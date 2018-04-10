@@ -20,6 +20,7 @@ class Welcome extends PublicController {
 	 */
 	public function index()
 	{
-		$this->l
+	    exit('toc toc');
+//		$this->l
 	}
 }
