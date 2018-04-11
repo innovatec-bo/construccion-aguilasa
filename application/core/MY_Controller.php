@@ -9,12 +9,16 @@ class PrivateController extends CI_Controller
      * @var Model_User
      */
     protected $sessUser;
+    /**
+     * @var string
+     */
+    protected $_panelTmpl;
 
     public function __construct()
     {
         parent::__construct();
         $this->load->driver('session');
-        $this->_panelTmpl = "base-template";
+        $this->_panelTmpl = "default-template";
         $this->complementHandler = new ComplementHandler();
     }
 
@@ -33,11 +37,24 @@ class PrivateController extends CI_Controller
     }
 }
 
-class PublicController extends PrivateController {
-    
+class PublicController extends PrivateController
+{
     protected $gnTemplate;
 
-    public function __construct() {    	
+    public function __construct()
+    {
         parent::__construct();
+        $this->complementHandler->addViewComplement("jquery");
+        $this->complementHandler->addViewComplement("bootstrap");
+    }
+
+    protected function _loadPublicView($contentView, $contentData = array())
+    {
+        //Add General Components
+
+
+        $contentData["complementHandler"] = $this->complementHandler;
+        $contentData["contentView"] = $contentView;
+        $this->load->view($this->_panelTmpl."/public/master/master", array("contentData" => $contentData));
     }
 }

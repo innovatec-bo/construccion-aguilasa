@@ -19,16 +19,11 @@ $config['complements']['metisMenu']['js'] = assets_url('resource-sb-admin2/vendo
 $config['complements']['raphael']['js'] = assets_url('resource-sb-admin2/vendor/raphael/raphael.min.js');
 
 $config['complements']['sb-admin-2']['css'] = assets_url('resource-sb-admin2/dist/css/sb-admin-2.css');
-$config['complements']['sb-admin-2']['js'] = assets_url('resource-sb-admin2/dist/css/sb-admin-2.js');
+$config['complements']['sb-admin-2']['js'] = assets_url('resource-sb-admin2/dist/js/sb-admin-2.js');
 
 $config['complements']['morris']['css'] = assets_url('resource-sb-admin2/vendor/morrisjs/morris.css');
 $config['complements']['morris']['js'] = assets_url('resource-sb-admin2/vendor/morrisjs/morris.js');
 
 $config['complements']['font-awesome']['css'] = assets_url('resource-sb-admin2/vendor/font-awesome/css/font-awesome.min.css');
 
-
-
-
 $config['complements']['tinymce']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap/plugins/tinymce/tinymce.min.js');
-$config['complements']['tinymce']['js'] = assets_url('backend/global/plugins/tinymce/tinymce.min.js');
-$config['complements']['tinymce']['js'] = assets_url('backend/global/plugins/tinymce/tinymce.min.js');

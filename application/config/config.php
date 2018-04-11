@@ -23,8 +23,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
-
+switch (ENVIRONMENT)
+{
+    case 'development':
+        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/base-design';
+        break;
+    case 'testing':
+    case 'production':
+        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'];
+        break;
+}
 /*
 |--------------------------------------------------------------------------
 | Index File
