@@ -25,8 +25,8 @@ class Model_user_base extends MY_Model
     protected $_taxDeductible;
     protected $_googleId;
 
-    public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar, $passwordHash, $activationHash, $status,
-                                $taxDeductible, $googleId)
+    public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar = NULL, $passwordHash = "", $activationHash = "", $status = 1,
+                                $taxDeductible = "", $googleId = "")
     {
         parent::__construct();
         $this->_firstName = $firstName;
