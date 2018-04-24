@@ -20,7 +20,7 @@ class Welcome extends PublicController {
 	 */
 	public function index()
 	{
-	    exit('toc toc');
-//		$this->l
+	    $userList = Model_user::getAll(100,0);
+	    echo"<pre>";var_dump($userList);exit;
 	}
 }

@@ -5,8 +5,8 @@
  * Date: 2017-10-17
  * Time: 12:28 AM
  */
-$config['projectJsPath'] = assets_url("resource-sb-admin2/project/js");
-$config['projectCssPath'] = assets_url("resource-sb-admin2/project/css");
+$config['projectJsPath'] = assets_url("resource-sb-admin2/js");
+$config['projectCssPath'] = assets_url("resource-sb-admin2/css");
 
 $config['complements']['jquery']['js'] = assets_url('resource-sb-admin2/vendor/jquery/jquery.min.js');
 
@@ -27,3 +27,10 @@ $config['complements']['morris']['js'] = assets_url('resource-sb-admin2/vendor/m
 $config['complements']['font-awesome']['css'] = assets_url('resource-sb-admin2/vendor/font-awesome/css/font-awesome.min.css');
 
 $config['complements']['tinymce']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap/plugins/tinymce/tinymce.min.js');
+
+$config['complements']['handlebars']['js'] = assets_url('resource-sb-admin2/vendor/handlebars-v4.0.10.js');
+$config['complements']['handlebars.custom.helpers']['js'] = assets_url('resource-sb-admin2/vendor/handlebars.custom.helpers.js');
+
+$config['complements']['parsley']['js'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/dist/parsley.min.js');
+$config['complements']['parsley.spanish']['js'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/dist/i18n/es.js');
+$config['complements']['parsley']['css'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/src/parsley.css');

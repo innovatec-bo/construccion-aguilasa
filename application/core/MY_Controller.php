@@ -47,16 +47,14 @@ class PublicController extends PrivateController
     public function __construct()
     {
         parent::__construct();
-    }
-
-    protected function _loadPublicView($contentView, $contentData = array())
-    {
-        //Add General Components
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
         $this->complementHandler->addViewComplement("metisMenu");
         $this->complementHandler->addViewComplement("sb-admin-2");
+    }
 
+    protected function _loadPublicView($contentView, $contentData = array())
+    {
         $contentData["complementHandler"] = $this->complementHandler;
         $contentData["contentView"] = $contentView;
         $this->load->view($this->_panelTmpl."/public/master/master", array("contentData" => $contentData));

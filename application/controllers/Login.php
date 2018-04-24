@@ -29,7 +29,6 @@ class Login extends PublicController
             ];
             $passwordHash = password_hash("test", PASSWORD_BCRYPT, $options);
             $passwordVerify = password_verify($password, $passwordHash);
-//            exit('dfd');
             if($passwordVerify)
             {
                 redirect(base_url('panel/Home'));
