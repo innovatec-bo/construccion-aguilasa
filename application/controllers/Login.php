@@ -27,6 +27,7 @@ class Login extends PublicController
             $user = Model_user::login($email, $password);
             if($user instanceof Model_user)
             {
+                $user->startSession();
                 redirect(base_url('panel/Home'));
             }
             else
