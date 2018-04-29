@@ -34,3 +34,7 @@ $config['complements']['handlebars.custom.helpers']['js'] = assets_url('resource
 $config['complements']['parsley']['js'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/dist/parsley.min.js');
 $config['complements']['parsley.spanish']['js'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/dist/i18n/es.js');
 $config['complements']['parsley']['css'] = assets_url('resource-sb-admin2/vendor/Parsleyjs-272/src/parsley.css');
+
+$config['complements']['jstree']['css'] = assets_url('resource-sb-admin2/vendor/jstree/dist/themes/default/style.min.css');
+$config['complements']['jstree']['js'] = assets_url('resource-sb-admin2/vendor/jstree/dist/jstree.min.js');
+

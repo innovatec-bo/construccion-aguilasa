@@ -64,12 +64,7 @@ class PrivateController extends PublicController
         {
 //            $this->allowedStructure->initFromSession();
 //            $this->gnNavigation->initFromSession();
-
-            $this->sessionUser["id"] = $this->session->userdata("userId");
-            $this->sessionUser["firstName"] = $this->session->userdata("firstName");
-            $this->sessionUser["lastName"] = $this->session->userdata("lastName");
-            $this->sessionUser["fullName"] = $this->session->userdata("fullName");
-            $this->sessionUser = (object)$this->sessionUser;
+            $this->sessionUser = $this->session->userdata("sessionUser");
 //            $this->viewConfig["sessUserId"] = $this->sessUser->getId();
 //            $this->viewConfig["isSuperAdmin"] = $this->gnSecurity->isSuperAdmin();
         }

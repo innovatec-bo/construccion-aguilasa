@@ -80,10 +80,14 @@ class Model_user extends Model_user_base
     {
         $ci = &get_instance();
         $ci->load->library('session');
-        $ci->session->set_userdata("userId", $this->_id);
-        $ci->session->set_userdata("firstName", $this->_firstName);
-        $ci->session->set_userdata("lastName", $this->_lastName);
-        $ci->session->set_userdata("fullName", $this->_firstName." ".$this->_lastName);
+        /** begin - Session user basic data */
+        $sessionUser["id"] = $this->_id;
+        $sessionUser["firstName"] = $this->_firstName;
+        $sessionUser["lastName"] = $this->_lastName;
+        $sessionUser["fullName"] = $this->_firstName." ".$this->_lastName;
+        $ci->session->set_userdata("sessionUser", (object)$sessionUser);
+        /** end - Session user basic data */
+
         $ci->session->set_userdata("authenticated", 1);
     }
 

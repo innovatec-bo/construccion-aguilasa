@@ -34,21 +34,6 @@ class Login extends PublicController
             {
                 redirect(base_url());
             }
-//            $options = [
-//                'cost' => 10,
-//                'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-//            ];
-//            $passwordHash = password_hash("test", PASSWORD_BCRYPT, $options);
-//            $passwordVerify = password_verify($password, $passwordHash);
-//            if($passwordVerify)
-//            {
-//                redirect(base_url('panel/Home'));
-//            }
-//            else
-//            {
-//
-//            }
-
         }
 	}
 
