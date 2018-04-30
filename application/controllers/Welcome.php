@@ -64,7 +64,7 @@ class Welcome extends PublicController {
             if(count($children) > 0)
             {
                 $tree[] = array(
-//                    "feature_id" => $feature["feature_id"],
+                    "id" => $feature["feature_id"],
                     "text" => $feature["feature_name"],
                     "state" => array("opened" => true),
                     "children" => $children
@@ -73,7 +73,7 @@ class Welcome extends PublicController {
             else
             {
                 $tree[] = array(
-//                    "feature_id" => $feature["feature_id"],
+                    "id" => $feature["feature_id"],
                     "text" => $feature["feature_name"],
                     "state" => array("opened" => true),
                     "children" => array()
