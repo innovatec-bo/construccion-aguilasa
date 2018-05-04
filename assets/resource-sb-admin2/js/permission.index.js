@@ -25,9 +25,12 @@ $(document).ready(function() {
     //get list of current nodes selected
     // $("#container").jstree("get_checked",null,true)
 
+    //get list of current nodes selected
+    // $("#container").jstree("get_undetermined",null)
+
     // var checked_ids = [];
     // $("#container").jstree("get_checked",null,true).each
-    // (function () {
+8    // (function () {
     //     checked_ids.push(this.id);
     // });
     // console.log(checked_ids);
