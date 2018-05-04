@@ -40,17 +40,35 @@ function getRoles(roleId)
 {
     var nodesToCheck = [];
     $.ajax({
-        url : base_url + 'panel/AjaxPermission/getByRoleId',
+        url : base_url + 'panel/AjaxPermission/getFeaturesByRoleId',
         dataType  :"json",
         type : "POST",
         data : {roleId : roleId},
         success:function(response){
-            // console.log(response);
-            $.each(response,function(index,value){
-                nodesToCheck.push(value.featureid_per);
+            console.log(response);
+            $.each(response.featureByRole,function(index,value){
+                //TODO: feature list should contain all feature!!!!!!!!!!
+                if(!isParent(response.allFeatures,value.id_fes))
+                {
+                    nodesToCheck.push(value.id_fes);
+                }
             });
             $("#container").jstree("uncheck_all");
             $("#container").jstree("check_node",nodesToCheck);
         }
     });
+}
+
+function isParent(featureList, featureId)
+{
+    var isParent = false;
+    for(var i = 0; i < featureList.length; i++)
+    {
+        if(featureList[i].parent_feature_id_fes == featureId)
+        {
+            isParent = true;
+            break;
+        }
+    }
+    return isParent;
 }

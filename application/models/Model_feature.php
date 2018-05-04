@@ -34,4 +34,27 @@ class Model_feature extends Model_feature_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getByRoleId($roleId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        SELECT
+            sec_features.*
+        FROM
+            sec_features
+        LEFT JOIN sec_permissions on featureid_per = id_fes
+        WHERE
+        roleid_per = ".$ci->db->escape($roleId)."
+        and deleted_fes != 1
+        and deleted_per != 1
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
+
 }

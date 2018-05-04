@@ -25,4 +25,23 @@ class AjaxPermission extends PrivateController
         }
         echo json_encode($arrayRoles);exit;
     }
+
+    public function getFeaturesByRoleId()
+    {
+        $formData = $this->input->post();
+        $roleId = $formData["roleId"];
+        $allFeatures = Model_feature::getAll(200,0);
+        $featureList = Model_feature::getByRoleId($roleId);
+
+        $response = array();
+        $arrayFeature = array();
+        foreach ($featureList as $feature)
+        {
+            $arrayFeature[] = $feature->toArray();
+        }
+        $response['allFeatures'] = $allFeatures;
+        $response['featureByRole'] = $arrayFeature;
+        echo json_encode($response);exit;
+    }
+
 }
