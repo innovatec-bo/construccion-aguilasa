@@ -44,4 +44,12 @@ class AjaxPermission extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function savePermissions()
+    {
+        $formData = $this->input->post();
+        $roleId = $formData['roleId'];
+        $featureList = $formData['featureList'];
+        Model_permission::saveBatch($roleId, $featureList);
+//        echo"<pre>";var_dump();exit;
+    }
 }

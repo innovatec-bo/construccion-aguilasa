@@ -31,21 +31,27 @@
                     <div class="form-group">
                         <?php
                         $html = '';
+                        $i = 0;
                         foreach ($roleList as $role)
                         {
+                            $checked = $i == 0?'checked':'';
                             $html .= '
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="roles" value="'.$role->id_rol.'">'.$role->rolename_rol.'
+                                    <input type="radio" name="roles" value="'.$role->id_rol.'" '.$checked.'>'.$role->rolename_rol.'
                                 </label>
                             </div>
                         ';
+                            $i++;
                         }
                         echo $html;
                         ?>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-default save-permissions">Save</button>
         </div>
         <!-- /.col-lg-12 -->
     </div>
