@@ -50,6 +50,57 @@ class AjaxPermission extends PrivateController
         $roleId = $formData['roleId'];
         $featureList = $formData['featureList'];
         Model_permission::saveBatch($roleId, $featureList);
-//        echo"<pre>";var_dump();exit;
+    }
+
+    public function getTreeFeatures()
+    {
+        $list = Model_feature::getFeatures();
+        $tree = array();
+        $tree = $this->drawTree(NULL, $list, $tree);
+        echo json_encode($tree);exit;
+    }
+
+    public function drawTree($currentFeatureId, array $list, array $tree)
+    {
+        $results = array_filter($list, function($item) use($currentFeatureId){
+            if($item["parent_id"] == $currentFeatureId)
+                return $item;
+        });
+
+        foreach($results as $feature)
+        {
+            $currentFeatureId = $feature["feature_id"];
+            $isGroup = array_filter($list, function($item) use($currentFeatureId){
+                if($item["parent_id"] == $currentFeatureId)
+                    return $item;
+            });
+            $isGroup = count($isGroup) > 0?TRUE:FALSE;
+
+            $children = array();
+            if($isGroup)
+            {
+                $children = $this->drawTree($feature["feature_id"], $list, $children);
+            }
+
+            if(count($children) > 0)
+            {
+                $tree[] = array(
+                    "id" => $feature["feature_id"],
+                    "text" => $feature["feature_name"],
+                    "state" => array("opened" => true),
+                    "children" => $children
+                );
+            }
+            else
+            {
+                $tree[] = array(
+                    "id" => $feature["feature_id"],
+                    "text" => $feature["feature_name"],
+                    "state" => array("opened" => true),
+                    "children" => array()
+                );
+            }
+        }
+        return $tree;
     }
 }

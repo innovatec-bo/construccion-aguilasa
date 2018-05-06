@@ -2,30 +2,13 @@
  * Created by Jair on 23/04/2018.
  */
 var tree = {};
+var newFeatures = [];
 $(document).ready(function() {
-    var treeData = $("input[name=tree-data]").val();
-    tree = $('#container')
-        .on('select_node.jstree', function(event, data) {
-            alert('selecting');
-        })
-        .jstree({
-        "plugins" : ["checkbox","dnd","contextmenu"],
-        'core' : {
-            'data' : jQuery.parseJSON(treeData),
-            "check_callback" : true
-        },
-        'contextmenu': {
-            'select_node': false,
-            'items': reportMenu
-        }
+
+    $(document).on('dnd_stop.vakata', function (data, element, helper, event) {
+        console.log(data, element, helper, event);
     });
 
-    // $('#container').on("changed.jstree", function (e, data) {
-    //     console.log("The selected nodes are:");
-    //     console.log(data.selected);
-    // });
-    var roleId = $("input[type=radio][name=roles]:checked").val();
-    getRoles(roleId);
     $(document).on("change","input[type=radio][name=roles]",function(){
         roleId = $(this).val();
         getRoles(roleId);
@@ -45,14 +28,8 @@ $(document).ready(function() {
 
     //get list of current nodes selected
     // $("#container").jstree("get_undetermined",null)
-
-    // var checked_ids = [];
-    // $("#container").jstree("get_checked",null,true).each
-8    // (function () {
-    //     checked_ids.push(this.id);
-    // });
-    // console.log(checked_ids);
-})
+    loadTree();
+});
 
 function getRoles(roleId)
 {
@@ -104,42 +81,65 @@ function savePermissions(roleId, featureList)
     });
 }
 
-function demo_rename() {
-    var ref = tree;//$('#jstree_demo').jstree(true),
-        sel = ref.get_selected();
-    if(!sel.length) { return false; }
-    sel = sel[0];
-    ref.edit(sel);
-}
-
-function demo_create() {
-    var ref = $('#container').jstree(true),
-    sel = ref.get_selected();
-    if(!sel.length) { return false; }
-    sel = sel[0];
-    sel = ref.create_node(sel, {"type":"file"});
-    if(sel)
-    {
-        ref.edit(sel);
-    }
-}
-
 function reportMenu(node) {
-    alert('Node id ' + node.id);
+    // alert('Node id ' + node.id);
     // build your menu depending on node id
     return {
         createItem : {
             "label" : "Create feature",
-            "action" : function(obj) { this.create(obj); alert(obj.text())},
+            "action" : function() {
+                var tree = $('#container').jstree(true);
+                tree.create_node(node, {type:'file'});
+            },
             "_class" : "class"
         },
         renameItem : {
             "label" : "Rename feature",
-            "action" : function(obj) { this.rename(obj);}
+            "action" : function() {
+                var tree = $('#container').jstree(true);
+                tree.edit(node,null,function(data){
+                    console.log(data);
+                });
+            }
         },
         deleteItem : {
             "label" : "Delete feature",
             "action" : function(obj) { this.remove(obj); }
         }
     };
+}
+
+function loadTree()
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxPermission/getTreeFeatures',
+        dataType  :"json",
+        type : "POST",
+        success:function(response){
+            tree = $('#container')
+                .jstree({
+                    "plugins" : ["checkbox","dnd","contextmenu"],
+                    'core' : {
+                        'data' : response,
+                        'check_callback' : function (operation, node, node_parent, node_position, more) {
+                            // operation can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
+                            // in case of 'rename_node' node_position is filled with the new node name
+                            return operation === 'rename_node' ? true : false;
+                        }
+                    },
+                    'contextmenu': {
+                        'select_node': false,
+                        'items': reportMenu
+                    }
+                })
+                .on("model.jstree", function (event, nodes) {
+                    if(nodes.nodes.length === 1)
+                        console.log(event, nodes);
+                })
+                .on('ready.jstree', function(event, data) {
+                    var roleId = $("input[type=radio][name=roles]:checked").val();
+                    getRoles(roleId);
+                });
+        }
+    });
 }
