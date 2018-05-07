@@ -38,3 +38,5 @@ $config['complements']['parsley']['css'] = assets_url('resource-sb-admin2/vendor
 $config['complements']['jstree']['css'] = assets_url('resource-sb-admin2/vendor/jstree/dist/themes/default/style.min.css');
 $config['complements']['jstree']['js'] = assets_url('resource-sb-admin2/vendor/jstree/dist/jstree.min.js');
 
+$config['complements']['bootbox']['js'] = assets_url('resource-sb-admin2/vendor/bootbox.min.js');
+

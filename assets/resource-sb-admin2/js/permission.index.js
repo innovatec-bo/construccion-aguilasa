@@ -94,12 +94,13 @@ function reportMenu(node) {
             "_class" : "class"
         },
         renameItem : {
-            "label" : "Rename feature",
+            "label" : "Edit feature",
             "action" : function() {
-                var tree = $('#container').jstree(true);
-                tree.edit(node,null,function(data){
-                    console.log(data);
-                });
+                // var tree = $('#container').jstree(true);
+                // tree.edit(node,null,function(data){
+                //     console.log(data);
+                // });
+                launchEditForm(node);
             }
         },
         deleteItem : {
@@ -121,11 +122,7 @@ function loadTree()
                     "plugins" : ["checkbox","dnd","contextmenu"],
                     'core' : {
                         'data' : response,
-                        'check_callback' : function (operation, node, node_parent, node_position, more) {
-                            // operation can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
-                            // in case of 'rename_node' node_position is filled with the new node name
-                            return operation === 'rename_node' ? true : false;
-                        }
+                        'check_callback' : true
                     },
                     'contextmenu': {
                         'select_node': false,
@@ -140,6 +137,59 @@ function loadTree()
                     var roleId = $("input[type=radio][name=roles]:checked").val();
                     getRoles(roleId);
                 });
+        }
+    });
+}
+
+function launchEditForm(node)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxFeature/getById',
+        dataType  :"json",
+        type : "POST",
+        data:{node:node},
+        success:function(feature){
+            var htmlSource   = $('#ht-modal-edit-form').html();
+            var template = Handlebars.compile(htmlSource);
+            var data = {feature:feature};
+            var html    = template(data);
+            bootbox.confirm({
+                title:"Edit feature",
+                // message: JSON.stringify(feature),
+                message: html,
+                buttons: {
+                    confirm: {
+                        label: 'Save',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancel',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result)
+                    {
+                        var form = $("form[name=modal-feature-edit-form]");
+                        saveFeature(form.serialize());
+                    }
+                }
+            });
+        }
+    });
+}
+
+function saveFeature(featureData)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxFeature/save',
+        dataType  :"json",
+        type : "POST",
+        data:featureData,
+        success:function(response){
+            //TODO: find the way to refresh the tree after edit the feature
+            var tree = $('#container').jstree(true);
+            tree.refresh();
         }
     });
 }

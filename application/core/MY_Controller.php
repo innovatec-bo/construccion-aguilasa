@@ -17,6 +17,7 @@ class PublicController extends CI_Controller
         parent::__construct();
         $this->_ci = &get_instance();
         $this->load->driver('session');
+        $this->load->library('form_validation');
         $this->_panelTmpl = "default-template";
         $this->complementHandler = new ComplementHandler();
 

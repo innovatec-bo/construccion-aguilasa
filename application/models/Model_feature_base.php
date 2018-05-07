@@ -86,5 +86,31 @@ class Model_feature_base extends MY_Model
         }
         return $response;
     }
+// begin - setters
+    public function setName($name)
+    {
+        $this->_featureName = $name;
+    }
+
+    public function setSecurityString($securityString)
+    {
+        $this->_securityString = $securityString;
+    }
+
+    public function setIcon($icon)
+    {
+        $this->_featureIcon = $icon;
+    }
+
+    public function setLink($link)
+    {
+        $this->_link = $link;
+    }
+
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
+// end - setters
 
 }

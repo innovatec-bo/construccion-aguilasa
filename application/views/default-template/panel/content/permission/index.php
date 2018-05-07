@@ -58,3 +58,6 @@
     <!-- /.row -->
 </div>
 <!-- /.container-fluid -->
+<?php
+$this->load->view('default-template/panel/content/feature/ht-modal-edit-form');
+?>

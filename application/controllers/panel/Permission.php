@@ -15,12 +15,15 @@ class Permission extends PrivateController
 
     public function index()
     {
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jstree");
+        $this->complementHandler->addViewComplement("handlebars");
+        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("jstree");
         $this->complementHandler->addProjectJs('permission.index');
 
         $parentId = NULL;
         $roleList = Model_role::getAll(100,0);
-//        echo "<pre>";var_dump($roleList);exit;
         $list = Model_feature::getFeatures();
         $tree = array();
         $tree = $this->drawTree(NULL, $list, $tree);
