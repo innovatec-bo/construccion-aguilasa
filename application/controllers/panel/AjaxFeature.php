@@ -23,15 +23,10 @@ class AjaxFeature extends PrivateController
 
     public function save()
     {
-        $response = array("success" => 1, "message" => "Feature saved successfully!");
+        $response = array("success" => 1, "message" => array());
         $formData = $this->input->post();
         $featureId = $formData['feature-id'];
         $feature = Model_feature::getById($featureId);
-//        if($feature instanceof Model_feature)
-//        {
-//
-//        }
-//        echo"<pre>";var_dump($formData);exit;
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('feature-name', 'Feature name', 'trim|required');
@@ -42,7 +37,7 @@ class AjaxFeature extends PrivateController
 
         if ($this->form_validation->run() === FALSE)
         {
-
+            $response = array("success" => 0, "message" => validation_errors());
         }
         else
         {

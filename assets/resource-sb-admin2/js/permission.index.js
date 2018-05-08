@@ -187,9 +187,21 @@ function saveFeature(featureData)
         type : "POST",
         data:featureData,
         success:function(response){
-            //TODO: find the way to refresh the tree after edit the feature
-            var tree = $('#container').jstree(true);
-            tree.refresh();
+            if(response.success === 1)
+            {
+                var tree = $('#container').jstree(true);
+                tree.destroy();
+                loadTree();
+            }
+            else
+            {
+                bootbox.alert({
+                    title:"Something went wrong!",
+                    message: response.message,
+                    size:"medium"
+                })
+            }
+
         }
     });
 }
