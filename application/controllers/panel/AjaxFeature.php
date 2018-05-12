@@ -30,7 +30,7 @@ class AjaxFeature extends PrivateController
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('feature-name', 'Feature name', 'trim|required');
-        $this->form_validation->set_rules('feature-security-string', 'Security string', 'trim|required');
+        $this->form_validation->set_rules('feature-security-string', 'Security string', 'trim|required|callback_unique_security_string');
         $this->form_validation->set_rules('feature-icon', 'Icon', 'trim|required');
         $this->form_validation->set_rules('feature-link', 'Link', 'trim|required');
         $this->form_validation->set_rules('description', 'Longitude', 'trim');
@@ -50,5 +50,22 @@ class AjaxFeature extends PrivateController
             $feature->save();
         }
         echo json_encode($response);exit;
+    }
+
+    public function unique_security_string()
+    {
+        $formData = $this->input->post();
+        $featureId = $formData["feature-id"];
+        $securityString = $formData["feature-security-string"];
+//        var_dump($featureId, $securityString);exit;
+        $isDuplicated = Model_feature::securityStringDuplicated($securityString, $featureId);
+        $validationResult = TRUE;
+//        var_dump($isDuplicated);exit;
+        if ($isDuplicated)
+        {
+            $this->form_validation->set_message('unique_security_string', 'The {field} already exist.');
+            $validationResult = FALSE;
+        }
+        return $validationResult;
     }
 }

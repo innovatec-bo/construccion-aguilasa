@@ -57,4 +57,66 @@ class Model_feature extends Model_feature_base
         return $result;
     }
 
+    public static function getBySecurityString($securityString)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+                sec_features.*
+            FROM
+                sec_features
+            WHERE
+            securitystring_fes = ".$ci->db->escape($securityString)."
+            and deleted_fes != 1
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
+
+    public static function getBySecurityStringAndNotFeatureId($securityString, $featureId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+                sec_features.*
+            FROM
+                sec_features
+            WHERE
+            securitystring_fes = ".$ci->db->escape($securityString)."
+            and id_fes != ".$ci->db->escape($featureId)."
+            and deleted_fes != 1
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
+
+    public static function securityStringDuplicated($securityString, $featureId = NULL)
+    {
+        $alreadyExist = FALSE;
+        //add feature
+        if(is_null($featureId))
+        {
+            $feature = static::getBySecurityString($securityString);
+        }
+        //edit feature
+        else
+        {
+            $feature = static::getBySecurityStringAndNotFeatureId($securityString, $featureId);
+        }
+
+        if($feature instanceof Model_feature)
+        {
+            $alreadyExist = TRUE;
+        }
+
+        return $alreadyExist;
+    }
 }
