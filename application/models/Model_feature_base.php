@@ -18,8 +18,9 @@ class Model_feature_base extends MY_Model
     protected $_link;
     protected $_description;
     protected $_parentFeatureId;
+    protected $_order;
 
-    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId)
+    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order)
     {
         parent::__construct();
         $this->_featureName = $featureName;
@@ -28,6 +29,7 @@ class Model_feature_base extends MY_Model
         $this->_link = $link;
         $this->_description = $description;
         $this->_parentFeatureId = $parentFeatureId;
+        $this->_order = $order;
     }
 
     /**
@@ -44,6 +46,7 @@ class Model_feature_base extends MY_Model
             "link_fes" => $this->_link,
             "description_fes" => $this->_description,
             "parent_feature_id_fes" => $this->_parentFeatureId,
+            "order_fes" => $this->_order,
             "deleted_fes" => $this->_deleted,
             "createdon_fes" => $this->_createdOn,
             "createdby_fes" => $this->_createdBy,
@@ -73,7 +76,8 @@ class Model_feature_base extends MY_Model
                 $object->featureicon_fes,
                 $object->link_fes,
                 $object->description_fes,
-                $object->parent_feature_id_fes
+                $object->parent_feature_id_fes,
+                $object->order_fes
             );
             $instance->_id = $object->id_fes;
 

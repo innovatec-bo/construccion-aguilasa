@@ -55,6 +55,9 @@ class PrivateController extends PublicController
         $contentData["complementHandler"] = $this->complementHandler;
         $contentData["contentView"] = $contentView;
         $contentData["sessionUser"] = $this->sessionUser;
+        $featureList = unserialize($this->sessionUser->featureList);
+        $treeFeatureHtml = Model_feature::drawTreeHtml(NULL,$featureList,array());
+        $contentData["treeFeatureHtml"] = $treeFeatureHtml;
 
         $this->load->view($this->_panelTmpl."/panel/master/master", array("contentData" => $contentData));
     }

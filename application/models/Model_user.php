@@ -79,12 +79,16 @@ class Model_user extends Model_user_base
     public function startSession()
     {
         $ci = &get_instance();
+
+        $roleList = Model_role::getByUserId($this->_id);
+        $featureList = Model_feature::getFeaturesTreeSeedByRoleArray($roleList);
         $ci->load->library('session');
         /** begin - Session user basic data */
         $sessionUser["id"] = $this->_id;
         $sessionUser["firstName"] = $this->_firstName;
         $sessionUser["lastName"] = $this->_lastName;
         $sessionUser["fullName"] = $this->_firstName." ".$this->_lastName;
+        $sessionUser["featureList"] = serialize($featureList);
         $ci->session->set_userdata("sessionUser", (object)$sessionUser);
         /** end - Session user basic data */
 

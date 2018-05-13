@@ -54,7 +54,7 @@ class AjaxPermission extends PrivateController
 
     public function getTreeFeatures()
     {
-        $list = Model_feature::getFeatures();
+        $list = Model_feature::getFeaturesTreeSeed();
         $tree = array();
         $tree = $this->drawTree(NULL, $list, $tree);
         echo json_encode($tree);exit;

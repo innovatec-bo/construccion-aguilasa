@@ -24,9 +24,9 @@ class Permission extends PrivateController
 
         $parentId = NULL;
         $roleList = Model_role::getAll(100,0);
-        $list = Model_feature::getFeatures();
+        $list = Model_feature::getFeaturesTreeSeed();
         $tree = array();
-        $tree = $this->drawTree(NULL, $list, $tree);
+        $tree = Model_feature::drawTree(NULL, $list, $tree);
         $jsonTree = json_encode($tree);
         $data["jsonTree"] = $jsonTree;
         $data["roleList"] = $roleList;
@@ -34,7 +34,7 @@ class Permission extends PrivateController
         $this->_loadPanelView('permission/index',$data);
     }
 
-    public function drawTree($currentFeatureId, array $list, array $tree)
+    public function drawTree_deprecated($currentFeatureId, array $list, array $tree)
     {
         $results = array_filter($list, function($item) use($currentFeatureId){
             if($item["parent_id"] == $currentFeatureId)
