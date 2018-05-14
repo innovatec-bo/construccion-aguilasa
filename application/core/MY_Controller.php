@@ -78,5 +78,16 @@ class PrivateController extends PublicController
             redirect(base_url("Login"));
         }
     }
+
+    protected function _validateFeature($securityString)
+    {
+        $featureList = unserialize($this->sessionUser->featureList);
+        $key = array_search($securityString, array_column($featureList, 'securitystring_fes'));
+        if($key === FALSE)
+        {
+            $this->session->set_flashdata("errorMessage", "Permission denied!");
+            redirect(base_url("panel/Home"));
+        }
+    }
 }
 

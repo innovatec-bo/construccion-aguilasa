@@ -15,6 +15,7 @@ class Permission extends PrivateController
 
     public function index()
     {
+        $this->_validateFeature('permissionn');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("jstree");
