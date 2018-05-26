@@ -14,10 +14,6 @@ $(document).ready(function() {
     var oTable = $('#user-index').dataTable({
         "processing" : true,
         "serverSide" : true,
-        "initComplete" : function () {
-            // oTable.buttons().container()
-            //     .appendTo( $('#user-index_wrapper .col-sm-6:eq(0)'));
-        },
         "ajax" : {
             url : base_url + 'panel/AjaxUser/ajaxDtAllUsers',
             type : 'POST'
@@ -40,9 +36,8 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = '<a class="btn btn-primary btn-xs" href="'+base_url + 'panel/User/partnerSummary/' +row.id_usr+'" title="" target="_blank" data-original-title="SUMMARY" data-toggle="tooltip" data-placement="top"><i class="fa fa-file-o"></i></a> ';
-                    html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'admin/User/edit/' +row.usu_id+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-home"></i></a> ';
+                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'admin/User/edit/' +row.usu_id+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                    html += ' <a class="btn btn-danger btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],
@@ -51,23 +46,6 @@ $(document).ready(function() {
             this.api().column(0).visible(false);
         },
         "buttons": [ 'copy', 'excel', 'pdf']
-        // "buttons": [
-        //     $.extend( true, {}, buttonCommon,{
-        //         extend: 'copy'
-        //     } ),
-        //     $.extend( true, {}, buttonCommon,{
-        //         extend: 'csv'
-        //     } ),
-        //     $.extend( true, {}, buttonCommon,{
-        //         extend: 'pdf',
-        //     } ),
-        //     $.extend( true, {}, buttonCommon,{
-        //         extend: 'excel'
-        //     } ),
-        //     $.extend( true, {}, buttonCommon,{
-        //         extend: 'print'
-        //     } )
-        // ]
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Search');
     $('.dataTables_length select').addClass('form-control');
