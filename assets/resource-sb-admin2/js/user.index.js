@@ -1,0 +1,75 @@
+/**
+ * Created by Jair on 10/01/2018.
+ */
+
+$(document).ready(function() {
+    var buttonCommon = {
+        title: "Users",
+        exportOptions: {
+            page: 'all',
+            columns: [1, 2, 3, 4, 5, 6]
+        }
+    };
+    //Horizontal Icons dataTable
+    var oTable = $('#user-index').dataTable({
+        "processing" : true,
+        "serverSide" : true,
+        "initComplete" : function () {
+            // oTable.buttons().container()
+            //     .appendTo( $('#user-index_wrapper .col-sm-6:eq(0)'));
+        },
+        "ajax" : {
+            url : base_url + 'panel/AjaxUser/ajaxDtAllUsers',
+            type : 'POST'
+        },
+        "language": {
+                processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
+        },
+        "dom": "<'row'<'col-sm-6'Bl><'col-sm-6 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+        "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
+        "columns" : [{
+            "data" : "id_usr"
+        }, {
+            "data" : "firstname_usr"
+        }, {
+            "data" : "lastname_usr"
+        }, {
+            "data" : "email_usr"
+        }, {
+            "defaultContent" : " ",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var html = '<a class="btn btn-primary btn-xs" href="'+base_url + 'panel/User/partnerSummary/' +row.id_usr+'" title="" target="_blank" data-original-title="SUMMARY" data-toggle="tooltip" data-placement="top"><i class="fa fa-file-o"></i></a> ';
+                    html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'admin/User/edit/' +row.usu_id+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-home"></i></a> ';
+                return html;
+            }
+        }],
+        "drawCallback" : function(object) {
+            $('[data-toggle="tooltip"]').tooltip();
+            this.api().column(0).visible(false);
+        },
+        "buttons": [ 'copy', 'excel', 'pdf']
+        // "buttons": [
+        //     $.extend( true, {}, buttonCommon,{
+        //         extend: 'copy'
+        //     } ),
+        //     $.extend( true, {}, buttonCommon,{
+        //         extend: 'csv'
+        //     } ),
+        //     $.extend( true, {}, buttonCommon,{
+        //         extend: 'pdf',
+        //     } ),
+        //     $.extend( true, {}, buttonCommon,{
+        //         extend: 'excel'
+        //     } ),
+        //     $.extend( true, {}, buttonCommon,{
+        //         extend: 'print'
+        //     } )
+        // ]
+    });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Search');
+    $('.dataTables_length select').addClass('form-control');
+    oTable.fnSetFilteringDelay(1000);
+});

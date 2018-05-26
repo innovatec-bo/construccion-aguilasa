@@ -40,3 +40,21 @@ $config['complements']['jstree']['js'] = assets_url('resource-sb-admin2/vendor/j
 
 $config['complements']['bootbox']['js'] = assets_url('resource-sb-admin2/vendor/bootbox.min.js');
 
+$config['complements']['jquery.datatables']['js'] = assets_url('resource-sb-admin2/vendor/datatables/DataTables-1.10.16/js/jquery.dataTables.js');
+
+$config['complements']['jquery.datatables.bootstrap']['js'] = assets_url('resource-sb-admin2/vendor/datatables/DataTables-1.10.16/js/dataTables.bootstrap.js');
+$config['complements']['jquery.datatables.bootstrap']['css'] = assets_url('resource-sb-admin2/vendor/datatables/DataTables-1.10.16/css/dataTables.bootstrap.css');
+
+$config['complements']['jquery.datatables.jszip']['js'] = assets_url('resource-sb-admin2/vendor/datatables/JSZip-2.5.0/jszip.js');
+$config['complements']['jquery.datatables.pdfmake']['js'] = assets_url('resource-sb-admin2/vendor/datatables/pdfmake-0.1.32/pdfmake.js');
+$config['complements']['jquery.datatables.vfs_fonts']['js'] = assets_url('resource-sb-admin2/vendor/datatables/pdfmake-0.1.32/vfs_fonts.js');
+$config['complements']['jquery.datatables.buttons.html5']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/buttons.html5.js');
+$config['complements']['jquery.datatables.buttons.print']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/buttons.print.js');
+$config['complements']['jquery.datatables.buttons.flash']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/buttons.flash.js');
+
+$config['complements']['jquery.datatables.buttons']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/dataTables.buttons.js');
+$config['complements']['jquery.datatables.buttons']['css'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/css/buttons.dataTables.css');
+$config['complements']['jquery.datatables.buttons.bootstrap']['css'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/css/buttons.bootstrap.css');
+$config['complements']['jquery.datatables.buttons.bootstrap']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/buttons.bootstrap.js');
+
+$config['complements']['jquery.datatables.filterdelay']['js'] = assets_url('resource-sb-admin2/vendor/datatables/FilterDelay/dataTables.FilterDelay.js');
