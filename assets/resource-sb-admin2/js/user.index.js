@@ -3,11 +3,10 @@
  */
 
 $(document).ready(function() {
-    var buttonCommon = {
-        title: "Users",
-        exportOptions: {
-            page: 'all',
-            columns: [1, 2, 3, 4, 5, 6]
+    var buttonAdd = {
+        text: "Add",
+        action: function ( e, dt, node, config ) {
+            window.open(base_url + "panel/User/add","_blank");
         }
     };
     //Horizontal Icons dataTable
@@ -45,7 +44,7 @@ $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
             this.api().column(0).visible(false);
         },
-        "buttons": [ 'copy', 'excel', 'pdf']
+        "buttons": ['excel', 'csv','pdf','print',buttonAdd]
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Search');
     $('.dataTables_length select').addClass('form-control');

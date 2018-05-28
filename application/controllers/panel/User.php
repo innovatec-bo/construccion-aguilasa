@@ -32,4 +32,85 @@ class User extends PrivateController
         $this->complementHandler->addProjectJs('user.index');
         $this->_loadPanelView("user/index");
     }
+
+    public function add()
+    {
+        $this->complementHandler->addViewComplement("parsley");
+
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
+        $this->form_validation->set_rules('last-name', 'Email', 'trim|required');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_unique_email');
+        $this->form_validation->set_rules('roles[]', 'Roles', 'callback_validate_roles');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required');
+        $this->form_validation->set_rules('confirm-password', 'Confirm password', 'trim|required|matches[password]');
+
+        $roleList = Model_role::getAll(100,0);
+        $data["roleList"] = $roleList;
+
+        if($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("user/add",$data);
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $firstName = $formData["first-name"];
+            $lastName = $formData["last-name"];
+            $email = $formData["email"];
+            $password = $formData["password"];
+            $userRoleList = $formData["roles"];
+            echo"<pre>";var_dump($userRoleList);exit;
+            $user = new Model_user(
+                $firstName,
+                $lastName,
+                $email,
+                NULL,
+                NULL,
+                $this->_encryptPassword($password)
+            );
+            $user->save();
+
+            Model_user_role::saveUserRoleList($userRoleList);
+
+            $user->startSession();
+        }
+    }
+
+    public function unique_email($email)
+    {
+        $user = Model_user::getByEmail($email);
+        //If the user exist then notice to user that request the signup
+        $response = TRUE;
+        if($user instanceof Model_user)
+        {
+            $this->form_validation->set_message('unique_email', 'The email {field} already exist.');
+            $response = FALSE;
+        }
+        return $response;
+    }
+
+    public function validate_roles()
+    {
+        $formData = $this->input->post();
+        $roles = $formData['roles'];
+        $roleList = Model_role::getAll(100,0);
+        $validRoleListIds = array_column((array)$roleList,'id_rol');
+        $quantityValidIds = 0;
+        echo"<pre>";var_dump($roles,$validRoleListIds,$roleList);exit;
+        foreach ($roles as $roleId)
+        {
+            if(array_search($roleId, $validRoleListIds) !== FALSE)
+            {
+                $quantityValidIds++;
+            }
+        }
+        $response = TRUE;
+        if($quantityValidIds != count($roles))
+        {
+            $this->form_validation->set_message('validate_roles', 'You need to adds valid roles');
+            $response = FALSE;
+        }
+        return $response;
+    }
 }

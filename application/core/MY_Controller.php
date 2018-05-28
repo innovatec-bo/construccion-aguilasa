@@ -33,6 +33,16 @@ class PublicController extends CI_Controller
         $contentData["contentView"] = $contentView;
         $this->load->view($this->_panelTmpl."/public/master/master", array("contentData" => $contentData));
     }
+
+    protected function _encryptPassword($password)
+    {
+        $options = [
+            'cost' => 10,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+        ];
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options);
+        return $passwordHash;
+    }
 }
 
 class PrivateController extends PublicController

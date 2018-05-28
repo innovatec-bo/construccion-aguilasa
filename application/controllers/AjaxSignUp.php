@@ -53,6 +53,8 @@ class AjaxSignUp extends PublicController
             {
                 $user = new Model_user($firstName,$lastName,$email,NULL,NULL,$this->_encryptPassword($password));
                 $user->save();
+                $userRole = new Model_user_role($user->getId(),3);
+                $userRole->save();
                 $user->startSession();
                 $response = array("success" => 1, "message" => "Your account was created successfully. We are redirecting to you home page..!", "url" => "panel/Home");
             }
@@ -61,13 +63,5 @@ class AjaxSignUp extends PublicController
         echo json_encode($response);exit;
     }
 
-    private function _encryptPassword($password)
-    {
-        $options = [
-            'cost' => 10,
-            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-        ];
-        $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options);
-        return $passwordHash;
-    }
+
 }
