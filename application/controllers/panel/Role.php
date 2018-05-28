@@ -7,7 +7,7 @@
  */
 
 
-class User extends PrivateController
+class Role extends PrivateController
 {
     public function __construct()
     {
@@ -17,7 +17,7 @@ class User extends PrivateController
 
     public function index()
     {
-        $this->_validateFeature('user_index');
+        $this->_validateFeature('role_index');
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("jquery.datatables.buttons");
@@ -29,9 +29,9 @@ class User extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
-        $this->complementHandler->addProjectCss('user.index');
-        $this->complementHandler->addProjectJs('user.index');
-        $this->_loadPanelView("user/index");
+        $this->complementHandler->addProjectCss('role.index');
+        $this->complementHandler->addProjectJs('role.index');
+        $this->_loadPanelView("role/index");
     }
 
     public function add()
