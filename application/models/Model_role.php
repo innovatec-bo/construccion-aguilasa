@@ -8,9 +8,9 @@
 
 class Model_role extends Model_role_base
 {
-    public function __construct($roleName)
+    public function __construct($roleName = "", $keyWord = "")
     {
-        parent::__construct($roleName);
+        parent::__construct($roleName, $keyWord);
     }
 
     public static function getByUserId($userId)
@@ -23,9 +23,10 @@ class Model_role extends Model_role_base
             from ".static::TABLE_NAME."
             left join sec_userroles on roleid_uro = id_rol
             where 
-            userid_uro = ".$ci->db->escape($userId)." 
+            userid_uro = ".$ci->db->escape($userId)."
+            and deleted_uro != 1
+            and deleted_rol != 1 
         ";
-//        echo"<pre>";var_dump($sql);exit;
         $result = $ci->db->query($sql);
         return static::recastArray(get_called_class(), $result->result());
     }

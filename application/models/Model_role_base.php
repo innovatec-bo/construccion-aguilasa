@@ -13,11 +13,13 @@ class Model_role_base extends MY_Model
     const ATTRIB_SUFIX = "_rol";
 
     protected $_roleName;
+    protected $_keyWord;
 
-    public function __construct($roleName)
+    public function __construct($roleName = "", $keyWord = "")
     {
         parent::__construct();
         $this->_roleName = $roleName;
+        $this->_keyWord = $keyWord;
     }
 
     /**
@@ -29,6 +31,7 @@ class Model_role_base extends MY_Model
         $tableAttributes = array(
             "id_rol" => $this->_id,
             "role_rol" => $this->_roleName,
+            "keyword_rol" => $this->_keyWord,
             "deleted_rol" => $this->_deleted,
             "createdon_rol" => $this->_createdOn,
             "createdby_rol" => $this->_createdBy,
@@ -53,7 +56,8 @@ class Model_role_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
-                $object->rolename_rol
+                $object->rolename_rol,
+                $object->keyword_rol
             );
             $instance->_id = $object->id_rol;
 

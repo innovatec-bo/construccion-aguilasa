@@ -8,9 +8,9 @@
 
 class Model_feature extends Model_feature_base
 {
-    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order)
+    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order, $isMenu)
     {
-        parent::__construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order);
+        parent::__construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order, $isMenu);
     }
 
     public static function getFeaturesTreeSeed()
@@ -257,27 +257,30 @@ class Model_feature extends Model_feature_base
                 $childrenTreeHtml = static::drawTreeHtml($feature["feature_id"], $list, $children, $level+1);
             }
 
-            if($childrenTreeHtml != "")
+            if($feature["is_menu_fes"] == 1)
             {
-                $childrenTreeHtml = '
+                if($childrenTreeHtml != "")
+                {
+                    $childrenTreeHtml = '
                     <ul class="nav '.$treeLevelCss[$level+1].' collapse">
                         '.$childrenTreeHtml.'
                     </ul>
                 ';
-                $treeHtml .= '
+                    $treeHtml .= '
                     <li>
                         <a href="'.base_url($feature["link_fes"]).'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'<span class="fa arrow"></span></a>
                         '.$childrenTreeHtml.'
                     </li>
                 ';
-            }
-            else
-            {
-                $treeHtml .= '
+                }
+                else
+                {
+                    $treeHtml .= '
                     <li>
                         <a href="'.base_url($feature["link_fes"]).'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'</a>
                     </li>
                 ';
+                }
             }
         }
         return $treeHtml;

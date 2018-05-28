@@ -19,8 +19,9 @@ class Model_feature_base extends MY_Model
     protected $_description;
     protected $_parentFeatureId;
     protected $_order;
+    protected $_isMenu;
 
-    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order)
+    public function __construct($featureName, $securityString, $featureIcon, $link, $description, $parentFeatureId, $order, $isMenu)
     {
         parent::__construct();
         $this->_featureName = $featureName;
@@ -30,6 +31,7 @@ class Model_feature_base extends MY_Model
         $this->_description = $description;
         $this->_parentFeatureId = $parentFeatureId;
         $this->_order = $order;
+        $this->_isMenu = $isMenu;
     }
 
     /**
@@ -47,6 +49,7 @@ class Model_feature_base extends MY_Model
             "description_fes" => $this->_description,
             "parent_feature_id_fes" => $this->_parentFeatureId,
             "order_fes" => $this->_order,
+            "is_menu_fes" => $this->_isMenu,
             "deleted_fes" => $this->_deleted,
             "createdon_fes" => $this->_createdOn,
             "createdby_fes" => $this->_createdBy,
@@ -77,7 +80,8 @@ class Model_feature_base extends MY_Model
                 $object->link_fes,
                 $object->description_fes,
                 $object->parent_feature_id_fes,
-                $object->order_fes
+                $object->order_fes,
+                $object->is_menu_fes
             );
             $instance->_id = $object->id_fes;
 
@@ -114,6 +118,11 @@ class Model_feature_base extends MY_Model
     public function setDescription($description)
     {
         $this->_description = $description;
+    }
+
+    public function setIsMenu($isMenu)
+    {
+        $this->_isMenu = $isMenu;
     }
 // end - setters
 

@@ -61,19 +61,7 @@ class Model_user extends Model_user_base
         return $result;
     }
 
-    ################################################################################### begin getters
-    public function getFullName()
-    {
-        return ucwords($this->_firstName." ".$this->_lastName);
-    }
-    ################################################################################### end getters
 
-    ################################################################################### begin setters
-    public function setGoogleId($googleId)
-    {
-        $this->_googleId = $googleId;
-    }
-    ################################################################################### end setters
 
 
     public function startSession()
@@ -82,6 +70,13 @@ class Model_user extends Model_user_base
 
         $roleList = Model_role::getByUserId($this->_id);
         $featureList = Model_feature::getFeaturesTreeSeedByRoleArray($roleList);
+        $userRoleList = Model_role::getByUserId($this->_id);
+        $userArrayRoleList = array();
+        foreach ($userRoleList as $role)
+        {
+            $role = $role->toArray();
+            $userArrayRoleList[] = $role["keyword_rol"];
+        }
         $ci->load->library('session');
         /** begin - Session user basic data */
         $sessionUser["id"] = $this->_id;
@@ -89,6 +84,8 @@ class Model_user extends Model_user_base
         $sessionUser["lastName"] = $this->_lastName;
         $sessionUser["fullName"] = $this->_firstName." ".$this->_lastName;
         $sessionUser["featureList"] = serialize($featureList);
+
+        $sessionUser["roleList"] = serialize($userArrayRoleList);
         $ci->session->set_userdata("sessionUser", (object)$sessionUser);
         /** end - Session user basic data */
 

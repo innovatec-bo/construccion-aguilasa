@@ -99,5 +99,16 @@ class PrivateController extends PublicController
             redirect(base_url("panel/Home"));
         }
     }
+
+    protected function _is($roleKeyWord)
+    {
+        $roleList = unserialize($this->sessionUser->roleList);
+        $response = array_search($roleKeyWord, $roleList);
+        if($response !== FALSE)
+        {
+            $response = TRUE;
+        }
+        return $response;
+    }
 }
 

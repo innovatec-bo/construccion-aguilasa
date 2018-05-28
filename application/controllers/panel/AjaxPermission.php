@@ -11,6 +11,10 @@ class AjaxPermission extends PrivateController
     public function __construct()
     {
         parent::__construct();
+        if(! $this->input->is_ajax_request())
+        {
+            redirect('404');
+        }
     }
 
     public function getByRoleId()

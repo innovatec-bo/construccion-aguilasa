@@ -113,4 +113,33 @@ class Model_user_base extends MY_Model
         return $response;
     }
 
+    ################################################################################### begin getters
+    public function getFullName()
+    {
+        return ucwords($this->_firstName." ".$this->_lastName);
+    }
+    ################################################################################### end getters
+
+    ################################################################################### begin setters
+    public function setFirstName($firstName)
+    {
+        $this->_firstName = $firstName;
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->_lastName = $lastName;
+    }
+
+    public  function setPassword($password)
+    {
+        $this->_password = $password;
+    }
+
+    public function setGoogleId($googleId)
+    {
+        $this->_googleId = $googleId;
+    }
+    ################################################################################### end setters
+
 }

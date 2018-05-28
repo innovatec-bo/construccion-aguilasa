@@ -40,6 +40,20 @@
                     <input class="form-control" name="feature-description" value="{{feature.description_fes}}" placeholder="Enter text">
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Is visible menu</label>
+                    <div class="checkbox">
+                        <label>
+                            {{var "checked" ""}}
+                            {{#ifCond feature.is_menu_fes "==" "1"}}
+                                {{var "checked" "checked"}}
+                            {{/ifCond}}
+                            <input type="checkbox" name="is-visible-menu" {{checked}}>Yes
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </script>

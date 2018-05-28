@@ -11,6 +11,10 @@ class AjaxFeature extends PrivateController
     public function __construct()
     {
         parent::__construct();
+        if(! $this->input->is_ajax_request())
+        {
+            redirect('404');
+        }
     }
 
     public function getById()
@@ -47,6 +51,8 @@ class AjaxFeature extends PrivateController
             $feature->setIcon($formData["feature-icon"]);
             $feature->setLink($formData["feature-link"]);
             $feature->setDescription($formData["feature-description"]);
+            $isMenu = isset($formData["is-visible-menu"])?1:0;
+            $feature->setIsMenu($isMenu);
             $feature->save();
         }
         echo json_encode($response);exit;

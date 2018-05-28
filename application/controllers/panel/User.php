@@ -36,8 +36,10 @@ class User extends PrivateController
 
     public function add()
     {
+        //TODO:add feature validation
+        $this->_validateFeature('user_add');
+        /** View complements */
         $this->complementHandler->addViewComplement("parsley");
-
         /** Server Side Validations **/
         $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
         $this->form_validation->set_rules('last-name', 'Email', 'trim|required');
@@ -61,7 +63,6 @@ class User extends PrivateController
             $email = $formData["email"];
             $password = $formData["password"];
             $userRoleList = $formData["roles"];
-//            echo"<pre>";var_dump($formData);exit;
             $user = new Model_user(
                 $firstName,
                 $lastName,
@@ -74,6 +75,77 @@ class User extends PrivateController
             Model_user_role::saveUserRoleList($user->getId(), $userRoleList, $this->sessionUser);
             $this->session->set_flashdata("successMessage", "User was added successfully");
             redirect(base_url("panel/User"));
+        }
+    }
+
+    public function edit($userId = NULL)
+    {
+        $this->_validateFeature('user_edit');
+        $this->_formEditUser($userId);
+
+    }
+
+    public function myProfile()
+    {
+        $this->_validateFeature('user_profile');
+        $this->_formEditUser($this->sessionUser->id);
+    }
+
+    private function _formEditUser($userId = NULL)
+    {
+        if(!is_numeric($userId))
+        {
+            $this->session->set_flashdata("errorMessage", "Wrong request.");
+            redirect(base_url("panel/User"));
+        }
+
+        $user = Model_user::getById($userId);
+        if(!$user instanceof Model_user)
+        {
+            $this->session->set_flashdata("errorMessage", "The user doesn't exist.");
+            redirect(base_url("panel/User"));
+        }
+
+        /** View complements */
+        $this->complementHandler->addViewComplement("parsley");
+
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
+        $this->form_validation->set_rules('last-name', 'Email', 'trim|required');
+        $this->form_validation->set_rules('roles[]', 'Roles', 'callback_validate_roles');
+        $this->form_validation->set_rules('password', 'Password', 'trim');
+        $this->form_validation->set_rules('confirm-password', 'Confirm password', 'trim|matches[password]');
+
+        $roleList = Model_role::getAll(100,0);
+        $userRoleList = Model_role::getByUserId($user->getId());
+        $data["roleList"] = $roleList;
+        $data["user"] = $user->toArray();
+        $data["userRoleList"] = $userRoleList;
+        //TODO:this variable is passed to define weather show or not the role section, would be handled as functionality.
+        $data["isSuperAdmin"] = $this->_is("super_admin");
+        if($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("user/edit",$data);
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $firstName = $formData["first-name"];
+            $lastName = $formData["last-name"];
+            $roleListToSave = $formData["roles"];
+
+            $user->setFirstName($firstName);
+            $user->setLastName($lastName);
+            if(isset($formData["update-password"]))
+            {
+                $password = $formData["password"];
+                $passwordEncrypted = $this->_encryptPassword($password);
+                $user->setPassword($passwordEncrypted);
+            }
+            $user->save();
+            Model_user_role::saveUserRoleList($user->getId(), $roleListToSave, $this->sessionUser);
+            $this->session->set_flashdata("successMessage", "User was updated successfully.");
+            redirect(base_url("panel/User/edit/".$user->getId()));
         }
     }
 
