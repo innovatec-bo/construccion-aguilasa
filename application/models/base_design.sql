@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : LOCAL_HOST
 Source Server Version : 50505
 Source Host           : localhost:3306
 Source Database       : base_design
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-05-25 22:22:39
+Date: 2018-05-28 18:05:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,6 +28,7 @@ CREATE TABLE `sec_features` (
   `description_fes` text,
   `parent_feature_id_fes` bigint(20) DEFAULT NULL,
   `order_fes` smallint(3) DEFAULT NULL,
+  `is_menu_fes` smallint(1) DEFAULT '1',
   `deleted_fes` smallint(1) DEFAULT '0',
   `createdon_fes` datetime DEFAULT NULL,
   `createdby_fes` bigint(20) DEFAULT NULL,
@@ -35,30 +36,31 @@ CREATE TABLE `sec_features` (
   `editedby_fes` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_fes`),
   UNIQUE KEY `UQ_sec_features_id_fes` (`id_fes`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sec_features
 -- ----------------------------
-INSERT INTO `sec_features` VALUES ('1', 'dashboard', 'dashboard', 'iconnnn', 'link', 'description', null, '2', '0', null, null, '2018-05-13 20:12:02', null);
-INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', null, null, null, null, '2', '0', null, null, '2018-05-13 19:19:02', null);
-INSERT INTO `sec_features` VALUES ('3', 'tables', 'tables', null, null, null, null, '3', '0', null, null, '2018-05-13 19:17:02', null);
-INSERT INTO `sec_features` VALUES ('4', 'forms', 'forms', null, null, null, null, '4', '0', null, null, '2018-05-13 19:17:02', null);
-INSERT INTO `sec_features` VALUES ('5', 'ui elements', 'ui_elements', null, null, null, null, '5', '0', null, null, '2018-05-13 19:17:03', null);
-INSERT INTO `sec_features` VALUES ('6', 'multi-level dropdown', 'multi_level_dropdown', null, null, null, null, '6', '0', null, null, '2018-05-13 19:17:03', null);
-INSERT INTO `sec_features` VALUES ('7', 'sample page', 'sample_page', null, null, null, null, '7', '0', null, null, '2018-05-13 19:17:04', null);
-INSERT INTO `sec_features` VALUES ('8', 'flot chars', 'flot_charts', 'icon', 'icon link', '', '2', '8', '0', null, null, '2018-05-13 19:17:04', null);
-INSERT INTO `sec_features` VALUES ('9', 'morris charts', 'morris_charts', 'icon', 'link', '', '2', '9', '0', null, null, '2018-05-13 19:17:05', null);
-INSERT INTO `sec_features` VALUES ('10', 'panels and wells', 'panels_and_wells', null, null, null, '5', '10', '0', null, null, '2018-05-13 19:17:06', null);
-INSERT INTO `sec_features` VALUES ('11', 'buttons', 'buttons', null, null, null, '5', '11', '0', null, null, '2018-05-13 19:17:07', null);
-INSERT INTO `sec_features` VALUES ('12', 'notifications', 'notifications', null, null, null, '5', '12', '0', null, null, '2018-05-13 19:17:08', null);
-INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '5', '13', '0', null, null, '2018-05-13 19:17:08', null);
-INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '5', '14', '0', null, null, '2018-05-13 19:17:09', null);
-INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '5', '15', '0', null, null, '2018-05-13 19:17:10', null);
-INSERT INTO `sec_features` VALUES ('16', 'second level', 'second_level', null, null, null, '6', '16', '0', null, null, '2018-05-13 19:17:10', null);
-INSERT INTO `sec_features` VALUES ('17', 'third level', 'third_level', null, null, null, '16', '17', '0', null, null, '2018-05-13 19:17:19', null);
-INSERT INTO `sec_features` VALUES ('18', 'home', 'home', 'fa fa-home', 'panel/Home', null, null, '0', '0', null, null, '2018-05-13 19:36:38', null);
-INSERT INTO `sec_features` VALUES ('19', 'permission', 'permission', null, 'panel/Permission', null, null, '1', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-user-edit', 'panel/User/edit', 'Edit users', null, '6', '0', '0', null, null, '2018-05-28 17:58:00', null);
+INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', null, null, null, null, '11', '1', '0', null, null, '2018-05-28 17:58:20', null);
+INSERT INTO `sec_features` VALUES ('3', 'Users', 'user_index', 'fa fa-users', 'panel/User', '', null, '2', '1', '0', null, null, '2018-05-28 17:57:20', null);
+INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', null, '5', '0', '0', null, null, '2018-05-28 17:57:48', null);
+INSERT INTO `sec_features` VALUES ('5', 'ui elements', 'ui_elements', null, null, null, null, '11', '1', '0', null, null, '2018-05-28 17:58:33', null);
+INSERT INTO `sec_features` VALUES ('6', 'multi-level dropdown', 'multi_level_dropdown', null, null, null, null, '6', '1', '0', null, null, '2018-05-13 19:17:03', null);
+INSERT INTO `sec_features` VALUES ('7', 'My profile', 'user_profile', 'fa fa-user', 'panel/User/myProfile', 'User\'s profile', null, '7', '0', '0', null, null, '2018-05-28 17:08:22', null);
+INSERT INTO `sec_features` VALUES ('8', 'flot chars', 'flot_charts', 'icon', 'icon link', '', '2', '9', '1', '0', null, null, '2018-05-28 17:56:30', null);
+INSERT INTO `sec_features` VALUES ('9', 'morris charts', 'morris_charts', 'icon', 'link', '', '2', '8', '1', '0', null, null, '2018-05-28 17:56:28', null);
+INSERT INTO `sec_features` VALUES ('10', 'panels and wells', 'panels_and_wells', null, null, null, '5', '10', '1', '0', null, null, '2018-05-13 19:17:06', null);
+INSERT INTO `sec_features` VALUES ('11', 'buttons', 'buttons', null, null, null, '5', '11', '1', '0', null, null, '2018-05-13 19:17:07', null);
+INSERT INTO `sec_features` VALUES ('12', 'notifications', 'notifications', null, null, null, '5', '12', '1', '0', null, null, '2018-05-13 19:17:08', null);
+INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '5', '13', '1', '0', null, null, '2018-05-13 19:17:08', null);
+INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '5', '14', '1', '0', null, null, '2018-05-13 19:17:09', null);
+INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '5', '15', '1', '0', null, null, '2018-05-13 19:17:10', null);
+INSERT INTO `sec_features` VALUES ('16', 'second level', 'second_level', null, null, null, '6', '16', '1', '0', null, null, '2018-05-13 19:17:10', null);
+INSERT INTO `sec_features` VALUES ('17', 'third level', 'third_level', null, null, null, '16', '17', '1', '0', null, null, '2018-05-13 19:17:19', null);
+INSERT INTO `sec_features` VALUES ('18', 'home', 'home', 'fa fa-home', 'panel/Home', null, null, '0', '1', '0', null, null, '2018-05-13 19:36:38', null);
+INSERT INTO `sec_features` VALUES ('19', 'permission', 'permission', 'fa fa-lock', 'panel/Permission', '', null, '3', '1', '0', null, null, '2018-05-28 18:01:00', null);
+INSERT INTO `sec_features` VALUES ('20', 'roles', 'role_index', 'fa fa-table', 'panel/Role', 'Role list', null, '4', '1', '0', null, null, '2018-05-28 17:57:37', null);
 
 -- ----------------------------
 -- Table structure for sec_permissions
@@ -79,7 +81,7 @@ CREATE TABLE `sec_permissions` (
   KEY `roleid_per` (`roleid_per`) USING BTREE,
   CONSTRAINT `sec_permissions_ibfk_1` FOREIGN KEY (`featureid_per`) REFERENCES `sec_features` (`id_fes`),
   CONSTRAINT `sec_permissions_ibfk_2` FOREIGN KEY (`roleid_per`) REFERENCES `sec_roles` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_permissions
@@ -121,15 +123,15 @@ INSERT INTO `sec_permissions` VALUES ('34', '1', '1', '1', '2018-05-12 09:10:23'
 INSERT INTO `sec_permissions` VALUES ('35', '1', '2', '1', '2018-05-12 09:10:23', null, '2018-05-12 03:12:23', null);
 INSERT INTO `sec_permissions` VALUES ('36', '1', '8', '1', '2018-05-12 09:10:23', null, '2018-05-12 03:12:23', null);
 INSERT INTO `sec_permissions` VALUES ('37', '1', '9', '1', '2018-05-12 09:10:23', null, '2018-05-12 03:12:23', null);
-INSERT INTO `sec_permissions` VALUES ('38', '2', '3', '0', '2018-05-12 09:10:39', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('39', '2', '4', '0', '2018-05-12 09:10:39', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('40', '3', '5', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('41', '3', '10', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('42', '3', '11', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('43', '3', '12', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('44', '3', '13', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('45', '3', '14', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('46', '3', '15', '0', '2018-05-12 09:11:01', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('38', '2', '3', '1', '2018-05-12 09:10:39', null, '2018-05-28 17:11:13', null);
+INSERT INTO `sec_permissions` VALUES ('39', '2', '4', '1', '2018-05-12 09:10:39', null, '2018-05-28 17:11:13', null);
+INSERT INTO `sec_permissions` VALUES ('40', '3', '5', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('41', '3', '10', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('42', '3', '11', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('43', '3', '12', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('44', '3', '13', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('45', '3', '14', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
+INSERT INTO `sec_permissions` VALUES ('46', '3', '15', '1', '2018-05-12 09:11:01', null, '2018-05-28 17:10:00', null);
 INSERT INTO `sec_permissions` VALUES ('47', '1', '1', '1', '2018-05-12 09:12:24', null, '2018-05-13 16:50:59', null);
 INSERT INTO `sec_permissions` VALUES ('48', '1', '2', '1', '2018-05-12 09:12:24', null, '2018-05-13 16:50:59', null);
 INSERT INTO `sec_permissions` VALUES ('49', '1', '3', '1', '2018-05-12 09:12:24', null, '2018-05-13 16:50:59', null);
@@ -159,15 +161,72 @@ INSERT INTO `sec_permissions` VALUES ('72', '1', '16', '1', '2018-05-14 01:57:42
 INSERT INTO `sec_permissions` VALUES ('73', '1', '17', '1', '2018-05-14 01:57:42', null, '2018-05-13 19:57:45', null);
 INSERT INTO `sec_permissions` VALUES ('74', '1', '18', '1', '2018-05-14 01:57:42', null, '2018-05-13 19:57:45', null);
 INSERT INTO `sec_permissions` VALUES ('75', '1', '19', '1', '2018-05-14 01:57:42', null, '2018-05-13 19:57:45', null);
-INSERT INTO `sec_permissions` VALUES ('76', '1', '1', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('77', '1', '2', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('78', '1', '6', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('79', '1', '8', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('80', '1', '9', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('81', '1', '16', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('82', '1', '17', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('83', '1', '18', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('84', '1', '19', '0', '2018-05-14 01:57:45', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('76', '1', '1', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('77', '1', '2', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('78', '1', '6', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('79', '1', '8', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('80', '1', '9', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('81', '1', '16', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('82', '1', '17', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('83', '1', '18', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('84', '1', '19', '1', '2018-05-14 01:57:45', null, '2018-05-28 09:54:17', null);
+INSERT INTO `sec_permissions` VALUES ('85', '1', '1', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('86', '1', '2', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('87', '1', '3', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('88', '1', '6', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('89', '1', '8', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('90', '1', '9', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('91', '1', '16', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('92', '1', '17', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('93', '1', '18', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('94', '1', '19', '1', '2018-05-28 15:54:18', null, '2018-05-28 17:00:54', null);
+INSERT INTO `sec_permissions` VALUES ('95', '1', '1', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('96', '1', '2', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('97', '1', '3', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('98', '1', '4', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('99', '1', '5', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('100', '1', '6', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('101', '1', '7', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('102', '1', '8', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('103', '1', '9', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('104', '1', '10', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('105', '1', '11', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('106', '1', '12', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('107', '1', '13', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('108', '1', '14', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('109', '1', '15', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('110', '1', '16', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('111', '1', '17', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('112', '1', '18', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('113', '1', '19', '1', '2018-05-28 23:00:54', null, '2018-05-28 17:32:36', null);
+INSERT INTO `sec_permissions` VALUES ('114', '3', '7', '0', '2018-05-28 23:10:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('115', '2', '3', '1', '2018-05-28 23:11:13', null, '2018-05-28 17:12:04', null);
+INSERT INTO `sec_permissions` VALUES ('116', '2', '4', '1', '2018-05-28 23:11:13', null, '2018-05-28 17:12:04', null);
+INSERT INTO `sec_permissions` VALUES ('117', '2', '7', '1', '2018-05-28 23:11:13', null, '2018-05-28 17:12:04', null);
+INSERT INTO `sec_permissions` VALUES ('118', '2', '1', '0', '2018-05-28 23:12:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('119', '2', '3', '0', '2018-05-28 23:12:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('120', '2', '4', '0', '2018-05-28 23:12:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('121', '2', '7', '0', '2018-05-28 23:12:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('122', '1', '1', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('123', '1', '2', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('124', '1', '3', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('125', '1', '4', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('126', '1', '5', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('127', '1', '6', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('128', '1', '7', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('129', '1', '8', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('130', '1', '9', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('131', '1', '10', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('132', '1', '11', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('133', '1', '12', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('134', '1', '13', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('135', '1', '14', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('136', '1', '15', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('137', '1', '16', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('138', '1', '17', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('139', '1', '18', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('140', '1', '19', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('141', '1', '20', '0', '2018-05-28 23:32:36', null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_roles
@@ -176,6 +235,7 @@ DROP TABLE IF EXISTS `sec_roles`;
 CREATE TABLE `sec_roles` (
   `id_rol` bigint(20) NOT NULL AUTO_INCREMENT,
   `rolename_rol` varchar(20) DEFAULT NULL,
+  `keyword_rol` varchar(15) DEFAULT NULL,
   `deleted_rol` smallint(6) DEFAULT '0',
   `createdon_rol` datetime DEFAULT NULL,
   `createdby_rol` bigint(20) DEFAULT NULL,
@@ -188,9 +248,9 @@ CREATE TABLE `sec_roles` (
 -- ----------------------------
 -- Records of sec_roles
 -- ----------------------------
-INSERT INTO `sec_roles` VALUES ('1', 'Super admin', '0', null, null, '2018-04-26 00:37:36', null);
-INSERT INTO `sec_roles` VALUES ('2', 'Admin', '0', null, null, '2018-04-26 00:37:39', null);
-INSERT INTO `sec_roles` VALUES ('3', 'User', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_roles` VALUES ('1', 'Super admin', 'super_admin', '0', null, null, '2018-05-28 15:38:31', null);
+INSERT INTO `sec_roles` VALUES ('2', 'Admin', 'admin', '0', null, null, '2018-05-28 15:38:34', null);
+INSERT INTO `sec_roles` VALUES ('3', 'User', 'user', '0', null, null, '2018-05-28 15:38:37', null);
 
 -- ----------------------------
 -- Table structure for sec_userroles
@@ -211,12 +271,23 @@ CREATE TABLE `sec_userroles` (
   KEY `roleid_uro` (`roleid_uro`) USING BTREE,
   CONSTRAINT `sec_userroles_ibfk_1` FOREIGN KEY (`roleid_uro`) REFERENCES `sec_roles` (`id_rol`),
   CONSTRAINT `sec_userroles_ibfk_2` FOREIGN KEY (`userid_uro`) REFERENCES `sec_users` (`id_usr`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_userroles
 -- ----------------------------
 INSERT INTO `sec_userroles` VALUES ('1', '1', '1', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_userroles` VALUES ('2', '4', '2', '1', '2018-05-28 10:34:28', '1', '2018-05-28 15:02:17', null);
+INSERT INTO `sec_userroles` VALUES ('3', '4', '3', '1', '2018-05-28 10:34:28', '1', '2018-05-28 15:02:17', null);
+INSERT INTO `sec_userroles` VALUES ('4', '4', '3', '1', '2018-05-28 15:02:17', '1', '2018-05-28 15:02:37', null);
+INSERT INTO `sec_userroles` VALUES ('5', '4', '3', '1', '2018-05-28 15:02:37', '1', '2018-05-28 15:08:14', null);
+INSERT INTO `sec_userroles` VALUES ('6', '4', '2', '1', '2018-05-28 15:08:14', '1', '2018-05-28 15:10:29', null);
+INSERT INTO `sec_userroles` VALUES ('7', '4', '2', '1', '2018-05-28 15:10:29', '1', '2018-05-28 15:11:03', null);
+INSERT INTO `sec_userroles` VALUES ('8', '4', '3', '1', '2018-05-28 15:11:03', '1', '2018-05-28 15:12:33', null);
+INSERT INTO `sec_userroles` VALUES ('9', '4', '3', '1', '2018-05-28 15:12:33', '1', '2018-05-28 15:13:02', null);
+INSERT INTO `sec_userroles` VALUES ('10', '4', '3', '0', '2018-05-28 15:13:02', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sec_userroles` VALUES ('11', '3', '3', '0', '2018-05-28 15:13:58', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sec_userroles` VALUES ('12', '2', '3', '0', '2018-05-28 15:15:25', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_users
@@ -243,10 +314,12 @@ CREATE TABLE `sec_users` (
   `editedby_usr` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_usr`),
   UNIQUE KEY `UQ_sec_users_id_usr` (`id_usr`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_users
 -- ----------------------------
 INSERT INTO `sec_users` VALUES ('1', 'jair', 'cussy', 'jair@twiiti.com', null, null, '$2y$10$biHC1c85bbcHmNmRvKc1ZumAcCYkU2.q.oMzCX2r9aPpYX0HbVd46', null, '', '', '1', '0', '', '0', '2018-04-26 00:32:39', null, '2018-04-26 00:32:39', null);
-INSERT INTO `sec_users` VALUES ('2', 'user', 'contest', 'user@mailinator.com', null, null, '$2y$10$0vXlAtP1c2GiAC0adsi1eeGKRbE2YiokjKFfNN4cEZtN0wYiLpkCO', null, '', '', '1', '0', '', '0', '2018-05-13 21:47:16', null, '2018-05-13 21:47:16', null);
+INSERT INTO `sec_users` VALUES ('2', 'user', 'contest', 'user@mailinator.com', null, null, '$2y$10$0vXlAtP1c2GiAC0adsi1eeGKRbE2YiokjKFfNN4cEZtN0wYiLpkCO', null, '', '', '1', '0', '', '0', '2018-05-13 21:47:16', null, '2018-05-28 15:15:24', null);
+INSERT INTO `sec_users` VALUES ('3', 'new', 'user', 'nuser@mailinator.com', null, null, '$2y$10$r.eAisul1hyGSXgurkWJjemFA7yxkVcg28lu75DBBgCu6o.W0c0vW', null, '', '', '1', '0', '', '0', '2018-05-28 10:32:52', null, '2018-05-28 15:13:57', null);
+INSERT INTO `sec_users` VALUES ('4', 'new', 'user', 'nuser2@mailinator.com', null, null, '$2y$10$c8Jgx3up2nF9n523UoXHyeRWU5ZbL9L1EWxIiGHrADXIFa9QJXE2S', null, '', '', '1', '0', '', '0', '2018-05-28 10:34:28', null, '2018-05-28 15:13:02', null);
