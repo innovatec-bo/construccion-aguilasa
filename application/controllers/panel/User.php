@@ -17,6 +17,7 @@ class User extends PrivateController
 
     public function index()
     {
+        $this->_validateFeature('users');
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("jquery.datatables.buttons");
@@ -60,7 +61,7 @@ class User extends PrivateController
             $email = $formData["email"];
             $password = $formData["password"];
             $userRoleList = $formData["roles"];
-            echo"<pre>";var_dump($userRoleList);exit;
+//            echo"<pre>";var_dump($formData);exit;
             $user = new Model_user(
                 $firstName,
                 $lastName,
@@ -70,10 +71,9 @@ class User extends PrivateController
                 $this->_encryptPassword($password)
             );
             $user->save();
-
-            Model_user_role::saveUserRoleList($userRoleList);
-
-            $user->startSession();
+            Model_user_role::saveUserRoleList($user->getId(), $userRoleList, $this->sessionUser);
+            $this->session->set_flashdata("successMessage", "User was added successfully");
+            redirect(base_url("panel/User"));
         }
     }
 
@@ -94,10 +94,14 @@ class User extends PrivateController
     {
         $formData = $this->input->post();
         $roles = $formData['roles'];
+        $arrayRoleList = array();
         $roleList = Model_role::getAll(100,0);
-        $validRoleListIds = array_column((array)$roleList,'id_rol');
+        foreach ($roleList as $role)
+        {
+            $arrayRoleList[] = (array)$role;
+        }
+        $validRoleListIds = array_column((array)$arrayRoleList,'id_rol');
         $quantityValidIds = 0;
-        echo"<pre>";var_dump($roles,$validRoleListIds,$roleList);exit;
         foreach ($roles as $roleId)
         {
             if(array_search($roleId, $validRoleListIds) !== FALSE)

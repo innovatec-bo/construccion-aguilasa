@@ -30,8 +30,37 @@ class Model_user_role extends Model_user_role_base
         return $result;
     }
 
-    public static function saveUserRoleList($roleList)
+    public static function saveUserRoleList($userId, $roleList, $sessionUser)
     {
+        $ci = &get_instance();
+        $ci->load->database();
+        static::deleteUserRoles($userId);
+        $rolesToSave = array();
 
+        foreach ($roleList as $id)
+        {
+            $rolesToSave[] = array(
+                "userid_uro" => $userId,
+                "roleid_uro" => $id,
+                "deleted_uro" => 0,
+                "createdon_uro" => date("Y-m-d H:i:s"),
+                "createdby_uro" => $sessionUser->id
+            );
+        }
+
+        if(count($rolesToSave) > 0)
+        {
+            $ci->db->insert_batch(static::TABLE_NAME,$rolesToSave);
+        }
+    }
+
+    public static function deleteUserRoles($userId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            update ".static::TABLE_NAME." set deleted_uro = 1 where userid_uro = ".$ci->db->escape($userId)."
+        ";
+        $ci->db->query($sql);
     }
 }

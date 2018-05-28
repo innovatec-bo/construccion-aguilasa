@@ -12,6 +12,11 @@
             <h1 class="page-header">Users</h1>
         </div>
         <div class="col-md-12">
+            <?php
+            $this->load->view("default-template/flash-data-basic-messages");
+            ?>
+        </div>
+        <div class="col-md-12">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover" id="user-index">
                     <thead>
