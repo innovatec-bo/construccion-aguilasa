@@ -6,11 +6,13 @@ var newFeatures = [];
 $(document).ready(function() {
 
     $(document).on('dnd_stop.vakata', function (data, element, helper, event) {
-        console.log(data, element, helper, event);
+        var currentNodeDragged = $(element.data.obj[0]).prop("id");
+        console.log( currentNodeDragged, data, element, helper, event);
+        // sortFeatures();
     });
 
     $(document).on("change","input[type=radio][name=roles]",function(){
-        roleId = $(this).val();
+        var roleId = $(this).val();
         getRoles(roleId);
     });
 
@@ -18,7 +20,7 @@ $(document).ready(function() {
         var checked = $("#container").jstree("get_checked",null,true);
         var undetermined = $("#container").jstree("get_undetermined",null);
         var permissionsToSave = jQuery.merge(checked, undetermined);
-        roleId = $("input[type=radio][name=roles]:checked").val();
+        var roleId = $("input[type=radio][name=roles]:checked").val();
         // console.log(roleId, permissionsToSave);
         savePermissions(roleId, permissionsToSave);
     });
@@ -201,7 +203,48 @@ function saveFeature(featureData)
                     size:"medium"
                 })
             }
+        }
+    });
+}
 
+function list()
+{
+    var treeData = $('#container').jstree(true).get_json('#', {flat:true});
+    var jsonData = JSON.stringify(treeData);
+    var jsonList = $.parseJSON(jsonData);
+    console.log(jsonList);
+}
+
+function blockArea(content)
+{
+    content.block({
+        message: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>',
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8,
+            cursor: 'wait'
+        },
+        css: {
+            border: 0,
+            padding: 0,
+            backgroundColor: 'transparent'
+        }
+    });
+}
+
+function sortFeatures()
+{
+    var treeData = $('#container').jstree(true).get_json('#', {flat:true});
+    var jsonData = JSON.stringify(treeData);
+    var jsonList = $.parseJSON(jsonData);
+    blockArea($('#container'));
+    $.ajax({
+        url : base_url + 'panel/AjaxFeature/sortFeatures',
+        dataType  :"json",
+        type : "POST",
+        data : {featureList : jsonList},
+        success:function(){
+            $('#container').unblock();
         }
     });
 }

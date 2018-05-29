@@ -74,4 +74,14 @@ class AjaxFeature extends PrivateController
         }
         return $validationResult;
     }
+
+    public function sortFeatures()
+    {
+        $formData = $this->input->post();
+        $featureList = $formData["featureList"];
+        Model_feature::sortAllFeatureByArray($featureList);
+        $response["success"] = 1;
+        $response["message"] = "features sorted successfully.";
+        echo json_encode($response);exit;
+    }
 }

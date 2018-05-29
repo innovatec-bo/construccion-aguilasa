@@ -58,3 +58,5 @@ $config['complements']['jquery.datatables.buttons.bootstrap']['css'] = assets_ur
 $config['complements']['jquery.datatables.buttons.bootstrap']['js'] = assets_url('resource-sb-admin2/vendor/datatables/Buttons-1.5.1/js/buttons.bootstrap.js');
 
 $config['complements']['jquery.datatables.filterdelay']['js'] = assets_url('resource-sb-admin2/vendor/datatables/FilterDelay/dataTables.FilterDelay.js');
+
+$config['complements']['jquery.blockui']['js'] = assets_url('resource-sb-admin2/vendor/jquery.blockUI.js');

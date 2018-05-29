@@ -285,4 +285,25 @@ class Model_feature extends Model_feature_base
         }
         return $treeHtml;
     }
+
+    public static function sortAllFeatureByArray(array $featureList)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $featureToUpdate = array();
+        $i = 1;
+        foreach ($featureList as $feature)
+        {
+            $featureToUpdate[] = array(
+                "id_fes" => $feature["id"],
+                "order_fes" => $i
+            );
+            $i++;
+        }
+        if(count($featureToUpdate) > 0)
+        {
+            $ci->db->update_batch(static::TABLE_NAME, $featureToUpdate, static::TABLE_ID);
+        }
+    }
 }

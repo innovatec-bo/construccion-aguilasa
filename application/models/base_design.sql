@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : LOCAL_HOST
+Source Server         : localhost
 Source Server Version : 50505
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : base_design
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-05-28 18:05:01
+Date: 2018-05-29 00:31:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,26 +41,26 @@ CREATE TABLE `sec_features` (
 -- ----------------------------
 -- Records of sec_features
 -- ----------------------------
-INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-user-edit', 'panel/User/edit', 'Edit users', null, '6', '0', '0', null, null, '2018-05-28 17:58:00', null);
-INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', null, null, null, null, '11', '1', '0', null, null, '2018-05-28 17:58:20', null);
-INSERT INTO `sec_features` VALUES ('3', 'Users', 'user_index', 'fa fa-users', 'panel/User', '', null, '2', '1', '0', null, null, '2018-05-28 17:57:20', null);
-INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', null, '5', '0', '0', null, null, '2018-05-28 17:57:48', null);
-INSERT INTO `sec_features` VALUES ('5', 'ui elements', 'ui_elements', null, null, null, null, '11', '1', '0', null, null, '2018-05-28 17:58:33', null);
-INSERT INTO `sec_features` VALUES ('6', 'multi-level dropdown', 'multi_level_dropdown', null, null, null, null, '6', '1', '0', null, null, '2018-05-13 19:17:03', null);
-INSERT INTO `sec_features` VALUES ('7', 'My profile', 'user_profile', 'fa fa-user', 'panel/User/myProfile', 'User\'s profile', null, '7', '0', '0', null, null, '2018-05-28 17:08:22', null);
-INSERT INTO `sec_features` VALUES ('8', 'flot chars', 'flot_charts', 'icon', 'icon link', '', '2', '9', '1', '0', null, null, '2018-05-28 17:56:30', null);
-INSERT INTO `sec_features` VALUES ('9', 'morris charts', 'morris_charts', 'icon', 'link', '', '2', '8', '1', '0', null, null, '2018-05-28 17:56:28', null);
-INSERT INTO `sec_features` VALUES ('10', 'panels and wells', 'panels_and_wells', null, null, null, '5', '10', '1', '0', null, null, '2018-05-13 19:17:06', null);
-INSERT INTO `sec_features` VALUES ('11', 'buttons', 'buttons', null, null, null, '5', '11', '1', '0', null, null, '2018-05-13 19:17:07', null);
-INSERT INTO `sec_features` VALUES ('12', 'notifications', 'notifications', null, null, null, '5', '12', '1', '0', null, null, '2018-05-13 19:17:08', null);
-INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '5', '13', '1', '0', null, null, '2018-05-13 19:17:08', null);
-INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '5', '14', '1', '0', null, null, '2018-05-13 19:17:09', null);
-INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '5', '15', '1', '0', null, null, '2018-05-13 19:17:10', null);
-INSERT INTO `sec_features` VALUES ('16', 'second level', 'second_level', null, null, null, '6', '16', '1', '0', null, null, '2018-05-13 19:17:10', null);
-INSERT INTO `sec_features` VALUES ('17', 'third level', 'third_level', null, null, null, '16', '17', '1', '0', null, null, '2018-05-13 19:17:19', null);
-INSERT INTO `sec_features` VALUES ('18', 'home', 'home', 'fa fa-home', 'panel/Home', null, null, '0', '1', '0', null, null, '2018-05-13 19:36:38', null);
-INSERT INTO `sec_features` VALUES ('19', 'permission', 'permission', 'fa fa-lock', 'panel/Permission', '', null, '3', '1', '0', null, null, '2018-05-28 18:01:00', null);
-INSERT INTO `sec_features` VALUES ('20', 'roles', 'role_index', 'fa fa-table', 'panel/Role', 'Role list', null, '4', '1', '0', null, null, '2018-05-28 17:57:37', null);
+INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-user-edit', 'panel/User/edit', 'Edit users', null, '6', '0', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', null, null, null, null, '15', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('3', 'Users', 'user_index', 'fa fa-users', 'panel/User', '', null, '4', '1', '0', null, null, '2018-05-28 23:54:23', null);
+INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', null, '5', '0', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('5', 'ui elements', 'ui_elements', null, null, null, null, '8', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('6', 'multi-level dropdown', 'multi_level_dropdown', null, null, null, null, '18', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('7', 'My profile', 'user_profile', 'fa fa-user', 'panel/User/myProfile', 'User\'s profile', null, '7', '0', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('8', 'flot chars', 'flot_charts', 'icon', 'icon link', '', '2', '17', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('9', 'morris charts', 'morris_charts', 'icon', 'link', '', '2', '16', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('10', 'panels and wells', 'panels_and_wells', null, null, null, '5', '9', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('11', 'buttons', 'buttons', null, null, null, '5', '10', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('12', 'notifications', 'notifications', null, null, null, '5', '11', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '5', '12', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '5', '13', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '5', '14', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('16', 'second level', 'second_level', null, null, null, '6', '19', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('17', 'third level', 'third_level', null, null, null, '16', '20', '1', '0', null, null, '2018-05-28 23:54:15', null);
+INSERT INTO `sec_features` VALUES ('18', 'home', 'home', 'fa fa-home', 'panel/Home', null, null, '1', '1', '0', null, null, '2018-05-28 23:53:38', null);
+INSERT INTO `sec_features` VALUES ('19', 'permission', 'permission', 'fa fa-lock', 'panel/Permission', '', null, '2', '1', '0', null, null, '2018-05-28 23:54:23', null);
+INSERT INTO `sec_features` VALUES ('20', 'roles', 'role_index', 'fa fa-table', 'panel/Role', 'Role list', null, '3', '1', '0', null, null, '2018-05-28 23:54:23', null);
 
 -- ----------------------------
 -- Table structure for sec_permissions
