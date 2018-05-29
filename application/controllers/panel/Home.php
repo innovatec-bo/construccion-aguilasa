@@ -15,6 +15,7 @@ class Home extends PrivateController
 
     public function index()
     {
-        $this->_loadPanelView('blank');
+        $this->_validateFeature("home");
+        $this->_loadPanelView('home/index');
     }
 }

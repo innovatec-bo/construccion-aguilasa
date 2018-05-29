@@ -26,11 +26,6 @@ class Permission extends PrivateController
 
         $parentId = NULL;
         $roleList = Model_role::getAll(100,0);
-        $list = Model_feature::getFeaturesTreeSeed();
-        $tree = array();
-        $tree = Model_feature::drawTree(NULL, $list, $tree);
-        $jsonTree = json_encode($tree);
-        $data["jsonTree"] = $jsonTree;
         $data["roleList"] = $roleList;
 
         $this->_loadPanelView('permission/index',$data);

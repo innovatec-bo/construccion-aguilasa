@@ -36,4 +36,32 @@ class AjaxRole extends PrivateController
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
         exit;
     }
+
+    public function add()
+    {
+        $this->_validateFeature('ajax_role_add');
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('role-keyword', 'Keyword', 'trim|required');
+
+        if($this->form_validation->run() === FALSE)
+        {
+            $response["success"] = 1;
+            $response["message"] = "";
+            $response["template"] = $this->loadView("panel/content/role/ht-modal-add", array(),true);
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $roleName = $formData["role-name"];
+            $roleKeyword = $formData["role-keyword"];
+            $role = new Model_role($roleName, $roleKeyword);
+            //TODO:find bug => the role can't be saved
+            echo"<pre>";var_dump($role->toArray());exit;
+            $role->save();
+            $response["success"] = 1;
+            $response["message"] = "User was added successfully";
+        }
+        echo json_encode($response);exit;
+    }
 }

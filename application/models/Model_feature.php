@@ -22,8 +22,10 @@ class Model_feature extends Model_feature_base
         SELECT
             f.id_fes feature_id,
             f.featurename_fes feature_name,
+            f.featureicon_fes icon,
             pf.id_fes parent_id,
-            pf.featurename_fes parent_name
+            pf.featurename_fes parent_name,
+            pf.featureicon_fes parent_icon
         FROM
             sec_features f
         LEFT JOIN sec_features pf on f.parent_feature_id_fes = pf.id_fes
@@ -56,8 +58,10 @@ class Model_feature extends Model_feature_base
             f.*,
             f.id_fes feature_id,
             f.featurename_fes feature_name,
+            f.featureicon_fes icon,
             pf.id_fes parent_id,
-            pf.featurename_fes parent_name
+            pf.featurename_fes parent_name,
+            pf.featureicon_fes parent_icon
         FROM
                 sec_features f
         LEFT JOIN sec_features pf on f.parent_feature_id_fes = pf.id_fes
@@ -213,20 +217,24 @@ class Model_feature extends Model_feature_base
 
             if(count($children) > 0)
             {
+                $icon = $feature["parent_icon"]!= ""?$feature["parent_icon"]:"fa fa-file-o";
                 $tree[] = array(
                     "id" => $feature["feature_id"],
                     "text" => $feature["feature_name"],
                     "state" => array("opened" => true),
-                    "children" => $children
+                    "children" => $children,
+                    "icon" => $icon
                 );
             }
             else
             {
+                $icon = $feature["icon"]!= ""?$feature["icon"]:"fa fa-file-o";
                 $tree[] = array(
                     "id" => $feature["feature_id"],
                     "text" => $feature["feature_name"],
                     "state" => array("opened" => true),
-                    "children" => array()
+                    "children" => array(),
+                    "icon" => $icon
                 );
             }
         }
@@ -268,7 +276,7 @@ class Model_feature extends Model_feature_base
                 ';
                     $treeHtml .= '
                     <li>
-                        <a href="'.base_url($feature["link_fes"]).'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'<span class="fa arrow"></span></a>
+                        <a href="#"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'<span class="fa arrow"></span></a>
                         '.$childrenTreeHtml.'
                     </li>
                 ';
@@ -295,9 +303,11 @@ class Model_feature extends Model_feature_base
         $i = 1;
         foreach ($featureList as $feature)
         {
+            $parent = $feature["parent"] == "#"?NULL:$feature["parent"];
             $featureToUpdate[] = array(
                 "id_fes" => $feature["id"],
-                "order_fes" => $i
+                "order_fes" => $i,
+                "parent_feature_id_fes" => $parent
             );
             $i++;
         }

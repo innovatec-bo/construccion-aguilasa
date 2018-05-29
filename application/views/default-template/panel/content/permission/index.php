@@ -12,7 +12,6 @@
             <h1 class="page-header">Permissions</h1>
         </div>
         <div class="col-md-6 col-lg-6">
-            <input type="hidden" value='<?=$jsonTree?>' name="tree-data">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Tree feature

@@ -1,14 +1,10 @@
 /**
  * Created by Jair on 23/04/2018.
  */
-var tree = {};
-var newFeatures = [];
 $(document).ready(function() {
 
-    $(document).on('dnd_stop.vakata', function (data, element, helper, event) {
-        var currentNodeDragged = $(element.data.obj[0]).prop("id");
-        console.log( currentNodeDragged, data, element, helper, event);
-        // sortFeatures();
+    $(document).on('dnd_stop.vakata', function () {
+        sortFeatures();
     });
 
     $(document).on("change","input[type=radio][name=roles]",function(){
@@ -22,6 +18,7 @@ $(document).ready(function() {
         var permissionsToSave = jQuery.merge(checked, undetermined);
         var roleId = $("input[type=radio][name=roles]:checked").val();
         // console.log(roleId, permissionsToSave);
+
         savePermissions(roleId, permissionsToSave);
     });
 
@@ -72,13 +69,14 @@ function isParent(featureList, featureId)
 
 function savePermissions(roleId, featureList)
 {
+    blockArea($('#container'));
     $.ajax({
         url : base_url + 'panel/AjaxPermission/savePermissions',
         dataType  :"json",
         type : "POST",
         data : {roleId : roleId, featureList: featureList},
         success:function(response){
-            console.log(response);
+            $('#container').unblock();
         }
     });
 }
@@ -119,7 +117,7 @@ function loadTree()
         dataType  :"json",
         type : "POST",
         success:function(response){
-            tree = $('#container')
+            var tree = $('#container')
                 .jstree({
                     "plugins" : ["checkbox","dnd","contextmenu"],
                     'core' : {
@@ -184,7 +182,7 @@ function launchEditForm(node)
 function saveFeature(featureData)
 {
     $.ajax({
-        url : base_url + 'panel/AjaxFeature/save',
+        url : base_url + 'panel/AjaxFeature/edit',
         dataType  :"json",
         type : "POST",
         data:featureData,
@@ -244,6 +242,9 @@ function sortFeatures()
         type : "POST",
         data : {featureList : jsonList},
         success:function(){
+            var tree = $('#container').jstree(true);
+            tree.destroy();
+            loadTree();
             $('#container').unblock();
         }
     });

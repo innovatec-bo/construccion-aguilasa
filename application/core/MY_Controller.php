@@ -43,6 +43,19 @@ class PublicController extends CI_Controller
         $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options);
         return $passwordHash;
     }
+
+    public function loadView($viewFile, $contentData = array(), $returnAsData = FALSE)
+    {
+        if($returnAsData)
+        {
+            return $this->load->view($this->_panelTmpl."/".$viewFile, $contentData,$returnAsData);
+        }
+        else
+        {
+            $this->load->view($this->_panelTmpl."/".$viewFile, $contentData);
+        }
+
+    }
 }
 
 class PrivateController extends PublicController
@@ -76,11 +89,7 @@ class PrivateController extends PublicController
     {
         if ($this->session->has_userdata("authenticated") && $this->session->userdata("authenticated") === 1)
         {
-//            $this->allowedStructure->initFromSession();
-//            $this->gnNavigation->initFromSession();
             $this->sessionUser = $this->session->userdata("sessionUser");
-//            $this->viewConfig["sessUserId"] = $this->sessUser->getId();
-//            $this->viewConfig["isSuperAdmin"] = $this->gnSecurity->isSuperAdmin();
         }
         else
         {
@@ -93,11 +102,22 @@ class PrivateController extends PublicController
     {
         $featureList = unserialize($this->sessionUser->featureList);
         $key = array_search($securityString, array_column($featureList, 'securitystring_fes'));
+
         if($key === FALSE)
         {
-            $this->session->set_flashdata("errorMessage", "Permission denied!");
-            redirect(base_url("panel/Home"));
+            if($this->input->is_ajax_request())
+            {
+                $response["success"] = 0;
+                $response["message"] = "Permission denied!";
+                echo json_encode($response);exit;
+            }
+            else{
+                $this->session->set_flashdata("errorMessage", "Permission denied!");
+                redirect(base_url("panel/Home"));
+            }
+
         }
+
     }
 
     protected function _is($roleKeyWord)

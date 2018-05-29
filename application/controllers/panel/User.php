@@ -12,7 +12,6 @@ class User extends PrivateController
     public function __construct()
     {
         parent::__construct();
-
     }
 
     public function index()
@@ -36,7 +35,6 @@ class User extends PrivateController
 
     public function add()
     {
-        //TODO:add feature validation
         $this->_validateFeature('user_add');
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");

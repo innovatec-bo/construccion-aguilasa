@@ -6,7 +6,8 @@ $(document).ready(function() {
     var buttonAdd = {
         text: "Add",
         action: function ( e, dt, node, config ) {
-            window.open(base_url + "panel/User/add","_blank");
+            addRole();
+            // window.open(base_url + "panel/User/add","_blank");
         }
     };
     //Horizontal Icons dataTable
@@ -48,3 +49,64 @@ $(document).ready(function() {
     $('.dataTables_length select').addClass('form-control');
     oTable.fnSetFilteringDelay(1000);
 });
+
+function addRole(formData)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxRole/add',
+        dataType  :"json",
+        type : "POST",
+        data:formData,
+        success:function(response){
+            if(response.success === 1 && !formData)
+            {
+                callFormResponse(response)
+            }
+            else if(response.success === 1 && formData)
+            {
+                sendFormResponse(response)
+            }
+            else
+            {
+                bootbox.alert({
+                    title:"Something went wrong!",
+                    message: response.message,
+                    size:"medium"
+                })
+            }
+        }
+    });
+}
+
+function callFormResponse(response)
+{
+    var htmlSource   = $(response.template).html()
+    var template = Handlebars.compile(htmlSource);
+    var data = {};
+    var html    = template(data);
+    bootbox.confirm({
+        title:"Add Role",
+        message: html,
+        buttons: {
+            confirm: {
+                label: 'Save',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'Cancel',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if(result)
+            {
+                var form = $("form[name=modal-role-add-form]");
+                addRole(form.serialize());
+            }
+        }
+    });
+}
+function sendFormResponse()
+{
+    window.reload();
+}

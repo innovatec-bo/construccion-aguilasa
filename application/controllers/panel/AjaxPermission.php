@@ -54,17 +54,20 @@ class AjaxPermission extends PrivateController
         $roleId = $formData['roleId'];
         $featureList = $formData['featureList'];
         Model_permission::saveBatch($roleId, $featureList);
+        $response["success"] = 1;
+        $response["message"] = "Permissions saved successfully.";
+        echo json_encode($response);exit;
     }
 
     public function getTreeFeatures()
     {
         $list = Model_feature::getFeaturesTreeSeed();
         $tree = array();
-        $tree = $this->drawTree(NULL, $list, $tree);
+        $tree = Model_feature::drawTree(NULL, $list, $tree);
         echo json_encode($tree);exit;
     }
 
-    public function drawTree($currentFeatureId, array $list, array $tree)
+    public function drawTree_deprecated($currentFeatureId, array $list, array $tree)
     {
         $results = array_filter($list, function($item) use($currentFeatureId){
             if($item["parent_id"] == $currentFeatureId)
@@ -101,7 +104,8 @@ class AjaxPermission extends PrivateController
                     "id" => $feature["feature_id"],
                     "text" => $feature["feature_name"],
                     "state" => array("opened" => true),
-                    "children" => array()
+                    "children" => array(),
+                    "icon" => "fa fa-file-o"
                 );
             }
         }

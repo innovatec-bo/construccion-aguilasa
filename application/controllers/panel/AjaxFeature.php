@@ -25,7 +25,7 @@ class AjaxFeature extends PrivateController
         echo $feature;exit;
     }
 
-    public function save()
+    public function edit()
     {
         $response = array("success" => 1, "message" => array());
         $formData = $this->input->post();
