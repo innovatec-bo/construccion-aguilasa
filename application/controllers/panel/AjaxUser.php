@@ -36,4 +36,11 @@ class AjaxUser extends PrivateController
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
         exit;
     }
+
+    public function getTotalUsers()
+    {
+        $recordsTotal = Model_user::countAll();
+        $response["total"] = $recordsTotal;
+        echo json_encode($response);exit;
+    }
 }

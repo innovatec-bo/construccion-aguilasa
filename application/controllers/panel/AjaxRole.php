@@ -107,4 +107,11 @@ class AjaxRole extends PrivateController
         }
         echo json_encode($response);exit;
     }
+
+    public function getTotalRoles()
+    {
+        $recordsTotal = Model_role::countAll();
+        $response["total"] = $recordsTotal;
+        echo json_encode($response);exit;
+    }
 }
