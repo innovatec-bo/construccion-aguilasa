@@ -39,7 +39,7 @@ class AjaxRole extends PrivateController
 
     public function add()
     {
-        $this->_validateFeature('ajax_role_add');
+        $this->_validateFeature('role_add');
         /** Server Side Validations **/
         $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
         $this->form_validation->set_rules('role-keyword', 'Keyword', 'trim|required');
@@ -49,6 +49,7 @@ class AjaxRole extends PrivateController
             $response["success"] = 1;
             $response["message"] = "";
             $response["template"] = $this->loadView("panel/content/role/ht-modal-add", array(),true);
+            $response["role"] = array();
         }
         else
         {
@@ -56,11 +57,53 @@ class AjaxRole extends PrivateController
             $roleName = $formData["role-name"];
             $roleKeyword = $formData["role-keyword"];
             $role = new Model_role($roleName, $roleKeyword);
-            //TODO:find bug => the role can't be saved
-            echo"<pre>";var_dump($role->toArray());exit;
             $role->save();
             $response["success"] = 1;
             $response["message"] = "User was added successfully";
+        }
+        echo json_encode($response);exit;
+    }
+
+    public function edit($roleId = NULL)
+    {
+        $this->_validateFeature('role_edit');
+
+        if(!is_numeric($roleId))
+        {
+            $response["success"] = 0;
+            $response["message"] = "Invalid parameter.";
+            echo json_encode($response);exit;
+        }
+        $role = Model_role::getById($roleId);
+        if(!$role instanceof Model_role)
+        {
+            $response["success"] = 0;
+            $response["message"] = "Role not found.";
+            echo json_encode($response);exit;
+        }
+
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
+
+        if($this->form_validation->run() === FALSE)
+        {
+            $response["success"] = 1;
+            $response["message"] = "";
+            $response["template"] = $this->loadView("panel/content/role/ht-modal-edit", array(),true);
+            $role = $role->toArray();
+            $response["role"]["roleId"] = $role["id_rol"];
+            $response["role"]["roleName"] = $role["rolename_rol"];
+            $response["role"]["keyword"] = $role["keyword_rol"];
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $roleName = $formData["role-name"];
+            $role->setRoleName($roleName);
+            $role->save();
+            $response["success"] = 1;
+            $response["message"] = "User was added successfully";
+
         }
         echo json_encode($response);exit;
     }

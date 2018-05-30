@@ -84,6 +84,7 @@ class MY_Model
     public function save()
     {
         $ci=&get_instance();
+        $ci->load->database();
         $ci->load->library("session");
         date_default_timezone_set('America/La_Paz');
         $now = new DateTime();

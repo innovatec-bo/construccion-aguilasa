@@ -187,4 +187,17 @@ class User extends PrivateController
         }
         return $response;
     }
+
+    public function testSave()
+    {
+        $user = new Model_user(
+            "new",
+            "user2",
+            "nuser2@mailinator.com",
+            NULL,
+            NULL,
+            ""
+        );
+        $user->save();
+    }
 }

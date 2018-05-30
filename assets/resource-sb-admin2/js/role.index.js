@@ -3,11 +3,17 @@
  */
 
 $(document).ready(function() {
+
+    $(document).on("click",".edit-role",function(e){
+        e.preventDefault();
+        var roleId = $(this).data("role-id");
+        editRole(roleId);
+    });
+
     var buttonAdd = {
         text: "Add",
         action: function ( e, dt, node, config ) {
             addRole();
-            // window.open(base_url + "panel/User/add","_blank");
         }
     };
     //Horizontal Icons dataTable
@@ -34,7 +40,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Role/edit/' +row.id_usr+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                var html = ' <a target="_blank" class="btn btn-primary btn-xs edit-role" data-role-id="'+row.id_rol+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                     // html += ' <a class="btn btn-danger btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
@@ -60,7 +66,7 @@ function addRole(formData)
         success:function(response){
             if(response.success === 1 && !formData)
             {
-                callFormResponse(response)
+                launchForm(response,"Form add")
             }
             else if(response.success === 1 && formData)
             {
@@ -78,15 +84,44 @@ function addRole(formData)
     });
 }
 
-function callFormResponse(response)
+function editRole(roleId, formData)
 {
-    var htmlSource   = $(response.template).html()
+    $.ajax({
+        url : base_url + 'panel/AjaxRole/edit/'+roleId,
+        dataType  :"json",
+        type : "POST",
+        data:formData,
+        success:function(response){
+            if(response.success === 1 && !formData)
+            {
+                launchForm(response, "Form edit")
+            }
+            else if(response.success === 1 && formData)
+            {
+                sendFormResponse(response)
+            }
+            else
+            {
+                bootbox.alert({
+                    title:"Something went wrong!",
+                    message: response.message,
+                    size:"medium"
+                })
+            }
+        }
+    });
+}
+
+function launchForm(response, formTitle)
+{
+    var htmlSource   = $(response.template).html();
     var template = Handlebars.compile(htmlSource);
-    var data = {};
+    var data = {role:response.role};
     var html    = template(data);
     bootbox.confirm({
-        title:"Add Role",
+        title:formTitle,
         message: html,
+        className: "role-modal-form",
         buttons: {
             confirm: {
                 label: 'Save',
@@ -100,13 +135,21 @@ function callFormResponse(response)
         callback: function (result) {
             if(result)
             {
-                var form = $("form[name=modal-role-add-form]");
-                addRole(form.serialize());
+                var form = $(".role-modal-form form");
+                if(response.role.hasOwnProperty('roleId'))
+                {
+                    editRole(response.role.roleId, form.serialize());
+                }
+                else
+                {
+                    addRole(form.serialize());
+                }
+
             }
         }
     });
 }
 function sendFormResponse()
 {
-    window.reload();
+    $("#role-index").DataTable().ajax.reload();
 }

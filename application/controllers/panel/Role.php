@@ -192,4 +192,10 @@ class Role extends PrivateController
         }
         return $response;
     }
+
+    public function testSave()
+    {
+        $role = new Model_role("test", "testt");
+        $role->save();
+    }
 }

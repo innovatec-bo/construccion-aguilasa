@@ -30,7 +30,7 @@ class Model_role_base extends MY_Model
     {
         $tableAttributes = array(
             "id_rol" => $this->_id,
-            "role_rol" => $this->_roleName,
+            "rolename_rol" => $this->_roleName,
             "keyword_rol" => $this->_keyWord,
             "deleted_rol" => $this->_deleted,
             "createdon_rol" => $this->_createdOn,
@@ -69,6 +69,11 @@ class Model_role_base extends MY_Model
             $response = $instance;
         }
         return $response;
+    }
+
+    public function setRoleName($roleName)
+    {
+        $this->_roleName = $roleName;
     }
 
 }
