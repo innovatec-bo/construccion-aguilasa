@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 switch (ENVIRONMENT)
 {
     case 'development':
-        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/base-design';
+        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/serebo';
         break;
     case 'testing':
     case 'production':

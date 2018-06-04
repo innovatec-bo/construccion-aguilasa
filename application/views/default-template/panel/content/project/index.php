@@ -1,0 +1,39 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Jair
+ * Date: 12/4/2018
+ * Time: 22:33
+ */
+?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Lista de proyectos</h1>
+        </div>
+        <div class="col-md-12">
+            <?php
+            $this->load->view("default-template/flash-data-basic-messages");
+            ?>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" id="project-index">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOMBRE</th>
+                        <th>VISTA RAPIDA</th>
+                        <th>ENVIAR A DISEÑO</th>
+                        <th>EDITAR</th>
+                        <th>ELIMINAR</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container-fluid -->
