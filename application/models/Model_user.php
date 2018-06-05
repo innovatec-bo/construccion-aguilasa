@@ -110,4 +110,12 @@ class Model_user extends Model_user_base
         return $result;
 
     }
+
+    public function delete($makePhysicalDelete = FALSE)
+    {
+        //Delete all roles
+        Model_user_role::deleteUserRoles($this->_id);
+        //Delete user
+        parent::delete($makePhysicalDelete);
+    }
 }

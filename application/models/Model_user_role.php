@@ -63,4 +63,14 @@ class Model_user_role extends Model_user_role_base
         ";
         $ci->db->query($sql);
     }
+
+    public static function deleteByRoleId($roleId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            update ".static::TABLE_NAME." set deleted_uro = 1 where roleid_uro = ".$ci->db->escape($roleId)."
+        ";
+        $ci->db->query($sql);
+    }
 }

@@ -64,19 +64,7 @@ class Project extends PrivateController
     public function edit($projectId = NULL)
     {
         $this->_validateFeature('project_edit');
-
-        if(!is_numeric($projectId))
-        {
-            $this->session->set_flashdata("errorMessage", "Parametro incorrecto.");
-            redirect(base_url("panel/Project"));
-        }
-
-        $project = Model_project::getById($projectId);
-        if(!$project instanceof Model_project)
-        {
-            $this->session->set_flashdata("errorMessage", "El proyecto no existe.");
-            redirect(base_url("panel/Project"));
-        }
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
 
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");
@@ -104,7 +92,7 @@ class Project extends PrivateController
     public function delete($projectId = NULL)
     {
         $this->_validateFeature("delete_project");
-        $project = Model_project::getById($projectId);
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
         $project->delete();
         $this->session->set_flashdata("successMessage", "Proyecto eliminado!");
         redirect(base_url("panel/Project"));

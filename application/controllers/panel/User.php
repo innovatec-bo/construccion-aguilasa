@@ -18,6 +18,7 @@ class User extends PrivateController
     {
         $this->_validateFeature('user_index');
         $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("jquery.datatables.buttons");
         $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
@@ -91,19 +92,7 @@ class User extends PrivateController
 
     private function _formEditUser($userId = NULL)
     {
-        if(!is_numeric($userId))
-        {
-            $this->session->set_flashdata("errorMessage", "Wrong request.");
-            redirect(base_url("panel/User"));
-        }
-
-        $user = Model_user::getById($userId);
-        if(!$user instanceof Model_user)
-        {
-            $this->session->set_flashdata("errorMessage", "The user doesn't exist.");
-            redirect(base_url("panel/User"));
-        }
-
+        $user = $this->_validateObjectToEdit($userId,"Model_user","panel/User");
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");
 
@@ -199,5 +188,14 @@ class User extends PrivateController
             ""
         );
         $user->save();
+    }
+
+    public function delete($userId = NULL)
+    {
+        $this->_validateFeature("delete_user");
+        $user = $this->_validateObjectToEdit($userId,"Model_user","panel/User");
+        $user->delete();
+        $this->session->set_flashdata("successMessage", "Usuario eliminado!");
+        redirect(base_url("panel/User"));
     }
 }

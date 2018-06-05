@@ -198,4 +198,13 @@ class Role extends PrivateController
         $role = new Model_role("test", "testt");
         $role->save();
     }
+
+    public function delete($roleId = NULL)
+    {
+        $this->_validateFeature("delete_role");
+        $role = $this->_validateObjectToEdit($roleId,"Model_role","panel/Role");
+        $role->delete();
+        $this->session->set_flashdata("successMessage", "Rol eliminado!");
+        redirect(base_url("panel/Role"));
+    }
 }

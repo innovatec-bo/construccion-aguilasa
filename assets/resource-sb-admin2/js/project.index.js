@@ -55,7 +55,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-danger btn-xs delete-button" href="#" data-project-id="'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
+                var html = ' <a target="_blank" class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],
@@ -68,32 +68,4 @@ $(document).ready(function() {
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Buscar');
     $('.dataTables_length select').addClass('form-control');
     oTable.fnSetFilteringDelay(1000);
-
-    $(document).on("click",".delete-button",function(e){
-       e.preventDefault();
-       var projectId = $(this).data("project-id");
-        deleteObject(projectId);
-    });
 });
-function deleteObject(objectId)
-{
-    bootbox.confirm({
-        message: "Eliminar proyecto?",
-        buttons: {
-            confirm: {
-                label: 'Yes',
-                className: 'btn-success'
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-danger'
-            }
-        },
-        callback: function (result) {
-            if(result)
-            {
-                window.location = base_url + "panel/Project/delete/"+objectId;
-            }
-        }
-    });
-}

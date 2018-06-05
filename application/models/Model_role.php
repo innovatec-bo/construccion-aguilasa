@@ -30,4 +30,12 @@ class Model_role extends Model_role_base
         $result = $ci->db->query($sql);
         return static::recastArray(get_called_class(), $result->result());
     }
+
+    public function delete($makePhysicalDelete = FALSE)
+    {
+        //Delete all roles
+        Model_user_role::deleteByRoleId($this->_id);
+        //Delete role
+        parent::delete($makePhysicalDelete);
+    }
 }

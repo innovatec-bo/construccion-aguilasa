@@ -54,11 +54,25 @@ class PublicController extends CI_Controller
         {
             $this->load->view($this->_panelTmpl."/".$viewFile, $contentData);
         }
-
     }
 
+    protected function _validateObjectToEdit($parameter, $class, $onFailRedirectTo)
+    {
+        if(!is_numeric($parameter))
+        {
+            $this->session->set_flashdata("errorMessage", "Parametro incorrecto.");
+            redirect(base_url($onFailRedirectTo));
+        }
+        $object = $class::getById($parameter);
 
+        if(!$object instanceof $class)
+        {
+            $this->session->set_flashdata("errorMessage", "El objeto no existe.");
+            redirect(base_url($onFailRedirectTo));
+        }
 
+        return $object;
+    }
 }
 
 class PrivateController extends PublicController
@@ -73,6 +87,7 @@ class PrivateController extends PublicController
         parent::__construct();
         //Add General Components
         $this->complementHandler->addViewComplement("font-awesome");
+        $this->complementHandler->addProjectJs('general-scripts');
         $this->_validateSession();
     }
 

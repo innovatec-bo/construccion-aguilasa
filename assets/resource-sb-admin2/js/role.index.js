@@ -41,7 +41,7 @@ $(document).ready(function() {
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var html = ' <a target="_blank" class="btn btn-primary btn-xs edit-role" data-role-id="'+row.id_rol+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                    // html += ' <a class="btn btn-danger btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
+                    html += ' <a class="btn btn-danger btn-xs datatable-delete-button" data-object-id="'+row.id_rol+'" data-url= "'+base_url+'panel/Role/delete/'+row.id_rol+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],

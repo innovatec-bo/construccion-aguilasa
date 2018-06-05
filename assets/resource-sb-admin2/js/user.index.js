@@ -36,7 +36,7 @@ $(document).ready(function() {
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/User/edit/' +row.id_usr+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                    // html += ' <a class="btn btn-danger btn-xs" href="'+base_url + 'admin/Project/publication/' +row.proy_id+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
+                    html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_usr+'" data-url= "'+base_url+'panel/User/delete/'+row.id_usr+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],
