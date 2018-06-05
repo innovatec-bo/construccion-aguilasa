@@ -56,6 +56,9 @@ class PublicController extends CI_Controller
         }
 
     }
+
+
+
 }
 
 class PrivateController extends PublicController

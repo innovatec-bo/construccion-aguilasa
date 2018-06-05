@@ -17,6 +17,7 @@ class Project extends PrivateController
     public function index()
     {
         $this->_validateFeature('project_index');
+        $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("jquery.datatables.buttons");
@@ -100,57 +101,12 @@ class Project extends PrivateController
         }
     }
 
-    public function unique_email($email)
+    public function delete($projectId = NULL)
     {
-        $user = Model_user::getByEmail($email);
-        //If the user exist then notice to user that request the signup
-        $response = TRUE;
-        if($user instanceof Model_user)
-        {
-            $this->form_validation->set_message('unique_email', 'The email {field} already exist.');
-            $response = FALSE;
-        }
-        return $response;
-    }
-
-    public function validate_roles()
-    {
-        $formData = $this->input->post();
-        $roles = $formData['roles'];
-        $arrayRoleList = array();
-        $roleList = Model_role::getAll(100,0);
-        foreach ($roleList as $role)
-        {
-            $arrayRoleList[] = (array)$role;
-        }
-        $validRoleListIds = array_column((array)$arrayRoleList,'id_rol');
-        $quantityValidIds = 0;
-        foreach ($roles as $roleId)
-        {
-            if(array_search($roleId, $validRoleListIds) !== FALSE)
-            {
-                $quantityValidIds++;
-            }
-        }
-        $response = TRUE;
-        if($quantityValidIds != count($roles))
-        {
-            $this->form_validation->set_message('validate_roles', 'You need to adds valid roles');
-            $response = FALSE;
-        }
-        return $response;
-    }
-
-    public function testSave()
-    {
-        $user = new Model_user(
-            "new",
-            "user2",
-            "nuser2@mailinator.com",
-            NULL,
-            NULL,
-            ""
-        );
-        $user->save();
+        $this->_validateFeature("delete_project");
+        $project = Model_project::getById($projectId);
+        $project->delete();
+        $this->session->set_flashdata("successMessage", "Proyecto eliminado!");
+        redirect(base_url("panel/Project"));
     }
 }

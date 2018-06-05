@@ -11,6 +11,7 @@ class MY_Model
     const TABLE_NAME = "";
     const TABLE_ID = "";
     const ATTRIB_SUFIX = "";
+    const DELETE_FIELD = 'deleted';
 
     protected $_id;
     protected $_deleted;
@@ -109,15 +110,17 @@ class MY_Model
 
     public function delete($makePhysicalDelete = FALSE)
     {
+        $ci = &get_instance();
+        $ci->load->database();
         if (!$makePhysicalDelete)
         {
             // Delete logically the row. Change the state.
-            //return $this->db->update(static::TABLE_NAME, array(static::TABLE_ID . static::ATTRIB_SUFIX => static::DELETE_STATE), array(static::ID_FIELD => $this->getId()));
+            return $ci->db->update(static::TABLE_NAME, array(static::DELETE_FIELD . static::ATTRIB_SUFIX => 1), array(static::TABLE_ID => $this->getId()));
         }
         else
         {
             //Delete fisically the row.
-            return $this->db->delete(static::TABLE_NAME, array(static::TABLE_ID => $this->getId()));
+            return $ci->db->delete(static::TABLE_NAME, array(static::TABLE_ID => $this->getId()));
         }
     }
 
@@ -132,7 +135,7 @@ class MY_Model
 
         $sql = '
                 select count(' . static::TABLE_ID. ') as total
-                from ' . static::TABLE_NAME;
+                from ' . static::TABLE_NAME .' where '.static::notDeleted();
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -155,7 +158,7 @@ class MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . '                 
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' where '.static::notDeleted().'             
                 group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
         $query = $ci->db->query($sql);
         $result = $query->result();
@@ -172,7 +175,7 @@ class MY_Model
         $ci->load->database();
 
         $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
-        $sql .= ' where (';
+        $sql .= ' where '.static::notDeleted().' and (';
         foreach ($colsArray as $var)
         {
             $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
@@ -191,7 +194,7 @@ class MY_Model
         $ci->load->database();
 
         $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
-        $sql .= ' where (';
+        $sql .= ' where '.static::notDeleted().' and (';
 
         foreach ($colsArray as $var)
         {
@@ -215,7 +218,7 @@ class MY_Model
 
     protected static function notDeleted()
     {
-        return " deleted".static::ATTRIB_SUFIX." != 1 ";
+        return static::DELETE_FIELD.static::ATTRIB_SUFIX." != 1 ";
     }
 
 }
