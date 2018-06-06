@@ -31,7 +31,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
+                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/stateManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                 return html;
             }
         }, {

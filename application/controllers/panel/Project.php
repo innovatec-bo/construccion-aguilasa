@@ -97,4 +97,6 @@ class Project extends PrivateController
         $this->session->set_flashdata("successMessage", "Proyecto eliminado!");
         redirect(base_url("panel/Project"));
     }
+
+
 }
