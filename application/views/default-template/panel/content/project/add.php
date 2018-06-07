@@ -24,20 +24,38 @@
 
                 <div class="panel-body">
                     <form role="form" method="post" name="project-add-form" data-parsley-validate>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <input type="hidden" name="project-id" value="">
-                            <div class="form-group">
-                                <label>Nombre del proyecto</label>
-                                <input class="form-control" required name="project-name" placeholder="Ingrese nombre del proyecto">
+                        <input type="hidden" name="project-id" value="">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Codigo</label>
+                                    <input class="form-control" required name="project-code" placeholder="Ingrese el codigo del proyecto">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nombre del proyecto</label>
+                                    <input class="form-control" required name="project-name" placeholder="Ingrese nombre del proyecto">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Fecha de ingreso</label>
+                                    <input class="form-control date date-picker" required name="project-entry-date" placeholder="Fecha de ingreso del proyecto">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Fiscal de CRE</label>
+                                    <input class="form-control" required name="project-entry-date" placeholder="Fecha de ingreso del proyecto">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
                         </div>
-                    </div>
                     <!-- /.row (nested) -->
                     </form>
                 </div>

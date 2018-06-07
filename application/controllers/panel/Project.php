@@ -40,6 +40,9 @@ class Project extends PrivateController
 
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("bootstrap.date-time-picker");
+        $this->complementHandler->addProjectCss('project.add');
+        $this->complementHandler->addProjectJs('project.add');
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim|required');
