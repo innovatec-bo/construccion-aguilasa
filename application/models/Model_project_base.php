@@ -12,12 +12,22 @@ class Model_project_base extends MY_Model
     const TABLE_ID = "id_pro";
     const ATTRIB_SUFIX = "_pro";
 
+    protected $_projectCode;
     protected $_projectName;
+    protected $_address;
+    protected $_entryDate;
+    protected $_creFiscal;
+    protected $_status;
 
-    public function __construct($projectName = "")
+    public function __construct($projectCode = "", $projectName = "", $address = "", $entryDate = "", $creFiscal = "", $status = NULL)
     {
         parent::__construct();
+        $this->_projectCode = $projectCode;
         $this->_projectName = $projectName;
+        $this->_address = $address;
+        $this->_entryDate = $entryDate;
+        $this->_creFiscal = $creFiscal;
+        $this->_status = $status;
     }
 
     /**
@@ -28,7 +38,12 @@ class Model_project_base extends MY_Model
     {
         $tableAttributes = array(
             "id_pro" => $this->_id,
+            "code_pro" => $this->_projectCode,
             "project_name_pro" => $this->_projectName,
+            "address_pro" => $this->_address,
+            "entry_date_pro" => $this->_entryDate,
+            "cre_fiscal_pro" => $this->_creFiscal,
+            "status_pro" => $this->_status,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -53,7 +68,12 @@ class Model_project_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
-                $object->project_name_pro
+                $object->code_pro,
+                $object->project_name_pro,
+                $object->address_pro,
+                $object->entry_date_pro,
+                $object->cre_fiscal_pro,
+                $object->status_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -70,5 +90,10 @@ class Model_project_base extends MY_Model
     public function setProjectName($projectName)
     {
         $this->_projectName = $projectName;
+    }
+
+    public function setStatus($statusId)
+    {
+        $this->_status = $statusId;
     }
 }

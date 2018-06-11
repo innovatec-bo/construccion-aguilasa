@@ -86,6 +86,7 @@ class PrivateController extends PublicController
     {
         parent::__construct();
         //Add General Components
+//        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addProjectJs('general-scripts');
         $this->_validateSession();

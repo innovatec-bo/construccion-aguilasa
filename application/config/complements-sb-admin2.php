@@ -61,5 +61,8 @@ $config['complements']['jquery.datatables.filterdelay']['js'] = assets_url('reso
 
 $config['complements']['jquery.blockui']['js'] = assets_url('resource-sb-admin2/vendor/jquery.blockUI.js');
 
-$config['complements']['bootstrap.date-time-picker']['css'] = assets_url('resource-sb-admin2/vendor/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css');
-$config['complements']['bootstrap.date-time-picker']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js');
+$config['complements']['date-time-picker']['css'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/css/bootstrap-datetimepicker.css');
+$config['complements']['date-time-picker']['js'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/js/bootstrap-datetimepicker.min.js');
+$config['complements']['moment-with-locales']['js'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/js/moment-with-locales.min.js');
+$config['complements']['picker']['js'] = assets_url('resource-sb-admin2/vendor/pickers/pickadate/js/picker.js');
+$config['complements']['pick-a-date']['js'] = assets_url('resource-sb-admin2/vendor/pickers/pickadate/js/picker.date.js');

@@ -39,27 +39,47 @@ class Project extends PrivateController
         $this->_validateFeature('project_add');
 
         /** View complements */
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
-        $this->complementHandler->addViewComplement("bootstrap.date-time-picker");
         $this->complementHandler->addProjectCss('project.add');
         $this->complementHandler->addProjectJs('project.add');
 
         /** Server Side Validations **/
+        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal de CRE', 'trim|required');
+        $this->form_validation->set_rules('project-address', 'Direccion/Ubicacion', 'trim|required');
+        $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
+        $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
+        $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
+
+        $projectStatusList = Model_project_status::getAll(100,0);
+        $data["projectStatusList"] = $projectStatusList;
 
         if($this->form_validation->run() === FALSE)
         {
-            $this->_loadPanelView("project/add");
+            $this->_loadPanelView("project/add",$data);
         }
         else
         {
             $formData = $this->input->post();
+            $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
-            $project = new Model_project(
-                $projectName
-            );
+            $projectEntryDate = $formData["project-entry-date"];
+            $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
+            $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
+            $projectCreFiscal = $formData["project-cre-fiscal"];
+            $projectAddress = $formData["project-address"];
+            $projectPoints = $formData["project-points"];
+            $projectMetersDistance = $formData["project-meters-distance"];
+            $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
+            $project = new Model_project($projectCode, $projectName, $projectAddress, $projectEntryDate, $projectCreFiscal,$projectStatus);
             $project->save();
-            $this->session->set_flashdata("successMessage", "Projecto agregado exitosamente!");
+            $project->savePoints($projectPoints, $projectMetersDistance);
+            $project->addStatusToLog($projectStatus);
+            $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
             redirect(base_url("panel/Project"));
         }
     }
@@ -70,23 +90,49 @@ class Project extends PrivateController
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
 
         /** View complements */
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addProjectCss('project.edit');
+        $this->complementHandler->addProjectJs('project.edit');
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
 
+        $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
+        $data["lastProjectStatus"] = $getLastProjectStatus;
+        $projectStatusList = Model_project_status::getAll(100,0);
+        $data["projectStatusList"] = $projectStatusList;
         $data["project"] = $project->toArray();
+        $projectLastPoints = Model_project_points::getLastPointsByProjectId($project->getId())->toArray();
+        $data["projectLastPoints"] = $projectLastPoints;
         if($this->form_validation->run() === FALSE)
         {
-            $this->_loadPanelView("project/edit",$data);
+            $this->_loadPanelView("project/edit", $data);
         }
         else
         {
             $formData = $this->input->post();
+            $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
+            $projectEntryDate = $formData["project-entry-date"];
+            $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
+            $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
+            $projectCreFiscal = $formData["project-cre-fiscal"];
+            $projectAddress = $formData["project-address"];
+            $projectPoints = $formData["project-points"];
+            $projectMetersDistance = $formData["project-meters-distance"];
+            $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
 
             $project->setProjectName($projectName);
+            $project->setStatus($projectStatus);
             $project->save();
+            if($projectLastPoints["points_quantity_prp"] != $projectPoints || $projectLastPoints["meters_distance_prp"] != $projectMetersDistance)
+            {
+                $project->savePoints($projectPoints, $projectMetersDistance);
+            }
+            $project->addStatusToLog($projectStatus);
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");
             redirect(base_url("panel/Project/edit/".$project->getId()));
         }
@@ -101,5 +147,9 @@ class Project extends PrivateController
         redirect(base_url("panel/Project"));
     }
 
+    public function testDate()
+    {
+
+    }
 
 }

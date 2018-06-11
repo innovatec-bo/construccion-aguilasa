@@ -32,22 +32,81 @@
                                     <input class="form-control" required name="project-code" placeholder="Ingrese el codigo del proyecto">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Nombre del proyecto</label>
-                                    <input class="form-control" required name="project-name" placeholder="Ingrese nombre del proyecto">
+                                    <label>Nombre de proyecto</label>
+                                    <input class="form-control" required name="project-name" placeholder="Ingrese el nombre del proyecto">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fecha de ingreso</label>
-                                    <input class="form-control date date-picker" required name="project-entry-date" placeholder="Fecha de ingreso del proyecto">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input name="project-entry-date" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
-                                    <input class="form-control" required name="project-entry-date" placeholder="Fecha de ingreso del proyecto">
+                                    <input class="form-control" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Dirección</label>
+                                    <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-inline">
+                            <div class="col-md-6">
+                                <label>Area del proyecto</label><br>
+                                <div class="form-group">
+                                    <input class="form-control" name="project-points" placeholder="Puntos">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" name="project-meters-distance" placeholder="Distancia">
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Estado</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="project-status" value="" checked>Ninguno
+                                        </label>
+                                    </div>
+                                    <?php
+                                    $html = "";
+                                    $i = 0;
+                                    foreach ($projectStatusList as $status)
+                                    {
+                                        $status = (array)$status;
+                                        $html .= '
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="project-status" value="'.$status["id_pst"].'">'.$status["status_name_pst"].'
+                                            </label>
+                                        </div>
+                                        ';
+                                    }
+                                    echo $html;
+                                    ?>
+                                    <div id="role-error-container"></div>
                                 </div>
                             </div>
                         </div>

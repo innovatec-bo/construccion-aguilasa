@@ -21,15 +21,97 @@
                 <div class="panel-heading">
                     Informacion del proyecto
                 </div>
-
                 <div class="panel-body">
                     <form role="form" method="post" name="proyect-edit-form" data-parsley-validate>
+                        <input type="hidden" name="project-id" value="">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Codigo</label>
+                                    <input class="form-control" value="<?=set_value('project-code', $project["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-6">
-                                <input type="hidden" name="project-id" value="">
                                 <div class="form-group">
                                     <label>Nombre del proyecto</label>
                                     <input class="form-control" value="<?=set_value('project-name', $project["project_name_pro"])?>" required name="project-name" placeholder="Nombre del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Fecha de ingreso</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <?php
+                                        $entryDate = $project["entry_date_pro"];
+                                        $entryDate = DateTime::createFromFormat('Y-m-d 00:00:00', $entryDate);
+                                        $entryDate = date_format($entryDate, 'd-m-Y');
+                                        ?>
+                                        <input name="project-entry-date" value="<?=set_value('project-entry-date', $entryDate)?>" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Fiscal de CRE</label>
+                                    <input class="form-control" value="<?=set_value('project-cre-fiscal', $project["cre_fiscal_pro"])?>" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Dirección</label>
+                                    <input class="form-control" value="<?=set_value('project-address', $project["address_pro"])?>" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-inline">
+                            <div class="col-md-6">
+                                <label>Area del proyecto</label><br>
+                                <div class="form-group">
+                                    <input class="form-control" value="<?=set_value('project-points', $projectLastPoints["points_quantity_prp"])?>" name="project-points" placeholder="Puntos">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" value="<?=set_value('project-meters-distance', $projectLastPoints["meters_distance_prp"])?>" name="project-meters-distance" placeholder="Distancia">
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Estado</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="project-status" value="" checked>Ninguno
+                                        </label>
+                                    </div>
+                                    <?php
+                                    $html = "";
+                                    $i = 0;
+                                    foreach ($projectStatusList as $status)
+                                    {
+                                        $status = (array)$status;
+                                        $checked = $lastProjectStatus->getProjectStatus() == $status["id_pst"]?" checked ":"";
+                                        $html .= '
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="project-status" value="'.$status["id_pst"].'" '.$checked.' >'.$status["status_name_pst"].'
+                                            </label>
+                                        </div>
+                                        ';
+                                    }
+                                    echo $html;
+                                    ?>
+                                    <div id="role-error-container"></div>
                                 </div>
                             </div>
                         </div>
