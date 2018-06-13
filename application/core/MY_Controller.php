@@ -147,7 +147,7 @@ class PrivateController extends PublicController
         {
             $response = TRUE;
         }
-        return $response;
+        return +$response;
     }
 }
 

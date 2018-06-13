@@ -205,6 +205,10 @@ class ProjectStatus extends PrivateController
     {
         $this->_validateFeature('project_status_management');
 
+        $this->complementHandler->addViewComplement("handlebars");
+        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+        $this->complementHandler->addProjectCss('project-status.status-management');
+        $this->complementHandler->addProjectJs('project-status.status-management');
         $this->complementHandler->addProjectCss('project.status-management.wizard');
         $this->complementHandler->addProjectJs('project.status-management.wizard');
 

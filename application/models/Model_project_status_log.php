@@ -25,7 +25,7 @@ class Model_project_status_log extends Model_project_status_log_base
                 and project_id_psl = ".$ci->db->escape($projectId)."
                 order by createdon_psl desc limit 1 
         ";
-        $query = $ci->db->query($sql);
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
         $result = static::recast(get_called_class(), $query->row());
         return $result;
     }

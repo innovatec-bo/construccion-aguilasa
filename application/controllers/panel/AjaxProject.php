@@ -16,6 +16,7 @@ class AjaxProject extends PrivateController
         {
             redirect('404');
         }
+        $this->_validateFeature("project_index");
     }
 
     public function ajaxDtAllProjects()
@@ -35,5 +36,38 @@ class AjaxProject extends PrivateController
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
         exit;
+    }
+
+    public function getStakesLeaderProjects()
+    {
+        $stakesLeaderProject = Model_project::getStakesLeaderProjects();
+        $arrayStakes = array();
+        $singleList = array(
+            "stakesTeamLeaderId" => "",
+            "stakesTeamLeader" => "",
+            "projectList" => array()
+        );
+        $singleList = array();
+        for ($i = 0; $i < count($stakesLeaderProject); $i++)
+        {
+            $stakeLeaderId = $stakesLeaderProject[$i]["id_stl"];
+            $singleList[] = $stakesLeaderProject[$i];
+            if(isset($stakesLeaderProject[$i+1]))
+            {
+                if($stakesLeaderProject[$i]["id_stl"] != $stakesLeaderProject[$i+1]["id_stl"])
+                {
+                    $arrayStakes[$stakeLeaderId]['teamLeader'] = $stakesLeaderProject[$i]["leader_stl"];
+                    $arrayStakes[$stakeLeaderId]['projectList'] = $singleList;
+                    $singleList = array();
+                }
+            }
+            else
+            {
+                $arrayStakes[$stakeLeaderId]['teamLeader'] = $stakesLeaderProject[$i]["leader_stl"];
+                $arrayStakes[$stakeLeaderId]['projectList'] = $singleList;
+            }
+        }
+        $list[] = $arrayStakes;
+        echo json_encode($arrayStakes);exit;
     }
 }
