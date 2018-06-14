@@ -10,6 +10,9 @@ $config['projectCssPath'] = assets_url("resource-sb-admin2/css");
 
 $config['complements']['jquery']['js'] = assets_url('resource-sb-admin2/vendor/jquery/jquery.min.js');
 
+$config['complements']['jquery.ui']['css'] = assets_url('resource-sb-admin2/plugins/jquery-ui/jquery-ui.min.css');
+$config['complements']['jquery.ui']['js'] = assets_url('resource-sb-admin2/plugins/jquery-ui/jquery-ui.min.js');
+
 $config['complements']['bootstrap']['css'] = assets_url('resource-sb-admin2/vendor/bootstrap/css/bootstrap.min.css');
 $config['complements']['bootstrap']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap/js/bootstrap.min.js');
 
