@@ -9,7 +9,7 @@
 <script id="ht-stakes-project" type="text/x-handlebars-template">
     {{#each stakesProject}}
         <div class="col-md-12">
-            <div class="tags sortable-list">
+            <div class="tags sortable-list" data-leader-id="{{teamLeaderId}}">
                 <span class="success" style="">{{teamLeader}}</span>
                 {{> ht-stakes-project-item}}
             </div>
@@ -18,6 +18,6 @@
 </script>
 <script id="ht-stakes-project-item" type="text/x-handlebars-template">
     {{#each projectList}}
-        <span class="info sortable-item"><a href="#" data-toggle="tooltip" data-placement="top" title="{{address_pro}}">Direccion</a><br>8p/2Km</span>
+        <span class="info sortable-item" data-project-id="{{id_pro}}"><a href="#" data-toggle="tooltip" data-placement="top" title="{{address_pro}}">Direccion</a><br>8p/2Km</span>
     {{/each}}
 </script>

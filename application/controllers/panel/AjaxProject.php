@@ -56,6 +56,7 @@ class AjaxProject extends PrivateController
             {
                 if($stakesLeaderProject[$i]["id_stl"] != $stakesLeaderProject[$i+1]["id_stl"])
                 {
+                    $arrayStakes[$stakeLeaderId]['teamLeaderId'] = $stakesLeaderProject[$i]["id_stl"];
                     $arrayStakes[$stakeLeaderId]['teamLeader'] = $stakesLeaderProject[$i]["leader_stl"];
                     $arrayStakes[$stakeLeaderId]['projectList'] = $singleList;
                     $singleList = array();
@@ -63,11 +64,26 @@ class AjaxProject extends PrivateController
             }
             else
             {
+                $arrayStakes[$stakeLeaderId]['teamLeaderId'] = $stakesLeaderProject[$i]["id_stl"];
                 $arrayStakes[$stakeLeaderId]['teamLeader'] = $stakesLeaderProject[$i]["leader_stl"];
                 $arrayStakes[$stakeLeaderId]['projectList'] = $singleList;
             }
         }
         $list[] = $arrayStakes;
         echo json_encode($arrayStakes);exit;
+    }
+
+    public function updateStakesLeaderProjects()
+    {
+        $formData = $this->input->post();
+        $leaderId = $formData["leaderId"];
+        $projectId = $formData["projectId"];
+//        var_dump($leaderId, $projectId);exit;
+        $projectStakes = Model_project_stakes::getByLeaderIdAndProjectId($leaderId, $projectId);
+        if($projectStakes instanceof Model_project_stakes)
+        {
+
+        }
+
     }
 }

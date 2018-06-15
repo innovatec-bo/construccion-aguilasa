@@ -29,8 +29,32 @@ function getStakesLeaderProjects()
             $(".status-content").html(html);
             $('[data-toggle="tooltip"]').tooltip();
             $(".sortable-list").sortable({
-                connectWith: ".sortable-list"
+                connectWith: ".sortable-list",
+                placeholder: "ui-state-highlight",
+                items: "span:not(.success)",
+                update: function( event, ui ) {
+                    if (this === ui.item.parent()[0])
+                    {
+                        var leaderId = $(ui.item).parent().data("leader-id");
+                        var projectId = $(ui.item).data("project-id");
+                        updateProjectAssignment(leaderId, projectId);
+                    }
+
+                }
             }).disableSelection();
+        }
+    });
+}
+
+function updateProjectAssignment(leaderId, projectId)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxProject/updateStakesLeaderProjects',
+        dataType  :"json",
+        type : "POST",
+        data:{leaderId:leaderId, projectId:projectId},
+        success:function(response){
+            console.log(response);
         }
     });
 }
