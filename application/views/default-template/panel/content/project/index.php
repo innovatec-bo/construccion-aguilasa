@@ -9,12 +9,29 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Lista de proyectos</h1>
+            <h1 class="page-header"><?=$viewTitle?></h1>
         </div>
         <div class="col-md-12">
             <?php
             $this->load->view("default-template/flash-data-basic-messages");
             ?>
+        </div>
+        <div class="col-md-12 hide">
+            <form class="form-group" id="extra-request-data">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input name="status" value="<?=$status?>">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>
+                    <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove parametros adicionales</button>
+                </div>
+            </form>
         </div>
         <div class="col-md-12">
             <div class="table-responsive">

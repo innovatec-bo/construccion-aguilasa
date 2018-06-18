@@ -96,4 +96,133 @@ class Model_project_base extends MY_Model
     {
         $this->_status = $statusId;
     }
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+
+    /**
+     * @return mixed
+     */
+    public static function countAll()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = '
+                select count(' . static::TABLE_ID. ') as total
+                from ' . static::TABLE_NAME .' where '.static::notDeleted();
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    /**
+     * @param $limit
+     * @param $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     */
+    public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' where '.static::notDeleted().'             
+                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
+
+    /**
+     * @param $text
+     * @param $limit
+     * @param $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @param null $colsArray
+     * @param array $additionalParameters
+     * @return mixed
+     */
+    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
+        $sql .= ' where '.static::notDeleted().' and (';
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+
+        $query = $ci->db->query($sql);
+        return $query->result();
+    }
+
+    /**
+     * @param $text
+     * @param null $colsArray
+     * @param array $additionalParameters
+     * @return mixed
+     */
+    public static function searchTotalCount($text, $colsArray = null, $additionalParameters = array())
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+        $sql .= ' where '.static::notDeleted().' and (';
+
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') '.static::_additionalParameters($additionalParameters);
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    private static function _dataTableColumns()
+    {
+        $columns = static::TABLE_NAME.".*";
+        return $columns;
+    }
+
+    private static function _additionalParameters($list = array())
+    {
+        $ci=&get_instance();
+        $ci->load->database();
+        $sql = "";
+        if(is_array($list) && count($list) >= 1)
+        {
+            foreach($list as $parameter => $value)
+            {
+                switch ($parameter)
+                {
+                    case "status":
+                        $sql .= " and status_pro = ".$ci->db->escape($value);
+                        break;
+                }
+            }
+        }
+
+        return $sql;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
 }

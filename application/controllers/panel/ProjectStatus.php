@@ -214,6 +214,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizard');
 
         $statusList = Model_project_status::getAll(50,0,"order_pst");
+        $statusList = Model_project_status::getChildrenByParentStatusId(1);
         $data["statusList"] = $statusList;
         $this->_loadPanelView("project-status/status-management", $data);
     }

@@ -3,6 +3,13 @@
  */
 
 $(document).ready(function() {
+
+    var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
+    additionalParameter.addParameterObject('status','text');
+    additionalParameter.setButtonFilter('#send-filters');
+    additionalParameter.setButtonRest('#remove-additional-parameters');
+    additionalParameter.loadEventHandlers();
+
     var buttonAdd = {
         text: "Add",
         action: function ( e, dt, node, config ) {
@@ -15,7 +22,10 @@ $(document).ready(function() {
         "serverSide" : true,
         "ajax" : {
             url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
-            type : 'POST'
+            type : 'POST',
+            data:function ( data ) {
+                data.additionalParameters = additionalParameter.getList();
+            }
         },
         "language": {
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
@@ -31,7 +41,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/stateManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
+                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                 return html;
             }
         }, {

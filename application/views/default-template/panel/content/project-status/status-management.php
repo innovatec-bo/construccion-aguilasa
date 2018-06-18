@@ -29,7 +29,7 @@
                             foreach ($statusList as $status)
                             {
                                 $class = $i === 1?"active":"";
-                                $status = (array)$status;
+                                $status = $status->toArray();
                                 $navTab .= '
                                 <li role="presentation" class="'.$class.'">
                                     <a href="#step'.$i.'" data-toggle="tab" aria-controls="step'.$i.'" role="tab" title="'.$status["status_name_pst"].'">

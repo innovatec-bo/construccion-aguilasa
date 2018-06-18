@@ -15,13 +15,15 @@ class Model_project_status_base extends MY_Model
     protected $_name;
     protected $_icon;
     protected $_order;
+    protected $_parentStatus;
 
-    public function __construct($name = "", $icon = "", $order = "")
+    public function __construct($name = "", $icon = "", $order = "", $parentStatus = "")
     {
         parent::__construct();
         $this->_name = $name;
         $this->_icon = $icon;
         $this->_order = $order;
+        $this->_parentStatus = $parentStatus;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_project_status_base extends MY_Model
             "status_name_pst" => $this->_name,
             "status_icon_pst" => $this->_icon,
             "order_pst" => $this->_order,
+            "parent_status_pst" => $this->_parentStatus,
             "deleted_pst" => $this->_deleted,
             "createdon_pst" => $this->_createdOn,
             "createdby_pst" => $this->_createdBy,
@@ -61,7 +64,8 @@ class Model_project_status_base extends MY_Model
             $instance = new $className(
                 $object->status_name_pst,
                 $object->status_icon_pst,
-                $object->order_pst
+                $object->order_pst,
+                $object->parent_status_pst
             );
             $instance->_id = $object->id_pst;
 

@@ -29,9 +29,12 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $this->_loadPanelView("project/index");
+        $data["viewTitle"] = "Lista de proyectos";
+        $data["status"] = "";
+        $this->_loadPanelView("project/index",$data);
     }
 
     public function add()
