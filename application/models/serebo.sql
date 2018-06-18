@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-06-14 14:02:10
+Date: 2018-06-18 13:43:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,37 +41,37 @@ CREATE TABLE `sec_features` (
 -- ----------------------------
 -- Records of sec_features
 -- ----------------------------
-INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-edit', 'panel/User/edit', 'Edit users', null, '16', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', 'fa fa-table', '#', '', null, '26', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('3', 'Users', 'user_index', 'fa fa-users', 'panel/User', '', null, '14', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', null, '15', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('5', 'ui elements', 'ui_elements', 'fa fa-table', '#', '', null, '19', '0', '0', null, null, '2018-06-06 11:57:03', null);
+INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-edit', 'panel/User/edit', 'Edit users', null, '20', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('2', 'charts', 'charts', 'fa fa-table', '#', '', null, '23', '0', '0', null, null, '2018-06-18 09:41:41', null);
+INSERT INTO `sec_features` VALUES ('3', 'Users', 'user_index', 'fa fa-users', 'panel/User', '', null, '18', '1', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', null, '19', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('5', 'Diseño', 'design', 'glyphicon glyphicon-pencil', '#', '', null, '4', '1', '0', null, null, '2018-06-18 11:47:52', null);
 INSERT INTO `sec_features` VALUES ('6', 'multi-level dropdown', 'multi_level_dropdown', 'fa fa-table', '#', '', null, '29', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('7', 'My profile', 'user_profile', 'fa fa-user', 'panel/User/myProfile', 'User\'s profile', null, '18', '0', '0', null, null, '2018-06-06 11:57:03', null);
+INSERT INTO `sec_features` VALUES ('7', 'My profile', 'user_profile', 'fa fa-user', 'panel/User/myProfile', 'User\'s profile', null, '22', '0', '0', null, null, '2018-06-18 11:47:34', null);
 INSERT INTO `sec_features` VALUES ('8', 'flot chars', 'flot_charts', 'fa fa-table', 'icon link', '', '2', '28', '1', '0', null, null, '2018-06-06 11:57:03', null);
 INSERT INTO `sec_features` VALUES ('9', 'morris charts', 'morris_charts', 'fa fa-table', 'link', '', '2', '27', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('10', 'panels and wells', 'panels_and_wells', 'fa fa-user-plus', null, null, '5', '20', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('11', 'buttons', 'buttons', null, null, null, '5', '21', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('12', 'notifications', 'notifications', null, null, null, '5', '22', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '5', '23', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '5', '24', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '5', '25', '1', '0', null, null, '2018-06-06 11:57:03', null);
+INSERT INTO `sec_features` VALUES ('10', 'Estaqueadores', 'design_stakes', 'fa fa-users', 'panel/Design/stakesTeam', '', '5', '5', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('11', 'Digitalizacion', 'design_digitization', 'fa fa-laptop', 'panel/Design/digitization', '', '5', '6', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('12', 'Dibujo', 'design_drawing', 'fa fa-pencil-square-o', 'panel/Design/drawing', '', '5', '7', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('13', 'typography', 'typography', null, null, null, '2', '26', '1', '0', null, null, '2018-06-18 09:41:29', null);
+INSERT INTO `sec_features` VALUES ('14', 'icons', 'icons', null, null, null, '2', '24', '1', '0', null, null, '2018-06-18 09:41:41', null);
+INSERT INTO `sec_features` VALUES ('15', 'grid', 'grid', null, null, null, '2', '25', '1', '0', null, null, '2018-06-18 09:41:41', null);
 INSERT INTO `sec_features` VALUES ('16', 'second level', 'second_level', 'fa fa-table', null, null, '6', '30', '1', '0', null, null, '2018-06-06 11:57:03', null);
 INSERT INTO `sec_features` VALUES ('17', 'third level', 'third_level', 'fa fa-table', null, null, '16', '31', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('18', 'Home', 'home', 'fa fa-home', 'panel/Home', '', null, '8', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('19', 'Permission', 'permission', 'fa fa-lock', 'panel/Permission', 'Add, edit, and handle user permissions', null, '13', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('20', 'Roles', 'role_index', 'fa fa-user', 'panel/Role', 'Role list', null, '9', '1', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('21', 'Add role', 'role_add', 'fa fa-plus', '#', 'Add role form', null, '10', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('22', 'Edit role', 'role_edit', 'fa fa-edit', '#', 'Edit role form', null, '11', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('23', 'Dashboard', 'dashboard_index', 'fa fa-dashboard', 'panel/Dashboard', 'User dashboard', null, '1', '1', '0', null, null, '2018-06-04 11:41:50', null);
-INSERT INTO `sec_features` VALUES ('24', 'Projects', 'project_index', 'fa fa-folder', 'panel/Project', 'Projects', null, '2', '1', '0', null, null, '2018-06-05 11:21:11', null);
-INSERT INTO `sec_features` VALUES ('25', 'Add project', 'project_add', 'fa fa-plus', 'panel/Project/add', 'Add new project', null, '4', '0', '0', null, null, '2018-06-06 10:32:53', null);
-INSERT INTO `sec_features` VALUES ('26', 'Edit project', 'project_edit', 'fa fa-pencil', 'panel/Project/edit', 'Edit project', null, '5', '0', '0', null, null, '2018-06-06 10:32:53', null);
-INSERT INTO `sec_features` VALUES ('27', 'Delete project', 'delete_project', 'fa fa-times', 'panel/Project/delete', 'Delete project', null, '6', '0', '0', null, null, '2018-06-06 10:32:53', null);
-INSERT INTO `sec_features` VALUES ('28', 'Delete user', 'delete_user', 'fa fa-times', 'panel/User/delete', 'Delete user', null, '17', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('29', 'Delete role', 'delete_role', 'fa fa-times', 'panel/Role/delete', 'Delete role', null, '12', '0', '0', null, null, '2018-06-06 11:57:03', null);
-INSERT INTO `sec_features` VALUES ('30', 'State management', 'project_status_management', 'fa fa-table', 'panel/ProjectStatus/stateManagement', 'Project state management', null, '3', '0', '0', null, null, '2018-06-06 12:16:39', null);
-INSERT INTO `sec_features` VALUES ('31', 'Project status', 'project_status_index', 'fa fa-table', 'panel/ProjectStatus', 'Project status', null, '7', '1', '0', null, null, '2018-06-06 11:57:03', null);
+INSERT INTO `sec_features` VALUES ('18', 'Home', 'home', 'fa fa-home', 'panel/Home', '', null, '1', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('19', 'Permission', 'permission', 'fa fa-lock', 'panel/Permission', 'Add, edit, and handle user permissions', null, '17', '1', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('20', 'Roles', 'role_index', 'fa fa-user', 'panel/Role', 'Role list', null, '13', '1', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('21', 'Add role', 'role_add', 'fa fa-plus', '#', 'Add role form', null, '14', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('22', 'Edit role', 'role_edit', 'fa fa-edit', '#', 'Edit role form', null, '15', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('23', 'Dashboard', 'dashboard_index', 'fa fa-dashboard', 'panel/Dashboard', 'User dashboard', null, '2', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('24', 'Proyectos', 'project_index', 'fa fa-folder', 'panel/Project', 'Projects', null, '3', '1', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('25', 'Add project', 'project_add', 'fa fa-plus', 'panel/Project/add', 'Add new project', null, '9', '0', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('26', 'Edit project', 'project_edit', 'fa fa-pencil', 'panel/Project/edit', 'Edit project', null, '10', '0', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('27', 'Delete project', 'delete_project', 'fa fa-times', 'panel/Project/delete', 'Delete project', null, '11', '0', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('28', 'Delete user', 'delete_user', 'fa fa-times', 'panel/User/delete', 'Delete user', null, '21', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('29', 'Delete role', 'delete_role', 'fa fa-times', 'panel/Role/delete', 'Delete role', null, '16', '0', '0', null, null, '2018-06-18 11:47:34', null);
+INSERT INTO `sec_features` VALUES ('30', 'State management', 'project_status_management', 'fa fa-table', 'panel/ProjectStatus/stateManagement', 'Project state management', null, '8', '0', '0', null, null, '2018-06-18 11:47:52', null);
+INSERT INTO `sec_features` VALUES ('31', 'Project status', 'project_status_index', 'fa fa-table', 'panel/ProjectStatus', 'Project status', null, '12', '1', '0', null, null, '2018-06-18 11:47:52', null);
 
 -- ----------------------------
 -- Table structure for sec_permissions
@@ -681,7 +681,7 @@ CREATE TABLE `wfl_projects` (
   UNIQUE KEY `UQ_sec_roles_id_rol` (`id_pro`) USING BTREE,
   KEY `fk_status_pro` (`status_pro`),
   CONSTRAINT `fk_status_pro` FOREIGN KEY (`status_pro`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_projects
@@ -701,6 +701,7 @@ INSERT INTO `wfl_projects` VALUES ('17', '486', 'adfasdf a', 'asdfasdfasdfdfdf',
 INSERT INTO `wfl_projects` VALUES ('18', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '2', '0', '2018-06-11 14:15:46', null, '2018-06-11 14:30:50', null);
 INSERT INTO `wfl_projects` VALUES ('19', '351', 'adas', 'asdfasdf', '2018-06-11 00:00:00', 'asdfasf', '5', '0', '2018-06-11 14:32:03', null, '2018-06-12 10:54:04', null);
 INSERT INTO `wfl_projects` VALUES ('20', '963', 'nuevo proyecto', 'lejosss', '2018-06-13 00:00:00', 'un fical', '2', '0', '2018-06-13 11:38:00', null, '2018-06-13 11:40:24', null);
+INSERT INTO `wfl_projects` VALUES ('21', 're2', 'nuevo', 'lejos', '2018-06-15 00:00:00', 'Fulano de tal', '1', '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_points
@@ -719,7 +720,7 @@ CREATE TABLE `wfl_project_points` (
   PRIMARY KEY (`id_prp`),
   KEY `fk_project_id_prp` (`project_id_prp`),
   CONSTRAINT `fk_project_id_prp` FOREIGN KEY (`project_id_prp`) REFERENCES `wfl_projects` (`id_pro`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_points
@@ -739,6 +740,7 @@ INSERT INTO `wfl_project_points` VALUES ('12', '19', '20', '25.00', '0', '2018-0
 INSERT INTO `wfl_project_points` VALUES ('13', '17', '10', '10.00', '0', '2018-06-12 11:08:44', null, '2018-06-12 11:08:44', null);
 INSERT INTO `wfl_project_points` VALUES ('14', '20', '20', '50.00', '0', '2018-06-13 11:38:00', null, '2018-06-13 11:38:00', null);
 INSERT INTO `wfl_project_points` VALUES ('15', '20', '10', '25.00', '0', '2018-06-13 11:40:24', null, '2018-06-13 11:40:24', null);
+INSERT INTO `wfl_project_points` VALUES ('16', '21', '8', '50.00', '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_stakes
@@ -777,6 +779,7 @@ CREATE TABLE `wfl_project_status` (
   `status_name_pst` varchar(50) DEFAULT NULL,
   `status_icon_pst` varchar(50) DEFAULT NULL,
   `order_pst` smallint(2) DEFAULT NULL,
+  `parent_status_pst` bigint(20) DEFAULT NULL,
   `deleted_pst` smallint(6) DEFAULT '0',
   `createdon_pst` datetime DEFAULT NULL,
   `createdby_pst` bigint(20) DEFAULT NULL,
@@ -789,10 +792,10 @@ CREATE TABLE `wfl_project_status` (
 -- ----------------------------
 -- Records of wfl_project_status
 -- ----------------------------
-INSERT INTO `wfl_project_status` VALUES ('1', 'Diseño', 'glyphicon glyphicon-pencil', '1', '0', null, null, '2018-06-06 11:10:35', null);
-INSERT INTO `wfl_project_status` VALUES ('2', 'Estaqueado', 'fa fa-users', '2', '0', null, null, '2018-06-06 11:22:08', null);
-INSERT INTO `wfl_project_status` VALUES ('3', 'Digitalizacion', 'fa fa-laptop', '3', '0', null, null, '2018-06-06 11:15:29', null);
-INSERT INTO `wfl_project_status` VALUES ('5', 'DIbujo', 'fa fa-pencil-square-o', '4', '0', null, null, '2018-06-06 11:15:27', null);
+INSERT INTO `wfl_project_status` VALUES ('1', 'Diseño', 'glyphicon glyphicon-pencil', '1', null, '0', null, null, '2018-06-06 11:10:35', null);
+INSERT INTO `wfl_project_status` VALUES ('2', 'Estaqueado', 'fa fa-users', '2', '1', '0', null, null, '2018-06-18 13:24:46', null);
+INSERT INTO `wfl_project_status` VALUES ('3', 'Digitalizacion', 'fa fa-laptop', '3', '1', '0', null, null, '2018-06-18 13:24:47', null);
+INSERT INTO `wfl_project_status` VALUES ('5', 'DIbujo', 'fa fa-pencil-square-o', '4', '1', '0', null, null, '2018-06-18 13:24:47', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_status_log
@@ -813,7 +816,7 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`),
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
@@ -825,6 +828,7 @@ INSERT INTO `wfl_project_status_log` VALUES ('4', '19', '5', null, '0', '2018-06
 INSERT INTO `wfl_project_status_log` VALUES ('5', '17', '1', null, '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_project_status_log` VALUES ('6', '20', '1', null, '0', '2018-06-13 11:38:01', null, '2018-06-13 11:38:01', null);
 INSERT INTO `wfl_project_status_log` VALUES ('7', '20', '2', null, '0', '2018-06-13 11:38:54', null, '2018-06-13 11:38:54', null);
+INSERT INTO `wfl_project_status_log` VALUES ('8', '21', '1', null, '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader
