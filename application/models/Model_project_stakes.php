@@ -29,4 +29,24 @@ class Model_project_stakes extends Model_project_stakes_base
         $result = $ci->db->query($sql);
         return static::recastArray(get_called_class(), $result->result());
     }
+
+    public static function getByProjectId($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            select 
+              id_stl id,
+	          leader_stl leader
+            from 
+              wfl_project_stakes
+            LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
+            where 
+            project_id_prs = ".$ci->db->escape($projectId)."
+            and ".static::notDeleted()."
+        ";
+        $result = $ci->db->query($sql);
+        return $result->result_array();
+    }
 }

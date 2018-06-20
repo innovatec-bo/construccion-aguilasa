@@ -43,11 +43,6 @@ class AjaxProject extends PrivateController
     {
         $stakesLeaderProject = Model_project::getStakesLeaderProjects();
         $arrayStakes = array();
-        $singleList = array(
-            "stakesTeamLeaderId" => "",
-            "stakesTeamLeader" => "",
-            "projectList" => array()
-        );
         $singleList = array();
         for ($i = 0; $i < count($stakesLeaderProject); $i++)
         {

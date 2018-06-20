@@ -206,6 +206,7 @@ class ProjectStatus extends PrivateController
         $this->_validateFeature('project_status_management');
 
         $this->complementHandler->addViewComplement("jquery.ui");
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('project-status.status-management');
@@ -213,9 +214,10 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.status-management.wizard');
         $this->complementHandler->addProjectJs('project.status-management.wizard');
 
-        $statusList = Model_project_status::getAll(50,0,"order_pst");
         $statusList = Model_project_status::getChildrenByParentStatusId(1);
+        $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
         $data["statusList"] = $statusList;
+        $data["teamLeadersOnProject"] = json_encode($projectStakeLeaders);
         $this->_loadPanelView("project-status/status-management", $data);
     }
 }

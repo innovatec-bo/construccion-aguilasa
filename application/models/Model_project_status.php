@@ -8,9 +8,9 @@
 
 class Model_project_status extends Model_project_status_base
 {
-    public function __construct($name = "", $icon = "", $order = "", $parentStatus = "")
+    public function __construct($name = "", $icon = "", $order = "", $parentStatus = "", $keyword = "")
     {
-        parent::__construct($name, $icon, $order, $parentStatus);
+        parent::__construct($name, $icon, $order, $parentStatus, $keyword);
     }
 
     public static function getChildrenByParentStatusId($parentStatusId)

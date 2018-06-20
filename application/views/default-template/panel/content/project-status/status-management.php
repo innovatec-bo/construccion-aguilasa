@@ -22,7 +22,6 @@
                     <div class="wizard-inner">
                         <div class="connecting-line"></div>
                         <ul class="nav nav-tabs" role="tablist">
-
                             <?php
                             $navTab = '';
                             $i = 1;
@@ -32,7 +31,7 @@
                                 $status = $status->toArray();
                                 $navTab .= '
                                 <li role="presentation" class="'.$class.'">
-                                    <a href="#step'.$i.'" data-toggle="tab" aria-controls="step'.$i.'" role="tab" title="'.$status["status_name_pst"].'">
+                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-controls="step_'.$status["keyword_pst"].'" role="tab" title="'.$status["status_name_pst"].'">
                                         <span class="round-tab">
                                             <i class="'.$status["status_icon_pst"].'"></i>
                                         </span>
@@ -54,23 +53,25 @@
                             foreach ($statusList as $status)
                             {
                                 $class = $i === 1?"active":"";
-                                $status = (array)$status;
+                                $status = $status->toArray();
                                 $tapPane .= '
-                                <div class="tab-pane '.$class.'" role="tabpanel" id="step'.$i.'">
+                                <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3>Step '.$i.'</h3>
-                                            <p>This is step '.$i.'</p>
+                                            <h3>Step '.$status["keyword_pst"].'</h3>
+                                            <p>This is step '.$status["keyword_pst"].'</p>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 status-content">
-                                            sdasdfasd
-                                        </div>
+                                        <div class="col-md-12 status-content">';
+                                        $data["status"] = $status["keyword_pst"];
+                            $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views",$data,TRUE);
+                            $tapPane .=
+                                        '</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary next-step">Save</button>
+                                            <button type="button" class="btn btn-primary save-'.$status["keyword_pst"].'">Save</button>
                                         </div>
                                     </div>
                                     

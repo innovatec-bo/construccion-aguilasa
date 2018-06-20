@@ -69,3 +69,6 @@ $config['complements']['date-time-picker']['js'] = assets_url('resource-sb-admin
 $config['complements']['moment-with-locales']['js'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/js/moment-with-locales.min.js');
 $config['complements']['picker']['js'] = assets_url('resource-sb-admin2/vendor/pickers/pickadate/js/picker.js');
 $config['complements']['pick-a-date']['js'] = assets_url('resource-sb-admin2/vendor/pickers/pickadate/js/picker.date.js');
+
+$config['complements']['select2']['css'] = assets_url('resource-sb-admin2/plugins/select2/dist/css/select2.min.css');
+$config['complements']['select2']['js'] = assets_url('resource-sb-admin2/plugins/select2/dist/js/select2.min.js');

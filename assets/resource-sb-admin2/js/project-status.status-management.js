@@ -2,9 +2,12 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    getStakesLeaderProjects();
+    // getStakesLeaderProjects();
+    startSelect2Companies();
 
-
+    $(document).on("click",".save-stakes",function(e){
+        addTeamLeaderToProject();
+    });
 });
 
 function getStakesLeaderProjects()
@@ -57,4 +60,53 @@ function updateProjectAssignment(leaderId, projectId)
             console.log(response);
         }
     });
+}
+
+function startSelect2Companies()
+{
+    //select2 ajax for companies in bonus modal form
+    $('#ajax-get-stakes-leader').select2({
+        placeholder: "Elija un equipo",
+        tags:true,
+        multiple:true,
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxProjectStatus/getAllStakesTeamLeader',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                return {
+                    term : params.term || "", //search term
+                    limit : 5, // page size
+                    page: params.page || 1
+                };
+            },
+
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        width : "100%"
+    });
+
+    // create the default options and append to Select2
+    var teamLeaderList = $("#ajax-get-stakes-leader").data("default");
+    var list = [];
+    var option = {};
+    $.each(teamLeaderList,function(index, value){
+        option = new Option(value.leader, value.id, true, true);
+        list.push(option);
+
+    });
+    $('#ajax-get-stakes-leader').append(list).trigger('change');
+}
+
+function addTeamLeaderToProject()
+{
+    var teamLeaderIdList = $('#ajax-get-stakes-leader').select2("data");
+    console.log(teamLeaderIdList);
 }

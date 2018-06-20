@@ -114,4 +114,30 @@ class AjaxProjectStatus extends PrivateController
         $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }
+
+    public function getAllStakesTeamLeader()
+    {
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $offset = ($page-1)*$limit;
+        $companies = Model_stakes_team_leader::search($term, $limit, $offset, 'leader_stl', 'asc', array('leader_stl'));
+        $recordsFiltered = Model_stakes_team_leader::searchTotalCount($term, array('leader_stl'));
+
+        $resultArray = array();
+        $list = array();
+
+        foreach ($companies as $company)
+        {
+            $list[] = array(
+                "id" => $company->id_stl,
+                "text" => $company->leader_stl
+            );
+        }
+        $moreResults = ($page * $limit) < $recordsFiltered;
+        $resultArray['list'] = $list;
+        $resultArray['pagination'] = array("more" => $moreResults);
+        echo json_encode($resultArray);exit ;
+
+    }
 }
