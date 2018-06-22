@@ -74,45 +74,20 @@
                             <div class="col-md-6">
                                 <label>Area del proyecto</label><br>
                                 <div class="form-group">
+                                    <em>Puntos</em><br>
                                     <input class="form-control" name="project-points" placeholder="Puntos">
                                 </div>
                                 <div class="form-group">
+                                    <em>Distancia Km</em><br>
                                     <input class="form-control" name="project-meters-distance" placeholder="Distancia">
                                 </div>
                             </div>
                         </div><br>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Estado</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="project-status" value="" checked>Ninguno
-                                        </label>
-                                    </div>
-                                    <?php
-                                    $html = "";
-                                    $i = 0;
-                                    foreach ($projectStatusList as $status)
-                                    {
-                                        $status = (array)$status;
-                                        $html .= '
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="project-status" value="'.$status["id_pst"].'">'.$status["status_name_pst"].'
-                                            </label>
-                                        </div>
-                                        ';
-                                    }
-                                    echo $html;
-                                    ?>
-                                    <div id="role-error-container"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
+                                <button type="button" class="btn btn-info save-project" data-project-status="1">Guardar y enviar a diseño</button>
+                                <input type="hidden" name="project-status" value="">
                             </div>
                         </div>
                     <!-- /.row (nested) -->

@@ -13,11 +13,50 @@ switch ($status)
     case "stakes":
         $htmlStatusView .= '
         <fieldset>
-                <label>Equipo '.$status.'</label>
+            <label>Equipo <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+            <div class="form-group">
+                <select class="form-control" data-parsley-required parsley-trigger="change" id="ajax-get-stakes-leader" data-default=\''.$teamLeadersOnProject.'\'></select>
+            </div>
+        </fieldset>
+        ';
+        break;
+    case "digitization":
+        $htmlStatusView .= '
+        <div class="row form-inline">
+            <div class="col-md-6">
+                <label>Area del proyecto</label><br>
                 <div class="form-group">
-                    <select class="form-control" data-parsley-required parsley-trigger="change" id="ajax-get-stakes-leader" data-default=\''.$teamLeadersOnProject.'\'></select>
+                    <em>Puntos</em><br>
+                    <input class="form-control" name="project-points" placeholder="Puntos">
                 </div>
-            </fieldset>
+                <div class="form-group">
+                    <em>Distancia Km</em><br>
+                    <input class="form-control" name="project-meters-distance" placeholder="Distancia">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Observaciones</label>
+            <textarea class="form-control" rows="2"></textarea>
+        </div>
+        <p>ULTIMA ENTRADA</p>
+        <div class="row form-inline">
+            <div class="col-md-6">
+                <label>Area del proyecto</label><br>
+                <div class="form-group">
+                    <em>Puntos</em><br>
+                    <input class="form-control" disabled name="project-points" placeholder="Puntos">
+                </div>
+                <div class="form-group">
+                    <em>Distancia Km</em><br>
+                    <input class="form-control" disabled name="project-meters-distance" placeholder="Distancia">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Observaciones</label>
+            <textarea class="form-control" disabled rows="2"></textarea>
+        </div>
         ';
         break;
     default:

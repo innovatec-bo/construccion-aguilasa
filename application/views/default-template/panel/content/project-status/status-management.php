@@ -58,8 +58,8 @@
                                 <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3>Step '.$status["keyword_pst"].'</h3>
-                                            <p>This is step '.$status["keyword_pst"].'</p>
+                                            <h3>'.$status["status_name_pst"].'</h3>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary save-'.$status["keyword_pst"].'">Save</button>
+                                            <button type="button" class="btn btn-primary save-'.$status["keyword_pst"].'">Guardar</button>
                                         </div>
                                     </div>
                                     

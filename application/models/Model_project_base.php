@@ -18,8 +18,10 @@ class Model_project_base extends MY_Model
     protected $_entryDate;
     protected $_creFiscal;
     protected $_status;
+    protected $_projectStart;
+    protected $_projectEnd;
 
-    public function __construct($projectCode = "", $projectName = "", $address = "", $entryDate = "", $creFiscal = "", $status = NULL)
+    public function __construct($projectCode = "", $projectName = "", $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -28,6 +30,8 @@ class Model_project_base extends MY_Model
         $this->_entryDate = $entryDate;
         $this->_creFiscal = $creFiscal;
         $this->_status = $status;
+        $this->_projectStart = $projectStart;
+        $this->_projectEnd = $projectEnd;
     }
 
     /**
@@ -44,6 +48,8 @@ class Model_project_base extends MY_Model
             "entry_date_pro" => $this->_entryDate,
             "cre_fiscal_pro" => $this->_creFiscal,
             "status_pro" => $this->_status,
+            "project_start_pro" => $this->_projectStart,
+            "project_end_pro" => $this->_projectEnd,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -73,7 +79,9 @@ class Model_project_base extends MY_Model
                 $object->address_pro,
                 $object->entry_date_pro,
                 $object->cre_fiscal_pro,
-                $object->status_pro
+                $object->status_pro,
+                $object->project_start_pro,
+                $object->project_end_pro
             );
             $instance->_id = $object->id_pro;
 

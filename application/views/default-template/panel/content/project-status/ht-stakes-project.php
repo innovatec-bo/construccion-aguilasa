@@ -7,14 +7,16 @@
  */
 ?>
 <script id="ht-stakes-project" type="text/x-handlebars-template">
-    {{#each stakesProject}}
+    <div class="row">
+        {{#each stakesProject}}
         <div class="col-md-12">
             <div class="tags sortable-list" data-leader-id="{{teamLeaderId}}">
                 <span class="success" style="">{{teamLeader}}</span>
                 {{> ht-stakes-project-item}}
             </div>
         </div>
-    {{/each}}
+        {{/each}}
+    </div>
 </script>
 <script id="ht-stakes-project-item" type="text/x-handlebars-template">
     {{#each projectList}}

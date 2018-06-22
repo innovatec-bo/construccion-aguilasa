@@ -14,6 +14,29 @@ class Design extends PrivateController
         parent::__construct();
     }
 
+    public function index()
+    {
+        $this->_validateFeature('project_index');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index');
+        $this->complementHandler->addProjectJs('project.index');
+        $data["viewTitle"] = "Proyectos en diseño";
+        $data["status"] = 1;
+        $this->_loadPanelView("project/index",$data);
+    }
+
     public function stakesTeam()
     {
         $this->_validateFeature('project_index');
@@ -80,6 +103,29 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en dibujo";
         $data["status"] = 5;
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function schedule()
+    {
+        $this->_validateFeature('project_index');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index');
+        $this->complementHandler->addProjectJs('project.index');
+        $data["viewTitle"] = "Proyectos en Cronograma";
+        $data["status"] = 6;
         $this->_loadPanelView("project/index",$data);
     }
 }

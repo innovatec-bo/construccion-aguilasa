@@ -8,6 +8,13 @@ $(document).ready(function() {
     $(document).on("click",".save-stakes",function(e){
         addTeamLeaderToProject();
     });
+
+    $(document).on("click", ".check-stakes-team",function(e){
+        e.preventDefault();
+        getStakesLeaderProjects();
+    });
+
+
 });
 
 function getStakesLeaderProjects()
@@ -29,22 +36,12 @@ function getStakesLeaderProjects()
             var template = Handlebars.compile(htmlSource);
             var data = {stakesProject: stakesProject};
             var html = template(data);
-            $(".status-content").html(html);
+            // $(".status-content").html(html);
+            bootbox.alert({
+                title:"Equipos y Proyectos",
+                message:html
+            });
             $('[data-toggle="tooltip"]').tooltip();
-            $(".sortable-list").sortable({
-                connectWith: ".sortable-list",
-                placeholder: "ui-state-highlight",
-                items: "span:not(.success)",
-                update: function( event, ui ) {
-                    if (this === ui.item.parent()[0])
-                    {
-                        var leaderId = $(ui.item).parent().data("leader-id");
-                        var projectId = $(ui.item).data("project-id");
-                        updateProjectAssignment(leaderId, projectId);
-                    }
-
-                }
-            }).disableSelection();
         }
     });
 }
