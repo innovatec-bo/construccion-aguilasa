@@ -65,7 +65,7 @@
                                     <div class="row">
                                         <div class="col-md-12 status-content">';
                                         $data["status"] = $status["keyword_pst"];
-                            $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views",$data,TRUE);
+                            $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views", $data,TRUE);
                             $tapPane .=
                                         '</div>
                                     </div>

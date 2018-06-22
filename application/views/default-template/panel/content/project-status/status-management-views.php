@@ -31,13 +31,13 @@ switch ($status)
                 </div>
                 <div class="form-group">
                     <em>Distancia Km</em><br>
-                    <input class="form-control" name="project-meters-distance" placeholder="Distancia">
+                    <input class="form-control"  name="project-meters-distance" placeholder="Distancia">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>Observaciones</label>
-            <textarea class="form-control" rows="2"></textarea>
+            <textarea class="form-control" name="project-detail" rows="2"></textarea>
         </div>
         <p>ULTIMA ENTRADA</p>
         <div class="row form-inline">
@@ -45,17 +45,17 @@ switch ($status)
                 <label>Area del proyecto</label><br>
                 <div class="form-group">
                     <em>Puntos</em><br>
-                    <input class="form-control" disabled name="project-points" placeholder="Puntos">
+                    <input class="form-control" disabled name="current-project-points" value="'.$projectDigitizationStatus['points'].'" placeholder="Puntos">
                 </div>
                 <div class="form-group">
                     <em>Distancia Km</em><br>
-                    <input class="form-control" disabled name="project-meters-distance" placeholder="Distancia">
+                    <input class="form-control" disabled name="current-project-meters-distance" value="'.$projectDigitizationStatus['distance'].'" placeholder="Distancia">
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>Observaciones</label>
-            <textarea class="form-control" disabled rows="2"></textarea>
+            <textarea class="form-control" name="current-project-detail" disabled rows="2">'.$projectDigitizationStatus['detail'].'</textarea>
         </div>
         ';
         break;
