@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-06-22 14:27:02
+Date: 2018-06-25 14:04:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -700,7 +700,7 @@ INSERT INTO `wfl_projects` VALUES ('14', '159', 'project with status - test2', '
 INSERT INTO `wfl_projects` VALUES ('15', '357', 'project with status log', 'lejos', '2018-06-11 00:00:00', 'Fulano de tal', '1', null, null, '0', '2018-06-11 14:05:13', null, '2018-06-11 14:05:13', null);
 INSERT INTO `wfl_projects` VALUES ('16', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '1', null, null, '0', '2018-06-11 14:06:43', null, '2018-06-11 14:06:43', null);
 INSERT INTO `wfl_projects` VALUES ('17', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '1', null, null, '0', '2018-06-11 14:13:28', null, '2018-06-12 11:08:44', null);
-INSERT INTO `wfl_projects` VALUES ('18', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '2', null, null, '0', '2018-06-11 14:15:46', null, '2018-06-11 14:30:50', null);
+INSERT INTO `wfl_projects` VALUES ('18', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '2018-06-11 14:15:46', null, '2018-06-25 12:11:12', null);
 INSERT INTO `wfl_projects` VALUES ('19', '351', 'adas', 'asdfasdf', '2018-06-11 00:00:00', 'asdfasf', '5', null, null, '0', '2018-06-11 14:32:03', null, '2018-06-12 10:54:04', null);
 INSERT INTO `wfl_projects` VALUES ('20', '963', 'nuevo proyecto', 'lejosss', '2018-06-13 00:00:00', 'un fical', '2', null, null, '0', '2018-06-13 11:38:00', null, '2018-06-13 11:40:24', null);
 INSERT INTO `wfl_projects` VALUES ('21', 're2', 'nuevo', 'lejos', '2018-06-15 00:00:00', 'Fulano de tal', '1', null, null, '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
@@ -725,7 +725,7 @@ CREATE TABLE `wfl_project_points` (
   PRIMARY KEY (`id_prp`),
   KEY `fk_project_id_prp` (`project_id_prp`),
   CONSTRAINT `fk_project_id_prp` FOREIGN KEY (`project_id_prp`) REFERENCES `wfl_projects` (`id_pro`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_points
@@ -750,6 +750,11 @@ INSERT INTO `wfl_project_points` VALUES ('17', '22', '52', '69.00', '0', '2018-0
 INSERT INTO `wfl_project_points` VALUES ('18', '23', '50', '850.00', '0', '2018-06-22 11:39:59', null, '2018-06-22 11:40:00', null);
 INSERT INTO `wfl_project_points` VALUES ('19', '24', '60', '951.00', '0', '2018-06-22 11:41:34', null, '2018-06-22 11:41:34', null);
 INSERT INTO `wfl_project_points` VALUES ('20', '18', '55', '650.00', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_points` VALUES ('21', '18', '25', '669.00', '0', '2018-06-25 12:04:11', null, '2018-06-25 12:04:11', null);
+INSERT INTO `wfl_project_points` VALUES ('22', '18', '58', '963.00', '0', '2018-06-25 12:07:13', null, '2018-06-25 12:07:13', null);
+INSERT INTO `wfl_project_points` VALUES ('23', '18', '84', '562.00', '0', '2018-06-25 12:09:56', null, '2018-06-25 12:09:56', null);
+INSERT INTO `wfl_project_points` VALUES ('24', '18', '84', '562.00', '0', '2018-06-25 12:10:21', null, '2018-06-25 12:10:21', null);
+INSERT INTO `wfl_project_points` VALUES ('25', '18', '87', '548.00', '0', '2018-06-25 12:11:12', null, '2018-06-25 12:11:12', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_stakes
@@ -817,6 +822,7 @@ CREATE TABLE `wfl_project_status_log` (
   `project_id_psl` bigint(20) DEFAULT NULL,
   `status_id_psl` bigint(20) DEFAULT NULL,
   `log_detail_psl` text,
+  `manual_entry_date_psl` datetime DEFAULT NULL,
   `deleted_psl` smallint(6) DEFAULT '0',
   `createdon_psl` datetime DEFAULT NULL,
   `createdby_psl` bigint(20) DEFAULT NULL,
@@ -827,23 +833,26 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`),
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
 -- ----------------------------
-INSERT INTO `wfl_project_status_log` VALUES ('1', '18', '1', null, '0', '2018-06-11 14:15:47', null, '2018-06-11 14:15:47', null);
-INSERT INTO `wfl_project_status_log` VALUES ('2', '18', '2', null, '0', '2018-06-11 14:30:50', null, '2018-06-11 14:30:50', null);
-INSERT INTO `wfl_project_status_log` VALUES ('3', '19', null, null, '0', '2018-06-11 14:32:03', null, '2018-06-11 14:32:03', null);
-INSERT INTO `wfl_project_status_log` VALUES ('4', '19', '5', null, '0', '2018-06-11 14:32:42', null, '2018-06-11 14:32:42', null);
-INSERT INTO `wfl_project_status_log` VALUES ('5', '17', '1', null, '0', null, null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_project_status_log` VALUES ('6', '20', '1', null, '0', '2018-06-13 11:38:01', null, '2018-06-13 11:38:01', null);
-INSERT INTO `wfl_project_status_log` VALUES ('7', '20', '2', null, '0', '2018-06-13 11:38:54', null, '2018-06-13 11:38:54', null);
-INSERT INTO `wfl_project_status_log` VALUES ('8', '21', '1', null, '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
-INSERT INTO `wfl_project_status_log` VALUES ('9', '22', null, null, '0', '2018-06-22 10:42:16', null, '2018-06-22 10:42:16', null);
-INSERT INTO `wfl_project_status_log` VALUES ('10', '22', '1', null, '0', '2018-06-22 10:42:34', null, '2018-06-22 10:42:34', null);
-INSERT INTO `wfl_project_status_log` VALUES ('11', '23', null, null, '0', '2018-06-22 11:40:00', null, '2018-06-22 11:40:00', null);
-INSERT INTO `wfl_project_status_log` VALUES ('12', '24', '1', null, '0', '2018-06-22 11:41:34', null, '2018-06-22 11:41:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('1', '18', '1', null, null, '0', '2018-06-11 14:15:47', null, '2018-06-11 14:15:47', null);
+INSERT INTO `wfl_project_status_log` VALUES ('2', '18', '2', null, null, '0', '2018-06-11 14:30:50', null, '2018-06-11 14:30:50', null);
+INSERT INTO `wfl_project_status_log` VALUES ('3', '19', null, null, null, '0', '2018-06-11 14:32:03', null, '2018-06-11 14:32:03', null);
+INSERT INTO `wfl_project_status_log` VALUES ('4', '19', '5', null, null, '0', '2018-06-11 14:32:42', null, '2018-06-11 14:32:42', null);
+INSERT INTO `wfl_project_status_log` VALUES ('5', '17', '1', null, null, '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_status_log` VALUES ('6', '20', '1', null, null, '0', '2018-06-13 11:38:01', null, '2018-06-13 11:38:01', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7', '20', '2', null, null, '0', '2018-06-13 11:38:54', null, '2018-06-13 11:38:54', null);
+INSERT INTO `wfl_project_status_log` VALUES ('8', '21', '1', null, null, '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
+INSERT INTO `wfl_project_status_log` VALUES ('9', '22', null, null, null, '0', '2018-06-22 10:42:16', null, '2018-06-22 10:42:16', null);
+INSERT INTO `wfl_project_status_log` VALUES ('10', '22', '1', null, null, '0', '2018-06-22 10:42:34', null, '2018-06-22 10:42:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('11', '23', null, null, null, '0', '2018-06-22 11:40:00', null, '2018-06-22 11:40:00', null);
+INSERT INTO `wfl_project_status_log` VALUES ('12', '24', '1', null, null, '0', '2018-06-22 11:41:34', null, '2018-06-22 11:41:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('13', '18', '3', null, null, '0', '2018-06-25 12:04:11', null, '2018-06-25 12:04:11', null);
+INSERT INTO `wfl_project_status_log` VALUES ('14', '18', '3', null, null, '0', '2018-06-25 12:10:21', null, '2018-06-25 12:10:21', null);
+INSERT INTO `wfl_project_status_log` VALUES ('15', '18', '3', 'nuevo detalle', '2018-06-25 12:11:12', '0', '2018-06-25 12:11:12', null, '2018-06-25 12:21:37', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader
