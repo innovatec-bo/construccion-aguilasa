@@ -13,19 +13,23 @@ class Model_project extends Model_project_base
         parent::__construct($projectCode, $projectName, $address, $entryDate, $creFiscal, $status);
     }
 
-    public function savePoints($points, $metersDistance)
+    public function savePoints($lastPoints, $lastDistance, $points, $metersDistance)
     {
-        $projectPoints = new Model_project_points($this->_id, $points, $metersDistance);
-        $projectPoints->save();
+        //Verify if the entrance data is equals to the current data
+        if($lastPoints != $points || $lastDistance != $metersDistance)
+        {
+            $projectPoints = new Model_project_points($this->_id, $points, $metersDistance);
+            $projectPoints->save();
+        }
     }
 
-    public function addStatusToLog($statusId)
+    public function addStatusToLog($statusId, $detail = "")
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
 
-        if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status)
+        if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail)
         {
-            $projectStatus = new Model_project_status_log($this->_id, $statusId);
+            $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail);
             $projectStatus->save();
         }
     }

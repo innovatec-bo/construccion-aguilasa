@@ -44,6 +44,7 @@ class Model_project_status extends Model_project_status_base
         $sql = "
         SELECT
             project_id_psl project_id,
+            manual_entry_date_psl manual_entry_date,
             log_detail_psl detail,
             project_points.points,
             project_points.distance

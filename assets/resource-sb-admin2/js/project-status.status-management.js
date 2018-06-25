@@ -2,7 +2,11 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    // getStakesLeaderProjects();
+    $('.date-time-picker').datetimepicker({
+        ignoreReadonly: true,
+        // defaultDate: date,
+        format: 'DD-MM-YYYY'
+    });
     startSelect2Companies();
 
     $(document).on("click",".save-stakes",function(e){
@@ -14,6 +18,21 @@ $(document).ready(function() {
         getStakesLeaderProjects();
     });
 
+    $(document).on("click",".save-status",function(e){
+        e.preventDefault();
+        var statusKeyword = $(this).data("status-keyword");
+        var statusId = $(this).data("status-id");
+        switch(statusKeyword)
+        {
+            case "stakes":
+                getStakesLeaderProjects();
+                break;
+            case "digitization":
+                saveDigitization(statusId);
+                break;
+        }
+
+    });
 
 });
 
@@ -106,4 +125,33 @@ function addTeamLeaderToProject()
 {
     var teamLeaderIdList = $('#ajax-get-stakes-leader').select2("data");
     console.log(teamLeaderIdList);
+}
+
+function saveDigitization(statusId)
+{
+    var projectId = $("input[name=project-id]").val();
+    var projectPoints = $("input[name=project-points]").val();
+    var projectDistance = $("input[name=project-meters-distance]").val();
+    var statusDetail = $("textarea[name=project-detail]").val();
+    var lastPoints = $("input[name=current-project-points]").val();
+    var lastDistance = $("input[name=current-project-meters-distance]").val();
+    var digitization = {
+        projectId: projectId,
+        statusId: statusId,
+        projectPoints: projectPoints,
+        projectDistance: projectDistance,
+        statusDetail: statusDetail,
+        lastPoints: lastPoints,
+        lastDistance: lastDistance
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveDigitization',
+        dataType  :"json",
+        type : "POST",
+        data : digitization,
+        success:function(response){
+            window.location.reload();
+        }
+    });
 }

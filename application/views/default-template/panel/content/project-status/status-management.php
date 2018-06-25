@@ -27,8 +27,8 @@
                             $i = 1;
                             foreach ($statusList as $status)
                             {
-                                $class = $i === 1?"active":"";
                                 $status = $status->toArray();
+                                $class = $status["id_pst"] === $project["status_pro"]?"active":"";
                                 $navTab .= '
                                 <li role="presentation" class="'.$class.'">
                                     <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-controls="step_'.$status["keyword_pst"].'" role="tab" title="'.$status["status_name_pst"].'">
@@ -46,14 +46,15 @@
                     </div>
 
                     <form role="form">
+                        <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <div class="tab-content">
                             <?php
                             $tapPane = '';
                             $i = 1;
                             foreach ($statusList as $status)
                             {
-                                $class = $i === 1?"active":"";
                                 $status = $status->toArray();
+                                $class = $status["id_pst"] === $project["status_pro"]?"active":"";
                                 $tapPane .= '
                                 <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
                                     <div class="row">
@@ -68,14 +69,14 @@
                             $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views", $data,TRUE);
                             $tapPane .=
                                         '</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary save-'.$status["keyword_pst"].'">Guardar</button>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button type="button" class="btn btn-primary save-status" data-status-id="'.$status["id_pst"].'" data-status-keyword="'.$status["keyword_pst"].'">Guardar</button>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
-                                    </div>
-                                    
-                                </div>
                                 ';
                                 $i++;
                             }

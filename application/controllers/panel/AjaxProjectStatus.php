@@ -140,4 +140,27 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($resultArray);exit ;
 
     }
+
+    public function saveDigitization()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $statusId = $formData["statusId"];
+        $projectPoints = $formData["projectPoints"];
+        $projectDistance = $formData["projectDistance"];
+        $statusDetail = $formData["statusDetail"];
+        $lastPoints = $formData["lastPoints"];
+        $lastDistance = $formData["lastDistance"];
+
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->savePoints($lastPoints, $lastDistance, $projectPoints, $projectDistance);
+        $project->addStatusToLog($statusId, $statusDetail);
+        $project->save();
+
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
 }

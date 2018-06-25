@@ -8,9 +8,9 @@
 
 class Model_project_status_log extends Model_project_status_log_base
 {
-    public function __construct($projectId = NULL, $statusId = NULL, $logDetail = "")
+    public function __construct($projectId = NULL, $statusId = NULL, $logDetail = "", $manualEntryDate = "")
     {
-        parent::__construct($projectId, $statusId, $logDetail);
+        parent::__construct($projectId, $statusId, $logDetail, $manualEntryDate);
     }
 
     public static function getLastProjectStatusLogByProjectId($projectId)

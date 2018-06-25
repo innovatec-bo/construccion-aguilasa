@@ -131,10 +131,7 @@ class Project extends PrivateController
             $project->setProjectName($projectName);
             $project->setStatus($projectStatus);
             $project->save();
-            if($projectLastPoints["points_quantity_prp"] != $projectPoints || $projectLastPoints["meters_distance_prp"] != $projectMetersDistance)
-            {
-                $project->savePoints($projectPoints, $projectMetersDistance);
-            }
+            $project->savePoints($projectLastPoints["points_quantity_prp"], $projectLastPoints["meters_distance_prp"], $projectPoints, $projectMetersDistance);
             $project->addStatusToLog($projectStatus);
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");
             redirect(base_url("panel/Project/edit/".$project->getId()));

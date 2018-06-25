@@ -206,6 +206,8 @@ class ProjectStatus extends PrivateController
         $this->_validateFeature('project_status_management');
 
         $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
@@ -214,9 +216,11 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.status-management.wizard');
         $this->complementHandler->addProjectJs('project.status-management.wizard');
 
+        $project = Model_project::getById($projectId);
         $statusList = Model_project_status::getChildrenByParentStatusId(1);
         $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
         $projectDigitizationStatus = Model_project_status::getDigitizationStatus($projectId);
+        $data["project"] = $project->toArray();
         $data["statusList"] = $statusList;
         $data["teamLeadersOnProject"] = json_encode($projectStakeLeaders);
         $data["projectDigitizationStatus"] = $projectDigitizationStatus;

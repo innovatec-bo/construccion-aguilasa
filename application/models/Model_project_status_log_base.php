@@ -15,12 +15,15 @@ class Model_project_status_log_base extends MY_Model
     protected $_projectId;
     protected $_statusId;
     protected $_logDetail;
+    protected $_manualEntryDate;
 
-    public function __construct($projectId = NULL, $statusId = NULL, $logDetail = "")
+    public function __construct($projectId = NULL, $statusId = NULL, $logDetail = "", $manualEntryDate = "")
     {
         parent::__construct();
         $this->_projectId = $projectId;
         $this->_statusId = $statusId;
+        $this->_logDetail = $logDetail;
+        $this->_manualEntryDate = date("Y-m-d H:i:s");
     }
 
     /**
@@ -34,6 +37,7 @@ class Model_project_status_log_base extends MY_Model
             "project_id_psl" => $this->_projectId,
             "status_id_psl" => $this->_statusId,
             "log_detail_psl" => $this->_logDetail,
+            "manual_entry_date_psl" => $this->_manualEntryDate,
             "deleted_psl" => $this->_deleted,
             "createdon_psl" => $this->_createdOn,
             "createdby_psl" => $this->_createdBy,
@@ -60,7 +64,8 @@ class Model_project_status_log_base extends MY_Model
             $instance = new $className(
                 $object->project_id_psl,
                 $object->status_id_psl,
-                $object->log_detail_psl
+                $object->log_detail_psl,
+                $object->manual_entry_date_psl
             );
             $instance->_id = $object->id_psl;
 
@@ -77,5 +82,10 @@ class Model_project_status_log_base extends MY_Model
     public function getProjectStatus()
     {
         return $this->_statusId;
+    }
+
+    public function getDetail()
+    {
+        return $this->_logDetail;
     }
 }

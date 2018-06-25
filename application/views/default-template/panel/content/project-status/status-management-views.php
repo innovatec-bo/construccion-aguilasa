@@ -22,6 +22,19 @@ switch ($status)
         break;
     case "digitization":
         $htmlStatusView .= '
+        <div class="row">
+            <div class="col-md-3">
+            <div class="form-group">
+            <label>Fecha de ingreso</label>
+            <div class="input-group date date-time-picker">
+                <input name="project-entry-date" readonly class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+            </div>
+        </div>
         <div class="row form-inline">
             <div class="col-md-6">
                 <label>Area del proyecto</label><br>
@@ -40,6 +53,14 @@ switch ($status)
             <textarea class="form-control" name="project-detail" rows="2"></textarea>
         </div>
         <p>ULTIMA ENTRADA</p>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input class="form-control" disabled name="current-manual-entry-date" value="'.$projectDigitizationStatus['manual_entry_date'].'">
+                </div>    
+            </div>
+        </div>
         <div class="row form-inline">
             <div class="col-md-6">
                 <label>Area del proyecto</label><br>
