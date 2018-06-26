@@ -104,6 +104,16 @@ class Model_project_base extends MY_Model
     {
         $this->_status = $statusId;
     }
+
+    public function setStart($start)
+    {
+        $this->_projectStart = $start;
+    }
+
+    public function setEnd($end)
+    {
+        $this->_projectEnd = $end;
+    }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
     /**

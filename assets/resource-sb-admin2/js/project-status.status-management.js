@@ -5,13 +5,9 @@ $(document).ready(function() {
     $('.date-time-picker').datetimepicker({
         ignoreReadonly: true,
         // defaultDate: date,
-        format: 'DD-MM-YYYY'
+        format: 'DD-MM-YYYY HH:mm:ss'
     });
-    startSelect2Companies();
-
-    $(document).on("click",".save-stakes",function(e){
-        addTeamLeaderToProject();
-    });
+    startSelect2StakeLeaders();
 
     $(document).on("click", ".check-stakes-team",function(e){
         e.preventDefault();
@@ -25,13 +21,21 @@ $(document).ready(function() {
         switch(statusKeyword)
         {
             case "stakes":
-                getStakesLeaderProjects();
+                addTeamLeaderToProject();
                 break;
             case "digitization":
                 saveDigitization(statusId);
                 break;
+            case "drawing":
+                saveDrawing(statusId);
+                break;
+            case "schedule":
+                saveSchedule(statusId);
+                break;
+            default:
+                alert("There isn't a saving logic defined to "+statusKeyword);
+                break;
         }
-
     });
 
 });
@@ -78,7 +82,7 @@ function updateProjectAssignment(leaderId, projectId)
     });
 }
 
-function startSelect2Companies()
+function startSelect2StakeLeaders()
 {
     //select2 ajax for companies in bonus modal form
     $('#ajax-get-stakes-leader').select2({
@@ -130,13 +134,15 @@ function addTeamLeaderToProject()
 function saveDigitization(statusId)
 {
     var projectId = $("input[name=project-id]").val();
+    var digitizationEntryDate = $("input[name=digitization-entry-date]").val();
     var projectPoints = $("input[name=project-points]").val();
     var projectDistance = $("input[name=project-meters-distance]").val();
-    var statusDetail = $("textarea[name=project-detail]").val();
+    var statusDetail = $("textarea[name=digitization-detail]").val();
     var lastPoints = $("input[name=current-project-points]").val();
     var lastDistance = $("input[name=current-project-meters-distance]").val();
     var digitization = {
         projectId: projectId,
+        digitizationEntryDate:digitizationEntryDate,
         statusId: statusId,
         projectPoints: projectPoints,
         projectDistance: projectDistance,
@@ -150,6 +156,56 @@ function saveDigitization(statusId)
         dataType  :"json",
         type : "POST",
         data : digitization,
+        success:function(response){
+            window.location.reload();
+        }
+    });
+}
+
+function saveDrawing(statusId)
+{
+    var projectId = $("input[name=project-id]").val();
+    var drawingEntryDate = $("input[name=drawing-entry-date]").val();
+    var statusDetail = $("textarea[name=drawing-detail]").val();
+    var drawing = {
+        projectId: projectId,
+        drawingEntryDate:drawingEntryDate,
+        statusId: statusId,
+        statusDetail: statusDetail
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveDrawing',
+        dataType  :"json",
+        type : "POST",
+        data : drawing,
+        success:function(response){
+            window.location.reload();
+        }
+    });
+}
+
+function saveSchedule(statusId)
+{
+    var projectId = $("input[name=project-id]").val();
+    var scheduleEntryDate = $("input[name=schedule-entry-date]").val();
+    var projectStart = $("input[name=project-start]").val();
+    var projectEnd = $("input[name=project-end]").val();
+    var statusDetail = $("textarea[name=schedule-detail]").val();
+    var drawing = {
+        projectId: projectId,
+        scheduleEntryDate:scheduleEntryDate,
+        projectStart: projectStart,
+        projectEnd: projectEnd,
+        statusId: statusId,
+        statusDetail: statusDetail
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveSchedule',
+        dataType  :"json",
+        type : "POST",
+        data : drawing,
         success:function(response){
             window.location.reload();
         }

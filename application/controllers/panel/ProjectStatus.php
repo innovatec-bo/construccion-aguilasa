@@ -220,10 +220,14 @@ class ProjectStatus extends PrivateController
         $statusList = Model_project_status::getChildrenByParentStatusId(1);
         $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
         $projectDigitizationStatus = Model_project_status::getDigitizationStatus($projectId);
+        $projectDrawingStatus = Model_project_status::getDrawingStatus($projectId);
+        $projectScheduleStatus = Model_project_status::getScheduleStatus($projectId);
         $data["project"] = $project->toArray();
         $data["statusList"] = $statusList;
         $data["teamLeadersOnProject"] = json_encode($projectStakeLeaders);
         $data["projectDigitizationStatus"] = $projectDigitizationStatus;
+        $data["projectDrawingStatus"] = $projectDrawingStatus;
+        $data["projectScheduleStatus"] = $projectScheduleStatus;
         $this->_loadPanelView("project-status/status-management", $data);
     }
 }

@@ -23,7 +23,7 @@ class Model_project_status_log_base extends MY_Model
         $this->_projectId = $projectId;
         $this->_statusId = $statusId;
         $this->_logDetail = $logDetail;
-        $this->_manualEntryDate = date("Y-m-d H:i:s");
+        $this->_manualEntryDate = $manualEntryDate == ""?date("Y-m-d H:i:s"):$manualEntryDate;
     }
 
     /**

@@ -50,6 +50,7 @@ class Model_project_status extends Model_project_status_base
             project_points.distance
         FROM
             wfl_project_status_log
+        LEFT JOIN wfl_project_status on id_pst = status_id_psl
         LEFT JOIN (
             SELECT 
                 project_id_prp project_id,
@@ -64,6 +65,56 @@ class Model_project_status extends Model_project_status_base
         ) as project_points on project_points.project_id = project_id_psl
         where 
             project_id_psl = ".$ci->db->escape($projectId)."
+            and keyword_pst = 'digitization'
+            and deleted_psl != 1
+        ORDER BY id_psl DESC limit 1;  
+        ";
+        $query = $ci->db->query($sql);
+        $result = (array)$query->row();
+        return $result;
+    }
+
+    public static function getDrawingStatus($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+            project_id_psl project_id,
+            manual_entry_date_psl manual_entry_date,
+            log_detail_psl detail
+        FROM
+            wfl_project_status_log
+        LEFT JOIN wfl_project_status on id_pst = status_id_psl
+        where 
+            project_id_psl = ".$ci->db->escape($projectId)."
+            and keyword_pst = 'drawing'
+            and deleted_psl != 1
+        ORDER BY id_psl DESC limit 1;  
+        ";
+        $query = $ci->db->query($sql);
+        $result = (array)$query->row();
+        return $result;
+    }
+
+    public static function getScheduleStatus($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+            project_id_psl project_id,
+            manual_entry_date_psl manual_entry_date,
+            log_detail_psl detail,
+            project_start_pro project_start,
+            project_end_pro project_end
+        FROM
+            wfl_project_status_log
+        LEFT JOIN wfl_project_status on id_pst = status_id_psl
+        LEFT JOIN wfl_projects on id_pro = project_id_psl
+        where 
+            project_id_psl = ".$ci->db->escape($projectId)."
+            and keyword_pst = 'schedule'
             and deleted_psl != 1
         ORDER BY id_psl DESC limit 1;  
         ";

@@ -23,13 +23,13 @@ class Model_project extends Model_project_base
         }
     }
 
-    public function addStatusToLog($statusId, $detail = "")
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "")
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
 
         if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail)
         {
-            $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail);
+            $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
         }
     }
