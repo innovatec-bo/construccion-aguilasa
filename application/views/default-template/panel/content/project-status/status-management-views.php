@@ -12,6 +12,19 @@ switch ($status)
 {
     case "stakes":
         $htmlStatusView .= '
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Fecha de asignacion</label>
+                    <div class="input-group date date-time-picker">
+                        <input name="stakes-team-entry-date" readonly class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <fieldset>
             <label>Equipo <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
             <div class="form-group">
@@ -164,7 +177,7 @@ switch ($status)
                 <div class="form-group">
                     <label>Fecha de ingreso</label>
                     <div class="input-group date date-time-picker">
-                        <input name="schedule-entry-date" readonly class="form-control" />
+                        <input name="schedule-entry-date" readonly class="form-control" required data-parsley-group="schedule"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -177,7 +190,7 @@ switch ($status)
                 <div class="form-group">
                     <label>Fecha inicio</label>
                     <div class="input-group date date-time-picker">
-                        <input name="project-start" readonly class="form-control" />
+                        <input name="project-start" readonly class="form-control" required data-parsley-group="schedule"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -188,7 +201,7 @@ switch ($status)
                 <div class="form-group">
                     <label>Fecha fin</label>
                     <div class="input-group date date-time-picker">
-                        <input name="project-end" readonly class="form-control" />
+                        <input name="project-end" readonly class="form-control" required data-parsley-group="schedule"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -198,7 +211,7 @@ switch ($status)
         </div>
         <div class="form-group">
             <label>Observaciones</label>
-            <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
+            <textarea class="form-control" name="schedule-detail" rows="2" required data-parsley-group="schedule"></textarea>
         </div>
         <p>ULTIMA ENTRADA</p>
         <div class="row">

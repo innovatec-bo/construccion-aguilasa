@@ -72,4 +72,29 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;
     }
+
+    public function saveStakesTeam($stakesTeamList)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        Model_project_stakes::removeAllStakesTeamByProjectId($this->_id);
+        $arrayToSave = array();
+        foreach ($stakesTeamList as $teamLeaderId)
+        {
+            $arrayToSave[] = array(
+                "project_id_prs" => $this->_id,
+                "stakes_leader_id_prs" =>  $teamLeaderId,
+                "deleted_prs" => 0,
+                "createdon_prs" => date("Y-m-d -H:i:s"),
+                "createdby_prs" => NULL,
+                "editedon_prs" => "",
+                "editedby_prs" => NULL
+            );
+        }
+
+        if(count($arrayToSave) > 0)
+        {
+            $ci->db->insert_batch("wfl_project_stakes", $arrayToSave);
+        }
+    }
 }

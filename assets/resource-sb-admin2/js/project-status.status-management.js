@@ -21,7 +21,7 @@ $(document).ready(function() {
         switch(statusKeyword)
         {
             case "stakes":
-                addTeamLeaderToProject();
+                saveStakesTeam(statusId);
                 break;
             case "digitization":
                 saveDigitization(statusId);
@@ -125,10 +125,34 @@ function startSelect2StakeLeaders()
     $('#ajax-get-stakes-leader').append(list).trigger('change');
 }
 
-function addTeamLeaderToProject()
+function saveStakesTeam(statusId)
 {
-    var teamLeaderIdList = $('#ajax-get-stakes-leader').select2("data");
-    console.log(teamLeaderIdList);
+    var select2Data = $('#ajax-get-stakes-leader').select2("data");
+    var stakesTeamList = [];
+    $.each(select2Data, function(index, value){
+        stakesTeamList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var stakesTeamEntryDate = $("input[name=stakes-team-entry-date]").val();
+    var statusDetail = $("textarea[name=digitization-detail]").val();
+    var stakes = {
+        projectId: projectId,
+        stakesTeamEntryDate:stakesTeamEntryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        stakesTeamList: stakesTeamList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveStakesTeam',
+        dataType  :"json",
+        type : "POST",
+        data : stakes,
+        success:function(response){
+            console.log(response);
+            // window.location.reload();
+        }
+    });
 }
 
 function saveDigitization(statusId)

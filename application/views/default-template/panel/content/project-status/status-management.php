@@ -45,7 +45,7 @@
                         </ul>
                     </div>
 
-                    <form role="form">
+                    <form role="form" name="status-management">
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <div class="tab-content">
                             <?php

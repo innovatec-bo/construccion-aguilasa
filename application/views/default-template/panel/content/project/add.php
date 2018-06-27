@@ -33,11 +33,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row hide">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nombre de proyecto</label>
-                                    <input class="form-control" required name="project-name" placeholder="Ingrese el nombre del proyecto">
+                                    <input class="form-control" name="project-name" placeholder="Ingrese el nombre del proyecto">
                                 </div>
                             </div>
                         </div>

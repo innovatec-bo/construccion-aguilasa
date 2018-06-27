@@ -50,7 +50,7 @@ class Project extends PrivateController
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
-        $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim');
         $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal de CRE', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion/Ubicacion', 'trim|required');
@@ -108,7 +108,8 @@ class Project extends PrivateController
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
         $data["project"] = $project->toArray();
-        $projectLastPoints = Model_project_points::getLastPointsByProjectId($project->getId())->toArray();
+        $projectLastPoints = Model_project_points::getLastPointsByProjectId($project->getId());
+        $projectLastPoints = $projectLastPoints instanceof Model_project_points?$projectLastPoints->toArray():array("points_quantity_prp" => "", "meters_distance_prp" => "");
         $data["projectLastPoints"] = $projectLastPoints;
         if($this->form_validation->run() === FALSE)
         {

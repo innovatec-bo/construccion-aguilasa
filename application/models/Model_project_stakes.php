@@ -45,8 +45,19 @@ class Model_project_stakes extends Model_project_stakes_base
             where 
             project_id_prs = ".$ci->db->escape($projectId)."
             and ".static::notDeleted()."
+            and deleted_stl != 1
         ";
         $result = $ci->db->query($sql);
         return $result->result_array();
+    }
+
+    public static function removeAllStakesTeamByProjectId($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            update ".static::TABLE_NAME." set deleted_prs = 1 where project_id_prs = ".$ci->db->escape($projectId)."
+        ";
+        $ci->db->query($sql);
     }
 }

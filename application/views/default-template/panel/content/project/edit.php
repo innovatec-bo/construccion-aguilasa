@@ -33,10 +33,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 hide">
                                 <div class="form-group">
                                     <label>Nombre del proyecto</label>
-                                    <input class="form-control" value="<?=set_value('project-name', $project["project_name_pro"])?>" required name="project-name" placeholder="Nombre del proyecto">
+                                    <input class="form-control" value="<?=set_value('project-name', $project["project_name_pro"])?>" name="project-name" placeholder="Nombre del proyecto">
                                 </div>
                             </div>
                         </div>
@@ -46,9 +46,13 @@
                                     <label>Fecha de ingreso</label>
                                     <div class='input-group date' id='datetimepicker1'>
                                         <?php
-                                        $entryDate = $project["entry_date_pro"];
-                                        $entryDate = DateTime::createFromFormat('Y-m-d 00:00:00', $entryDate);
-                                        $entryDate = date_format($entryDate, 'd-m-Y');
+                                        $entryDate = "";
+                                        if(isset($project["entry_date_pro"]))
+                                        {
+                                            $entryDate = $project["entry_date_pro"];
+                                            $entryDate = DateTime::createFromFormat('Y-m-d 00:00:00', $entryDate);
+                                            $entryDate = date_format($entryDate, 'd-m-Y');
+                                        }
                                         ?>
                                         <input name="project-entry-date" value="<?=set_value('project-entry-date', $entryDate)?>" readonly class="form-control" />
                                         <span class="input-group-addon">
@@ -86,38 +90,10 @@
                             </div>
                         </div><br>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Estado</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="project-status" value="" checked>Ninguno
-                                        </label>
-                                    </div>
-                                    <?php
-                                    $html = "";
-                                    $i = 0;
-                                    foreach ($projectStatusList as $status)
-                                    {
-                                        $status = (array)$status;
-                                        $checked = $lastProjectStatus->getProjectStatus() == $status["id_pst"]?" checked ":"";
-                                        $html .= '
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="project-status" value="'.$status["id_pst"].'" '.$checked.' >'.$status["status_name_pst"].'
-                                            </label>
-                                        </div>
-                                        ';
-                                    }
-                                    echo $html;
-                                    ?>
-                                    <div id="role-error-container"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
+                                <button type="button" class="btn btn-info save-project" data-project-status="1">Guardar y enviar a diseño</button>
+                                <input type="hidden" name="project-status" value="">
                             </div>
                         </div>
                     <!-- /.row (nested) -->

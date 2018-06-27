@@ -141,19 +141,23 @@ class AjaxProjectStatus extends PrivateController
 
     }
 
-    public function saveStakes()
+    public function saveStakesTeam()
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $digitizationEntryDate = date("Y-m-d H:i:s");
+        $stakesTeamEntryDate = $formData["stakesTeamEntryDate"];
+        $stakesTeamEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $stakesTeamEntryDate);
+        $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d H:i:s');
         $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
+        $stakesTeamList = $formData["stakesTeamList"];
+        $statusDetail = "";
 
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $digitizationEntryDate);
+        $project->addStatusToLog($statusId, $statusDetail, $stakesTeamEntryDate);
         $project->save();
+        $project->saveStakesTeam($stakesTeamList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
