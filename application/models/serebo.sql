@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-06-25 14:04:34
+Date: 2018-06-27 13:56:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -689,7 +689,7 @@ CREATE TABLE `wfl_projects` (
 -- Records of wfl_projects
 -- ----------------------------
 INSERT INTO `wfl_projects` VALUES ('1', null, 'project5', null, null, null, null, null, null, '1', '2018-06-04 12:16:06', null, '2018-06-05 11:13:37', null);
-INSERT INTO `wfl_projects` VALUES ('5', null, 'project1', null, null, null, null, null, null, '0', null, null, '2018-06-04 12:27:47', null);
+INSERT INTO `wfl_projects` VALUES ('5', null, 'project1', '6', null, null, null, null, null, '0', null, null, '2018-06-27 12:27:47', null);
 INSERT INTO `wfl_projects` VALUES ('6', null, 'project2', null, null, null, null, null, null, '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_projects` VALUES ('7', null, 'project3', null, null, null, null, null, null, '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_projects` VALUES ('8', null, 'project4', null, null, null, null, null, null, '1', '2018-06-04 12:15:33', null, '2018-06-05 12:05:34', null);
@@ -700,7 +700,7 @@ INSERT INTO `wfl_projects` VALUES ('14', '159', 'project with status - test2', '
 INSERT INTO `wfl_projects` VALUES ('15', '357', 'project with status log', 'lejos', '2018-06-11 00:00:00', 'Fulano de tal', '1', null, null, '0', '2018-06-11 14:05:13', null, '2018-06-11 14:05:13', null);
 INSERT INTO `wfl_projects` VALUES ('16', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '1', null, null, '0', '2018-06-11 14:06:43', null, '2018-06-11 14:06:43', null);
 INSERT INTO `wfl_projects` VALUES ('17', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '1', null, null, '0', '2018-06-11 14:13:28', null, '2018-06-12 11:08:44', null);
-INSERT INTO `wfl_projects` VALUES ('18', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '2018-06-11 14:15:46', null, '2018-06-25 12:11:12', null);
+INSERT INTO `wfl_projects` VALUES ('18', '486', 'adfasdf a', 'asdfasdfasdfdfdf', '2018-06-11 00:00:00', 'asdfasdasd', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '2018-06-11 14:15:46', null, '2018-06-27 10:47:22', null);
 INSERT INTO `wfl_projects` VALUES ('19', '351', 'adas', 'asdfasdf', '2018-06-11 00:00:00', 'asdfasf', '5', null, null, '0', '2018-06-11 14:32:03', null, '2018-06-12 10:54:04', null);
 INSERT INTO `wfl_projects` VALUES ('20', '963', 'nuevo proyecto', 'lejosss', '2018-06-13 00:00:00', 'un fical', '2', null, null, '0', '2018-06-13 11:38:00', null, '2018-06-13 11:40:24', null);
 INSERT INTO `wfl_projects` VALUES ('21', 're2', 'nuevo', 'lejos', '2018-06-15 00:00:00', 'Fulano de tal', '1', null, null, '0', '2018-06-15 11:42:49', null, '2018-06-15 11:42:49', null);
@@ -725,7 +725,7 @@ CREATE TABLE `wfl_project_points` (
   PRIMARY KEY (`id_prp`),
   KEY `fk_project_id_prp` (`project_id_prp`),
   CONSTRAINT `fk_project_id_prp` FOREIGN KEY (`project_id_prp`) REFERENCES `wfl_projects` (`id_pro`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_points
@@ -755,6 +755,16 @@ INSERT INTO `wfl_project_points` VALUES ('22', '18', '58', '963.00', '0', '2018-
 INSERT INTO `wfl_project_points` VALUES ('23', '18', '84', '562.00', '0', '2018-06-25 12:09:56', null, '2018-06-25 12:09:56', null);
 INSERT INTO `wfl_project_points` VALUES ('24', '18', '84', '562.00', '0', '2018-06-25 12:10:21', null, '2018-06-25 12:10:21', null);
 INSERT INTO `wfl_project_points` VALUES ('25', '18', '87', '548.00', '0', '2018-06-25 12:11:12', null, '2018-06-25 12:11:12', null);
+INSERT INTO `wfl_project_points` VALUES ('26', '18', '995', '999.99', '0', '2018-06-26 09:54:05', null, '2018-06-26 09:54:05', null);
+INSERT INTO `wfl_project_points` VALUES ('27', '18', '65', '985.00', '0', '2018-06-26 09:59:06', null, '2018-06-26 09:59:06', null);
+INSERT INTO `wfl_project_points` VALUES ('28', '18', '65', '985.00', '0', '2018-06-26 09:59:10', null, '2018-06-26 09:59:10', null);
+INSERT INTO `wfl_project_points` VALUES ('29', '18', '65', '631.00', '0', '2018-06-26 10:00:25', null, '2018-06-26 10:00:25', null);
+INSERT INTO `wfl_project_points` VALUES ('30', '18', '87', '956.00', '0', '2018-06-26 10:02:19', null, '2018-06-26 10:02:19', null);
+INSERT INTO `wfl_project_points` VALUES ('31', '18', '87', '956.00', '0', '2018-06-26 10:02:19', null, '2018-06-26 10:02:19', null);
+INSERT INTO `wfl_project_points` VALUES ('32', '18', '123', '234.00', '0', '2018-06-26 10:02:57', null, '2018-06-26 10:02:57', null);
+INSERT INTO `wfl_project_points` VALUES ('33', '18', '8', '56.00', '0', '2018-06-26 10:04:55', null, '2018-06-26 10:04:55', null);
+INSERT INTO `wfl_project_points` VALUES ('34', '18', '12', '123.00', '0', '2018-06-26 10:06:11', null, '2018-06-26 10:06:11', null);
+INSERT INTO `wfl_project_points` VALUES ('35', '18', '89', '987.00', '0', '2018-06-26 10:20:04', null, '2018-06-26 10:20:04', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_stakes
@@ -774,15 +784,17 @@ CREATE TABLE `wfl_project_stakes` (
   KEY `fk_stakes_leader_id_prs` (`stakes_leader_id_prs`),
   CONSTRAINT `fk_project_id_prs` FOREIGN KEY (`project_id_prs`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_stakes_leader_id_prs` FOREIGN KEY (`stakes_leader_id_prs`) REFERENCES `wfl_stakes_team_leader` (`id_stl`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_stakes
 -- ----------------------------
-INSERT INTO `wfl_project_stakes` VALUES ('1', '18', '1', '0', null, null, '2018-06-19 17:40:37', null);
+INSERT INTO `wfl_project_stakes` VALUES ('1', '18', '1', '1', null, null, '2018-06-27 10:46:08', null);
 INSERT INTO `wfl_project_stakes` VALUES ('2', '19', '2', '0', null, null, '2018-06-19 17:40:23', null);
 INSERT INTO `wfl_project_stakes` VALUES ('3', '17', '1', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_project_stakes` VALUES ('4', '16', '1', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_stakes` VALUES ('5', '18', '1', '0', '2018-06-27 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_stakes` VALUES ('6', '18', '2', '0', '2018-06-27 00:00:00', null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_status
@@ -833,7 +845,7 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`),
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
@@ -853,6 +865,20 @@ INSERT INTO `wfl_project_status_log` VALUES ('12', '24', '1', null, null, '0', '
 INSERT INTO `wfl_project_status_log` VALUES ('13', '18', '3', null, null, '0', '2018-06-25 12:04:11', null, '2018-06-25 12:04:11', null);
 INSERT INTO `wfl_project_status_log` VALUES ('14', '18', '3', null, null, '0', '2018-06-25 12:10:21', null, '2018-06-25 12:10:21', null);
 INSERT INTO `wfl_project_status_log` VALUES ('15', '18', '3', 'nuevo detalle', '2018-06-25 12:11:12', '0', '2018-06-25 12:11:12', null, '2018-06-25 12:21:37', null);
+INSERT INTO `wfl_project_status_log` VALUES ('16', '18', '3', 'asd', '2018-06-26 09:54:05', '0', '2018-06-26 09:54:05', null, '2018-06-26 09:54:05', null);
+INSERT INTO `wfl_project_status_log` VALUES ('17', '18', '3', 'asdf', '2018-06-26 09:59:06', '0', '2018-06-26 09:59:06', null, '2018-06-26 09:59:06', null);
+INSERT INTO `wfl_project_status_log` VALUES ('18', '18', '3', 'asd', '0000-00-00 00:00:00', '0', '2018-06-26 10:00:25', null, '2018-06-26 10:00:25', null);
+INSERT INTO `wfl_project_status_log` VALUES ('19', '18', '3', 'asdf', '2018-06-26 10:04:55', '0', '2018-06-26 10:04:55', null, '2018-06-26 10:04:55', null);
+INSERT INTO `wfl_project_status_log` VALUES ('20', '18', '3', 'asdfasdf', '2018-06-01 10:05:50', '0', '2018-06-26 10:06:11', null, '2018-06-26 10:06:11', null);
+INSERT INTO `wfl_project_status_log` VALUES ('21', '18', '3', 'adf', '2018-06-02 10:19:48', '0', '2018-06-26 10:20:04', null, '2018-06-26 10:20:04', null);
+INSERT INTO `wfl_project_status_log` VALUES ('22', '18', '5', null, '2018-06-26 10:21:50', '0', '2018-06-26 10:23:19', null, '2018-06-26 10:23:19', null);
+INSERT INTO `wfl_project_status_log` VALUES ('23', '18', '5', 'drawing comment', '2018-06-05 10:26:22', '0', '2018-06-26 10:26:34', null, '2018-06-26 10:26:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('24', '18', '5', 'another drawing comment', '2018-06-05 10:47:49', '0', '2018-06-26 10:48:00', null, '2018-06-26 10:48:00', null);
+INSERT INTO `wfl_project_status_log` VALUES ('25', '18', '5', 'drawing comment', '2018-06-14 10:48:03', '0', '2018-06-26 10:48:12', null, '2018-06-26 10:48:12', null);
+INSERT INTO `wfl_project_status_log` VALUES ('26', '18', '6', 'primera definición del cronograma', '2018-06-10 12:06:41', '0', '2018-06-26 12:07:22', null, '2018-06-26 12:07:22', null);
+INSERT INTO `wfl_project_status_log` VALUES ('27', '18', '6', 'primera definicion del cronograma', '2018-06-09 12:07:36', '0', '2018-06-26 12:07:53', null, '2018-06-26 12:07:53', null);
+INSERT INTO `wfl_project_status_log` VALUES ('28', '18', '6', 'se modifico el cronograma', '2018-06-10 12:11:24', '0', '2018-06-26 12:11:47', null, '2018-06-26 12:11:47', null);
+INSERT INTO `wfl_project_status_log` VALUES ('29', '18', '2', '', '2018-06-19 10:46:00', '0', '2018-06-27 10:46:07', null, '2018-06-27 10:46:07', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader

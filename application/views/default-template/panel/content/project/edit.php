@@ -5,6 +5,15 @@
  * Date: 12/4/2018
  * Time: 22:33
  */
+
+$addressList = array(
+    1 => "Sistema velasco",
+    2 => "Sistema misiones",
+    3 => "Sistema camiri",
+    4 => "Sistema German bush",
+    5 => "Sistema robore",
+    6 => "Sistema valles"
+);
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -74,7 +83,20 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Dirección</label>
-                                    <input class="form-control" value="<?=set_value('project-address', $project["address_pro"])?>" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                    <select  class="form-control" name="project-address" required>
+
+                                        <option value="">Elija una direccion</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($addressList as $key => $name)
+                                        {
+                                            $selected = $project["address_pro"] == $key?" selected ":"";
+                                            $html .= '<option value="'.$key.'" '.$selected.'>'.$name.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+<!--                                    <input class="form-control" value="--><?//=set_value('project-address', $project["address_pro"])?><!--" required name="project-address" placeholder="Ubicación/dirección del proyecto">-->
                                 </div>
                             </div>
                         </div>

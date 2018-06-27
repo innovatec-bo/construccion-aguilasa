@@ -66,7 +66,16 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Dirección</label>
-                                    <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                    <select  class="form-control" name="project-address" required>
+                                        <option value="">Elija una direccion</option>
+                                        <option value="1">Sistema velasco</option>
+                                        <option value="2">Sistema misiones</option>
+                                        <option value="3">Sistema camiri</option>
+                                        <option value="4">Sistema German bush</option>
+                                        <option value="5">Sistema robore</option>
+                                        <option value="6">Sistema valles</option>
+                                    </select>
+<!--                                    <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">-->
                                 </div>
                             </div>
                         </div>

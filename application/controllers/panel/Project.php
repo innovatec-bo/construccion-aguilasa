@@ -80,7 +80,7 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
             $project = new Model_project($projectCode, $projectName, $projectAddress, $projectEntryDate, $projectCreFiscal,$projectStatus);
             $project->save();
-            $project->savePoints($projectPoints, $projectMetersDistance);
+            $project->savePoints("","", $projectPoints, $projectMetersDistance);
             $project->addStatusToLog($projectStatus);
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
             redirect(base_url("panel/Project"));
