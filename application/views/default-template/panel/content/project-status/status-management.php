@@ -63,7 +63,7 @@
                         </ul>
                     </div>
 
-                    <form role="form" name="status-management">
+                    <form role="form" name="status-management" data-parsley-validate>
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <div class="tab-content">
                             <?php

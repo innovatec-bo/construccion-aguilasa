@@ -20,3 +20,8 @@
     margin:0px;
     line-height: 1.2em;
 }
+.parsley-errors-list
+{
+    color: #8a6d3b;
+    font-weight: 600;
+}

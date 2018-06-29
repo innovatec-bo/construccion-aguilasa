@@ -16,26 +16,36 @@ $(document).ready(function() {
 
     $(document).on("click",".save-status",function(e){
         e.preventDefault();
+        var $form = $("form[name=status-management]");
         var statusKeyword = $(this).data("status-keyword");
         var statusId = $(this).data("status-id");
-        switch(statusKeyword)
+
+        if($form.parsley().isValid({group: statusKeyword}))
         {
-            case "stakes":
-                saveStakesTeam(statusId);
-                break;
-            case "digitization":
-                saveDigitization(statusId);
-                break;
-            case "drawing":
-                saveDrawing(statusId);
-                break;
-            case "schedule":
-                saveSchedule(statusId);
-                break;
-            default:
-                alert("There isn't a saving logic defined to "+statusKeyword);
-                break;
+            switch(statusKeyword)
+            {
+                case "stakes":
+                    saveStakesTeam(statusId);
+                    break;
+                case "digitization":
+                    saveDigitization(statusId);
+                    break;
+                case "drawing":
+                    saveDrawing(statusId);
+                    break;
+                case "schedule":
+                    saveSchedule(statusId);
+                    break;
+                default:
+                    alert("There isn't a saving logic defined to "+statusKeyword);
+                    break;
+            }
         }
+        else
+        {
+            $form.parsley().validate({group: statusKeyword});
+        }
+
     });
 
 });

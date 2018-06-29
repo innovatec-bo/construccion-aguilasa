@@ -207,6 +207,7 @@ class ProjectStatus extends PrivateController
 
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement('select2');

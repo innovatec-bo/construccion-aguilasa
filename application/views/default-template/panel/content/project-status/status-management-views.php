@@ -17,11 +17,12 @@ switch ($status)
                 <div class="form-group">
                     <label>Fecha de asignacion</label>
                     <div class="input-group date date-time-picker">
-                        <input name="stakes-team-entry-date" readonly class="form-control" />
+                        <input name="stakes-team-entry-date" readonly required class="form-control" data-parsley-group="'.$status.'" data-parsley-errors-container="#error-stakes-team-entry-date"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
+                    <div id="error-stakes-team-entry-date"></div>
                 </div>
             </div>
         </div>
@@ -52,11 +53,12 @@ switch ($status)
                         <div class="form-group">
                             <label>Fecha de ingreso</label>
                             <div class="input-group date date-time-picker">
-                                <input name="digitization-entry-date" readonly class="form-control" />
+                                <input name="digitization-entry-date" readonly class="form-control" required data-parsley-group="'.$status.'" data-parsley-errors-container="#error-digitization-entry-date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                            <div id="error-digitization-entry-date"></div>
                         </div>
                     </div>
                 </div>
@@ -65,11 +67,11 @@ switch ($status)
                         <label>Area del proyecto</label><br>
                         <div class="form-group">
                             <em>Puntos</em><br>
-                            <input class="form-control" name="project-points" placeholder="Puntos">
+                            <input class="form-control" name="project-points" placeholder="Puntos" required data-parsley-type="integer" data-parsley-group="'.$status.'">
                         </div>
                         <div class="form-group">
                             <em>Distancia Km</em><br>
-                            <input class="form-control"  name="project-meters-distance" placeholder="Distancia">
+                            <input class="form-control"  name="project-meters-distance" placeholder="Distancia" data-parsley-type="number" required data-parsley-group="'.$status.'">
                         </div>
                     </div>
                 </div>
@@ -126,11 +128,12 @@ switch ($status)
                         <div class="form-group">
                             <label>Fecha de ingreso</label>
                             <div class="input-group date date-time-picker">
-                                <input name="drawing-entry-date" readonly class="form-control" />
+                                <input name="drawing-entry-date" readonly class="form-control" required data-parsley-group="'.$status.'" data-parsley-errors-container="#error-drawing-entry-date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                            <div id="error-drawing-entry-date"></div>
                         </div>
                     </div>
                 </div>
@@ -188,11 +191,12 @@ switch ($status)
                         <div class="form-group">
                             <label>Fecha de ingreso</label>
                             <div class="input-group date date-time-picker">
-                                <input name="schedule-entry-date" readonly class="form-control" required data-parsley-group="schedule"/>
+                                <input name="schedule-entry-date" readonly class="form-control" required data-parsley-group="'.$status.'" data-parsley-errors-container="#error-schedule-entry-date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                            <div id="error-schedule-entry-date"></div>
                         </div>
                     </div>
                 </div>
@@ -201,28 +205,30 @@ switch ($status)
                         <div class="form-group">
                             <label>Fecha inicio</label>
                             <div class="input-group date date-time-picker">
-                                <input name="project-start" readonly class="form-control" required data-parsley-group="schedule"/>
+                                <input name="project-start" readonly class="form-control" required data-parsley-group="'.$status.'" data-parsley-errors-container="#error-project-start"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                            <div id="error-project-start"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Fecha fin</label>
                             <div class="input-group date date-time-picker">
-                                <input name="project-end" readonly class="form-control" required data-parsley-group="schedule"/>
+                                <input name="project-end" readonly class="form-control" required data-parsley-group="'.$status.'" data-parsley-errors-container="#error-project-end"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                            <div id="error-project-end"></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Observaciones</label>
-                    <textarea class="form-control" name="schedule-detail" rows="2" required data-parsley-group="schedule"></textarea>
+                    <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
                 </div>
             </div>
             <div class="col-md-6">
