@@ -14,6 +14,7 @@ class Model_project_base extends MY_Model
 
     protected $_projectCode;
     protected $_projectName;
+    protected $_system;
     protected $_address;
     protected $_entryDate;
     protected $_creFiscal;
@@ -21,11 +22,12 @@ class Model_project_base extends MY_Model
     protected $_projectStart;
     protected $_projectEnd;
 
-    public function __construct($projectCode = "", $projectName = "", $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "")
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
         $this->_projectName = $projectName;
+        $this->_system = $system;
         $this->_address = $address;
         $this->_entryDate = $entryDate;
         $this->_creFiscal = $creFiscal;
@@ -44,6 +46,7 @@ class Model_project_base extends MY_Model
             "id_pro" => $this->_id,
             "code_pro" => $this->_projectCode,
             "project_name_pro" => $this->_projectName,
+            "system_pro" => $this->_system,
             "address_pro" => $this->_address,
             "entry_date_pro" => $this->_entryDate,
             "cre_fiscal_pro" => $this->_creFiscal,
@@ -76,6 +79,7 @@ class Model_project_base extends MY_Model
             $instance = new $className(
                 $object->code_pro,
                 $object->project_name_pro,
+                $object->system_pro,
                 $object->address_pro,
                 $object->entry_date_pro,
                 $object->cre_fiscal_pro,
@@ -103,6 +107,21 @@ class Model_project_base extends MY_Model
     public function setStatus($statusId)
     {
         $this->_status = $statusId;
+    }
+
+    public function setSystem($system)
+    {
+        $this->_system = $system;
+    }
+
+    public function setAddress($address)
+    {
+        $this->_address = $address;
+    }
+
+    public function setCREFiscal($creFiscal)
+    {
+        $this->_creFiscal = $creFiscal;
     }
 
     public function setStart($start)
@@ -184,7 +203,6 @@ class Model_project_base extends MY_Model
 
         $sql = substr($sql, 0, -3);
         $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
-
         $query = $ci->db->query($sql);
         return $query->result();
     }
@@ -234,7 +252,14 @@ class Model_project_base extends MY_Model
                 switch ($parameter)
                 {
                     case "status":
-                        $sql .= " and status_pro = ".$ci->db->escape($value);
+                        $statusList = explode(",",$value);
+                        $statusScape = "";
+                        foreach ($statusList as $status)
+                        {
+                            $statusScape .= $ci->db->escape($status).", ";
+                        }
+                        $statusScape = substr($statusScape,0,-2);
+                        $sql .= " and status_pro in ( ".$statusScape." )";
                         break;
                 }
             }

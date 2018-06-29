@@ -53,6 +53,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim');
         $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal de CRE', 'trim|required');
+        $this->form_validation->set_rules('project-system', 'Sistema', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion/Ubicacion', 'trim|required');
         $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
@@ -74,11 +75,12 @@ class Project extends PrivateController
             $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
             $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
             $projectCreFiscal = $formData["project-cre-fiscal"];
+            $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
-            $project = new Model_project($projectCode, $projectName, $projectAddress, $projectEntryDate, $projectCreFiscal,$projectStatus);
+            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus);
             $project->save();
             $project->savePoints("","", $projectPoints, $projectMetersDistance);
             $project->addStatusToLog($projectStatus);
@@ -100,7 +102,10 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.edit');
 
         /** Server Side Validations **/
-        $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
+        $this->form_validation->set_rules('project-system', 'sistema', 'trim|required');
+        $this->form_validation->set_rules('project-address', 'Direccion', 'trim');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
@@ -124,6 +129,7 @@ class Project extends PrivateController
             $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
             $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
             $projectCreFiscal = $formData["project-cre-fiscal"];
+            $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
@@ -131,6 +137,9 @@ class Project extends PrivateController
 
             $project->setProjectName($projectName);
             $project->setStatus($projectStatus);
+            $project->setCREFiscal($projectCreFiscal);
+            $project->setSystem($projectSystem);
+            $project->setAddress($projectAddress);
             $project->save();
             $project->savePoints($projectLastPoints["points_quantity_prp"], $projectLastPoints["meters_distance_prp"], $projectPoints, $projectMetersDistance);
             $project->addStatusToLog($projectStatus);

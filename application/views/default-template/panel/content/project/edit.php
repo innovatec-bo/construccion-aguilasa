@@ -7,12 +7,13 @@
  */
 
 $addressList = array(
-    1 => "Sistema velasco",
-    2 => "Sistema misiones",
-    3 => "Sistema camiri",
-    4 => "Sistema German bush",
-    5 => "Sistema robore",
-    6 => "Sistema valles"
+    1 => "Sistema Santa Cruz",
+    2 => "Sistema velasco",
+    3 => "Sistema misiones",
+    4 => "Sistema camiri",
+    5 => "Sistema German bush",
+    6 => "Sistema robore",
+    7 => "Sistema valles"
 );
 ?>
 <div class="container-fluid">
@@ -82,21 +83,28 @@ $addressList = array(
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Dirección</label>
-                                    <select  class="form-control" name="project-address" required>
+                                    <label>Sistema</label>
+                                    <select  class="form-control" name="project-system" required>
 
                                         <option value="">Elija una direccion</option>
                                         <?php
                                         $html = "";
                                         foreach ($addressList as $key => $name)
                                         {
-                                            $selected = $project["address_pro"] == $key?" selected ":"";
+                                            $selected = $project["system_pro"] == $key?" selected ":"";
                                             $html .= '<option value="'.$key.'" '.$selected.'>'.$name.'</option>';
                                         }
                                         echo $html;
                                         ?>
                                     </select>
-<!--                                    <input class="form-control" value="--><?//=set_value('project-address', $project["address_pro"])?><!--" required name="project-address" placeholder="Ubicación/dirección del proyecto">-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Direccion</label>
+                                    <input class="form-control" value="<?=set_value('project-address', $project["address_pro"])?>" required name="project-address" placeholder="Ubicación/dirección del proyecto">
                                 </div>
                             </div>
                         </div>
@@ -104,10 +112,10 @@ $addressList = array(
                             <div class="col-md-6">
                                 <label>Area del proyecto</label><br>
                                 <div class="form-group">
-                                    <input class="form-control" value="<?=set_value('project-points', $projectLastPoints["points_quantity_prp"])?>" name="project-points" placeholder="Puntos">
+                                    <input class="form-control" readonly value="<?=set_value('project-points', $projectLastPoints["points_quantity_prp"])?>" name="project-points" placeholder="Puntos">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" value="<?=set_value('project-meters-distance', $projectLastPoints["meters_distance_prp"])?>" name="project-meters-distance" placeholder="Distancia">
+                                    <input class="form-control" readonly value="<?=set_value('project-meters-distance', $projectLastPoints["meters_distance_prp"])?>" name="project-meters-distance" placeholder="Distancia">
                                 </div>
                             </div>
                         </div><br>

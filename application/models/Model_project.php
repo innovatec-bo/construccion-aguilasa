@@ -8,9 +8,9 @@
 
 class Model_project extends Model_project_base
 {
-    public function __construct($projectCode = "", $projectName = "", $address = "", $entryDate = "", $creFiscal = "", $status = NULL)
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "")
     {
-        parent::__construct($projectCode, $projectName, $address, $entryDate, $creFiscal, $status);
+        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd);
     }
 
     public function savePoints($lastPoints, $lastDistance, $points, $metersDistance)
@@ -66,6 +66,7 @@ class Model_project extends Model_project_base
             WHERE 
                 deleted_pro != 1
                 and deleted_prs != 1
+                and status_pro = 2
             ORDER BY id_stl
         ";
         $query = $ci->db->query($sql);

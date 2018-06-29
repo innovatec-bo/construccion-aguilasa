@@ -5,6 +5,15 @@
  * Date: 12/4/2018
  * Time: 22:33
  */
+$systemList = array(
+    1 => "Sistema Santa Cruz",
+    2 => "Sistema velasco",
+    3 => "Sistema misiones",
+    4 => "Sistema camiri",
+    5 => "Sistema German bush",
+    6 => "Sistema robore",
+    7 => "Sistema valles"
+);
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -65,17 +74,26 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Dirección</label>
-                                    <select  class="form-control" name="project-address" required>
-                                        <option value="">Elija una direccion</option>
-                                        <option value="1">Sistema velasco</option>
-                                        <option value="2">Sistema misiones</option>
-                                        <option value="3">Sistema camiri</option>
-                                        <option value="4">Sistema German bush</option>
-                                        <option value="5">Sistema robore</option>
-                                        <option value="6">Sistema valles</option>
+                                    <label>Sistema</label>
+                                    <select  class="form-control" name="project-system" required>
+                                        <option value="">Elija un sistema</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($systemList as $key => $name)
+                                        {
+                                            $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
                                     </select>
-<!--                                    <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Dirección</label>
+                                    <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">
                                 </div>
                             </div>
                         </div>

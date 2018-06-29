@@ -10,6 +10,24 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Diseño</h1>
+            <dl>
+                <dt>Proyecto</dt>
+                <dd><?=$project["code_pro"]?></dd>
+                <dt>Estado</dt>
+                <?php
+                $status = "None";
+                if(isset($statusList[$project["status_pro"]]))
+                {
+                    $status = $statusList[$project["status_pro"]];
+                    $status = $status->toArray();
+                    $status = $status["status_name_pst"];
+                }
+
+                ?>
+                <dd><?=$status?></dd>
+                <dt>Sistema</dt>
+                <dd><?=isset($projectSystems[$project["system_pro"]])?$projectSystems[$project["system_pro"]]:""?></dd>
+            </dl>
         </div>
         <div class="col-md-12">
             <?php

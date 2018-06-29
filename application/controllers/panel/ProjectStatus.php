@@ -218,6 +218,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizard');
 
         $project = Model_project::getById($projectId);
+
         $statusList = Model_project_status::getChildrenByParentStatusId(1);
         $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
         $projectDigitizationStatus = Model_project_status::getDigitizationStatus($projectId);
@@ -225,6 +226,7 @@ class ProjectStatus extends PrivateController
         $projectScheduleStatus = Model_project_status::getScheduleStatus($projectId);
         $data["project"] = $project->toArray();
         $data["statusList"] = $statusList;
+        $data["projectSystems"] = $this->_projectSystems;
         $data["teamLeadersOnProject"] = json_encode($projectStakeLeaders);
         $data["projectDigitizationStatus"] = $projectDigitizationStatus;
         $data["projectDrawingStatus"] = $projectDrawingStatus;

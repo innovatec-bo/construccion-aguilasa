@@ -81,14 +81,23 @@ class PrivateController extends PublicController
      * @var Model_User
      */
     protected $sessionUser;
+    protected $_projectSystems;
 
     public function __construct()
     {
         parent::__construct();
         //Add General Components
-//        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addProjectJs('general-scripts');
+        $this->_projectSystems = array(
+            1 => "Sistema Santa Cruz",
+            2 => "Sistema velasco",
+            3 => "Sistema misiones",
+            4 => "Sistema camiri",
+            5 => "Sistema German bush",
+            6 => "Sistema robore",
+            7 => "Sistema valles"
+        );
         $this->_validateSession();
     }
 
