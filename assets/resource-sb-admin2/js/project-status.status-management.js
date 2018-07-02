@@ -159,8 +159,8 @@ function saveStakesTeam(statusId)
         type : "POST",
         data : stakes,
         success:function(response){
-            console.log(response);
-            // window.location.reload();
+            // console.log(response);
+            window.location.reload();
         }
     });
 }

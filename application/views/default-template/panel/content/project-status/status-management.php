@@ -47,6 +47,11 @@
                             {
                                 $status = $status->toArray();
                                 $class = $status["id_pst"] === $project["status_pro"]?"active":"";
+//                                $class = "disabled";
+//                                if($status["id_pst"] === $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
+//                                {
+//                                    $class = "active";
+//                                }
                                 $navTab .= '
                                 <li role="presentation" class="'.$class.'">
                                     <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-controls="step_'.$status["keyword_pst"].'" role="tab" title="'.$status["status_name_pst"].'">
@@ -73,6 +78,11 @@
                             {
                                 $status = $status->toArray();
                                 $class = $status["id_pst"] === $project["status_pro"]?"active":"";
+//                                $class = "disabled";
+//                                if($status["id_pst"] === $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
+//                                {
+//                                    $class = "active";
+//                                }
                                 $tapPane .= '
                                 <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
                                     <div class="row">
@@ -90,10 +100,17 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
+                                        ';
+//                            if($status["id_pst"] == $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
+//                            {
+                                $tapPane .= '                   
                                                     <button type="button" class="btn btn-primary save-status" data-status-id="'.$status["id_pst"].'" data-status-keyword="'.$status["keyword_pst"].'">Guardar</button>
+                                        ';
+//                            }
+
+                            $tapPane .= '
                                                 </div>
                                             </div>
-                                            
                                         </div>
                                 ';
                                 $i++;

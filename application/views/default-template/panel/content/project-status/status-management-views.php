@@ -33,6 +33,7 @@ switch ($status)
             </div>
         </fieldset>
         ';
+
         break;
     case "digitization":
         $digitizationEntryDate = "";
@@ -110,6 +111,11 @@ switch ($status)
             </div>
         </div>
         ';
+        //If there is data on stakes leader then release the digitization view
+        if(strlen($teamLeadersOnProject) <= 2)
+        {
+            $htmlStatusView = 'Asigna estaqueadores al proyecto antes de editar esta seccion';
+        }
         break;
     case 'drawing':
         $drawingEntryDate = "";
@@ -159,6 +165,11 @@ switch ($status)
             </div>
         </div>
         ';
+        //If there is data on digitization then release the drawing view
+        if(count($projectDigitizationStatus) <= 0)
+        {
+            $htmlStatusView = 'Debes ingresar al menos una fecha de registro en digitalizacion antes de editar esta seccion';
+        }
         break;
     case 'schedule':
         $scheduleEntryDate = "";
@@ -262,6 +273,11 @@ switch ($status)
             </div>
         </div>
         ';
+        //If there is data on digitization then release the drawing view
+        if(count($projectDrawingStatus) <= 0)
+        {
+            $htmlStatusView = 'Debes ingresar al menos una fecha de registro en dibujo antes de editar esta seccion';
+        }
         break;
     default:
         $htmlStatusView = "La vista para este estado no esta implementada";
