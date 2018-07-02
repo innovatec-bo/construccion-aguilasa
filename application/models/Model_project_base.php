@@ -104,6 +104,11 @@ class Model_project_base extends MY_Model
         $this->_projectName = $projectName;
     }
 
+    public function setCode($code)
+    {
+        $this->_projectCode = $code;
+    }
+
     public function setStatus($statusId)
     {
         $this->_status = $statusId;

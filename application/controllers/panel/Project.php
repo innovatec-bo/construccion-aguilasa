@@ -136,13 +136,21 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
 
             $project->setProjectName($projectName);
-            $project->setStatus($projectStatus);
+            $project->setCode($projectCode);
+            if(!is_null($projectStatus))
+            {
+                $project->setStatus($projectStatus);
+            }
             $project->setCREFiscal($projectCreFiscal);
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);
             $project->save();
             $project->savePoints($projectLastPoints["points_quantity_prp"], $projectLastPoints["meters_distance_prp"], $projectPoints, $projectMetersDistance);
-            $project->addStatusToLog($projectStatus);
+            if(!is_null($projectStatus))
+            {
+                $project->addStatusToLog($projectStatus);
+            }
+
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");
             redirect(base_url("panel/Project/edit/".$project->getId()));
         }

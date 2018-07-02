@@ -108,7 +108,7 @@ $addressList = array(
                                 </div>
                             </div>
                         </div>
-                        <div class="row form-inline">
+                        <div class="row form-inline hide">
                             <div class="col-md-6">
                                 <label>Area del proyecto</label><br>
                                 <div class="form-group">
@@ -122,7 +122,16 @@ $addressList = array(
                         <div class="row">
                             <div class="col-lg-6">
                                 <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
-                                <button type="button" class="btn btn-info save-project" data-project-status="1">Guardar y enviar a diseño</button>
+                                <?php
+                                if($project["status_pro"] === NULL)
+                                {
+                                    ?>
+                                    <button type="button" class="btn btn-info save-project" data-project-status="1">
+                                        Guardar y enviar a diseño
+                                    </button>
+                                    <?php
+                                }
+                                ?>
                                 <input type="hidden" name="project-status" value="">
                             </div>
                         </div>
