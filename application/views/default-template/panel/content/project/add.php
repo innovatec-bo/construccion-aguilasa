@@ -38,7 +38,7 @@ $systemList = array(
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Codigo</label>
-                                    <input class="form-control" required name="project-code" placeholder="Ingrese el codigo del proyecto">
+                                    <input class="form-control" required name="project-code" placeholder="Ingrese el código del proyecto">
                                 </div>
                             </div>
                         </div>
