@@ -64,7 +64,7 @@ $(document).ready(function() {
                 var projectSystem = $("#project-index").data("project-systems");
                 if(row.system_pro in projectSystem)
                 {
-                    response = projectSystem[row.status_pro];
+                    response = projectSystem[row.system_pro];
                 }
 
                 return response;
