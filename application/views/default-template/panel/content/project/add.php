@@ -5,15 +5,6 @@
  * Date: 12/4/2018
  * Time: 22:33
  */
-$systemList = array(
-    1 => "Sistema Santa Cruz",
-    2 => "Sistema velasco",
-    3 => "Sistema misiones",
-    4 => "Sistema camiri",
-    5 => "Sistema German bush",
-    6 => "Sistema robore",
-    7 => "Sistema valles"
-);
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -79,7 +70,7 @@ $systemList = array(
                                         <option value="">Elija un sistema</option>
                                         <?php
                                         $html = "";
-                                        foreach ($systemList as $key => $name)
+                                        foreach ($projectSystems as $key => $name)
                                         {
                                             $html .= '<option value="'.$key.'" >'.$name.'</option>';
                                         }

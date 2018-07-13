@@ -34,7 +34,16 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Lista de proyectos";
         $data["status"] = "";
-        $this->_loadPanelView("project/index",$data);
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index", $data);
     }
 
     public function add()
@@ -61,7 +70,7 @@ class Project extends PrivateController
 
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
-
+        $data["projectSystems"] = $this->_projectSystems;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project/add",$data);
@@ -116,6 +125,7 @@ class Project extends PrivateController
         $projectLastPoints = Model_project_points::getLastPointsByProjectId($project->getId());
         $projectLastPoints = $projectLastPoints instanceof Model_project_points?$projectLastPoints->toArray():array("points_quantity_prp" => "", "meters_distance_prp" => "");
         $data["projectLastPoints"] = $projectLastPoints;
+        $data["projectSystems"] = $this->_projectSystems;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project/edit", $data);

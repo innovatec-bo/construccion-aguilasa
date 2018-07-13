@@ -8,9 +8,9 @@
 
 class Model_project extends Model_project_base
 {
-    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "")
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0)
     {
-        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd);
+        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance);
     }
 
     public function savePoints($lastPoints, $lastDistance, $points, $metersDistance)
@@ -20,6 +20,9 @@ class Model_project extends Model_project_base
         {
             $projectPoints = new Model_project_points($this->_id, $points, $metersDistance);
             $projectPoints->save();
+            $this->_points = $points;
+            $this->_distance = $metersDistance;
+            $this->save();
         }
     }
 

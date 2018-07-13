@@ -27,6 +27,7 @@ $(document).ready(function() {
                 data.additionalParameters = additionalParameter.getList();
             }
         },
+        "order": [[ 2, "desc" ]],
         "language": {
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
         },
@@ -35,37 +36,60 @@ $(document).ready(function() {
         "columns" : [{
             "data" : "id_pro"
         }, {
-            "data" : "project_name_pro"
+            "data" : "code_pro"
+        }, {
+            "data" : "entry_date_pro"
+        }, {
+            "data" : "status_pro",
+            "defaultContent" : "",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var response = "";
+                var projectStatus = $("#project-index").data("project-status");
+                if(row.status_pro in projectStatus)
+                {
+                    response = projectStatus[row.status_pro];
+                }
+
+                return response;
+            }
+        }, {
+            "data" : "system_pro",
+            "defaultContent" : "",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var response = "";
+                var projectSystem = $("#project-index").data("project-systems");
+                if(row.system_pro in projectSystem)
+                {
+                    response = projectSystem[row.status_pro];
+                }
+
+                return response;
+            }
+        }, {
+            "defaultContent" : "",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var response = "";
+                if(row.distance_pro !== null && row.points_pro !== null)
+                {
+                    response = row.distance_pro+"K / "+row.points_pro+"p";
+                }
+                return response;
+            }
         }, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                return html;
-            }
-        }, {
-            "defaultContent" : "",
-            "searchable" : false,
-            "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
-                return html;
-            }
-        }, {
-            "defaultContent" : "",
-            "searchable" : false,
-            "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                return html;
-            }
-        }, {
-            "defaultContent" : "",
-            "searchable" : false,
-            "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
+                html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
+                html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                html += ' <a target="_blank" class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],

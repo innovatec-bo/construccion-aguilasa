@@ -35,14 +35,15 @@
         </div>
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover" id="project-index">
+                <table class="table table-bordered table-striped table-hover" id="project-index" data-project-systems='<?=json_encode($projectSystems)?>' data-project-status='<?=$projectStatusJson?>'>
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>NOMBRE</th>
-                        <th>VISTA RAPIDA</th>
-                        <th>ENVIAR A DISEÑO</th>
-                        <th>EDITAR</th>
+                        <th>CODIGO</th>
+                        <th>FECHA <BR>DE INGRESO</th>
+                        <th>ESTADO</th>
+                        <th>SISTEMA</th>
+                        <th>DISTANCIA Y<br>PUNTOS</th>
                         <th>ELIMINAR</th>
                     </tr>
                     </thead>
