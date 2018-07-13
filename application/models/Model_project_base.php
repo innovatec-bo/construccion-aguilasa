@@ -181,7 +181,11 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' where '.static::notDeleted().'             
+        $sql = 'select '.static::_dataTableColumns().' 
+                from ' . static::TABLE_NAME . '
+                LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
+                LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
+                where '.static::notDeleted().'             
                 group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
         $query = $ci->db->query($sql);
         $result = $query->result();
@@ -208,6 +212,10 @@ class Model_project_base extends MY_Model
         $ci->load->database();
 
         $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
+        $sql.='
+            LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
+            LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
+        ';
         $sql .= ' where '.static::notDeleted().' and (';
         foreach ($colsArray as $var)
         {
@@ -232,6 +240,10 @@ class Model_project_base extends MY_Model
         $ci->load->database();
 
         $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+        $sql.='
+            LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
+            LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
+        ';
         $sql .= ' where '.static::notDeleted().' and (';
 
         foreach ($colsArray as $var)
@@ -249,7 +261,7 @@ class Model_project_base extends MY_Model
 
     private static function _dataTableColumns()
     {
-        $columns = static::TABLE_NAME.".*";
+        $columns = static::TABLE_NAME.".*, GROUP_CONCAT(DISTINCT leader_stl) leader_stl";
         return $columns;
     }
 

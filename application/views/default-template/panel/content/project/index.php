@@ -44,6 +44,7 @@
                         <th>ESTADO</th>
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
+                        <th>RESPONSABLE</th>
                         <th>ELIMINAR</th>
                     </tr>
                     </thead>
