@@ -17,6 +17,18 @@
             ?>
         </div>
         <div class="col-md-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs wizard">
+                    <li class="active"><a href="#i9" data-toggle="tab" aria-expanded="false">Step 01</a></li>
+                    <li><a href="#w4" data-toggle="tab" aria-expanded="false">Step 02</a></li>
+                    <li><a href="#stateinfo" data-toggle="tab" aria-expanded="false">Step 03</a></li>
+                    <li><a href="#companydoc" data-toggle="tab" aria-expanded="false">Step 04</a></li>
+                    <li><a href="#finish" data-toggle="tab" aria-expanded="true">Step 05</a></li>
+
+                </ul>
+            <div>
+        </div>
+        <div class="col-md-12">
             <section>
                 <div class="wizard">
                     <div class="wizard-inner">

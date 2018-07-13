@@ -215,8 +215,10 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('project-status.status-management');
         $this->complementHandler->addProjectJs('project-status.status-management');
-        $this->complementHandler->addProjectCss('project.status-management.wizard');
-        $this->complementHandler->addProjectJs('project.status-management.wizard');
+//        $this->complementHandler->addProjectCss('project.status-management.wizard');
+//        $this->complementHandler->addProjectJs('project.status-management.wizard');
+        $this->complementHandler->addProjectCss('project.status-management.wizardv2');
+        $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
         $project = Model_project::getById($projectId);
 

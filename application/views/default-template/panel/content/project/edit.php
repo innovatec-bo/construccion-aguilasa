@@ -111,7 +111,7 @@
                         </div><br>
                         <div class="row">
                             <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
+                                <button type="button" class="btn btn-primary save-project" data-project-status="7">Guardar</button>
                                 <?php
                                 if($project["status_pro"] === NULL)
                                 {

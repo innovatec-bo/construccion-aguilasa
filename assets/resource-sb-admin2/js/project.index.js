@@ -42,8 +42,8 @@ $(document).ready(function() {
         }, {
             "data" : "status_pro",
             "defaultContent" : "",
-            "searchable" : false,
-            "orderable" : false,
+            // "searchable" : false,
+            // "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var response = "";
                 var projectStatus = $("#project-index").data("project-status");
