@@ -74,8 +74,8 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var response = "";
-                if(row.distance_pro !== null && row.points_pro !== null)
+                var response = "Sin asignar";
+                if($.isNumeric(row.distance_pro) && $.isNumeric(row.points_pro))
                 {
                     response = row.distance_pro+"K / "+row.points_pro+"p";
                 }
