@@ -1,0 +1,42 @@
+set @STATUS_ID = 2;
+set @PROJECT_CODE = 18;
+select * from 
+(
+	SELECT
+		wfl_projects.*,	
+		status_name_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select 
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,			
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from 
+			wfl_project_status_log
+		LEFT JOIN (
+			select 
+				* 
+			from  
+				wfl_status_log_responsibles		
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+		
+		where 		
+			status_id_psl = @STATUS_ID
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+		
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE 
+		status_pro = @STATUS_ID
+) projects
+where code_pro like "%pro.5466%"
+
