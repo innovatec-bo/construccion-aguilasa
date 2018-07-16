@@ -33,7 +33,6 @@ switch ($status)
             </div>
         </fieldset>
         ';
-
         break;
     case "digitization":
         $digitizationEntryDate = "";
@@ -48,7 +47,7 @@ switch ($status)
         $distance = isset($projectDigitizationStatus["distance"])?$projectDigitizationStatus["distance"]:"";
         $htmlStatusView .= '
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -80,35 +79,7 @@ switch ($status)
                     <label>Observaciones</label>
                     <textarea class="form-control" name="digitization-detail" rows="2"></textarea>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <p>ULTIMA ENTRADA</p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fecha</label>
-                            <input class="form-control" disabled name="current-manual-entry-date" value="'.$digitizationEntryDate.'">
-                        </div>    
-                    </div>
-                </div>
-                <div class="row form-inline">
-                    <div class="col-md-6">
-                        <label>Area del proyecto</label><br>
-                        <div class="form-group">
-                            <em>Puntos</em><br>
-                            <input class="form-control" disabled name="current-project-points" value="'.$points.'" placeholder="Puntos">
-                        </div>
-                        <div class="form-group">
-                            <em>Distancia Km</em><br>
-                            <input class="form-control" disabled name="current-project-meters-distance" value="'.$distance.'" placeholder="Distancia">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Observaciones</label>
-                    <textarea class="form-control" name="current-digitization-detail" disabled rows="2">'.$detail.'</textarea>
-                </div>
-            </div>
+            </div>            
         </div>
         ';
         //If there is data on stakes leader then release the digitization view
@@ -128,7 +99,7 @@ switch ($status)
         $detail = isset($projectDrawingStatus["detail"])?$projectDrawingStatus["detail"]:"";
         $htmlStatusView .= '
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -148,21 +119,6 @@ switch ($status)
                     <textarea class="form-control" name="drawing-detail" rows="2"></textarea>
                 </div>
             </div> 
-            <div class="col-md-6">
-                <p>ULTIMA ENTRADA</p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fecha</label>
-                            <input class="form-control" disabled name="current-drawing-manual-entry-date" value="'.$drawingEntryDate.'">
-                        </div>    
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Observaciones</label>
-                    <textarea class="form-control" name="last-drawing-detail" disabled rows="2">'.$detail.'</textarea>
-                </div>
-            </div>
         </div>
         ';
         //If there is data on digitization then release the drawing view
@@ -196,7 +152,7 @@ switch ($status)
         $detail = isset($projectScheduleStatus["detail"])?$projectScheduleStatus["detail"]:"";
         $htmlStatusView .= '
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -240,35 +196,6 @@ switch ($status)
                 <div class="form-group">
                     <label>Observaciones</label>
                     <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p>ULTIMA ENTRADA</p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fecha</label>
-                            <input class="form-control" disabled name="current-schedule-manual-entry-date" value="'.$scheduleEntryDate.'">
-                        </div>    
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fecha inicio</label>
-                            <input class="form-control" disabled name="last-project-start" value="'.$projectStart.'">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Fecha inicio</label>
-                            <input class="form-control" disabled name="last-project-end" value="'.$projectEnd.'">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Observaciones</label>
-                    <textarea class="form-control" name="last-schedule-detail" disabled rows="2">'.$detail.'</textarea>
                 </div>
             </div>
         </div>

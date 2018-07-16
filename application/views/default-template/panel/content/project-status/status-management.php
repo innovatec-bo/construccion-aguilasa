@@ -16,52 +16,42 @@
             $this->load->view("default-template/flash-data-basic-messages");
             ?>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-10">
             <div class="tabbable">
                 <ul class="nav nav-tabs wizard">
-                    <li class="active"><a href="#i9" data-toggle="tab" aria-expanded="false">Step 01</a></li>
-                    <li><a href="#w4" data-toggle="tab" aria-expanded="false">Step 02</a></li>
-                    <li><a href="#stateinfo" data-toggle="tab" aria-expanded="false">Step 03</a></li>
-                    <li><a href="#companydoc" data-toggle="tab" aria-expanded="false">Step 04</a></li>
-                    <li><a href="#finish" data-toggle="tab" aria-expanded="true">Step 05</a></li>
-
-                </ul>
-            <div>
-        </div>
-        <div class="col-md-12">
-            <section>
-                <div class="wizard">
-                    <div class="wizard-inner">
-                        <div class="connecting-line"></div>
-                        <ul class="nav nav-tabs" role="tablist">
-                            <?php
-                            $navTab = '';
-                            $i = 1;
-                            foreach ($statusList as $status)
-                            {
-                                $status = $status->toArray();
-                                $class = $status["id_pst"] === $project["status_pro"]?"active":"";
-//                                $class = "disabled";
-//                                if($status["id_pst"] === $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
-//                                {
-//                                    $class = "active";
-//                                }
-                                $navTab .= '
-                                <li role="presentation" class="'.$class.'">
-                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-controls="step_'.$status["keyword_pst"].'" role="tab" title="'.$status["status_name_pst"].'">
-                                        <span class="round-tab">
-                                            <i class="'.$status["status_icon_pst"].'"></i>
-                                        </span>
-                                    </a>
+                    <?php
+                    $navTab = '';
+                    $i = 1;
+                    $unsigned = '
+                                <li class="completed">
+                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
                                 </li>
                                 ';
-                                $i++;
-                            }
-                            echo $navTab;
-                            ?>
-                        </ul>
-                    </div>
 
+                    foreach ($statusList as $status)
+                    {
+                        $status = $status->toArray();
+                        $class = $status["id_pst"] === $project["status_pro"]?"active":"";
+                        $navTab .= '
+                                <li class="'.$class.'">
+                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
+                                </li>
+                                ';
+                        $i++;
+                    }
+                    echo $unsigned.$navTab;
+                    ?>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="tabbable">
+                <a href="#next-step" data-toggle="tab" aria-expanded="false" id="next-step">Siguiente paso</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <section>
+                <div class="wizard">
                     <form role="form" name="status-management" data-parsley-validate>
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <div class="tab-content">
@@ -72,40 +62,33 @@
                             {
                                 $status = $status->toArray();
                                 $class = $status["id_pst"] === $project["status_pro"]?"active":"";
-//                                $class = "disabled";
-//                                if($status["id_pst"] === $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
-//                                {
-//                                    $class = "active";
-//                                }
                                 $tapPane .= '
                                 <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h3>'.$status["status_name_pst"].'</h3>
-                                            
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Formulario de '.$status["status_name_pst"].'
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 status-content">';
-                                        $data["status"] = $status["keyword_pst"];
-                            $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views", $data,TRUE);
-                            $tapPane .=
-                                        '</div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12 status-content">';
+                                                $data["status"] = $status["keyword_pst"];
+                                    $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views", $data,TRUE);
+                                    $tapPane .=
+                                                '</div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                        ';
-//                            if($status["id_pst"] == $project["status_pro"] || ($project["status_pro"] == 1 && $status["keyword_pst"] == 'stakes'))
-//                            {
-                                $tapPane .= '                   
+                                                ';
+                                        $tapPane .= '                   
                                                     <button type="button" class="btn btn-primary save-status" data-status-id="'.$status["id_pst"].'" data-status-keyword="'.$status["keyword_pst"].'">Guardar</button>
-                                        ';
-//                            }
-
-                            $tapPane .= '
+                                                ';
+                                    $tapPane .= '
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </div>
+                                        <!-- /.panel-body -->
+                                    </div>
+                                </div>
                                 ';
                                 $i++;
                             }
@@ -116,6 +99,38 @@
                     </form>
                 </div>
             </section>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Historial
+                </div>
+                <div class="panel-body">
+                    <h6>ESTAQUEADO</h6>
+                    <blockquote>
+                        <dl>
+                            <dt>Fecha</dt>
+                            <dd>16/07/2018</dd>
+                            <dt>Responsable</dt>
+                            <dd>Fulano de tal</dd>
+                            <dt>Comentario</dt>
+                            <dd>Ninguno</dd>
+                        </dl>
+                    </blockquote>
+                    <h6>DIGITALIZACION</h6>
+                    <blockquote>
+                        <dl>
+                            <dt>Fecha</dt>
+                            <dd>16/07/2018</dd>
+                            <dt>Responsable</dt>
+                            <dd>Fulano de tal</dd>
+                            <dt>Comentario</dt>
+                            <dd>Ninguno</dd>
+                        </dl>
+                    </blockquote>
+                </div>
+                <!-- /.panel-body -->
+            </div>
         </div>
         <!-- /.col-lg-12 -->
     </div>
