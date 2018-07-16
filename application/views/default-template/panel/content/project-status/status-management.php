@@ -106,36 +106,30 @@
                     Historial
                 </div>
                 <div class="panel-body" style="overflow: auto;height: 50vh;">
-                    <h6>ESTAQUEADO</h6>
+                    <h6>ESTAQUEADO <span class="pull-right">16-07-2018</span></h6>
                     <blockquote>
                         <dl>
-                            <dt>Fecha</dt>
-                            <dd>16/07/2018</dd>
                             <dt>Responsable</dt>
                             <dd>Fulano de tal</dd>
-                            <dt>Comentario</dt>
+                            <dt>Observaciones</dt>
                             <dd>Ninguno</dd>
                         </dl>
                     </blockquote>
-                    <h6>DIGITALIZACION</h6>
+                    <h6>DIGITALIZACION <span class="pull-right">16-07-2018</span></h6>
                     <blockquote>
                         <dl>
-                            <dt>Fecha</dt>
-                            <dd>16/07/2018</dd>
                             <dt>Responsable</dt>
                             <dd>Fulano de tal</dd>
-                            <dt>Comentario</dt>
+                            <dt>Observaciones</dt>
                             <dd>Ninguno</dd>
                         </dl>
                     </blockquote>
-                    <h6>DIGITALIZACION</h6>
+                    <h6>DIBUJO <span class="pull-right">16-07-2018</span></h6>
                     <blockquote>
                         <dl>
-                            <dt>Fecha</dt>
-                            <dd>16/07/2018</dd>
                             <dt>Responsable</dt>
                             <dd>Fulano de tal</dd>
-                            <dt>Comentario</dt>
+                            <dt>Observaciones</dt>
                             <dd>Ninguno</dd>
                         </dl>
                     </blockquote>

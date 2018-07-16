@@ -175,13 +175,13 @@ class AjaxProjectStatus extends PrivateController
         $projectPoints = $formData["projectPoints"];
         $projectDistance = $formData["projectDistance"];
         $statusDetail = $formData["statusDetail"];
-        $lastPoints = $formData["lastPoints"];
-        $lastDistance = $formData["lastDistance"];
+//        $lastPoints = $formData["lastPoints"];
+//        $lastDistance = $formData["lastDistance"];
 
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->savePoints($lastPoints, $lastDistance, $projectPoints, $projectDistance);
+        $project->savePoints($projectPoints, $projectDistance);
         $project->addStatusToLog($statusId, $statusDetail, $digitizationEntryDate);
         $project->save();
 

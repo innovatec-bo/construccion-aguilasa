@@ -13,10 +13,10 @@ class Model_project extends Model_project_base
         parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance);
     }
 
-    public function savePoints($lastPoints, $lastDistance, $points, $metersDistance)
+    public function savePoints($points, $metersDistance)
     {
         //Verify if the entrance data is equals to the current data
-        if($lastPoints != $points || $lastDistance != $metersDistance)
+        if($this->_points != $points || $this->_distance != $metersDistance)
         {
             $projectPoints = new Model_project_points($this->_id, $points, $metersDistance);
             $projectPoints->save();
