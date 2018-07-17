@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-16 18:09:05
+Date: 2018-07-17 18:04:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -598,7 +598,7 @@ CREATE TABLE `sec_userroles` (
   KEY `roleid_uro` (`roleid_uro`) USING BTREE,
   CONSTRAINT `sec_userroles_ibfk_1` FOREIGN KEY (`roleid_uro`) REFERENCES `sec_roles` (`id_rol`),
   CONSTRAINT `sec_userroles_ibfk_2` FOREIGN KEY (`userid_uro`) REFERENCES `sec_users` (`id_usr`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_userroles
@@ -621,6 +621,8 @@ INSERT INTO `sec_userroles` VALUES ('15', '6', '3', '1', '2018-05-30 09:58:30', 
 INSERT INTO `sec_userroles` VALUES ('16', '2', '3', '0', '2018-06-01 11:48:58', '1', '0000-00-00 00:00:00', null);
 INSERT INTO `sec_userroles` VALUES ('17', '7', '3', '0', '2018-06-05 12:26:51', '1', '0000-00-00 00:00:00', null);
 INSERT INTO `sec_userroles` VALUES ('18', '7', '4', '1', '2018-06-05 12:26:51', '1', '2018-06-05 12:28:35', null);
+INSERT INTO `sec_userroles` VALUES ('19', '8', '3', '0', '2018-07-17 17:36:07', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sec_userroles` VALUES ('20', '9', '3', '0', '2018-07-17 17:37:00', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_users
@@ -647,18 +649,20 @@ CREATE TABLE `sec_users` (
   `editedby_usr` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_usr`),
   UNIQUE KEY `UQ_sec_users_id_usr` (`id_usr`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_users
 -- ----------------------------
 INSERT INTO `sec_users` VALUES ('1', 'jair', 'cussy', 'jair@twiiti.com', null, null, '$2y$10$biHC1c85bbcHmNmRvKc1ZumAcCYkU2.q.oMzCX2r9aPpYX0HbVd46', null, '', '', '1', '0', '', '0', '2018-04-26 00:32:39', null, '2018-04-26 00:32:39', null);
 INSERT INTO `sec_users` VALUES ('2', 'user', 'contest', 'user@mailinator.com', null, null, '$2y$10$8CN4RnGgW92AnvJnNHWWaOiv4bYq/MUhgYnJikGeobrbyB8uWMsvi', null, '', '', '1', '0', '', '0', '2018-05-13 21:47:16', null, '2018-06-01 11:48:58', null);
-INSERT INTO `sec_users` VALUES ('3', 'new', 'user', 'nuser@mailinator.com', null, null, '$2y$10$r.eAisul1hyGSXgurkWJjemFA7yxkVcg28lu75DBBgCu6o.W0c0vW', null, '', '', '1', '0', '', '0', '2018-05-28 10:32:52', null, '2018-05-28 15:13:57', null);
-INSERT INTO `sec_users` VALUES ('4', 'new', 'user', 'nuser2@mailinator.com', null, null, '$2y$10$c8Jgx3up2nF9n523UoXHyeRWU5ZbL9L1EWxIiGHrADXIFa9QJXE2S', null, '', '', '1', '0', '', '0', '2018-05-28 10:34:28', null, '2018-05-28 15:13:02', null);
-INSERT INTO `sec_users` VALUES ('5', 'test', 'user', 'tuser@mailinator.com', null, null, '$2y$10$42XsIiB5gRBPcTlxoHm84eyWV9hNtvcPCVcXi1UAB09unAmQIZdIG', null, '', '', '1', '0', '', '0', '2018-05-30 09:44:40', null, '2018-05-30 09:44:40', null);
-INSERT INTO `sec_users` VALUES ('6', 'another', 'user', 'auser@mailinator.com', null, null, '$2y$10$3k0HQgfQ.x59LB/V0995detQoizrIRPM5jmPg1MOco/g5wd7ERRBe', null, '', '', '1', '0', '', '1', '2018-05-30 09:58:30', null, '2018-06-05 12:15:38', null);
-INSERT INTO `sec_users` VALUES ('7', 'test7', 'test7', 'test7@mailiantor.com', null, null, '$2y$10$kDCu0dJWW1GQJSnDAX.hwu8sLMYTGxCKFlbad4A2jlwx/Yx73j3UC', null, '', '', '1', '0', '', '0', '2018-06-04 12:15:00', null, '2018-06-05 12:26:51', null);
+INSERT INTO `sec_users` VALUES ('3', 'Estaqueador 1', 'user', 'nuser@mailinator.com', null, null, '$2y$10$r.eAisul1hyGSXgurkWJjemFA7yxkVcg28lu75DBBgCu6o.W0c0vW', null, '', '', '1', '0', '', '0', '2018-05-28 10:32:52', null, '2018-07-17 17:38:25', null);
+INSERT INTO `sec_users` VALUES ('4', 'Estaqueador 2', 'user', 'nuser2@mailinator.com', null, null, '$2y$10$c8Jgx3up2nF9n523UoXHyeRWU5ZbL9L1EWxIiGHrADXIFa9QJXE2S', null, '', '', '1', '0', '', '0', '2018-05-28 10:34:28', null, '2018-07-17 17:38:23', null);
+INSERT INTO `sec_users` VALUES ('5', 'diseñador 1', 'user', 'tuser@mailinator.com', null, null, '$2y$10$42XsIiB5gRBPcTlxoHm84eyWV9hNtvcPCVcXi1UAB09unAmQIZdIG', null, '', '', '1', '0', '', '0', '2018-05-30 09:44:40', null, '2018-07-17 17:38:00', null);
+INSERT INTO `sec_users` VALUES ('6', 'diseñador 2', 'user', 'auser@mailinator.com', null, null, '$2y$10$3k0HQgfQ.x59LB/V0995detQoizrIRPM5jmPg1MOco/g5wd7ERRBe', null, '', '', '1', '0', '', '0', '2018-05-30 09:58:30', null, '2018-07-17 17:38:06', null);
+INSERT INTO `sec_users` VALUES ('7', 'diseñador 3', 'user', 'test7@mailiantor.com', null, null, '$2y$10$kDCu0dJWW1GQJSnDAX.hwu8sLMYTGxCKFlbad4A2jlwx/Yx73j3UC', null, '', '', '1', '0', '', '0', '2018-06-04 12:15:00', null, '2018-07-17 17:38:10', null);
+INSERT INTO `sec_users` VALUES ('8', 'Digitalizador 1', 'user', 'digitalizador1@mailiantor.com', null, null, '$2y$10$CjDWq.RhG/LI5l5P77eEmelXD27P0RVc4GEyCojfqR96mXf/nrMfi', null, '', '', '1', '0', '', '0', '2018-07-17 17:36:07', null, '2018-07-17 17:38:37', null);
+INSERT INTO `sec_users` VALUES ('9', 'Dibujante 1', 'user', 'dibujante1@mailinator.com', null, null, '$2y$10$iozfBGQg.Ib5nCkC6yKNx.5fs0euDukOBE3.8QyE3YpLdl3rN5C/.', null, '', '', '1', '0', '', '0', '2018-07-17 17:37:00', null, '2018-07-17 17:38:36', null);
 
 -- ----------------------------
 -- Table structure for wfl_projects
@@ -686,7 +690,7 @@ CREATE TABLE `wfl_projects` (
   UNIQUE KEY `UQ_sec_roles_id_rol` (`id_pro`) USING BTREE,
   KEY `fk_status_pro` (`status_pro`),
   CONSTRAINT `fk_status_pro` FOREIGN KEY (`status_pro`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_projects
@@ -713,6 +717,7 @@ INSERT INTO `wfl_projects` VALUES ('24', '123', '849646', null, 'dfadf', '2018-0
 INSERT INTO `wfl_projects` VALUES ('25', 'TR.5466', '', '0', '2018-06-28', '0000-00-00 00:00:00', null, null, '0000-00-00 00:00:00', '0000-00-00 00:00:00', null, null, '0', '2018-06-28 11:24:45', null, '2018-06-28 11:24:45', null);
 INSERT INTO `wfl_projects` VALUES ('26', 'TR.689', '', '1', 'lejos', '2018-06-28 00:00:00', 'Fulano de tal', null, '0000-00-00 00:00:00', '0000-00-00 00:00:00', null, null, '0', '2018-06-28 11:29:56', null, '2018-06-28 11:48:29', null);
 INSERT INTO `wfl_projects` VALUES ('27', 'pro.5466', '', '1', 'lejitos', '2018-07-13 00:00:00', 'Fulano de tal', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '8', '25.00', '0', '2018-07-13 11:48:32', null, '2018-07-16 17:52:51', null);
+INSERT INTO `wfl_projects` VALUES ('28', 'DF.1212', '', '2', 'norte', '2018-07-17 00:00:00', 'Fulano de tallll', '7', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '85', '65.00', '0', '2018-07-17 11:28:34', null, '2018-07-17 11:32:22', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_points
@@ -731,7 +736,7 @@ CREATE TABLE `wfl_project_points` (
   PRIMARY KEY (`id_prp`),
   KEY `fk_project_id_prp` (`project_id_prp`),
   CONSTRAINT `fk_project_id_prp` FOREIGN KEY (`project_id_prp`) REFERENCES `wfl_projects` (`id_pro`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_points
@@ -782,6 +787,7 @@ INSERT INTO `wfl_project_points` VALUES ('43', '18', '0', '0.00', '0', '2018-06-
 INSERT INTO `wfl_project_points` VALUES ('44', '13', '8', '25.00', '0', '2018-07-02 15:55:56', null, '2018-07-02 15:55:56', null);
 INSERT INTO `wfl_project_points` VALUES ('45', '27', '60', '75.00', '0', '2018-07-13 11:48:33', null, '2018-07-13 11:48:33', null);
 INSERT INTO `wfl_project_points` VALUES ('46', '27', '8', '25.00', '0', '2018-07-16 17:18:39', null, '2018-07-16 17:18:39', null);
+INSERT INTO `wfl_project_points` VALUES ('47', '28', '85', '65.00', '0', '2018-07-17 11:28:34', null, '2018-07-17 11:28:34', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_stakes
@@ -872,7 +878,7 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`),
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
@@ -920,6 +926,7 @@ INSERT INTO `wfl_project_status_log` VALUES ('40', '16', '7', '', '2018-07-13 17
 INSERT INTO `wfl_project_status_log` VALUES ('41', '27', '2', '', '2018-07-16 17:16:47', '0', '2018-07-16 17:17:13', null, '2018-07-16 17:17:13', null);
 INSERT INTO `wfl_project_status_log` VALUES ('42', '27', '3', 'ninguna', '2018-07-16 17:18:22', '0', '2018-07-16 17:18:39', null, '2018-07-16 17:18:39', null);
 INSERT INTO `wfl_project_status_log` VALUES ('43', '27', '2', '', '2018-07-17 17:52:44', '0', '2018-07-16 17:52:51', null, '2018-07-16 17:52:51', null);
+INSERT INTO `wfl_project_status_log` VALUES ('44', '28', '7', '', '2018-07-17 11:28:34', '0', '2018-07-17 11:28:34', null, '2018-07-17 11:28:34', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader
@@ -956,7 +963,11 @@ CREATE TABLE `wfl_status_log_responsibles` (
   `createdby_slr` bigint(20) DEFAULT NULL,
   `editedon_slr` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_slr` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id_slr`)
+  PRIMARY KEY (`id_slr`),
+  KEY `fk_status_log_id_slr` (`status_log_id_slr`),
+  KEY `fk_responsible_id_slr` (`responsible_id_slr`),
+  CONSTRAINT `fk_responsible_id_slr` FOREIGN KEY (`responsible_id_slr`) REFERENCES `wfl_status_responsibles` (`id_sre`),
+  CONSTRAINT `fk_status_log_id_slr` FOREIGN KEY (`status_log_id_slr`) REFERENCES `wfl_project_status_log` (`id_psl`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -981,8 +992,12 @@ CREATE TABLE `wfl_status_responsibles` (
   `createdby_sre` bigint(20) DEFAULT NULL,
   `editedon_sre` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_sre` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id_sre`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_sre`),
+  KEY `fk_user_id_sre` (`user_id_sre`),
+  KEY `fk_status_id_sre` (`status_id_sre`),
+  CONSTRAINT `fk_status_id_sre` FOREIGN KEY (`status_id_sre`) REFERENCES `wfl_project_status` (`id_pst`),
+  CONSTRAINT `fk_user_id_sre` FOREIGN KEY (`user_id_sre`) REFERENCES `sec_users` (`id_usr`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_status_responsibles
@@ -990,3 +1005,264 @@ CREATE TABLE `wfl_status_responsibles` (
 INSERT INTO `wfl_status_responsibles` VALUES ('1', '7', '1', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('2', '6', '1', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('3', '5', '1', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('4', '3', '2', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('5', '4', '2', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('6', '8', '3', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('7', '9', '5', '0', null, null, '0000-00-00 00:00:00', null);
+
+-- ----------------------------
+-- Procedure structure for project_count_all
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `project_count_all`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `project_count_all`(
+	statusId VARCHAR(15)
+)
+begin
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @queryy = CONCAT(
+"
+select count(id_pro) as total from
+(
+	SELECT
+		wfl_projects.*,
+		status_name_pst,
+		order_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from
+			wfl_project_status_log
+		LEFT JOIN (
+			select
+				*
+			from
+				wfl_status_log_responsibles
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+
+		where
+			",@statusIdFilter1,"
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE
+		",@statusIdFilter2,"
+) projects;");
+PREPARE stmt FROM @queryy;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for project_get_all
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `project_get_all`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `project_get_all`(
+	statusId VARCHAR(15),
+	limitt int(3),
+    offsett int(3),
+    orderBy VARCHAR(40),
+    orderType VARCHAR(4)
+)
+begin
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @queryy = CONCAT(
+"
+select * from
+(
+	SELECT
+		wfl_projects.*,
+		status_name_pst,
+		order_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from
+			wfl_project_status_log
+		LEFT JOIN (
+			select
+				*
+			from
+				wfl_status_log_responsibles
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+
+		where
+			",@statusIdFilter1,"
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE
+		",@statusIdFilter2,"
+) projects
+ORDER BY order_pst ASC, ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
+;");
+PREPARE stmt FROM @queryy;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for project_search
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `project_search`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `project_search`(
+	statusId VARCHAR(15),
+	limitt int(3),
+	offsett int(3),
+	orderBy VARCHAR(40),
+	orderType VARCHAR(4),
+	textToSearh VARCHAR(20)
+)
+begin
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @queryy = CONCAT(
+"
+select * from
+(
+	SELECT
+		wfl_projects.*,
+		status_name_pst,
+		order_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from
+			wfl_project_status_log
+		LEFT JOIN (
+			select
+				*
+			from
+				wfl_status_log_responsibles
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+
+		where
+			",@statusIdFilter1,"
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE
+		",@statusIdFilter2,"
+) projects
+where
+	code_pro LIKE '%",textToSearh,"%'
+	or address_pro LIKE '%",textToSearh,"%'
+ORDER BY order_pst ASC, ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
+;");
+PREPARE stmt FROM @queryy;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for project_search_total_count
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `project_search_total_count`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `project_search_total_count`(
+	statusId VARCHAR(15),
+	textToSearh VARCHAR(20)
+)
+begin
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @queryy = CONCAT(
+"
+select count(id_pro) as total from
+(
+	SELECT
+		wfl_projects.*,
+		status_name_pst,
+		order_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from
+			wfl_project_status_log
+		LEFT JOIN (
+			select
+				*
+			from
+				wfl_status_log_responsibles
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+
+		where
+			",@statusIdFilter1,"
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE
+		",@statusIdFilter2,"
+) projects
+where
+	code_pro LIKE '%",textToSearh,"%'
+	or address_pro LIKE '%",textToSearh,"%'
+;");
+PREPARE stmt FROM @queryy;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+end
+;;
+DELIMITER ;
