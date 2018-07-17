@@ -2,13 +2,20 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    $('.date-time-picker').datetimepicker({
-        ignoreReadonly: true,
-        // defaultDate: date,
-        format: 'DD-MM-YYYY HH:mm:ss'
+    // $('.date-time-picker').datetimepicker({
+    //     ignoreReadonly: true,
+    //     // defaultDate: date,
+    //     format: 'DD-MM-YYYY HH:mm:ss'
+    // });
+    // startSelect2StakeLeaders();
+    var status = $("ul.wizard li.active a").prop("id");
+    loadStatusForm(status);
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        // e.target // newly activated tab
+        // e.relatedTarget // previous active tab
+        status = $(e.target).attr("id");
+        loadStatusForm(status);
     });
-    startSelect2StakeLeaders();
-
     $(document).on("click", ".check-stakes-team",function(e){
         e.preventDefault();
         getStakesLeaderProjects();
@@ -242,6 +249,40 @@ function saveSchedule(statusId)
         data : drawing,
         success:function(response){
             window.location.reload();
+        }
+    });
+}
+
+function loadStatusForm(statusKeyword)
+{
+    var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
+    var htmlSource   = $("#ht-status-"+statusKeyword+"-form").html();
+    var template = Handlebars.compile(htmlSource);
+    var data = {responsibleList:responsibleList};
+    var html = template(data);
+    $("#status-form-content").html(html);
+
+    var date = new Date();
+    $('.date-time-picker').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'DD-MM-YYYY'
+    });
+    $("#ajax-get-responsible-list").select2({
+        placeholder: 'Asigne uno o mas responsables',
+        allowClear: true
+    });
+    // startSelect2StakeLeaders();
+}
+function getResponsibleList()
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/getResponsibleByStatusKeyword',
+        dataType  :"json",
+        type : "POST",
+        // data : drawing,
+        success:function(response){
+            console.log(response);
         }
     });
 }

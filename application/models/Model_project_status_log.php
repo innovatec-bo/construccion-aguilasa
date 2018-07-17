@@ -29,4 +29,25 @@ class Model_project_status_log extends Model_project_status_log_base
         $result = static::recast(get_called_class(), $query->row());
         return $result;
     }
+
+    public static function getLogByProjectId($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+            wfl_project_status_log.*,
+            status_name_pst,
+            keyword_pst
+        FROM
+            wfl_project_status_log
+        LEFT JOIN wfl_project_status ON status_id_psl = id_pst
+        WHERE
+            project_id_psl = " . $ci->db->escape($projectId) . "
+        ORDER BY manual_entry_date_psl DESC
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

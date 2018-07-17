@@ -23,16 +23,16 @@ class AjaxProject extends PrivateController
     {
         $dt = new JqdtHandler($this->input->post());
         $additionalParameters = $this->input->post("additionalParameters");
-        $recordsTotal = Model_project::countAll();
+        $recordsTotal = Model_project::countAll($additionalParameters["status"]);
         $recordsFiltered = $recordsTotal;
-        if (!$dt->hasSearchValue() && count($additionalParameters) <= 0)
+        if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
         {
-            $resultArray = Model_project::getAllProject($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+            $resultArray = Model_project::getAllProjects($additionalParameters["status"], $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
         }
         else
         {
-            $resultArray = Model_project::searchProject($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
-            $recordsFiltered = Model_project::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
+            $resultArray = Model_project::searchProject($additionalParameters["status"], $dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
+            $recordsFiltered = Model_project::searchTotalCount($additionalParameters["status"], $dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);

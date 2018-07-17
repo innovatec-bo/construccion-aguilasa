@@ -215,8 +215,6 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('project-status.status-management');
         $this->complementHandler->addProjectJs('project-status.status-management');
-//        $this->complementHandler->addProjectCss('project.status-management.wizard');
-//        $this->complementHandler->addProjectJs('project.status-management.wizard');
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
@@ -234,6 +232,9 @@ class ProjectStatus extends PrivateController
         $data["projectDigitizationStatus"] = $projectDigitizationStatus;
         $data["projectDrawingStatus"] = $projectDrawingStatus;
         $data["projectScheduleStatus"] = $projectScheduleStatus;
+        $data["projectLog"] = Model_project_status_log::getLogByProjectId($project->getId());
+        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $data["responsibleList"] = json_encode($responsibleList);
         $this->_loadPanelView("project-status/status-management", $data);
     }
 }

@@ -27,7 +27,7 @@ $(document).ready(function() {
                 data.additionalParameters = additionalParameter.getList();
             }
         },
-        "order": [[ 2, "desc" ]],
+        "order": [[ 3, "desc" ]],
         "language": {
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
         },
@@ -36,9 +36,24 @@ $(document).ready(function() {
         "columns" : [{
             "data" : "id_pro"
         }, {
+            "data" : "order_pst"
+        }, {
             "data" : "code_pro"
         }, {
-            "data" : "entry_date_pro"
+            "data" : "manual_entry_date_psl",
+            "render" : function(data, type, row, meta) {
+                var result = "";
+                if(row.manual_entry_date_psl !== "" && row.manual_entry_date_psl !== null)
+                {
+                    var dateObject = new Date(row.manual_entry_date_psl);
+                    var date = dateObject.getDate() < 10? "0"+dateObject.getDate():dateObject.getDate();
+                    var month = (dateObject.getMonth()+1) < 10? "0"+(dateObject.getMonth()+1):(dateObject.getMonth()+1);
+                    var year = dateObject.getFullYear();
+                    result = date+"-"+month+"-"+year;
+                }
+
+                return result;
+            }
         }, {
             "data" : "status_pro",
             "defaultContent" : "",
@@ -82,22 +97,23 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-            "data" : "leader_stl"
+            "data" : "responsible"
         }, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
-                html += ' <a target="_blank" class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                html += ' <a target="_blank" class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
+                var html = ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
+                html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
+                html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }
         }],
         "drawCallback" : function(object) {
             $('[data-toggle="tooltip"]').tooltip();
             this.api().column(0).visible(false);
+            this.api().column(1).visible(false);
         },
         "buttons": ['excel', 'csv','pdf','print', buttonAdd]
     });

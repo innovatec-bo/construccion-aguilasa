@@ -305,7 +305,7 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        //check definition on Model_user_sp.txt
+        //check definition on Model_project_sp.txt
         $sql = 'CALL project_count_all('.$ci->db->escape($statusId).')';
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -330,7 +330,7 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        //check definition on Model_user_sp.txt
+        //check definition on Model_project_sp.txt
         $sql = 'CALL project_get_all('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).')';
         $query = $ci->db->query($sql);
         $result = $query->result();
@@ -357,8 +357,8 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        //check definition on Model_user_sp.txt
-        $sql = 'CALL user_search('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
+        //check definition on Model_project_sp.txt
+        $sql = 'CALL project_search('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
         $query = $ci->db->query($sql);
         $result = $query->result();
         $ci->db->close();
@@ -370,8 +370,8 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        //check definition on Model_user_sp.txt
-        $sql = 'CALL user_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($text).')';
+        //check definition on Model_project_sp.txt
+        $sql = 'CALL project_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($text).')';
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
         $ci->db->close();

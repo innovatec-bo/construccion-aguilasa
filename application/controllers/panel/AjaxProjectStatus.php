@@ -239,4 +239,11 @@ class AjaxProjectStatus extends PrivateController
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
     }
+
+    public function getResponsibleByStatusKeyword()
+    {
+        $keyword = 'design';
+        $list = Model_status_responsible::getUsersResponsibleByStatusKeyword($keyword);
+        echo json_encode($list);exit;
+    }
 }

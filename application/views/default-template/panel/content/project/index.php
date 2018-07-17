@@ -39,13 +39,14 @@
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th>ORDEN</th>
                         <th>CODIGO</th>
                         <th>FECHA <BR>DE INGRESO</th>
                         <th>ESTADO</th>
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
                         <th>RESPONSABLE</th>
-                        <th>ELIMINAR</th>
+                        <th>ACCIONES</th>
                     </tr>
                     </thead>
                 </table>

@@ -5,7 +5,7 @@
  * Date: 29/11/2017
  * Time: 2:35 PM
  */
-
+//TODO: evaluate if add or not the status log id
 class Model_project_points extends Model_project_points_base
 {
     public function __construct($projectId = NULL, $pointsQuantity = 0, $metersDistance = 0)

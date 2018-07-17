@@ -2,11 +2,11 @@
 DROP PROCEDURE IF EXISTS project_count_all;
 CREATE PROCEDURE project_count_all
 (
-	statusId int(1)
+	statusId VARCHAR(15)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl = '",statusId,"' "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro = '",statusId,"' "));
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select count(id_pro) as total from
@@ -14,6 +14,7 @@ select count(id_pro) as total from
 	SELECT
 		wfl_projects.*,
 		status_name_pst,
+		order_pst,
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
 		id_psl
@@ -55,11 +56,15 @@ end
 DROP PROCEDURE IF EXISTS project_get_all;
 CREATE PROCEDURE project_get_all
 (
-	statusId int(1)
+	statusId VARCHAR(15),
+	limitt int(3),
+    offsett int(3),
+    orderBy VARCHAR(40),
+    orderType VARCHAR(4)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl = '",statusId,"' "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro = '",statusId,"' "));
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select * from
@@ -67,6 +72,7 @@ select * from
 	SELECT
 		wfl_projects.*,
 		status_name_pst,
+		order_pst,
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
 		id_psl
@@ -99,7 +105,9 @@ select * from
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
 		",@statusIdFilter2,"
-) projects;");
+) projects
+ORDER BY order_pst ASC, ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
+;");
 PREPARE stmt FROM @queryy;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
@@ -108,7 +116,7 @@ end
 DROP PROCEDURE IF EXISTS project_search;
 CREATE PROCEDURE project_search
 (
-	statusId int(1),
+	statusId VARCHAR(15),
 	limitt int(3),
 	offsett int(3),
 	orderBy VARCHAR(40),
@@ -116,8 +124,8 @@ CREATE PROCEDURE project_search
 	textToSearh VARCHAR(20)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl = '",statusId,"' "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro = '",statusId,"' "));
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select * from
@@ -125,6 +133,7 @@ select * from
 	SELECT
 		wfl_projects.*,
 		status_name_pst,
+		order_pst,
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
 		id_psl
@@ -161,7 +170,66 @@ select * from
 where
 	code_pro LIKE '%",textToSearh,"%'
 	or address_pro LIKE '%",textToSearh,"%'
-ORDER BY ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
+ORDER BY order_pst ASC, ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
+;");
+PREPARE stmt FROM @queryy;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+end
+###################################################################################################### project_search_total_count
+DROP PROCEDURE IF EXISTS project_search_total_count;
+CREATE PROCEDURE project_search_total_count
+(
+	statusId VARCHAR(15),
+	textToSearh VARCHAR(20)
+)
+begin
+SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @queryy = CONCAT(
+"
+select count(id_pro) as total from
+(
+	SELECT
+		wfl_projects.*,
+		status_name_pst,
+		order_pst,
+		status_log_manual_entry_date.manual_entry_date_psl,
+		status_log_manual_entry_date.responsible,
+		id_psl
+	FROM
+		wfl_projects
+	LEFT JOIN (
+		select
+			max(id_psl) id_psl,
+			project_id_psl,
+			status_id_psl,
+			max(manual_entry_date_psl) manual_entry_date_psl,
+			GROUP_CONCAT(responsibles.firstname_usr) responsible
+		from
+			wfl_project_status_log
+		LEFT JOIN (
+			select
+				*
+			from
+				wfl_status_log_responsibles
+			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+			LEFT JOIN sec_users on id_usr = user_id_sre
+		) responsibles on responsibles.status_log_id_slr = id_psl
+
+		where
+			",@statusIdFilter1,"
+		GROUP BY project_id_psl, status_id_psl
+		ORDER BY manual_entry_date_psl desc
+
+	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+	LEFT JOIN wfl_project_status on status_pro = id_pst
+	WHERE
+		",@statusIdFilter2,"
+) projects
+where
+	code_pro LIKE '%",textToSearh,"%'
+	or address_pro LIKE '%",textToSearh,"%'
 ;");
 PREPARE stmt FROM @queryy;
 EXECUTE stmt;

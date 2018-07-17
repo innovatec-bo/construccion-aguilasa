@@ -33,7 +33,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Lista de proyectos";
-        $data["status"] = "";
+        $data["status"] = '1,2,3,4,5,6,7';
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -143,11 +143,11 @@ class Project extends PrivateController
             $projectAddress = $formData["project-address"];
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
-            $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
+            $projectStatus = $formData["project-status"];
 
             $project->setProjectName($projectName);
             $project->setCode($projectCode);
-            if(!is_null($projectStatus))
+            if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);
             }

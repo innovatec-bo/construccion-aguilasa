@@ -27,11 +27,20 @@
                                     <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
                                 </li>
                                 ';
-
+                    $activeFound = FALSE;
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
-                        $class = $status["id_pst"] === $project["status_pro"]?"active":"";
+                        $class = 'completed';
+                        if($status["id_pst"] === $project["status_pro"])
+                        {
+                            $class = 'active';
+                            $activeFound = TRUE;
+                        }
+                        elseif($activeFound)
+                        {
+                            $class = '';
+                        }
                         $navTab .= '
                                 <li class="'.$class.'">
                                     <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
@@ -54,47 +63,8 @@
                 <div class="wizard">
                     <form role="form" name="status-management" data-parsley-validate>
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
-                        <div class="tab-content">
-                            <?php
-                            $tapPane = '';
-                            $i = 1;
-                            foreach ($statusList as $status)
-                            {
-                                $status = $status->toArray();
-                                $class = $status["id_pst"] === $project["status_pro"]?"active":"";
-                                $tapPane .= '
-                                <div class="tab-pane '.$class.'" role="tabpanel" id="step_'.$status["keyword_pst"].'">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            Formulario de '.$status["status_name_pst"].'
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-md-12 status-content">';
-                                                $data["status"] = $status["keyword_pst"];
-                                    $tapPane .= $this->load->view("default-template/panel/content/project-status/status-management-views", $data,TRUE);
-                                    $tapPane .=
-                                                '</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                ';
-                                        $tapPane .= '                   
-                                                    <button type="button" class="btn btn-primary save-status" data-status-id="'.$status["id_pst"].'" data-status-keyword="'.$status["keyword_pst"].'">Guardar</button>
-                                                ';
-                                    $tapPane .= '
-                                                </div>
-                                            </div> 
-                                        </div>
-                                        <!-- /.panel-body -->
-                                    </div>
-                                </div>
-                                ';
-                                $i++;
-                            }
-                            echo $tapPane;
-                            ?>
-                            <div class="clearfix"></div>
+                        <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
+                        <div class="tab-content" id="status-form-content">
                         </div>
                     </form>
                 </div>
@@ -106,33 +76,34 @@
                     Historial
                 </div>
                 <div class="panel-body" style="overflow: auto;height: 50vh;">
-                    <h6>ESTAQUEADO <span class="pull-right">16-07-2018</span></h6>
-                    <blockquote>
-                        <dl>
-                            <dt>Responsable</dt>
-                            <dd>Fulano de tal</dd>
-                            <dt>Observaciones</dt>
-                            <dd>Ninguno</dd>
-                        </dl>
-                    </blockquote>
-                    <h6>DIGITALIZACION <span class="pull-right">16-07-2018</span></h6>
-                    <blockquote>
-                        <dl>
-                            <dt>Responsable</dt>
-                            <dd>Fulano de tal</dd>
-                            <dt>Observaciones</dt>
-                            <dd>Ninguno</dd>
-                        </dl>
-                    </blockquote>
-                    <h6>DIBUJO <span class="pull-right">16-07-2018</span></h6>
-                    <blockquote>
-                        <dl>
-                            <dt>Responsable</dt>
-                            <dd>Fulano de tal</dd>
-                            <dt>Observaciones</dt>
-                            <dd>Ninguno</dd>
-                        </dl>
-                    </blockquote>
+                    <?php
+                    $html = '';
+                    foreach ($projectLog as $log)
+                    {
+                        $originalDate = $log['manual_entry_date_psl'];
+                        $newDate = date("d-m-Y", strtotime($originalDate));
+                        $detail = '';
+                        if($log['log_detail_psl'] != "")
+                        {
+                            $detail = '
+                                <dt>Observaciones</dt>
+                                <dd>'.$log['log_detail_psl'].'</dd>
+                            ';
+                        }
+
+                        $html .= '
+                        <h6>'.$log['status_name_pst'].' <span class="pull-right">'.$newDate.'</span></h6>
+                        <blockquote>
+                            <dl>
+                                <dt>Responsable</dt>
+                                <dd>Fulano de tal</dd>
+                                '.$detail.'
+                            </dl>
+                        </blockquote>
+                        ';
+                    }
+                    echo $html;
+                    ?>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -144,4 +115,8 @@
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/project-status/ht-stakes-project");
+$this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-digitization-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-drawing-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
 ?>
