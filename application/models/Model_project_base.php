@@ -151,7 +151,7 @@ class Model_project_base extends MY_Model
     /**
      * @return mixed
      */
-    public static function countAll()
+    public static function countAll_deprecated()
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -172,7 +172,7 @@ class Model_project_base extends MY_Model
      * @param string $orderType
      * @return mixed
      */
-    public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAll_deprecated($limit, $offset, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {
@@ -202,7 +202,7 @@ class Model_project_base extends MY_Model
      * @param array $additionalParameters
      * @return mixed
      */
-    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
+    public static function search_deprecated($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
     {
         if ($orderBy === null)
         {
@@ -234,7 +234,7 @@ class Model_project_base extends MY_Model
      * @param array $additionalParameters
      * @return mixed
      */
-    public static function searchTotalCount($text, $colsArray = null, $additionalParameters = array())
+    public static function searchTotalCount_deprecated($text, $colsArray = null, $additionalParameters = array())
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -291,6 +291,91 @@ class Model_project_base extends MY_Model
         }
 
         return $sql;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
+
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+
+    /**
+     * @param string $statusId
+     * @return mixed
+     */
+    public static function countAll($statusId = "")
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_user_sp.txt
+        $sql = 'CALL project_count_all('.$ci->db->escape($statusId).')';
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        $ci->db->close();
+        return $totalCount;
+    }
+
+    /**
+     * @param string $statusId
+     * @param $limit
+     * @param null $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     */
+    public static function getAllProjects($statusId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_user_sp.txt
+        $sql = 'CALL project_get_all('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).')';
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        $ci->db->close();
+        return $result;
+    }
+
+    /**
+     * @param $statusId
+     * @param $text
+     * @param $limit
+     * @param null $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @param null $colsArray
+     * @return mixed
+     */
+    public static function searchProject($statusId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_user_sp.txt
+        $sql = 'CALL user_search('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        $ci->db->close();
+        return $result;
+    }
+
+    public static function searchTotalCount($statusId = "", $text = "", $colsArray = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_user_sp.txt
+        $sql = 'CALL user_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($text).')';
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        $ci->db->close();
+        return $totalCount;
     }
     ################################################################################################# END - DATATABLE AJAX METHODS
 }
