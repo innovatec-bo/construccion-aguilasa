@@ -1,0 +1,64 @@
+/****************************** begin - main logo settings*/
+.logo-link
+{
+    padding: 0px 10px;
+}
+.logo-image
+{
+    width: 80%;
+}/****************************** end - main logo settings*/
+
+/****************************** begin - panel settings*/
+.panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #0F263A;
+    border-color: #ddd;
+}
+/****************************** end - panel settings*/
+
+/****************************** begin - menu settings*/
+#side-menu
+{
+    background-color: #0F263A;
+}
+#side-menu a{
+    color:#fff;
+}
+#side-menu a.active{
+    color:#0F263A;
+}
+#side-menu a:hover{
+    color:#0F263A;
+}
+#side-menu a:focus{
+    color:#0F263A;
+}
+.page-header
+{
+    text-transform: uppercase;
+}
+.navbar-top-links a
+{
+    color:#0F263A;
+}
+/****************************** end - menu settings*/
+
+/****************************** begin - table settings*/
+.table-responsive table
+{
+    font-size: 11px;
+}
+.table-responsive table thead
+{
+    color:#fff;
+    background-color: #0F263A;
+    text-transform: uppercase;
+}
+.table-responsive table tbody td
+{
+    padding:5px;
+}
+/****************************** end - table settings*/
+.page-header {
+    border-bottom: 1px solid #fab90a;
+}

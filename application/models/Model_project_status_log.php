@@ -41,11 +41,14 @@ class Model_project_status_log extends Model_project_status_log_base
                 keyword_pst,
                 points_quantity_prp,
                 distance_prp,
-                GROUP_CONCAT(responsible.full_name) responsible_user
+                GROUP_CONCAT(responsible.full_name) responsible_user,
+                points_pro,
+                distance_pro
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
+        LEFT JOIN wfl_projects on id_pro = project_id_psl
         LEFT JOIN (
             SELECT
                 status_log_id_slr,
@@ -60,7 +63,7 @@ class Model_project_status_log extends Model_project_status_log_base
         WHERE
                 project_id_psl = ".$ci->db->escape($projectId)."
         GROUP BY id_psl
-        ORDER BY manual_entry_date_psl DESC
+        ORDER BY createdon_psl DESC
         ";
         $query = $ci->db->query($sql);
         $result = $query->result_array();

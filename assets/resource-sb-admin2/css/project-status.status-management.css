@@ -41,3 +41,22 @@ blockquote dl
 {
     margin-bottom: 10px;
 }
+.header-description
+{
+    font-size: 11px;
+}
+.original-area
+{
+    color: #a29999;
+}
+.quick-log-status-name
+{
+    /*color: #96c03d;*/
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid #fab90a;
+}
+.header-description.well
+{
+    margin-bottom: 0px;
+}

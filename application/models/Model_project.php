@@ -26,9 +26,9 @@ class Model_project extends Model_project_base
             $projectPoints = new Model_project_points($projectStatus->getId(), $points, $metersDistance);
             $projectPoints->save();
             //The points and distance saved on log also are saved on project
-            $this->_points = $points;
-            $this->_distance = $metersDistance;
-            $this->save();
+//            $this->_points = $points;
+//            $this->_distance = $metersDistance;
+//            $this->save();
 
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
@@ -39,7 +39,8 @@ class Model_project extends Model_project_base
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
         $currentResponsibleList = Model_status_log_responsible::getByStatusLogId($statusId);
-        $responsibleDifference = array_diff($responsibleList,$currentResponsibleList);
+//        echo "<pre>";var_dump($responsibleList,$currentResponsibleList);exit;
+        $responsibleDifference = array_diff($responsibleList,array_column($currentResponsibleList,"id_sre"));
         if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail || count($responsibleDifference) > 0)
         {
             //Lets create a new log

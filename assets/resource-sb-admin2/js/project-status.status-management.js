@@ -3,12 +3,15 @@
  */
 $(document).ready(function() {
     var status = $("ul.wizard li.active a").prop("id");
+    getProjectLog();
     loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        // e.target // newly activated tab
-        // e.relatedTarget // previous active tab
         status = $(e.target).attr("id");
         loadStatusForm(status);
+    });
+    $(document).on("click","#next-step",function(e){
+        e.preventDefault();
+        $("ul.wizard li.active").next().find("a").trigger("click");
     });
     $(document).on("click", ".check-stakes-team",function(e){
         e.preventDefault();
@@ -23,6 +26,8 @@ $(document).ready(function() {
 
         if($form.parsley().isValid({group: statusKeyword}))
         {
+            var $content = $("#status-form-content");
+            blockArea($content);
             switch(statusKeyword)
             {
                 case "stakes":
@@ -161,6 +166,7 @@ function saveStakesTeam(statusId,statusKeyword)
         data : stakes,
         success:function(response){
             loadStatusSavedView();
+            getProjectLog();
         }
     });
 }
@@ -198,6 +204,7 @@ function saveDigitization(statusId,statusKeyword)
         data : digitization,
         success:function(response){
             loadStatusSavedView();
+            getProjectLog();
         }
     });
 }
@@ -228,6 +235,7 @@ function saveDrawing(statusId,statusKeyword)
         data : drawing,
         success:function(response){
             loadStatusSavedView();
+            getProjectLog();
         }
     });
 }
@@ -261,6 +269,7 @@ function saveSchedule(statusId,statusKeyword)
         data : drawing,
         success:function(response){
             loadStatusSavedView();
+            getProjectLog();
         }
     });
 }
@@ -276,10 +285,18 @@ function loadStatusForm(statusKeyword, addMoreInfo)
         success:function(response){
             if(response.length <= 0 || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
+                var points = $("#points").text();
+                var distance = $("#distance").text();
                 var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
+                var statusResponsible = [];
+                $.each(responsibleList,function(index,value){
+                    if(value.keyword_pst == statusKeyword)
+                        statusResponsible.push(value);
+                });
+                var responsibleListLength = statusResponsible.length;
                 var htmlSource   = $("#ht-status-"+statusKeyword+"-form").html();
                 var template = Handlebars.compile(htmlSource);
-                var data = {responsibleList:responsibleList};
+                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance};
                 var html = template(data);
                 $("#status-form-content").html(html);
                 var date = new Date();
@@ -304,18 +321,6 @@ function loadStatusForm(statusKeyword, addMoreInfo)
         }
     });
 }
-function getResponsibleList()
-{
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/getResponsibleByStatusKeyword',
-        dataType  :"json",
-        type : "POST",
-        // data : drawing,
-        success:function(response){
-            console.log(response);
-        }
-    });
-}
 
 function loadStatusSavedView()
 {
@@ -324,4 +329,41 @@ function loadStatusSavedView()
     var data = {};
     var html = template(data);
     $("#status-form-content").html(html);
+}
+
+function getProjectLog()
+{
+    var projectId = $("input[name=project-id]").val();
+    var $logContent = $("#status-project-log-content");
+    blockArea($logContent);
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/getProjectLog',
+        dataType  :"json",
+        type : "POST",
+        data : {projectId:projectId},
+        success:function(response){
+            var htmlSource   = $("#ht-status-project-log-quick-view").html();
+            var template = Handlebars.compile(htmlSource);
+            var data = {projectLog:response};
+            var html = template(data);
+            $logContent.html(html);
+        }
+    });
+}
+
+function blockArea(content)
+{
+    content.block({
+        message: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>',
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8,
+            cursor: 'wait'
+        },
+        css: {
+            border: 0,
+            padding: 0,
+            backgroundColor: 'transparent'
+        }
+    });
 }

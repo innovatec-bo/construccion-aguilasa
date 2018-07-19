@@ -14,7 +14,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">SEREBO</a>
+        <a class="navbar-brand logo-link" href="<?=base_url()?>">
+            <img class="img-responsive logo-image" src="<?=assets_url("images/logo.png")?>">
+        </a>
     </div>
     <!-- /.navbar-header -->
 

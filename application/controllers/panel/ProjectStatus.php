@@ -232,7 +232,7 @@ class ProjectStatus extends PrivateController
 //        $data["projectDigitizationStatus"] = $projectDigitizationStatus;
         $data["projectDrawingStatus"] = $projectDrawingStatus;
         $data["projectScheduleStatus"] = $projectScheduleStatus;
-        $data["projectLog"] = Model_project_status_log::getLogByProjectId($project->getId());
+//        $data["projectLog"] = Model_project_status_log::getLogByProjectId($project->getId());
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
         $this->_loadPanelView("project-status/status-management", $data);

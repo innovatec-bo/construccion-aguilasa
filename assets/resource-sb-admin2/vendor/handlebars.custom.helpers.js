@@ -101,3 +101,17 @@
     Handlebars.registerHelper('var',function(name, value, context){
         this[name] = value;
     });
+    Handlebars.registerHelper('formatDate', function (datetime, format) {
+        var DateFormats = {
+            short: "DD-MM-YYYY",
+            long: "dddd DD.MM.YYYY HH:mm"
+        };
+        if (moment) {
+            // can use other formats like 'lll' too
+            format = DateFormats[format] || format;
+            return moment(datetime).format(format);
+        }
+        else {
+            return datetime;
+        }
+    });

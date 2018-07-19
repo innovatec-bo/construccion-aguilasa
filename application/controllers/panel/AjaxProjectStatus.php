@@ -249,4 +249,12 @@ class AjaxProjectStatus extends PrivateController
         $response = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
         echo json_encode($response);exit;
     }
+
+    public function getProjectLog()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+        echo json_encode($projectLog);exit;
+    }
 }

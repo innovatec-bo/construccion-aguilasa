@@ -8,7 +8,7 @@
 ?>
 <script id="ht-status-schedule-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_schedule">
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 Formulario de Cronograma new
             </div>

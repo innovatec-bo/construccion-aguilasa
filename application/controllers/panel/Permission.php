@@ -17,7 +17,6 @@ class Permission extends PrivateController
     {
         $this->_validateFeature('permission');
         $this->complementHandler->addViewComplement("bootbox");
-        $this->complementHandler->addViewComplement("jquery.blockui");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("jstree");
         $this->complementHandler->addViewComplement("handlebars");

@@ -16,7 +16,7 @@ class Project extends PrivateController
 
     public function index()
     {
-        $this->_validateFeature('project_index');
+//        $this->_validateFeature('project_index');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -48,7 +48,7 @@ class Project extends PrivateController
 
     public function add()
     {
-        $this->_validateFeature('project_add');
+//        $this->_validateFeature('project_add');
 
         /** View complements */
         $this->complementHandler->addViewComplement("moment-with-locales");
@@ -91,11 +91,16 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus);
             $project->save();
-            $keyword = $projectStatus == 7?"unsigned":"design";
+            $statusDetail = "Proyecto enviado a diseño";
+            if($projectStatus == 7)
+            {
+                $keyword = "unsigned";
+                $statusDetail = "Proyecto creado";
+            }
             $responsibleList = Model_status_responsible::getUsersResponsible($keyword);
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
-            $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,"Proyecto creado",$projectEntryDate,$responsibleList);
+            $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,$statusDetail,$projectEntryDate,$responsibleList);
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
             redirect(base_url("panel/Project"));
         }

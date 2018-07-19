@@ -8,7 +8,7 @@
 ?>
 <script id="ht-status-stakes-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_stakes">
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 Formulario de Estaqueado new
             </div>
@@ -35,10 +35,12 @@
                                     <label>Estaqueador(es) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                     <div class="form-group">
                                         <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
-                                            {{#each responsibleList}}
-                                                {{#ifCond keyword_pst '==' 'stakes'}}
-                                                    <option value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                                            {{#each statusResponsible}}
+                                                {{var "selected" ""}}
+                                                {{#ifCond ../responsibleListLength "===" 1}}
+                                                    {{var "selected" "selected"}}
                                                 {{/ifCond}}
+                                                <option value="{{id_sre}}" {{selected}}>{{firstname_usr}} {{lastname_usr}}</option>
                                             {{/each}}
                                         </select>
                                     </div>

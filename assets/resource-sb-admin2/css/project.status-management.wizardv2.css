@@ -10,6 +10,14 @@
     position: absolute;
     margin-top: 17px;
 }
+#next-step:hover
+{
+    text-decoration: none;
+}
+#next-step:focus
+{
+    text-decoration: none;
+}
 .nav-tabs.wizard {
     background-color: transparent;
     padding: 0;

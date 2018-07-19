@@ -92,7 +92,7 @@ $(document).ready(function() {
                 var response = "Sin asignar";
                 if($.isNumeric(row.distance_pro) && $.isNumeric(row.points_pro))
                 {
-                    response = row.distance_pro+"K / "+row.points_pro+"p";
+                    response = row.points_pro+"p / "+row.distance_pro+"Km";
                 }
                 return response;
             }
@@ -104,7 +104,7 @@ $(document).ready(function() {
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var html = ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
+                // html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="ENVIAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-send"></i></a> ';
                 html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                 html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;

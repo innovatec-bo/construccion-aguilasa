@@ -16,7 +16,7 @@ class AjaxProject extends PrivateController
         {
             redirect('404');
         }
-        $this->_validateFeature("project_index");
+//        $this->_validateFeature("project_index");
     }
 
     public function ajaxDtAllProjects()

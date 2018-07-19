@@ -9,12 +9,46 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Diseño <em class="subtext"><?=$project["project_name_pro"]?></h1></em>
+            <h1 class="page-header">Diseño<em class="subtext"><?=$project["code_pro"]?></h1></em>
         </div>
         <div class="col-md-12">
             <?php
             $this->load->view("default-template/flash-data-basic-messages");
             ?>
+        </div>
+        <div class="col-md-2">
+            <dl class="header-description well well-sm">
+                <dt>SISTEMA</dt>
+                <dd><?=$projectSystems[$project["system_pro"]]?></dd>
+            </dl>
+        </div>
+        <div class="col-md-2">
+            <dl class="header-description well well-sm">
+                <dt>FECHA DE INGRESO</dt>
+                <?php
+                $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
+                $entryDate = date_format($entryDate, 'd-m-Y');
+                ?>
+                <dd><?=$entryDate?></dd>
+            </dl>
+        </div>
+        <div class="col-md-2">
+            <dl class="header-description well well-sm">
+                <dt>FISCAL DE CREE</dt>
+                <dd><?=$project["cre_fiscal_pro"]?></dd>
+            </dl>
+        </div>
+        <div class="col-md-2">
+            <dl class="header-description well well-sm">
+                <dt>DIRECCION</dt>
+                <dd><dd><?=$project["address_pro"]?></dd></dd>
+            </dl>
+        </div>
+        <div class="col-md-2">
+            <dl class="header-description well well-sm">
+                <dt>AREA</dt>
+                <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
+            </dl>
         </div>
         <div class="col-md-10">
             <div class="tabbable">
@@ -57,7 +91,7 @@
         </div>
         <div class="col-md-2">
             <div class="tabbable">
-                <a href="#next-step" data-toggle="tab" aria-expanded="false" id="next-step">Siguiente paso</a>
+                <a href="#next-step" id="next-step">Siguiente paso</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -73,47 +107,12 @@
             </section>
         </div>
         <div class="col-md-3">
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     Historial
                 </div>
-                <div class="panel-body" style="overflow: auto;height: 50vh;">
-                    <?php
-                    $html = '';
-                    foreach ($projectLog as $log)
-                    {
-                        $originalDate = $log['manual_entry_date_psl'];
-                        $newDate = date("d-m-Y", strtotime($originalDate));
-                        $detail = '';
-                        if($log['log_detail_psl'] != "")
-                        {
-                            $detail = '
-                                <dt>Observaciones</dt>
-                                <dd>'.$log['log_detail_psl'].'</dd>
-                            ';
-                        }
-                        $projectArea = '';
-                        if($log['keyword_pst'] == "digitization")
-                        {
-                            $projectArea = '
-                                <dt>Area del proyecto</dt>
-                                <dd>'.$log['points_quantity_prp'].' / '.$log['distance_prp'].'Km</dd>
-                            ';
-                        }
-                        $html .= '
-                        <h6>'.$log['status_name_pst'].' <span class="pull-right">'.$newDate.'</span></h6>
-                        <blockquote>
-                            <dl>
-                                <dt>Responsable(s)</dt>
-                                <dd>'.$log['responsible_user'].'</dd>
-                                '.$projectArea.'
-                                '.$detail.'
-                            </dl>
-                        </blockquote>
-                        ';
-                    }
-                    echo $html;
-                    ?>
+                <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content">
+
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -132,4 +131,5 @@ $this->load->view("default-template/panel/content/project-status/ht-status-drawi
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 $this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
+$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
 ?>

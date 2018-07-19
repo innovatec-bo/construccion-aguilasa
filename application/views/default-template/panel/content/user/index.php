@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Users</h1>
+            <h1 class="page-header">Usuarios</h1>
         </div>
         <div class="col-md-12">
             <?php
@@ -22,10 +22,10 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Last name</th>
-                        <th>Email</th>
-                        <th>Options</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Opciones</th>
                     </tr>
                     </thead>
                 </table>

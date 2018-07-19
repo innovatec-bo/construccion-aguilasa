@@ -16,7 +16,7 @@ class Design extends PrivateController
 
     public function index()
     {
-        $this->_validateFeature('project_index');
+        $this->_validateFeature('design_index');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -48,7 +48,7 @@ class Design extends PrivateController
 
     public function stakesTeam()
     {
-        $this->_validateFeature('project_index');
+        $this->_validateFeature('design_stakes');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -80,7 +80,7 @@ class Design extends PrivateController
 
     public function digitization()
     {
-        $this->_validateFeature('project_index');
+        $this->_validateFeature('design_digitization');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -112,7 +112,7 @@ class Design extends PrivateController
 
     public function drawing()
     {
-        $this->_validateFeature('project_index');
+        $this->_validateFeature('design_drawing');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -144,7 +144,7 @@ class Design extends PrivateController
 
     public function schedule()
     {
-        $this->_validateFeature('project_index');
+        $this->_validateFeature('design_schedule');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
