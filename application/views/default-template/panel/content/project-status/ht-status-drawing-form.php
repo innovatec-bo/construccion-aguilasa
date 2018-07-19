@@ -24,11 +24,27 @@
                                             <div class="input-group date date-time-picker">
                                                 <input name="drawing-entry-date" readonly="" class="form-control" required="" data-parsley-group="drawing" data-parsley-errors-container="#error-drawing-entry-date">
                                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
                                             </div>
                                             <div id="error-drawing-entry-date"></div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset>
+                                            <label>Dibujante(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                            <div class="form-group">
+                                                <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
+                                                    {{#each responsibleList}}
+                                                    {{#ifCond keyword_pst '==' 'drawing'}}
+                                                        <option value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                                                    {{/ifCond}}
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="form-group">

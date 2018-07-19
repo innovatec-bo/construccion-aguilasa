@@ -8,12 +8,12 @@
 //TODO: evaluate if add or not the status log id
 class Model_project_points extends Model_project_points_base
 {
-    public function __construct($projectId = NULL, $pointsQuantity = 0, $metersDistance = 0)
+    public function __construct($statusLogId = NULL, $pointsQuantity = 0, $distance = 0)
     {
-        parent::__construct($projectId, $pointsQuantity, $metersDistance);
+        parent::__construct($statusLogId, $pointsQuantity, $distance);
     }
 
-    public static function getLastPointsByProjectId($projectId)
+    public static function getLastPointsByProjectId_deprecated($projectId)
     {
         $ci = &get_instance();
         $ci->load->database();

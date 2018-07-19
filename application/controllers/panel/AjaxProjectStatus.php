@@ -146,18 +146,15 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $stakesTeamEntryDate = $formData["stakesTeamEntryDate"];
-        $stakesTeamEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $stakesTeamEntryDate);
-        $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d H:i:s');
+        $stakesTeamEntryDate = DateTime::createFromFormat('d-m-Y', $stakesTeamEntryDate);
+        $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d');
         $statusId = $formData["statusId"];
-        $stakesTeamList = $formData["stakesTeamList"];
+        $responsibleList = $formData["responsibleList"];
         $statusDetail = "";
-
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $stakesTeamEntryDate);
-        $project->save();
-        $project->saveStakesTeam($stakesTeamList);
+        $project->addStatusToLog($statusId, $statusDetail, $stakesTeamEntryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -169,21 +166,18 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $digitizationEntryDate = $formData["digitizationEntryDate"];
-        $digitizationEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $digitizationEntryDate);
-        $digitizationEntryDate = date_format($digitizationEntryDate, 'Y-m-d H:i:s');
+        $digitizationEntryDate = DateTime::createFromFormat('d-m-Y', $digitizationEntryDate);
+        $digitizationEntryDate = date_format($digitizationEntryDate, 'Y-m-d');
         $statusId = $formData["statusId"];
         $projectPoints = $formData["projectPoints"];
         $projectDistance = $formData["projectDistance"];
         $statusDetail = $formData["statusDetail"];
-//        $lastPoints = $formData["lastPoints"];
-//        $lastDistance = $formData["lastDistance"];
+        $responsibleList = $formData["responsibleList"];
 
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->savePoints($projectPoints, $projectDistance);
-        $project->addStatusToLog($statusId, $statusDetail, $digitizationEntryDate);
-        $project->save();
+        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $digitizationEntryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -195,16 +189,16 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $drawingEntryDate = $formData["drawingEntryDate"];
-        $drawingEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $drawingEntryDate);
-        $drawingEntryDate = date_format($drawingEntryDate, 'Y-m-d H:i:s');
+        $drawingEntryDate = DateTime::createFromFormat('d-m-Y', $drawingEntryDate);
+        $drawingEntryDate = date_format($drawingEntryDate, 'Y-m-d');
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
+        $responsibleList = $formData["responsibleList"];
 
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $drawingEntryDate);
-        $project->save();
+        $project->addStatusToLog($statusId, $statusDetail, $drawingEntryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -216,24 +210,24 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $scheduleEntryDate = $formData["scheduleEntryDate"];
-        $scheduleEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $scheduleEntryDate);
-        $scheduleEntryDate = date_format($scheduleEntryDate, 'Y-m-d H:i:s');
+        $scheduleEntryDate = DateTime::createFromFormat('d-m-Y', $scheduleEntryDate);
+        $scheduleEntryDate = date_format($scheduleEntryDate, 'Y-m-d');
         $projectStart = $formData["projectStart"];
-        $projectStart = DateTime::createFromFormat('d-m-Y H:i:s', $projectStart);
-        $projectStart = date_format($projectStart, 'Y-m-d H:i:s');
+        $projectStart = DateTime::createFromFormat('d-m-Y', $projectStart);
+        $projectStart = date_format($projectStart, 'Y-m-d');
         $projectEnd = $formData["projectEnd"];
-        $projectEnd = DateTime::createFromFormat('d-m-Y H:i:s', $projectEnd);
-        $projectEnd = date_format($projectEnd, 'Y-m-d H:i:s');
+        $projectEnd = DateTime::createFromFormat('d-m-Y', $projectEnd);
+        $projectEnd = date_format($projectEnd, 'Y-m-d');
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
-
+        $responsibleList = Model_status_responsible::getUsersResponsible("schedule");
+        $responsibleList = array_column($responsibleList,'id_sre');
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate);
-        $project->save();
+        $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -243,7 +237,16 @@ class AjaxProjectStatus extends PrivateController
     public function getResponsibleByStatusKeyword()
     {
         $keyword = 'design';
-        $list = Model_status_responsible::getUsersResponsibleByStatusKeyword($keyword);
+        $list = Model_status_responsible::getUsersResponsible($keyword);
         echo json_encode($list);exit;
+    }
+
+    public function verifyPreviousEntry()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $statusKeyword = $formData["statusKeyword"];
+        $response = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
+        echo json_encode($response);exit;
     }
 }

@@ -2,12 +2,6 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    // $('.date-time-picker').datetimepicker({
-    //     ignoreReadonly: true,
-    //     // defaultDate: date,
-    //     format: 'DD-MM-YYYY HH:mm:ss'
-    // });
-    // startSelect2StakeLeaders();
     var status = $("ul.wizard li.active a").prop("id");
     loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -32,16 +26,16 @@ $(document).ready(function() {
             switch(statusKeyword)
             {
                 case "stakes":
-                    saveStakesTeam(statusId);
+                    saveStakesTeam(statusId,statusKeyword);
                     break;
                 case "digitization":
-                    saveDigitization(statusId);
+                    saveDigitization(statusId,statusKeyword);
                     break;
                 case "drawing":
-                    saveDrawing(statusId);
+                    saveDrawing(statusId,statusKeyword);
                     break;
                 case "schedule":
-                    saveSchedule(statusId);
+                    saveSchedule(statusId,statusKeyword);
                     break;
                 default:
                     alert("There isn't a saving logic defined to "+statusKeyword);
@@ -142,12 +136,12 @@ function startSelect2StakeLeaders()
     $('#ajax-get-stakes-leader').append(list).trigger('change');
 }
 
-function saveStakesTeam(statusId)
+function saveStakesTeam(statusId,statusKeyword)
 {
-    var select2Data = $('#ajax-get-stakes-leader').select2("data");
-    var stakesTeamList = [];
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
     $.each(select2Data, function(index, value){
-        stakesTeamList.push(value.id);
+        responsibleList.push(value.id);
     });
     var projectId = $("input[name=project-id]").val();
     var stakesTeamEntryDate = $("input[name=stakes-team-entry-date]").val();
@@ -157,7 +151,7 @@ function saveStakesTeam(statusId)
         stakesTeamEntryDate:stakesTeamEntryDate,
         statusId: statusId,
         statusDetail: statusDetail,
-        stakesTeamList: stakesTeamList
+        responsibleList: responsibleList
     };
 
     $.ajax({
@@ -166,14 +160,18 @@ function saveStakesTeam(statusId)
         type : "POST",
         data : stakes,
         success:function(response){
-            // console.log(response);
-            window.location.reload();
+            loadStatusSavedView();
         }
     });
 }
 
-function saveDigitization(statusId)
+function saveDigitization(statusId,statusKeyword)
 {
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
     var projectId = $("input[name=project-id]").val();
     var digitizationEntryDate = $("input[name=digitization-entry-date]").val();
     var projectPoints = $("input[name=project-points]").val();
@@ -189,7 +187,8 @@ function saveDigitization(statusId)
         projectDistance: projectDistance,
         statusDetail: statusDetail,
         lastPoints: lastPoints,
-        lastDistance: lastDistance
+        lastDistance: lastDistance,
+        responsibleList:responsibleList
     };
 
     $.ajax({
@@ -198,13 +197,19 @@ function saveDigitization(statusId)
         type : "POST",
         data : digitization,
         success:function(response){
-            window.location.reload();
+            loadStatusSavedView();
         }
     });
 }
 
-function saveDrawing(statusId)
+function saveDrawing(statusId,statusKeyword)
 {
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
     var projectId = $("input[name=project-id]").val();
     var drawingEntryDate = $("input[name=drawing-entry-date]").val();
     var statusDetail = $("textarea[name=drawing-detail]").val();
@@ -212,7 +217,8 @@ function saveDrawing(statusId)
         projectId: projectId,
         drawingEntryDate:drawingEntryDate,
         statusId: statusId,
-        statusDetail: statusDetail
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
     };
 
     $.ajax({
@@ -221,13 +227,18 @@ function saveDrawing(statusId)
         type : "POST",
         data : drawing,
         success:function(response){
-            window.location.reload();
+            loadStatusSavedView();
         }
     });
 }
 
-function saveSchedule(statusId)
+function saveSchedule(statusId,statusKeyword)
 {
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
     var projectId = $("input[name=project-id]").val();
     var scheduleEntryDate = $("input[name=schedule-entry-date]").val();
     var projectStart = $("input[name=project-start]").val();
@@ -239,7 +250,8 @@ function saveSchedule(statusId)
         projectStart: projectStart,
         projectEnd: projectEnd,
         statusId: statusId,
-        statusDetail: statusDetail
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
     };
 
     $.ajax({
@@ -248,31 +260,49 @@ function saveSchedule(statusId)
         type : "POST",
         data : drawing,
         success:function(response){
-            window.location.reload();
+            loadStatusSavedView();
         }
     });
 }
 
-function loadStatusForm(statusKeyword)
+function loadStatusForm(statusKeyword, addMoreInfo)
 {
-    var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
-    var htmlSource   = $("#ht-status-"+statusKeyword+"-form").html();
-    var template = Handlebars.compile(htmlSource);
-    var data = {responsibleList:responsibleList};
-    var html = template(data);
-    $("#status-form-content").html(html);
-
-    var date = new Date();
-    $('.date-time-picker').datetimepicker({
-        ignoreReadonly: true,
-        defaultDate: date,
-        format: 'DD-MM-YYYY'
+    var projectId = $("input[name=project-id]").val();
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/verifyPreviousEntry',
+        dataType  :"json",
+        type : "POST",
+        data : {projectId:projectId, statusKeyword:statusKeyword},
+        success:function(response){
+            if(response.length <= 0 || addMoreInfo ==  1 || statusKeyword == 'unsigned')
+            {
+                var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
+                var htmlSource   = $("#ht-status-"+statusKeyword+"-form").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {responsibleList:responsibleList};
+                var html = template(data);
+                $("#status-form-content").html(html);
+                var date = new Date();
+                $('.date-time-picker').datetimepicker({
+                    ignoreReadonly: true,
+                    defaultDate: date,
+                    format: 'DD-MM-YYYY'
+                });
+                $("#ajax-get-responsible-list").select2({
+                    placeholder: 'Asigne uno o mas responsables',
+                    allowClear: true
+                });
+            }
+            else
+            {
+                var htmlSource = $("#ht-status-already-has-data").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {statusKeyword:statusKeyword};
+                var html = template(data);
+                $("#status-form-content").html(html);
+            }
+        }
     });
-    $("#ajax-get-responsible-list").select2({
-        placeholder: 'Asigne uno o mas responsables',
-        allowClear: true
-    });
-    // startSelect2StakeLeaders();
 }
 function getResponsibleList()
 {
@@ -285,4 +315,13 @@ function getResponsibleList()
             console.log(response);
         }
     });
+}
+
+function loadStatusSavedView()
+{
+    var htmlSource   = $("#ht-status-saved-view").html();
+    var template = Handlebars.compile(htmlSource);
+    var data = {};
+    var html = template(data);
+    $("#status-form-content").html(html);
 }

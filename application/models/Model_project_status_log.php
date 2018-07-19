@@ -36,6 +36,43 @@ class Model_project_status_log extends Model_project_status_log_base
         $ci->load->database();
         $sql = "
         SELECT
+                wfl_project_status_log.*,
+                status_name_pst,
+                keyword_pst,
+                points_quantity_prp,
+                distance_prp,
+                GROUP_CONCAT(responsible.full_name) responsible_user
+        FROM
+                wfl_project_status_log
+        LEFT JOIN wfl_project_status ON status_id_psl = id_pst
+        LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
+        LEFT JOIN (
+            SELECT
+                status_log_id_slr,
+                firstname_usr,
+                lastname_usr,
+                CONCAT(firstname_usr,' ',lastname_usr) full_name
+            FROM
+                wfl_status_log_responsibles
+            LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre
+            LEFT JOIN sec_users on user_id_sre = id_usr 
+        ) responsible on responsible.status_log_id_slr = id_psl
+        WHERE
+                project_id_psl = ".$ci->db->escape($projectId)."
+        GROUP BY id_psl
+        ORDER BY manual_entry_date_psl DESC
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
             wfl_project_status_log.*,
             status_name_pst,
             keyword_pst
@@ -44,6 +81,7 @@ class Model_project_status_log extends Model_project_status_log_base
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
+            and keyword_pst = ".$ci->db->escape($statusKeyword)."
         ORDER BY manual_entry_date_psl DESC
         ";
         $query = $ci->db->query($sql);

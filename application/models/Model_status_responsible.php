@@ -15,13 +15,14 @@ class Model_status_responsible extends Model_status_responsible_base
 
     public static function getUsersResponsible($keyword = "")
     {
+        $ci = &get_instance();
+        $ci->load->database();
         $keywordFilter = "";
         if($keyword != "")
         {
             $keywordFilter = " and keyword_pst = ".$ci->db->escape($keyword);
         }
-        $ci = &get_instance();
-        $ci->load->database();
+
         $sql = "
             SELECT
                 sec_users.*,

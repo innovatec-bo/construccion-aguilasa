@@ -13,7 +13,7 @@ $(document).ready(function() {
     var buttonAdd = {
         text: "Add",
         action: function ( e, dt, node, config ) {
-            window.open(base_url + "panel/Project/add","_blank");
+            window.open(base_url + "panel/Project/add","_self");
         }
     };
     //Horizontal Icons dataTable

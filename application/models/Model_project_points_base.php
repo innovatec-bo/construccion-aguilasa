@@ -12,16 +12,16 @@ class Model_project_points_base extends MY_Model
     const TABLE_ID = "id_prp";
     const ATTRIB_SUFIX = "_prp";
 
-    protected $_projectId;
+    protected $_statusLogId;
     protected $_pointsQuantity;
-    protected $_metersDistance;
+    protected $_distance;
 
-    public function __construct($projectId = NULL, $pointsQuantity = 0, $metersDistance = 0)
+    public function __construct($statusLogId = NULL, $pointsQuantity = 0, $distance = 0)
     {
         parent::__construct();
-        $this->_projectId = $projectId;
+        $this->_statusLogId = $statusLogId;
         $this->_pointsQuantity = $pointsQuantity;
-        $this->_metersDistance = $metersDistance;
+        $this->_distance = $distance;
     }
 
     /**
@@ -32,9 +32,9 @@ class Model_project_points_base extends MY_Model
     {
         $tableAttributes = array(
             "id_prp" => $this->_id,
-            "project_id_prp" => $this->_projectId,
+            "status_log_id_prp" => $this->_statusLogId,
             "points_quantity_prp" => $this->_pointsQuantity,
-            "meters_distance_prp" => $this->_metersDistance,
+            "distance_prp" => $this->_distance,
             "deleted_prp" => $this->_deleted,
             "createdon_prp" => $this->_createdOn,
             "createdby_prp" => $this->_createdBy,
@@ -59,9 +59,9 @@ class Model_project_points_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
-                $object->project_id_prp,
+                $object->status_log_id_prp,
                 $object->points_quantity_prp,
-                $object->meters_distance_prp
+                $object->distance_prp
             );
             $instance->_id = $object->id_prp;
 

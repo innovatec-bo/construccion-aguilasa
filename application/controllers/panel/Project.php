@@ -91,8 +91,11 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus);
             $project->save();
-            $project->savePoints($projectPoints, $projectMetersDistance);
-            $project->addStatusToLog($projectStatus);
+            $keyword = $projectStatus == 7?"unsigned":"design";
+            $responsibleList = Model_status_responsible::getUsersResponsible($keyword);
+            $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
+            $responsibleList = array($responsibleList['id_sre']);
+            $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,"Proyecto creado",$projectEntryDate,$responsibleList);
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
             redirect(base_url("panel/Project"));
         }
@@ -122,9 +125,6 @@ class Project extends PrivateController
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
         $data["project"] = $project->toArray();
-        $projectLastPoints = Model_project_points::getLastPointsByProjectId($project->getId());
-        $projectLastPoints = $projectLastPoints instanceof Model_project_points?$projectLastPoints->toArray():array("points_quantity_prp" => "", "meters_distance_prp" => "");
-        $data["projectLastPoints"] = $projectLastPoints;
         $data["projectSystems"] = $this->_projectSystems;
         if($this->form_validation->run() === FALSE)
         {
@@ -135,14 +135,14 @@ class Project extends PrivateController
             $formData = $this->input->post();
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
-            $projectEntryDate = $formData["project-entry-date"];
-            $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
-            $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
+//            $projectEntryDate = $formData["project-entry-date"];
+//            $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
+//            $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
-            $projectPoints = $formData["project-points"];
-            $projectMetersDistance = $formData["project-meters-distance"];
+//            $projectPoints = $formData["project-points"];
+//            $projectMetersDistance = $formData["project-meters-distance"];
             $projectStatus = $formData["project-status"];
 
             $project->setProjectName($projectName);
@@ -155,8 +155,8 @@ class Project extends PrivateController
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);
             $project->save();
-            $project->savePoints($projectLastPoints["points_quantity_prp"], $projectLastPoints["meters_distance_prp"], $projectPoints, $projectMetersDistance);
-            if(!is_null($projectStatus))
+            //The status isn't empty when is send to design
+            if($projectStatus != "")
             {
                 $project->addStatusToLog($projectStatus);
             }
@@ -175,9 +175,12 @@ class Project extends PrivateController
         redirect(base_url("panel/Project"));
     }
 
-    public function testDate()
+    public function test()
     {
+        $a1=array(0 => 2, 1=>3);
+        $a2=array(0 => 2, 1=>4);
 
+        $result=array_diff($a1,$a2);
+        print_r($result);exit;
     }
-
 }

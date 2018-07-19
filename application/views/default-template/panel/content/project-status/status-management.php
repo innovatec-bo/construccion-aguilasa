@@ -22,16 +22,12 @@
                     <?php
                     $navTab = '';
                     $i = 1;
-                    $unsigned = '
-                                <li class="completed">
-                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
-                                </li>
-                                ';
+
                     $activeFound = FALSE;
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
-                        $class = 'completed';
+                        $class = $project["status_pro"] != 1 && $project["status_pro"] !=7?'completed':"";
                         if($status["id_pst"] === $project["status_pro"])
                         {
                             $class = 'active';
@@ -48,6 +44,12 @@
                                 ';
                         $i++;
                     }
+                    $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
+                    $unsigned = '
+                                <li class="'.$unsignedAsDefault.'">
+                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
+                                </li>
+                                ';
                     echo $unsigned.$navTab;
                     ?>
                 </ul>
@@ -90,13 +92,21 @@
                                 <dd>'.$log['log_detail_psl'].'</dd>
                             ';
                         }
-
+                        $projectArea = '';
+                        if($log['keyword_pst'] == "digitization")
+                        {
+                            $projectArea = '
+                                <dt>Area del proyecto</dt>
+                                <dd>'.$log['points_quantity_prp'].' / '.$log['distance_prp'].'Km</dd>
+                            ';
+                        }
                         $html .= '
                         <h6>'.$log['status_name_pst'].' <span class="pull-right">'.$newDate.'</span></h6>
                         <blockquote>
                             <dl>
-                                <dt>Responsable</dt>
-                                <dd>Fulano de tal</dd>
+                                <dt>Responsable(s)</dt>
+                                <dd>'.$log['responsible_user'].'</dd>
+                                '.$projectArea.'
                                 '.$detail.'
                             </dl>
                         </blockquote>
@@ -115,8 +125,11 @@
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/project-status/ht-stakes-project");
+$this->load->view("default-template/panel/content/project-status/ht-status-unsigned-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-drawing-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
+$this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
 ?>

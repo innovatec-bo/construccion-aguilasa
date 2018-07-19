@@ -13,27 +13,41 @@ class Model_project extends Model_project_base
         parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance);
     }
 
-    public function savePoints($points, $metersDistance)
+    public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
     {
         //Verify if the entrance data is equals to the current data
         if($this->_points != $points || $this->_distance != $metersDistance)
         {
-            $projectPoints = new Model_project_points($this->_id, $points, $metersDistance);
+            //Lets create a new log
+            $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
+            $projectStatus->save();
+
+            //Create the record about the points and distance and associate it to project status log
+            $projectPoints = new Model_project_points($projectStatus->getId(), $points, $metersDistance);
             $projectPoints->save();
+            //The points and distance saved on log also are saved on project
             $this->_points = $points;
             $this->_distance = $metersDistance;
             $this->save();
+
+            //Each statusLog needs to have a o more responsible by log
+            Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
         }
     }
 
-    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "")
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array())
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
-
-        if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail)
+        $currentResponsibleList = Model_status_log_responsible::getByStatusLogId($statusId);
+        $responsibleDifference = array_diff($responsibleList,$currentResponsibleList);
+        if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail || count($responsibleDifference) > 0)
         {
+            //Lets create a new log
             $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
+
+            //Each statusLog needs to have a o more responsible by log
+            Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
         }
     }
 

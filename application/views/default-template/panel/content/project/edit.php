@@ -98,26 +98,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row form-inline hide">
-                            <div class="col-md-6">
-                                <label>Area del proyecto</label><br>
-                                <div class="form-group">
-                                    <input class="form-control" readonly value="<?=set_value('project-points', $projectLastPoints["points_quantity_prp"])?>" name="project-points" placeholder="Puntos">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" readonly value="<?=set_value('project-meters-distance', $projectLastPoints["meters_distance_prp"])?>" name="project-meters-distance" placeholder="Distancia">
-                                </div>
-                            </div>
-                        </div><br>
                         <div class="row">
                             <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary save-project" data-project-status="7">Guardar</button>
+
                                 <?php
-                                if($project["status_pro"] === NULL)
+                                //If the project is unsigned then the user can choose between hold in unsigned or send to design
+                                if($project["status_pro"] === 7)
                                 {
                                     ?>
+                                    <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
                                     <button type="button" class="btn btn-info save-project" data-project-status="1">
                                         Guardar y enviar a diseño
+                                    </button>
+                                    <?php
+                                }
+                                //If the project is on status distinct to unsigned then hold on as well.
+                                else
+                                {
+                                    ?>
+                                    <button type="button" class="btn btn-info save-project" data-project-status="">
+                                        Guardar
                                     </button>
                                     <?php
                                 }
