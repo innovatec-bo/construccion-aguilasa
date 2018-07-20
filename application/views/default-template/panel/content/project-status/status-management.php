@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-2">
             <dl class="header-description well well-sm">
-                <dt>FISCAL DE CREE</dt>
+                <dt>FISCAL DE CRE</dt>
                 <dd><?=$project["cre_fiscal_pro"]?></dd>
             </dl>
         </div>

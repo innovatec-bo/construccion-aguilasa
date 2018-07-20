@@ -116,4 +116,17 @@ class Model_project extends Model_project_base
             $ci->db->insert_batch("wfl_project_stakes", $arrayToSave);
         }
     }
+
+    public static function getByCode($code)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        select * from ".static::TABLE_NAME." where ".static::notDeleted()." and code_pro = ".$ci->db->escape($code)." 
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
 }

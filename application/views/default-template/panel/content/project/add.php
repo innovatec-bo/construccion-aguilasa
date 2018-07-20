@@ -29,7 +29,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Codigo</label>
-                                    <input class="form-control" required name="project-code" placeholder="Ingrese el código del proyecto">
+                                    <input class="form-control" value="<?=set_value("project-code")?>" required name="project-code" placeholder="Ingrese el código del proyecto">
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nombre de proyecto</label>
-                                    <input class="form-control" name="project-name" placeholder="Ingrese el nombre del proyecto">
+                                    <input class="form-control" value="<?=set_value("project-name")?>" name="project-name" placeholder="Ingrese el nombre del proyecto">
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
-                                    <input class="form-control" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
+                                    <input class="form-control" required value="<?=set_value("project-cre-fiscal")?>" name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
                                 </div>
                             </div>
                         </div>

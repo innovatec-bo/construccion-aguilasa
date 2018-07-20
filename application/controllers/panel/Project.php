@@ -58,7 +58,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.add');
 
         /** Server Side Validations **/
-        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim');
         $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal de CRE', 'trim|required');
@@ -151,7 +151,7 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"];
 
             $project->setProjectName($projectName);
-            $project->setCode($projectCode);
+//            $project->setCode($projectCode);
             if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);
@@ -187,5 +187,19 @@ class Project extends PrivateController
 
         $result=array_diff($a1,$a2);
         print_r($result);exit;
+    }
+
+    public function validate_code()
+    {
+        $formData = $this->input->post();
+        $code = isset($formData["project-code"])?$formData["project-code"]:"";
+        $project = Model_project::getByCode($code);
+        $result = TRUE;
+        if($project instanceof Model_project)
+        {
+            $this->form_validation->set_message('validate_code', 'Ya existe un proyecto con el codigo '.$code);
+            $result = FALSE;
+        }
+        return $result;
     }
 }
