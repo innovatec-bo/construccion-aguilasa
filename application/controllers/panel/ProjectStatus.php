@@ -204,7 +204,7 @@ class ProjectStatus extends PrivateController
     public function statusManagement($projectId = NULL)
     {
         $this->_validateFeature('project_status_management');
-
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
@@ -217,8 +217,6 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project-status.status-management');
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
-
-        $project = Model_project::getById($projectId);
 
         $statusList = Model_project_status::getChildrenByParentStatusId(1);
         $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
