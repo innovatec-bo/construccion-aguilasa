@@ -201,8 +201,9 @@ class ProjectStatus extends PrivateController
         redirect(base_url("panel/Role"));
     }
 
-    public function statusManagement($projectId = NULL)
+    public function statusManagement($statusSet = "", $projectId = NULL)
     {
+        $keywordList = $this->_validateStatusSet($statusSet);
         $this->_validateFeature('project_status_management');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
         $this->complementHandler->addViewComplement("bootbox");
@@ -218,21 +219,34 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
-        $statusList = Model_project_status::getChildrenByParentStatusId(1);
-        $projectStakeLeaders = Model_project_stakes::getByProjectId($projectId);
-//        $projectDigitizationStatus = Model_project_status::getDigitizationStatus($projectId);
-        $projectDrawingStatus = Model_project_status::getDrawingStatus($projectId);
-        $projectScheduleStatus = Model_project_status::getScheduleStatus($projectId);
+        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
         $data["project"] = $project->toArray();
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
-        $data["teamLeadersOnProject"] = json_encode($projectStakeLeaders);
-//        $data["projectDigitizationStatus"] = $projectDigitizationStatus;
-        $data["projectDrawingStatus"] = $projectDrawingStatus;
-        $data["projectScheduleStatus"] = $projectScheduleStatus;
-//        $data["projectLog"] = Model_project_status_log::getLogByProjectId($project->getId());
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
         $this->_loadPanelView("project-status/status-management", $data);
+    }
+
+    private function _validateStatusSet($statusSet)
+    {
+        switch ($statusSet)
+        {
+            case 'design':
+                $keywordList = array("stakes","digitization","drawing","schedule");
+                break;
+            case 'rectify_design':
+                $keywordList = array("stakes","digitization","drawing");
+                break;
+            case 'rectify_illustration':
+                $keywordList = array("digitization","drawing");
+                break;
+            default:
+                $keywordList = array();
+                $this->session->set_flashdata("errorMessage","El conjunto de estados es incorrecto!");
+                redirect("panel/Project");
+        }
+
+        return $keywordList;
     }
 }

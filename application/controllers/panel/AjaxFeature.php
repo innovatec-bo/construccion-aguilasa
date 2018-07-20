@@ -25,6 +25,42 @@ class AjaxFeature extends PrivateController
         echo $feature;exit;
     }
 
+    public function add()
+    {
+        $response = array("status" => 1, "message" => array());
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('feature-name', 'Feature name', 'trim|required');
+        $this->form_validation->set_rules('feature-security-string', 'Security string', 'trim|required|callback_unique_security_string');
+        $this->form_validation->set_rules('feature-icon', 'Icon', 'trim|required');
+        $this->form_validation->set_rules('feature-link', 'Link', 'trim|required');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $response = array("status" => 0, "message" => validation_errors());
+        }
+        else
+        {
+            $formData = $this->input->post();
+//            echo"<pre>";var_dump($formData);exit;
+            $parentId = $formData["feature-parent-id"] == "#"?NULL:$formData["feature-parent-id"];
+            $isMenu = isset($formData["is-visible-menu"])?1:0;
+            $feature = new Model_feature(
+                $formData["feature-name"],
+                $formData["feature-security-string"],
+                $formData["feature-icon"],
+                $formData["feature-link"],
+                $formData["feature-description"],
+                $parentId,
+                1,
+                $isMenu
+            );
+            $feature->save();
+        }
+        echo json_encode($response);exit;
+    }
+
+
     public function edit()
     {
         $response = array("success" => 1, "message" => array());

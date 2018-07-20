@@ -93,11 +93,11 @@
                                 <label>Area del proyecto</label><br>
                                 <div class="form-group">
                                     <em>Puntos</em><br>
-                                    <input class="form-control" name="project-points" placeholder="Puntos">
+                                    <input class="form-control" value="<?=set_value("project-points")?>" name="project-points" placeholder="Puntos">
                                 </div>
                                 <div class="form-group">
                                     <em>Distancia Km</em><br>
-                                    <input class="form-control" name="project-meters-distance" placeholder="Distancia">
+                                    <input class="form-control" value="<?=set_value("project-meters-distance")?>" name="project-meters-distance" placeholder="Distancia">
                                 </div>
                             </div>
                         </div><br>

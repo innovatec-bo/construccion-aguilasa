@@ -49,6 +49,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea class="form-control" name="stakes-detail" rows="2"></textarea>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <button type="button" class="btn btn-primary save-status" data-status-id="2" data-status-keyword="stakes">Guardar</button>

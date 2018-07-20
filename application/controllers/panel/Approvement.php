@@ -7,12 +7,11 @@
  */
 
 
-class Design extends PrivateController
+class Approvement extends PrivateController
 {
     public function __construct()
     {
         parent::__construct();
-
     }
 
     public function index()
@@ -33,9 +32,8 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en diseño";
+        $data["viewTitle"] = "Proyectos en Aprobacion";
         $data["status"] = "1";
-        $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -68,7 +66,6 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en estaqueado";
         $data["status"] = 2;
-        $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -101,7 +98,6 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en Digitalizacion";
         $data["status"] = 3;
-        $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -134,7 +130,6 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en dibujo";
         $data["status"] = 5;
-        $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -167,7 +162,6 @@ class Design extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en Cronograma";
         $data["status"] = 6;
-        $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

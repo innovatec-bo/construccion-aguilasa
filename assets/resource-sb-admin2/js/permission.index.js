@@ -12,6 +12,11 @@ $(document).ready(function() {
         getRoles(roleId);
     });
 
+    $(document).on("click",".launch-add-form",function(){
+        launchAddForm();
+    });
+
+
     $(document).on("click",".save-permissions",function(){
         var checked = $("#container").jstree("get_checked",null,true);
         var undetermined = $("#container").jstree("get_undetermined",null);
@@ -88,18 +93,14 @@ function reportMenu(node) {
         createItem : {
             "label" : "Create feature",
             "action" : function() {
-                var tree = $('#container').jstree(true);
-                tree.create_node(node, {type:'file'});
+                launchAddForm(node);
             },
             "_class" : "class"
-        },
+        }
+        ,
         renameItem : {
             "label" : "Edit feature",
             "action" : function() {
-                // var tree = $('#container').jstree(true);
-                // tree.edit(node,null,function(data){
-                //     console.log(data);
-                // });
                 launchEditForm(node);
             }
         },
@@ -137,6 +138,41 @@ function loadTree()
                     var roleId = $("input[type=radio][name=roles]:checked").val();
                     getRoles(roleId);
                 });
+        }
+    });
+}
+
+
+function launchAddForm(node)
+{
+    var parentId = "#";
+    if(typeof node === "object")
+    {
+        parentId = node.id;
+    }
+    var htmlSource   = $('#ht-modal-add-form').html();
+    var template = Handlebars.compile(htmlSource);
+    var data = {parentId:parentId};
+    var html    = template(data);
+    bootbox.confirm({
+        title:"Add feature",
+        message: html,
+        buttons: {
+            confirm: {
+                label: 'Save',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'Cancel',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if(result)
+            {
+                var form = $("form[name=modal-feature-add-form]");
+                addFeature(form.serialize());
+            }
         }
     });
 }
@@ -233,4 +269,32 @@ function sortFeatures()
             $('#container').unblock();
         }
     });
+
+}
+
+function addFeature(featureData)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxFeature/add',
+        dataType  :"json",
+        type : "POST",
+        data:featureData,
+        success:function(response){
+            if(response.status === 1)
+            {
+                var tree = $('#container').jstree(true);
+                tree.destroy();
+                loadTree();
+            }
+            else
+            {
+                bootbox.alert({
+                    title:"Something went wrong!",
+                    message: response.message,
+                    size:"medium"
+                })
+            }
+        }
+    });
+
 }

@@ -16,7 +16,9 @@
             $this->load->view("default-template/flash-data-basic-messages");
             ?>
         </div>
+
         <div class="col-md-12 hide">
+            <input type="hidden" name="status-set" value="<?=$statusSet?>">
             <form class="form-group" id="extra-request-data">
                 <div class="row">
                     <div class="col-md-12">

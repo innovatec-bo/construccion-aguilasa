@@ -29,6 +29,32 @@ class Model_project_status extends Model_project_status_base
         return $result;
     }
 
+    public static function getByStatusKeywordList($keywordList = array())
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $keywordStringList = "";
+
+        foreach ($keywordList as $keyword)
+        {
+            $keywordStringList .= $ci->db->escape($keyword).",";
+        }
+
+        $keywordStringList = substr($keywordStringList, 0, -1);
+
+        $sql = "
+        select ".static::TABLE_NAME.".*
+        from ".static::TABLE_NAME."
+        where 
+        ".static::notDeleted()."
+        and keyword_pst in (".$keywordStringList.")        
+        ";
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
+
     public function delete($makePhysicalDelete = FALSE)
     {
         //Delete all roles

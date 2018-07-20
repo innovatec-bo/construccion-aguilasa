@@ -14,7 +14,7 @@
         <div class="col-md-6 col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Arbol de menú
+                    Arbol de menú <button type="button" class="btn btn-default btn-xs launch-add-form"><i class="fa fa-plus"></i></button>
                 </div>
                 <div class="panel-body">
                     <div id="container"></div>
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <button type="button" class="btn btn-default save-permissions">Save</button>
+            <button type="button" class="btn btn-primary save-permissions">Save</button>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -58,5 +58,6 @@
 </div>
 <!-- /.container-fluid -->
 <?php
+$this->load->view('default-template/panel/content/feature/ht-modal-add-form');
 $this->load->view('default-template/panel/content/feature/ht-modal-edit-form');
 ?>

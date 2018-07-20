@@ -48,7 +48,7 @@ class Project extends PrivateController
 
     public function add()
     {
-//        $this->_validateFeature('project_add');
+        $this->_validateFeature('project_add');
 
         /** View complements */
         $this->complementHandler->addViewComplement("moment-with-locales");
@@ -138,20 +138,14 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
-            $projectCode = $formData["project-code"];
+//            $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
-//            $projectEntryDate = $formData["project-entry-date"];
-//            $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
-//            $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
-//            $projectPoints = $formData["project-points"];
-//            $projectMetersDistance = $formData["project-meters-distance"];
             $projectStatus = $formData["project-status"];
 
             $project->setProjectName($projectName);
-//            $project->setCode($projectCode);
             if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);
