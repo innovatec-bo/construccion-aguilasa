@@ -141,7 +141,7 @@ function startSelect2StakeLeaders()
     $('#ajax-get-stakes-leader').append(list).trigger('change');
 }
 
-function saveStakesTeam(statusId,statusKeyword)
+function saveStakesTeam(statusId, statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
     var responsibleList = [];
@@ -150,7 +150,7 @@ function saveStakesTeam(statusId,statusKeyword)
     });
     var projectId = $("input[name=project-id]").val();
     var stakesTeamEntryDate = $("input[name=stakes-team-entry-date]").val();
-    var statusDetail = $("textarea[name=digitization-detail]").val();
+    var statusDetail = $("textarea[name=stakes-detail]").val();
     var stakes = {
         projectId: projectId,
         stakesTeamEntryDate:stakesTeamEntryDate,
@@ -283,7 +283,15 @@ function loadStatusForm(statusKeyword, addMoreInfo)
         type : "POST",
         data : {projectId:projectId, statusKeyword:statusKeyword},
         success:function(response){
-            if(response.length <= 0 || addMoreInfo ==  1 || statusKeyword == 'unsigned')
+            if(response.scheduleEntry.length > 0)
+            {
+                var htmlSource   = $("#ht-finished-stage-design").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {};
+                var html = template(data);
+                $("#status-form-content").html(html);
+            }
+            else if(response.previousEntry.length <= 0 || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
                 var points = $("#points").text();
                 var distance = $("#distance").text();

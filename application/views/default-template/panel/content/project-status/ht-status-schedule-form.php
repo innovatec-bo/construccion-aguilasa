@@ -67,9 +67,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-
-                        <button type="button" class="btn btn-primary save-status" data-status-id="6" data-status-keyword="schedule">Guardar</button>
-
+                        <button type="button" class="btn btn-primary save-status" data-status-id="6" data-status-keyword="schedule">Guardar y enviar a aprobacion</button>
                     </div>
                 </div>
             </div>

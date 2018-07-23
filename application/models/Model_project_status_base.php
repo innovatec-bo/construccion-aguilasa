@@ -82,4 +82,13 @@ class Model_project_status_base extends MY_Model
         }
         return $response;
     }
+
+    /*************************************** begin - getters */
+
+    public function getName()
+    {
+        return $this->_name;
+    }
+
+    /*************************************** end - getters */
 }

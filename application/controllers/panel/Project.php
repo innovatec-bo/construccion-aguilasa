@@ -34,6 +34,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Lista de proyectos";
         $data["status"] = '1,2,3,4,5,6,7';
+        $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

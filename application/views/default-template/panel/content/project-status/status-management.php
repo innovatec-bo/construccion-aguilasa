@@ -5,11 +5,15 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
+$statusName = $statusList[$project["status_pro"]]->getName();
+$projectSystem = $projectSystems[$project["system_pro"]];
+$entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
+$entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Diseño<em class="subtext"><?=$project["code_pro"]?></h1></em>
+            <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?></h1></em>
         </div>
         <div class="col-md-12">
             <?php
@@ -19,16 +23,12 @@
         <div class="col-md-2">
             <dl class="header-description well well-sm">
                 <dt>SISTEMA</dt>
-                <dd><?=$projectSystems[$project["system_pro"]]?></dd>
+                <dd><?=$projectSystem?></dd>
             </dl>
         </div>
         <div class="col-md-2">
             <dl class="header-description well well-sm">
                 <dt>FECHA DE INGRESO</dt>
-                <?php
-                $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
-                $entryDate = date_format($entryDate, 'd-m-Y');
-                ?>
                 <dd><?=$entryDate?></dd>
             </dl>
         </div>
@@ -79,11 +79,12 @@
                         $i++;
                     }
                     $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
-                    $unsigned = '
-                                <li class="'.$unsignedAsDefault.'">
-                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
-                                </li>
-                                ';
+                    $unsigned = '';
+//                    $unsigned = '
+//                                <li class="'.$unsignedAsDefault.'">
+//                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
+//                                </li>
+//                                ';
                     echo $unsigned.$navTab;
                     ?>
                 </ul>
@@ -132,4 +133,5 @@ $this->load->view("default-template/panel/content/project-status/ht-status-sched
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 $this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
 $this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+$this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 ?>

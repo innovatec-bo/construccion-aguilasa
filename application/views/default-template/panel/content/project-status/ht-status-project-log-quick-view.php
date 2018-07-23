@@ -15,7 +15,7 @@
                 <dd>{{responsible_user}}</dd>
                 {{#ifCond keyword_pst "==" "digitization"}}
                     <dt>Area del proyecto</dt>
-                    <dd>{{points_quantity_prp}} / {{distance_prp}}Km - <span class="original-area">{{points_pro}} / {{distance_pro}}Km</span></dd>
+                    <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                 {{/ifCond}}
                 {{#ifCond log_detail_psl "!=" ""}}
                     <dt>Observaciones</dt>

@@ -39,14 +39,14 @@ class Model_project extends Model_project_base
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
         $currentResponsibleList = Model_status_log_responsible::getByStatusLogId($statusId);
-//        echo "<pre>";var_dump($responsibleList,$currentResponsibleList);exit;
         $responsibleDifference = array_diff($responsibleList,array_column($currentResponsibleList,"id_sre"));
         if(!$getLastProjectStatus instanceof Model_project_status_log || $getLastProjectStatus->getProjectStatus() != $this->_status || $getLastProjectStatus->getDetail() != $detail || count($responsibleDifference) > 0)
         {
             //Lets create a new log
             $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
-
+            $this->_status = $statusId;
+            $this->save();
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
         }

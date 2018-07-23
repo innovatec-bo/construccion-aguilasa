@@ -150,7 +150,7 @@ class AjaxProjectStatus extends PrivateController
         $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d');
         $statusId = $formData["statusId"];
         $responsibleList = $formData["responsibleList"];
-        $statusDetail = "";
+        $statusDetail = $formData["statusDetail"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
@@ -223,11 +223,12 @@ class AjaxProjectStatus extends PrivateController
         $responsibleList = Model_status_responsible::getUsersResponsible("schedule");
         $responsibleList = array_column($responsibleList,'id_sre');
         $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate, $responsibleList);
+        $project->addStatusToLog(8, "Iniciando etapa de aprobacion", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
+        $project->addStatusToLog(9, "Proyecto por enviar", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -246,7 +247,12 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $statusKeyword = $formData["statusKeyword"];
-        $response = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
+        //TODO:el status set() define
+        $statusSet = "design";
+        $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
+        $scheduleEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "schedule");
+        $response["previousEntry"] = $previousEntry;
+        $response["scheduleEntry"] = $scheduleEntry;
         echo json_encode($response);exit;
     }
 

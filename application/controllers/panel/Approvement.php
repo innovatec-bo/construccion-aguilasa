@@ -46,9 +46,9 @@ class Approvement extends PrivateController
         $this->_loadPanelView("project/index",$data);
     }
 
-    public function stakesTeam()
+    public function readyToSend()
     {
-        $this->_validateFeature('design_stakes');
+        $this->_validateFeature('Approvement_pending_to_send');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -64,8 +64,9 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en estaqueado";
-        $data["status"] = 2;
+        $data["viewTitle"] = "Proyectos por enviar a CREE";
+        $data["status"] = 9;
+        $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -78,7 +79,7 @@ class Approvement extends PrivateController
         $this->_loadPanelView("project/index",$data);
     }
 
-    public function digitization()
+    public function alreadySent()
     {
         $this->_validateFeature('design_digitization');
         $this->complementHandler->addViewComplement("bootbox");
@@ -96,8 +97,9 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en Digitalizacion";
-        $data["status"] = 3;
+        $data["viewTitle"] = "Proyectos enviados a CREE";
+        $data["status"] = 10;
+        $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -110,7 +112,7 @@ class Approvement extends PrivateController
         $this->_loadPanelView("project/index",$data);
     }
 
-    public function drawing()
+    public function approved()
     {
         $this->_validateFeature('design_drawing');
         $this->complementHandler->addViewComplement("bootbox");
@@ -128,8 +130,9 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en dibujo";
-        $data["status"] = 5;
+        $data["viewTitle"] = "Proyectos aprobados";
+        $data["status"] = 11;
+        $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -142,7 +145,7 @@ class Approvement extends PrivateController
         $this->_loadPanelView("project/index",$data);
     }
 
-    public function schedule()
+    public function canceled()
     {
         $this->_validateFeature('design_schedule');
         $this->complementHandler->addViewComplement("bootbox");
@@ -160,8 +163,9 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en Cronograma";
-        $data["status"] = 6;
+        $data["viewTitle"] = "Proyectos cancelados";
+        $data["status"] = 12;
+        $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
