@@ -75,3 +75,9 @@
         </div>
     </div>
 </script>
+
+<script id="ht-status-stakes-form-completed" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Esta definido el cronograma de incio y fin. Este proyecto ahora esta en etapa de aprobacion!</h4>
+    </div>
+</script>

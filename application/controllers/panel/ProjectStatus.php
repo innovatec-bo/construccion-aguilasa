@@ -203,9 +203,10 @@ class ProjectStatus extends PrivateController
 
     public function statusManagement($statusSet = "", $projectId = NULL)
     {
-        $keywordList = $this->_validateStatusSet($statusSet);
         $this->_validateFeature('project_status_management');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $project = $project->toArray();
+        $keywordList = $this->_validateStatusSet($statusSet, $project);
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
@@ -220,20 +221,21 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
-        $data["project"] = $project->toArray();
+        $data["project"] = $project;
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
+        $data["statusSet"] = $statusSet;
         $this->_loadPanelView("project-status/status-management", $data);
     }
 
-    private function _validateStatusSet($statusSet)
+    private function _validateStatusSet($statusSet, $project)
     {
         switch ($statusSet)
         {
             case 'design':
-                $keywordList = array("unsigned","stakes","digitization","drawing","schedule");
+                $keywordList = array("design","stakes","digitization","drawing","schedule");
                 break;
             case 'approvement':
                 $keywordList = array("ready_to_send","already_sent","approved","canceled");

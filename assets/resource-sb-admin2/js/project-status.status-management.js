@@ -277,11 +277,12 @@ function saveSchedule(statusId,statusKeyword)
 function loadStatusForm(statusKeyword, addMoreInfo)
 {
     var projectId = $("input[name=project-id]").val();
+    var statusSet = $("input[name=status-set]").val();
     $.ajax({
         url : base_url + 'panel/AjaxProjectStatus/verifyPreviousEntry',
         dataType  :"json",
         type : "POST",
-        data : {projectId:projectId, statusKeyword:statusKeyword},
+        data : {projectId:projectId, statusKeyword:statusKeyword, statusSet:statusSet},
         success:function(response){
             if(response.scheduleEntry.length > 0)
             {
@@ -302,7 +303,10 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                         statusResponsible.push(value);
                 });
                 var responsibleListLength = statusResponsible.length;
-                var htmlSource   = $("#ht-status-"+statusKeyword+"-form").html();
+                var htmlSource   = $("#ht-status-not-created-view-form").html();
+                if($("#ht-status-"+statusKeyword+"-form").length === 1)
+                    htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
+
                 var template = Handlebars.compile(htmlSource);
                 var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance};
                 var html = template(data);
@@ -320,7 +324,8 @@ function loadStatusForm(statusKeyword, addMoreInfo)
             }
             else
             {
-                var htmlSource = $("#ht-status-already-has-data").html();
+                // var htmlSource = $("#ht-status-already-has-data").html();
+                var htmlSource = $("#ht-status-"+statusKeyword+"-form-completed").html();
                 var template = Handlebars.compile(htmlSource);
                 var data = {statusKeyword:statusKeyword};
                 var html = template(data);

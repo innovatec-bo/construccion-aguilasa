@@ -20,3 +20,10 @@
         </div>
     </div>
 </script>
+
+<script id="ht-status-unsigned-form-completed" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Ya ingreso informacion para este estado!</h4>
+        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+    </div>
+</script>

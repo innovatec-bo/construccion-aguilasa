@@ -90,5 +90,10 @@ class Model_project_status_base extends MY_Model
         return $this->_name;
     }
 
+    public function getKeyword()
+    {
+        return $this->_keyword;
+    }
+
     /*************************************** end - getters */
 }

@@ -247,10 +247,13 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $statusKeyword = $formData["statusKeyword"];
-        //TODO:el status set() define
-        $statusSet = "design";
+        $statusSet = $formData["statusSet"];
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
-        $scheduleEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "schedule");
+        $scheduleEntry = array();
+        if($statusSet == "design")
+        {
+            $scheduleEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "schedule");
+        }
         $response["previousEntry"] = $previousEntry;
         $response["scheduleEntry"] = $scheduleEntry;
         echo json_encode($response);exit;

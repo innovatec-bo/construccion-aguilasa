@@ -64,7 +64,7 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos por enviar a CREE";
+        $data["viewTitle"] = "Proyectos por enviar a CRE";
         $data["status"] = 9;
         $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;

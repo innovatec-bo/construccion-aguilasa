@@ -5,7 +5,7 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
-$statusName = $statusList[$project["status_pro"]]->getName();
+$statusName = isset($statusList[$project["status_pro"]])?$statusList[$project["status_pro"]]->getName():"Este proyecto no esta en ".$statusSet;
 $projectSystem = $projectSystems[$project["system_pro"]];
 $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
 $entryDate = date_format($entryDate, 'd-m-Y');
@@ -50,7 +50,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
             </dl>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-11">
             <div class="tabbable">
                 <ul class="nav nav-tabs wizard">
                     <?php
@@ -90,9 +90,9 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </ul>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <div class="tabbable">
-                <a href="#next-step" id="next-step">Siguiente paso</a>
+                <a href="#next-step" id="next-step">Siguiente</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -101,6 +101,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     <form role="form" name="status-management" data-parsley-validate>
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
+                        <input type="hidden" value="<?=$statusSet?>" name="status-set">
                         <div class="tab-content" id="status-form-content">
                         </div>
                     </form>
@@ -125,13 +126,21 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/project-status/ht-stakes-project");
+
 $this->load->view("default-template/panel/content/project-status/ht-status-unsigned-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-no-created-view-form");
+//diseño
+$this->load->view("default-template/panel/content/project-status/ht-status-design-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-drawing-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
-$this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
-$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+//approvement
+$this->load->view("default-template/panel/content/project-status/ht-status-ready_to_send-form");
+
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
+$this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
+
+//$this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
+$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
 ?>
