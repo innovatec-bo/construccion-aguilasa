@@ -103,7 +103,7 @@
 
                                 <?php
                                 //If the project is unsigned then the user can choose between hold in unsigned or send to design
-                                if($project["status_pro"] === 7)
+                                if($project["status_pro"] == 7)
                                 {
                                     ?>
                                     <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
