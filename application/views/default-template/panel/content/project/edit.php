@@ -44,13 +44,13 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fecha de ingreso</label>
-                                    <div class='input-group date' id='datetimepicker1'>
+                                    <div class='input-group date'>
                                         <?php
                                         $entryDate = "";
                                         if(isset($project["entry_date_pro"]))
                                         {
                                             $entryDate = $project["entry_date_pro"];
-                                            $entryDate = DateTime::createFromFormat('Y-m-d 00:00:00', $entryDate);
+                                            $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $entryDate);
                                             $entryDate = date_format($entryDate, 'd-m-Y');
                                         }
                                         ?>

@@ -34,7 +34,7 @@ class Design extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en diseño";
-        $data["status"] = "1";
+        $data["status"] = "1,2,3,5,6";
         $data["statusSet"] = "design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);

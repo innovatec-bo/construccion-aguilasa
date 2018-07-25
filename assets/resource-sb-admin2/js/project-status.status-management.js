@@ -308,7 +308,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance};
+                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance,statusKeyword:statusKeyword};
                 var html = template(data);
                 $("#status-form-content").html(html);
                 var date = new Date();

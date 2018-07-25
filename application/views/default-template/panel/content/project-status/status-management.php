@@ -22,7 +22,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         </div>
         <div class="col-md-2">
             <dl class="header-description well well-sm">
-                <dt>SISTEMA</dt>
+                <dt>SISTEMA <?=date("H:i:s")?></dt>
                 <dd><?=$projectSystem?></dd>
             </dl>
         </div>
@@ -137,6 +137,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-drawi
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
 //approvement
 $this->load->view("default-template/panel/content/project-status/ht-status-ready_to_send-form");
+//$this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

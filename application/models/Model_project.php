@@ -15,24 +15,17 @@ class Model_project extends Model_project_base
 
     public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
     {
-        //Verify if the entrance data is equals to the current data
-        if($this->_points != $points || $this->_distance != $metersDistance)
-        {
-            //Lets create a new log
-            $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
-            $projectStatus->save();
 
-            //Create the record about the points and distance and associate it to project status log
-            $projectPoints = new Model_project_points($projectStatus->getId(), $points, $metersDistance);
-            $projectPoints->save();
-            //The points and distance saved on log also are saved on project
-//            $this->_points = $points;
-//            $this->_distance = $metersDistance;
-//            $this->save();
+        //Lets create a new log
+        $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
+        $projectStatus->save();
 
-            //Each statusLog needs to have a o more responsible by log
-            Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
-        }
+        //Create the record about the points and distance and associate it to project status log
+        $projectPoints = new Model_project_points($projectStatus->getId(), $points, $metersDistance);
+        $projectPoints->save();
+
+        //Each statusLog needs to have a o more responsible by log
+        Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
     public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array())

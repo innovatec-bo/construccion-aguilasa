@@ -58,7 +58,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
-                                    <input class="form-control" required value="<?=set_value("project-cre-fiscal")?>" name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
+                                    <input class="form-control" required value="<?=set_value("project-cre-fiscal")?>" name="project-cre-fiscal" placeholder="Fiscal de CRE">
                                 </div>
                             </div>
                         </div>

@@ -119,7 +119,7 @@ $(document).ready(function() {
             this.api().column(0).visible(false);
             this.api().column(1).visible(false);
         },
-        "buttons": ['excel', 'csv','pdf','print', buttonAdd]
+        "buttons": ['excel', 'csv','pdf','print']
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Buscar');
     $('.dataTables_length select').addClass('form-control');

@@ -21,28 +21,33 @@ select count(id_pro) as total from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -79,28 +84,33 @@ select * from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -140,28 +150,33 @@ select * from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -200,28 +215,33 @@ select count(id_pro) as total from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE

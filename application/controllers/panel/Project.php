@@ -33,7 +33,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Lista de proyectos";
-        $data["status"] = '1,2,3,4,5,6,7';
+        $data["status"] = '1,2,3,5,6,7,8,9,10';
         $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -84,15 +84,17 @@ class Project extends PrivateController
             $projectEntryDate = $formData["project-entry-date"];
             $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
             $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
+            $projectEntryDate = $projectEntryDate." ".date("H:i:s");
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
-            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus);
+            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance);
             $project->save();
             $statusDetail = "Proyecto enviado a diseño";
+            $keyword = "design";
             if($projectStatus == 7)
             {
                 $keyword = "unsigned";
@@ -158,7 +160,10 @@ class Project extends PrivateController
             //The status isn't empty when is send to design
             if($projectStatus != "")
             {
-                $project->addStatusToLog($projectStatus);
+                $responsibleList = Model_status_responsible::getUsersResponsible("design");
+                $responsibleList = $responsibleList[0];
+                $responsibleList = array($responsibleList['id_sre']);
+                $project->addStatusToLog($projectStatus,$detail = "Inicio de diseño del proyecto", date("Y-m-d H:i:s"), $responsibleList);
             }
 
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");

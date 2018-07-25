@@ -148,6 +148,7 @@ class AjaxProjectStatus extends PrivateController
         $stakesTeamEntryDate = $formData["stakesTeamEntryDate"];
         $stakesTeamEntryDate = DateTime::createFromFormat('d-m-Y', $stakesTeamEntryDate);
         $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d');
+        $stakesTeamEntryDate = $stakesTeamEntryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $responsibleList = $formData["responsibleList"];
         $statusDetail = $formData["statusDetail"];
@@ -168,6 +169,7 @@ class AjaxProjectStatus extends PrivateController
         $digitizationEntryDate = $formData["digitizationEntryDate"];
         $digitizationEntryDate = DateTime::createFromFormat('d-m-Y', $digitizationEntryDate);
         $digitizationEntryDate = date_format($digitizationEntryDate, 'Y-m-d');
+        $digitizationEntryDate = $digitizationEntryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $projectPoints = $formData["projectPoints"];
         $projectDistance = $formData["projectDistance"];
@@ -191,6 +193,7 @@ class AjaxProjectStatus extends PrivateController
         $drawingEntryDate = $formData["drawingEntryDate"];
         $drawingEntryDate = DateTime::createFromFormat('d-m-Y', $drawingEntryDate);
         $drawingEntryDate = date_format($drawingEntryDate, 'Y-m-d');
+        $drawingEntryDate = $drawingEntryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
@@ -212,12 +215,15 @@ class AjaxProjectStatus extends PrivateController
         $scheduleEntryDate = $formData["scheduleEntryDate"];
         $scheduleEntryDate = DateTime::createFromFormat('d-m-Y', $scheduleEntryDate);
         $scheduleEntryDate = date_format($scheduleEntryDate, 'Y-m-d');
+        $scheduleEntryDate = $scheduleEntryDate." ".date("H:i:s");
         $projectStart = $formData["projectStart"];
         $projectStart = DateTime::createFromFormat('d-m-Y', $projectStart);
         $projectStart = date_format($projectStart, 'Y-m-d');
+        $projectStart = $projectStart." ".date("H:i:s");
         $projectEnd = $formData["projectEnd"];
         $projectEnd = DateTime::createFromFormat('d-m-Y', $projectEnd);
         $projectEnd = date_format($projectEnd, 'Y-m-d');
+        $projectEnd = $projectEnd." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = Model_status_responsible::getUsersResponsible("schedule");
@@ -227,7 +233,9 @@ class AjaxProjectStatus extends PrivateController
         $project->setEnd($projectEnd);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate, $responsibleList);
+        sleep(1);
         $project->addStatusToLog(8, "Iniciando etapa de aprobacion", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
+        sleep(1);
         $project->addStatusToLog(9, "Proyecto por enviar", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
 
         $response["success"] = 1;
