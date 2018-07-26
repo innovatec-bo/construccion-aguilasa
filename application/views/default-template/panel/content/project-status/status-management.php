@@ -22,7 +22,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         </div>
         <div class="col-md-2">
             <dl class="header-description well well-sm">
-                <dt>SISTEMA <?=date("H:i:s")?></dt>
+                <dt>SISTEMA</dt>
                 <dd><?=$projectSystem?></dd>
             </dl>
         </div>

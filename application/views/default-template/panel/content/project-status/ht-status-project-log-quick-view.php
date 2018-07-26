@@ -8,7 +8,7 @@
 ?>
 <script id="ht-status-project-log-quick-view" type="text/x-handlebars-template">
     {{#each projectLog}}
-        <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right">{{formatDate createdon_psl "short"}}</span></h6>
+        <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right">{{formatDate manual_entry_date_psl "short"}}</span></h6>
         <blockquote>
             <dl>
                 <dt>Responsable(s)</dt>
