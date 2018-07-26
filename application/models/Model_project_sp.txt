@@ -51,7 +51,8 @@ select count(id_pro) as total from
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
-		",@statusIdFilter2,"
+	    deleted_pro != 1
+		and ",@statusIdFilter2,"
 ) projects;");
 PREPARE stmt FROM @queryy;
 EXECUTE stmt;
@@ -114,7 +115,8 @@ select * from
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
-		",@statusIdFilter2,"
+	    deleted_pro != 1
+		and ",@statusIdFilter2,"
 ) projects
 ORDER BY order_pst ASC, ",orderBy," ",orderType," LIMIT ",limitt," offset ",offsett,";
 ;");
@@ -180,7 +182,8 @@ select * from
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
-		",@statusIdFilter2,"
+	    deleted_pro != 1
+		and ",@statusIdFilter2,"
 ) projects
 where
 	code_pro LIKE '%",textToSearh,"%'
@@ -245,7 +248,8 @@ select count(id_pro) as total from
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
-		",@statusIdFilter2,"
+	    deleted_pro != 1
+		and ",@statusIdFilter2,"
 ) projects
 where
 	code_pro LIKE '%",textToSearh,"%'

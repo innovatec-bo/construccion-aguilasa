@@ -197,7 +197,6 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
-
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
@@ -237,6 +236,26 @@ class AjaxProjectStatus extends PrivateController
         $project->addStatusToLog(8, "Iniciando etapa de aprobacion", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
         sleep(1);
         $project->addStatusToLog(9, "Proyecto por enviar", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
+
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
+    public function saveAlreadySent()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $alreadySentEntryDate = $formData["alreadySentEntryDate"];
+        $alreadySentEntryDate = DateTime::createFromFormat('d-m-Y', $alreadySentEntryDate);
+        $alreadySentEntryDate = date_format($alreadySentEntryDate, 'Y-m-d');
+        $alreadySentEntryDate = $alreadySentEntryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        echo"<pre>";var_dump($statusId, $statusDetail, $alreadySentEntryDate, $responsibleList);exit;
+        $project->addStatusToLog($statusId, $statusDetail, $alreadySentEntryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";

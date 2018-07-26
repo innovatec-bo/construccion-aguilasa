@@ -10,7 +10,7 @@
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Dibujo new
+                Definir fecha de envio
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de ingreso</label>
+                                            <label>Fecha de envio</label>
                                             <div class="input-group date date-time-picker">
                                                 <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
                                             <label>Dibujante(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
@@ -60,7 +60,7 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="10" data-status-keyword="{{statusKeyword}}">Guardar</button>
 
                     </div>
                 </div>
@@ -72,7 +72,26 @@
 
 <script id="ht-status-already_sent-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definio un responsable de dibujo para este proyecto!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <h4>El proyecto ha sido enviado a CRE!</h4>
+        <p>
+            Si la fecha de envio fue incorrecta puede corregirla haciendo clic aqui <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui.</a><br>
+            Si el proyecto ha tenido observaciones puede enviarlo a RECTIFICACION DE DISEÑO ó RECTIFICACION DE ILUSTRACION
+        </p>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary send-to-rectify" data-status-id="13" data-status-keyword="rectify_design">Rectificar diseño</button>
+            <button type="button" class="btn btn-primary send-to-rectify" data-status-id="14" data-status-keyword="rectify_illustration">Rectificar ilustración</button>
+        </div>
+    </div>
+</script>
+
+<script id="ht-status-already_sent-form-rectify_design" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>El proyecto esta en rectificación de diseño!</h4>
+    </div>
+</script>
+
+<script id="ht-status-already_sent-form-rectify_illustration" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>El proyecto esta en rectificación de ilustración!</h4>
     </div>
 </script>

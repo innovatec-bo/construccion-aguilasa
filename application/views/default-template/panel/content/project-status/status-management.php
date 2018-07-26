@@ -137,7 +137,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-drawi
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
 //approvement
 $this->load->view("default-template/panel/content/project-status/ht-status-ready_to_send-form");
-//$this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

@@ -42,8 +42,17 @@ $(document).ready(function() {
                 case "schedule":
                     saveSchedule(statusId,statusKeyword);
                     break;
+                case "already_sent":
+                    saveAlreadySent(statusId,statusKeyword);
+                    break;
+                case "rectify_design":
+                    saveRectifyDesign(statusId,statusKeyword);
+                    break;
+                case "rectify_illustration":
+                    saveRectifyIllustration(statusId,statusKeyword);
+                    break;
                 default:
-                    alert("There isn't a saving logic defined to "+statusKeyword);
+                    bootbox.alert("Desculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
                     break;
             }
         }
@@ -52,6 +61,12 @@ $(document).ready(function() {
             $form.parsley().validate({group: statusKeyword});
         }
 
+    });
+
+    $(document).on("click",".send-to-rectify",function(e){
+        e.preventDefault();
+        var statusKeyword = $(this).data("status-keyword");
+        loadStatusForm(statusKeyword,1);
     });
 
 });
@@ -83,62 +98,6 @@ function getStakesLeaderProjects()
             $('[data-toggle="tooltip"]').tooltip();
         }
     });
-}
-
-function updateProjectAssignment(leaderId, projectId)
-{
-    $.ajax({
-        url : base_url + 'panel/AjaxProject/updateStakesLeaderProjects',
-        dataType  :"json",
-        type : "POST",
-        data:{leaderId:leaderId, projectId:projectId},
-        success:function(response){
-            console.log(response);
-        }
-    });
-}
-
-function startSelect2StakeLeaders()
-{
-    //select2 ajax for companies in bonus modal form
-    $('#ajax-get-stakes-leader').select2({
-        placeholder: "Elija un equipo",
-        tags:true,
-        multiple:true,
-        allowClear : true,
-        ajax : {
-            url : base_url + 'panel/AjaxProjectStatus/getAllStakesTeamLeader',
-            dataType : "json",
-            type : "post",
-            delay : 600,
-            data : function(params) {
-                return {
-                    term : params.term || "", //search term
-                    limit : 5, // page size
-                    page: params.page || 1
-                };
-            },
-
-            processResults: function (data) {
-                return {
-                    results: data.list,
-                    pagination: data.pagination
-                };
-            }
-        },
-        width : "100%"
-    });
-
-    // create the default options and append to Select2
-    var teamLeaderList = $("#ajax-get-stakes-leader").data("default");
-    var list = [];
-    var option = {};
-    $.each(teamLeaderList,function(index, value){
-        option = new Option(value.leader, value.id, true, true);
-        list.push(option);
-
-    });
-    $('#ajax-get-stakes-leader').append(list).trigger('change');
 }
 
 function saveStakesTeam(statusId, statusKeyword)
@@ -252,7 +211,7 @@ function saveSchedule(statusId,statusKeyword)
     var projectStart = $("input[name=project-start]").val();
     var projectEnd = $("input[name=project-end]").val();
     var statusDetail = $("textarea[name=schedule-detail]").val();
-    var drawing = {
+    var schedule = {
         projectId: projectId,
         scheduleEntryDate:scheduleEntryDate,
         projectStart: projectStart,
@@ -266,7 +225,67 @@ function saveSchedule(statusId,statusKeyword)
         url : base_url + 'panel/AjaxProjectStatus/saveSchedule',
         dataType  :"json",
         type : "POST",
-        data : drawing,
+        data : schedule,
+        success:function(response){
+            loadStatusSavedView();
+            getProjectLog();
+        }
+    });
+}
+
+function saveAlreadySent(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var alreadySentEntryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var alreadySent = {
+        projectId: projectId,
+        alreadySentEntryDate:alreadySentEntryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveAlreadySent',
+        dataType  :"json",
+        type : "POST",
+        data : alreadySent,
+        success:function(response){
+            loadStatusSavedView();
+            getProjectLog();
+        }
+    });
+}
+
+function saveRectifyDesign(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var alreadySentEntryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var alreadySent = {
+        projectId: projectId,
+        alreadySentEntryDate:alreadySentEntryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveAlreadySent',
+        dataType  :"json",
+        type : "POST",
+        data : alreadySent,
         success:function(response){
             loadStatusSavedView();
             getProjectLog();
