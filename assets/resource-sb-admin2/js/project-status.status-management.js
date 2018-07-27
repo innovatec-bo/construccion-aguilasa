@@ -271,18 +271,48 @@ function saveRectifyDesign(statusId,statusKeyword)
         responsibleList.push(value.id);
     });
     var projectId = $("input[name=project-id]").val();
-    var alreadySentEntryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
     var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var alreadySent = {
         projectId: projectId,
-        alreadySentEntryDate:alreadySentEntryDate,
+        entryDate:entryDate,
         statusId: statusId,
         statusDetail: statusDetail,
         responsibleList:responsibleList
     };
 
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveAlreadySent',
+        url : base_url + 'panel/AjaxProjectStatus/saveRectifyDesign',
+        dataType  :"json",
+        type : "POST",
+        data : alreadySent,
+        success:function(response){
+            loadStatusSavedView();
+            getProjectLog();
+        }
+    });
+}
+
+function saveRectifyIllustration(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var alreadySent = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveRectifyIllustration',
         dataType  :"json",
         type : "POST",
         data : alreadySent,

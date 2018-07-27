@@ -5,7 +5,13 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
-$statusName = isset($statusList[$project["status_pro"]])?$statusList[$project["status_pro"]]->getName():"Este proyecto no esta en ".$statusSet;
+$statusName = "Este proyecto no esta etapa";
+$projectOnCurrentStage = FALSE;
+if(isset($statusList[$project["status_pro"]]))
+{
+    $projectOnCurrentStage = TRUE;
+    $statusName = $statusList[$project["status_pro"]]->getName();
+}
 $projectSystem = $projectSystems[$project["system_pro"]];
 $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
 $entryDate = date_format($entryDate, 'd-m-Y');
@@ -102,8 +108,28 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
                         <input type="hidden" value="<?=$statusSet?>" name="status-set">
-                        <div class="tab-content" id="status-form-content">
-                        </div>
+                        <?php
+                        $html = '
+                                <div class="tab-content">
+                                 <div class="well">
+                                    <h4>Esta etapa ha finalizado!</h4>
+                                </div>
+                                </div>    
+                            ';
+                        if($projectOnCurrentStage)
+                        {
+                            $html = '
+                                <div class="tab-content" id="status-form-content">
+                                </div>    
+                            ';
+                        }
+                        $html = '
+                                <div class="tab-content" id="status-form-content">
+                                </div>    
+                            ';
+                        echo $html;
+                        ?>
+
                     </form>
                 </div>
             </section>
@@ -138,6 +164,8 @@ $this->load->view("default-template/panel/content/project-status/ht-status-sched
 //approvement
 $this->load->view("default-template/panel/content/project-status/ht-status-ready_to_send-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-rectify_design-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-rectify_illustration-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
