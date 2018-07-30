@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-20 17:54:09
+Date: 2018-07-30 17:11:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `sec_features` (
 -- Records of sec_features
 -- ----------------------------
 INSERT INTO `sec_features` VALUES ('1', 'Edit user', 'user_edit', 'fa fa-edit', 'panel/User/edit', 'Edit users', '6', '7', '0', '0', null, null, '2018-07-19 16:15:46', null);
-INSERT INTO `sec_features` VALUES ('2', 'Cancelado', 'Approvement_canceled', 'fa fa-table', '#', '', '13', '30', '1', '0', null, null, '2018-07-20 14:17:12', null);
+INSERT INTO `sec_features` VALUES ('2', 'Cancelado', 'Approvement_canceled', 'fa fa-table', 'panel/Approvement/canceled', 'Proyecto cancelado', '13', '30', '1', '0', null, null, '2018-07-23 11:37:51', null);
 INSERT INTO `sec_features` VALUES ('3', 'Lista', 'user_index', 'fa fa-table', 'panel/User', '', '6', '5', '1', '0', null, null, '2018-07-19 16:20:52', null);
 INSERT INTO `sec_features` VALUES ('4', 'Add user', 'user_add', 'fa fa-user-plus', 'panel/User/add', 'Add users', '6', '6', '0', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('5', 'Etapa de diseño', 'design', 'glyphicon glyphicon-pencil', '#', '', null, '14', '1', '0', null, null, '2018-07-19 16:57:04', null);
@@ -54,8 +54,8 @@ INSERT INTO `sec_features` VALUES ('10', 'Estaqueado', 'design_stakes', 'fa fa-u
 INSERT INTO `sec_features` VALUES ('11', 'Digitalizacion', 'design_digitization', 'fa fa-laptop', 'panel/Design/digitization', '', '5', '17', '1', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('12', 'Dibujo', 'design_drawing', 'fa fa-pencil-square-o', 'panel/Design/drawing', '', '5', '18', '1', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('13', 'Etapa de aprobacion', 'Approvement', 'fa fa-check', '#', '', null, '26', '1', '0', null, null, '2018-07-20 14:17:12', null);
-INSERT INTO `sec_features` VALUES ('14', 'Aprovado', 'Approvement_approved', 'fa fa-check', '#', '', '13', '29', '1', '0', null, null, '2018-07-20 14:17:12', null);
-INSERT INTO `sec_features` VALUES ('15', 'Por enviar a cree', 'Approvement_pending_to_send', 'fa fa-clock-o', '#', '', '13', '27', '1', '0', null, null, '2018-07-20 14:17:12', null);
+INSERT INTO `sec_features` VALUES ('14', 'Aprobado', 'Approvement_approved', 'fa fa-check', 'panel/Approvement/approved', 'El proyecto ha sido aprobado', '13', '29', '1', '0', null, null, '2018-07-24 16:54:04', null);
+INSERT INTO `sec_features` VALUES ('15', 'Por enviar a cree', 'Approvement_pending_to_send', 'fa fa-clock-o', 'panel/Approvement/readyToSend', 'Listo para ser enviado a CREE', '13', '27', '1', '0', null, null, '2018-07-23 11:45:17', null);
 INSERT INTO `sec_features` VALUES ('16', 'Cronograma', 'design_schedule', 'fa fa-clock-o', 'panel/Design/schedule', '', '5', '19', '1', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('17', 'Lista', 'design_index', 'glyphicon glyphicon-pencil', 'panel/Design', '', '5', '15', '1', '0', null, null, '2018-07-20 10:56:46', null);
 INSERT INTO `sec_features` VALUES ('18', 'Home', 'home', 'fa fa-home', 'panel/Home', '', null, '1', '1', '0', null, null, '2018-07-19 16:04:56', null);
@@ -65,14 +65,14 @@ INSERT INTO `sec_features` VALUES ('21', 'Add role', 'role_add', 'fa fa-plus', '
 INSERT INTO `sec_features` VALUES ('22', 'Edit role', 'role_edit', 'fa fa-edit', '#', 'Edit role form', '9', '35', '0', '0', null, null, '2018-07-20 14:17:12', null);
 INSERT INTO `sec_features` VALUES ('23', 'Dashboard', 'dashboard_index', 'fa fa-dashboard', 'panel/Dashboard', 'User dashboard', null, '2', '1', '0', null, null, '2018-07-19 16:13:09', null);
 INSERT INTO `sec_features` VALUES ('24', 'Lista', 'project_index', 'fa fa-table', 'panel/Project', 'Projects', '8', '10', '1', '0', null, null, '2018-07-19 16:15:46', null);
-INSERT INTO `sec_features` VALUES ('25', 'Add project', 'project_add', 'fa fa-plus', 'panel/Project/add', 'Add new project', '8', '11', '0', '0', null, null, '2018-07-19 16:15:46', null);
+INSERT INTO `sec_features` VALUES ('25', 'Crear proyecto', 'project_add', 'fa fa-plus', 'panel/Project/add', 'Add new project', '8', '11', '1', '0', null, null, '2018-07-24 16:49:43', null);
 INSERT INTO `sec_features` VALUES ('26', 'Edit project', 'project_edit', 'fa fa-pencil', 'panel/Project/edit', 'Edit project', '8', '12', '0', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('27', 'Delete project', 'delete_project', 'fa fa-times', 'panel/Project/delete', 'Delete project', '8', '13', '0', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('28', 'Delete user', 'delete_user', 'fa fa-times', 'panel/User/delete', 'Delete user', '6', '8', '0', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('29', 'Delete role', 'delete_role', 'fa fa-times', 'panel/Role/delete', 'Delete role', '9', '36', '0', '0', null, null, '2018-07-20 14:17:12', null);
 INSERT INTO `sec_features` VALUES ('30', 'State management', 'project_status_management', 'fa fa-table', 'panel/ProjectStatus/stateManagement', 'Project state management', '5', '20', '0', '0', null, null, '2018-07-19 16:15:46', null);
 INSERT INTO `sec_features` VALUES ('31', 'Estados', 'project_status_index', 'fa fa-table', 'panel/ProjectStatus', 'Project status', null, '31', '1', '0', null, null, '2018-07-20 14:17:12', null);
-INSERT INTO `sec_features` VALUES ('32', 'Enviado a cree', 'approvement_sent_to_cree', 'fa fa-send', '#', null, '13', '28', '1', '0', null, null, '2018-07-20 14:17:12', null);
+INSERT INTO `sec_features` VALUES ('32', 'Enviado a cree', 'approvement_sent_to_cree', 'fa fa-send', 'panel/Approvement/alreadySent', 'El proyecto ha sido enviado a CREE', '13', '28', '1', '0', null, null, '2018-07-23 11:36:33', null);
 INSERT INTO `sec_features` VALUES ('33', 'Rectificar diseño', 'rectify_design', 'glyphicon glyphicon-refresh', '#', '', '5', '21', '1', '0', null, null, '2018-07-20 16:40:18', null);
 INSERT INTO `sec_features` VALUES ('34', 'Estaqueado', 're_stake_stake', 'fa fa-users', 'panel/ReStake/stakesTeam', '', '33', '22', '1', '0', '2018-07-20 13:59:00', null, '2018-07-20 14:27:03', null);
 INSERT INTO `sec_features` VALUES ('35', 'Digitalizacion', 're_stake_digitization', 'fa fa-laptop', 'panel/ReStake/digitization', '', '33', '23', '1', '0', '2018-07-20 14:01:58', null, '2018-07-20 14:27:07', null);
@@ -100,7 +100,7 @@ CREATE TABLE `sec_permissions` (
   KEY `roleid_per` (`roleid_per`) USING BTREE,
   CONSTRAINT `sec_permissions_ibfk_1` FOREIGN KEY (`featureid_per`) REFERENCES `sec_features` (`id_fes`),
   CONSTRAINT `sec_permissions_ibfk_2` FOREIGN KEY (`roleid_per`) REFERENCES `sec_roles` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=733 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=757 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_permissions
@@ -685,18 +685,18 @@ INSERT INTO `sec_permissions` VALUES ('577', '1', '28', '1', '2018-07-19 21:42:3
 INSERT INTO `sec_permissions` VALUES ('578', '1', '29', '1', '2018-07-19 21:42:36', null, '2018-07-20 10:59:09', null);
 INSERT INTO `sec_permissions` VALUES ('579', '1', '30', '1', '2018-07-19 21:42:36', null, '2018-07-20 10:59:09', null);
 INSERT INTO `sec_permissions` VALUES ('580', '1', '31', '1', '2018-07-19 21:42:36', null, '2018-07-20 10:59:09', null);
-INSERT INTO `sec_permissions` VALUES ('581', '5', '5', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('582', '5', '8', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('583', '5', '10', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('584', '5', '11', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('585', '5', '12', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('586', '5', '16', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('587', '5', '17', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('588', '5', '24', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('589', '5', '25', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('590', '5', '26', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('591', '5', '27', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
-INSERT INTO `sec_permissions` VALUES ('592', '5', '30', '0', '2018-07-19 22:52:34', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('581', '5', '5', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('582', '5', '8', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('583', '5', '10', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('584', '5', '11', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('585', '5', '12', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('586', '5', '16', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('587', '5', '17', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('588', '5', '24', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('589', '5', '25', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('590', '5', '26', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('591', '5', '27', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
+INSERT INTO `sec_permissions` VALUES ('592', '5', '30', '1', '2018-07-19 22:52:34', null, '2018-07-24 16:24:00', null);
 INSERT INTO `sec_permissions` VALUES ('593', '1', '1', '1', '2018-07-20 16:59:09', null, '2018-07-20 13:43:24', null);
 INSERT INTO `sec_permissions` VALUES ('594', '1', '2', '1', '2018-07-20 16:59:09', null, '2018-07-20 13:43:24', null);
 INSERT INTO `sec_permissions` VALUES ('595', '1', '3', '1', '2018-07-20 16:59:09', null, '2018-07-20 13:43:24', null);
@@ -837,6 +837,30 @@ INSERT INTO `sec_permissions` VALUES ('729', '1', '36', '0', '2018-07-20 20:20:0
 INSERT INTO `sec_permissions` VALUES ('730', '1', '37', '0', '2018-07-20 20:20:08', null, '0000-00-00 00:00:00', null);
 INSERT INTO `sec_permissions` VALUES ('731', '1', '38', '0', '2018-07-20 20:20:08', null, '0000-00-00 00:00:00', null);
 INSERT INTO `sec_permissions` VALUES ('732', '1', '39', '0', '2018-07-20 20:20:08', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('733', '5', '2', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('734', '5', '5', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('735', '5', '8', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('736', '5', '10', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('737', '5', '11', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('738', '5', '12', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('739', '5', '13', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('740', '5', '14', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('741', '5', '15', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('742', '5', '16', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('743', '5', '17', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('744', '5', '24', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('745', '5', '25', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('746', '5', '26', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('747', '5', '27', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('748', '5', '30', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('749', '5', '32', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('750', '5', '33', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('751', '5', '34', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('752', '5', '35', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('753', '5', '36', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('754', '5', '37', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('755', '5', '38', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `sec_permissions` VALUES ('756', '5', '39', '0', '2018-07-24 20:24:00', null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_roles
@@ -884,7 +908,7 @@ CREATE TABLE `sec_userroles` (
   KEY `roleid_uro` (`roleid_uro`) USING BTREE,
   CONSTRAINT `sec_userroles_ibfk_1` FOREIGN KEY (`roleid_uro`) REFERENCES `sec_roles` (`id_rol`),
   CONSTRAINT `sec_userroles_ibfk_2` FOREIGN KEY (`userid_uro`) REFERENCES `sec_users` (`id_usr`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sec_userroles
@@ -919,7 +943,8 @@ INSERT INTO `sec_userroles` VALUES ('27', '7', '6', '0', '2018-07-19 11:11:11', 
 INSERT INTO `sec_userroles` VALUES ('28', '2', '3', '0', '2018-07-19 11:11:43', '1', '0000-00-00 00:00:00', null);
 INSERT INTO `sec_userroles` VALUES ('29', '2', '5', '0', '2018-07-19 11:11:43', '1', '0000-00-00 00:00:00', null);
 INSERT INTO `sec_userroles` VALUES ('30', '2', '6', '0', '2018-07-19 11:11:43', '1', '0000-00-00 00:00:00', null);
-INSERT INTO `sec_userroles` VALUES ('31', '6', '1', '0', '2018-07-19 17:27:02', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sec_userroles` VALUES ('31', '6', '1', '1', '2018-07-19 17:27:02', '1', '2018-07-24 16:33:31', null);
+INSERT INTO `sec_userroles` VALUES ('32', '6', '1', '0', '2018-07-24 16:33:31', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_users
@@ -955,8 +980,8 @@ INSERT INTO `sec_users` VALUES ('1', 'jair', 'cussy', 'jair@twiiti.com', null, n
 INSERT INTO `sec_users` VALUES ('2', 'Mario', 'Aguilera', 'marioa@mailinator.com', null, null, '$2y$10$3QicFM3Htj1iAKhIUmHv2ulIOB0k.SXmcZkCRbDOLvYVZoNBInoZe', null, '', '', '1', '0', '', '0', '2018-05-13 21:47:16', null, '2018-07-19 11:11:43', null);
 INSERT INTO `sec_users` VALUES ('3', 'Dandy', 'Coca', 'nuser@mailinator.com', null, null, '$2y$10$r.eAisul1hyGSXgurkWJjemFA7yxkVcg28lu75DBBgCu6o.W0c0vW', null, '', '', '1', '0', '', '0', '2018-05-28 10:32:52', null, '2018-07-19 11:01:45', null);
 INSERT INTO `sec_users` VALUES ('4', 'Miguel', 'Flores', 'nuser2@mailinator.com', null, null, '$2y$10$c8Jgx3up2nF9n523UoXHyeRWU5ZbL9L1EWxIiGHrADXIFa9QJXE2S', null, '', '', '1', '0', '', '0', '2018-05-28 10:34:28', null, '2018-07-19 11:01:49', null);
-INSERT INTO `sec_users` VALUES ('5', 'River', 'Cortez', 'tuser@mailinator.com', null, null, '$2y$10$42XsIiB5gRBPcTlxoHm84eyWV9hNtvcPCVcXi1UAB09unAmQIZdIG', null, '', '', '1', '0', '', '0', '2018-05-30 09:44:40', null, '2018-07-19 11:02:25', null);
-INSERT INTO `sec_users` VALUES ('6', 'Victor Hugo', 'Suarez', 'vsuarez@mailinator.com', null, null, '$2y$10$GAbB4uK2OpvXBjE7VoJqkOy/P2AyeggyoqknkTJrF9SiG7I7ktqAC', null, '', '', '1', '0', '', '0', '2018-05-30 09:58:30', null, '2018-07-19 17:27:02', null);
+INSERT INTO `sec_users` VALUES ('5', 'Rider', 'Cortez', 'tuser@mailinator.com', null, null, '$2y$10$42XsIiB5gRBPcTlxoHm84eyWV9hNtvcPCVcXi1UAB09unAmQIZdIG', null, '', '', '1', '0', '', '0', '2018-05-30 09:44:40', null, '2018-07-24 18:03:50', null);
+INSERT INTO `sec_users` VALUES ('6', 'Victor Hugo', 'Suarez', 'vsuarez@mailinator.com', null, null, '$2y$10$.2BkIdbwCJp369k1//gJ8.Gr0jq7ZnIkvm1X5QKbd9kUHNimtT8Ge', null, '', '', '1', '0', '', '0', '2018-05-30 09:58:30', null, '2018-07-24 16:33:31', null);
 INSERT INTO `sec_users` VALUES ('7', 'Pablo', 'Mendoza', 'pablom@mailinator.com', null, null, '$2y$10$W/aBzKpgfucg1MZzh2rtuOKYboPu1dUBr8Ru0H4LiV.QkJSkejsOC', null, '', '', '1', '0', '', '0', '2018-06-04 12:15:00', null, '2018-07-19 11:14:44', null);
 INSERT INTO `sec_users` VALUES ('8', 'Pepe', 'Vargas', 'digitalizador1@mailiantor.com', null, null, '$2y$10$CjDWq.RhG/LI5l5P77eEmelXD27P0RVc4GEyCojfqR96mXf/nrMfi', null, '', '', '1', '0', '', '0', '2018-07-17 17:36:07', null, '2018-07-19 11:05:34', null);
 INSERT INTO `sec_users` VALUES ('9', 'Jose', 'Duran', 'dibujante1@mailinator.com', null, null, '$2y$10$iozfBGQg.Ib5nCkC6yKNx.5fs0euDukOBE3.8QyE3YpLdl3rN5C/.', null, '', '', '1', '0', '', '0', '2018-07-17 17:37:00', null, '2018-07-19 11:05:40', null);
@@ -987,14 +1012,70 @@ CREATE TABLE `wfl_projects` (
   UNIQUE KEY `UQ_sec_roles_id_rol` (`id_pro`) USING BTREE,
   KEY `fk_status_pro` (`status_pro`),
   CONSTRAINT `fk_status_pro` FOREIGN KEY (`status_pro`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_projects
 -- ----------------------------
-INSERT INTO `wfl_projects` VALUES ('1', 'RA.18.0507', '', '2', 'K9 av Banzer', '2018-07-20 00:00:00', 'Mario Diego galvarro', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '0.00', '0', '2018-07-20 09:57:43', null, '2018-07-20 13:19:36', null);
-INSERT INTO `wfl_projects` VALUES ('2', 'RA.18.0508', '', '3', 'K6 av Banzer', '2018-07-20 00:00:00', 'Mario Diego galvarro', '7', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '0.00', '0', '2018-07-20 10:02:22', null, '2018-07-20 10:04:08', null);
-INSERT INTO `wfl_projects` VALUES ('3', 'RA.18.0238', '', '4', 'Entrada a camiri', '2018-07-20 00:00:00', 'Juan Carlos molina', '7', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '0.00', '0', '2018-07-20 10:06:21', null, '2018-07-20 10:07:11', null);
+INSERT INTO `wfl_projects` VALUES ('1', 'RD.18.0292', '', '3', 'Comunidad Medio Monte', '2018-07-01 00:00:00', 'Garcia', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '80', '3.20', '0', '2018-07-24 17:01:05', null, '2018-07-25 15:06:11', null);
+INSERT INTO `wfl_projects` VALUES ('2', 'RO.18.0161', '', '1', 'Equipetrol', '2018-07-18 00:00:00', 'GARCIA', '5', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '3', '0.90', '0', '2018-07-24 17:03:09', null, '2018-07-25 17:26:05', null);
+INSERT INTO `wfl_projects` VALUES ('3', 'RD.18.0211', '', '1', 'No sabemos', '2018-07-02 00:00:00', 'Prueba', '9', '2018-08-01 00:00:00', '2018-08-02 00:00:00', '4', '1.00', '1', '2018-07-24 17:26:48', null, '2018-07-25 16:50:20', null);
+INSERT INTO `wfl_projects` VALUES ('4', 'RO.18.0166', '', '1', 'El Remanzo', '2018-07-25 00:00:00', 'Suarez', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '0', '2018-07-25 08:20:36', null, '2018-07-25 15:07:46', null);
+INSERT INTO `wfl_projects` VALUES ('5', 'RO.18.0167', '', '1', 'El Remanzo', '2018-07-25 00:00:00', 'Suarez', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '0', '2018-07-25 08:22:33', null, '2018-07-25 15:08:07', null);
+INSERT INTO `wfl_projects` VALUES ('6', 'RD.18.0858', '', '1', 'Las Cabañas', '2018-04-26 00:00:00', 'Giles', '9', '2018-07-25 00:00:00', '2018-07-25 00:00:00', '64', '3.00', '1', '2018-07-25 08:30:43', null, '2018-07-25 16:45:34', null);
+INSERT INTO `wfl_projects` VALUES ('7', 'RD.18.0210', '', '5', 'Puerto Suarez', '2018-07-02 00:00:00', 'Jose Luis Rodriguez', '5', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '18', '0.72', '0', '2018-07-25 10:21:51', null, '2018-07-26 09:22:52', null);
+INSERT INTO `wfl_projects` VALUES ('8', 'RA.18.1717', '', '3', 'Entre San Julian y San Ramon', '2018-07-21 00:00:00', 'Herman Velasco Flores', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '3', '1.00', '0', '2018-07-25 11:53:18', null, '2018-07-25 15:08:53', null);
+INSERT INTO `wfl_projects` VALUES ('9', 'RA.18.1218', '', '3', 'San Julian', '2018-06-16 16:53:43', 'Santos Cespedes', '14', '2018-07-25 16:55:12', '2018-07-25 16:55:12', '39', '1.50', '0', '2018-07-25 16:53:43', null, '2018-07-30 15:50:21', null);
+INSERT INTO `wfl_projects` VALUES ('10', 'RD.19.0045', '', '4', 'Itambemi', '2018-07-26 08:59:52', 'LUJAN', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '16', '0.64', '0', '2018-07-26 08:59:52', null, '2018-07-26 08:59:52', null);
+INSERT INTO `wfl_projects` VALUES ('11', 'RA.18.1219', '', '3', 'San Julian', '2018-06-16 10:20:24', 'Santos Cespedes', '14', '2018-08-01 10:24:47', '2018-08-20 10:24:47', '37', '1.48', '0', '2018-07-26 10:20:24', null, '2018-07-30 16:20:01', null);
+INSERT INTO `wfl_projects` VALUES ('12', 'RA.18.1538', '', '3', 'San Juan de Lomerio', '2018-07-16 10:28:05', 'Santos Cespedes', '9', '2018-08-06 10:31:04', '2018-08-09 10:31:04', '6', '0.20', '0', '2018-07-26 10:28:05', null, '2018-07-26 10:31:06', null);
+INSERT INTO `wfl_projects` VALUES ('13', 'RA.18.1539', '', '3', 'San Ramon', '2018-07-26 10:38:49', 'Herman Velasco Flores', '10', '2018-08-13 10:53:42', '2018-08-14 10:53:42', '2', '0.10', '0', '2018-07-26 10:38:49', null, '2018-07-30 16:23:46', null);
+INSERT INTO `wfl_projects` VALUES ('14', 'RD.18.1613', '', '3', 'San Ramon', '2018-07-02 11:08:50', 'Herman Velasco Flores', '5', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '5', '0.16', '0', '2018-07-26 11:08:50', null, '2018-07-26 11:11:34', null);
+
+-- ----------------------------
+-- Table structure for wfl_project_budgets
+-- ----------------------------
+DROP TABLE IF EXISTS `wfl_project_budgets`;
+CREATE TABLE `wfl_project_budgets` (
+  `id_prb` bigint(20) NOT NULL AUTO_INCREMENT,
+  `status_log_id_prb` bigint(20) DEFAULT NULL,
+  `design_prb` double(8,2) DEFAULT NULL,
+  `building_prb` double(8,2) DEFAULT NULL,
+  `deleted_prb` smallint(6) DEFAULT '0',
+  `createdon_prb` datetime DEFAULT NULL,
+  `createdby_prb` bigint(20) DEFAULT NULL,
+  `editedon_prb` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `editedby_prb` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id_prb`),
+  KEY `fk_status_log_id_prb` (`status_log_id_prb`),
+  CONSTRAINT `fk_status_log_id_prb` FOREIGN KEY (`status_log_id_prb`) REFERENCES `wfl_project_status_log` (`id_psl`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wfl_project_budgets
+-- ----------------------------
+INSERT INTO `wfl_project_budgets` VALUES ('1', '1', '80.00', '3.20', '0', '2018-07-24 17:01:05', null, '2018-07-24 17:01:05', null);
+INSERT INTO `wfl_project_budgets` VALUES ('2', '2', '3.00', '0.90', '0', '2018-07-24 17:03:09', null, '2018-07-24 17:03:09', null);
+INSERT INTO `wfl_project_budgets` VALUES ('3', '5', '4.00', '1.00', '0', '2018-07-24 17:26:48', null, '2018-07-24 17:26:48', null);
+INSERT INTO `wfl_project_budgets` VALUES ('4', '7', '4.00', '1.00', '0', '2018-07-24 17:29:49', null, '2018-07-24 17:29:49', null);
+INSERT INTO `wfl_project_budgets` VALUES ('5', '12', '1.00', '0.00', '0', '2018-07-25 08:20:36', null, '2018-07-25 08:20:36', null);
+INSERT INTO `wfl_project_budgets` VALUES ('6', '13', '1.00', '0.00', '0', '2018-07-25 08:22:33', null, '2018-07-25 08:22:33', null);
+INSERT INTO `wfl_project_budgets` VALUES ('7', '14', '64.00', '3.00', '0', '2018-07-25 08:30:43', null, '2018-07-25 08:30:43', null);
+INSERT INTO `wfl_project_budgets` VALUES ('8', '15', '18.00', '0.72', '0', '2018-07-25 10:21:51', null, '2018-07-25 10:21:51', null);
+INSERT INTO `wfl_project_budgets` VALUES ('9', '18', '3.00', '1.00', '0', '2018-07-25 11:53:18', null, '2018-07-25 11:53:18', null);
+INSERT INTO `wfl_project_budgets` VALUES ('10', '23', '9.00', '0.15', '0', '2018-07-25 16:35:23', null, '2018-07-25 16:35:23', null);
+INSERT INTO `wfl_project_budgets` VALUES ('11', '24', '39.00', '1.50', '0', '2018-07-25 16:53:43', null, '2018-07-25 16:53:43', null);
+INSERT INTO `wfl_project_budgets` VALUES ('12', '30', '16.00', '0.64', '0', '2018-07-26 08:59:52', null, '2018-07-26 08:59:52', null);
+INSERT INTO `wfl_project_budgets` VALUES ('13', '33', '18.00', '0.72', '0', '2018-07-26 09:22:41', null, '2018-07-26 09:22:41', null);
+INSERT INTO `wfl_project_budgets` VALUES ('14', '35', '37.00', '1.48', '0', '2018-07-26 10:20:24', null, '2018-07-26 10:20:24', null);
+INSERT INTO `wfl_project_budgets` VALUES ('15', '38', '37.00', '1.48', '0', '2018-07-26 10:22:04', null, '2018-07-26 10:22:04', null);
+INSERT INTO `wfl_project_budgets` VALUES ('16', '41', '37.00', '1.48', '0', '2018-07-26 10:23:29', null, '2018-07-26 10:23:29', null);
+INSERT INTO `wfl_project_budgets` VALUES ('17', '46', '6.00', '0.20', '0', '2018-07-26 10:28:05', null, '2018-07-26 10:28:05', null);
+INSERT INTO `wfl_project_budgets` VALUES ('18', '48', '6.00', '0.20', '0', '2018-07-26 10:29:41', null, '2018-07-26 10:29:41', null);
+INSERT INTO `wfl_project_budgets` VALUES ('19', '53', '2.00', '0.10', '0', '2018-07-26 10:38:49', null, '2018-07-26 10:38:49', null);
+INSERT INTO `wfl_project_budgets` VALUES ('20', '55', '2.00', '0.10', '0', '2018-07-26 10:48:54', null, '2018-07-26 10:48:54', null);
+INSERT INTO `wfl_project_budgets` VALUES ('21', '61', '5.00', '0.16', '0', '2018-07-26 11:08:50', null, '2018-07-26 11:08:50', null);
+INSERT INTO `wfl_project_budgets` VALUES ('22', '63', '5.00', '0.16', '0', '2018-07-26 11:10:58', null, '2018-07-26 11:10:58', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_points
@@ -1011,14 +1092,33 @@ CREATE TABLE `wfl_project_points` (
   `editedon_prp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_prp` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_prp`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_points
 -- ----------------------------
-INSERT INTO `wfl_project_points` VALUES ('1', '1', '60', '20.00', '0', '2018-07-20 09:57:44', null, '2018-07-20 09:57:44', null);
-INSERT INTO `wfl_project_points` VALUES ('2', '2', '50', '25.00', '0', '2018-07-20 10:02:22', null, '2018-07-20 10:02:22', null);
-INSERT INTO `wfl_project_points` VALUES ('3', '3', '65', '14.00', '0', '2018-07-20 10:06:21', null, '2018-07-20 10:06:21', null);
+INSERT INTO `wfl_project_points` VALUES ('1', '1', '80', '3.20', '0', '2018-07-24 17:01:05', null, '2018-07-24 17:01:05', null);
+INSERT INTO `wfl_project_points` VALUES ('2', '2', '3', '0.90', '0', '2018-07-24 17:03:09', null, '2018-07-24 17:03:09', null);
+INSERT INTO `wfl_project_points` VALUES ('3', '5', '4', '1.00', '0', '2018-07-24 17:26:48', null, '2018-07-24 17:26:48', null);
+INSERT INTO `wfl_project_points` VALUES ('4', '7', '4', '1.00', '0', '2018-07-24 17:29:49', null, '2018-07-24 17:29:49', null);
+INSERT INTO `wfl_project_points` VALUES ('5', '12', '1', '0.00', '0', '2018-07-25 08:20:36', null, '2018-07-25 08:20:36', null);
+INSERT INTO `wfl_project_points` VALUES ('6', '13', '1', '0.00', '0', '2018-07-25 08:22:33', null, '2018-07-25 08:22:33', null);
+INSERT INTO `wfl_project_points` VALUES ('7', '14', '64', '3.00', '0', '2018-07-25 08:30:43', null, '2018-07-25 08:30:43', null);
+INSERT INTO `wfl_project_points` VALUES ('8', '15', '18', '0.72', '0', '2018-07-25 10:21:51', null, '2018-07-25 10:21:51', null);
+INSERT INTO `wfl_project_points` VALUES ('9', '18', '3', '1.00', '0', '2018-07-25 11:53:18', null, '2018-07-25 11:53:18', null);
+INSERT INTO `wfl_project_points` VALUES ('10', '23', '9', '0.15', '0', '2018-07-25 16:35:23', null, '2018-07-25 16:35:23', null);
+INSERT INTO `wfl_project_points` VALUES ('11', '24', '39', '1.50', '0', '2018-07-25 16:53:43', null, '2018-07-25 16:53:43', null);
+INSERT INTO `wfl_project_points` VALUES ('12', '30', '16', '0.64', '0', '2018-07-26 08:59:52', null, '2018-07-26 08:59:52', null);
+INSERT INTO `wfl_project_points` VALUES ('13', '33', '18', '0.72', '0', '2018-07-26 09:22:41', null, '2018-07-26 09:22:41', null);
+INSERT INTO `wfl_project_points` VALUES ('14', '35', '37', '1.48', '0', '2018-07-26 10:20:24', null, '2018-07-26 10:20:24', null);
+INSERT INTO `wfl_project_points` VALUES ('15', '38', '37', '1.48', '0', '2018-07-26 10:22:04', null, '2018-07-26 10:22:04', null);
+INSERT INTO `wfl_project_points` VALUES ('16', '41', '37', '1.48', '0', '2018-07-26 10:23:29', null, '2018-07-26 10:23:29', null);
+INSERT INTO `wfl_project_points` VALUES ('17', '46', '6', '0.20', '0', '2018-07-26 10:28:05', null, '2018-07-26 10:28:05', null);
+INSERT INTO `wfl_project_points` VALUES ('18', '48', '6', '0.20', '0', '2018-07-26 10:29:41', null, '2018-07-26 10:29:41', null);
+INSERT INTO `wfl_project_points` VALUES ('19', '53', '2', '0.10', '0', '2018-07-26 10:38:49', null, '2018-07-26 10:38:49', null);
+INSERT INTO `wfl_project_points` VALUES ('20', '55', '2', '0.10', '0', '2018-07-26 10:48:54', null, '2018-07-26 10:48:54', null);
+INSERT INTO `wfl_project_points` VALUES ('21', '61', '5', '0.16', '0', '2018-07-26 11:08:50', null, '2018-07-26 11:08:50', null);
+INSERT INTO `wfl_project_points` VALUES ('22', '63', '5', '0.16', '0', '2018-07-26 11:10:58', null, '2018-07-26 11:10:58', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_stakes
@@ -1078,8 +1178,8 @@ INSERT INTO `wfl_project_status` VALUES ('9', 'Por enviar', 'glyphicon glyphicon
 INSERT INTO `wfl_project_status` VALUES ('10', 'Enviado', 'fa fa-send', '8', null, 'already_sent', '0', null, null, '2018-07-20 14:37:34', null);
 INSERT INTO `wfl_project_status` VALUES ('11', 'Aprobado', 'fa fa-check', '9', null, 'approved', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_project_status` VALUES ('12', 'Cancelado', 'fa fa-times', '10', null, 'canceled', '0', null, null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_project_status` VALUES ('13', 'Rectificacion de diseño', 'fa fa-refresh', '11', null, 'rectify_design', '0', null, null, '2018-07-20 15:17:35', null);
-INSERT INTO `wfl_project_status` VALUES ('14', 'Rectificacion de ilustracion', 'fa fa-refresh', '12', null, 'rectify_illustration', '0', null, null, '2018-07-20 15:30:05', null);
+INSERT INTO `wfl_project_status` VALUES ('13', 'Rect. de diseño', 'fa fa-refresh', '1', null, 'rectify_design', '0', null, null, '2018-07-30 16:21:00', null);
+INSERT INTO `wfl_project_status` VALUES ('14', 'Rect. de ilustracion', 'fa fa-refresh', '1', null, 'rectify_illustration', '0', null, null, '2018-07-30 16:20:56', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_status_log
@@ -1101,15 +1201,80 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`),
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
 -- ----------------------------
-INSERT INTO `wfl_project_status_log` VALUES ('1', '1', '1', 'Proyecto enviado a diseño', '2018-07-20 00:00:00', '0', '2018-07-20 09:57:44', null, '2018-07-20 09:57:44', null);
-INSERT INTO `wfl_project_status_log` VALUES ('2', '2', '7', 'Proyecto creado', '2018-07-20 00:00:00', '0', '2018-07-20 10:02:22', null, '2018-07-20 10:02:22', null);
-INSERT INTO `wfl_project_status_log` VALUES ('3', '3', '7', 'Proyecto creado', '2018-07-20 00:00:00', '0', '2018-07-20 10:06:21', null, '2018-07-20 10:06:21', null);
-INSERT INTO `wfl_project_status_log` VALUES ('4', '1', '2', '', '2018-07-20 00:00:00', '0', '2018-07-20 13:19:36', null, '2018-07-20 13:19:36', null);
+INSERT INTO `wfl_project_status_log` VALUES ('1', '1', '1', 'Proyecto enviado a diseño', '2018-07-01 00:00:00', '0', '2018-07-24 17:01:05', null, '2018-07-24 17:01:05', null);
+INSERT INTO `wfl_project_status_log` VALUES ('2', '2', '1', 'Proyecto enviado a diseño', '2018-07-18 00:00:00', '0', '2018-07-24 17:03:09', null, '2018-07-24 17:03:09', null);
+INSERT INTO `wfl_project_status_log` VALUES ('3', '2', '2', '', '2018-07-19 00:00:00', '0', '2018-07-24 17:05:52', null, '2018-07-24 17:05:52', null);
+INSERT INTO `wfl_project_status_log` VALUES ('4', '1', '2', '', '2018-07-03 00:00:00', '0', '2018-07-24 17:10:32', null, '2018-07-24 17:10:32', null);
+INSERT INTO `wfl_project_status_log` VALUES ('5', '3', '1', 'Proyecto enviado a diseño', '2018-07-02 00:00:00', '0', '2018-07-24 17:26:48', null, '2018-07-24 17:26:48', null);
+INSERT INTO `wfl_project_status_log` VALUES ('6', '3', '2', '', '2018-07-03 00:00:00', '0', '2018-07-24 17:27:39', null, '2018-07-24 17:27:39', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7', '3', '3', '', '2018-07-19 00:00:00', '0', '2018-07-24 17:29:49', null, '2018-07-24 17:29:49', null);
+INSERT INTO `wfl_project_status_log` VALUES ('8', '3', '5', '', '2018-07-20 00:00:00', '0', '2018-07-24 17:31:09', null, '2018-07-24 17:31:09', null);
+INSERT INTO `wfl_project_status_log` VALUES ('9', '3', '6', '', '2018-07-23 00:00:00', '0', '2018-07-24 17:33:38', null, '2018-07-24 17:33:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('10', '3', '8', 'Iniciando etapa de aprobacion', '2018-07-24 17:33:38', '0', '2018-07-24 17:33:38', null, '2018-07-24 17:33:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('11', '3', '9', 'Proyecto por enviar', '2018-07-24 17:33:38', '0', '2018-07-24 17:33:38', null, '2018-07-24 17:33:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('12', '4', '1', 'Proyecto enviado a diseño', '2018-07-25 00:00:00', '0', '2018-07-25 08:20:36', null, '2018-07-25 08:20:36', null);
+INSERT INTO `wfl_project_status_log` VALUES ('13', '5', '1', 'Proyecto enviado a diseño', '2018-07-25 00:00:00', '0', '2018-07-25 08:22:33', null, '2018-07-25 08:22:33', null);
+INSERT INTO `wfl_project_status_log` VALUES ('14', '6', '1', 'Proyecto enviado a diseño', '2018-04-26 00:00:00', '0', '2018-07-25 08:30:43', null, '2018-07-25 08:30:43', null);
+INSERT INTO `wfl_project_status_log` VALUES ('15', '7', '7', 'Proyecto creado', '2018-07-02 00:00:00', '0', '2018-07-25 10:21:51', null, '2018-07-25 10:21:51', null);
+INSERT INTO `wfl_project_status_log` VALUES ('16', '6', '2', '', '2018-04-24 00:00:00', '0', '2018-07-25 11:42:47', null, '2018-07-25 11:42:47', null);
+INSERT INTO `wfl_project_status_log` VALUES ('17', '6', '5', '', '2018-05-15 00:00:00', '0', '2018-07-25 11:44:06', null, '2018-07-25 11:44:06', null);
+INSERT INTO `wfl_project_status_log` VALUES ('18', '8', '1', 'Proyecto enviado a diseño', '2018-07-21 00:00:00', '0', '2018-07-25 11:53:18', null, '2018-07-25 11:53:18', null);
+INSERT INTO `wfl_project_status_log` VALUES ('19', '8', '2', '', '2018-07-23 00:00:00', '0', '2018-07-25 11:53:53', null, '2018-07-25 11:53:53', null);
+INSERT INTO `wfl_project_status_log` VALUES ('20', '6', '6', '', '2018-05-18 00:00:00', '0', '2018-07-25 11:57:38', null, '2018-07-25 11:57:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('21', '6', '8', 'Iniciando etapa de aprobacion', '2018-07-25 11:57:38', '0', '2018-07-25 11:57:38', null, '2018-07-25 11:57:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('22', '6', '9', 'Proyecto por enviar', '2018-07-25 11:57:38', '0', '2018-07-25 11:57:38', null, '2018-07-25 11:57:38', null);
+INSERT INTO `wfl_project_status_log` VALUES ('23', '2', '3', '', '2018-07-25 16:35:22', '0', '2018-07-25 16:35:23', null, '2018-07-25 16:35:23', null);
+INSERT INTO `wfl_project_status_log` VALUES ('24', '9', '1', 'Proyecto enviado a diseño', '2018-06-16 16:53:43', '0', '2018-07-25 16:53:43', null, '2018-07-25 16:53:43', null);
+INSERT INTO `wfl_project_status_log` VALUES ('25', '9', '2', '', '2018-06-18 16:54:34', '0', '2018-07-25 16:54:34', null, '2018-07-25 16:54:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('26', '9', '6', '', '2018-07-29 16:55:12', '0', '2018-07-25 16:55:12', null, '2018-07-25 16:55:12', null);
+INSERT INTO `wfl_project_status_log` VALUES ('27', '9', '8', 'Iniciando etapa de aprobacion', '2018-07-25 16:55:13', '0', '2018-07-25 16:55:13', null, '2018-07-25 16:55:13', null);
+INSERT INTO `wfl_project_status_log` VALUES ('28', '9', '9', 'Proyecto por enviar', '2018-07-25 16:55:14', '0', '2018-07-25 16:55:14', null, '2018-07-25 16:55:14', null);
+INSERT INTO `wfl_project_status_log` VALUES ('29', '2', '5', '', '2018-07-25 17:26:05', '0', '2018-07-25 17:26:05', null, '2018-07-25 17:26:05', null);
+INSERT INTO `wfl_project_status_log` VALUES ('30', '10', '1', 'Proyecto enviado a diseño', '2018-07-26 08:59:52', '0', '2018-07-26 08:59:52', null, '2018-07-26 08:59:52', null);
+INSERT INTO `wfl_project_status_log` VALUES ('31', '7', '1', 'Inicio de diseño del proyecto', '2018-07-26 09:07:50', '0', '2018-07-26 09:07:50', null, '2018-07-26 09:07:50', null);
+INSERT INTO `wfl_project_status_log` VALUES ('32', '7', '2', '', '2018-07-03 09:22:27', '0', '2018-07-26 09:22:27', null, '2018-07-26 09:22:27', null);
+INSERT INTO `wfl_project_status_log` VALUES ('33', '7', '3', '', '2018-07-17 09:22:41', '0', '2018-07-26 09:22:41', null, '2018-07-26 09:22:41', null);
+INSERT INTO `wfl_project_status_log` VALUES ('34', '7', '5', '', '2018-07-17 09:22:52', '0', '2018-07-26 09:22:52', null, '2018-07-26 09:22:52', null);
+INSERT INTO `wfl_project_status_log` VALUES ('35', '11', '7', 'Proyecto creado', '2018-06-16 10:20:24', '0', '2018-07-26 10:20:24', null, '2018-07-26 10:20:24', null);
+INSERT INTO `wfl_project_status_log` VALUES ('36', '11', '1', 'Inicio de diseño del proyecto', '2018-07-26 10:20:33', '0', '2018-07-26 10:20:33', null, '2018-07-26 10:20:33', null);
+INSERT INTO `wfl_project_status_log` VALUES ('37', '11', '2', '', '2018-07-18 10:21:46', '0', '2018-07-26 10:21:46', null, '2018-07-26 10:21:46', null);
+INSERT INTO `wfl_project_status_log` VALUES ('38', '11', '3', '', '2018-07-28 10:22:04', '0', '2018-07-26 10:22:04', null, '2018-07-26 10:22:04', null);
+INSERT INTO `wfl_project_status_log` VALUES ('39', '11', '5', '', '2018-06-29 10:22:20', '0', '2018-07-26 10:22:20', null, '2018-07-26 10:22:20', null);
+INSERT INTO `wfl_project_status_log` VALUES ('40', '11', '2', '', '2018-06-26 10:22:56', '0', '2018-07-26 10:22:56', null, '2018-07-26 10:22:56', null);
+INSERT INTO `wfl_project_status_log` VALUES ('41', '11', '3', '', '2018-06-28 10:23:29', '0', '2018-07-26 10:23:29', null, '2018-07-26 10:23:29', null);
+INSERT INTO `wfl_project_status_log` VALUES ('42', '11', '2', '', '2018-06-16 10:24:03', '0', '2018-07-26 10:24:03', null, '2018-07-26 10:24:03', null);
+INSERT INTO `wfl_project_status_log` VALUES ('43', '11', '6', '', '2018-07-06 10:24:47', '0', '2018-07-26 10:24:47', null, '2018-07-26 10:24:47', null);
+INSERT INTO `wfl_project_status_log` VALUES ('44', '11', '8', 'Iniciando etapa de aprobacion', '2018-07-26 10:24:48', '0', '2018-07-26 10:24:48', null, '2018-07-26 10:24:48', null);
+INSERT INTO `wfl_project_status_log` VALUES ('45', '11', '9', 'Proyecto por enviar', '2018-07-26 10:24:49', '0', '2018-07-26 10:24:49', null, '2018-07-26 10:24:49', null);
+INSERT INTO `wfl_project_status_log` VALUES ('46', '12', '1', 'Proyecto enviado a diseño', '2018-07-16 10:28:05', '0', '2018-07-26 10:28:05', null, '2018-07-26 10:28:05', null);
+INSERT INTO `wfl_project_status_log` VALUES ('47', '12', '2', '', '2018-06-18 10:29:24', '0', '2018-07-26 10:29:24', null, '2018-07-26 10:29:24', null);
+INSERT INTO `wfl_project_status_log` VALUES ('48', '12', '3', '', '2018-07-02 10:29:41', '0', '2018-07-26 10:29:41', null, '2018-07-26 10:29:41', null);
+INSERT INTO `wfl_project_status_log` VALUES ('49', '12', '5', '', '2018-07-03 10:29:50', '0', '2018-07-26 10:29:50', null, '2018-07-26 10:29:50', null);
+INSERT INTO `wfl_project_status_log` VALUES ('50', '12', '6', '', '2018-07-04 10:31:04', '0', '2018-07-26 10:31:04', null, '2018-07-26 10:31:04', null);
+INSERT INTO `wfl_project_status_log` VALUES ('51', '12', '8', 'Iniciando etapa de aprobacion', '2018-07-26 10:31:05', '0', '2018-07-26 10:31:05', null, '2018-07-26 10:31:05', null);
+INSERT INTO `wfl_project_status_log` VALUES ('52', '12', '9', 'Proyecto por enviar', '2018-07-26 10:31:06', '0', '2018-07-26 10:31:06', null, '2018-07-26 10:31:06', null);
+INSERT INTO `wfl_project_status_log` VALUES ('53', '13', '1', 'Proyecto enviado a diseño', '2018-07-26 10:38:49', '0', '2018-07-26 10:38:49', null, '2018-07-26 10:38:49', null);
+INSERT INTO `wfl_project_status_log` VALUES ('54', '13', '2', '', '2018-06-16 10:48:08', '0', '2018-07-26 10:48:08', null, '2018-07-26 10:48:08', null);
+INSERT INTO `wfl_project_status_log` VALUES ('55', '13', '3', '', '2018-06-29 10:48:54', '0', '2018-07-26 10:48:54', null, '2018-07-26 10:48:54', null);
+INSERT INTO `wfl_project_status_log` VALUES ('56', '13', '2', '', '2018-06-18 10:49:09', '0', '2018-07-26 10:49:09', null, '2018-07-26 10:49:09', null);
+INSERT INTO `wfl_project_status_log` VALUES ('57', '13', '5', '', '2018-06-30 10:50:32', '0', '2018-07-26 10:50:32', null, '2018-07-26 10:50:32', null);
+INSERT INTO `wfl_project_status_log` VALUES ('58', '13', '6', '', '2018-07-02 10:53:42', '0', '2018-07-26 10:53:42', null, '2018-07-26 10:53:42', null);
+INSERT INTO `wfl_project_status_log` VALUES ('59', '13', '8', 'Iniciando etapa de aprobacion', '2018-07-26 10:53:43', '0', '2018-07-26 10:53:43', null, '2018-07-26 10:53:43', null);
+INSERT INTO `wfl_project_status_log` VALUES ('60', '13', '9', 'Proyecto por enviar', '2018-07-26 10:53:44', '0', '2018-07-26 10:53:44', null, '2018-07-26 10:53:44', null);
+INSERT INTO `wfl_project_status_log` VALUES ('61', '14', '1', 'Proyecto enviado a diseño', '2018-07-02 11:08:50', '0', '2018-07-26 11:08:50', null, '2018-07-26 11:08:50', null);
+INSERT INTO `wfl_project_status_log` VALUES ('62', '14', '2', '', '2018-07-03 11:10:19', '0', '2018-07-26 11:10:19', null, '2018-07-26 11:10:19', null);
+INSERT INTO `wfl_project_status_log` VALUES ('63', '14', '3', '', '2018-07-07 11:10:58', '0', '2018-07-26 11:10:58', null, '2018-07-26 11:10:58', null);
+INSERT INTO `wfl_project_status_log` VALUES ('64', '14', '5', '', '2018-07-07 11:11:34', '0', '2018-07-26 11:11:34', null, '2018-07-26 11:11:34', null);
+INSERT INTO `wfl_project_status_log` VALUES ('65', '9', '10', 'enviando a CRE', '2018-07-30 15:37:37', '0', '2018-07-30 15:37:37', null, '2018-07-30 15:37:37', null);
+INSERT INTO `wfl_project_status_log` VALUES ('66', '9', '14', 'El proyecto necesita ser reilustrado', '2018-07-30 15:50:21', '0', '2018-07-30 15:50:21', null, '2018-07-30 15:50:21', null);
+INSERT INTO `wfl_project_status_log` VALUES ('67', '11', '10', 'proyecto enviado a CRE', '2018-07-30 15:52:57', '0', '2018-07-30 15:52:57', null, '2018-07-30 15:52:57', null);
+INSERT INTO `wfl_project_status_log` VALUES ('68', '11', '14', 'rectificando ilustracion', '2018-07-30 16:20:01', '0', '2018-07-30 16:20:01', null, '2018-07-30 16:20:01', null);
+INSERT INTO `wfl_project_status_log` VALUES ('69', '13', '10', 'proyecto enviado a CRE', '2018-07-30 16:23:45', '0', '2018-07-30 16:23:46', null, '2018-07-30 16:23:46', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader
@@ -1124,14 +1289,11 @@ CREATE TABLE `wfl_stakes_team_leader` (
   `editedon_stl` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_stl` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_stl`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_stakes_team_leader
 -- ----------------------------
-INSERT INTO `wfl_stakes_team_leader` VALUES ('1', 'Dandy coca', '0', null, null, '2018-06-22 10:58:31', null);
-INSERT INTO `wfl_stakes_team_leader` VALUES ('2', 'migue flores', '0', null, null, '2018-06-22 10:58:36', null);
-INSERT INTO `wfl_stakes_team_leader` VALUES ('3', 'river cortez', '0', null, null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_status_log_responsibles
@@ -1151,15 +1313,76 @@ CREATE TABLE `wfl_status_log_responsibles` (
   KEY `fk_responsible_id_slr` (`responsible_id_slr`),
   CONSTRAINT `fk_responsible_id_slr` FOREIGN KEY (`responsible_id_slr`) REFERENCES `wfl_status_responsibles` (`id_sre`),
   CONSTRAINT `fk_status_log_id_slr` FOREIGN KEY (`status_log_id_slr`) REFERENCES `wfl_project_status_log` (`id_psl`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_status_log_responsibles
 -- ----------------------------
-INSERT INTO `wfl_status_log_responsibles` VALUES ('1', '1', '1', '0', '2018-07-20 00:00:00', null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_status_log_responsibles` VALUES ('2', '2', '9', '0', '2018-07-20 00:00:00', null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_status_log_responsibles` VALUES ('3', '3', '9', '0', '2018-07-20 00:00:00', null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_status_log_responsibles` VALUES ('4', '4', '4', '0', '2018-07-20 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('1', '1', '8', '0', '2018-07-24 17:01:05', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('2', '2', '8', '0', '2018-07-24 17:03:09', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('3', '3', '5', '0', '2018-07-24 17:05:52', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('4', '4', '4', '0', '2018-07-24 17:10:32', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('5', '5', '8', '0', '2018-07-24 17:26:48', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('6', '6', '3', '0', '2018-07-24 17:27:39', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('7', '7', '6', '0', '2018-07-24 17:29:49', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('8', '8', '7', '0', '2018-07-24 17:31:09', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('9', '9', '8', '0', '2018-07-24 17:33:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10', '10', '10', '0', '2018-07-24 17:33:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('11', '11', '10', '0', '2018-07-24 17:33:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('12', '12', '1', '0', '2018-07-25 08:20:36', null, '2018-07-26 10:20:04', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('13', '13', '1', '0', '2018-07-25 08:22:33', null, '2018-07-26 10:49:04', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('14', '14', '8', '0', '2018-07-25 08:30:43', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('15', '15', '9', '0', '2018-07-25 10:21:51', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('16', '16', '3', '0', '2018-07-25 11:42:47', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('17', '17', '7', '0', '2018-07-25 11:44:06', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('18', '18', '8', '0', '2018-07-25 11:53:18', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('19', '19', '4', '0', '2018-07-25 11:53:53', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('20', '20', '8', '0', '2018-07-25 11:57:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('21', '21', '10', '0', '2018-07-25 11:57:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('22', '22', '10', '0', '2018-07-25 11:57:38', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('23', '23', '6', '0', '2018-07-25 16:35:23', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('24', '24', '1', '0', '2018-07-25 16:53:43', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('25', '25', '3', '0', '2018-07-25 16:54:34', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('26', '26', '8', '0', '2018-07-25 16:55:12', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('27', '27', '10', '0', '2018-07-25 16:55:13', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('28', '28', '10', '0', '2018-07-25 16:55:14', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('29', '29', '7', '0', '2018-07-25 17:26:05', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('30', '30', '1', '0', '2018-07-26 08:59:52', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('31', '31', '1', '0', '2018-07-26 09:07:50', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('32', '32', '3', '0', '2018-07-26 09:22:27', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('33', '33', '6', '0', '2018-07-26 09:22:41', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('34', '34', '7', '0', '2018-07-26 09:22:52', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('35', '35', '9', '0', '2018-07-26 10:20:24', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('36', '36', '1', '0', '2018-07-26 10:20:33', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('37', '37', '3', '0', '2018-07-26 10:21:46', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('38', '38', '6', '0', '2018-07-26 10:22:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('39', '39', '7', '0', '2018-07-26 10:22:20', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('40', '41', '6', '0', '2018-07-26 10:23:29', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('41', '43', '8', '0', '2018-07-26 10:24:47', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('42', '44', '10', '0', '2018-07-26 10:24:48', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('43', '45', '10', '0', '2018-07-26 10:24:49', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('44', '46', '1', '0', '2018-07-26 10:28:05', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('45', '47', '3', '0', '2018-07-26 10:29:24', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('46', '48', '6', '0', '2018-07-26 10:29:41', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('47', '49', '7', '0', '2018-07-26 10:29:50', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('48', '50', '8', '0', '2018-07-26 10:31:04', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('49', '51', '10', '0', '2018-07-26 10:31:05', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('50', '52', '10', '0', '2018-07-26 10:31:06', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('51', '53', '1', '0', '2018-07-26 10:38:49', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('52', '54', '3', '0', '2018-07-26 10:48:08', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('53', '55', '6', '0', '2018-07-26 10:48:54', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('54', '57', '7', '0', '2018-07-26 10:50:32', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('55', '58', '8', '0', '2018-07-26 10:53:42', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('56', '59', '10', '0', '2018-07-26 10:53:43', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('57', '60', '10', '0', '2018-07-26 10:53:44', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('58', '61', '1', '0', '2018-07-26 11:08:50', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('59', '62', '4', '0', '2018-07-26 11:10:19', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('60', '63', '6', '0', '2018-07-26 11:10:58', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('61', '64', '7', '0', '2018-07-26 11:11:34', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('62', '65', '12', '0', '2018-07-30 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('63', '67', '12', '0', '2018-07-30 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('64', '68', '10', '0', '2018-07-30 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('65', '69', '12', '0', '2018-07-30 00:00:00', null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_status_responsibles
@@ -1179,13 +1402,13 @@ CREATE TABLE `wfl_status_responsibles` (
   KEY `fk_status_id_sre` (`status_id_sre`),
   CONSTRAINT `fk_status_id_sre` FOREIGN KEY (`status_id_sre`) REFERENCES `wfl_project_status` (`id_pst`),
   CONSTRAINT `fk_user_id_sre` FOREIGN KEY (`user_id_sre`) REFERENCES `sec_users` (`id_usr`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of wfl_status_responsibles
 -- ----------------------------
 INSERT INTO `wfl_status_responsibles` VALUES ('1', '7', '1', '0', null, null, '0000-00-00 00:00:00', null);
-INSERT INTO `wfl_status_responsibles` VALUES ('2', '6', '1', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('2', '6', '1', '1', null, null, '2018-07-25 14:53:52', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('3', '5', '2', '0', null, null, '2018-07-19 11:02:42', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('4', '3', '2', '0', null, null, '2018-07-19 11:01:08', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('5', '4', '2', '0', null, null, '2018-07-19 11:01:08', null);
@@ -1193,6 +1416,11 @@ INSERT INTO `wfl_status_responsibles` VALUES ('6', '8', '3', '0', null, null, '0
 INSERT INTO `wfl_status_responsibles` VALUES ('7', '9', '5', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('8', '2', '6', '0', null, null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_responsibles` VALUES ('9', '2', '7', '0', null, null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('10', '2', '8', '0', null, null, '2018-07-23 10:26:12', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('11', '2', '9', '0', null, null, '2018-07-23 10:26:12', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('12', '2', '10', '0', null, null, '2018-07-23 10:26:13', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('13', '2', '11', '0', null, null, '2018-07-23 10:26:13', null);
+INSERT INTO `wfl_status_responsibles` VALUES ('14', '2', '12', '0', null, null, '2018-07-23 10:26:13', null);
 
 -- ----------------------------
 -- Procedure structure for project_count_all
@@ -1219,28 +1447,33 @@ select count(id_pro) as total from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -1282,28 +1515,33 @@ select * from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -1348,28 +1586,33 @@ select * from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
@@ -1413,28 +1656,33 @@ select count(id_pro) as total from
 	FROM
 		wfl_projects
 	LEFT JOIN (
-		select
-			max(id_psl) id_psl,
-			project_id_psl,
-			status_id_psl,
-			max(manual_entry_date_psl) manual_entry_date_psl,
-			GROUP_CONCAT(responsibles.firstname_usr) responsible
-		from
-			wfl_project_status_log
-		LEFT JOIN (
-			select
-				*
-			from
-				wfl_status_log_responsibles
-			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-			LEFT JOIN sec_users on id_usr = user_id_sre
-		) responsibles on responsibles.status_log_id_slr = id_psl
-
-		where
-			",@statusIdFilter1,"
-		GROUP BY project_id_psl, status_id_psl
-		ORDER BY manual_entry_date_psl desc
-
+		select * from (
+        	select
+        		project_id_psl project_id, max(manual_entry_date_psl) max_date
+        		from (
+        			SELECT
+        				project_id_psl,
+        				manual_entry_date_psl
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			GROUP BY id_psl
+        		) statusLogAndResponsible group by project_id_psl
+        ) as max_entry
+        LEFT JOIN (
+        			SELECT
+        				id_psl,
+        				project_id_psl,
+        				log_detail_psl,
+        				manual_entry_date_psl,
+        				GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+        			FROM
+        				wfl_project_status_log
+        			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        			LEFT JOIN sec_users on id_usr = user_id_sre
+        			GROUP BY id_psl
+        			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
 	WHERE
