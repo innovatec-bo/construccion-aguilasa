@@ -72,6 +72,7 @@
 
 <script id="ht-status-rectify_design-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>El proyecto ha sido enviado a rectificación de diseño!</h4>
+        <h4>El presente proyecto recibio observaciones, por lo que es necesario hacer una rectificacion en su diseño!</h4>
+        <p>Es necesario volver a estaqueado, digitalizacion y dibujo</p>
     </div>
 </script>

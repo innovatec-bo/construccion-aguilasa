@@ -51,8 +51,14 @@ $(document).ready(function() {
                 case "rectify_illustration":
                     saveRectifyIllustration(statusId,statusKeyword);
                     break;
+                case "approved":
+                    saveApproved(statusId,statusKeyword);
+                    break;
+                case "canceled":
+                    saveCanceled(statusId,statusKeyword);
+                    break;
                 default:
-                    bootbox.alert("Desculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
+                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
                     break;
             }
         }
@@ -144,6 +150,7 @@ function saveDigitization(statusId,statusKeyword)
     var statusDetail = $("textarea[name=digitization-detail]").val();
     var lastPoints = $("input[name=current-project-points]").val();
     var lastDistance = $("input[name=current-project-meters-distance]").val();
+    var sendToApprovement = $("[data-status-keyword="+statusKeyword+"]").data("send-to-approvement");
     var digitization = {
         projectId: projectId,
         digitizationEntryDate:digitizationEntryDate,
@@ -153,7 +160,8 @@ function saveDigitization(statusId,statusKeyword)
         statusDetail: statusDetail,
         lastPoints: lastPoints,
         lastDistance: lastDistance,
-        responsibleList:responsibleList
+        responsibleList:responsibleList,
+        sendToApprovement:sendToApprovement
     };
 
     $.ajax({
@@ -179,12 +187,14 @@ function saveDrawing(statusId,statusKeyword)
     var projectId = $("input[name=project-id]").val();
     var drawingEntryDate = $("input[name=drawing-entry-date]").val();
     var statusDetail = $("textarea[name=drawing-detail]").val();
+    var sendToApprovement = $("[data-status-keyword="+statusKeyword+"]").data("send-to-approvement");
     var drawing = {
         projectId: projectId,
         drawingEntryDate:drawingEntryDate,
         statusId: statusId,
         statusDetail: statusDetail,
-        responsibleList:responsibleList
+        responsibleList:responsibleList,
+        sendToApprovement:sendToApprovement
     };
 
     $.ajax({
@@ -287,8 +297,7 @@ function saveRectifyDesign(statusId,statusKeyword)
         type : "POST",
         data : alreadySent,
         success:function(response){
-            loadStatusSavedView();
-            getProjectLog();
+            window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/"+projectId;
         }
     });
 }
@@ -316,6 +325,39 @@ function saveRectifyIllustration(statusId,statusKeyword)
         dataType  :"json",
         type : "POST",
         data : alreadySent,
+        success:function(response){
+            window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/"+projectId;
+        }
+    });
+}
+
+function saveApproved(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var design = $("input[name=design-budget]").val();
+    var building = $("input[name=building-budget]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var digitization = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        design: design,
+        building: building,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveApproved',
+        dataType  :"json",
+        type : "POST",
+        data : digitization,
         success:function(response){
             loadStatusSavedView();
             getProjectLog();
@@ -357,7 +399,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance,statusKeyword:statusKeyword};
+                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance,statusKeyword:statusKeyword, statusSet:statusSet};
                 var html = template(data);
                 $("#status-form-content").html(html);
                 var date = new Date();
@@ -376,7 +418,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 // var htmlSource = $("#ht-status-already-has-data").html();
                 var htmlSource = $("#ht-status-"+statusKeyword+"-form-completed").html();
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusKeyword:statusKeyword};
+                var data = {statusKeyword:statusKeyword,statusSet:statusSet};
                 var html = template(data);
                 $("#status-form-content").html(html);
             }

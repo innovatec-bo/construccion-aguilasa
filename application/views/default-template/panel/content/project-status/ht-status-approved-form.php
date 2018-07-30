@@ -6,8 +6,8 @@
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-drawing-form" type="text/x-handlebars-template">
-    <div class="tab-pane active" role="tabpanel" id="step_drawing">
+<script id="ht-status-approved-form" type="text/x-handlebars-template">
+    <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Formulario de Dibujo new
@@ -22,19 +22,32 @@
                                         <div class="form-group">
                                             <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
-                                                <input name="drawing-entry-date" readonly="" class="form-control" required="" data-parsley-group="drawing" data-parsley-errors-container="#error-drawing-entry-date">
+                                                <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>
                                             </div>
-                                            <div id="error-drawing-entry-date"></div>
+                                            <div id="error-{{statusKeyword}}-entry-date"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row form-inline">
+                                    <div class="col-md-6">
+                                        <label>Presupuesto</label><br>
+                                        <div class="form-group">
+                                            <em>Diseño</em><br>
+                                            <input class="form-control" value="{{design_budget}}" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <em>Construccion</em><br>
+                                            <input class="form-control" value="{{building_budget}}" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
-                                            <label>Dibujante(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                            <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                             <div class="form-group">
                                                 <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
                                                     {{#each statusResponsible}}
@@ -51,7 +64,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="drawing-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +78,7 @@
                         {{var "buttonTitle" "Guardar y enviar a aprobacion"}}
                     {{/ifCond}}
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="drawing" data-send-to-approvement="{{sendToApprovement}}">{{buttonTitle}}</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="{{statusKeyword}}" data-send-to-approvement="{{sendToApprovement}}">{{buttonTitle}}</button>
                     </div>
                 </div>
             </div>
@@ -74,7 +87,7 @@
     </div>
 </script>
 
-<script id="ht-status-drawing-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-approved-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>Ya se definio un responsable de dibujo para este proyecto!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>

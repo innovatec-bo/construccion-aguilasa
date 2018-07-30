@@ -72,7 +72,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="3" data-status-keyword="digitization">Guardar</button>
+                        {{var "sendToApprovement" "0"}}
+                        {{var "buttonTitle" "Guardar"}}
+                        {{#ifCond statusSet "==" "rectify_design"}}
+                        {{var "sendToApprovement" "1"}}
+                        {{var "buttonTitle" "Guardar y enviar a aprobacion"}}
+                        {{/ifCond}}
+                        <button type="button" class="btn btn-primary save-status" data-status-id="3" data-status-keyword="digitization" data-send-to-approvement="{{sendToApprovement}}">{{buttonTitle}}</button>
                     </div>
                 </div>
             </div>

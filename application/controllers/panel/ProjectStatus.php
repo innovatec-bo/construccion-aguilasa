@@ -241,10 +241,10 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("ready_to_send","already_sent","approved","canceled");
                 break;
             case 'rectify_design':
-                $keywordList = array("stakes","digitization","drawing");
+                $keywordList = array("rectify_design", "stakes", "digitization", "drawing");
                 break;
             case 'rectify_illustration':
-                $keywordList = array("digitization","drawing");
+                $keywordList = array("rectify_illustration", "digitization", "drawing");
                 break;
             default:
                 $keywordList = array();

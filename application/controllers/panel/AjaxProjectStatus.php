@@ -175,11 +175,19 @@ class AjaxProjectStatus extends PrivateController
         $projectDistance = $formData["projectDistance"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
-
+        $sendToApprovement = $formData["sendToApprovement"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
         $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $digitizationEntryDate, $responsibleList);
+        if($sendToApprovement == 1)
+        {
+            $seconds = 1;
+            $approvementEntryDate = $drawingEntryDate;
+
+            $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+            $project->addStatusToLog($statusId, $statusDetail, $approvementEntryDate, $responsibleList);
+        }
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -197,10 +205,19 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
+        $sendToApprovement = $formData["sendToApprovement"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $drawingEntryDate, $responsibleList);
+        if($sendToApprovement == 1)
+        {
+            $seconds = 1;
+            $approvementEntryDate = $drawingEntryDate;
+
+            $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+            $project->addStatusToLog($statusId, $statusDetail, $approvementEntryDate, $responsibleList);
+        }
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -233,9 +250,9 @@ class AjaxProjectStatus extends PrivateController
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate, $responsibleList);
         sleep(1);
-        $project->addStatusToLog(8, "Iniciando etapa de aprobacion", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
+        $project->addStatusToLog(8, "Iniciando etapa de aprobacion", $scheduleEntryDate, array(10));//check wfl_status_responsibles id 10
         sleep(1);
-        $project->addStatusToLog(9, "Proyecto por enviar", date("Y-m-d H:i:s"), array(10));//check wfl_status_responsibles id 10
+        $project->addStatusToLog(9, "Proyecto por enviar", $scheduleEntryDate, array(10));//check wfl_status_responsibles id 10
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -271,9 +288,9 @@ class AjaxProjectStatus extends PrivateController
         $entryDate = $entryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
+//        $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(10));
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -289,9 +306,29 @@ class AjaxProjectStatus extends PrivateController
         $entryDate = $entryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
+//        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(10));
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
+    public function saveApproved()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $design = $formData["design"];
+        $building = $formData["building"];
         $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, $building, $statusId, $statusDetail, $entryDate, $responsibleList);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

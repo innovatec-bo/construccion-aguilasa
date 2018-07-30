@@ -48,7 +48,7 @@ class Model_project_status extends Model_project_status_base
         from ".static::TABLE_NAME."
         where 
         ".static::notDeleted()."
-        and keyword_pst in (".$keywordStringList.")        
+        and keyword_pst in (".$keywordStringList.") order by order_pst
         ";
         $query = $ci->db->query($sql);
         $result = static::recastArray(get_called_class(), $query->result());

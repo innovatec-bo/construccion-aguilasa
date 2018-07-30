@@ -32,8 +32,9 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en reestaqueado";
+        $data["viewTitle"] = "Rectificacion de diseño";
         $data["status"] = "13";
+        $data["statusSet"] = "rectify_design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -64,8 +65,9 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en estaqueado";
+        $data["viewTitle"] = "Rectificacion de estaqueado";
         $data["status"] = 2;
+        $data["statusSet"] = "rectify_design";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -96,7 +98,7 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en Digitalizacion";
+        $data["viewTitle"] = "Rectificacion de Digitalizacion";
         $data["status"] = 3;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -128,40 +130,8 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en dibujo";
+        $data["viewTitle"] = "Rectificacion de dibujo";
         $data["status"] = 5;
-        $data["projectSystems"] = $this->_projectSystems;
-        $projectStatus = Model_project_status::getAll(100,0);
-        $arrayStatus = array();
-        foreach ($projectStatus as $status)
-        {
-            $status = (array)$status;
-            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
-        }
-        $data["projectStatusJson"] = json_encode($arrayStatus);
-        $this->_loadPanelView("project/index",$data);
-    }
-
-    public function schedule()
-    {
-        $this->_validateFeature('design_schedule');
-        $this->complementHandler->addViewComplement("bootbox");
-        $this->complementHandler->addViewComplement("jquery.datatables");
-        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
-        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
-        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
-        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
-        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
-        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
-        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
-        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
-        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
-        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
-        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
-        $data["viewTitle"] = "Proyectos en Cronograma";
-        $data["status"] = 6;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

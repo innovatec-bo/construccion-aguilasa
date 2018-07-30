@@ -166,6 +166,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-ready
 $this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-rectify_design-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-rectify_illustration-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-approved-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
