@@ -33,7 +33,7 @@ class Approvement extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en Aprobacion";
-        $data["status"] = "1";
+        $data["status"] = "8";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

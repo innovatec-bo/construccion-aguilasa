@@ -130,7 +130,7 @@ function saveStakesTeam(statusId, statusKeyword)
         type : "POST",
         data : stakes,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -170,7 +170,7 @@ function saveDigitization(statusId,statusKeyword)
         type : "POST",
         data : digitization,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -203,7 +203,7 @@ function saveDrawing(statusId,statusKeyword)
         type : "POST",
         data : drawing,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -237,7 +237,7 @@ function saveSchedule(statusId,statusKeyword)
         type : "POST",
         data : schedule,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -267,7 +267,7 @@ function saveAlreadySent(statusId,statusKeyword)
         type : "POST",
         data : alreadySent,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -359,7 +359,41 @@ function saveApproved(statusId,statusKeyword)
         type : "POST",
         data : digitization,
         success:function(response){
-            loadStatusSavedView();
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveCanceled(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var design = $("input[name=design-budget]").val();
+    var building = $("input[name=building-budget]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var dataToSend = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        design: design,
+        building: building,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveCanceled',
+        dataType  :"json",
+        type : "POST",
+        data : dataToSend,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
             getProjectLog();
         }
     });
@@ -426,9 +460,9 @@ function loadStatusForm(statusKeyword, addMoreInfo)
     });
 }
 
-function loadStatusSavedView()
+function loadStatusSavedView(keyword)
 {
-    var htmlSource   = $("#ht-status-saved-view").html();
+    var htmlSource   = $("#ht-status-"+keyword+"-form-completed").html();
     var template = Handlebars.compile(htmlSource);
     var data = {};
     var html = template(data);

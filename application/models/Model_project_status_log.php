@@ -43,12 +43,15 @@ class Model_project_status_log extends Model_project_status_log_base
                 distance_prp,
                 GROUP_CONCAT(responsible.full_name) responsible_user,
                 points_pro,
-                distance_pro
+                distance_pro,
+                design_prb,
+                building_prb
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
         LEFT JOIN wfl_projects on id_pro = project_id_psl
+        LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
         LEFT JOIN (
             SELECT
                 status_log_id_slr,
