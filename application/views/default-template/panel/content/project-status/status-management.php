@@ -168,10 +168,17 @@ $this->load->view("default-template/panel/content/project-status/ht-status-recti
 $this->load->view("default-template/panel/content/project-status/ht-status-rectify_illustration-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-approved-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-canceled-form");
+//rectify design
+$this->load->view("default-template/panel/content/project-status/ht-status-rd_stakes-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-rd_digitization-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-rd_drawing-form");
+//rectify illustration
+$this->load->view("default-template/panel/content/project-status/ht-status-ri_stakes-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-ri_digitization-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-ri_drawing-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
-//$this->load->view("default-template/panel/content/project-status/ht-status-already-has-data");
 $this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
 ?>

@@ -296,6 +296,27 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function saveRdStakesTeam()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $responsibleList = $formData["responsibleList"];
+        $statusDetail = $formData["statusDetail"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
     public function saveRectifyIllustration()
     {
         $formData = $this->input->post();
