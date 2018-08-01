@@ -173,7 +173,6 @@ $this->load->view("default-template/panel/content/project-status/ht-status-rd_st
 $this->load->view("default-template/panel/content/project-status/ht-status-rd_digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-rd_drawing-form");
 //rectify illustration
-$this->load->view("default-template/panel/content/project-status/ht-status-ri_stakes-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_drawing-form");
 

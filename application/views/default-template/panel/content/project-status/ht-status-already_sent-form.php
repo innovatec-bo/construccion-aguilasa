@@ -72,9 +72,8 @@
 
 <script id="ht-status-already_sent-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>El proyecto ha sido enviado a CRE!</h4>
         <p>
-            Si la fecha de envio fue incorrecta puede corregirla haciendo clic aqui <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui.</a><br>
+            Si la fecha de envio fue incorrecta o va a registrar un nuevo envio puede hacerlo <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui.</a><br>
             Si el proyecto ha tenido observaciones puede enviarlo a RECTIFICACION DE DISEÑO ó RECTIFICACION DE ILUSTRACION
         </p>
         <div class="row">

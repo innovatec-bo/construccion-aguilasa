@@ -10,7 +10,7 @@
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Estaqueado por rectificacion
+                Estaqueado por rectificacion de diseño
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -55,7 +55,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="2" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="15" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
 
 <script id="ht-status-rd_stakes-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definieron responsables de estaqueado para este proyecto!</h4>
+        <h4>Ya se definieron responsables de estaqueado(rectificacion de diseño) para este proyecto!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

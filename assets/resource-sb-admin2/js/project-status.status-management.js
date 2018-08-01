@@ -23,6 +23,7 @@ $(document).ready(function() {
         var $form = $("form[name=status-management]");
         var statusKeyword = $(this).data("status-keyword");
         var statusId = $(this).data("status-id");
+        var $button = $(this);
 
         if($form.parsley().isValid({group: statusKeyword}))
         {
@@ -30,14 +31,19 @@ $(document).ready(function() {
             blockArea($content);
             switch(statusKeyword)
             {
+                case "rd_stakes":
                 case "stakes":
                     saveStakesTeam(statusId,statusKeyword);
                     break;
+                case "ri_digitization":
+                case "rd_digitization":
                 case "digitization":
-                    saveDigitization(statusId,statusKeyword);
+                    saveDigitization(statusId,statusKeyword,$button);
                     break;
+                case "ri_drawing":
+                case "rd_drawing":
                 case "drawing":
-                    saveDrawing(statusId,statusKeyword);
+                    saveDrawing(statusId,statusKeyword,$button);
                     break;
                 case "schedule":
                     saveSchedule(statusId,statusKeyword);
@@ -114,11 +120,11 @@ function saveStakesTeam(statusId, statusKeyword)
         responsibleList.push(value.id);
     });
     var projectId = $("input[name=project-id]").val();
-    var stakesTeamEntryDate = $("input[name=stakes-team-entry-date]").val();
-    var statusDetail = $("textarea[name=stakes-detail]").val();
+    var entryDate = $("input[name="+statusKeyword+"-team-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var stakes = {
         projectId: projectId,
-        stakesTeamEntryDate:stakesTeamEntryDate,
+        entryDate:entryDate,
         statusId: statusId,
         statusDetail: statusDetail,
         responsibleList: responsibleList
@@ -136,7 +142,7 @@ function saveStakesTeam(statusId, statusKeyword)
     });
 }
 
-function saveDigitization(statusId,statusKeyword)
+function saveDigitization(statusId,statusKeyword, button)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
     var responsibleList = [];
@@ -144,16 +150,16 @@ function saveDigitization(statusId,statusKeyword)
         responsibleList.push(value.id);
     });
     var projectId = $("input[name=project-id]").val();
-    var digitizationEntryDate = $("input[name=digitization-entry-date]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
     var projectPoints = $("input[name=project-points]").val();
     var projectDistance = $("input[name=project-meters-distance]").val();
-    var statusDetail = $("textarea[name=digitization-detail]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var lastPoints = $("input[name=current-project-points]").val();
     var lastDistance = $("input[name=current-project-meters-distance]").val();
-    var sendToApprovement = $("[data-status-keyword="+statusKeyword+"]").data("send-to-approvement");
+    var sendToApprovement = button.data("send-to-approvement");
     var digitization = {
         projectId: projectId,
-        digitizationEntryDate:digitizationEntryDate,
+        entryDate:entryDate,
         statusId: statusId,
         projectPoints: projectPoints,
         projectDistance: projectDistance,
@@ -170,13 +176,20 @@ function saveDigitization(statusId,statusKeyword)
         type : "POST",
         data : digitization,
         success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
+            if(sendToApprovement == 1)
+            {
+                window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+projectId;
+            }
+            else
+            {
+                loadStatusSavedView(statusKeyword);
+                getProjectLog();
+            }
         }
     });
 }
 
-function saveDrawing(statusId,statusKeyword)
+function saveDrawing(statusId,statusKeyword,button)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
     var responsibleList = [];
@@ -185,12 +198,12 @@ function saveDrawing(statusId,statusKeyword)
     });
 
     var projectId = $("input[name=project-id]").val();
-    var drawingEntryDate = $("input[name=drawing-entry-date]").val();
-    var statusDetail = $("textarea[name=drawing-detail]").val();
-    var sendToApprovement = $("[data-status-keyword="+statusKeyword+"]").data("send-to-approvement");
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var sendToApprovement = button.data("send-to-approvement");
     var drawing = {
         projectId: projectId,
-        drawingEntryDate:drawingEntryDate,
+        entryDate:entryDate,
         statusId: statusId,
         statusDetail: statusDetail,
         responsibleList:responsibleList,
@@ -203,8 +216,16 @@ function saveDrawing(statusId,statusKeyword)
         type : "POST",
         data : drawing,
         success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
+            if(sendToApprovement == 1)
+            {
+                window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+projectId;
+            }
+            else
+            {
+                loadStatusSavedView(statusKeyword);
+                getProjectLog();
+            }
+
         }
     });
 }
@@ -464,7 +485,7 @@ function loadStatusSavedView(keyword)
 {
     var htmlSource   = $("#ht-status-"+keyword+"-form-completed").html();
     var template = Handlebars.compile(htmlSource);
-    var data = {};
+    var data = {statusKeyword:keyword};
     var html = template(data);
     $("#status-form-content").html(html);
 }

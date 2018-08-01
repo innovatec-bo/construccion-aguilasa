@@ -33,7 +33,7 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Rectificacion de ilustracion";
-        $data["status"] = "14";
+        $data["status"] = "14,18,19";
         $data["statusSet"] = "rectify_illustration";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -66,7 +66,8 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Rectificacion de Digitalizacion";
-        $data["status"] = 3;
+        $data["statusSet"] = "rectify_illustration";
+        $data["status"] = 18;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -98,7 +99,8 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Rectificacion de dibujo";
-        $data["status"] = 5;
+        $data["statusSet"] = "rectify_illustration";
+        $data["status"] = 19;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

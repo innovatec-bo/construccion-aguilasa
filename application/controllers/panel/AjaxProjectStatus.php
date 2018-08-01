@@ -145,17 +145,17 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $stakesTeamEntryDate = $formData["stakesTeamEntryDate"];
-        $stakesTeamEntryDate = DateTime::createFromFormat('d-m-Y', $stakesTeamEntryDate);
-        $stakesTeamEntryDate = date_format($stakesTeamEntryDate, 'Y-m-d');
-        $stakesTeamEntryDate = $stakesTeamEntryDate." ".date("H:i:s");
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $responsibleList = $formData["responsibleList"];
         $statusDetail = $formData["statusDetail"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $stakesTeamEntryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -166,10 +166,10 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $digitizationEntryDate = $formData["digitizationEntryDate"];
-        $digitizationEntryDate = DateTime::createFromFormat('d-m-Y', $digitizationEntryDate);
-        $digitizationEntryDate = date_format($digitizationEntryDate, 'Y-m-d');
-        $digitizationEntryDate = $digitizationEntryDate." ".date("H:i:s");
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $projectPoints = $formData["projectPoints"];
         $projectDistance = $formData["projectDistance"];
@@ -179,14 +179,16 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $digitizationEntryDate, $responsibleList);
+        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList);
         if($sendToApprovement == 1)
         {
+            $approvementEntryDate = $entryDate;
             $seconds = 1;
-            $approvementEntryDate = $drawingEntryDate;
-
             $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
-            $project->addStatusToLog($statusId, $statusDetail, $approvementEntryDate, $responsibleList);
+            $project->addStatusToLog(8, $statusDetail, $approvementEntryDate, $responsibleList);
+            $seconds = 2;
+            $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+            $project->addStatusToLog(9, $statusDetail, $approvementEntryDate, $responsibleList);
         }
 
         $response["success"] = 1;
@@ -198,10 +200,10 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $drawingEntryDate = $formData["drawingEntryDate"];
-        $drawingEntryDate = DateTime::createFromFormat('d-m-Y', $drawingEntryDate);
-        $drawingEntryDate = date_format($drawingEntryDate, 'Y-m-d');
-        $drawingEntryDate = $drawingEntryDate." ".date("H:i:s");
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
@@ -209,14 +211,16 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $drawingEntryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         if($sendToApprovement == 1)
         {
+            $approvementEntryDate = $entryDate;
             $seconds = 1;
-            $approvementEntryDate = $drawingEntryDate;
-
             $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
-            $project->addStatusToLog($statusId, $statusDetail, $approvementEntryDate, $responsibleList);
+            $project->addStatusToLog(8, "Iniciando etapa de aprobacion", $approvementEntryDate, array(10));
+            $seconds = 2;
+            $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+            $project->addStatusToLog(9, "Proyecto por enviar", $approvementEntryDate, array(11));
         }
 
         $response["success"] = 1;
@@ -228,10 +232,10 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $scheduleEntryDate = $formData["scheduleEntryDate"];
-        $scheduleEntryDate = DateTime::createFromFormat('d-m-Y', $scheduleEntryDate);
-        $scheduleEntryDate = date_format($scheduleEntryDate, 'Y-m-d');
-        $scheduleEntryDate = $scheduleEntryDate." ".date("H:i:s");
+        $entryDate = $formData["scheduleEntryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
         $projectStart = $formData["projectStart"];
         $projectStart = DateTime::createFromFormat('d-m-Y', $projectStart);
         $projectStart = date_format($projectStart, 'Y-m-d');
@@ -248,11 +252,15 @@ class AjaxProjectStatus extends PrivateController
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $scheduleEntryDate, $responsibleList);
-        sleep(1);
-        $project->addStatusToLog(8, "Iniciando etapa de aprobacion", $scheduleEntryDate, array(10));//check wfl_status_responsibles id 10
-        sleep(1);
-        $project->addStatusToLog(9, "Proyecto por enviar", $scheduleEntryDate, array(10));//check wfl_status_responsibles id 10
+
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $approvementEntryDate = $entryDate;
+        $seconds = 1;
+        $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+        $project->addStatusToLog(8, "Iniciando etapa de aprobacion", $approvementEntryDate, array(10));
+        $seconds = 2;
+        $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
+        $project->addStatusToLog(9, "Proyecto por enviar", $approvementEntryDate, array(11));
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";

@@ -16,20 +16,28 @@
                         <dt>Responsable(s)</dt>
                         <dd>{{responsible_user}}</dd>
                         {{#ifCond keyword_pst "==" "digitization"}}
-                        <dt>Area del proyecto</dt>
-                        <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                            <dt>Area del proyecto</dt>
+                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                        {{/ifCond}}
+                        {{#ifCond keyword_pst "==" "rd_digitization"}}
+                            <dt>Area del proyecto</dt>
+                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                        {{/ifCond}}
+                        {{#ifCond keyword_pst "==" "ri_digitization"}}
+                            <dt>Area del proyecto</dt>
+                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "approved"}}
-                        <dt>Costos diseño/construccion</dt>
-                        <dd>{{design_prb}}/{{building_prb}}</dd>
+                            <dt>Costos diseño/construccion</dt>
+                            <dd>{{design_prb}}/{{building_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "canceled"}}
-                        <dt>Costos de diseño</dt>
-                        <dd>{{design_prb}}</dd>
+                            <dt>Costos de diseño</dt>
+                            <dd>{{design_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond log_detail_psl "!=" ""}}
-                        <dt>Observaciones</dt>
-                        <dd>{{log_detail_psl}}</dd>
+                            <dt>Observaciones</dt>
+                            <dd>{{log_detail_psl}}</dd>
                         {{/ifCond}}
                     </dl>
                 </blockquote>

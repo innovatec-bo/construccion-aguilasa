@@ -7,10 +7,10 @@
  */
 ?>
 <script id="ht-status-digitization-form" type="text/x-handlebars-template">
-    <div class="tab-pane active" role="tabpanel" id="step_digitization">
+    <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Digitalizacion new
+                Formulario de Digitalizacion
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -22,12 +22,12 @@
                                         <div class="form-group">
                                             <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
-                                                <input name="digitization-entry-date" readonly="" class="form-control" required="" data-parsley-group="digitization" data-parsley-errors-container="#error-digitization-entry-date">
+                                                <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>
                                             </div>
-                                            <div id="error-digitization-entry-date"></div>
+                                            <div id="error-{{statusKeyword}}-entry-date"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -54,17 +54,17 @@
                                         <label>Area del proyecto</label><br>
                                         <div class="form-group">
                                             <em>Puntos</em><br>
-                                            <input class="form-control" value="{{points}}" name="project-points" placeholder="Puntos" required="" data-parsley-type="integer" data-parsley-group="digitization">
+                                            <input class="form-control" value="{{points}}" name="project-points" placeholder="Puntos" required="" data-parsley-type="integer" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                         <div class="form-group">
                                             <em>Distancia Km</em><br>
-                                            <input class="form-control" value="{{distance}}" name="project-meters-distance" placeholder="Distancia" data-parsley-type="number" required="" data-parsley-group="digitization">
+                                            <input class="form-control" value="{{distance}}" name="project-meters-distance" placeholder="Distancia" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="digitization-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -72,13 +72,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        {{var "sendToApprovement" "0"}}
-                        {{var "buttonTitle" "Guardar"}}
-                        {{#ifCond statusSet "==" "rectify_design"}}
-                        {{var "sendToApprovement" "1"}}
-                        {{var "buttonTitle" "Guardar y enviar a aprobacion"}}
-                        {{/ifCond}}
-                        <button type="button" class="btn btn-primary save-status" data-status-id="3" data-status-keyword="digitization" data-send-to-approvement="{{sendToApprovement}}">{{buttonTitle}}</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="3" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>

@@ -6,11 +6,11 @@
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-rd_digitization-form" type="text/x-handlebars-template">
+<script id="ht-status-ri_digitization-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Digitalizacion por rectificacion de diseño
+                Digitalizacion por rectificacion de ilustracion
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -72,8 +72,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="16" data-status-keyword="{{statusKeyword}}" data-send-to-approvement="0">Guardar</button>
-                        <button type="button" class="btn btn-primary save-status" data-status-id="16" data-status-keyword="{{statusKeyword}}" data-send-to-approvement="1">Guardar y enviar a aprobacion</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="18" data-status-keyword="{{statusKeyword}}" data-send-to-approvement="0">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="18" data-status-keyword="{{statusKeyword}}" data-send-to-approvement="1">Guardar y enviar a aprobacion</button>
                     </div>
                 </div>
             </div>
@@ -82,9 +82,9 @@
     </div>
 </script>
 
-<script id="ht-status-rd_digitization-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-ri_digitization-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definió responsable de digitalizacion(rectificacion de diseño) en este proyecto!</h4>
+        <h4>Ya se definió responsable de digitalizacion(rectificacion de ilustracion) en este proyecto!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

@@ -7,10 +7,10 @@
  */
 ?>
 <script id="ht-status-drawing-form" type="text/x-handlebars-template">
-    <div class="tab-pane active" role="tabpanel" id="step_drawing">
+    <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Dibujo new
+                Formulario de Dibujo
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -22,12 +22,12 @@
                                         <div class="form-group">
                                             <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
-                                                <input name="drawing-entry-date" readonly="" class="form-control" required="" data-parsley-group="drawing" data-parsley-errors-container="#error-drawing-entry-date">
+                                                <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>
                                             </div>
-                                            <div id="error-drawing-entry-date"></div>
+                                            <div id="error-{{statusKeyword}}-entry-date"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -51,21 +51,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="drawing-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    {{var "sendToApprovement" "0"}}
-                    {{var "buttonTitle" "Guardar"}}
-                    {{#ifCond statusSet "==" "rectify_design"}}
-                        {{var "sendToApprovement" "1"}}
-                        {{var "buttonTitle" "Guardar y enviar a aprobacion"}}
-                    {{/ifCond}}
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="drawing" data-send-to-approvement="{{sendToApprovement}}">{{buttonTitle}}</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>

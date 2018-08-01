@@ -23,6 +23,7 @@ class AjaxProject extends PrivateController
     {
         $dt = new JqdtHandler($this->input->post());
         $additionalParameters = $this->input->post("additionalParameters");
+        $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
         $recordsTotal = Model_project::countAll($additionalParameters["status"]);
         $recordsFiltered = $recordsTotal;
         if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)

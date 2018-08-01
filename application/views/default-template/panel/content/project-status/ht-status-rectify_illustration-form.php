@@ -59,9 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-
                         <button type="button" class="btn btn-primary save-status" data-status-id="14" data-status-keyword="{{statusKeyword}}">Guardar</button>
-
                     </div>
                 </div>
             </div>
@@ -72,6 +70,6 @@
 
 <script id="ht-status-rectify_illustration-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>El proyecto ha sido enviado a rectificación de ilustración!</h4>
+        <h4>El proyecto encuentra en rectificación de ilustración!</h4>
     </div>
 </script>
