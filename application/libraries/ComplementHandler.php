@@ -40,9 +40,9 @@ class ComplementHandler
         }
     }
 
-    public function addProjectJs($name)
+    public function addProjectJs($name, $version = "")
     {
-        $this->_viewJavascript[] = $this->_projectJsPath . "/" . $name . ".js";
+        $this->_viewJavascript[] = $this->_projectJsPath . "/" . $name . ".js?v=".$version;
     }
 
     public function addPublicJs($name)
@@ -50,9 +50,9 @@ class ComplementHandler
         $this->_viewJavascript[] = $this->_publicJsPath . "/" . $name . ".js";
     }
 
-    public function addProjectCss($name)
+    public function addProjectCss($name, $version = "")
     {
-        $this->_viewCss[] = $this->_projectCssPath . "/" . $name . ".css";
+        $this->_viewCss[] = $this->_projectCssPath . "/" . $name . ".css?v=".$version;
     }
 
     public function addPublicCss($name)
