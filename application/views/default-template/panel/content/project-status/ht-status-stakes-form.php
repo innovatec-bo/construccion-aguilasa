@@ -10,7 +10,7 @@
     <div class="tab-pane active" role="tabpanel" id="step_stakes">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Estaqueado new
+                Formulario de Estaqueado
             </div>
             <div class="panel-body">
                 <div class="row">

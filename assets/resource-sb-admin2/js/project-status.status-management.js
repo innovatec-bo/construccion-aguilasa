@@ -35,6 +35,9 @@ $(document).ready(function() {
                 case "stakes":
                     saveStakesTeam(statusId,statusKeyword);
                     break;
+                case "returned":
+                    saveReturned(statusId,statusKeyword);
+                    break;
                 case "ri_digitization":
                 case "rd_digitization":
                 case "digitization":
@@ -135,6 +138,36 @@ function saveStakesTeam(statusId, statusKeyword)
         dataType  :"json",
         type : "POST",
         data : stakes,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveReturned(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var dataToSend = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveReturned',
+        dataType  :"json",
+        type : "POST",
+        data : dataToSend,
         success:function(response){
             loadStatusSavedView(statusKeyword);
             getProjectLog();
