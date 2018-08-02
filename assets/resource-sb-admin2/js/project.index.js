@@ -1,7 +1,26 @@
 /**
  * Created by Jair on 10/01/2018.
  */
+var statusSet = [];
+statusSet["1"] = "design";
+statusSet["2"] = "design";
+statusSet["3"] = "design";
+statusSet["5"] = "design";
+statusSet["6"] = "design";
 
+statusSet["9"] = "approvement";
+statusSet["10"] = "approvement";
+statusSet["11"] = "approvement";
+statusSet["12"] = "approvement";
+
+statusSet["13"] = "rectify_design";
+statusSet["15"] = "rectify_design";
+statusSet["16"] = "rectify_design";
+statusSet["17"] = "rectify_design";
+
+statusSet["14"] = "rectify_illustration";
+statusSet["18"] = "rectify_illustration";
+statusSet["19"] = "rectify_illustration";
 $(document).ready(function() {
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
@@ -17,7 +36,7 @@ $(document).ready(function() {
         }
     };
     //Horizontal Icons dataTable
-    var statusSet = $("input[name=status-set]").val();
+    // var statusSet = $("input[name=status-set]").val();
     var oTable = $('#project-index').dataTable({
         "processing" : true,
         "serverSide" : true,
@@ -105,10 +124,7 @@ $(document).ready(function() {
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var html = '';
-                if(statusSet !== "")
-                {
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                }
+                html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                 html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                 html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
