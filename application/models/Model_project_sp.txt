@@ -31,6 +31,7 @@ select count(id_pro) as total from
         			FROM
         				wfl_project_status_log
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			where deleted_psl != 1
         			GROUP BY id_psl
         		) statusLogAndResponsible group by project_id_psl
         ) as max_entry
@@ -46,6 +47,7 @@ select count(id_pro) as total from
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
         			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         			LEFT JOIN sec_users on id_usr = user_id_sre
+        			where deleted_psl != 1
         			GROUP BY id_psl
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
@@ -95,6 +97,7 @@ select * from
         			FROM
         				wfl_project_status_log
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			where deleted_psl != 1
         			GROUP BY id_psl
         		) statusLogAndResponsible group by project_id_psl
         ) as max_entry
@@ -110,6 +113,7 @@ select * from
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
         			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         			LEFT JOIN sec_users on id_usr = user_id_sre
+        			where deleted_psl != 1
         			GROUP BY id_psl
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
@@ -162,6 +166,7 @@ select * from
         			FROM
         				wfl_project_status_log
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			where deleted_psl != 1
         			GROUP BY id_psl
         		) statusLogAndResponsible group by project_id_psl
         ) as max_entry
@@ -177,6 +182,7 @@ select * from
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
         			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         			LEFT JOIN sec_users on id_usr = user_id_sre
+        			where deleted_psl != 1
         			GROUP BY id_psl
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
@@ -228,6 +234,7 @@ select count(id_pro) as total from
         			FROM
         				wfl_project_status_log
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        			where deleted_psl != 1
         			GROUP BY id_psl
         		) statusLogAndResponsible group by project_id_psl
         ) as max_entry
@@ -243,6 +250,7 @@ select count(id_pro) as total from
         			LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
         			LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         			LEFT JOIN sec_users on id_usr = user_id_sre
+        			where deleted_psl != 1
         			GROUP BY id_psl
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro

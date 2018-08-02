@@ -65,6 +65,7 @@ class Model_project_status_log extends Model_project_status_log_base
         ) responsible on responsible.status_log_id_slr = id_psl
         WHERE
                 project_id_psl = ".$ci->db->escape($projectId)."
+                and deleted_psl != 1
         GROUP BY id_psl
         ORDER BY manual_entry_date_psl DESC
         ";
