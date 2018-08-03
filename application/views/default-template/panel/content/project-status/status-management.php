@@ -158,6 +158,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-no-cr
 //diseño
 $this->load->view("default-template/panel/content/project-status/ht-status-design-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-returned-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-drawing-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");

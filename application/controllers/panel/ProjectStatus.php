@@ -235,7 +235,7 @@ class ProjectStatus extends PrivateController
         switch ($statusSet)
         {
             case 'design':
-                $keywordList = array("design","stakes","digitization","drawing","schedule");
+                $keywordList = array("design","stakes","returned","digitization","drawing","schedule");
                 break;
             case 'approvement':
                 $keywordList = array("ready_to_send","already_sent","approved","canceled");
