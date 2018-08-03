@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
                                             <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="12" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="20" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>

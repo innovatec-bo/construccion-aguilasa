@@ -4,6 +4,7 @@
 var statusSet = [];
 statusSet["1"] = "design";
 statusSet["2"] = "design";
+statusSet["20"] = "design";
 statusSet["3"] = "design";
 statusSet["5"] = "design";
 statusSet["6"] = "design";
