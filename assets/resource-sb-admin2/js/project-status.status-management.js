@@ -396,6 +396,8 @@ function saveApproved(statusId,statusKeyword)
     var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
     var design = $("input[name=design-budget]").val();
     var building = $("input[name=building-budget]").val();
+    var graphNumber = $("input[name=graph-number-budget]").val();
+    var reservationNumber = $("input[name=reservation-number-budget]").val();
     var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var digitization = {
         projectId: projectId,
@@ -403,6 +405,8 @@ function saveApproved(statusId,statusKeyword)
         statusId: statusId,
         design: design,
         building: building,
+        graphNumber: graphNumber,
+        reservationNumber: reservationNumber,
         statusDetail: statusDetail,
         responsibleList:responsibleList
     };

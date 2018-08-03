@@ -30,6 +30,10 @@
                         {{#ifCond keyword_pst "==" "approved"}}
                             <dt>Costos diseño/construccion</dt>
                             <dd>{{design_prb}}/{{building_prb}}</dd>
+                            <dt>Numero de grafo</dt>
+                            <dd>{{graph_number_prb}}</dd>
+                            <dt>Numero de reserva</dt>
+                            <dd>{{reservation_number_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "canceled"}}
                             <dt>Costos de diseño</dt>

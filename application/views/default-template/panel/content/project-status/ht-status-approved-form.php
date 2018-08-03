@@ -36,11 +36,11 @@
                                         <label>Presupuesto</label><br>
                                         <div class="form-group">
                                             <em>Diseño</em><br>
-                                            <input class="form-control" value="{{design_budget}}" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                         <div class="form-group">
                                             <em>Construccion</em><br>
-                                            <input class="form-control" value="{{building_budget}}" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                     <div class="col-md-3">
                                         <label>Nro. de grafo</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="{{building_budget}}" name="building-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="" name="graph-number-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                     <div class="col-md-3">
                                         <label>Nro. de reserva</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="{{building_budget}}" name="building-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="" name="reservation-number-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>

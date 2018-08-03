@@ -27,14 +27,14 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
-    public function saveBudget($design, $building, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
+    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building);
+        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber);
         $projectBudget->save();
 
         //Each statusLog needs to have a o more responsible by log
