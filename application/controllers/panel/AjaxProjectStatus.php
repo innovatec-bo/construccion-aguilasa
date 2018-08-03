@@ -298,7 +298,7 @@ class AjaxProjectStatus extends PrivateController
         $statusDetail = $formData["statusDetail"];
 //        $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(10));
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(15));
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -337,7 +337,7 @@ class AjaxProjectStatus extends PrivateController
         $statusDetail = $formData["statusDetail"];
 //        $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(10));
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(16));
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
