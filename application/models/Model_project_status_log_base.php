@@ -88,4 +88,9 @@ class Model_project_status_log_base extends MY_Model
     {
         return $this->_logDetail;
     }
+
+    public function setManualEntryDate($manualEntryDate)
+    {
+        $this->_manualEntryDate = $manualEntryDate;
+    }
 }

@@ -10,7 +10,11 @@
     {{#each projectLog}}
         {{#ifCond keyword_pst "!=" "approvement"}}
             {{#ifCond keyword_pst "!=" "schedule"}}
-                <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right">{{formatDate manual_entry_date_psl "short"}}</span></h6>
+                {{var "className" ""}}
+                {{#ifCond ../allowUpdateHistory "==" 1}}
+                    {{var "className" "edit-date"}}
+                {{/ifCond}}
+                <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right {{className}}" data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}">{{formatDate manual_entry_date_psl "short"}}</span></h6>
                 <blockquote>
                     <dl>
                         <dt>Responsable(s)</dt>

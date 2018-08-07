@@ -227,6 +227,7 @@ class ProjectStatus extends PrivateController
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
         $data["statusSet"] = $statusSet;
+        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
         $this->_loadPanelView("project-status/status-management", $data);
     }
 

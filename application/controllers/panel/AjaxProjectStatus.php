@@ -441,4 +441,20 @@ class AjaxProjectStatus extends PrivateController
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         echo json_encode($projectLog);exit;
     }
+
+    public function updateManualEntry()
+    {
+        $this->_validateFeature("project_update_history");
+        $formData = $this->input->post();
+        $logId = $formData["logId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
+        $projectStatusLog = Model_project_status_log::getById($logId);
+        $projectStatusLog->setManualEntryDate($entryDate);
+        $projectStatusLog->save();
+        $response["success"] = 1;
+        $response["message"] = "Manual entry updated successfully";
+        echo json_encode($response);exit;
+    }
 }

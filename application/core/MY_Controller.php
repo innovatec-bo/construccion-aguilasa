@@ -129,7 +129,7 @@ class PrivateController extends PublicController
         }
     }
 
-    protected function _validateFeature($securityString)
+    protected function _validateFeature_deprecated($securityString)
     {
         $featureList = unserialize($this->sessionUser->featureList);
         $key = array_search($securityString, array_column($featureList, 'securitystring_fes'));
@@ -147,6 +147,36 @@ class PrivateController extends PublicController
                 redirect(base_url("panel/Home"));
             }
 
+        }
+
+    }
+
+    protected function _validateFeature($securityString, $binaryResponse = FALSE)
+    {
+        $featureList = unserialize($this->sessionUser->featureList);
+        $key = array_search($securityString, array_column($featureList, 'securitystring_fes'));
+
+        if(!$binaryResponse)
+        {
+            if($key === FALSE)
+            {
+                if($this->input->is_ajax_request())
+                {
+                    $response["success"] = 0;
+                    $response["message"] = "Access denied!!!!";
+                    echo json_encode($response);exit;
+                }
+                else{
+                    $this->session->set_flashdata("errorMessage", "Access denied!");
+                    redirect(base_url("panel/Home"));
+                }
+
+            }
+        }
+        else
+        {
+            $response = $key === FALSE?$key:TRUE;
+            return +$response;
         }
 
     }

@@ -139,7 +139,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 <div class="panel-heading">
                     Historial
                 </div>
-                <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content">
+                <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="<?=$updateHistory?>">
 
                 </div>
                 <!-- /.panel-body -->
@@ -181,4 +181,5 @@ $this->load->view("default-template/panel/content/project-status/ht-finished-sta
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
 $this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+$this->load->view("default-template/panel/content/project-status/ht-modal-modify-history-manual-entry-date");
 ?>
