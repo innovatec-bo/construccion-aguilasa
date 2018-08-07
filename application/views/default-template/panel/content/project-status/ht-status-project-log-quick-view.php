@@ -28,15 +28,19 @@
                             <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "approved"}}
-                            <dt>Costos diseño/construccion</dt>
-                            <dd>{{design_prb}}/{{building_prb}}</dd>
+                            <dt>Importe de diseño</dt>
+                            <dd>{{design_prb}}</dd>
+                            <dt>Importe de construccion</dt>
+                            <dd>{{building_prb}}</dd>
                             <dt>Numero de grafo</dt>
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
+                            <dt>Importe de transporte</dt>
+                            <dd>{{transportation_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "canceled"}}
-                            <dt>Costos de diseño</dt>
+                            <dt>Importe de diseño</dt>
                             <dd>{{design_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond log_detail_psl "!=" ""}}

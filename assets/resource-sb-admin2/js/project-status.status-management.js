@@ -398,6 +398,7 @@ function saveApproved(statusId,statusKeyword)
     var building = $("input[name=building-budget]").val();
     var graphNumber = $("input[name=graph-number-budget]").val();
     var reservationNumber = $("input[name=reservation-number-budget]").val();
+    var transportation = $("input[name=transportation-budget]").val();
     var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var digitization = {
         projectId: projectId,
@@ -407,6 +408,7 @@ function saveApproved(statusId,statusKeyword)
         building: building,
         graphNumber: graphNumber,
         reservationNumber: reservationNumber,
+        transportation:transportation,
         statusDetail: statusDetail,
         responsibleList:responsibleList
     };

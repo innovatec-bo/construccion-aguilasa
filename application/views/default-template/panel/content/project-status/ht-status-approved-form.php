@@ -60,6 +60,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Importe de transporte</label>
+                                        <div class="form-group">
+                                            <input class="form-control" value="" name="transportation-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>

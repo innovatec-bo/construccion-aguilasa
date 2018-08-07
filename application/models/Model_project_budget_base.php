@@ -17,8 +17,9 @@ class Model_project_budget_base extends MY_Model
     protected $_building;
     protected $_graphNumber;
     protected $_reservationNumber;
+    protected $_transportation;
 
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0)
+    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -26,6 +27,7 @@ class Model_project_budget_base extends MY_Model
         $this->_building = $building;
         $this->_graphNumber = $graphNumber;
         $this->_reservationNumber = $reservationNumber;
+        $this->_transportation = $transportation;
     }
 
     /**
@@ -41,6 +43,7 @@ class Model_project_budget_base extends MY_Model
             "building_prb" => $this->_building,
             "graph_number_prb" => $this->_graphNumber,
             "reservation_number_prb" => $this->_reservationNumber,
+            "transportation_prb" => $this->_transportation,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -69,7 +72,8 @@ class Model_project_budget_base extends MY_Model
                 $object->design_prb,
                 $object->building_prb,
                 $object->graph_number_prb,
-                $object->reservation_number_prb
+                $object->reservation_number_prb,
+                $object->transportation_prb
             );
             $instance->_id = $object->id_prb;
 
