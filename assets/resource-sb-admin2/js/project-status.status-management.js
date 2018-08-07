@@ -116,7 +116,7 @@ $(document).ready(function() {
         var date = new Date();
         $('input[name=modify-manual-entry-date]').datetimepicker({
             ignoreReadonly: true,
-            defaultDate: date,
+            // defaultDate: date,
             format: 'DD-MM-YYYY HH:mm:ss'
         });
     })
