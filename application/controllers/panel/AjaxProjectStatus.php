@@ -196,7 +196,7 @@ class AjaxProjectStatus extends PrivateController
         $projectDistance = $formData["projectDistance"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
-        $sendToApprovement = $formData["sendToApprovement"];
+        $sendToApprovement = isset($formData["sendToApprovement"])?$formData["sendToApprovement"]:0;
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
@@ -228,7 +228,7 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
-        $sendToApprovement = $formData["sendToApprovement"];
+        $sendToApprovement = isset($formData["sendToApprovement"])?$formData["sendToApprovement"]:0;
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();

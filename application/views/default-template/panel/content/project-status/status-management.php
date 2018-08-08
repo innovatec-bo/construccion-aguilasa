@@ -7,7 +7,13 @@
  */
 $statusName = "Este proyecto no esta etapa";
 $projectOnCurrentStage = FALSE;
-if(isset($statusList[$project["status_pro"]]))
+$disableStatus = FALSE;
+if($project["status_pro"] == 20)
+{
+    $statusName = "Este proyecto ha sido devuelto a CRE";
+    $disableStatus = TRUE;
+}
+elseif(isset($statusList[$project["status_pro"]]))
 {
     $projectOnCurrentStage = TRUE;
     $statusName = $statusList[$project["status_pro"]]->getName();
@@ -67,7 +73,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
+                        if($status["keyword_pst"] == "returned")
+                            continue;
                         $class = $project["status_pro"] != 1 && $project["status_pro"] !=7?'completed':"";
+                        $disabled = $disableStatus?" disabled ":"";
                         if($status["id_pst"] === $project["status_pro"])
                         {
                             $class = 'active';
@@ -78,7 +87,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                             $class = '';
                         }
                         $navTab .= '
-                                <li class="'.$class.'">
+                                <li class="'.$class.' '.$disabled.'">
                                     <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
                                 </li>
                                 ';

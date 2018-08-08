@@ -1,4 +1,10 @@
 $('.wizard li').click(function() {
-    $(this).prevAll().addClass("completed");
-    $(this).nextAll().removeClass("completed");
+    if(!$(this).hasClass("disabled"))
+    {
+        $(this).prevAll().addClass("completed");
+        $(this).nextAll().removeClass("completed");
+    }
+    else {
+        return false;
+    }
 });

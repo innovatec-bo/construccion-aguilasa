@@ -6,8 +6,14 @@ $(document).ready(function() {
     getProjectLog();
     loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        status = $(e.target).attr("id");
-        loadStatusForm(status);
+        if(!$(this).parent().hasClass("disabled"))
+        {
+            status = $(e.target).attr("id");
+            loadStatusForm(status);
+        }
+        else {
+            return false;
+        }
     });
     $(document).on("click","#next-step",function(e){
         e.preventDefault();
@@ -205,8 +211,7 @@ function saveReturned(statusId,statusKeyword)
         type : "POST",
         data : dataToSend,
         success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
+            window.location.reload();
         }
     });
 }

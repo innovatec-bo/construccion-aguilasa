@@ -85,5 +85,10 @@
     <div class="well">
         <h4>Ya se definió responsable de digitalizacion en este proyecto!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" onclick="loadStatusForm('returned',1)">Devolver a CRE</button>
+            </div>
+        </div>
     </div>
 </script>
