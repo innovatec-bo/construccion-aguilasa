@@ -22,6 +22,11 @@ statusSet["17"] = "rectify_design";
 statusSet["14"] = "rectify_illustration";
 statusSet["18"] = "rectify_illustration";
 statusSet["19"] = "rectify_illustration";
+
+statusSet["23"] = "warehouse";
+statusSet["24"] = "warehouse";
+statusSet["25"] = "warehouse";
+
 $(document).ready(function() {
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");

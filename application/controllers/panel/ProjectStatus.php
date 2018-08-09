@@ -247,6 +247,9 @@ class ProjectStatus extends PrivateController
             case 'rectify_illustration':
                 $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
                 break;
+            case 'warehouse':
+                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials");
+                break;
             default:
                 $keywordList = array();
                 $this->session->set_flashdata("errorMessage","El conjunto de estados es incorrecto!");

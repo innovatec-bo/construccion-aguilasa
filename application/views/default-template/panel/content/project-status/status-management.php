@@ -185,6 +185,11 @@ $this->load->view("default-template/panel/content/project-status/ht-status-rd_dr
 //rectify illustration
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_drawing-form");
+//warehouse
+$this->load->view("default-template/panel/content/project-status/ht-status-warehouse-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-record_building_materials-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

@@ -72,6 +72,15 @@ $(document).ready(function() {
                 case "canceled":
                     saveCanceled(statusId,statusKeyword);
                     break;
+                case "record_building_materials":
+                    saveRecordBuildingMaterials(statusId,statusKeyword);
+                    break;
+                case "get_materials":
+                    savePickUpMaterials(statusId,statusKeyword);
+                    break;
+                case "deliver_materials":
+                    saveDeliverMaterials(statusId,statusKeyword);
+                    break;
                 default:
                     bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
                     break;
@@ -493,6 +502,99 @@ function saveCanceled(statusId,statusKeyword)
         dataType  :"json",
         type : "POST",
         data : dataToSend,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveRecordBuildingMaterials(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var drawing = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveRecordBuildingMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : drawing,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function savePickUpMaterials(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var drawing = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/savePickUpMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : drawing,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveDeliverMaterials(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var drawing = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveDeliverMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : drawing,
         success:function(response){
             loadStatusSavedView(statusKeyword);
             getProjectLog();
