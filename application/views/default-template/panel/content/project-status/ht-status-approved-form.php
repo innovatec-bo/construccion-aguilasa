@@ -33,14 +33,18 @@
                                 </div>
                                 <div class="row form-inline">
                                     <div class="col-md-6">
-                                        <label>Presupuesto</label><br>
+                                        <label>Importe</label><br>
                                         <div class="form-group">
                                             <em>Diseño</em><br>
-                                            <input class="form-control" value="" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="{{previousEntry.design_prb}}" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                         <div class="form-group">
                                             <em>Construccion</em><br>
-                                            <input class="form-control" value="" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="{{previousEntry.building_prb}}" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <em>Transporte</em><br>
+                                            <input class="form-control" value="{{previousEntry.transportation_prb}}" name="transportation-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -48,7 +52,7 @@
                                     <div class="col-md-3">
                                         <label>Nro. de grafo</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="" name="graph-number-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="{{previousEntry.graph_number_prb}}" name="graph-number-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -56,15 +60,7 @@
                                     <div class="col-md-3">
                                         <label>Nro. de reserva</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="" name="reservation-number-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>Importe de transporte</label>
-                                        <div class="form-group">
-                                            <input class="form-control" value="" name="transportation-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="{{previousEntry.reservation_number_prb}}" name="reservation-number-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +84,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2">{{previousEntry.log_detail_psl}}</textarea>
                                 </div>
                             </div>
                         </div>

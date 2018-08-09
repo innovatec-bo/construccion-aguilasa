@@ -534,7 +534,15 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusResponsible:statusResponsible, responsibleListLength:responsibleListLength, points:points, distance:distance,statusKeyword:statusKeyword, statusSet:statusSet};
+                var data = {
+                    statusResponsible:statusResponsible,
+                    responsibleListLength:responsibleListLength,
+                    points:points,
+                    distance:distance,
+                    statusKeyword:statusKeyword,
+                    statusSet:statusSet,
+                    previousEntry:response.previousEntry[0]
+                };
                 var html = template(data);
                 $("#status-form-content").html(html);
                 var date = new Date();
