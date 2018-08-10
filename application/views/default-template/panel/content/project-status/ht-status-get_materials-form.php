@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="24" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -72,5 +72,10 @@
     <div class="well">
         <h4>Ya se definio un responsable para el retiro de los materiales!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" onclick="loadStatusForm('assign_to',1)">Asignar</button>
+            </div>
+        </div>
     </div>
 </script>

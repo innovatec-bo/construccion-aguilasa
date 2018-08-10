@@ -34,6 +34,7 @@ class Warehouse extends PrivateController
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Proyectos en Almacen";
         $data["status"] = "22";
+        $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

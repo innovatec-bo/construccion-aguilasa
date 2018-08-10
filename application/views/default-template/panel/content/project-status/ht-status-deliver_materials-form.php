@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="5" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="25" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
