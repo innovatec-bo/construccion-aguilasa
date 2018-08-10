@@ -36,12 +36,14 @@
                             <dd>{{design_prb}}</dd>
                             <dt>Importe de construccion</dt>
                             <dd>{{building_prb}}</dd>
+                            <dt>Importe de transporte</dt>
+                            <dd>{{transportation_prb}}</dd>
+                            <dt>Importe de linea viva</dt>
+                            <dd>{{live_line_prb}}</dd>
                             <dt>Numero de grafo</dt>
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
-                            <dt>Importe de transporte</dt>
-                            <dd>{{transportation_prb}}</dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "canceled"}}
                             <dt>Importe de diseño</dt>
