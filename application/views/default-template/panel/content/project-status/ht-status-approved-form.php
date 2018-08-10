@@ -44,7 +44,11 @@
                                         </div>
                                         <div class="form-group">
                                             <em>Transporte</em><br>
-                                            <input class="form-control" value="{{previousEntry.transportation_prb}}" name="transportation-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="{{previousEntry.transportation_prb}}" name="transportation-budget" placeholder="Transporte" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <em>Linea viva</em><br>
+                                            <input class="form-control" value="{{previousEntry.live_line_prb}}" name="live-line-budget" placeholder="Linea viva" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>

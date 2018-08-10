@@ -48,7 +48,8 @@ class Model_project_status_log extends Model_project_status_log_base
                 building_prb,
                 graph_number_prb,
                 reservation_number_prb,
-                transportation_prb
+                transportation_prb,
+                live_line_prb
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
