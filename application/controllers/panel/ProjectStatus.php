@@ -258,4 +258,130 @@ class ProjectStatus extends PrivateController
 
         return $keywordList;
     }
+
+    public function readyToAssign()
+    {
+        $this->_validateFeature('project_status_ready_to_assign');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index');
+        $this->complementHandler->addProjectJs('project.index');
+        $data["viewTitle"] = "Listos para definir parametros de inicio de construccion";
+        $data["status"] = "11,22,23,24,25";
+        $data["statusSet"] = "";
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function assignProject($projectId)
+    {
+        $this->_validateFeature('project_status_assign_project');
+        $project = $this->_validateObjectToEdit($projectId, "Model_project", "panel/Home");
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('entry-date', 'Fecha de Asignacion', 'trim|required');
+        $this->form_validation->set_rules('responsible-list', 'Responsable(s)', 'trim|required');
+        $this->form_validation->set_rules('start-date', 'Fecha inicio', 'trim|required');
+        $this->form_validation->set_rules('end-date', 'Fecha fin', 'trim|required');
+        $this->form_validation->set_rules('estimated-time', 'Tiempo estimado', 'trim|required|numeric');
+        $this->form_validation->set_rules('live-line', 'Linea viva', 'trim|in_list[1,0]');
+        $this->form_validation->set_rules('power-down', 'Corte', 'trim|in_list[1,0]');
+        $this->form_validation->set_rules('maneuver', 'Maniobra', 'trim|in_list[1,0]');
+        $this->form_validation->set_rules('status-detail', 'Detalle', 'trim');
+
+        //complements
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addProjectCss('project-status.assign-project');
+        $this->complementHandler->addProjectJs('project-status.assign-project');
+        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
+        $data["responsibleList"] = $responsibleList;
+        $data["project"] = $project->toArray();
+        $data["previousEntry"] = $previousEntry;
+        if($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("project-status/ready-to-assign", $data);
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $entryDate = $formData["entry-date"];
+            $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d');
+            $entryDate = $entryDate." ".date("H:i:s");
+            $responsibleList = $formData["responsible-list"];
+            $responsibleList = explode(",",$responsibleList);
+            $startDate = $formData["start-date"];
+            $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+            $startDate = date_format($startDate, 'Y-m-d');
+            $startDate = $startDate." ".date("H:i:s");
+            $endDate = $formData["end-date"];
+            $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+            $endDate = date_format($endDate, 'Y-m-d');
+            $endDate = $endDate." ".date("H:i:s");
+            $estimatedTime = $formData["estimated-time"];
+            $liveLine = isset($formData["live-line"])?1:0;
+            $powerDown = isset($formData["power-down"])?1:0;
+            $maneuver = isset($formData["maneuver"])?1:0;
+            $statusId = 21;//assign_to
+            $statusDetail = $formData["status-detail"];
+
+            $project->setStatus($statusId);
+            $project->save();
+            $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
+            $response["success"] = 1;
+            $response["message"] = "Operacion realizada con exito.";
+            $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");
+            redirect(base_url("panel/ProjectStatus/assignProject/".$projectId));
+            echo json_encode($response);exit;
+        }
+    }
+
+    public function saveApproved()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $design = $formData["design"];
+        $building = $formData["building"];
+        $graphNumber = $formData["graphNumber"];
+        $reservationNumber = $formData["reservationNumber"];
+        $transportation = $formData["transportation"];
+        $liveLine = $formData["liveLine"];
+        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
 }

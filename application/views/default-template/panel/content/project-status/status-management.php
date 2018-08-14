@@ -25,7 +25,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?></h1></em>
+            <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?></em></h1>
         </div>
         <div class="col-md-12">
             <?php

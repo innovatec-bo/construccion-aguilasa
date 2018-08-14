@@ -49,13 +49,20 @@ class Model_project_status_log extends Model_project_status_log_base
                 graph_number_prb,
                 reservation_number_prb,
                 transportation_prb,
-                live_line_prb
+                live_line_prb,
+                start_date_cas,
+				end_date_cas,
+				estimated_time_cas,
+				live_line_cas,
+				power_down_cas,
+				maneuver_cas
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
         LEFT JOIN wfl_projects on id_pro = project_id_psl
         LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
+        LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
         LEFT JOIN (
             SELECT
                 status_log_id_slr,
@@ -86,12 +93,14 @@ class Model_project_status_log extends Model_project_status_log_base
         SELECT
             wfl_project_status_log.*,
             wfl_project_budgets.*,
+            wfl_construction_assignments.*,
             status_name_pst,
             keyword_pst
         FROM
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_budgets on id_psl  = status_log_id_prb
+        LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."

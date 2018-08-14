@@ -41,6 +41,20 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
+    public function saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
+    {
+        //Lets create a new log
+        $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
+        $projectStatus->save();
+
+        //Create the record about the design and building and associate it to project status log
+        $constructionAssignment = new Model_construction_assignment($projectStatus->getId(), $startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver);
+        $constructionAssignment->save();
+
+        //Each statusLog needs to have a o more responsible by log
+        Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
+    }
+
     public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array())
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);

@@ -45,6 +45,20 @@
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
                         {{/ifCond}}
+
+                        {{#ifCond keyword_pst "==" "assign_to"}}
+                            <dt>Fecha de inicio</dt>
+                            <dd>{{formatDate start_date_cas "short"}}</dd>
+                            <dt>Fecha de fin</dt>
+                            <dd>{{formatDate end_date_cas "short"}}</dd>
+                            <dt>Tiempo estimado</dt>
+                            <dd>{{estimated_time_cas}} dia(s)</dd>
+                            <dt>Adicionales</dt>
+                            {{#ifCond live_line_cas "==" 1}}<dd>Linea viva</dd>{{/ifCond}}
+                            {{#ifCond power_down_cas "==" 1}}<dd>Corte</dd>{{/ifCond}}
+                            {{#ifCond maneuver_cas "==" 1}}<dd>Maniobra</dd>{{/ifCond}}
+                        {{/ifCond}}
+
                         {{#ifCond keyword_pst "==" "canceled"}}
                             <dt>Importe de diseño</dt>
                             <dd>{{design_prb}}</dd>
