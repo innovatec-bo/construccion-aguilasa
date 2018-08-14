@@ -12,6 +12,7 @@ $liveLine = "";
 $powerDown = "";
 $maneuver = "";
 $detail = "";
+$previousEntry = $previousEntry[0];
 if(count($previousEntry) > 0)
 {
     $startDate = $previousEntry["start_date_cas"];
@@ -20,7 +21,7 @@ if(count($previousEntry) > 0)
     $liveLine = $previousEntry["live_line_cas"];
     $powerDown = $previousEntry["power_down_cas"];
     $maneuver = $previousEntry["maneuver_cas"];
-    $detail = $previousEntry["detail_psl"];
+    $detail = $previousEntry["log_detail_psl"];
 }
 ?>
 <div class="container-fluid">
