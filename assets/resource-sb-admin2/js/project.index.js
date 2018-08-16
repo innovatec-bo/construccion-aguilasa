@@ -130,9 +130,9 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var statusSet = $("input[name=status-set]").val();
+                var currentStatusSet = $("input[name=status-set]").val();
                 var html = '';
-                if(statusSet != "")
+                if(currentStatusSet != "")
                 {
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';

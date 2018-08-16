@@ -85,6 +85,8 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                         $status = $status->toArray();
                         if($status["keyword_pst"] == "returned" || $status["keyword_pst"] == "assign_to")
                             continue;
+                        if($currentStatus == 11 && $status["keyword_pst"] == "warehouse")
+                            continue;
                         $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
                         $disabled = $disableStatus?" disabled ":"";
                         if($status["id_pst"] === $currentStatus)
@@ -188,6 +190,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-recti
 $this->load->view("default-template/panel/content/project-status/ht-status-rectify_illustration-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-approved-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-canceled-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-warehouse-form");
 //rectify design
 $this->load->view("default-template/panel/content/project-status/ht-status-rd_stakes-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-rd_digitization-form");

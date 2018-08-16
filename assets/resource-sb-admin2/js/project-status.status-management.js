@@ -72,6 +72,9 @@ $(document).ready(function() {
                 case "canceled":
                     saveCanceled(statusId,statusKeyword);
                     break;
+                case "warehouse":
+                    saveWarehouse(statusId,statusKeyword);
+                    break;
                 case "record_building_materials":
                     saveRecordBuildingMaterials(statusId,statusKeyword);
                     break;
@@ -514,6 +517,38 @@ function saveCanceled(statusId,statusKeyword)
     });
 }
 
+function saveWarehouse(statusId, statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveWarehouse',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            // loadStatusSavedView(statusKeyword);
+            // getProjectLog();
+            window.location = base_url + "panel/ProjectStatus/statusManagement/warehouse/"+projectId;
+        }
+    });
+}
+
 function saveRecordBuildingMaterials(statusId,statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
@@ -672,6 +707,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
+                var assignmentResponsible = response.assignmentEntry.length > 0?jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
                 var data = {
                     statusResponsible:statusResponsible,
                     responsibleListLength:responsibleListLength,
@@ -680,7 +716,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     statusKeyword:statusKeyword,
                     statusSet:statusSet,
                     previousEntry:response.previousEntry[0],
-                    assignmentResponsible:jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]")
+                    assignmentResponsible:assignmentResponsible
                 };
                 var html = template(data);
                 $("#status-form-content").html(html);
