@@ -146,6 +146,11 @@ class Model_project_base extends MY_Model
     {
         $this->_projectEnd = $end;
     }
+
+    public function getCode()
+    {
+        return $this->_projectCode;
+    }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
     /**

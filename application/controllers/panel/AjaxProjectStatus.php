@@ -428,6 +428,7 @@ class AjaxProjectStatus extends PrivateController
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
+        $this->session->set_flashdata("successMessage","El proyecto ".$project->getCode()." se envio a 'Por Grabar'");
         echo json_encode($response);exit;
     }
 

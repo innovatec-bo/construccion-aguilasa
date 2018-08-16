@@ -544,7 +544,7 @@ function saveWarehouse(statusId, statusKeyword)
         success:function(response){
             // loadStatusSavedView(statusKeyword);
             // getProjectLog();
-            window.location = base_url + "panel/ProjectStatus/statusManagement/warehouse/"+projectId;
+            window.location = base_url + "panel/Approvement/approved";
         }
     });
 }
