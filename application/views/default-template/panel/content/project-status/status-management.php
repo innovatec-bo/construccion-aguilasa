@@ -30,7 +30,15 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         <div class="col-md-12">
             <?php
             $this->load->view("default-template/flash-data-basic-messages");
-            ?>
+            if($project["status_pro"] == 21) {
+                ?>
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Info!</strong>Se ha asignado un fiscal y un constructor a este proyecto, por favor revise el log para saber en que punto del almacen quedo este proyecto.
+                </div>
+                <?php
+            }
+                ?>
         </div>
         <div class="col-md-2">
             <dl class="header-description well well-sm">
@@ -70,14 +78,16 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     $i = 1;
 
                     $activeFound = FALSE;
+                    //If the current status is equals to 21 then lets active the previous status
+                    $currentStatus = $project["status_pro"] == 21?$projectLog[1]["status_id_psl"]:$project["status_pro"];
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
-                        if($status["keyword_pst"] == "returned")
+                        if($status["keyword_pst"] == "returned" || $status["keyword_pst"] == "assign_to")
                             continue;
-                        $class = $project["status_pro"] != 1 && $project["status_pro"] !=7?'completed':"";
+                        $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
                         $disabled = $disableStatus?" disabled ":"";
-                        if($status["id_pst"] === $project["status_pro"])
+                        if($status["id_pst"] === $currentStatus)
                         {
                             $class = 'active';
                             $activeFound = TRUE;
@@ -190,6 +200,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-wareh
 $this->load->view("default-template/panel/content/project-status/ht-status-record_building_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

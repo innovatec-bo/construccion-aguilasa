@@ -8,13 +8,8 @@
 ?>
 <script id="ht-status-warehouse-form" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Listos para comenzar la etapa de almacen!</h4>
+        <h4>Listos para Grabar los materiales!</h4>
         <p>Ahora solo ve a "Grabar" y asigna un responsable.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('assign_to',1)">Asignar</button>
-            </div>
-        </div>
     </div>
 </script>
 
@@ -22,10 +17,5 @@
     <div class="well">
         <h4>Listos para comenzar la etapa de almacen!</h4>
         <p>Ahora solo ve a "Grabar" y asigna un responsable.</p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('assign_to',1)">Asignar</button>
-            </div>
-        </div>
     </div>
 </script>

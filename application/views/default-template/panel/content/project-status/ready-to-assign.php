@@ -5,23 +5,66 @@
  * Date: 12/4/2018
  * Time: 22:33
  */
-$startDate = "";
-$endDate = "";
-$estimatedTime = "";
+$entryDate = date("d-m-Y");
+$startDate = date("d-m-Y");;
+$endDate = date("d-m-Y");;
+$estimatedTime = "0";
 $liveLine = "";
 $powerDown = "";
 $maneuver = "";
 $detail = "";
-$previousEntry = $previousEntry[0];
+$currentResponsible = array();
+$previousEntry = isset($previousEntry[0])?$previousEntry[0]:array();
+$alreadyPreviousInfoMessage = "";
 if(count($previousEntry) > 0)
 {
+    $entryDate = $previousEntry["manual_entry_date_psl"];
+    $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $entryDate);
+    $entryDate = date_format($entryDate, 'd-m-Y');
+
     $startDate = $previousEntry["start_date_cas"];
+    $startDate = DateTime::createFromFormat('Y-m-d H:i:s', $startDate);
+    $startDate = date_format($startDate, 'd-m-Y');
     $endDate = $previousEntry["end_date_cas"];
+    $endDate = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
+    $endDate = date_format($endDate, 'd-m-Y');
     $estimatedTime = $previousEntry["estimated_time_cas"];
     $liveLine = $previousEntry["live_line_cas"];
     $powerDown = $previousEntry["power_down_cas"];
     $maneuver = $previousEntry["maneuver_cas"];
     $detail = $previousEntry["log_detail_psl"];
+    $currentResponsible = json_decode("[".$previousEntry["jsonResponsible"]."]",TRUE);
+    $alreadyPreviousInfoMessage = "Este proyecto ya ha sido asignado.";
+}
+$fiscalHtml = "";
+$builderHtml = "";
+//echo"<pre>";var_dump($currentResponsible);
+foreach($responsibleList as $responsible)
+{
+    if($responsible['keyword_rol'] == "fiscal")
+    {
+        $selected = "";
+        if(count($currentResponsible))
+        {
+            $selected = array_search($responsible['id_sre'],array_column($currentResponsible,"id")) === FALSE?"":" selected ";
+        }
+
+        $fiscalHtml .= '
+            <option data-user-id="'.$responsible['id_usr'].'" value="'.$responsible['id_sre'].'" '.$selected.'>'.$responsible['firstname_usr'].' '.$responsible['lastname_usr'].'</option>    
+        ';
+
+    }
+    elseif($responsible['keyword_rol'] == "builder")
+    {
+        $selected = "";
+        if(count($currentResponsible))
+        {
+            $selected = array_search($responsible['id_sre'],array_column($currentResponsible,"id")) === FALSE?"":" selected ";
+        }
+        $builderHtml .= '
+            <option data-supervising-id="'.$responsible['supervising_user_usr'].'"value="'.$responsible['id_sre'].'" '.$selected.'>'.$responsible['firstname_usr'].' '.$responsible['lastname_usr'].'</option>    
+        ';
+    }
 }
 ?>
 <div class="container-fluid">
@@ -32,6 +75,14 @@ if(count($previousEntry) > 0)
         <div class="col-md-12">
             <?php
             $this->load->view("default-template/flash-data-basic-messages");
+            if($alreadyPreviousInfoMessage != "") {
+                ?>
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Info!</strong> <?=$alreadyPreviousInfoMessage?>
+                </div>
+                <?php
+            }
             ?>
         </div>
         <div class="col-md-12">
@@ -60,24 +111,30 @@ if(count($previousEntry) > 0)
                         <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
-                                    <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                    <label>Fiscal(es) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                     <div class="form-group">
-                                        <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list1">
                                             <?php
-                                            $html = "";
-                                            foreach($responsibleList as $responsible)
-                                            {
-                                                if($responsible['keyword_pst'] == "assign_to")
-                                                {
-                                                    $html .= '
-                                                        <option value="'.$responsible['id_sre'].'">'.$responsible['firstname_usr'].' '.$responsible['lastname_usr'].'</option>    
-                                                    ';
-                                                }
-                                            }
-                                            echo $html;
+
+                                            echo $fiscalHtml;
                                             ?>
                                         </select>
-                                        <input type="hidden" name="responsible-list" value="">
+                                        <input type="hidden" name="responsible-list1" value="">
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <label>Constructore(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                    <div class="form-group">
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list2">
+                                            <?php
+                                            echo $builderHtml;
+                                            ?>
+                                        </select>
+                                        <input type="hidden" name="responsible-list2" value="">
                                     </div>
                                 </fieldset>
                             </div>
@@ -88,7 +145,7 @@ if(count($previousEntry) > 0)
                                     <div class="form-group">
                                         <label>Fecha de Inicio</label>
                                         <div class="input-group date date-time-picker">
-                                            <input name="start-date" readonly="" class="form-control input-date" required="" data-parsley-errors-container="#error-start-date">
+                                            <input name="start-date" value="<?=$startDate?>" readonly="" class="form-control input-date" required="" data-parsley-errors-container="#error-start-date">
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -102,7 +159,7 @@ if(count($previousEntry) > 0)
                                     <div class="form-group">
                                         <label>Fecha de Fin</label>
                                         <div class="input-group date date-time-picker">
-                                            <input name="end-date" readonly="" class="form-control input-date" required="" data-parsley-errors-container="#error-end-date">
+                                            <input name="end-date" value="<?=$endDate?>" readonly="" class="form-control input-date" required="" data-parsley-errors-container="#error-end-date">
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -116,7 +173,7 @@ if(count($previousEntry) > 0)
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tiempo(días)</label>
-                                    <input type="text" class="form-control" required name="estimated-time" placeholder="Días de trabajo" data-parsley-type="integer">
+                                    <input type="text" class="form-control" value="<?=$estimatedTime?>" required name="estimated-time" readonly placeholder="Días de trabajo" data-parsley-type="integer">
                                 </div>
                             </div>
                         </div>
@@ -126,17 +183,17 @@ if(count($previousEntry) > 0)
                                     <label>Adicionales</label>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="live-line" value="1">Linea viva
+                                            <input type="checkbox" name="live-line" value="1" <?=$liveLine == "1"?"checked":""?>>Linea viva
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="power-down" value="1">Corte
+                                            <input type="checkbox" name="power-down" value="1" <?=$powerDown == "1"?"checked":""?>>Corte
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="maneuver" value="1">Maniobra
+                                            <input type="checkbox" name="maneuver" value="1" <?=$maneuver == "1"?"checked":""?>>Maniobra
                                         </label>
                                     </div>
                                 </div>

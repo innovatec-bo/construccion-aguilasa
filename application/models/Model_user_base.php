@@ -24,9 +24,10 @@ class Model_user_base extends MY_Model
     protected $_status;
     protected $_taxDeductible;
     protected $_googleId;
+    protected $_supervisingUser;
 
     public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar = NULL, $passwordHash = "", $activationHash = "", $status = 1,
-                                $taxDeductible = "", $googleId = "")
+                                $taxDeductible = "", $googleId = "", $supervisingUser = NULL)
     {
         parent::__construct();
         $this->_firstName = $firstName;
@@ -41,6 +42,7 @@ class Model_user_base extends MY_Model
         $this->_status = $status;
         $this->_taxDeductible = $taxDeductible;
         $this->_googleId = $googleId;
+        $this->_supervisingUser = $supervisingUser;
     }
 
     /**
@@ -63,6 +65,7 @@ class Model_user_base extends MY_Model
             "status_usr" => $this->_status,
             "tax_deductible_usr" => $this->_taxDeductible,
             "googleid_usr" => $this->_googleId,
+            "supervising_user_usr" => $this->_supervisingUser,
             "deleted_usr" => $this->_deleted,
             "createdon_usr" => $this->_createdOn,
             "createdby_usr" => $this->_createdBy,
@@ -99,7 +102,8 @@ class Model_user_base extends MY_Model
                 $object->activationhash_usr,
                 $object->status_usr,
                 $object->tax_deductible_usr,
-                $object->googleid_usr
+                $object->googleid_usr,
+                $object->supervising_user_usr
             );
             $instance->_id = $object->id_usr;
 

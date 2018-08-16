@@ -43,4 +43,33 @@ class Model_status_responsible extends Model_status_responsible_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getResponsibleDetailListByStatusKeyword($keyword)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+            id_sre,
+            keyword_rol,
+            sec_users.*
+        FROM
+            wfl_status_responsibles
+        LEFT JOIN sec_users on user_id_sre = id_usr
+        LEFT JOIN wfl_project_status on id_pst = status_id_sre
+        LEFT JOIN (
+            SELECT 
+                userid_uro,
+                keyword_rol
+            FROM sec_userroles 
+            LEFT JOIN sec_roles on id_rol = roleid_uro
+            WHERE keyword_rol in ('fiscal', 'builder')
+        ) role on role.userid_uro = id_usr
+        where keyword_pst = ".$ci->db->escape($keyword)."
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
                                             <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
@@ -72,10 +72,5 @@
     <div class="well">
         <h4>Ya se definio un responsable para el grabado de materiales!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('assign_to',1)">Asignar</button>
-            </div>
-        </div>
     </div>
 </script>

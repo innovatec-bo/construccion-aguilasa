@@ -81,6 +81,9 @@ $(document).ready(function() {
                 case "deliver_materials":
                     saveDeliverMaterials(statusId,statusKeyword);
                     break;
+                case "return_materials":
+                    saveReturnMaterials(statusId, statusKeyword);
+                    break;
                 default:
                     bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
                     break;
@@ -604,6 +607,37 @@ function saveDeliverMaterials(statusId,statusKeyword)
     });
 }
 
+function saveReturnMaterials(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveReturnMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
 function loadStatusForm(statusKeyword, addMoreInfo)
 {
     var projectId = $("input[name=project-id]").val();
@@ -622,7 +656,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 var html = template(data);
                 $("#status-form-content").html(html);
             }
-            else if(response.previousEntry.length <= 0 || addMoreInfo ==  1 || statusKeyword == 'unsigned')
+            else if(response.previousEntry[0].id_psl === null || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
                 var points = $("#points").text();
                 var distance = $("#distance").text();
@@ -645,7 +679,8 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     distance:distance,
                     statusKeyword:statusKeyword,
                     statusSet:statusSet,
-                    previousEntry:response.previousEntry[0]
+                    previousEntry:response.previousEntry[0],
+                    assignmentResponsible:jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]")
                 };
                 var html = template(data);
                 $("#status-form-content").html(html);

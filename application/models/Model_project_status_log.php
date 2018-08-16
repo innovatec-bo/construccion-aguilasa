@@ -36,26 +36,26 @@ class Model_project_status_log extends Model_project_status_log_base
         $ci->load->database();
         $sql = "
         SELECT
-                wfl_project_status_log.*,
-                status_name_pst,
-                keyword_pst,
-                points_quantity_prp,
-                distance_prp,
-                GROUP_CONCAT(responsible.full_name) responsible_user,
-                points_pro,
-                distance_pro,
-                design_prb,
-                building_prb,
-                graph_number_prb,
-                reservation_number_prb,
-                transportation_prb,
-                live_line_prb,
-                start_date_cas,
-				end_date_cas,
-				estimated_time_cas,
-				live_line_cas,
-				power_down_cas,
-				maneuver_cas
+            wfl_project_status_log.*,
+            status_name_pst,
+            keyword_pst,
+            points_quantity_prp,
+            distance_prp,
+            GROUP_CONCAT(responsible.full_name) responsible_user,
+            points_pro,
+            distance_pro,
+            design_prb,
+            building_prb,
+            graph_number_prb,
+            reservation_number_prb,
+            transportation_prb,
+            live_line_prb,
+            start_date_cas,
+            end_date_cas,
+            estimated_time_cas,
+            live_line_cas,
+            power_down_cas,
+            maneuver_cas
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
@@ -95,12 +95,18 @@ class Model_project_status_log extends Model_project_status_log_base
             wfl_project_budgets.*,
             wfl_construction_assignments.*,
             status_name_pst,
-            keyword_pst
+            keyword_pst,
+            GROUP_CONCAT(
+                CONCAT('{','\"id\":',id_sre,',\"name\":\"',firstname_usr,' ',lastname_usr,'\"}')
+            ) jsonResponsible
         FROM
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_budgets on id_psl  = status_log_id_prb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
+        LEFT JOIN wfl_status_log_responsibles on id_psl = status_log_id_slr
+        LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        LEFT JOIN sec_users on id_usr = user_id_sre
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."

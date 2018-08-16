@@ -215,8 +215,8 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
-        $this->complementHandler->addProjectCss('project-status.status-management',4);
-        $this->complementHandler->addProjectJs('project-status.status-management',4);
+        $this->complementHandler->addProjectCss('project-status.status-management',5);
+        $this->complementHandler->addProjectJs('project-status.status-management',5);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
@@ -227,6 +227,9 @@ class ProjectStatus extends PrivateController
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
         $data["statusSet"] = $statusSet;
+        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+        $data["projectLog"] = $projectLog;
+//        echo"<pre>";var_dump($projectLog[1]);exit;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
         $this->_loadPanelView("project-status/status-management", $data);
     }
@@ -248,7 +251,7 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
                 break;
             case 'warehouse':
-                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials");
+                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials");
                 break;
             default:
                 $keywordList = array();
@@ -315,11 +318,12 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('project-status.assign-project');
         $this->complementHandler->addProjectJs('project-status.assign-project');
-        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to");
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
         $data["responsibleList"] = $responsibleList;
         $data["project"] = $project->toArray();
         $data["previousEntry"] = $previousEntry;
+        $data["responsibleList"] = $responsibleList;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project-status/ready-to-assign", $data);

@@ -2,15 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: Jair
- * Date: 09/08/2108
+ * Date: 13/06/2018
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-get_materials-form" type="text/x-handlebars-template">
+<script id="ht-status-return_materials-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Retiro de materiales
+                Formulario de Devolucion de materiales
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -34,7 +34,7 @@
                                 <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
-                                            <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                            <label>Responsable <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                             <div class="form-group">
                                                 <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
                                                     {{#each statusResponsible}}
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="24" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="26" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -68,9 +68,9 @@
     </div>
 </script>
 
-<script id="ht-status-get_materials-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-return_materials-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definio un responsable para el retiro de los materiales!</h4>
+        <h4>Ya se definio una fecha de devolucion de materiales a CRE!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
                                             <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
@@ -49,8 +49,20 @@
                                         </fieldset>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset>
+                                            <label>Responsables de construccion</label><br>
+                                            {{#each assignmentResponsible}}
+                                            {{name}}<br>
+                                            {{/each}}
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
-                                    <label>Observaciones</label>
+                                    <label>Observaciones {{assignmentEntry.jsonResponsible}}</label>
                                     <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
