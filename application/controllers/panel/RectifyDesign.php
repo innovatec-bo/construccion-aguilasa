@@ -30,8 +30,8 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de diseño";
         $data["status"] = "13,15,16,17";
         $data["statusSet"] = "rectify_design";
@@ -63,8 +63,8 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de estaqueado";
         $data["status"] = 15;
         $data["statusSet"] = "rectify_design";
@@ -96,8 +96,8 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de Digitalizacion";
         $data["status"] = 16;
         $data["statusSet"] = "rectify_design";
@@ -129,8 +129,8 @@ class RectifyDesign extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de dibujo";
         $data["status"] = 17;
         $data["statusSet"] = "rectify_design";

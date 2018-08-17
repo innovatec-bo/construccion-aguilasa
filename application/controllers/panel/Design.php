@@ -31,8 +31,8 @@ class Design extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index',TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en diseño";
         $data["status"] = "1,2,3,5,6";
         $data["statusSet"] = "design";
@@ -64,8 +64,8 @@ class Design extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en estaqueado";
         $data["status"] = 2;
         $data["statusSet"] = "design";
@@ -97,8 +97,8 @@ class Design extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en Digitalizacion";
         $data["status"] = 3;
         $data["statusSet"] = "design";
@@ -130,8 +130,8 @@ class Design extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en dibujo";
         $data["status"] = 5;
         $data["statusSet"] = "design";
@@ -163,8 +163,8 @@ class Design extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en Cronograma";
         $data["status"] = 6;
         $data["statusSet"] = "design";

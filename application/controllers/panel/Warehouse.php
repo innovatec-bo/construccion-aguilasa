@@ -30,8 +30,8 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en Almacen";
         $data["status"] = "22,23,24,25,26";
         $data["statusSet"] = "warehouse";
@@ -63,8 +63,8 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Grabado de los materiales";
         $data["status"] = 23;
         $data["statusSet"] = "warehouse";
@@ -96,8 +96,8 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Retiro de materiales";
         $data["status"] = 24;
         $data["statusSet"] = "warehouse";
@@ -129,8 +129,8 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "En entrega de Materiales";
         $data["status"] = 25;
         $data["statusSet"] = "warehouse";

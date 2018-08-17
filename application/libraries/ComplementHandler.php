@@ -40,8 +40,13 @@ class ComplementHandler
         }
     }
 
-    public function addProjectJs($name, $version = "")
+    public function addProjectJs($name, $applyVersion = FALSE)
     {
+        $version = "";
+        if($applyVersion)
+        {
+            $version = strtotime(date("Y-m-d"));
+        }
         $this->_viewJavascript[] = $this->_projectJsPath . "/" . $name . ".js?v=".$version;
     }
 
@@ -50,8 +55,13 @@ class ComplementHandler
         $this->_viewJavascript[] = $this->_publicJsPath . "/" . $name . ".js";
     }
 
-    public function addProjectCss($name, $version = "")
+    public function addProjectCss($name, $applyVersion = FALSE)
     {
+        $version = "";
+        if($applyVersion)
+        {
+            $version = strtotime(date("Y-m-d"));
+        }
         $this->_viewCss[] = $this->_projectCssPath . "/" . $name . ".css?v=".$version;
     }
 

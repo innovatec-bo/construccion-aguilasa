@@ -30,8 +30,8 @@ class Approvement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos en Aprobacion";
         $data["status"] = "8";
         $data["projectSystems"] = $this->_projectSystems;
@@ -62,8 +62,8 @@ class Approvement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos por enviar a CRE";
         $data["status"] = 9;
         $data["statusSet"] = "approvement";
@@ -95,8 +95,8 @@ class Approvement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos enviados a CREE";
         $data["status"] = 10;
         $data["statusSet"] = "approvement";
@@ -128,8 +128,8 @@ class Approvement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos aprobados";
         $data["status"] = 11;
         $data["statusSet"] = "approvement";
@@ -161,8 +161,8 @@ class Approvement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos cancelados";
         $data["status"] = 12;
         $data["statusSet"] = "approvement";

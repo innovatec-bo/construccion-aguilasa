@@ -30,8 +30,8 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de ilustracion";
         $data["status"] = "14,18,19";
         $data["statusSet"] = "rectify_illustration";
@@ -63,8 +63,8 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de Digitalizacion";
         $data["statusSet"] = "rectify_illustration";
         $data["status"] = 18;
@@ -96,8 +96,8 @@ class RectifyIllustration extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index');
-        $this->complementHandler->addProjectJs('project.index');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Rectificacion de dibujo";
         $data["statusSet"] = "rectify_illustration";
         $data["status"] = 19;
