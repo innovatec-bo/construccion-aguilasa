@@ -14,7 +14,7 @@ $powerDown = "";
 $maneuver = "";
 $detail = "";
 $currentResponsible = array();
-$previousEntry = isset($previousEntry[0])?$previousEntry[0]:array();
+$previousEntry = isset($previousEntry[0]["id_psl"])?$previousEntry[0]:array();
 $alreadyPreviousInfoMessage = "";
 if(count($previousEntry) > 0)
 {

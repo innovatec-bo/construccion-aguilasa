@@ -320,6 +320,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project-status.assign-project');
         $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to");
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
+//        echo"<pre>";var_dump($previousEntry[0],isset($previousEntry[0]["id_psl"]));exit;
         $data["responsibleList"] = $responsibleList;
         $data["project"] = $project->toArray();
         $data["previousEntry"] = $previousEntry;
