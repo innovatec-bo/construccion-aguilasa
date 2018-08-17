@@ -63,9 +63,9 @@ class Model_status_responsible extends Model_status_responsible_base
                 keyword_rol
             FROM sec_userroles 
             LEFT JOIN sec_roles on id_rol = roleid_uro
-            WHERE keyword_rol in ('fiscal', 'builder')
+            WHERE keyword_rol in ('fiscal', 'builder') and deleted_uro != 1
         ) role on role.userid_uro = id_usr
-        where keyword_pst = ".$ci->db->escape($keyword)." and deleted_uro != 1
+        where keyword_pst = ".$ci->db->escape($keyword)."
         ";
 
         $query = $ci->db->query($sql);
