@@ -119,7 +119,6 @@ foreach($responsibleList as $responsible)
                                             echo $fiscalHtml;
                                             ?>
                                         </select>
-                                        <input type="hidden" name="responsible-list1" value="">
                                     </div>
                                 </fieldset>
                             </div>
@@ -134,7 +133,7 @@ foreach($responsibleList as $responsible)
                                             echo $builderHtml;
                                             ?>
                                         </select>
-                                        <input type="hidden" name="responsible-list2" value="">
+                                        <input type="hidden" name="responsible-list" value="">
                                     </div>
                                 </fieldset>
                             </div>

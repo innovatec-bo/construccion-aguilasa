@@ -70,7 +70,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
             </dl>
         </div>
-        <div class="col-md-11">
+        <div class="col-md-10">
             <div class="tabbable">
                 <ul class="nav nav-tabs wizard">
                     <?php
@@ -120,6 +120,11 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         <div class="col-md-1">
             <div class="tabbable">
                 <a href="#next-step" id="next-step">Siguiente</a>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="tabbable">
+                <a href="#next-step" id="next-step"><i class="fa fa-plus"></i>Incidencia</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -204,6 +209,12 @@ $this->load->view("default-template/panel/content/project-status/ht-status-recor
 $this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
+//building
+$this->load->view("default-template/panel/content/project-status/ht-status-ready_to_start-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-in_progress-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-stopped-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-paused-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-completed-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

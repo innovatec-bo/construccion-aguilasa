@@ -28,6 +28,13 @@ statusSet["23"] = "warehouse";
 statusSet["24"] = "warehouse";
 statusSet["25"] = "warehouse";
 
+statusSet["27"] = "building";
+statusSet["28"] = "building";
+statusSet["29"] = "building";
+statusSet["30"] = "building";
+statusSet["31"] = "building";
+statusSet["32"] = "building";
+
 $(document).ready(function() {
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
