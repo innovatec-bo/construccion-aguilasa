@@ -683,7 +683,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
         type : "POST",
         data : {projectId:projectId, statusKeyword:statusKeyword, statusSet:statusSet},
         success:function(response){
-            if(response.scheduleEntry.length > 0)
+            if(response.scheduleEntry[0].id_psl !== null)
             {
                 var htmlSource   = $("#ht-finished-stage-design").html();
                 var template = Handlebars.compile(htmlSource);
