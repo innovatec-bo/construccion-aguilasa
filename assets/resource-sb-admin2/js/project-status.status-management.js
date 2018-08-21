@@ -87,6 +87,12 @@ $(document).ready(function() {
                 case "return_materials":
                     saveReturnMaterials(statusId, statusKeyword);
                     break;
+                case "in_progress":
+                case "paused":
+                case "stopped":
+                case "completed":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
                 default:
                     bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
                     break;
@@ -663,6 +669,37 @@ function saveReturnMaterials(statusId,statusKeyword)
 
     $.ajax({
         url : base_url + 'panel/AjaxProjectStatus/saveReturnMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveBasicLog(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
         dataType  :"json",
         type : "POST",
         data : data,
