@@ -124,7 +124,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         </div>
         <div class="col-md-1">
             <div class="tabbable">
-                <a href="#next-step" id="next-step"><i class="fa fa-plus"></i>Incidencia</a>
+                <a href="#next-step" id="next-step"><i class="fa fa-plus"></i> Incid.</a>
             </div>
         </div>
         <div class="col-md-9">
