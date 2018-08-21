@@ -146,7 +146,12 @@ $(document).ready(function() {
             // defaultDate: date,
             format: 'DD-MM-YYYY HH:mm:ss'
         });
-    })
+    });
+
+    $("#add-incident").on("click",function(e){
+       e.preventDefault();
+       alert('toc toc');
+    });
 });
 
 function getStakesLeaderProjects()

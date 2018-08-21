@@ -60,3 +60,15 @@ blockquote dl
 {
     margin-bottom: 0px;
 }
+#add-incident
+{
+    border-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: #fff !important;
+    background-color: #96c03d !important;
+    border-color: #96c03d !important;
+    border-bottom: none !important;
+    padding: 1em .8em .8em 1em;
+    position: absolute;
+    margin-top: 17px;
+}
