@@ -229,7 +229,6 @@ class ProjectStatus extends PrivateController
         $data["statusSet"] = $statusSet;
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         $data["projectLog"] = $projectLog;
-//        echo"<pre>";var_dump($projectLog[1]);exit;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
         $this->_loadPanelView("project-status/status-management", $data);
     }

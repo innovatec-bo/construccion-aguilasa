@@ -589,4 +589,38 @@ class AjaxProjectStatus extends PrivateController
         $response["message"] = "Manual entry updated successfully";
         echo json_encode($response);exit;
     }
+
+    public function addIncident()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $statusId = $formData["statusLogId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $percentage = $formData["percentage"];
+        $detail = $formData["detail"];
+        $incident = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId);
+        $incident->save();
+        echo json_encode($formData);exit;
+    }
+
+    public function checkIncidents()
+    {
+        $formData = $this->input->post();
+        $statusId = $formData["statusId"];
+        $projectId = $formData["projectId"];
+        $incidentList = Model_incident::getAllByProjectIdAndStatusId($projectId, $statusId);
+        $incidentArrayList = array();
+        $i = 1;
+        foreach ($incidentList as $incident)
+        {
+            $incidentArray = $incident->toArray();
+            $incidentArray["position"] = $i%2==0?"right":"left";
+            $incidentArrayList[] = $incidentArray;
+            $i++;
+        }
+        echo json_encode($incidentArrayList);exit;
+    }
 }

@@ -150,7 +150,41 @@ $(document).ready(function() {
 
     $("#add-incident").on("click",function(e){
        e.preventDefault();
-       alert('toc toc');
+        var htmlSource   = $("#ht-modal-incident-form").html();
+        var template = Handlebars.compile(htmlSource);
+        var data = {};
+        var html = template(data);
+        bootbox.confirm({
+            title:"Detalle de la incidencia",
+            message: html,
+            buttons: {
+                confirm: {
+                    label: 'Agregar incidente',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Cancelar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result)
+                {
+                    addIncident();
+                }
+            }
+        });
+        var date = new Date();
+        $('input[name=incident-manual-entry-date]').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: date,
+            format: 'DD-MM-YYYY'
+        });
+    })
+
+    $(document).on("click",".check-incidents",function(e){
+        e.preventDefault();
+
     });
 });
 
@@ -844,6 +878,59 @@ function blockArea(content)
             border: 0,
             padding: 0,
             backgroundColor: 'transparent'
+        }
+    });
+}
+
+function addIncident()
+{
+    var projectId = $("input[name=project-id]").val();
+    var statusLogId = $(".active a").data("status-id");
+    var detail = $('textarea[name=incident-detail]').val();
+    var percentage = $('input[name=incident-percentage]').val();
+    var entryDate = $('input[name=incident-manual-entry-date]').val();
+    var data = {
+        projectId:projectId,
+        statusLogId:statusLogId,
+        detail:detail,
+        percentage:percentage,
+        entryDate:entryDate
+    };
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/addIncident',
+        dataType  :"json",
+        type : "POST",
+        data:data,
+        success:function(response){
+            console.log(response);
+        }
+    });
+}
+
+function checkIncidents()
+{
+    var projectId = $("input[name=project-id]").val();
+    var statusId = $(".active a").data("status-id");
+    var statusText = $(".active a").text();
+    var data = {
+        projectId: projectId,
+        statusId: statusId
+    };
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/checkIncidents',
+        dataType  :"json",
+        type : "POST",
+        data:data,
+        success:function(response){
+            console.log(response);
+            var htmlSource   = $("#ht-modal-incident-list").html();
+            var template = Handlebars.compile(htmlSource);
+            var data = {incidentList:response};
+            var html = template(data);
+            bootbox.alert({
+                title:"Incidentes en "+statusText,
+                message: html
+            });
         }
     });
 }

@@ -100,18 +100,13 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                         }
                         $navTab .= '
                                 <li class="'.$class.' '.$disabled.'">
-                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
+                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
                                 </li>
                                 ';
                         $i++;
                     }
                     $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
                     $unsigned = '';
-//                    $unsigned = '
-//                                <li class="'.$unsignedAsDefault.'">
-//                                    <a href="#step_unsigned" data-toggle="tab" aria-expanded="false" id="unsigned">Sin asignar</a>
-//                                </li>
-//                                ';
                     echo $unsigned.$navTab;
                     ?>
                 </ul>
@@ -124,7 +119,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         </div>
         <div class="col-md-1">
             <div class="tabbable">
-                <a href="#next-step" id="add-incident><i class="fa fa-plus"></i> Incid.</a>
+                <a href="#next-step" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -221,4 +216,6 @@ $this->load->view("default-template/panel/content/project-status/ht-status-saved
 
 $this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
 $this->load->view("default-template/panel/content/project-status/ht-modal-modify-history-manual-entry-date");
+$this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
+$this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");
 ?>
