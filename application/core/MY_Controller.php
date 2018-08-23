@@ -191,5 +191,16 @@ class PrivateController extends PublicController
         }
         return +$response;
     }
+
+    public static function getSessionUser()
+    {
+        $ci = &get_instance();
+        $currentUser = NULL;
+        if ($ci->session->has_userdata("authenticated") && $ci->session->userdata("authenticated") === 1)
+        {
+            $currentUser = $ci->session->userdata("sessionUser");
+        }
+        return $currentUser;
+    }
 }
 

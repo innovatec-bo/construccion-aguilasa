@@ -166,6 +166,8 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 <!-- /.panel-body -->
             </div>
         </div>
+        <div class="col-md-12" id="incident-content">
+        </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->

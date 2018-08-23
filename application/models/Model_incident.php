@@ -19,7 +19,13 @@ class Model_incident extends Model_incident_base
         $ci->load->database();
 
         $sql = "
-            select * from ".static::TABLE_NAME." 
+            select 
+             wfl_incidents.*,
+            firstname_usr,
+            lastname_usr,
+            CONCAT(firstname_usr,' ',lastname_usr) full_name
+             from ".static::TABLE_NAME."
+             LEFT JOIN sec_users on id_usr = createdby_inc 
             where 
             ".static::notDeleted()." 
             and project_id_inc = ".$ci->db->escape($projectId)." 
@@ -28,7 +34,7 @@ class Model_incident extends Model_incident_base
         ";
 
         $query = $ci->db->query($sql);
-        $result = static::recastArray(get_called_class(), $query->result());
+        $result = $query->result_array();
         return $result;
     }
 }

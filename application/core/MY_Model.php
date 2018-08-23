@@ -90,15 +90,18 @@ class MY_Model
         date_default_timezone_set('America/La_Paz');
         $now = new DateTime();
         $currentDate = $now->format( "Y-m-d H:i:s" );
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         if ( $this->getId() !== null && $this->getId() !== "" )
         {
             $this->_editedOn = $currentDate;
+            $this->_editedBy = $currentUserId;
             $ci->db->update( static::TABLE_NAME, $this->toArray(), array( static::TABLE_ID => $this->getId()));
         }
         else
         {
             $this->_createdOn = $currentDate;
-
+            $this->_createdBy = $currentUserId;
             $result = $ci->db->insert( static::TABLE_NAME, $this->toArray() );
             if ( $result === true )
             {

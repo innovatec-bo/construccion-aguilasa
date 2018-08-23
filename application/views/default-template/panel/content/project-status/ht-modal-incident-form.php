@@ -40,6 +40,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
+                                <label>Tipo de incidentes</label>
+                                <select class="form-control">
+                                    <option value="1">Permisos</option>
+                                    <option value="2">Fiscales</option>
+                                    <option value="3">Vecinos</option>
+                                    <option value="4">Linea Viva</option>
+                                    <option value="5">Mecanico</option>
+                                    <option value="6">Materiales incompletos</option>
+                                    <option value="7">Climatológico</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <div class="form-group">
                                     <label>Detalle</label>
                                     <textarea class="form-control" rows="2" name="incident-detail" required></textarea>

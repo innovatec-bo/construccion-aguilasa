@@ -817,6 +817,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 var html = template(data);
                 $("#status-form-content").html(html);
             }
+            checkIncidents();
         }
     });
 }
@@ -928,10 +929,11 @@ function checkIncidents()
             var template = Handlebars.compile(htmlSource);
             var data = {incidentList:response};
             var html = template(data);
-            bootbox.alert({
-                title:"Incidentes en "+statusText,
-                message: html
-            });
+            $("#incident-content").html(html);
+            // bootbox.alert({
+            //     title:"Incidentes en "+statusText,
+            //     message: html
+            // });
         }
     });
 }

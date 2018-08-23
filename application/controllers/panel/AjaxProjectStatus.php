@@ -618,13 +618,12 @@ class AjaxProjectStatus extends PrivateController
         $incidentList = Model_incident::getAllByProjectIdAndStatusId($projectId, $statusId);
         $incidentArrayList = array();
         $i = 1;
-        foreach ($incidentList as $incident)
-        {
-            $incidentArray = $incident->toArray();
-            $incidentArray["position"] = $i%2==0?"right":"left";
-            $incidentArrayList[] = $incidentArray;
-            $i++;
-        }
-        echo json_encode($incidentArrayList);exit;
+//        foreach ($incidentList as $incident)
+//        {
+//            $incidentArray = $incident->toArray();
+//            $incidentArrayList[] = $incidentArray;
+//            $i++;
+//        }
+        echo json_encode($incidentList);exit;
     }
 }
