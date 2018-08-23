@@ -64,6 +64,8 @@ $config['complements']['jquery.datatables.filterdelay']['js'] = assets_url('reso
 
 $config['complements']['jquery.blockui']['js'] = assets_url('resource-sb-admin2/vendor/jquery.blockUI.js');
 
+$config['complements']['jquery.inputmask.bundle']['js'] = assets_url('resource-sb-admin2/plugins/inputmask/jquery.inputmask.bundle.js');
+
 $config['complements']['date-time-picker']['css'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/css/bootstrap-datetimepicker.css');
 $config['complements']['date-time-picker']['js'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/js/bootstrap-datetimepicker.min.js');
 $config['complements']['moment-with-locales']['js'] = assets_url('resource-sb-admin2/vendor/pickers/datetime/js/moment-with-locales.min.js');

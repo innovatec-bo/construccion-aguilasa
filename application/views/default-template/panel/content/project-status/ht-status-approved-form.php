@@ -36,19 +36,19 @@
                                         <label>Importe</label><br>
                                         <div class="form-group">
                                             <em>Diseño</em><br>
-                                            <input class="form-control" value="{{previousEntry.design_prb}}" name="design-budget" placeholder="Diseño" required="" data-parsley-type="number" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control input-masked" value="{{previousEntry.design_prb}}" name="design-budget" placeholder="Diseño" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                         <div class="form-group">
                                             <em>Construccion</em><br>
-                                            <input class="form-control" value="{{previousEntry.building_prb}}" name="building-budget" placeholder="Construccion" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control input-masked" value="{{previousEntry.building_prb}}" name="building-budget" placeholder="Construccion" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                         <div class="form-group">
                                             <em>Transporte</em><br>
-                                            <input class="form-control" value="{{previousEntry.transportation_prb}}" name="transportation-budget" placeholder="Transporte" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control input-masked" value="{{previousEntry.transportation_prb}}" name="transportation-budget" placeholder="Transporte" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                         <div class="form-group">
                                             <em>Linea viva</em><br>
-                                            <input class="form-control" value="{{previousEntry.live_line_prb}}" name="live-line-budget" placeholder="Linea viva" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control input-masked" value="{{previousEntry.live_line_prb}}" name="live-line-budget" placeholder="Linea viva" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                     </div>
                                 </div>

@@ -730,6 +730,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     placeholder: 'Asigne uno o mas responsables',
                     allowClear: true
                 });
+                $(".input-masked").inputmask();
             }
             else
             {
