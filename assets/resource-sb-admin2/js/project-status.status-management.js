@@ -691,7 +691,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 var html = template(data);
                 $("#status-form-content").html(html);
             }
-            else if(response.previousEntry[0] !== undefined && response.previousEntry[0].id_psl === null || addMoreInfo ==  1 || statusKeyword == 'unsigned')
+            else if(response.previousEntry[0] === undefined || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
                 var points = $("#points").text();
                 var distance = $("#distance").text();
