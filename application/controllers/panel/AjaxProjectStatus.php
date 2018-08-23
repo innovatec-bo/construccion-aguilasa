@@ -375,11 +375,15 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $design = $formData["design"];
+        $design = str_replace(",","",$design);
         $building = $formData["building"];
+        $building = str_replace(",","",$building);
         $graphNumber = $formData["graphNumber"];
         $reservationNumber = $formData["reservationNumber"];
         $transportation = $formData["transportation"];
+        $transportation = str_replace(",","",$transportation);
         $liveLine = $formData["liveLine"];
+        $liveLine = str_replace(",","",$liveLine);
         $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);

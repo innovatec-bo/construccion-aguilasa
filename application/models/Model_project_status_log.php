@@ -110,6 +110,7 @@ class Model_project_status_log extends Model_project_status_log_base
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."
+        GROUP BY id_psl
         ORDER BY manual_entry_date_psl DESC
         ";
         $query = $ci->db->query($sql);
