@@ -80,10 +80,11 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     $activeFound = FALSE;
                     //If the current status is equals to 21 then lets active the previous status
                     $currentStatus = $project["status_pro"] == 21?$projectLog[1]["status_id_psl"]:$project["status_pro"];
+                    $currentStatus = $project["status_pro"];
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
-                        if($status["keyword_pst"] == "returned" || $status["keyword_pst"] == "assign_to")
+                        if($status["keyword_pst"] == "returned")
                             continue;
                         if($currentStatus == 11 && $status["keyword_pst"] == "warehouse")
                             continue;
@@ -207,6 +208,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-get_m
 $this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
 //building
+$this->load->view("default-template/panel/content/project-status/ht-status-assign_to-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ready_to_start-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-in_progress-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-stopped-form");

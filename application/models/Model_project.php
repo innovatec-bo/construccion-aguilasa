@@ -149,4 +149,10 @@ class Model_project extends Model_project_base
         $result = static::recast(get_called_class(), $query->row());
         return $result;
     }
+
+    public function startWarehouseProcess()
+    {
+        $warehouse = new Model_warehouse($this->_id);
+        $warehouse->save();
+    }
 }

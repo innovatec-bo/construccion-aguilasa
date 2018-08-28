@@ -254,7 +254,7 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials");
                 break;
             case 'building':
-                $keywordList = array("ready_to_start","in_progress", "stopped", "paused", "completed");
+                $keywordList = array("assign_to","in_progress", "stopped", "paused", "completed");
                 break;
             default:
                 $keywordList = array();
@@ -284,7 +284,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Listos para definir parametros de inicio de construccion";
-        $data["status"] = "11,22,23,24,25";
+        $data["status"] = "11";
         $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -359,6 +359,7 @@ class ProjectStatus extends PrivateController
             $project->setStatus($statusId);
             $project->save();
             $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
+            $project->startWarehouseProcess();
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
             $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");

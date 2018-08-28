@@ -33,7 +33,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Listos para iniciar la construccion";
-        $data["status"] = "28";
+        $data["status"] = "21";
         $data["statusSet"] = "building";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
