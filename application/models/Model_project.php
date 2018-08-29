@@ -142,7 +142,7 @@ class Model_project extends Model_project_base
         $ci = &get_instance();
         $ci->load->database();
         $sql = "
-        select * from ".static::TABLE_NAME." where ".static::notDeleted()." and code_pro = ".$ci->db->escape($code)." 
+          select * from ".static::TABLE_NAME." where ".static::notDeleted()." and code_pro = ".$ci->db->escape($code)." 
         ";
 
         $query = $ci->db->query($sql);

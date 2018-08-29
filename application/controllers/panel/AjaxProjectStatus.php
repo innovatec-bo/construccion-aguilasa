@@ -389,6 +389,11 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $wareHouse = Model_warehouse::getByProjectId($project->getId());
+        if(!$wareHouse instanceof Model_warehouse)
+        {
+            $project->startWarehouseProcess();
+        }
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

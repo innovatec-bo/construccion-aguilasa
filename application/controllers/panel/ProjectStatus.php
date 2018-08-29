@@ -254,7 +254,7 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials");
                 break;
             case 'building':
-                $keywordList = array("assign_to","in_progress", "stopped", "paused", "completed");
+                $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","as_built", "conciliation_reception", "conciliation_shipment");
                 break;
             default:
                 $keywordList = array();
@@ -368,7 +368,7 @@ class ProjectStatus extends PrivateController
         }
     }
 
-    public function saveApproved()
+    public function saveApproved_deprecated()
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
@@ -389,6 +389,12 @@ class ProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $wareHouse = Model_warehouse::getByProjectId($project->getId());
+        if(!$wareHouse instanceof  Model_warehouse)
+        {
+            $project->startWarehouseProcess();
+        }
+
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
