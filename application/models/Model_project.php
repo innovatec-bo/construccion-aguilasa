@@ -150,9 +150,10 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    public function startWarehouseProcess()
+    public function startWarehouseProcess($entryDate)
     {
         $warehouse = new Model_warehouse($this->_id);
         $warehouse->save();
+        $warehouse->addStatusToLog(22, "Inicio de gestion de materiales de construccion", $entryDate);
     }
 }

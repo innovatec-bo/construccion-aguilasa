@@ -5,19 +5,7 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
-$statusName = "Este proyecto no esta etapa";
-$projectOnCurrentStage = FALSE;
-$disableStatus = FALSE;
-if($project["status_pro"] == 20)
-{
-    $statusName = "Este proyecto ha sido devuelto a CRE";
-    $disableStatus = TRUE;
-}
-elseif(isset($statusList[$project["status_pro"]]))
-{
-    $projectOnCurrentStage = TRUE;
-    $statusName = $statusList[$project["status_pro"]]->getName();
-}
+$statusName = $statusName = $statusList[$warehouse["status_id_war"]]->getName();;
 $projectSystem = $projectSystems[$project["system_pro"]];
 $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
 $entryDate = date_format($entryDate, 'd-m-Y');
@@ -70,18 +58,12 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     $i = 1;
 
                     $activeFound = FALSE;
-                    //If the current status is equals to 21 then lets active the previous status
-                    $currentStatus = $project["status_pro"] == 21?$projectLog[1]["status_id_psl"]:$project["status_pro"];
-                    $currentStatus = $project["status_pro"];
+                    $currentStatus = $warehouse["status_id_war"];
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
-                        if($status["keyword_pst"] == "returned")
-                            continue;
-                        if($currentStatus == 11 && $status["keyword_pst"] == "warehouse")
-                            continue;
-                        $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
-                        $disabled = $disableStatus?" disabled ":"";
+                        $class = "completed";
+                        $disabled = "";
                         if($status["id_pst"] === $currentStatus)
                         {
                             $class = 'active';
@@ -105,23 +87,23 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </ul>
             </div>
         </div>
-        <div class="col-md-1">
-            <div class="tabbable">
-                <a href="#next-step" id="next-step">Siguiente</a>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="tabbable">
-                <a href="#next-step" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
-            </div>
-        </div>
+<!--        <div class="col-md-1">-->
+<!--            <div class="tabbable">-->
+<!--                <a href="#next-step" id="next-step">Siguiente</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-1">-->
+<!--            <div class="tabbable">-->
+<!--                <a href="#next-step" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="col-md-9">
             <section>
                 <div class="wizard">
                     <form role="form" name="status-management" data-parsley-validate>
-                        <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
+                        <input type="hidden" value="<?=$warehouse["id_war"]?>" name="warehouse-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
-                        <input type="hidden" value="<?=$statusSet?>" name="status-set">
+                        <input type="hidden" value="" name="status-set">
                         <?php
                         $html = '
                                 <div class="tab-content">
@@ -130,13 +112,6 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                                 </div>
                                 </div>    
                             ';
-                        if($projectOnCurrentStage)
-                        {
-                            $html = '
-                                <div class="tab-content" id="status-form-content">
-                                </div>    
-                            ';
-                        }
                         $html = '
                                 <div class="tab-content" id="status-form-content">
                                 </div>    
@@ -167,50 +142,19 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 </div>
 <!-- /.container-fluid -->
 <?php
-$this->load->view("default-template/panel/content/project-status/ht-stakes-project");
-
-$this->load->view("default-template/panel/content/project-status/ht-status-unsigned-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-no-created-view-form");
-//diseño
-$this->load->view("default-template/panel/content/project-status/ht-status-design-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-returned-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-digitization-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-drawing-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-schedule-form");
-//approvement
-$this->load->view("default-template/panel/content/project-status/ht-status-ready_to_send-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-already_sent-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-rectify_design-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-rectify_illustration-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-approved-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-canceled-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-warehouse-form");
-//rectify design
-$this->load->view("default-template/panel/content/project-status/ht-status-rd_stakes-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-rd_digitization-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-rd_drawing-form");
-//rectify illustration
-$this->load->view("default-template/panel/content/project-status/ht-status-ri_digitization-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-ri_drawing-form");
 //warehouse
 $this->load->view("default-template/panel/content/project-status/ht-status-warehouse-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-record_building_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-materials_reception-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
-//building
-$this->load->view("default-template/panel/content/project-status/ht-status-assign_to-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-ready_to_start-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-in_progress-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-stopped-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-paused-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-completed-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
-$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+$this->load->view("default-template/panel/content/project-status/ht-status-warehouse-log-quick-view");
 $this->load->view("default-template/panel/content/project-status/ht-modal-modify-history-manual-entry-date");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");

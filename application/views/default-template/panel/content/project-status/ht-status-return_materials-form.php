@@ -10,7 +10,7 @@
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Devolucion de materiales
+                Formulario de Devolucion de materiales a CRE
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de ingreso</label>
+                                            <label>Fecha de envio</label>
                                             <div class="input-group date date-time-picker">
                                                 <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
@@ -29,24 +29,6 @@
                                             </div>
                                             <div id="error-{{statusKeyword}}-entry-date"></div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row hide">
-                                    <div class="col-md-6">
-                                        <fieldset>
-                                            <label>Responsable <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
-                                            <div class="form-group">
-                                                <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
-                                                    {{#each statusResponsible}}
-                                                        {{var "selected" ""}}
-                                                        {{#ifCond ../responsibleListLength "===" 1}}
-                                                            {{var "selected" "selected"}}
-                                                        {{/ifCond}}
-                                                        <option value="{{id_sre}}" {{selected}}>{{firstname_usr}} {{lastname_usr}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="form-group">

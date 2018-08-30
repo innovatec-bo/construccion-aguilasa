@@ -109,10 +109,5 @@
     <div class="well">
         <h4>Este proyecto ha sido aprobado!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('warehouse',1)">Enviar a por grabar</button>
-            </div>
-        </div>
     </div>
 </script>

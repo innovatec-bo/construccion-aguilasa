@@ -29,4 +29,13 @@ class Model_warehouse extends Model_warehouse_base
         $result = static::recast(get_called_class(), $query->result());
         return $result;
     }
+
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "")
+    {
+        //Lets create a new log
+        $projectStatus = new Model_warehouse_status_log($this->_id, $statusId, $detail, $manualEntryDate);
+        $projectStatus->save();
+        $this->_statusId = $statusId;
+        $this->save();
+    }
 }

@@ -6,11 +6,11 @@
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-record_building_materials-form" type="text/x-handlebars-template">
+<script id="ht-status-materials_reception-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Grabado de materiales
+                Recepcion de materiales
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de grabado</label>
+                                            <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
                                                 <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="23" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="36" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -50,9 +50,9 @@
     </div>
 </script>
 
-<script id="ht-status-record_building_materials-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-materials_reception-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definio un responsable para el grabado de materiales!</h4>
+        <h4>Los materiales de contruccion han sido recibidos y se detallo este suceso!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

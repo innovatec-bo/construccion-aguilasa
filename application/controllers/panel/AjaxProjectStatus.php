@@ -392,7 +392,7 @@ class AjaxProjectStatus extends PrivateController
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
-            $project->startWarehouseProcess();
+            $project->startWarehouseProcess($entryDate);
         }
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -420,110 +420,7 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function saveWarehouse()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        $this->session->set_flashdata("successMessage","El proyecto ".$project->getCode()." se envio a 'Por Grabar'");
-        echo json_encode($response);exit;
-    }
 
-    public function saveRecordBuildingMaterials()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        echo json_encode($response);exit;
-    }
-
-    public function savePickUpMaterials()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        echo json_encode($response);exit;
-    }
-
-    public function saveDeliverMaterials()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-
-
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        echo json_encode($response);exit;
-    }
-
-    public function saveReturnMaterials()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        echo json_encode($response);exit;
-    }
 
     public function saveBasicLog()
     {

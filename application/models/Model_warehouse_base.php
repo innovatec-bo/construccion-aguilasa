@@ -71,4 +71,10 @@ class Model_warehouse_base extends MY_Model
         }
         return $response;
     }
+
+    //setters
+    public function setStatus($status)
+    {
+        $this->_statusId = $status;
+    }
 }

@@ -251,7 +251,7 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
                 break;
             case 'warehouse':
-                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials");
+                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials","materials_reception");
                 break;
             case 'building':
                 $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","as_built", "conciliation_reception", "conciliation_shipment");
@@ -284,7 +284,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Listos para definir parametros de inicio de construccion";
-        $data["status"] = "11";
+        $data["status"] = "11,31";
         $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);

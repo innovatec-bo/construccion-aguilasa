@@ -145,4 +145,36 @@ class Warehouse extends PrivateController
         $data["projectStatusJson"] = json_encode($arrayStatus);
         $this->_loadPanelView("project/index",$data);
     }
+
+    public function statusManagement($warehouseId)
+    {
+        $this->_validateFeature('project_status_management');
+        $warehouse = $this->_validateObjectToEdit($warehouseId,"Model_warehouse","panel/Home");
+        $warehouse = $warehouse->toArray();
+        $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "return_materials","materials_reception");
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("handlebars");
+        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+        $this->complementHandler->addProjectCss('warehouse.status-management',TRUE);
+        $this->complementHandler->addProjectJs('warehouse.status-management',TRUE);
+        $this->complementHandler->addProjectCss('project.status-management.wizardv2');
+        $this->complementHandler->addProjectJs('project.status-management.wizardv2');
+
+        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $data["warehouse"] = $warehouse;
+        $project = Model_project::getById($warehouse["project_id_war"]);
+        $data["project"] = $project->toArray();
+        $data["statusList"] = $statusList;
+        $data["projectSystems"] = $this->_projectSystems;
+        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $data["responsibleList"] = json_encode($responsibleList);
+        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+        $this->_loadPanelView("warehouse/status-management", $data);
+    }
 }

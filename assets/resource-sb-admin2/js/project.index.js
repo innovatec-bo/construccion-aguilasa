@@ -23,11 +23,11 @@ statusSet["14"] = "rectify_illustration";
 statusSet["18"] = "rectify_illustration";
 statusSet["19"] = "rectify_illustration";
 
-// statusSet["21"] = "warehouse";
-// statusSet["22"] = "warehouse";
-// statusSet["23"] = "warehouse";
-// statusSet["24"] = "warehouse";
-// statusSet["25"] = "warehouse";
+statusSet["21"] = "warehouse";
+statusSet["22"] = "warehouse";
+statusSet["23"] = "warehouse";
+statusSet["24"] = "warehouse";
+statusSet["25"] = "warehouse";
 
 statusSet["21"] = "building";
 statusSet["27"] = "building";
