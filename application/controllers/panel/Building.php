@@ -178,4 +178,169 @@ class Building extends PrivateController
         $data["projectStatusJson"] = json_encode($arrayStatus);
         $this->_loadPanelView("project/index",$data);
     }
+
+    public function asBuilt()
+    {
+        $this->_validateFeature('building_completed');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
+        $data["viewTitle"] = "Se esta realizando el as built del proyecto";
+        $data["statusSet"] = "as_built";
+        $data["status"] = 33;
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function conciliationReception()
+    {
+        $this->_validateFeature('building_conciliation_reception');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
+        $data["viewTitle"] = "Proyectos que ya tienen recepcion de conciliacion";
+        $data["statusSet"] = "conciliation_reception";
+        $data["status"] = 34;
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function conciliationShipment()
+    {
+        $this->_validateFeature('building_conciliation_shipment');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
+        $data["viewTitle"] = "Proyectos que ya enviaron la conciliacion";
+        $data["statusSet"] = "conciliation_shipment";
+        $data["status"] = 35;
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function creReturnOrder()
+    {
+        $this->_validateFeature('building_cre_return_order');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
+        $data["viewTitle"] = "Proyectos ha recibido la orden de devolucion de materiales";
+        $data["statusSet"] = "cre_return_order";
+        $data["status"] = 38;
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function projectReturnMaterials()
+    {
+        $this->_validateFeature('building_project_return_materials');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('project.index', TRUE);
+        $this->complementHandler->addProjectJs('project.index', TRUE);
+        $data["viewTitle"] = "Proyectos que confirmaron la devolucion de materiales a CRE";
+        $data["statusSet"] = "project_return_materials";
+        $data["status"] = 39;
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
 }

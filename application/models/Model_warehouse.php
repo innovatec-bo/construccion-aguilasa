@@ -26,7 +26,7 @@ class Model_warehouse extends Model_warehouse_base
                 and project_id_war = ".$ci->db->escape($projectId)."
         ";
         $query = $ci->db->query($sql);
-        $result = static::recast(get_called_class(), $query->result());
+        $result = static::recast(get_called_class(), $query->row());
         return $result;
     }
 

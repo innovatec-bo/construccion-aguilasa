@@ -206,6 +206,11 @@ $this->load->view("default-template/panel/content/project-status/ht-status-in_pr
 $this->load->view("default-template/panel/content/project-status/ht-status-stopped-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-paused-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-completed-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-as_built-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-conciliation_reception-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-conciliation_shipment-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-cre_return_order-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-project_return_materials-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

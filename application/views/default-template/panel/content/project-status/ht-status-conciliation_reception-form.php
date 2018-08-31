@@ -2,15 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: Jair
- * Date: 13/06/2018
+ * Date: 20/08/2018
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-return_materials-form" type="text/x-handlebars-template">
+<script id="ht-status-conciliation_reception-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Devolucion de materiales a CRE
+                Registrar recepcion de conciliacion
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de envio</label>
+                                            <label>Fecha de recepcion</label>
                                             <div class="input-group date date-time-picker">
                                                 <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
@@ -29,6 +29,20 @@
                                             </div>
                                             <div id="error-{{statusKeyword}}-entry-date"></div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset>
+                                            <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                            <div class="form-group">
+                                                <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
+                                                    {{#each assignmentResponsible}}
+                                                    <option value="{{id}}" selected>{{name}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -51,7 +65,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="26" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="34" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -60,9 +74,9 @@
     </div>
 </script>
 
-<script id="ht-status-return_materials-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-conciliation_reception-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definio una fecha de devolucion de materiales a CRE!</h4>
+        <h4>Se registro la recepcion de conciliacion de CRE!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

@@ -38,12 +38,9 @@
                                             {{#each assignmentResponsible}}
                                             {{name}}<br>
                                             {{/each}}
-                                            Lista no disponible
                                         </fieldset>
                                     </div>
                                 </div>
-
-
                                 <div class="form-group">
                                     <label>Observaciones {{assignmentEntry.jsonResponsible}}</label>
                                     <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
@@ -67,5 +64,11 @@
     <div class="well">
         <h4>Ya se definio un responsable para la entrega de los materiales!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+    </div>
+</script>
+<script id="ht-status-deliver_materials-form-not-available" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Aun no se han definido los responsables para la construccion de este proyecto!</h4>
+        <p>No puedes enviar los materiales a construcción</p>
     </div>
 </script>

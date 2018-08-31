@@ -2,15 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: Jair
- * Date: 13/06/2018
+ * Date: 09/08/2108
  * Time: 10:34 AM
  */
 ?>
-<script id="ht-status-return_materials-form" type="text/x-handlebars-template">
+<script id="ht-status-request_materials_return-form" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Devolucion de materiales a CRE
+                Recepcion de materiales
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de envio</label>
+                                            <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
                                                 <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
                                                 <span class="input-group-addon">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="26" data-status-keyword="{{statusKeyword}}">Guardar</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="36" data-status-keyword="{{statusKeyword}}">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -60,9 +60,9 @@
     </div>
 </script>
 
-<script id="ht-status-return_materials-form-completed" type="text/x-handlebars-template">
+<script id="ht-status-request_materials_return-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Ya se definio una fecha de devolucion de materiales a CRE!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <h4>El fiscal ha recibido una orden de devolucion!</h4>
+        <p>En cuanto hayas devuelto los materiales a CRE ve al paso siguiente, registra la fecha de la devolucion y añade un comentario si es necesario.</p>
     </div>
 </script>

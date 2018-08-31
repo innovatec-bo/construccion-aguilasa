@@ -420,7 +420,28 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
-
+    public function saveCreReturnOrder()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $warehouse = Model_warehouse::getByProjectId($project->getId());
+//        echo"<pre>";var_dump($project->getId(), $warehouse);exit;
+        $warehouse->addStatusToLog(37, "El fiscal ha recibido la orden de devolucion a CRE", $entryDate);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
 
     public function saveBasicLog()
     {
@@ -517,15 +538,10 @@ class AjaxProjectStatus extends PrivateController
         $formData = $this->input->post();
         $statusId = $formData["statusId"];
         $projectId = $formData["projectId"];
+        $allIncidents = Model_incident::getAllByProjectId($projectId);
         $incidentList = Model_incident::getAllByProjectIdAndStatusId($projectId, $statusId);
-        $incidentArrayList = array();
-        $i = 1;
-//        foreach ($incidentList as $incident)
-//        {
-//            $incidentArray = $incident->toArray();
-//            $incidentArrayList[] = $incidentArray;
-//            $i++;
-//        }
-        echo json_encode($incidentList);exit;
+        $response["allIncidents"] = $allIncidents;
+        $response["incidentList"] = $incidentList;
+        echo json_encode($response);exit;
     }
 }

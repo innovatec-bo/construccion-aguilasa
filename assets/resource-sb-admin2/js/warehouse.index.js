@@ -23,12 +23,11 @@ statusSet["14"] = "rectify_illustration";
 statusSet["18"] = "rectify_illustration";
 statusSet["19"] = "rectify_illustration";
 
-// el proyecto en estado 21(asignacion no va a ninguno de los procesos)
-// statusSet["21"] = "warehouse";
-// statusSet["22"] = "warehouse";
-// statusSet["23"] = "warehouse";
-// statusSet["24"] = "warehouse";
-// statusSet["25"] = "warehouse";
+statusSet["21"] = "warehouse";
+statusSet["22"] = "warehouse";
+statusSet["23"] = "warehouse";
+statusSet["24"] = "warehouse";
+statusSet["25"] = "warehouse";
 
 statusSet["21"] = "building";
 statusSet["27"] = "building";
@@ -37,11 +36,6 @@ statusSet["29"] = "building";
 statusSet["30"] = "building";
 statusSet["31"] = "building";
 statusSet["32"] = "building";
-statusSet["33"] = "building";
-statusSet["34"] = "building";
-statusSet["35"] = "building";
-statusSet["38"] = "building";
-statusSet["39"] = "building";
 
 $(document).ready(function() {
 
@@ -51,19 +45,13 @@ $(document).ready(function() {
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
 
-    var buttonAdd = {
-        text: "Add",
-        action: function ( e, dt, node, config ) {
-            window.open(base_url + "panel/Project/add","_self");
-        }
-    };
     //Horizontal Icons dataTable
     // var statusSet = $("input[name=status-set]").val();
     var oTable = $('#project-index').dataTable({
         "processing" : true,
         "serverSide" : true,
         "ajax" : {
-            url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
+            url : base_url + 'panel/AjaxWarehouse/ajaxDtAllWarehouses',
             type : 'POST',
             data:function ( data ) {
                 data.additionalParameters = additionalParameter.getList();
@@ -149,15 +137,7 @@ $(document).ready(function() {
                 var html = '';
                 if(currentStatusSet != "")
                 {
-                    if(statusSet[row.status_pro] == "warehouse")
-                    {
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Warehouse/statusManagement/'+row.id_war+'" title="" data-original-title="ALMACEN"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                    }
-                    else
-                    {
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                    }
-
+                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Warehouse/statusManagement/'+row.id_war+'" title="" data-original-title="ALMACEN"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                     html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 }

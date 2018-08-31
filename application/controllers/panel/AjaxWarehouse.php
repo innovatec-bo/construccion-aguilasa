@@ -20,16 +20,18 @@ class AjaxWarehouse extends PrivateController
     public function ajaxDtAllWarehouses()
     {
         $dt = new JqdtHandler($this->input->post());
-        $recordsTotal = Model_warehouse::countAll();
+        $additionalParameters = $this->input->post("additionalParameters");
+        $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
+        $recordsTotal = Model_warehouse::countAll($additionalParameters["status"]);
         $recordsFiltered = $recordsTotal;
-        if (!$dt->hasSearchValue())
+        if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
         {
-            $resultArray = Model_warehouse::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+            $resultArray = Model_warehouse::getAllProjects($additionalParameters["status"], $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
         }
         else
         {
-            $resultArray = Model_warehouse::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs());
-            $recordsFiltered = Model_warehouse::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs());
+            $resultArray = Model_warehouse::searchProject($additionalParameters["status"], $dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
+            $recordsFiltered = Model_warehouse::searchTotalCount($additionalParameters["status"], $dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
@@ -164,8 +166,11 @@ class AjaxWarehouse extends PrivateController
         $formData = $this->input->post();
         $warehouseId = $formData["warehouseId"];
         $statusKeyword = $formData["statusKeyword"];
+        $warehouse = Model_warehouse::getById($warehouseId);
         $previousEntry = Model_warehouse_status_log::getLogByWarehouseIdAndStatusKeyWord($warehouseId, $statusKeyword);
+        $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($warehouse->getProjectId(), "assign_to");
         $response["previousEntry"] = $previousEntry;
+        $response["assignmentEntry"] = $assignmentEntry;
         echo json_encode($response);exit;
     }
 

@@ -31,6 +31,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset>
+                                            <label>Responsables de construccion</label><br>
+                                            {{#each assignmentResponsible}}
+                                            {{name}}<br>
+                                            {{/each}}
+                                        </fieldset>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
                                     <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>

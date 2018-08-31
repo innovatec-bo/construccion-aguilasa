@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 <label> </label>
                                 <div class="input-group date date-time-picker">
-                                    <input name="incident-percentage" class="form-control" required="" data-parsley-errors-container="#error-incident-percentage">
+                                    <input name="incident-percentage" value="{{currentPercentage}}" class="form-control" required="" data-parsley-errors-container="#error-incident-percentage">
                                     <span class="input-group-addon">
                                         %
                                     </span>

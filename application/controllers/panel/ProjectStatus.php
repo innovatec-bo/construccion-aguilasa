@@ -254,7 +254,7 @@ class ProjectStatus extends PrivateController
                 $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials","materials_reception");
                 break;
             case 'building':
-                $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","as_built", "conciliation_reception", "conciliation_shipment");
+                $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","as_built", "conciliation_reception", "conciliation_shipment","cre_return_order","project_return_materials");
                 break;
             default:
                 $keywordList = array();
@@ -323,7 +323,6 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project-status.assign-project');
         $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to");
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
-//        echo"<pre>";var_dump($previousEntry[0],isset($previousEntry[0]["id_psl"]));exit;
         $data["responsibleList"] = $responsibleList;
         $data["project"] = $project->toArray();
         $data["previousEntry"] = $previousEntry;
@@ -359,7 +358,6 @@ class ProjectStatus extends PrivateController
             $project->setStatus($statusId);
             $project->save();
             $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
-            $project->startWarehouseProcess();
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
             $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");

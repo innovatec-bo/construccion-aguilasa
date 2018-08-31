@@ -37,4 +37,28 @@ class Model_incident extends Model_incident_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getAllByProjectId($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            select 
+             wfl_incidents.*,
+            firstname_usr,
+            lastname_usr,
+            CONCAT(firstname_usr,' ',lastname_usr) full_name
+             from ".static::TABLE_NAME."
+             LEFT JOIN sec_users on id_usr = createdby_inc 
+            where 
+            ".static::notDeleted()." 
+            and project_id_inc = ".$ci->db->escape($projectId)." 
+            order by manual_entry_date_inc desc
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

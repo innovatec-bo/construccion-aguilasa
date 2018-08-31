@@ -30,10 +30,10 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index', TRUE);
-        $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "Proyectos en Almacen";
-        $data["status"] = "22,23,24,25,26";
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Es necesario grabar los materiales de estos proyectos";
+        $data["status"] = "22";
         $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -63,9 +63,9 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index', TRUE);
-        $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "Grabado de los materiales";
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Materiales ya grabados en CRE";
         $data["status"] = 23;
         $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
@@ -96,9 +96,9 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index', TRUE);
-        $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "Retiro de materiales";
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Materiales ya retirados de CRE";
         $data["status"] = 24;
         $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
@@ -129,10 +129,109 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index', TRUE);
-        $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "En entrega de Materiales";
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Materiales entragados a responsables de contruccion";
         $data["status"] = 25;
+        $data["statusSet"] = "warehouse";
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function materialsReception()
+    {
+        $this->_validateFeature('warehouse_materials_reception');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Materiales recibidos de construccion";
+        $data["status"] = 36;
+        $data["statusSet"] = "warehouse";
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function requestMaterialsReturn()
+    {
+        $this->_validateFeature('warehouse_request_materials_return');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Devolvera CRE los materiales de estos proyectos";
+        $data["status"] = 37;
+        $data["statusSet"] = "warehouse";
+        $data["projectSystems"] = $this->_projectSystems;
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("project/index",$data);
+    }
+
+    public function returnMaterials()
+    {
+        $this->_validateFeature('warehouse_return_materials');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('warehouse.index', TRUE);
+        $this->complementHandler->addProjectJs('warehouse.index', TRUE);
+        $data["viewTitle"] = "Materiales devueltos a CRE";
+        $data["status"] = 20;
         $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -148,10 +247,10 @@ class Warehouse extends PrivateController
 
     public function statusManagement($warehouseId)
     {
-        $this->_validateFeature('project_status_management');
+//        $this->_validateFeature('project_status_management');
         $warehouse = $this->_validateObjectToEdit($warehouseId,"Model_warehouse","panel/Home");
         $warehouse = $warehouse->toArray();
-        $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "return_materials","materials_reception");
+        $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "return_materials","materials_reception","request_materials_return");
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");

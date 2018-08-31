@@ -117,9 +117,11 @@ $(document).ready(function() {
 
     $("#add-incident").on("click",function(e){
        e.preventDefault();
+        var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
+        currentPercentage =  currentPercentage == undefined?0:currentPercentage;
         var htmlSource   = $("#ht-modal-incident-form").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {};
+        var data = {currentPercentage:currentPercentage};
         var html = template(data);
         bootbox.confirm({
             title:"Detalle de la incidencia",
@@ -345,18 +347,26 @@ function loadStatusForm(statusKeyword, addMoreInfo)
         type : "POST",
         data : {warehouseId:warehouseId, statusKeyword:statusKeyword, statusSet:statusSet},
         success:function(response){
-
-            if(response.previousEntry[0] === undefined || addMoreInfo ==  1)
+            if(response.assignmentEntry.length <= 0 && statusKeyword == "deliver_materials")
+            {
+                var htmlSource = $("#ht-status-"+statusKeyword+"-form-not-available").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {statusKeyword:statusKeyword,statusSet:statusSet};
+                var html = template(data);
+                $("#status-form-content").html(html);
+            }
+            else if(response.previousEntry[0] === undefined || addMoreInfo ==  1)
             {
                 var htmlSource   = $("#ht-status-not-created-view-form").html();
                 if($("#ht-status-"+statusKeyword+"-form").length === 1)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
+                var assignmentResponsible = response.assignmentEntry.length > 0?jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
                 var data = {
                     previousEntry:response.previousEntry[0],
-                    assignmentResponsible:[],
-                    statusKeyword:statusKeyword
+                    statusKeyword:statusKeyword,
+                    assignmentResponsible:assignmentResponsible
                 };
                 var html = template(data);
                 $("#status-form-content").html(html);
@@ -374,7 +384,6 @@ function loadStatusForm(statusKeyword, addMoreInfo)
             }
             else
             {
-                // var htmlSource = $("#ht-status-already-has-data").html();
                 var htmlSource = $("#ht-status-"+statusKeyword+"-form-completed").html();
                 var template = Handlebars.compile(htmlSource);
                 var data = {statusKeyword:statusKeyword,statusSet:statusSet};
@@ -488,12 +497,18 @@ function checkIncidents()
         type : "POST",
         data:data,
         success:function(response){
-            console.log(response);
+            var currentProjectPercentage = 0;
+            if(response.allIncidents.length > 0)
+            {
+                currentProjectPercentage = response.allIncidents[0].percentage_inc;
+            }
+
             var htmlSource   = $("#ht-modal-incident-list").html();
             var template = Handlebars.compile(htmlSource);
-            var data = {incidentList:response};
+            var data = {incidentList:response.incidentList, currentProjectPercentage:currentProjectPercentage};
             var html = template(data);
             $("#incident-content").html(html);
+            console.log(response);
             // bootbox.alert({
             //     title:"Incidentes en "+statusText,
             //     message: html

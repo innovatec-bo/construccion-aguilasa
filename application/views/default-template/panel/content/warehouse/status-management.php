@@ -149,6 +149,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-recor
 $this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-materials_reception-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-request_materials_return-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");

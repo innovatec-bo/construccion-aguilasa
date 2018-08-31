@@ -1,12 +1,11 @@
-###################################################################################################### project_count_all
-DROP PROCEDURE IF EXISTS project_count_all;
-CREATE PROCEDURE project_count_all
+###################################################################################################### warehouse_count_all
+DROP PROCEDURE IF EXISTS warehouse_count_all;
+CREATE PROCEDURE warehouse_count_all
 (
 	statusId VARCHAR(15)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_id_war in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select count(id_pro) as total from
@@ -17,7 +16,8 @@ select count(id_pro) as total from
 		order_pst,
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
-		id_psl
+		id_psl,
+		wfl_warehouses.*
 	FROM
 		wfl_projects
 	LEFT JOIN (
@@ -52,6 +52,7 @@ select count(id_pro) as total from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
@@ -60,9 +61,9 @@ PREPARE stmt FROM @queryy;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 end
-###################################################################################################### project_get_all
-DROP PROCEDURE IF EXISTS project_get_all;
-CREATE PROCEDURE project_get_all
+###################################################################################################### warehouse_get_all
+DROP PROCEDURE IF EXISTS warehouse_get_all;
+CREATE PROCEDURE warehouse_get_all
 (
 	statusId VARCHAR(15),
 	limitt int(3),
@@ -71,8 +72,7 @@ CREATE PROCEDURE project_get_all
     orderType VARCHAR(4)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_id_war in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select * from
@@ -84,7 +84,7 @@ select * from
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
 		id_psl,
-		id_war
+		wfl_warehouses.*
 	FROM
 		wfl_projects
 	LEFT JOIN (
@@ -119,7 +119,7 @@ select * from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
@@ -130,9 +130,9 @@ PREPARE stmt FROM @queryy;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 end
-###################################################################################################### project_search
-DROP PROCEDURE IF EXISTS project_search;
-CREATE PROCEDURE project_search
+###################################################################################################### warehouse_search
+DROP PROCEDURE IF EXISTS warehouse_search;
+CREATE PROCEDURE warehouse_search
 (
 	statusId VARCHAR(15),
 	limitt int(3),
@@ -142,8 +142,7 @@ CREATE PROCEDURE project_search
 	textToSearh VARCHAR(20)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_id_war in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select * from
@@ -155,7 +154,7 @@ select * from
 		status_log_manual_entry_date.manual_entry_date_psl,
 		status_log_manual_entry_date.responsible,
 		id_psl,
-		id_war
+		wfl_warehouses.*
 	FROM
 		wfl_projects
 	LEFT JOIN (
@@ -190,7 +189,7 @@ select * from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
@@ -204,16 +203,15 @@ PREPARE stmt FROM @queryy;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 end
-###################################################################################################### project_search_total_count
-DROP PROCEDURE IF EXISTS project_search_total_count;
-CREATE PROCEDURE project_search_total_count
+###################################################################################################### warehouse_search_total_count
+DROP PROCEDURE IF EXISTS warehouse_search_total_count;
+CREATE PROCEDURE warehouse_search_total_count
 (
 	statusId VARCHAR(15),
 	textToSearh VARCHAR(20)
 )
 begin
-SET @statusIdFilter1 = IF(statusId = '','1=1',CONCAT(" status_id_psl in (",statusId,") "));
-SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_pro in (",statusId,") "));
+SET @statusIdFilter2 = IF(statusId = '','1=1',CONCAT(" status_id_war in (",statusId,") "));
 SET @queryy = CONCAT(
 "
 select count(id_pro) as total from
@@ -260,7 +258,7 @@ select count(id_pro) as total from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"

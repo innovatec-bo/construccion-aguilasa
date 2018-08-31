@@ -31,30 +31,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <fieldset>
-                                            <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
-                                            <div class="form-group">
-                                                <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
-                                                    {{#each statusResponsible}}
-                                                    {{var "selected" ""}}
-                                                    {{#ifCond ../responsibleListLength "===" 1}}
-                                                    {{var "selected" "selected"}}
-                                                    {{/ifCond}}
-                                                    <option value="{{id_sre}}" {{selected}}>{{firstname_usr}} {{lastname_usr}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
                                     <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset>
+                            <label>Responsables de construccion</label><br>
+                            {{#each assignmentResponsible}}
+                            {{name}}<br>
+                            {{/each}}
+                        </fieldset>
                     </div>
                 </div>
                 <div class="row">

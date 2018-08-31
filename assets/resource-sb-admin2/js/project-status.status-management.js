@@ -72,25 +72,19 @@ $(document).ready(function() {
                 case "canceled":
                     saveCanceled(statusId,statusKeyword);
                     break;
-                case "warehouse":
-                    saveWarehouse(statusId,statusKeyword);
-                    break;
-                case "record_building_materials":
-                    saveRecordBuildingMaterials(statusId,statusKeyword);
-                    break;
-                case "get_materials":
-                    savePickUpMaterials(statusId,statusKeyword);
-                    break;
-                case "deliver_materials":
-                    saveDeliverMaterials(statusId,statusKeyword);
-                    break;
-                case "return_materials":
-                    saveReturnMaterials(statusId, statusKeyword);
-                    break;
                 case "in_progress":
                 case "paused":
                 case "stopped":
                 case "completed":
+                case "as_built":
+                case "conciliation_reception":
+                case "conciliation_shipment":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "cre_return_order":
+                    saveCreReturnOrder(statusId,statusKeyword);
+                    break;
+                case "project_return_materials":
                     saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
@@ -150,9 +144,11 @@ $(document).ready(function() {
 
     $("#add-incident").on("click",function(e){
        e.preventDefault();
+        var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
+        currentPercentage =  currentPercentage == undefined?0:currentPercentage;
         var htmlSource   = $("#ht-modal-incident-form").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {};
+        var data = {currentPercentage:currentPercentage};
         var html = template(data);
         bootbox.confirm({
             title:"Detalle de la incidencia",
@@ -562,7 +558,7 @@ function saveCanceled(statusId,statusKeyword)
     });
 }
 
-function saveWarehouse(statusId, statusKeyword)
+function saveCreReturnOrder(statusId,statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
     var responsibleList = [];
@@ -582,132 +578,7 @@ function saveWarehouse(statusId, statusKeyword)
     };
 
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveWarehouse',
-        dataType  :"json",
-        type : "POST",
-        data : data,
-        success:function(response){
-            // loadStatusSavedView(statusKeyword);
-            // getProjectLog();
-            window.location = base_url + "panel/Approvement/approved";
-        }
-    });
-}
-
-function saveRecordBuildingMaterials(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var drawing = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveRecordBuildingMaterials',
-        dataType  :"json",
-        type : "POST",
-        data : drawing,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function savePickUpMaterials(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var drawing = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/savePickUpMaterials',
-        dataType  :"json",
-        type : "POST",
-        data : drawing,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function saveDeliverMaterials(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var drawing = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveDeliverMaterials',
-        dataType  :"json",
-        type : "POST",
-        data : drawing,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function saveReturnMaterials(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var data = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveReturnMaterials',
+        url : base_url + 'panel/AjaxProjectStatus/saveCreReturnOrder',
         dataType  :"json",
         type : "POST",
         data : data,
@@ -904,7 +775,7 @@ function addIncident()
         type : "POST",
         data:data,
         success:function(response){
-            console.log(response);
+            checkIncidents();
         }
     });
 }
@@ -924,10 +795,15 @@ function checkIncidents()
         type : "POST",
         data:data,
         success:function(response){
-            console.log(response);
+            var currentProjectPercentage = 0;
+            if(response.allIncidents.length > 0)
+            {
+                currentProjectPercentage = response.allIncidents[0].percentage_inc;
+            }
+
             var htmlSource   = $("#ht-modal-incident-list").html();
             var template = Handlebars.compile(htmlSource);
-            var data = {incidentList:response};
+            var data = {incidentList:response.incidentList, currentProjectPercentage:currentProjectPercentage};
             var html = template(data);
             $("#incident-content").html(html);
             // bootbox.alert({

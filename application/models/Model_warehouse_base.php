@@ -71,10 +71,99 @@ class Model_warehouse_base extends MY_Model
         }
         return $response;
     }
-
+    //getters
+    public function getProjectId()
+    {
+        return $this->_projectId;
+    }
     //setters
     public function setStatus($status)
     {
         $this->_statusId = $status;
     }
+
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+
+    /**
+     * @param string $statusId
+     * @return mixed
+     */
+    public static function countAll($statusId = "")
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_warehouse_sp.txt
+        $sql = 'CALL warehouse_count_all('.$ci->db->escape($statusId).')';
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        $ci->db->close();
+        return $totalCount;
+    }
+
+    /**
+     * @param string $statusId
+     * @param $limit
+     * @param null $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     */
+    public static function getAllProjects($statusId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_warehouse_sp.txt
+        $sql = 'CALL warehouse_get_all('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).')';
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        $ci->db->close();
+        return $result;
+    }
+
+    /**
+     * @param $statusId
+     * @param $text
+     * @param $limit
+     * @param null $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @param null $colsArray
+     * @return mixed
+     */
+    public static function searchProject($statusId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_warehouse_sp.txt
+        $sql = 'CALL warehouse_search('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        $ci->db->close();
+        return $result;
+    }
+
+    public static function searchTotalCount($statusId = "", $text = "", $colsArray = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        //check definition on Model_warehouse_sp.txt
+        $sql = 'CALL warehouse_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($text).')';
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        $ci->db->close();
+        return $totalCount;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
 }
