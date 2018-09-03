@@ -119,7 +119,7 @@ select * from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
@@ -190,7 +190,7 @@ select * from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
@@ -260,7 +260,7 @@ select count(id_pro) as total from
         			) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 	) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
 	LEFT JOIN wfl_project_status on status_pro = id_pst
-	LEFT JOIN wfl_warehouses on project_id_war = id_pro
+	LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
 	WHERE
 	    deleted_pro != 1
 		and ",@statusIdFilter2,"
