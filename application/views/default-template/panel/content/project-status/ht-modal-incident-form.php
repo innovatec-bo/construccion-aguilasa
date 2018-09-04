@@ -49,6 +49,7 @@
                                     <option value="5">Mecanico</option>
                                     <option value="6">Materiales incompletos</option>
                                     <option value="7">Climatológico</option>
+                                    <option value="8">Otros</option>
                                 </select>
                             </div>
                         </div>

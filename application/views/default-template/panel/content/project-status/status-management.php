@@ -70,15 +70,19 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     $i = 1;
 
                     $activeFound = FALSE;
-                    //If the current status is equals to 21 then lets active the previous status
-                    $currentStatus = $project["status_pro"] == 21?$projectLog[1]["status_id_psl"]:$project["status_pro"];
                     $currentStatus = $project["status_pro"];
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
                         if($status["keyword_pst"] == "returned")
                             continue;
-                        if($currentStatus == 11 && $status["keyword_pst"] == "warehouse")
+
+                        //Show stopped status only when the project is stopped
+                        if($status["keyword_pst"] == "paused" && ($currentStatus != 31|| $currentStatus != 30))
+                            continue;
+
+                        //Show paused status only when the project is paused
+                        if($status["keyword_pst"] == "stopped" && $currentStatus != 30)
                             continue;
                         $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
                         $disabled = $disableStatus?" disabled ":"";
@@ -193,12 +197,6 @@ $this->load->view("default-template/panel/content/project-status/ht-status-rd_dr
 //rectify illustration
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_digitization-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ri_drawing-form");
-//warehouse
-$this->load->view("default-template/panel/content/project-status/ht-status-warehouse-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-record_building_materials-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-get_materials-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-deliver_materials-form");
-$this->load->view("default-template/panel/content/project-status/ht-status-return_materials-form");
 //building
 $this->load->view("default-template/panel/content/project-status/ht-status-assign_to-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-ready_to_start-form");

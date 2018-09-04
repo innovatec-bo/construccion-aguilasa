@@ -250,9 +250,9 @@ class ProjectStatus extends PrivateController
             case 'rectify_illustration':
                 $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
                 break;
-            case 'warehouse':
-                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials","materials_reception");
-                break;
+//            case 'warehouse':
+//                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials","materials_reception");
+//                break;
             case 'building':
                 $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","as_built", "conciliation_reception", "conciliation_shipment","cre_return_order","project_return_materials");
                 break;
