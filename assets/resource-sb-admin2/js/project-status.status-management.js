@@ -144,11 +144,13 @@ $(document).ready(function() {
 
     $("#add-incident").on("click",function(e){
        e.preventDefault();
+        var status = $("ul.wizard li.active a").prop("id");
+        console.log(status);
         var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
         currentPercentage =  currentPercentage == undefined?0:currentPercentage;
         var htmlSource   = $("#ht-modal-incident-form").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {currentPercentage:currentPercentage};
+        var data = {currentPercentage:currentPercentage,statusKeyword:status};
         var html = template(data);
         bootbox.confirm({
             title:"Detalle de la incidencia",
@@ -762,12 +764,16 @@ function addIncident()
     var detail = $('textarea[name=incident-detail]').val();
     var percentage = $('input[name=incident-percentage]').val();
     var entryDate = $('input[name=incident-manual-entry-date]').val();
+    var pauseProject = $("input[name=pause-project]").is(":checked")?1:0;
+    var stopProject = $("input[name=stop-project]").is(":checked")?1:0;
     var data = {
         projectId:projectId,
         statusLogId:statusLogId,
         detail:detail,
         percentage:percentage,
-        entryDate:entryDate
+        entryDate:entryDate,
+        pauseProject:pauseProject,
+        stopProject:stopProject
     };
     $.ajax({
         url : base_url + 'panel/AjaxProjectStatus/addIncident',
@@ -775,7 +781,16 @@ function addIncident()
         type : "POST",
         data:data,
         success:function(response){
-            checkIncidents();
+            if(pauseProject || stopProject)
+            {
+                window.location.reload();
+            }
+            else
+            {
+                checkIncidents();
+            }
+
+
         }
     });
 }

@@ -7,6 +7,26 @@
  */
 ?>
 <script id="ht-status-stopped-form" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Quieres detener el proyecto?</h4>
+        <p>
+            1.- Seleciona el estado de "Pausado".<br>
+            2.- Has clic en el boton de Añadir incidencia.<br>
+            3.- Cuando estas en "Pausado" y abres el formulario de incidencias hay una opcion disponible para selecionar "Esta incidencia detiene el proyecto", el
+            cual indica que la incidencia que estas agregando provoca que proyecto se detenga y sea descontinuado.<br>
+            4.- Por ultimo, guarda la incidencia tickeando la opcion de "Esta incidencia detiene el proyecto".
+        </p>
+    </div>
+
+</script>
+
+<script id="ht-status-stopped-form-completed" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Se detuvo la construccion!</h4>
+        <p>Con el proyecto ya detenido se espera la fecha de envio del "As built".</p>
+    </div>
+</script>
+<script id="ht-status-stopped-form-completed-old-content" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -71,12 +91,5 @@
             </div>
             <!-- /.panel-body -->
         </div>
-    </div>
-</script>
-
-<script id="ht-status-stopped-form-completed" type="text/x-handlebars-template">
-    <div class="well">
-        <h4>Se detuvo la construccion!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

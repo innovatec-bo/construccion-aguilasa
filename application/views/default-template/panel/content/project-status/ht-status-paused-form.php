@@ -7,10 +7,29 @@
  */
 ?>
 <script id="ht-status-paused-form" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Quieres pausar el proyecto?</h4>
+        <p>
+            1.- Seleciona el estado de "En construccion".<br>
+            2.- Has clic en el boton de Añadir incidencia.<br>
+            3.- Cuando estas en "Construccion" y abres el formulario de incidencias hay una opcion disponible para selecionar "Esta incidencia pausa el proyecto", el
+            cual indica que la incidencia que estas agregando provoca una pausa en el proyecto.<br>
+            4.- Por ultimo, guarda la incidencia tickeando la opcion de "Esta incidencia pausa el proyecto".
+        </p>
+    </div>
+</script>
+
+<script id="ht-status-paused-form-completed" type="text/x-handlebars-template">
+    <div class="well">
+        <h4>Se pauso la construccion!</h4>
+        <p>Podras continuar con el proyecto una cuando se te vuelva a signar, de otra forma puedes detenerlo y saltar al "As built".</p>
+    </div>
+</script>
+<script id="ht-status-paused-form-old-content" type="text/x-handlebars-template">
     <div class="tab-pane active" role="tabpanel" id="step_{{statusKeyword}}">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                El proyecto en pausa
+                Pausar proyecto
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -72,11 +91,5 @@
             <!-- /.panel-body -->
         </div>
     </div>
-</script>
 
-<script id="ht-status-paused-form-completed" type="text/x-handlebars-template">
-    <div class="well">
-        <h4>Se pauso la construccion!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
-    </div>
 </script>

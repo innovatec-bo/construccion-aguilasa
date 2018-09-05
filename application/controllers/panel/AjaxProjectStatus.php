@@ -523,6 +523,8 @@ class AjaxProjectStatus extends PrivateController
         $projectId = $formData["projectId"];
         $statusId = $formData["statusLogId"];
         $entryDate = $formData["entryDate"];
+        $pauseProject = $formData["pauseProject"];
+        $stopProject = $formData["stopProject"];
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
         $entryDate = $entryDate." ".date("H:i:s");
@@ -530,6 +532,33 @@ class AjaxProjectStatus extends PrivateController
         $detail = $formData["detail"];
         $incident = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId);
         $incident->save();
+        if($pauseProject != 0|| $stopProject != 0)
+        {
+            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
+            $responsibleList = array();
+            if(count($assignmentEntry) >= 0)
+            {
+                $responsibleList = json_decode("[".$assignmentEntry[0]["jsonResponsible"]."]",TRUE);
+                $responsibleList = array_column($responsibleList,"id");
+            }
+
+            $project = Model_project::getById($projectId);
+
+            if($pauseProject == 1)
+            {
+                $statusId = 31;//project paused
+            }
+            if($stopProject == 1)
+            {
+                $statusId = 30;//project stopped
+            }
+
+            $project->setStatus($statusId);
+            $project->save();
+            $project->addStatusToLog($statusId, $detail, $entryDate, $responsibleList);
+        }
+
+
         echo json_encode($formData);exit;
     }
 

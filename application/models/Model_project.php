@@ -55,6 +55,12 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
+    /**
+     * @param $statusId
+     * @param string $detail
+     * @param string $manualEntryDate
+     * @param array $responsibleList array list ids
+     */
     public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array())
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);

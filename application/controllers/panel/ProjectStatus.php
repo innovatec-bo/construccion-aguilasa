@@ -327,6 +327,9 @@ class ProjectStatus extends PrivateController
         $data["project"] = $project->toArray();
         $data["previousEntry"] = $previousEntry;
         $data["responsibleList"] = $responsibleList;
+        $allIncidents = Model_incident::getAllByProjectId($projectId);
+//        echo"<pre>";var_dump($allIncidents);exit;
+        $data["allIncidents"] = $allIncidents;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project-status/ready-to-assign", $data);

@@ -16,6 +16,7 @@ $detail = "";
 $currentResponsible = array();
 $previousEntry = isset($previousEntry[0]["id_psl"])?$previousEntry[0]:array();
 $alreadyPreviousInfoMessage = "";
+$textBtnSave = "Asignar";
 if(count($previousEntry) > 0)
 {
     $entryDate = $previousEntry["manual_entry_date_psl"];
@@ -35,6 +36,7 @@ if(count($previousEntry) > 0)
     $detail = $previousEntry["log_detail_psl"];
     $currentResponsible = json_decode("[".$previousEntry["jsonResponsible"]."]",TRUE);
     $alreadyPreviousInfoMessage = "Este proyecto ya ha sido asignado.";
+    $textBtnSave = "Re asignar";
 }
 $fiscalHtml = "";
 $builderHtml = "";
@@ -85,6 +87,29 @@ foreach($responsibleList as $responsible)
             }
             ?>
         </div>
+        <?php
+        if(count($allIncidents)>0)
+        {
+            $incidentHtml = '';
+            foreach ($allIncidents as $incident)
+            {
+                $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $incident["manual_entry_date_inc"]);
+                $entryDate = date_format($entryDate, 'd-m-Y');
+                $incidentHtml = '
+                <div class="col-md-12" id="incident-content">
+                    <div class="list-group" data-last-project-percentage="25">
+                        <a href="javascript:void(0)" class="list-group-item" data-project-percentage="25">
+                            <i class="fa fa-info-circle"></i> ('.$incident["percentage_inc"].'%) '.$incident["detail_inc"].'
+                            <span class="pull-right text-muted small"><em>'.$entryDate.' - '.$incident["full_name"].'</em></span>
+                        </a>
+                    </div>
+                </div>
+                ';
+                break;
+            }
+            echo $incidentHtml;
+        }
+        ?>
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -209,7 +234,7 @@ foreach($responsibleList as $responsible)
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-primary"><?=$textBtnSave?></button>
                                 </div>
                             </div>
                         </div>

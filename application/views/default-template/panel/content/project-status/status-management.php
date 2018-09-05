@@ -77,13 +77,6 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                         if($status["keyword_pst"] == "returned")
                             continue;
 
-                        //Show stopped status only when the project is stopped
-                        if($status["keyword_pst"] == "paused" && ($currentStatus != 31|| $currentStatus != 30))
-                            continue;
-
-                        //Show paused status only when the project is paused
-                        if($status["keyword_pst"] == "stopped" && $currentStatus != 30)
-                            continue;
                         $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
                         $disabled = $disableStatus?" disabled ":"";
                         if($status["id_pst"] === $currentStatus)

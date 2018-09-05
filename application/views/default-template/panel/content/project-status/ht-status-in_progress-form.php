@@ -76,7 +76,7 @@
 
 <script id="ht-status-in_progress-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Este proyecto se encuentra en construccion!</h4>
+        <h4>Este proyecto tiene registro de haber sido puesto en construccion!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>

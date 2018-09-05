@@ -54,6 +54,28 @@
                             </div>
                         </div>
                     </div>
+                    {{#ifCond statusKeyword "==" "in_progress"}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="pause-project">Esta incidencia pausa el proyecto.<br><em>Si marca esta casilla se recomienda colocar un detalle del por que de la pausa del proyecto.</em>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    {{/ifCond}}
+                    {{#ifCond statusKeyword "==" "paused"}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="stop-project">Esta incidencia detiene el proyecto.<br><em>Si marca esta casilla se recomienda colocar un detalle del por que de la detencion del proyecto.</em>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    {{/ifCond}}
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
