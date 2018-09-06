@@ -162,4 +162,25 @@ class Model_project extends Model_project_base
         $warehouse->save();
         $warehouse->addStatusToLog(22, "Inicio de gestion de materiales de construccion", $entryDate);
     }
+
+    public static function getApprovedProjectWithoutWarehouse()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = '
+        SELECT
+            wfl_projects.*,
+            id_war
+        FROM
+            wfl_projects
+        LEFT JOIN wfl_warehouses on project_id_war = id_pro
+        WHERE
+        status_pro in (11)
+        and id_war is null
+        ';
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }
