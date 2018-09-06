@@ -100,7 +100,64 @@
                                     <input class="form-control" value="<?=set_value("project-meters-distance")?>" name="project-meters-distance" placeholder="Distancia">
                                 </div>
                             </div>
-                        </div><br>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Administrado por</label>
+                                    <select  class="form-control" name="management-by" required>
+                                        <option value="">Elija donde esta la administracion de este proyecto</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($projectSystems as $key => $name)
+                                        {
+                                            $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nivel de calidad</label>
+                                    <select  class="form-control" name="quality-level" required>
+                                        <option value="0">Ninguno</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Finalizacion de diseño (CRE)</label>
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input name="cre-design-completion-date" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Finalizacion de construccion (CRE)</label>
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        <input name="cre-building-completion-date" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="col-lg-6">
                                 <button type="button" class="btn btn-primary save-project" data-project-status="7">Guardar</button>

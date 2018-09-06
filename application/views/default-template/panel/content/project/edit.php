@@ -99,6 +99,81 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Administrado por</label>
+                                    <select  class="form-control" name="management-by" required>
+                                        <option value="">Elija donde esta la administracion de este proyecto</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($projectSystems as $key => $name)
+                                        {
+                                            $selected = $project["system_pro"] == $key?" selected ":"";
+                                            $html .= '<option value="'.$key.'" '.$selected.'>'.$name.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nivel de calidad</label>
+                                    <select  class="form-control" name="quality-level" required>
+                                        <option value="0"<?=$project["quality_level_pro"] == 0?"selected":""?>>Ninguno</option>
+                                        <option value="1"<?=$project["quality_level_pro"] == 1?"selected":""?>>1</option>
+                                        <option value="2"<?=$project["quality_level_pro"] == 2?"selected":""?>>2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Finalizacion de diseño (CRE)</label>
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <?php
+                                        $date = "";
+                                        if(isset($project["cre_design_completion_date_pro"]))
+                                        {
+                                            $date = $project["cre_design_completion_date_pro"];
+                                            $date = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+                                            $date = date_format($date, 'd-m-Y');
+                                        }
+                                        ?>
+                                        <input name="cre-design-completion-date" readonly class="form-control" value="<?=set_value('cre-design-completion-date', $date)?>"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Finalizacion de construccion (CRE)</label>
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        <?php
+                                        $date = "";
+                                        if(isset($project["cre_building_completion_date_pro"]))
+                                        {
+                                            $date = $project["cre_building_completion_date_pro"];
+                                            $date = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+                                            $date = date_format($date, 'd-m-Y');
+                                        }
+                                        ?>
+                                        <input name="cre-building-completion-date" readonly class="form-control" value="<?=set_value('cre-building-completion-date', $date)?>" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
 
                                 <?php
