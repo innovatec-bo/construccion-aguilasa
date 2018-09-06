@@ -23,8 +23,13 @@ class Model_project_base extends MY_Model
     protected $_projectEnd;
     protected $_points;
     protected $_distance;
+    protected $_managementBy;
+    protected $_qualityLevel;
+    protected $_creDesignCompletionDate;
+    protected $_creBuildingCompletionDate;
 
-    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0)
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -38,6 +43,10 @@ class Model_project_base extends MY_Model
         $this->_projectEnd = $projectEnd;
         $this->_points = $points;
         $this->_distance = $distance;
+        $this->_managementBy = $managementBy;
+        $this->_qualityLevel = $qualityLevel;
+        $this->_creDesignCompletionDate = $creDesignCompletionDate;
+        $this->_creBuildingCompletionDate = $creBuildingCompletionDate;
     }
 
     /**
@@ -59,6 +68,10 @@ class Model_project_base extends MY_Model
             "project_end_pro" => $this->_projectEnd,
             "points_pro" => $this->_points,
             "distance_pro" => $this->_distance,
+            "management_by_pro" => $this->_managementBy,
+            "quality_level_pro" => $this->_qualityLevel,
+            "cre_design_completion_date_pro" => $this->_creDesignCompletionDate,
+            "cre_building_completion_date_pro" => $this->_creBuildingCompletionDate,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -93,7 +106,11 @@ class Model_project_base extends MY_Model
                 $object->project_start_pro,
                 $object->project_end_pro,
                 $object->points_pro,
-                $object->distance_pro
+                $object->distance_pro,
+                $object->management_by_pro,
+                $object->quality_level_pro,
+                $object->cre_design_completion_date_pro,
+                $object->cre_building_completion_date_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -145,6 +162,26 @@ class Model_project_base extends MY_Model
     public function setEnd($end)
     {
         $this->_projectEnd = $end;
+    }
+
+    public function setManagementBy($managementBy)
+    {
+        $this->_managementBy = $managementBy;
+    }
+
+    public function setQualityLevel($qualityLevel)
+    {
+        $this->_qualityLevel = $qualityLevel;
+    }
+
+    public function setCreDesignCompletionDate($creDesignCompletionDate)
+    {
+        $this->_creDesignCompletionDate = $creDesignCompletionDate;
+    }
+
+    public function setCreBuildingCompletionDate($creBuildingCompletionDate)
+    {
+        $this->_creBuildingCompletionDate = $creBuildingCompletionDate;
     }
 
     public function getCode()

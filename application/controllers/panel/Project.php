@@ -55,8 +55,8 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
-        $this->complementHandler->addProjectCss('project.add');
-        $this->complementHandler->addProjectJs('project.add');
+        $this->complementHandler->addProjectCss('project.add', TRUE);
+        $this->complementHandler->addProjectJs('project.add', TRUE);
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
@@ -91,7 +91,19 @@ class Project extends PrivateController
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
-            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance);
+            $managementBy = $formData["management-by"];
+            $qualityLevel = $formData["quality-level"];
+            $creDesignCompletionDate = $formData["cre-design-completion-date"];
+            $creDesignCompletionDate = DateTime::createFromFormat('d-m-Y', $creDesignCompletionDate);
+            $creDesignCompletionDate = date_format($creDesignCompletionDate, 'Y-m-d');
+            $creDesignCompletionDate = $creDesignCompletionDate." ".date("H:i:s");
+
+            $creBuildingCompletionDate = $formData["cre-building-completion-date"];
+            $creBuildingCompletionDate = DateTime::createFromFormat('d-m-Y', $creBuildingCompletionDate);
+            $creBuildingCompletionDate = date_format($creBuildingCompletionDate, 'Y-m-d');
+            $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
+            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance,
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate);
             $project->save();
             $statusDetail = "Proyecto enviado a diseño";
             $keyword = "design";
@@ -118,8 +130,8 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
-        $this->complementHandler->addProjectCss('project.edit');
-        $this->complementHandler->addProjectJs('project.edit');
+        $this->complementHandler->addProjectCss('project.edit',TRUE);
+        $this->complementHandler->addProjectJs('project.edit', TRUE);
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
@@ -147,6 +159,10 @@ class Project extends PrivateController
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
             $projectStatus = $formData["project-status"];
+            $managementBy = $formData["management-by"];
+            $qualityLevel = $formData["quality-level"];
+            $creDesignCompletionDate = $formData["cre-design-completion-date"];
+            $creBuildingCompletionDate = $formData["cre-building-completion-date"];
 
             $project->setProjectName($projectName);
             if($projectStatus != "")
@@ -156,6 +172,10 @@ class Project extends PrivateController
             $project->setCREFiscal($projectCreFiscal);
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);
+            $project->setManagementBy($managementBy);
+            $project->setQualityLevel($qualityLevel);
+            $project->setCreDesignCompletionDate($creDesignCompletionDate);
+            $project->setCreBuildingCompletionDate($creBuildingCompletionDate);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")
