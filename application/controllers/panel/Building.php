@@ -197,7 +197,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "Se esta realizando el as built del proyecto";
+        $data["viewTitle"] = "Proyectos que ya enviaron su As Built";
         $data["statusSet"] = "as_built";
         $data["status"] = 33;
         $data["projectSystems"] = $this->_projectSystems;

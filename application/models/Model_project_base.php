@@ -342,13 +342,13 @@ class Model_project_base extends MY_Model
      * @param string $statusId
      * @return mixed
      */
-    public static function countAll($statusId = "")
+    public static function countAll($statusId = "", $userId = "")
     {
         $ci = &get_instance();
         $ci->load->database();
 
         //check definition on Model_project_sp.txt
-        $sql = 'CALL project_count_all('.$ci->db->escape($statusId).')';
+        $sql = 'CALL project_count_all('.$ci->db->escape($statusId).','.$ci->db->escape($userId).')';
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
         $ci->db->close();
@@ -357,13 +357,14 @@ class Model_project_base extends MY_Model
 
     /**
      * @param string $statusId
+     * @param string $userId
      * @param $limit
-     * @param null $offset
+     * @param $offset
      * @param null $orderBy
      * @param string $orderType
      * @return mixed
      */
-    public static function getAllProjects($statusId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllProjects($statusId = "", $userId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {
@@ -373,7 +374,7 @@ class Model_project_base extends MY_Model
         $ci->load->database();
 
         //check definition on Model_project_sp.txt
-        $sql = 'CALL project_get_all('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).')';
+        $sql = 'CALL project_get_all('.$ci->db->escape($statusId).','.$ci->db->escape($userId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).')';
         $query = $ci->db->query($sql);
         $result = $query->result();
         $ci->db->close();
@@ -390,7 +391,7 @@ class Model_project_base extends MY_Model
      * @param null $colsArray
      * @return mixed
      */
-    public static function searchProject($statusId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchProject($statusId = "", $userId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
     {
         if ($orderBy === null)
         {
@@ -400,20 +401,20 @@ class Model_project_base extends MY_Model
         $ci->load->database();
 
         //check definition on Model_project_sp.txt
-        $sql = 'CALL project_search('.$ci->db->escape($statusId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
+        $sql = 'CALL project_search('.$ci->db->escape($statusId).','.$ci->db->escape($userId).','.$limit.','.$offset.','.$ci->db->escape($orderBy).', '.$ci->db->escape($orderType).','.$ci->db->escape($text).')';
         $query = $ci->db->query($sql);
         $result = $query->result();
         $ci->db->close();
         return $result;
     }
 
-    public static function searchTotalCount($statusId = "", $text = "", $colsArray = null)
+    public static function searchTotalCount($statusId = "", $userId = "", $text = "", $colsArray = null)
     {
         $ci = &get_instance();
         $ci->load->database();
 
         //check definition on Model_project_sp.txt
-        $sql = 'CALL project_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($text).')';
+        $sql = 'CALL project_search_total_count('.$ci->db->escape($statusId).','.$ci->db->escape($userId).','.$ci->db->escape($text).')';
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
         $ci->db->close();

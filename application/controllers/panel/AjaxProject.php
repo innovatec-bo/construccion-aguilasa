@@ -21,19 +21,25 @@ class AjaxProject extends PrivateController
 
     public function ajaxDtAllProjects()
     {
+        $response = $this->_is("fiscal");
+        $userId = "";
+        if($response == 1)
+        {
+            $userId = $this->sessionUser->id;
+        }
         $dt = new JqdtHandler($this->input->post());
         $additionalParameters = $this->input->post("additionalParameters");
         $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
-        $recordsTotal = Model_project::countAll($additionalParameters["status"]);
+        $recordsTotal = Model_project::countAll($additionalParameters["status"], $userId);
         $recordsFiltered = $recordsTotal;
         if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
         {
-            $resultArray = Model_project::getAllProjects($additionalParameters["status"], $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+            $resultArray = Model_project::getAllProjects($additionalParameters["status"], $userId, $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
         }
         else
         {
-            $resultArray = Model_project::searchProject($additionalParameters["status"], $dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
-            $recordsFiltered = Model_project::searchTotalCount($additionalParameters["status"], $dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
+            $resultArray = Model_project::searchProject($additionalParameters["status"], $userId, $dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
+            $recordsFiltered = Model_project::searchTotalCount($additionalParameters["status"], $userId, $dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
