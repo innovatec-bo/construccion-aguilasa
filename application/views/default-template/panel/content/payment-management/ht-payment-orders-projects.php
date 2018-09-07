@@ -26,11 +26,22 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="6">Total</th>
-                <td>
-                    <span class="total-earned">0.00</span>
+                <th colspan="2">Total</th>
+                <td class="text-right">
+                    <span class="total-design">0.00</span>
                 </td>
-                <td></td>
+                <td class="text-right">
+                    <span class="total-transportation">0.00</span>
+                </td>
+                <td class="text-right">
+                    <span class="total-building">0.00</span>
+                </td>
+                <td class="text-right">
+                    <span class="total-live-line">0.00</span>
+                </td>
+                <td class="text-right">
+                    <span class="total-budget">0.00</span>
+                </td>
             </tr>
         </tfoot>
     </table>
@@ -38,7 +49,7 @@
 
 <script id="ht-payment-orders-projects-row" type="text/x-handlebars-template">
     <tr data-row-index="{{index}}" data-payment-order-project-id="{{payment_order_project}}">
-        <th scope="row"><span class="row-counter">#</span></th>
+        <th scope="row"><span class="row-counter">{{index}}</span></th>
         <td>
             <select class="form-control input-sm select2 project" data-select-index="{{index}}"></select>
         </td>

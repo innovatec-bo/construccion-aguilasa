@@ -28,8 +28,22 @@
                             <form role="form" method="post" name="user-add-form" data-parsley-validate>
                                 <div class="form-group">
                                     <label>Numero de orden</label>
-                                    <input class="form-control" required name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="8154651385">
+                                    <input class="form-control input-masked" required name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="" data-inputmask="'alias': 'integer'">
                                 </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Fecha de recepcion de numero de orden</label>
+                                <div class="input-group date date-time-picker">
+                                    <input name="entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+                                    <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                </div>
+                                <div id="error-entry-date"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -42,48 +56,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive" id="table-payment-orders-projects">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Proyecto</th>
-                                        <th>Importe diseño</th>
-                                        <th>Importe de transporte</th>
-                                        <th>Importe de construccion</th>
-                                        <th>Importe de linea viva</th>
-                                        <th class="text-center"><i class="fa fa-times"></i></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td><select class="form-control input-sm"><option>RA.8252.54</option></select></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe diseño" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe transporte" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe construccion" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe linea viva" value="500"></td>
-                                        <td class="text-center"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><select class="form-control input-sm"><option>RA.8252.55</option></select></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe diseño" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe transporte" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe construccion" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe linea viva" value="500"></td>
-                                        <td class="text-center"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><select class="form-control input-sm"><option>RA.8252.56</option></select></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe diseño" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe transporte" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe construccion" value="500"></td>
-                                        <td><input class="form-control input-sm" placeholder="Importe linea viva" value="500"></td>
-                                        <td class="text-center"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>

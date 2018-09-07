@@ -49,6 +49,8 @@ class PaymentManagement extends PrivateController
 
     public function createPaymentOrder()
     {
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("handlebars");

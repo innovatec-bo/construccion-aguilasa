@@ -114,6 +114,6 @@ class AjaxProject extends PrivateController
         $moreResults = ($page * $limit) < $recordsFiltered;
         $resultArray['list'] = $list;
         $resultArray['pagination'] = array("more" => $moreResults);
-        echo json_encode($resultArray);exit ;
+        echo json_encode($resultArray);exit;
     }
 }

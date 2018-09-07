@@ -4,7 +4,12 @@
 
 $(document).ready(function() {
     loadTable();
-
+    var date = new Date();
+    $('input[name=entry-date]').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'DD-MM-YYYY'
+    });
     $(".add-payment-order-project").on("click",function(e){
         e.preventDefault();
         var index = $("#project-list-content").children().length;
@@ -34,6 +39,7 @@ $(document).ready(function() {
             {
                 $row.remove();
                 evaluateVisibilityBtnRemove();
+                updateNumbering();
                 // deletePaymentOrderProject($row);
             }
         });
@@ -42,15 +48,25 @@ $(document).ready(function() {
     $(document).on("change",".select2.project",function(e){
         e.preventDefault();
         var projectId = $(this).val();
-        getOriginalBudgets(projectId);
+        var $row = $(this).closest("tr");
+        getOriginalBudgets(projectId, $row);
 
-        // $('#ajax-get-brands').val(null).trigger("change");
+    });
+    $(document).on("keyup","input[name=design-budget], input[name=transportation-budget], input[name=building-budget], input[name=live-line-budget]",function(){
+       updateTotalBudgets();
     });
 });
 
 function loadTable()
 {
-    var projectList = [1,2,3,4];
+    var data = {
+        index: 1,
+        design_budget:0,
+        transportation_budget:0,
+        building_budget:0,
+        live_line_budget:0
+    };
+    var projectList = [data];
     var teamHourlyRateRow = $("#ht-payment-orders-projects-row").html();
     Handlebars.registerPartial("ht-payment-orders-projects-row", teamHourlyRateRow);
     var htmlSource   = $("#ht-payment-orders-projects").html();
@@ -59,6 +75,7 @@ function loadTable()
     var html = template(data);
     $("#table-payment-orders-projects").html(html);
     startSelect2Projects();
+    evaluateVisibilityBtnRemove();
     $(".input-masked").inputmask();
 }
 
@@ -146,7 +163,7 @@ function formatRepo (response) {
     return html;
 }
 
-function getOriginalBudgets(projectId)
+function getOriginalBudgets(projectId, row)
 {
     $.ajax({
         url : base_url + 'panel/AjaxPaymentManagement/getOriginalBudgets',
@@ -155,6 +172,49 @@ function getOriginalBudgets(projectId)
         data : {projectId:projectId},
         success:function(response){
             console.log(response);
+            row.find("input[name=design-budget]").val(response.design);
+            row.find("input[name=transportation-budget]").val(response.transportation);
+            row.find("input[name=building-budget]").val(response.building);
+            row.find("input[name=live-line-budget]").val(response.liveLine);
+            updateTotalBudgets();
         }
     });
+}
+
+function updateNumbering()
+{
+    var objectivesNumber = $(".row-counter");
+    $.each(objectivesNumber,function(index, value){
+        $(value).text(index+1);
+    });
+}
+function updateTotalBudgets()
+{
+    var totalDesign = 0;
+    var totalTransportation = 0;
+    var totalBuilding = 0;
+    var totalLiveLine = 0;
+    var rows = $("tr[data-row-index]");
+
+    $.each(rows,function(index,value){
+        var designBudget = $(value).find("input[name=design-budget]").val().replace(",","");
+        totalDesign += parseFloat(designBudget);
+        var transportationBudget = $(value).find("input[name=transportation-budget]").val().replace(",","");
+        totalTransportation += parseFloat(transportationBudget);
+        var buildingBudget = $(value).find("input[name=building-budget]").val().replace(",","");
+        totalBuilding += parseFloat(buildingBudget);
+        var liveLineBudget = $(value).find("input[name=live-line-budget]").val().replace(",","");
+        totalLiveLine += parseFloat(liveLineBudget);
+    });
+    var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine;
+    console.log(totalDesign);
+    console.log(totalTransportation);
+    console.log(totalBuilding);
+    console.log(totalLiveLine);
+    console.log(totalBudget);
+    $("span.total-design").text(totalDesign.toFixed(2));
+    $("span.total-transportation").text(totalTransportation.toFixed(2));
+    $("span.total-building").text(totalBuilding.toFixed(2));
+    $("span.total-live-line").text(totalLiveLine.toFixed(2));
+    $("span.total-budget").text(totalBudget.toFixed(2));
 }
