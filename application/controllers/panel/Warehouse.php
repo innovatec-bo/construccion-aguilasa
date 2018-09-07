@@ -231,7 +231,7 @@ class Warehouse extends PrivateController
         $this->complementHandler->addProjectCss('warehouse.index', TRUE);
         $this->complementHandler->addProjectJs('warehouse.index', TRUE);
         $data["viewTitle"] = "Materiales devueltos a CRE";
-        $data["status"] = 20;
+        $data["status"] = "26";
         $data["statusSet"] = "warehouse";
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);

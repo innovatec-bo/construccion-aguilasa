@@ -87,6 +87,33 @@ class AjaxProject extends PrivateController
         {
 
         }
+    }
 
+    public function select2ProjectsThatReturnedMaterials()
+    {
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $offset = ($page-1)*$limit;
+        $projects = Model_project::searchProject("39","",$term, $limit, $offset, 'code_pro', 'asc', array('code_pro'));
+        $recordsFiltered = Model_project::searchTotalCount("39","",$term, array('code_pro'));
+
+        $resultArray = array();
+        $list = array();
+
+        foreach ($projects as $project)
+        {
+            $list[] = array(
+                "id" => $project->id_pro,
+                "text" => $project->code_pro,
+                "responsible" => $project->responsible,
+                "points" => $project->points_pro,
+                "distance" => $project->distance_pro
+            );
+        }
+        $moreResults = ($page * $limit) < $recordsFiltered;
+        $resultArray['list'] = $list;
+        $resultArray['pagination'] = array("more" => $moreResults);
+        echo json_encode($resultArray);exit ;
     }
 }

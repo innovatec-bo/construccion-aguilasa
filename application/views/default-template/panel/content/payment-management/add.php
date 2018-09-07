@@ -24,7 +24,7 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-2">
                             <form role="form" method="post" name="user-add-form" data-parsley-validate>
                                 <div class="form-group">
                                     <label>Numero de orden</label>
@@ -35,13 +35,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary">Agregar proyecto</button>
+                                <button type="button" class="btn btn-primary add-payment-order-project"><i class="fa fa-plus"></i> Incluir proyecto</button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="table-payment-orders-projects">
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -97,3 +97,7 @@
     <!-- /.row -->
 </div>
 <!-- /.container-fluid -->
+<?php
+$this->load->view("default-template/panel/content/payment-management/ht-payment-orders-projects");
+$this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
+?>

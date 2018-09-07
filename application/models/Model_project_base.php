@@ -382,10 +382,11 @@ class Model_project_base extends MY_Model
     }
 
     /**
-     * @param $statusId
+     * @param string $statusId
+     * @param string $userId
      * @param $text
      * @param $limit
-     * @param null $offset
+     * @param $offset
      * @param null $orderBy
      * @param string $orderType
      * @param null $colsArray
@@ -408,6 +409,13 @@ class Model_project_base extends MY_Model
         return $result;
     }
 
+    /**
+     * @param string $statusId
+     * @param string $userId
+     * @param string $text
+     * @param null $colsArray
+     * @return mixed
+     */
     public static function searchTotalCount($statusId = "", $userId = "", $text = "", $colsArray = null)
     {
         $ci = &get_instance();
