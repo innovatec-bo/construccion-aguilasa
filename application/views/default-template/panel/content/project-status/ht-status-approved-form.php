@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="row form-inline">
                                     <div class="col-md-6">
-                                        <label>Importe</label><br>
+                                        <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>
                                         <div class="form-group">
                                             <em>Diseño</em><br>
                                             <input class="form-control input-masked" value="{{previousEntry.design_prb}}" name="design-budget" placeholder="Diseño" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
@@ -49,6 +49,10 @@
                                         <div class="form-group">
                                             <em>Linea viva</em><br>
                                             <input class="form-control input-masked" value="{{previousEntry.live_line_prb}}" name="live-line-budget" placeholder="Linea viva" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                        </div>
+                                        <div class="form-group">
+                                            <em>Derecho de via</em><br>
+                                            <input class="form-control input-masked" value="{{previousEntry.right_of_way_prb}}" name="right-of-way-budget" placeholder="Derecho de via" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                     </div>
                                 </div>

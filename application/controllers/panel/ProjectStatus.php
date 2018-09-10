@@ -368,36 +368,4 @@ class ProjectStatus extends PrivateController
             echo json_encode($response);exit;
         }
     }
-
-    public function saveApproved_deprecated()
-    {
-        $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $design = $formData["design"];
-        $building = $formData["building"];
-        $graphNumber = $formData["graphNumber"];
-        $reservationNumber = $formData["reservationNumber"];
-        $transportation = $formData["transportation"];
-        $liveLine = $formData["liveLine"];
-        $responsibleList = $formData["responsibleList"];
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $statusId, $statusDetail, $entryDate, $responsibleList);
-        $wareHouse = Model_warehouse::getByProjectId($project->getId());
-        if(!$wareHouse instanceof  Model_warehouse)
-        {
-            $project->startWarehouseProcess();
-        }
-
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
-        echo json_encode($response);exit;
-    }
 }

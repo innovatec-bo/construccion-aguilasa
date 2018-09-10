@@ -384,11 +384,13 @@ class AjaxProjectStatus extends PrivateController
         $transportation = str_replace(",","",$transportation);
         $liveLine = $formData["liveLine"];
         $liveLine = str_replace(",","",$liveLine);
+        $rightOfWay = $formData["rightOfWay"];
+        $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
@@ -414,7 +416,7 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveBudget($design, 0, 0, 0,$statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, 0, 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

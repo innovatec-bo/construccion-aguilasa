@@ -184,6 +184,10 @@ $(document).ready(function() {
         e.preventDefault();
 
     });
+
+    $(document).on("keyup","input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function(){
+       updateTotalOnApprovedForm();
+    });
 });
 
 function getStakesLeaderProjects()
@@ -499,6 +503,7 @@ function saveApproved(statusId,statusKeyword)
     var reservationNumber = $("input[name=reservation-number-budget]").val();
     var transportation = $("input[name=transportation-budget]").val();
     var liveLine = $("input[name=live-line-budget]").val();
+    var rightOfWay = $("input[name=right-of-way-budget]").val();
     var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
     var digitization = {
         projectId: projectId,
@@ -510,6 +515,7 @@ function saveApproved(statusId,statusKeyword)
         reservationNumber: reservationNumber,
         transportation:transportation,
         liveLine:liveLine,
+        rightOfWay:rightOfWay,
         statusDetail: statusDetail,
         responsibleList:responsibleList
     };
@@ -524,6 +530,25 @@ function saveApproved(statusId,statusKeyword)
             getProjectLog();
         }
     });
+}
+function updateTotalOnApprovedForm()
+{
+    if($("#total-project-amount").length == 1)
+    {
+        var design = parseFloat($("input[name=design-budget]").val().replace(",",""));
+        design = isNaN(design)?0:design;
+        var building = parseFloat($("input[name=building-budget]").val().replace(",",""));
+        building = isNaN(building)?0:building;
+        var transportation = parseFloat($("input[name=transportation-budget]").val().replace(",",""));
+        transportation = isNaN(transportation)?0:transportation;
+        var liveLine = parseFloat($("input[name=live-line-budget]").val().replace(",",""));
+        liveLine = isNaN(liveLine)?0:liveLine;
+        var rightOfWay = parseFloat($("input[name=right-of-way-budget]").val().replace(",",""));
+        rightOfWay = isNaN(rightOfWay)?0:rightOfWay;
+        var total = design + building + transportation + liveLine + rightOfWay;
+        total = total.toFixed(2);
+        $("#total-project-amount").text(total);
+    }
 }
 
 function saveCanceled(statusId,statusKeyword)
@@ -680,6 +705,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     allowClear: true
                 });
                 $(".input-masked").inputmask();
+                updateTotalOnApprovedForm();
             }
             else
             {
