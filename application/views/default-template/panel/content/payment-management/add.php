@@ -22,14 +22,13 @@
                     Agregue la informacion de la orden de pago
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body" id="payment-order-form-content">
                     <div class="row">
                         <div class="col-lg-2">
-                            <form role="form" method="post" name="user-add-form" data-parsley-validate>
-                                <div class="form-group">
-                                    <label>Numero de orden</label>
-                                    <input class="form-control input-masked" required name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="" data-inputmask="'alias': 'integer'">
-                                </div>
+                            <div class="form-group">
+                                <label>Numero de orden</label>
+                                <input class="form-control input-masked" required name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="" data-inputmask="'alias': 'integer'">
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -46,6 +45,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <textarea class="form-control" name="detail" rows="2" placeholder=""></textarea>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -56,6 +59,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive" id="table-payment-orders-projects">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary save-payment-order-project">Guardar</button>
                             </div>
                         </div>
                     </div>

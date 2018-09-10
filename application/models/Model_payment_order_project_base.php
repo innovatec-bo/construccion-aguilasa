@@ -14,12 +14,22 @@ class Model_payment_order_project_base extends MY_Model
 
     protected $_orderId;
     protected $_projectId;
+    protected $_designBudget;
+    protected $_transportationBudget;
+    protected $_buildingBudget;
+    protected $_liveLineBudget;
+    protected $_rightOfWayBudget;
 
-    public function __construct($orderId = NULL, $projectId = NULL)
+    public function __construct($orderId = NULL, $projectId = NULL, $designBudget = 0, $transportationBudget = 0, $buildingBudget = 0, $liveLineBudget = 0, $rightOfWayBudget = 0)
     {
         parent::__construct();
         $this->_orderId = $orderId;
         $this->_projectId = $projectId;
+        $this->_designBudget = $designBudget;
+        $this->_transportationBudget = $transportationBudget;
+        $this->_buildingBudget = $buildingBudget;
+        $this->_liveLineBudget = $liveLineBudget;
+        $this->_rightOfWayBudget = $rightOfWayBudget;
     }
 
     /**
@@ -32,7 +42,11 @@ class Model_payment_order_project_base extends MY_Model
             "id_pop" => $this->_id,
             "order_id_pop" => $this->_orderId,
             "project_id_pop" => $this->_projectId,
-            "deleted_pop" => $this->_deleted,
+            "design_budget_pop" => $this->_designBudget,
+            "transportation_budget_pop" => $this->_transportationBudget,
+            "building_budget_pop" => $this->_buildingBudget,
+            "live_line_budget_pop" => $this->_liveLineBudget,
+            "right_of_way_budget_pop" => $this->_rightOfWayBudget,
             "createdon_pop" => $this->_createdOn,
             "createdby_pop" => $this->_createdBy,
             "editedon_pop" => $this->_editedOn,
@@ -57,7 +71,12 @@ class Model_payment_order_project_base extends MY_Model
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
                 $object->order_id_pop,
-                $object->project_id_pop
+                $object->project_id_pop,
+                $object->design_budget_pop,
+                $object->transportation_budget_pop,
+                $object->building_budget_pop,
+                $object->live_line_budget_pop,
+                $object->right_of_way_budget_pop
             );
             $instance->_id = $object->id_pop;
 

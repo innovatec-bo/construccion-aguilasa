@@ -15,13 +15,17 @@ class Model_payment_order_base extends MY_Model
     protected $_orderNumber;
     protected $_status;
     protected $_invoiceNumber;
+    protected $_entryDate;
+    protected $_detail;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL)
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "")
     {
         parent::__construct();
         $this->_orderNumber = $orderNumber;
         $this->_status = $status;
         $this->_invoiceNumber = $invoiceNumber;
+        $this->_entryDate = $entryDate;
+        $this->_detail = $detail;
     }
 
     /**
@@ -35,6 +39,8 @@ class Model_payment_order_base extends MY_Model
             "order_number_pao" => $this->_orderNumber,
             "status_pao" => $this->_status,
             "invoice_number_pao" => $this->_invoiceNumber,
+            "entry_date_pao" => $this->_entryDate,
+            "detail_pao" => $this->_detail,
             "deleted_pao" => $this->_deleted,
             "createdon_pao" => $this->_createdOn,
             "createdby_pao" => $this->_createdBy,
@@ -61,7 +67,9 @@ class Model_payment_order_base extends MY_Model
             $instance = new $className(
                 $object->order_number_pao,
                 $object->status_pao,
-                $object->invoice_number_pao
+                $object->invoice_number_pao,
+                $object->entry_date_pao,
+                $object->detail_pao
             );
             $instance->_id = $object->id_pao;
 

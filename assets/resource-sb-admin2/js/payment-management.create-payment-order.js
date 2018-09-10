@@ -55,6 +55,10 @@ $(document).ready(function() {
     $(document).on("keyup","input[name=design-budget], input[name=transportation-budget], input[name=building-budget], input[name=live-line-budget]",function(){
        updateTotalBudgets();
     });
+
+    $(document).on("click",".save-payment-order-project",function(){
+
+    });
 });
 
 function loadTable()
@@ -217,4 +221,70 @@ function updateTotalBudgets()
     $("span.total-building").text(totalBuilding.toFixed(2));
     $("span.total-live-line").text(totalLiveLine.toFixed(2));
     $("span.total-budget").text(totalBudget.toFixed(2));
+}
+
+function savePaymentOrder()
+{
+    var $formContent = $("#payment-order-form-content");
+    var projectList = $("#project-list-content").children();
+    var projectArrayObject = [];
+    var paymentOrderProjects = {};
+    var data = {
+        orderNumber: $("input[name=order-number]").val(),
+        entryDate: $("input[name=entry-date]").val(),
+        detail: $("input[name=detail]").val()
+    };
+    $.each(projectList,function(index, value){
+        var $row = $(value);
+        paymentOrderProjects = {
+            index:index+1,
+            paymentOrderId: $row.data("payment-order-project-id"),
+            projectId: $row.find("select.project").val(),
+            designBudget: $row.find("input[name=design-budget]").val(),
+            transportationBudget: $row.find("input[name=transportation-budget]").val(),
+            buildingBudget: $row.find("input[name=building-budget]").val(),
+            liveLineBudget: $row.find("input[name=live-line-budget]").val(),
+            rightOfWayBudget: $row.find("input[name=right-of-way-budget]").val() || 0
+        };
+        projectArrayObject.push(paymentOrderProjects);
+    });
+    data.projectList = projectArrayObject;
+    console.log(data);
+    blockArea($formContent);
+    // $.ajax({
+    //     url : base_url + 'panel/AjaxPaymentManagement/savePaymentOrder',
+    //     type : "POST",
+    //     dataType  :"json",
+    //     data : data,
+    //     success:function(response){
+    //         console.log(response);
+    //         if(response.success == 1)
+    //         {
+    //             loadTable();
+    //             swal({ html:true, title:'Good job', text:response.message,type:"success"});
+    //         }
+    //         else
+    //         {
+    //             swal({ html:true, title:'Something went wrong!', text:response.message,type:"error"});
+    //         }
+    //         $formContent.unblock();
+    //     }
+    // });
+}
+
+function blockArea(content)
+{
+    content.block({
+        message: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>',
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8,
+            cursor: 'wait'
+        },
+        css: {
+            border: 0,
+            padding: 0,
+            backgroundColor: 'transparent'
+        }
+    });
 }

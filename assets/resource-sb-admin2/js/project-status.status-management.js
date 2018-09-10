@@ -188,6 +188,7 @@ $(document).ready(function() {
     $(document).on("keyup","input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function(){
        updateTotalOnApprovedForm();
     });
+
 });
 
 function getStakesLeaderProjects()

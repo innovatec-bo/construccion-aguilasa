@@ -129,4 +129,34 @@ class AjaxPaymentManagement extends PrivateController
         }
         echo json_encode($response);exit;
     }
+
+    public function savePaymentOrder()
+    {
+        $this->load->library('form_validation');
+        /** server validations */
+        $this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric');
+        $this->form_validation->set_rules('entryDate', 'Fecha de reception de Nro de orden', 'trim|required');
+        $this->form_validation->set_rules('detail', 'Detalle', 'trim');
+        $this->form_validation->set_rules('projectList', 'Lista de proyectos', 'trim|callback_validate_|callback_validate_team_percentage|callback_validate_hourly_total_amount');
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $validationErrors = validation_errors();
+            $validationErrors = str_replace("<p>","",$validationErrors);
+            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $response = array("success" => 0, "message" => $validationErrors);
+        }
+        else
+        {
+            $formData = $this->input->post();
+            $orderNumber = $formData["orderNumber"];
+            $entryDate = $formData["entryDate"];
+            $detail = $formData["detail"];
+            $paymentOrder = new Model_payment_order($orderNumber, 1, NULL, $entryDate, $detail);
+            $paymentOrder->save();
+            $paymentOrder->saveProjects($formData["projectList"]);
+            $response = array("success" => 1, "message" => "Team definition saved successfully!");
+        }
+        echo json_encode($response);exit;
+    }
 }

@@ -223,5 +223,17 @@ class MY_Model
     {
         return static::DELETE_FIELD.static::ATTRIB_SUFIX." != 1 ";
     }
+    public static function updateBatch($list = array())
+    {
+        $ci=&get_instance();
+        $ci->load->database();
+        $ci->db->update_batch(static::TABLE_NAME, $list, static::TABLE_ID);
+    }
 
+    public static function insertBatch($list = array())
+    {
+        $ci=&get_instance();
+        $ci->load->database();
+        $ci->db->insert_batch(static::TABLE_NAME, $list);
+    }
 }
