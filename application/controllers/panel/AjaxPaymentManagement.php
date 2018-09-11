@@ -137,7 +137,7 @@ class AjaxPaymentManagement extends PrivateController
         $this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric');
         $this->form_validation->set_rules('entryDate', 'Fecha de reception de Nro de orden', 'trim|required');
         $this->form_validation->set_rules('detail', 'Detalle', 'trim');
-        $this->form_validation->set_rules('projectList', 'Lista de proyectos', 'trim|callback_validate_|callback_validate_team_percentage|callback_validate_hourly_total_amount');
+        $this->form_validation->set_rules('projectList', 'Lista de proyectos', 'callback_validate_project_list');
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -151,12 +151,45 @@ class AjaxPaymentManagement extends PrivateController
             $formData = $this->input->post();
             $orderNumber = $formData["orderNumber"];
             $entryDate = $formData["entryDate"];
+            $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d');
+            $entryDate = $entryDate." ".date("H:i:s");
             $detail = $formData["detail"];
             $paymentOrder = new Model_payment_order($orderNumber, 1, NULL, $entryDate, $detail);
             $paymentOrder->save();
             $paymentOrder->saveProjects($formData["projectList"]);
-            $response = array("success" => 1, "message" => "Team definition saved successfully!");
+            $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
         }
         echo json_encode($response);exit;
+    }
+
+    public function validate_project_list()
+    {
+        $formData = $this->input->post();
+        $projectArrayList = $formData["projectList"];
+        $projectIds = array_column($projectArrayList, "projectId");
+        $projectObjectList = Model_project::getAllInArrayIds($projectIds, 200,0);
+        $response = TRUE;
+        $notReadyToRealBudgets = "";
+        foreach ($projectObjectList as $project)
+        {
+            $projectStatus = $project->getStatus();
+            if($projectStatus != 39)
+            {
+                $notReadyToRealBudgets .= $project->getCode().", ";
+            }
+        }
+        $notReadyToRealBudgets = substr($notReadyToRealBudgets, 0, -2);
+        if(count($projectObjectList) <= 0)
+        {
+            $this->form_validation->set_message('validate_project_list', 'Se envio una lista vacia de proyectos');
+            $response = FALSE;
+        }
+        elseif ($notReadyToRealBudgets != "")
+        {
+            $this->form_validation->set_message('validate_project_list', 'Estos proyecto no estan en estado de "Materiales devueltos a CRE" ('.$notReadyToRealBudgets.')');
+            $response = FALSE;
+        }
+        return $response;
     }
 }

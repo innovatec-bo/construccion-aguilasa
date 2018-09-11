@@ -236,4 +236,30 @@ class MY_Model
         $ci->load->database();
         $ci->db->insert_batch(static::TABLE_NAME, $list);
     }
+
+    public static function getAllInArrayIds($arrayIds = array(), $limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $listIds = "";
+        foreach ($arrayIds as $id)
+        {
+            $listIds .= $ci->db->escape($id).", ";
+        }
+
+        $listIds = substr($listIds, 0, -2);
+
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+
+
+        $sql = 'select '.static::TABLE_NAME.'.* from ' . static::TABLE_NAME . ' where '.static::TABLE_ID.' in ('.$listIds.') and '.static::notDeleted().'             
+                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
 }

@@ -13,6 +13,10 @@ class Model_status_log_responsible extends Model_status_log_responsible_base
         parent::__construct($statusLogId, $responsibleId);
     }
 
+    /**
+     * @param $statusLogId
+     * @param $responsibleList array ids referenced to status responsible
+     */
     public static function addResponsible($statusLogId, $responsibleList)
     {
         $ci = &get_instance();

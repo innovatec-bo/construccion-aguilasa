@@ -188,6 +188,11 @@ class Model_project_base extends MY_Model
     {
         return $this->_projectCode;
     }
+
+    public function getStatus()
+    {
+        return $this->_status;
+    }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
     /**

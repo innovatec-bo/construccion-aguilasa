@@ -58,7 +58,6 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('payment-management.create-payment-order', TRUE);
         $this->complementHandler->addProjectJs('payment-management.create-payment-order', TRUE);
-
         $this->_validateFeature('payment_management_add');
         $this->_loadPanelView("payment-management/add");
     }

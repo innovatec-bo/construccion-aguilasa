@@ -57,7 +57,7 @@ $(document).ready(function() {
     });
 
     $(document).on("click",".save-payment-order-project",function(){
-
+        savePaymentOrder();
     });
 });
 
@@ -175,7 +175,6 @@ function getOriginalBudgets(projectId, row)
         dataType  :"json",
         data : {projectId:projectId},
         success:function(response){
-            console.log(response);
             row.find("input[name=design-budget]").val(response.design);
             row.find("input[name=transportation-budget]").val(response.transportation);
             row.find("input[name=building-budget]").val(response.building);
@@ -211,11 +210,6 @@ function updateTotalBudgets()
         totalLiveLine += parseFloat(liveLineBudget);
     });
     var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine;
-    console.log(totalDesign);
-    console.log(totalTransportation);
-    console.log(totalBuilding);
-    console.log(totalLiveLine);
-    console.log(totalBudget);
     $("span.total-design").text(totalDesign.toFixed(2));
     $("span.total-transportation").text(totalTransportation.toFixed(2));
     $("span.total-building").text(totalBuilding.toFixed(2));
@@ -232,10 +226,11 @@ function savePaymentOrder()
     var data = {
         orderNumber: $("input[name=order-number]").val(),
         entryDate: $("input[name=entry-date]").val(),
-        detail: $("input[name=detail]").val()
+        detail: $("textarea[name=detail]").val()
     };
     $.each(projectList,function(index, value){
         var $row = $(value);
+        //TODO: include detail
         paymentOrderProjects = {
             index:index+1,
             paymentOrderId: $row.data("payment-order-project-id"),
@@ -249,27 +244,33 @@ function savePaymentOrder()
         projectArrayObject.push(paymentOrderProjects);
     });
     data.projectList = projectArrayObject;
-    console.log(data);
+
     blockArea($formContent);
-    // $.ajax({
-    //     url : base_url + 'panel/AjaxPaymentManagement/savePaymentOrder',
-    //     type : "POST",
-    //     dataType  :"json",
-    //     data : data,
-    //     success:function(response){
-    //         console.log(response);
-    //         if(response.success == 1)
-    //         {
-    //             loadTable();
-    //             swal({ html:true, title:'Good job', text:response.message,type:"success"});
-    //         }
-    //         else
-    //         {
-    //             swal({ html:true, title:'Something went wrong!', text:response.message,type:"error"});
-    //         }
-    //         $formContent.unblock();
-    //     }
-    // });
+    $.ajax({
+        url : base_url + 'panel/AjaxPaymentManagement/savePaymentOrder',
+        type : "POST",
+        dataType  :"json",
+        data : data,
+        success:function(response){
+            $formContent.unblock();
+            console.log(response);
+            // if(response.success == 1)
+            // {
+            //     loadTable();
+            //     bootbox.alert({
+            //         title: "",
+            //         message: "This is the small alert!",
+            //         size: 'small'
+            //     });
+            //     swal({ html:true, title:'Good job', text:response.message,type:"success"});
+            // }
+            // else
+            // {
+            //     swal({ html:true, title:'Something went wrong!', text:response.message,type:"error"});
+            // }
+
+        }
+    });
 }
 
 function blockArea(content)
