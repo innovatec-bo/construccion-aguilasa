@@ -16,6 +16,7 @@
                 <th>Importe de transporte</th>
                 <th>Importe de construccion</th>
                 <th>Importe de linea viva</th>
+                <th>Importe de Derecho de via</th>
                 <th class="text-center"><i class="fa fa-times"></i></th>
             </tr>
         </thead>
@@ -38,6 +39,9 @@
                 </td>
                 <td class="text-right">
                     <span class="total-live-line">0.00</span>
+                </td>
+                <td class="text-right">
+                    <span class="total-right-of-way">0.00</span>
                 </td>
                 <td class="text-right">
                     <span class="total-budget">0.00</span>
@@ -64,6 +68,9 @@
         </td>
         <td>
             <input type="text" size="6" name="live-line-budget" class="form-control input-sm input-masked" placeholder="0.00" value="{{live_line_budget}}"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+        </td>
+        <td>
+            <input type="text" size="6" name="right-of-way-budget" class="form-control input-sm input-masked" placeholder="0.00" value="{{right_of_way_budget}}"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
         </td>
         <td class="text-center">
             <button type="button" class="btn btn-danger btn-sm remove-payment-order-project"><i class="fa fa-times"></i></button>

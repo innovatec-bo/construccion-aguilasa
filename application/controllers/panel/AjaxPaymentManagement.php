@@ -126,6 +126,7 @@ class AjaxPaymentManagement extends PrivateController
             $response["transportation"] = $originalBudgets[0]["transportation_prb"];
             $response["building"] = $originalBudgets[0]["building_prb"];
             $response["liveLine"] = $originalBudgets[0]["live_line_prb"];
+            $response["rightOfWay"] = $originalBudgets[0]["right_of_way_prb"];
         }
         echo json_encode($response);exit;
     }

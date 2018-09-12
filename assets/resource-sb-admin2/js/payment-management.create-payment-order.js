@@ -52,7 +52,7 @@ $(document).ready(function() {
         getOriginalBudgets(projectId, $row);
 
     });
-    $(document).on("keyup","input[name=design-budget], input[name=transportation-budget], input[name=building-budget], input[name=live-line-budget]",function(){
+    $(document).on("keyup","input[name=design-budget], input[name=transportation-budget], input[name=building-budget], input[name=live-line-budget], input[name=right-of-way-budget]",function(){
        updateTotalBudgets();
     });
 
@@ -179,6 +179,7 @@ function getOriginalBudgets(projectId, row)
             row.find("input[name=transportation-budget]").val(response.transportation);
             row.find("input[name=building-budget]").val(response.building);
             row.find("input[name=live-line-budget]").val(response.liveLine);
+            row.find("input[name=right-of-way-budget]").val(response.rightOfWay);
             updateTotalBudgets();
         }
     });
@@ -197,6 +198,7 @@ function updateTotalBudgets()
     var totalTransportation = 0;
     var totalBuilding = 0;
     var totalLiveLine = 0;
+    var totalRightOfWayBudget = 0;
     var rows = $("tr[data-row-index]");
 
     $.each(rows,function(index,value){
@@ -208,12 +210,15 @@ function updateTotalBudgets()
         totalBuilding += parseFloat(buildingBudget);
         var liveLineBudget = $(value).find("input[name=live-line-budget]").val().replace(",","");
         totalLiveLine += parseFloat(liveLineBudget);
+        var rightOfWayBudget = $(value).find("input[name=right-of-way-budget]").val().replace(",","");
+        totalRightOfWayBudget += parseFloat(rightOfWayBudget);
     });
-    var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine;
+    var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine + totalRightOfWayBudget;
     $("span.total-design").text(totalDesign.toFixed(2));
     $("span.total-transportation").text(totalTransportation.toFixed(2));
     $("span.total-building").text(totalBuilding.toFixed(2));
     $("span.total-live-line").text(totalLiveLine.toFixed(2));
+    $("span.total-right-of-way").text(totalRightOfWayBudget.toFixed(2));
     $("span.total-budget").text(totalBudget.toFixed(2));
 }
 
