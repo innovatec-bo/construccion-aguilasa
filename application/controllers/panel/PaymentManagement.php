@@ -30,12 +30,11 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
-        $this->complementHandler->addProjectCss('project.index', TRUE);
-        $this->complementHandler->addProjectJs('project.index', TRUE);
-        $data["viewTitle"] = "Listos para iniciar la construccion";
-        $data["status"] = "21";
-        $data["statusSet"] = "building";
-        $data["projectSystems"] = $this->_projectSystems;
+        $this->complementHandler->addProjectCss('payment-management.index', TRUE);
+        $this->complementHandler->addProjectJs('payment-management.index', TRUE);
+        $data["viewTitle"] = "Todas las ordenes de pago";
+        $data["status"] = "";
+        $data["statusSet"] = "payment_management";
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -62,13 +61,37 @@ class PaymentManagement extends PrivateController
         $this->_loadPanelView("payment-management/add");
     }
 
-    public function sendInvoiceToCRE($orderId)
+    public function statusManagement($statusSet = "", $orderId = NULL)
     {
-        $this->_validateFeature('payment_management_send_invoice_to_cre');
-    }
+        $this->_validateFeature('payment_status_management');
+        $paymentOrder = $this->_validateObjectToEdit($orderId,"Model_payment_order","panel/PaymentManagement");
+        $paymentOrder= $paymentOrder->toArray();
+//        $keywordList = $this->_validateStatusSet($statusSet, $paymentOrder);
+        $keywordList = array("payment_order_registered", "payment_order_invoice_sent", "payment_order_has_been_settled");
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("handlebars");
+        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+        $this->complementHandler->addProjectCss('payment-management.status-management',TRUE);
+        $this->complementHandler->addProjectJs('payment-management.status-management',TRUE);
+        $this->complementHandler->addProjectCss('project.status-management.wizardv2');
+        $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
-    public function confirmPaymentSettled($orderId)
-    {
-        $this->_validateFeature('payment_management_confirm_payment_settled');
+        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $data["paymentOrder"] = $paymentOrder;
+        $data["statusList"] = $statusList;
+        $data["projectSystems"] = $this->_projectSystems;
+        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $data["responsibleList"] = json_encode($responsibleList);
+        $data["statusSet"] = $statusSet;
+        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+        $data["projectLog"] = $projectLog;
+        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+        $this->_loadPanelView("project-status/status-management", $data);
     }
 }
