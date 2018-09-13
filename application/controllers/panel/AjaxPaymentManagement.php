@@ -17,20 +17,20 @@ class AjaxPaymentManagement extends PrivateController
             redirect('404');
         }
     }
-    //TODO: needs to be implemented!
+
     public function ajaxDtAllPaymentOrders()
     {
         $dt = new JqdtHandler($this->input->post());
-        $recordsTotal = Model_role::countAll();
+        $recordsTotal = Model_payment_order::countAll();
         $recordsFiltered = $recordsTotal;
         if (!$dt->hasSearchValue())
         {
-            $resultArray = Model_role::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+            $resultArray = Model_payment_order::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
         }
         else
         {
-            $resultArray = Model_role::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs());
-            $recordsFiltered = Model_role::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs());
+            $resultArray = Model_payment_order::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs());
+            $recordsFiltered = Model_payment_order::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs());
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
@@ -156,7 +156,7 @@ class AjaxPaymentManagement extends PrivateController
             $entryDate = date_format($entryDate, 'Y-m-d');
             $entryDate = $entryDate." ".date("H:i:s");
             $detail = $formData["detail"];
-            $paymentOrder = new Model_payment_order($orderNumber, 1, NULL, $entryDate, $detail);
+            $paymentOrder = new Model_payment_order($orderNumber, 42, NULL, $entryDate, $detail);
             $paymentOrder->save();
             $paymentOrder->saveProjects($formData["projectList"]);
             $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
@@ -192,5 +192,17 @@ class AjaxPaymentManagement extends PrivateController
             $response = FALSE;
         }
         return $response;
+    }
+
+    //TODO: evaluate this method for payment management
+    public function verifyPreviousEntry()
+    {
+        $formData = $this->input->post();
+        $orderId = $formData["orderId"];
+        $statusKeyword = $formData["statusKeyword"];
+        $order = Model_warehouse::getById($orderId);
+        $previousEntry = Model_warehouse_status_log::getLogByWarehouseIdAndStatusKeyWord($orderId, $statusKeyword);
+        $response["previousEntry"] = $previousEntry;
+        echo json_encode($response);exit;
     }
 }

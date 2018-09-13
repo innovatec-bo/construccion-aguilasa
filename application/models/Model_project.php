@@ -197,4 +197,26 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getAllByPaymentOrderId($orderId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = '
+        SELECT
+            wfl_projects.*
+        FROM
+            wfl_projects
+        left JOIN wfl_payment_orders_projects on project_id_pop = id_pro
+        WHERE
+        deleted_pop != 1
+        and deleted_pro != 1
+        and order_id_pop = '.$ci->db->escape($orderId).'
+        ';
+
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
+
 }

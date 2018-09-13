@@ -20,7 +20,7 @@ $(document).ready(function() {
         "processing" : true,
         "serverSide" : true,
         "ajax" : {
-            url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
+            url : base_url + 'panel/AjaxPaymentManagement/ajaxDtAllPaymentOrders',
             type : 'POST',
             data:function ( data ) {
                 data.additionalParameters = additionalParameter.getList();
@@ -69,31 +69,14 @@ $(document).ready(function() {
                 return result;
             }
         }, {
+            "data" : "detail_pao"
+        }, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var currentStatusSet = $("input[name=status-set]").val();
-                var html = '';
-                if(currentStatusSet != "")
-                {
-                    if(statusSet[row.status_pro] == "warehouse")
-                    {
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Warehouse/statusManagement/'+row.id_war+'" title="" data-original-title="ALMACEN"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                    }
-                    else
-                    {
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
-                    }
-
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                    html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
-                }
-                else
-                {
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro+'" title="" data-original-title="ASIGNAR PROYECTO"  data-toggle="tooltip" data-placement="top"><i class="fa fa-th-list"></i></a> ';
-                }
-                html = '';
+                var html = ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/PaymentManagement/statusManagement/'+row.id_pao+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                 return html;
             }
         }],

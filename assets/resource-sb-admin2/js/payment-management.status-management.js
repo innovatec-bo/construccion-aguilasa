@@ -3,7 +3,8 @@
  */
 $(document).ready(function() {
     var status = $("ul.wizard li.active a").prop("id");
-    getProjectLog();
+    //TODO: this could be the management payment log
+    // getProjectLog();
     loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if(!$(this).parent().hasClass("disabled"))
@@ -19,10 +20,6 @@ $(document).ready(function() {
         e.preventDefault();
         $("ul.wizard li.active").next().find("a").trigger("click");
     });
-    $(document).on("click", ".check-stakes-team",function(e){
-        e.preventDefault();
-        getStakesLeaderProjects();
-    });
 
     $(document).on("click",".save-status",function(e){
         e.preventDefault();
@@ -37,54 +34,9 @@ $(document).ready(function() {
             blockArea($content);
             switch(statusKeyword)
             {
-                case "rd_stakes":
-                case "stakes":
-                    saveStakesTeam(statusId,statusKeyword);
-                    break;
-                case "returned":
-                    saveReturned(statusId,statusKeyword);
-                    break;
-                case "ri_digitization":
-                case "rd_digitization":
-                case "digitization":
-                    saveDigitization(statusId,statusKeyword,$button);
-                    break;
-                case "ri_drawing":
-                case "rd_drawing":
-                case "drawing":
-                    saveDrawing(statusId,statusKeyword,$button);
-                    break;
-                case "schedule":
-                    saveSchedule(statusId,statusKeyword);
-                    break;
-                case "already_sent":
-                    saveAlreadySent(statusId,statusKeyword);
-                    break;
-                case "rectify_design":
-                    saveRectifyDesign(statusId,statusKeyword);
-                    break;
-                case "rectify_illustration":
-                    saveRectifyIllustration(statusId,statusKeyword);
-                    break;
-                case "approved":
-                    saveApproved(statusId,statusKeyword);
-                    break;
-                case "canceled":
-                    saveCanceled(statusId,statusKeyword);
-                    break;
-                case "in_progress":
-                case "paused":
-                case "stopped":
-                case "completed":
-                case "as_built":
-                case "conciliation_reception":
-                case "conciliation_shipment":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "cre_return_order":
-                    saveCreReturnOrder(statusId,statusKeyword);
-                    break;
-                case "project_return_materials":
+                case "payment_order_registered":
+                case "payment_order_invoice_sent":
+                case "payment_order_has_been_settled":
                     saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
@@ -191,182 +143,6 @@ $(document).ready(function() {
 
 });
 
-function getStakesLeaderProjects()
-{
-    $.ajax({
-        url : base_url + 'panel/AjaxProject/getStakesLeaderProjects',
-        dataType  :"json",
-        type : "POST",
-        success:function(response){
-            var stakesProject = [];
-
-            $.each(response,function(index,value){
-                stakesProject.push(value);
-            });
-            var partial = $("#ht-stakes-project-item").html();
-            Handlebars.registerPartial("ht-stakes-project-item", partial);
-
-            var htmlSource   = $("#ht-stakes-project").html();
-            var template = Handlebars.compile(htmlSource);
-            var data = {stakesProject: stakesProject};
-            var html = template(data);
-            // $(".status-content").html(html);
-            bootbox.alert({
-                title:"Equipos y Proyectos",
-                message:html
-            });
-            $('[data-toggle="tooltip"]').tooltip();
-        }
-    });
-}
-
-function saveStakesTeam(statusId, statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-team-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var stakes = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList: responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveStakesTeam',
-        dataType  :"json",
-        type : "POST",
-        data : stakes,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function saveReturned(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var dataToSend = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveReturned',
-        dataType  :"json",
-        type : "POST",
-        data : dataToSend,
-        success:function(response){
-            window.location.reload();
-        }
-    });
-}
-
-function saveDigitization(statusId,statusKeyword, button)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var projectPoints = $("input[name=project-points]").val();
-    var projectDistance = $("input[name=project-meters-distance]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var lastPoints = $("input[name=current-project-points]").val();
-    var lastDistance = $("input[name=current-project-meters-distance]").val();
-    var sendToApprovement = button.data("send-to-approvement");
-    var digitization = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        projectPoints: projectPoints,
-        projectDistance: projectDistance,
-        statusDetail: statusDetail,
-        lastPoints: lastPoints,
-        lastDistance: lastDistance,
-        responsibleList:responsibleList,
-        sendToApprovement:sendToApprovement
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveDigitization',
-        dataType  :"json",
-        type : "POST",
-        data : digitization,
-        success:function(response){
-            if(sendToApprovement == 1)
-            {
-                window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+projectId;
-            }
-            else
-            {
-                loadStatusSavedView(statusKeyword);
-                getProjectLog();
-            }
-        }
-    });
-}
-
-function saveDrawing(statusId,statusKeyword,button)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var sendToApprovement = button.data("send-to-approvement");
-    var drawing = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList,
-        sendToApprovement:sendToApprovement
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveDrawing',
-        dataType  :"json",
-        type : "POST",
-        data : drawing,
-        success:function(response){
-            if(sendToApprovement == 1)
-            {
-                window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+projectId;
-            }
-            else
-            {
-                loadStatusSavedView(statusKeyword);
-                getProjectLog();
-            }
-
-        }
-    });
-}
-
 function saveSchedule(statusId,statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
@@ -401,137 +177,6 @@ function saveSchedule(statusId,statusKeyword)
     });
 }
 
-function saveAlreadySent(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var alreadySentEntryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var alreadySent = {
-        projectId: projectId,
-        alreadySentEntryDate:alreadySentEntryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveAlreadySent',
-        dataType  :"json",
-        type : "POST",
-        data : alreadySent,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function saveRectifyDesign(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var alreadySent = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveRectifyDesign',
-        dataType  :"json",
-        type : "POST",
-        data : alreadySent,
-        success:function(response){
-            window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/"+projectId;
-        }
-    });
-}
-
-function saveRectifyIllustration(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var alreadySent = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveRectifyIllustration',
-        dataType  :"json",
-        type : "POST",
-        data : alreadySent,
-        success:function(response){
-            window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/"+projectId;
-        }
-    });
-}
-
-function saveApproved(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var design = $("input[name=design-budget]").val();
-    var building = $("input[name=building-budget]").val();
-    var graphNumber = $("input[name=graph-number-budget]").val();
-    var reservationNumber = $("input[name=reservation-number-budget]").val();
-    var transportation = $("input[name=transportation-budget]").val();
-    var liveLine = $("input[name=live-line-budget]").val();
-    var rightOfWay = $("input[name=right-of-way-budget]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var digitization = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        design: design,
-        building: building,
-        graphNumber: graphNumber,
-        reservationNumber: reservationNumber,
-        transportation:transportation,
-        liveLine:liveLine,
-        rightOfWay:rightOfWay,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveApproved',
-        dataType  :"json",
-        type : "POST",
-        data : digitization,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
 function updateTotalOnApprovedForm()
 {
     if($("#total-project-amount").length == 1)
@@ -550,71 +195,6 @@ function updateTotalOnApprovedForm()
         total = total.toFixed(2);
         $("#total-project-amount").text(total);
     }
-}
-
-function saveCanceled(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var design = $("input[name=design-budget]").val();
-    var building = $("input[name=building-budget]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var dataToSend = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        design: design,
-        building: building,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveCanceled',
-        dataType  :"json",
-        type : "POST",
-        data : dataToSend,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
-}
-
-function saveCreReturnOrder(statusId,statusKeyword)
-{
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-    var data = {
-        projectId: projectId,
-        entryDate:entryDate,
-        statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
-    };
-
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveCreReturnOrder',
-        dataType  :"json",
-        type : "POST",
-        data : data,
-        success:function(response){
-            loadStatusSavedView(statusKeyword);
-            getProjectLog();
-        }
-    });
 }
 
 function saveBasicLog(statusId,statusKeyword)
@@ -653,30 +233,13 @@ function loadStatusForm(statusKeyword, addMoreInfo)
     var projectId = $("input[name=project-id]").val();
     var statusSet = $("input[name=status-set]").val();
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/verifyPreviousEntry',
+        url : base_url + 'panel/AjaxPaymentManagement/verifyPreviousEntry',
         dataType  :"json",
         type : "POST",
         data : {projectId:projectId, statusKeyword:statusKeyword, statusSet:statusSet},
         success:function(response){
-            if(response.scheduleEntry[0] !== undefined && response.scheduleEntry[0].id_psl !== null)
+            if(response.previousEntry[0] === undefined || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
-                var htmlSource   = $("#ht-finished-stage-design").html();
-                var template = Handlebars.compile(htmlSource);
-                var data = {};
-                var html = template(data);
-                $("#status-form-content").html(html);
-            }
-            else if(response.previousEntry[0] === undefined || addMoreInfo ==  1 || statusKeyword == 'unsigned')
-            {
-                var points = $("#points").text();
-                var distance = $("#distance").text();
-                var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
-                var statusResponsible = [];
-                $.each(responsibleList,function(index,value){
-                    if(value.keyword_pst == statusKeyword)
-                        statusResponsible.push(value);
-                });
-                var responsibleListLength = statusResponsible.length;
                 var htmlSource   = $("#ht-status-not-created-view-form").html();
                 if($("#ht-status-"+statusKeyword+"-form").length === 1)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
@@ -684,10 +247,6 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 var template = Handlebars.compile(htmlSource);
                 var assignmentResponsible = response.assignmentEntry.length > 0?jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
                 var data = {
-                    statusResponsible:statusResponsible,
-                    responsibleListLength:responsibleListLength,
-                    points:points,
-                    distance:distance,
                     statusKeyword:statusKeyword,
                     statusSet:statusSet,
                     previousEntry:response.previousEntry[0],

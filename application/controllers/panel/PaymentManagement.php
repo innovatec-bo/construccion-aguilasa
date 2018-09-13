@@ -43,7 +43,7 @@ class PaymentManagement extends PrivateController
             $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
         }
         $data["projectStatusJson"] = json_encode($arrayStatus);
-        $this->_loadPanelView("project/index",$data);
+        $this->_loadPanelView("payment-management/index",$data);
     }
 
     public function createPaymentOrder()
@@ -61,9 +61,9 @@ class PaymentManagement extends PrivateController
         $this->_loadPanelView("payment-management/add");
     }
 
-    public function statusManagement($statusSet = "", $orderId = NULL)
+    public function statusManagement($orderId = NULL)
     {
-        $this->_validateFeature('payment_status_management');
+//        $this->_validateFeature('payment_status_management');
         $paymentOrder = $this->_validateObjectToEdit($orderId,"Model_payment_order","panel/PaymentManagement");
         $paymentOrder= $paymentOrder->toArray();
 //        $keywordList = $this->_validateStatusSet($statusSet, $paymentOrder);
@@ -83,15 +83,13 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
 
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $projectList = Model_project::getAllByPaymentOrderId($orderId);
         $data["paymentOrder"] = $paymentOrder;
+        $data["projectList"] = $projectList;
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
-        $data["statusSet"] = $statusSet;
-        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
-        $data["projectLog"] = $projectLog;
-        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
-        $this->_loadPanelView("project-status/status-management", $data);
+        $this->_loadPanelView("payment-management/status-management", $data);
     }
 }
