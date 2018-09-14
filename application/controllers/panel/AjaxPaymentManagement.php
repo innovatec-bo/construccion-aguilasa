@@ -156,8 +156,10 @@ class AjaxPaymentManagement extends PrivateController
             $entryDate = date_format($entryDate, 'Y-m-d');
             $entryDate = $entryDate." ".date("H:i:s");
             $detail = $formData["detail"];
-            $paymentOrder = new Model_payment_order($orderNumber, 42, NULL, $entryDate, $detail);
+            $statusId = 42;//payment_order_registered
+            $paymentOrder = new Model_payment_order($orderNumber, $statusId, NULL, $entryDate, $detail);
             $paymentOrder->save();
+            $paymentOrder->addStatusToLog($statusId, $detail, $entryDate);
             $paymentOrder->saveProjects($formData["projectList"]);
             $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
         }
@@ -194,15 +196,67 @@ class AjaxPaymentManagement extends PrivateController
         return $response;
     }
 
-    //TODO: evaluate this method for payment management
     public function verifyPreviousEntry()
     {
         $formData = $this->input->post();
         $orderId = $formData["orderId"];
         $statusKeyword = $formData["statusKeyword"];
-        $order = Model_warehouse::getById($orderId);
-        $previousEntry = Model_warehouse_status_log::getLogByWarehouseIdAndStatusKeyWord($orderId, $statusKeyword);
+        $previousEntry = Model_payment_order_status_log::getLogByPaymentOrderIdAndStatusKeyWord($orderId, $statusKeyword);
         $response["previousEntry"] = $previousEntry;
         echo json_encode($response);exit;
+    }
+
+    public function saveInvoiceSent()
+    {
+        $formData = $this->input->post();
+        $orderId = $formData["orderId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+
+        $invoiceDate = $formData["invoiceDate"];
+        $invoiceDate = DateTime::createFromFormat('d-m-Y', $invoiceDate);
+        $invoiceDate = date_format($invoiceDate, 'Y-m-d');
+        $invoiceDate = $invoiceDate." ".date("H:i:s");
+
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $paymentOrder = Model_payment_order::getById($orderId);
+        $paymentOrder->setStatus($statusId);
+        $paymentOrder->setInvoiceNumber();
+        $paymentOrder->setInvoiceDate();
+        $paymentOrder->save();
+        $paymentOrder->addStatusToLog($statusId, $statusDetail, $entryDate);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
+    public function saveBasicLog()
+    {
+        $formData = $this->input->post();
+        $orderId = $formData["orderId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["detail"];
+        $paymentOrder = Model_payment_order::getById($orderId);
+        $paymentOrder->setStatus($statusId);
+        $paymentOrder->save();
+        $paymentOrder->addStatusToLog($statusId, $statusDetail, $entryDate);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
+    public function getPaymentOrderLog()
+    {
+        $formData = $this->input->post();
+        $orderId = $formData["orderId"];
+        $paymentOrderLog = Model_payment_order_status_log::getLogByPaymentOrderId($orderId);
+        echo json_encode($paymentOrderLog);exit;
     }
 }

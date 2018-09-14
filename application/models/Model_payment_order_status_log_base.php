@@ -8,7 +8,7 @@
 
 class Model_payment_order_status_log_base extends MY_Model
 {
-    const TABLE_NAME = "wfl_payment_order_status_log";
+    const TABLE_NAME = "wfl_payment_orders_status_log";
     const TABLE_ID = "id_pos";
     const ATTRIB_SUFIX = "_pos";
 

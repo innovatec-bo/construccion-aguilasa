@@ -44,13 +44,13 @@
                     $i = 1;
 
                     $activeFound = FALSE;
-                    $currentStatus = 42;
+                    $currentStatus = $paymentOrder["status_pao"];
                     foreach ($statusList as $status)
                     {
                         $status = $status->toArray();
                         $class = "completed";
                         $disabled = "";
-                        if($status["id_pst"] === $currentStatus)
+                        if($status["id_pst"] == $currentStatus)
                         {
                             $class = 'active';
                             $activeFound = TRUE;
@@ -77,7 +77,7 @@
             <section>
                 <div class="wizard">
                     <form role="form" name="status-management" data-parsley-validate>
-                        <input type="hidden" value="" name="warehouse-id">
+                        <input type="hidden" value="<?=$paymentOrder["id_pao"]?>" name="payment-order-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
                         <input type="hidden" value="" name="status-set">
                         <?php
@@ -117,7 +117,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-payme
 $this->load->view("default-template/panel/content/project-status/ht-status-payment_order_invoice_sent-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-payment_order_has_been_settled-form");
 
-
+$this->load->view("default-template/panel/content/project-status/ht-status-payment-management-log-quick-view");
 
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");

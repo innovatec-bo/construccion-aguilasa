@@ -17,8 +17,9 @@ class Model_payment_order_base extends MY_Model
     protected $_invoiceNumber;
     protected $_entryDate;
     protected $_detail;
+    protected $_invoiceDate;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "")
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = "")
     {
         parent::__construct();
         $this->_orderNumber = $orderNumber;
@@ -26,6 +27,7 @@ class Model_payment_order_base extends MY_Model
         $this->_invoiceNumber = $invoiceNumber;
         $this->_entryDate = $entryDate;
         $this->_detail = $detail;
+        $this->_invoiceDate = $invoiceDate;
     }
 
     /**
@@ -41,6 +43,7 @@ class Model_payment_order_base extends MY_Model
             "invoice_number_pao" => $this->_invoiceNumber,
             "entry_date_pao" => $this->_entryDate,
             "detail_pao" => $this->_detail,
+            "invoice_date_pao" => $this->_invoiceDate,
             "deleted_pao" => $this->_deleted,
             "createdon_pao" => $this->_createdOn,
             "createdby_pao" => $this->_createdBy,
@@ -69,7 +72,8 @@ class Model_payment_order_base extends MY_Model
                 $object->status_pao,
                 $object->invoice_number_pao,
                 $object->entry_date_pao,
-                $object->detail_pao
+                $object->detail_pao,
+                $object->invoice_date_pao
             );
             $instance->_id = $object->id_pao;
 
@@ -81,5 +85,20 @@ class Model_payment_order_base extends MY_Model
             $response = $instance;
         }
         return $response;
+    }
+
+    public function setStatus($status)
+    {
+        $this->_status = $status;
+    }
+
+    public function setInvoiceNumber($invoiceNumber)
+    {
+        $this->_invoiceNumber = $invoiceNumber;
+    }
+
+    public function setInvoiceDate($invoiceDate)
+    {
+        $this->_invoiceDate = $invoiceDate;
     }
 }

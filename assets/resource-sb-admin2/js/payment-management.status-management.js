@@ -4,7 +4,7 @@
 $(document).ready(function() {
     var status = $("ul.wizard li.active a").prop("id");
     //TODO: this could be the management payment log
-    // getProjectLog();
+    getPaymentOrderLog();
     loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if(!$(this).parent().hasClass("disabled"))
@@ -34,8 +34,10 @@ $(document).ready(function() {
             blockArea($content);
             switch(statusKeyword)
             {
-                case "payment_order_registered":
+                // case "payment_order_registered":
                 case "payment_order_invoice_sent":
+                    saveInvoiceSent(statusId, statusKeyword);
+                    break;
                 case "payment_order_has_been_settled":
                     saveBasicLog(statusId, statusKeyword);
                     break;
@@ -143,36 +145,30 @@ $(document).ready(function() {
 
 });
 
-function saveSchedule(statusId,statusKeyword)
+function saveInvoiceSent(statusId,statusKeyword)
 {
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-    var projectId = $("input[name=project-id]").val();
-    var scheduleEntryDate = $("input[name=schedule-entry-date]").val();
-    var projectStart = $("input[name=project-start]").val();
-    var projectEnd = $("input[name=project-end]").val();
-    var statusDetail = $("textarea[name=schedule-detail]").val();
+    var orderId = $("input[name=payment-order-id]").val();
+    var entryDate = $("input[name=entry-date]").val();
+    var invoiceNumber = $("input[name=invoice-number]").val();
+    var invoiceDate = $("input[name=invoice-date]").val();
+    var statusDetail = $("textarea[name=detail]").val();
     var schedule = {
-        projectId: projectId,
-        scheduleEntryDate:scheduleEntryDate,
-        projectStart: projectStart,
-        projectEnd: projectEnd,
+        orderId: orderId,
+        entryDate:entryDate,
+        invoiceNumber:invoiceNumber,
+        invoiceDate: invoiceDate,
         statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
+        statusDetail: statusDetail
     };
 
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveSchedule',
+        url : base_url + 'panel/AjaxPaymentManagement/saveInvoiceSent',
         dataType  :"json",
         type : "POST",
         data : schedule,
         success:function(response){
             loadStatusSavedView(statusKeyword);
-            getProjectLog();
+            // getPaymentOrderLog();
         }
     });
 }
@@ -199,44 +195,37 @@ function updateTotalOnApprovedForm()
 
 function saveBasicLog(statusId,statusKeyword)
 {
-    var select2Data = $('#ajax-get-responsible-list').select2("data");
-    var responsibleList = [];
-    $.each(select2Data, function(index, value){
-        responsibleList.push(value.id);
-    });
-
-    var projectId = $("input[name=project-id]").val();
-    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
-    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var orderId = $("input[name=payment-order-id]").val();
+    var entryDate = $("input[name=entry-date]").val();
+    var detail = $("textarea[name=detail]").val();
     var data = {
-        projectId: projectId,
+        orderId: orderId,
         entryDate:entryDate,
         statusId: statusId,
-        statusDetail: statusDetail,
-        responsibleList:responsibleList
+        detail: detail
     };
 
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+        url : base_url + 'panel/AjaxPaymentManagement/saveBasicLog',
         dataType  :"json",
         type : "POST",
         data : data,
         success:function(response){
             loadStatusSavedView(statusKeyword);
-            getProjectLog();
+            // getPaymentOrderLog();
         }
     });
 }
 
 function loadStatusForm(statusKeyword, addMoreInfo)
 {
-    var projectId = $("input[name=project-id]").val();
+    var orderId = $("input[name=payment-order-id]").val();
     var statusSet = $("input[name=status-set]").val();
     $.ajax({
         url : base_url + 'panel/AjaxPaymentManagement/verifyPreviousEntry',
         dataType  :"json",
         type : "POST",
-        data : {projectId:projectId, statusKeyword:statusKeyword, statusSet:statusSet},
+        data : {orderId:orderId, statusKeyword:statusKeyword, statusSet:statusSet},
         success:function(response){
             if(response.previousEntry[0] === undefined || addMoreInfo ==  1 || statusKeyword == 'unsigned')
             {
@@ -245,12 +234,10 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
-                var assignmentResponsible = response.assignmentEntry.length > 0?jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
                 var data = {
                     statusKeyword:statusKeyword,
                     statusSet:statusSet,
-                    previousEntry:response.previousEntry[0],
-                    assignmentResponsible:assignmentResponsible
+                    previousEntry:response.previousEntry[0]
                 };
                 var html = template(data);
                 $("#status-form-content").html(html);
@@ -276,7 +263,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 var html = template(data);
                 $("#status-form-content").html(html);
             }
-            checkIncidents();
+            // checkIncidents();
         }
     });
 }
@@ -290,20 +277,20 @@ function loadStatusSavedView(keyword)
     $("#status-form-content").html(html);
 }
 
-function getProjectLog()
+function getPaymentOrderLog()
 {
-    var projectId = $("input[name=project-id]").val();
+    var orderId = $("input[name=payment-order-id]").val();
     var $logContent = $("#status-project-log-content");
 
     blockArea($logContent);
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/getProjectLog',
+        url : base_url + 'panel/AjaxPaymentManagement/getPaymentOrderLog',
         dataType  :"json",
         type : "POST",
-        data : {projectId:projectId},
+        data : {orderId:orderId},
         success:function(response){
             var allowUpdateHistory = $logContent.data("allow-update-history");
-            var htmlSource   = $("#ht-status-project-log-quick-view").html();
+            var htmlSource   = $("#ht-status-payment-management-log-quick-view").html();
             var template = Handlebars.compile(htmlSource);
             var data = {projectLog:response,allowUpdateHistory:allowUpdateHistory};
             var html = template(data);
@@ -320,7 +307,7 @@ function updateManualEntry(logId, entryDate)
         type : "POST",
         data : {logId:logId, entryDate:entryDate},
         success:function(response){
-            getProjectLog();
+            getPaymentOrderLog();
             // bootbox.alert(response.message);
         }
     });

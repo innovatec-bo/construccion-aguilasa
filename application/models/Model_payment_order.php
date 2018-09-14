@@ -66,4 +66,13 @@ class Model_payment_order extends Model_payment_order_base
         if(count($arrayToInsert) > 0)
             Model_payment_order_project::insertBatch($arrayToInsert);
     }
+
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "")
+    {
+        //Lets create a new log
+        $paymentOrder = new Model_payment_order_status_log($this->_id, $statusId, $detail, $manualEntryDate);
+        $paymentOrder->save();
+        $this->_status = $statusId;
+        $this->save();
+    }
 }

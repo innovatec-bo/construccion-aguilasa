@@ -19,17 +19,17 @@ class Model_payment_order_status_log extends Model_payment_order_status_log_base
         $ci->load->database();
         $sql = "
         SELECT
-            wfl_payment_order_status_log.*,
+            wfl_payment_orders_status_log.*,
             status_name_pst,
             keyword_pst
         FROM
-                wfl_payment_order_status_log
+                wfl_payment_orders_status_log
         LEFT JOIN wfl_project_status ON status_id_pos = id_pst
-        LEFT JOIN wfl_payment_order on id_pao = payment_order_id_pos
+        LEFT JOIN wfl_payment_orders on id_pao = payment_order_id_pos
         WHERE
                 payment_order_id_pos = ".$ci->db->escape($paymentOrderId)."
                 and deleted_pos != 1
-        GROUP BY id_wsl
+        GROUP BY id_pos
         ORDER BY manual_entry_date_pos DESC
         ";
         $query = $ci->db->query($sql);
@@ -43,11 +43,11 @@ class Model_payment_order_status_log extends Model_payment_order_status_log_base
         $ci->load->database();
         $sql = "
         SELECT
-            wfl_payment_order_status_log.*,
+            wfl_payment_orders_status_log.*,
             status_name_pst,
             keyword_pst
         FROM
-            wfl_payment_order_status_log
+            wfl_payment_orders_status_log
         LEFT JOIN wfl_project_status ON status_id_pos = id_pst
         WHERE
             payment_order_id_pos = " . $ci->db->escape($warehouseId) . "

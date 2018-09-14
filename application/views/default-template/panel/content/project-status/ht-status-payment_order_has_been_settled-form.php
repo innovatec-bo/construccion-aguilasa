@@ -7,10 +7,10 @@
  */
 ?>
 <script id="ht-status-payment_order_has_been_settled-form" type="text/x-handlebars-template">
-    <div class="tab-pane active" role="tabpanel" id="step_schedule">
+    <div class="tab-pane active" role="tabpanel" id="step_payment_order_has_been_settled">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Cronograma
+                Confirmacion de pago
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -20,34 +20,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Fecha de envio a CRE</label>
+                                            <label>Fecha de confirmacion de pago</label>
                                             <div class="input-group date date-time-picker">
-                                                <input name="schedule-entry-date" readonly="" class="form-control" required="" data-parsley-group="schedule" data-parsley-errors-container="#error-schedule-entry-date">
+                                                <input name="entry-date" readonly="" class="form-control" required="" data-parsley-group="payment_order_has_been_settled" data-parsley-errors-container="#error-entry-date">
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>
                                             </div>
-                                            <div id="error-schedule-entry-date"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Fecha de facturacion</label>
-                                            <div class="input-group date date-time-picker">
-                                                <input name="project-start" readonly="" class="form-control" required="" data-parsley-group="schedule" data-parsley-errors-container="#error-project-start">
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                            </div>
-                                            <div id="error-project-start"></div>
+                                            <div id="error-entry-date"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +41,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary save-status" data-status-id="43" data-status-keyword="schedule">Guardar y enviar a aprobacion</button>
+                        <button type="button" class="btn btn-primary save-status" data-status-id="44" data-status-keyword="payment_order_has_been_settled">Guardar</button>
                     </div>
                 </div>
             </div>
