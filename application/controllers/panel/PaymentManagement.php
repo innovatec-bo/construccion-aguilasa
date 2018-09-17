@@ -48,6 +48,7 @@ class PaymentManagement extends PrivateController
 
     public function createPaymentOrder()
     {
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
@@ -63,6 +64,7 @@ class PaymentManagement extends PrivateController
 
 	public function editPaymentOrder($paymentOrderId)
 	{
+        $this->complementHandler->addViewComplement('sweet-alert2');
 		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
@@ -83,6 +85,7 @@ class PaymentManagement extends PrivateController
 	public function PaymentOrderRegistered()
     {
         $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -115,6 +118,7 @@ class PaymentManagement extends PrivateController
     public function PaymentOrderInvoiceSent()
     {
         $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -147,6 +151,7 @@ class PaymentManagement extends PrivateController
     public function PaymentOrderSettled()
     {
         $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");

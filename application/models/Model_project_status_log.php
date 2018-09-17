@@ -92,8 +92,8 @@ class Model_project_status_log extends Model_project_status_log_base
         $sql = "
         SELECT
             wfl_project_status_log.*,
-            /*wfl_project_budgets.*,
-            wfl_construction_assignments.*,*/
+            wfl_project_budgets.*,
+            wfl_construction_assignments.*,
             status_name_pst,
             keyword_pst,
             GROUP_CONCAT(

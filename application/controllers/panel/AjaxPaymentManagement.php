@@ -21,16 +21,18 @@ class AjaxPaymentManagement extends PrivateController
     public function ajaxDtAllPaymentOrders()
     {
         $dt = new JqdtHandler($this->input->post());
-        $recordsTotal = Model_payment_order::countAll();
+        $additionalParameters = $this->input->post("additionalParameters");
+        $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
+        $recordsTotal = Model_payment_order::countAllPaymentOrders($additionalParameters["status"]);
         $recordsFiltered = $recordsTotal;
-        if (!$dt->hasSearchValue())
+        if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
         {
-            $resultArray = Model_payment_order::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+            $resultArray = Model_payment_order::getAllPaymentOrders($additionalParameters["status"],$dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
         }
         else
         {
-            $resultArray = Model_payment_order::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs());
-            $recordsFiltered = Model_payment_order::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs());
+            $resultArray = Model_payment_order::searchPaymentOrders($additionalParameters["status"],$dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs());
+            $recordsFiltered = Model_payment_order::searchTotalCountPaymentOrders($additionalParameters["status"],$dt->getSearchValue(),$dt->getSearchableColumnDefs());
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
@@ -162,6 +164,7 @@ class AjaxPaymentManagement extends PrivateController
             $paymentOrder->addStatusToLog($statusId, $detail, $entryDate);
             $paymentOrder->saveProjects($formData["projectList"]);
             $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
+            $this->session->set_flashdadta("successMessage", "Orden de pago registrada correctamente!");
         }
         echo json_encode($response);exit;
     }
@@ -170,7 +173,7 @@ class AjaxPaymentManagement extends PrivateController
 	{
 		$this->load->library('form_validation');
 		/** server validations */
-		$this->form_validation->set_rules('orderId', 'ID de orden', 'trim|required|numeric|callback_validate_payment_order');
+		$this->form_validation->set_rules('paymentOrderId', 'ID de orden', 'trim|required|numeric|callback_validate_update_payment_order');
 		$this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric');
 		$this->form_validation->set_rules('entryDate', 'Fecha de reception de Nro de orden', 'trim|required');
 		$this->form_validation->set_rules('detail', 'Detalle', 'trim');
@@ -186,6 +189,7 @@ class AjaxPaymentManagement extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
+			$paymentOrderId = $formData["paymentOrderId"];
 			$orderNumber = $formData["orderNumber"];
 			$entryDate = $formData["entryDate"];
 			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
@@ -193,10 +197,11 @@ class AjaxPaymentManagement extends PrivateController
 			$entryDate = $entryDate." ".date("H:i:s");
 			$detail = $formData["detail"];
 			$statusId = 42;//payment_order_registered
-			$paymentOrder = new Model_payment_order($orderNumber, $statusId, NULL, $entryDate, $detail);
-			$paymentOrder->save();
+			$paymentOrder = Model_payment_order::getById($paymentOrderId);
+//			$paymentOrder->save();
 			$paymentOrder->saveProjects($formData["projectList"]);
-			$response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
+			$response = array("success" => 1, "message" => "Orden de pago actualizada correctamente!", "paymentOrderId" => $paymentOrder->getId());
+			$this->session->set_flashdata("successMessage", "Orden de pago actualizada correctamente!");
 		}
 		echo json_encode($response);exit;
 	}
@@ -223,17 +228,16 @@ class AjaxPaymentManagement extends PrivateController
         $paymentOrderId = !isset($formData["paymentOrderId"])?"":$formData["paymentOrderId"];
         $paymentOrder = Model_payment_order::getById($paymentOrderId);
         $orderNumber = $formData["orderNumber"];
-
         $alreadyExist = Model_payment_order::orderNumberDuplicated($orderNumber, $paymentOrderId);
         $response = TRUE;
         if($alreadyExist)
         {
-            $this->form_validation->set_message('validate_payment_order', 'El numero de orden que intenta registrar ya existe!');
+            $this->form_validation->set_message('validate_update_payment_order', 'El numero de orden que intenta registrar ya existe!');
             $response = FALSE;
         }
         elseif($paymentOrder->getInvoiceNumber() != "")
         {
-            $this->form_validation->set_message('validate_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
+            $this->form_validation->set_message('validate_update_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
             $response = FALSE;
         }
         return $response;

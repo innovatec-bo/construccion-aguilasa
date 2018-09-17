@@ -91,6 +91,7 @@ class AjaxProject extends PrivateController
 
     public function select2ProjectsThatReturnedMaterials()
     {
+        $currentIds = $this->input->post("currentIds");
         $term = $this->input->post("term");
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");
@@ -103,13 +104,16 @@ class AjaxProject extends PrivateController
 
         foreach ($projects as $project)
         {
-            $list[] = array(
-                "id" => $project->id_pro,
-                "text" => $project->code_pro,
-                "responsible" => $project->responsible,
-                "points" => $project->points_pro,
-                "distance" => $project->distance_pro
-            );
+            if(array_search($project->id_pro,$currentIds) === FALSE)
+            {
+                $list[] = array(
+                    "id" => $project->id_pro,
+                    "text" => $project->code_pro,
+                    "responsible" => $project->responsible,
+                    "points" => $project->points_pro,
+                    "distance" => $project->distance_pro
+                );
+            }
         }
         $moreResults = ($page * $limit) < $recordsFiltered;
         $resultArray['list'] = $list;

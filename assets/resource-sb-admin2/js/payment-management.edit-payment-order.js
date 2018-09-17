@@ -115,7 +115,13 @@ function startSelect2Projects(selector)
             type : "post",
             delay : 600,
             data : function(params) {
+                var currentIds = [];
+                $.each($(".select2.project"),function(index, value){
+                    currentIds.push($(value).val());
+                    // console.log($(value).val())
+                });
                 return {
+                    currentIds:currentIds,
                     term : params.term || "", //search term
                     limit : 5, // page size
                     page: params.page || 1
@@ -264,22 +270,21 @@ function savePaymentOrder()
         data : data,
         success:function(response){
             $formContent.unblock();
+            if(response.success == 1)
+            {
+                loadTable();
+                bootbox.alert({
+                    title: "",
+                    message: "This is the small alert!",
+                    size: 'small'
+                });
+                swal({ title:'Bien hecho!', html:response.message, type:"success"});
+            }
+            else
+            {
+                swal({ title:'Algo salio mal!', html:response.message,type:"error"});
+            }
             console.log(response);
-            // if(response.success == 1)
-            // {
-            //     loadTable();
-            //     bootbox.alert({
-            //         title: "",
-            //         message: "This is the small alert!",
-            //         size: 'small'
-            //     });
-            //     swal({ html:true, title:'Good job', text:response.message,type:"success"});
-            // }
-            // else
-            // {
-            //     swal({ html:true, title:'Something went wrong!', text:response.message,type:"error"});
-            // }
-
         }
     });
 }

@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary save-payment-order-project">Guardar</button>
+                                <button type="button" class="btn btn-primary save-payment-order-project">Actualizar</button>
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,8 @@ $(document).ready(function() {
             design_budget:0,
             transportation_budget:0,
             building_budget:0,
-            live_line_budget:0
+            live_line_budget:0,
+            right_of_way_budget:0
         };
         var html = template(data);
         $("#project-list-content").append(html);
@@ -110,7 +111,13 @@ function startSelect2Projects(selector)
             type : "post",
             delay : 600,
             data : function(params) {
+                var currentIds = [];
+                $.each($(".select2.project"),function(index, value){
+                    currentIds.push($(value).val());
+                    // console.log($(value).val())
+                });
                 return {
+                    currentIds:currentIds,
                     term : params.term || "", //search term
                     limit : 5, // page size
                     page: params.page || 1
@@ -257,8 +264,8 @@ function savePaymentOrder()
         dataType  :"json",
         data : data,
         success:function(response){
-            $formContent.unblock();
-            console.log(response);
+            var paymentOrderId = response.paymentOrderId;
+            window.location.href = base_url + "panel/PaymentManagement/editPaymentOrder/"+paymentOrderId;
             // if(response.success == 1)
             // {
             //     loadTable();

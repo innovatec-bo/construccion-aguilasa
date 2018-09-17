@@ -157,4 +157,100 @@ class Model_payment_order extends Model_payment_order_base
 		$result = static::recast(get_called_class(), $query->row());
 		return $result;
 	}
+
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+
+    /**
+     * @param $statusId
+     * @return mixed
+     */
+    public static function countAllPaymentOrders($statusId = "42,43,44")
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = '
+                select count(' . static::TABLE_ID. ') as total
+                from ' . static::TABLE_NAME .' where '.static::notDeleted().' and status_pao in ('.$statusId.')';
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    /**
+     * @param string $statusId
+     * @param $limit
+     * @param $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     *
+     */
+    public static function getAllPaymentOrders($statusId = "42,43,44", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' where '.static::notDeleted().' and status_pao in ('.$statusId.')            
+                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
+
+    public static function searchPaymentOrders($statusId = "42,43,44", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
+        $sql .= ' where '.static::notDeleted().' and status_pao in ('.$statusId.') and (';
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+
+        $query = $ci->db->query($sql);
+        return $query->result();
+    }
+
+    public static function searchTotalCountPaymentOrders($statusId = "42,43,44", $text, $colsArray = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+        $sql .= ' where '.static::notDeleted().' and status_pao in ('.$statusId.')  and (';
+
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ')';
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    private static function _dataTableColumns()
+    {
+        $columns = static::TABLE_NAME.".*";
+        return $columns;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
 }
