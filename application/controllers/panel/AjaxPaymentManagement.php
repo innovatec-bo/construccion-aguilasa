@@ -166,6 +166,60 @@ class AjaxPaymentManagement extends PrivateController
         echo json_encode($response);exit;
     }
 
+	public function updatePaymentOrder()
+	{
+		$this->load->library('form_validation');
+		/** server validations */
+		$this->form_validation->set_rules('orderId', 'ID de orden', 'trim|required|numeric|callback_validate_payment_order');
+		$this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric');
+		$this->form_validation->set_rules('entryDate', 'Fecha de reception de Nro de orden', 'trim|required');
+		$this->form_validation->set_rules('detail', 'Detalle', 'trim');
+		$this->form_validation->set_rules('projectList', 'Lista de proyectos', 'callback_validate_project_list_to_update');
+
+		if ($this->form_validation->run() === FALSE)
+		{
+			$validationErrors = validation_errors();
+			$validationErrors = str_replace("<p>","",$validationErrors);
+			$validationErrors = str_replace("</p>","<br>",$validationErrors);
+			$response = array("success" => 0, "message" => $validationErrors);
+		}
+		else
+		{
+			$formData = $this->input->post();
+			$orderNumber = $formData["orderNumber"];
+			$entryDate = $formData["entryDate"];
+			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+			$entryDate = date_format($entryDate, 'Y-m-d');
+			$entryDate = $entryDate." ".date("H:i:s");
+			$detail = $formData["detail"];
+			$statusId = 42;//payment_order_registered
+			$paymentOrder = new Model_payment_order($orderNumber, $statusId, NULL, $entryDate, $detail);
+			$paymentOrder->save();
+			$paymentOrder->saveProjects($formData["projectList"]);
+			$response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
+		}
+		echo json_encode($response);exit;
+	}
+
+	public function validate_payment_order()
+	{
+		$formData = $this->input->post();
+		$paymentOrderId = !isset($formData["paymentOrderId"])?"":$formData["paymentOrderId"];
+		$paymentOrder = Model_payment_order::getById($paymentOrderId);
+		$response = TRUE;
+		if(!$paymentOrder instanceof Model_payment_order)
+		{
+			$this->form_validation->set_message('validate_payment_order', 'Orden de pago inexistente!');
+			$response = FALSE;
+		}
+		elseif($paymentOrder->getInvoiceNumber() != "")
+		{
+			$this->form_validation->set_message('validate_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
+			$response = FALSE;
+		}
+		return $response;
+	}
+
     public function validate_project_list()
     {
         $formData = $this->input->post();
@@ -195,6 +249,31 @@ class AjaxPaymentManagement extends PrivateController
         }
         return $response;
     }
+
+	public function validate_project_list_to_update()
+	{
+		$formData = $this->input->post();
+		$projectArrayList = $formData["projectList"];
+		$projectIds = array_column($projectArrayList, "projectId");
+		$projectObjectList = Model_project::getAllInArrayIds($projectIds, 200,0);
+		$response = TRUE;
+		$notReadyToRealBudgets = "";
+		foreach ($projectObjectList as $project)
+		{
+			$projectStatus = $project->getStatus();
+			if($projectStatus != 39)
+			{
+				$notReadyToRealBudgets .= $project->getCode().", ";
+			}
+		}
+		$notReadyToRealBudgets = substr($notReadyToRealBudgets, 0, -2);
+		if(count($projectObjectList) <= 0)
+		{
+			$this->form_validation->set_message('validate_project_list', 'Se envio una lista vacia de proyectos');
+			$response = FALSE;
+		}
+		return $response;
+	}
 
     public function verifyPreviousEntry()
     {
@@ -264,9 +343,27 @@ class AjaxPaymentManagement extends PrivateController
         echo json_encode($paymentOrderLog);exit;
     }
 
-    public function getPaymentOrderDetail()
+    public function getPaymentOrdersProjectsDetail()
 	{
 		$formData = $this->input->post();
 		$paymentOrderId = $formData["paymentOrderId"];
+		$paymentOrdersProjectsList = Model_payment_order_project::getDetailByPaymentOrderId($paymentOrderId);
+		$response = array();
+		$i = 0;
+		foreach($paymentOrdersProjectsList as $paymentOrderProject)
+		{
+			$response[] = array(
+				"index" => $i+1,
+				"design_budget" => $paymentOrderProject["design_budget_pop"],
+				"transportation_budget" => $paymentOrderProject["transportation_budget_pop"],
+				"building_budget" => $paymentOrderProject["building_budget_pop"],
+				"live_line_budget" => $paymentOrderProject["live_line_budget_pop"],
+				"right_of_way_budget" => $paymentOrderProject["right_of_way_budget_pop"],
+				"projectId" => $paymentOrderProject["id_pro"],
+				"projectCode" => $paymentOrderProject["code_pro"]
+			);
+			$i++;
+		}
+		echo json_encode($response);exit;
 	}
 }

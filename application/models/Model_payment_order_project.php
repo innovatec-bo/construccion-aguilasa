@@ -12,4 +12,25 @@ class Model_payment_order_project extends Model_payment_order_project_base
     {
         parent::__construct($orderId, $projectId);
     }
+
+	public static function getDetailByPaymentOrderId($paymentOrderId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+		SELECT 
+			wfl_payment_orders_projects.*,
+			id_pro,
+			code_pro
+		FROM
+		wfl_payment_orders_projects
+		left join wfl_projects on id_pro = project_id_pop
+		where 
+		order_id_pop = ".$ci->db->escape($paymentOrderId)."
+		and deleted_pop != 1
+		";
+		$query = $ci->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
 }

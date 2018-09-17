@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Agregar orden de pago</h1>
+            <h1 class="page-header">Editar orden de pago</h1>
         </div>
         <div class="col-md-12">
             <?php
@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Agregue la informacion de la orden de pago
+                    Edite la informacion de la orden de pago
                 </div>
 
                 <div class="panel-body" id="payment-order-form-content">
@@ -28,16 +28,20 @@
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label>Numero de orden</label>
-                                <input class="form-control input-masked" required name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="" data-inputmask="'alias': 'integer'">
+                                <input class="form-control input-masked" readonly name="order-number" placeholder="Ingrese el numero de orden de pago de CRE" value="<?=$paymentOrder["order_number_pao"]?>" data-inputmask="'alias': 'integer'">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Fecha de recepcion de numero de orden</label>
+                                <label>Fecha de recepcion de numero de orden <?=$paymentOrder["entry_date_pao"]?></label>
                                 <div class="input-group date date-time-picker">
-                                    <input name="entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+									<?php
+									$entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["entry_date_pao"]);
+									$entryDate = date_format($entryDate, 'd-m-Y');
+									?>
+                                    <input name="entry-date" readonly="" <?=$entryDate?> class="form-control" required="" data-parsley-errors-container="#error-entry-date">
                                     <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -46,9 +50,35 @@
                             </div>
                         </div>
                     </div>
+					<div class="row">
+						<div class="col-lg-2">
+							<div class="form-group">
+								<label>Numero de factura</label>
+								<input class="form-control input-masked" required name="invoice-number" placeholder="Ingrese el numero de factura de pago de CRE" value="<?=$paymentOrder["invoice_number_pao"]?>" data-inputmask="'alias': 'integer'">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Fecha de facturacion</label>
+								<div class="input-group date date-time-picker">
+									<?php
+									$invoiceDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["invoice_date_pao"]);
+									$invoiceDate = date_format($invoiceDate, 'd-m-Y');
+									?>
+									<input name="invoice-date" readonly="" value="<?=$invoiceDate?>" class="form-control" required="" data-parsley-errors-container="#error-invoice-date">
+									<span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+								</div>
+								<div id="error-invoice-date"></div>
+							</div>
+						</div>
+					</div>
                     <div class="form-group">
                         <label>Observaciones</label>
-                        <textarea class="form-control" name="detail" rows="2" placeholder=""></textarea>
+                        <textarea class="form-control" name="detail" rows="2" placeholder=""><?=$paymentOrder["detail_pao"]?></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-12">

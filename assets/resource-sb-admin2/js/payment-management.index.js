@@ -77,6 +77,7 @@ $(document).ready(function() {
             "render" : function(data, type, row, meta) {
                 var currentStatusSet = $("input[name=status-set]").val();
                 var html = ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/PaymentManagement/statusManagement/'+row.id_pao+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
+                html += ' <a class="btn btn-info btn-xs" href="'+base_url + 'panel/PaymentManagement/editPaymentOrder/'+row.id_pao+'" title="" data-original-title="EDITAR ORDEN DE PAGO"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                 return html;
             }
         }],

@@ -12,13 +12,14 @@ class Model_payment_order extends Model_payment_order_base
     const PAYMENT_ORDER_INVOICED_AND_SEND = 2;
     const PAYMENT_ORDER_HAS_BEEN_SETTLED = 3;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "")
-    {
-        parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail);
-    }
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = "")
+	{
+		parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate);
+	}
 
-    public function saveProjects($projectList = array())
+	public function saveProjects($projectList = array())
     {
+    	static::deleteProjectsFromPaymentOrder($this->_id);
         $arrayToInsert = array();
         $currentUser = PrivateController::getSessionUser();
         $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
@@ -67,6 +68,24 @@ class Model_payment_order extends Model_payment_order_base
             Model_payment_order_project::insertBatch($arrayToInsert);
     }
 
+    public static function deleteProjectsFromPaymentOrder($paymentOrderId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+		UPDATE 
+			wfl_projects,
+			wfl_payment_orders_projects 
+		SET 
+			status_pro = 39,
+			deleted_pop = 1
+		WHERE
+			order_id_pop = ".$ci->db->escape($paymentOrderId)."
+			and project_id_pop = id_pro
+		";
+		$ci->db->query($sql);
+	}
+
     public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "")
     {
         //Lets create a new log
@@ -75,4 +94,67 @@ class Model_payment_order extends Model_payment_order_base
         $this->_status = $statusId;
         $this->save();
     }
+
+	public static function getByInvoiceNumberAndNotOrderId($invoiceNumber, $paymentOrderId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = "
+            SELECT
+                ".static::TABLE_NAME.".*
+            FROM
+                ".static::TABLE_NAME."
+            WHERE
+            invoice_number_pao = ".$ci->db->escape($invoiceNumber)."
+            and id_pao != ".$ci->db->escape($paymentOrderId)."
+            and deleted_pao != 1
+        ";
+
+		$query = $ci->db->query($sql);
+		$result = static::recast(get_called_class(), $query->row());
+		return $result;
+	}
+
+	public static function invoiceNumberDuplicated($invoiceNumber, $paymentOrderId = NULL)
+	{
+		$alreadyExist = FALSE;
+		//add
+		if(is_null($paymentOrderId))
+		{
+			$paymentOrder = static::getByInvoiceNumber($invoiceNumber);
+		}
+		//edit
+		else
+		{
+			$paymentOrder = static::getByInvoiceNumberAndNotOrderId($invoiceNumber, $paymentOrderId);
+		}
+
+		if($paymentOrder instanceof Model_payment_order)
+		{
+			$alreadyExist = TRUE;
+		}
+
+		return $alreadyExist;
+	}
+
+	public static function getByInvoiceNumber($invoiceNumber)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = "
+            SELECT
+                ".static::TABLE_NAME.".*
+            FROM
+                ".static::TABLE_NAME."
+            WHERE
+            invoice_number_pao = ".$ci->db->escape($invoiceNumber)."
+            and deleted_pao != 1
+        ";
+
+		$query = $ci->db->query($sql);
+		$result = static::recast(get_called_class(), $query->row());
+		return $result;
+	}
 }

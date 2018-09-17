@@ -65,39 +65,26 @@ function loadTable()
 {
 	var paymentOrderId = $("input[name=payment-order-id]").val();
 	$.ajax({
-		url : base_url + 'panel/AjaxPaymentManagement/getPaymentOrderDetail',
+		url : base_url + 'panel/AjaxPaymentManagement/getPaymentOrdersProjectsDetail',
 		type : "POST",
 		dataType  :"json",
 		data : {paymentOrderId:paymentOrderId},
 		success:function(response){
-			if(response.success == 1)
-			{
-				// loadTable();
-			}
-			else
-			{
-				bootbox.alert(response.message);
-			}
+			var projectList = response;
+			var teamHourlyRateRow = $("#ht-payment-orders-projects-row").html();
+			Handlebars.registerPartial("ht-payment-orders-projects-row", teamHourlyRateRow);
+			var htmlSource   = $("#ht-payment-orders-projects").html();
+			var template = Handlebars.compile(htmlSource);
+			var data = {projectList:projectList};
+			var html = template(data);
+			$("#table-payment-orders-projects").html(html);
+			startSelect2Projects();
+			evaluateVisibilityBtnRemove();
+			$(".input-masked").inputmask();
+			console.log(response);
 		}
 	});
-    var data = {
-        index: 1,
-        design_budget:0,
-        transportation_budget:0,
-        building_budget:0,
-        live_line_budget:0
-    };
-    var projectList = [data];
-    var teamHourlyRateRow = $("#ht-payment-orders-projects-row").html();
-    Handlebars.registerPartial("ht-payment-orders-projects-row", teamHourlyRateRow);
-    var htmlSource   = $("#ht-payment-orders-projects").html();
-    var template = Handlebars.compile(htmlSource);
-    var data = {projectList:projectList};
-    var html = template(data);
-    $("#table-payment-orders-projects").html(html);
-    startSelect2Projects();
-    evaluateVisibilityBtnRemove();
-    $(".input-masked").inputmask();
+
 }
 
 function evaluateVisibilityBtnRemove()
@@ -246,6 +233,7 @@ function savePaymentOrder()
     var projectArrayObject = [];
     var paymentOrderProjects = {};
     var data = {
+		paymentOrderId:$("input[name=payment-order-id]").val(),
         orderNumber: $("input[name=order-number]").val(),
         entryDate: $("input[name=entry-date]").val(),
         detail: $("textarea[name=detail]").val()
@@ -269,7 +257,7 @@ function savePaymentOrder()
 
     blockArea($formContent);
     $.ajax({
-        url : base_url + 'panel/AjaxPaymentManagement/savePaymentOrder',
+        url : base_url + 'panel/AjaxPaymentManagement/updatePaymentOrder',
         type : "POST",
         dataType  :"json",
         data : data,

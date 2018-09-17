@@ -9,14 +9,17 @@
 <script id="ht-payment-orders-projects" type="text/x-handlebars-template">
     <table class="table">
         <thead class="thead-inverse">
+			<tr>
+				<th colspan="8" class="text-center">Importes</th>
+			</tr>
             <tr>
                 <th>#</th>
                 <th>Proyecto</th>
-                <th>Importe diseño</th>
-                <th>Importe de transporte</th>
-                <th>Importe de construccion</th>
-                <th>Importe de linea viva</th>
-                <th>Importe de Derecho de via</th>
+                <th>Diseño</th>
+                <th>Transporte</th>
+                <th>Construccion</th>
+                <th>Linea viva</th>
+                <th>Derecho de via</th>
                 <th class="text-center"><i class="fa fa-times"></i></th>
             </tr>
         </thead>
@@ -55,7 +58,9 @@
     <tr data-row-index="{{index}}" data-payment-order-project-id="{{payment_order_project}}">
         <th scope="row"><span class="row-counter">{{index}}</span></th>
         <td>
-            <select class="form-control input-sm select2 project" data-select-index="{{index}}"></select>
+            <select class="form-control input-sm select2 project" data-select-index="{{index}}">
+				<option value="{{projectId}}">{{projectCode}}</option>
+			</select>
         </td>
         <td>
             <input type="text" size="8" name="design-budget" class="form-control input-sm input-masked" placeholder="0.00" value="{{design_budget}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">

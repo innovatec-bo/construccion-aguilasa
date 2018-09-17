@@ -101,4 +101,9 @@ class Model_payment_order_base extends MY_Model
     {
         $this->_invoiceDate = $invoiceDate;
     }
+
+    public function getInvoiceNumber()
+	{
+		return $this->_invoiceNumber;
+	}
 }
