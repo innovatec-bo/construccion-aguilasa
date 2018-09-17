@@ -33,7 +33,7 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addProjectCss('payment-management.index', TRUE);
         $this->complementHandler->addProjectJs('payment-management.index', TRUE);
         $data["viewTitle"] = "Todas las ordenes de pago";
-        $data["status"] = "";
+        $data["status"] = "42, 43, 44";
         $data["statusSet"] = "payment_management";
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
