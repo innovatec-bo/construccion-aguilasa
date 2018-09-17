@@ -135,7 +135,7 @@ class AjaxPaymentManagement extends PrivateController
     {
         $this->load->library('form_validation');
         /** server validations */
-        $this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric');
+        $this->form_validation->set_rules('orderNumber', 'Numero de orden', 'trim|required|numeric|callback_validate_payment_order');
         $this->form_validation->set_rules('entryDate', 'Fecha de reception de Nro de orden', 'trim|required');
         $this->form_validation->set_rules('detail', 'Detalle', 'trim');
         $this->form_validation->set_rules('projectList', 'Lista de proyectos', 'callback_validate_project_list');
@@ -205,20 +205,39 @@ class AjaxPaymentManagement extends PrivateController
 	{
 		$formData = $this->input->post();
 		$paymentOrderId = !isset($formData["paymentOrderId"])?"":$formData["paymentOrderId"];
-		$paymentOrder = Model_payment_order::getById($paymentOrderId);
+		$orderNumber = $formData["orderNumber"];
+
+		$alreadyExist = Model_payment_order::orderNumberDuplicated($orderNumber, $paymentOrderId);
 		$response = TRUE;
-		if(!$paymentOrder instanceof Model_payment_order)
-		{
-			$this->form_validation->set_message('validate_payment_order', 'Orden de pago inexistente!');
-			$response = FALSE;
-		}
-		elseif($paymentOrder->getInvoiceNumber() != "")
-		{
-			$this->form_validation->set_message('validate_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
-			$response = FALSE;
-		}
+        if($alreadyExist)
+        {
+            $this->form_validation->set_message('validate_payment_order', 'El numero de orden que intenta registrar ya existe!');
+            $response = FALSE;
+        }
 		return $response;
 	}
+
+    public function validate_update_payment_order()
+    {
+        $formData = $this->input->post();
+        $paymentOrderId = !isset($formData["paymentOrderId"])?"":$formData["paymentOrderId"];
+        $paymentOrder = Model_payment_order::getById($paymentOrderId);
+        $orderNumber = $formData["orderNumber"];
+
+        $alreadyExist = Model_payment_order::orderNumberDuplicated($orderNumber, $paymentOrderId);
+        $response = TRUE;
+        if($alreadyExist)
+        {
+            $this->form_validation->set_message('validate_payment_order', 'El numero de orden que intenta registrar ya existe!');
+            $response = FALSE;
+        }
+        elseif($paymentOrder->getInvoiceNumber() != "")
+        {
+            $this->form_validation->set_message('validate_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
+            $response = FALSE;
+        }
+        return $response;
+    }
 
     public function validate_project_list()
     {

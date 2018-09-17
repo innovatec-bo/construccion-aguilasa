@@ -35,11 +35,15 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Fecha de recepcion de numero de orden <?=$paymentOrder["entry_date_pao"]?></label>
+                                <label>Fecha de recepcion de numero de orden</label>
                                 <div class="input-group date date-time-picker">
 									<?php
-									$entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["entry_date_pao"]);
-									$entryDate = date_format($entryDate, 'd-m-Y');
+                                    $entryDate = "";
+                                    if($paymentOrder["entry_date_pao"] != "")
+                                    {
+                                        $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["entry_date_pao"]);
+                                        $entryDate = date_format($entryDate, 'd-m-Y');
+                                    }
 									?>
                                     <input name="entry-date" readonly="" <?=$entryDate?> class="form-control" required="" data-parsley-errors-container="#error-entry-date">
                                     <span class="input-group-addon">
@@ -64,8 +68,13 @@
 								<label>Fecha de facturacion</label>
 								<div class="input-group date date-time-picker">
 									<?php
-									$invoiceDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["invoice_date_pao"]);
-									$invoiceDate = date_format($invoiceDate, 'd-m-Y');
+                                    $invoiceDate = "";
+                                    if($paymentOrder["invoice_date_pao"] != "")
+                                    {
+                                        $invoiceDate = DateTime::createFromFormat('Y-m-d H:i:s', $paymentOrder["invoice_date_pao"]);
+                                        $invoiceDate = date_format($invoiceDate, 'd-m-Y');
+                                    }
+
 									?>
 									<input name="invoice-date" readonly="" value="<?=$invoiceDate?>" class="form-control" required="" data-parsley-errors-container="#error-invoice-date">
 									<span class="input-group-addon">

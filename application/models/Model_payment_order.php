@@ -95,7 +95,7 @@ class Model_payment_order extends Model_payment_order_base
         $this->save();
     }
 
-	public static function getByInvoiceNumberAndNotOrderId($invoiceNumber, $paymentOrderId)
+	public static function getByOrderNumberAndNotOrderId($invoiceNumber, $paymentOrderId)
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -106,7 +106,7 @@ class Model_payment_order extends Model_payment_order_base
             FROM
                 ".static::TABLE_NAME."
             WHERE
-            invoice_number_pao = ".$ci->db->escape($invoiceNumber)."
+            order_number_pao = ".$ci->db->escape($invoiceNumber)."
             and id_pao != ".$ci->db->escape($paymentOrderId)."
             and deleted_pao != 1
         ";
@@ -116,18 +116,18 @@ class Model_payment_order extends Model_payment_order_base
 		return $result;
 	}
 
-	public static function invoiceNumberDuplicated($invoiceNumber, $paymentOrderId = NULL)
+	public static function orderNumberDuplicated($orderNumber, $paymentOrderId = NULL)
 	{
 		$alreadyExist = FALSE;
 		//add
-		if(is_null($paymentOrderId))
+		if(is_null($paymentOrderId) || $paymentOrderId == "")
 		{
-			$paymentOrder = static::getByInvoiceNumber($invoiceNumber);
+			$paymentOrder = static::getByOrderNumber($orderNumber);
 		}
 		//edit
 		else
 		{
-			$paymentOrder = static::getByInvoiceNumberAndNotOrderId($invoiceNumber, $paymentOrderId);
+			$paymentOrder = static::getByOrderNumberAndNotOrderId($orderNumber, $paymentOrderId);
 		}
 
 		if($paymentOrder instanceof Model_payment_order)
@@ -138,7 +138,7 @@ class Model_payment_order extends Model_payment_order_base
 		return $alreadyExist;
 	}
 
-	public static function getByInvoiceNumber($invoiceNumber)
+	public static function getByOrderNumber($orderNumber)
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -149,7 +149,7 @@ class Model_payment_order extends Model_payment_order_base
             FROM
                 ".static::TABLE_NAME."
             WHERE
-            invoice_number_pao = ".$ci->db->escape($invoiceNumber)."
+            order_number_pao = ".$ci->db->escape($orderNumber)."
             and deleted_pao != 1
         ";
 

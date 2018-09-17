@@ -81,6 +81,7 @@ function loadTable()
 			startSelect2Projects();
 			evaluateVisibilityBtnRemove();
 			$(".input-masked").inputmask();
+            updateTotalBudgets();
 			console.log(response);
 		}
 	});

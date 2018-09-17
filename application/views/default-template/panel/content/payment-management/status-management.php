@@ -35,7 +35,6 @@
         }
         echo $projectListHtml;
         ?>
-
         <div class="col-md-10">
             <div class="tabbable">
                 <ul class="nav nav-tabs wizard">

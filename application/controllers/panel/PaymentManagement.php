@@ -80,6 +80,102 @@ class PaymentManagement extends PrivateController
 		$this->_loadPanelView("payment-management/edit", $data);
 	}
 
+	public function PaymentOrderRegistered()
+    {
+        $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('payment-management.index', TRUE);
+        $this->complementHandler->addProjectJs('payment-management.index', TRUE);
+        $data["viewTitle"] = "Ordenes de pago por facturar";
+        $data["status"] = "42";
+        $data["statusSet"] = "payment_management";
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("payment-management/index",$data);
+    }
+
+    public function PaymentOrderInvoiceSent()
+    {
+        $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('payment-management.index', TRUE);
+        $this->complementHandler->addProjectJs('payment-management.index', TRUE);
+        $data["viewTitle"] = "Facturas enviadas a CRE(pendiente de confirmacion)";
+        $data["status"] = "43";
+        $data["statusSet"] = "payment_management";
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("payment-management/index",$data);
+    }
+
+    public function PaymentOrderSettled()
+    {
+        $this->_validateFeature('payment_management_index');
+        $this->complementHandler->addViewComplement("bootbox");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+        $this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+        $this->complementHandler->addViewComplement("jquery.datatables.jszip");
+        $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+        $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+        $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectCss('payment-management.index', TRUE);
+        $this->complementHandler->addProjectJs('payment-management.index', TRUE);
+        $data["viewTitle"] = "Pagos confirmados";
+        $data["status"] = "44";
+        $data["statusSet"] = "payment_management";
+        $projectStatus = Model_project_status::getAll(100,0);
+        $arrayStatus = array();
+        foreach ($projectStatus as $status)
+        {
+            $status = (array)$status;
+            $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+        }
+        $data["projectStatusJson"] = json_encode($arrayStatus);
+        $this->_loadPanelView("payment-management/index",$data);
+    }
+
     public function statusManagement($orderId = NULL)
     {
 //        $this->_validateFeature('payment_status_management');
