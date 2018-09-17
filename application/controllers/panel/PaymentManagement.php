@@ -61,6 +61,25 @@ class PaymentManagement extends PrivateController
         $this->_loadPanelView("payment-management/add");
     }
 
+	public function editPaymentOrder($paymentOrderId)
+	{
+		$this->complementHandler->addViewComplement("moment-with-locales");
+		$this->complementHandler->addViewComplement("date-time-picker");
+		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+		$this->complementHandler->addViewComplement("bootbox");
+		$this->complementHandler->addViewComplement("handlebars");
+		$this->complementHandler->addViewComplement('handlebars.custom.helpers');
+		$this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addProjectCss('payment-management.edit-payment-order', TRUE);
+		$this->complementHandler->addProjectJs('payment-management.edit-payment-order', TRUE);
+		$this->_validateFeature('payment_management_add');
+
+		$paymentOrder = Model_payment_order::getById($paymentOrderId);
+		$data["paymentOrder"] = $paymentOrder->toArray();
+
+		$this->_loadPanelView("payment-management/edit", $data);
+	}
+
     public function statusManagement($orderId = NULL)
     {
 //        $this->_validateFeature('payment_status_management');

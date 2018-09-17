@@ -167,7 +167,8 @@ function saveInvoiceSent(statusId,statusKeyword)
         type : "POST",
         data : schedule,
         success:function(response){
-            loadStatusSavedView(statusKeyword);
+			window.location.reload();
+            // loadStatusSavedView(statusKeyword);
             // getPaymentOrderLog();
         }
     });
@@ -211,7 +212,8 @@ function saveBasicLog(statusId,statusKeyword)
         type : "POST",
         data : data,
         success:function(response){
-            loadStatusSavedView(statusKeyword);
+			window.location.reload();
+            // loadStatusSavedView(statusKeyword);
             // getPaymentOrderLog();
         }
     });

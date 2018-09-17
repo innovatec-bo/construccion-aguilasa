@@ -220,12 +220,16 @@ class AjaxPaymentManagement extends PrivateController
         $invoiceDate = date_format($invoiceDate, 'Y-m-d');
         $invoiceDate = $invoiceDate." ".date("H:i:s");
 
+        $invoiceNumber = $formData["invoiceNumber"];
+
+
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $paymentOrder = Model_payment_order::getById($orderId);
         $paymentOrder->setStatus($statusId);
-        $paymentOrder->setInvoiceNumber();
-        $paymentOrder->setInvoiceDate();
+        $paymentOrder->setInvoiceNumber($invoiceNumber);
+        $paymentOrder->setInvoiceDate($invoiceDate);
+//        echo "<pre>";var_dump($paymentOrder->toArray());exit;
         $paymentOrder->save();
         $paymentOrder->addStatusToLog($statusId, $statusDetail, $entryDate);
         $response["success"] = 1;
@@ -259,4 +263,10 @@ class AjaxPaymentManagement extends PrivateController
         $paymentOrderLog = Model_payment_order_status_log::getLogByPaymentOrderId($orderId);
         echo json_encode($paymentOrderLog);exit;
     }
+
+    public function getPaymentOrderDetail()
+	{
+		$formData = $this->input->post();
+		$paymentOrderId = $formData["paymentOrderId"];
+	}
 }
