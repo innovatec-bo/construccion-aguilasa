@@ -53,8 +53,8 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("bootbox");
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement('handlebars.custom.helpers');
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement('handlebars.custom.helpers');
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('payment-management.create-payment-order', TRUE);
         $this->complementHandler->addProjectJs('payment-management.create-payment-order', TRUE);
@@ -69,8 +69,8 @@ class PaymentManagement extends PrivateController
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
 		$this->complementHandler->addViewComplement("bootbox");
-		$this->complementHandler->addViewComplement("handlebars");
-		$this->complementHandler->addViewComplement('handlebars.custom.helpers');
+//		$this->complementHandler->addViewComplement("handlebars");
+//		$this->complementHandler->addViewComplement('handlebars.custom.helpers');
 		$this->complementHandler->addViewComplement('select2');
 		$this->complementHandler->addProjectCss('payment-management.edit-payment-order', TRUE);
 		$this->complementHandler->addProjectJs('payment-management.edit-payment-order', TRUE);
@@ -195,8 +195,8 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('payment-management.status-management',TRUE);
         $this->complementHandler->addProjectJs('payment-management.status-management',TRUE);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');

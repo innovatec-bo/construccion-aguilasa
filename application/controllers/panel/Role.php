@@ -30,8 +30,8 @@ class Role extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('role.index');
         $this->complementHandler->addProjectJs('role.index');
         $this->_loadPanelView("role/index");

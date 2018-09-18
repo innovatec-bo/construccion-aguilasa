@@ -258,8 +258,8 @@ class Warehouse extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('warehouse.status-management',TRUE);
         $this->complementHandler->addProjectJs('warehouse.status-management',TRUE);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');

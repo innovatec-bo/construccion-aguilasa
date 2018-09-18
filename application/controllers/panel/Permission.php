@@ -19,8 +19,8 @@ class Permission extends PrivateController
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("jstree");
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectJs('permission.index');
 
         $parentId = NULL;

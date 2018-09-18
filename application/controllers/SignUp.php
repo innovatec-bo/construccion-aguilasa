@@ -12,8 +12,8 @@ class SignUp extends PublicController
 	{
         $this->load->library('form_validation');
 
-        $this->complementHandler->addViewComplement("handlebars");
-        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
+//        $this->complementHandler->addViewComplement("handlebars");
+//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addProjectJs('signup.index');

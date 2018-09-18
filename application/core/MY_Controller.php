@@ -88,6 +88,8 @@ class PrivateController extends PublicController
     {
         parent::__construct();
         //Add General Components
+        $this->complementHandler->addViewComplement("handlebars");
+        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addProjectCss('general-custom-style');
         $this->complementHandler->addViewComplement("jquery.blockui");
