@@ -221,12 +221,25 @@ function updateTotalBudgets()
         totalRightOfWayBudget += parseFloat(rightOfWayBudget);
     });
     var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine + totalRightOfWayBudget;
-    $("span.total-design").text(totalDesign.toFixed(2));
-    $("span.total-transportation").text(totalTransportation.toFixed(2));
-    $("span.total-building").text(totalBuilding.toFixed(2));
-    $("span.total-live-line").text(totalLiveLine.toFixed(2));
-    $("span.total-right-of-way").text(totalRightOfWayBudget.toFixed(2));
-    $("span.total-budget").text(totalBudget.toFixed(2));
+
+    totalBudget = totalBudget.toFixed(2);
+    totalBudget = parseFloat(totalBudget).toLocaleString('en');
+    totalDesign = totalDesign.toFixed(2);
+    totalDesign = parseFloat(totalDesign).toLocaleString('en');
+    totalTransportation = totalTransportation.toFixed(2);
+    totalTransportation = parseFloat(totalTransportation).toLocaleString('en');
+    totalBuilding = totalBuilding.toFixed(2);
+    totalBuilding = parseFloat(totalBuilding).toLocaleString('en');
+    totalLiveLine = totalLiveLine.toFixed(2);
+    totalLiveLine = parseFloat(totalLiveLine).toLocaleString('en');
+    totalRightOfWayBudget = totalRightOfWayBudget.toFixed(2);
+    totalRightOfWayBudget = parseFloat(totalRightOfWayBudget).toLocaleString('en');
+    $("span.total-design").text(totalDesign);
+    $("span.total-transportation").text(totalTransportation);
+    $("span.total-building").text(totalBuilding);
+    $("span.total-live-line").text(totalLiveLine);
+    $("span.total-right-of-way").text(totalRightOfWayBudget);
+    $("span.total-budget").text(totalBudget);
 }
 
 function savePaymentOrder()
