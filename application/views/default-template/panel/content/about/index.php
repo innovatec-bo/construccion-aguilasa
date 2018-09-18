@@ -16,6 +16,75 @@
             $this->load->view("default-template/flash-data-basic-messages");
             ?>
         </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> TO DO
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> New Comment
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-envelope fa-fw"></i> Message Sent
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> IN PROGRESS
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> New Comment
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-envelope fa-fw"></i> Message Sent
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> DONE
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-comment fa-fw"></i> New Comment
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-envelope fa-fw"></i> Message Sent
+                        </a>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
