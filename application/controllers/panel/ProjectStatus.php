@@ -364,7 +364,7 @@ class ProjectStatus extends PrivateController
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
             $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");
-            redirect(base_url("panel/ProjectStatus/assignProject/".$projectId));
+            redirect(base_url("panel/ProjectStatus/readyToAssign"));
             echo json_encode($response);exit;
         }
     }
