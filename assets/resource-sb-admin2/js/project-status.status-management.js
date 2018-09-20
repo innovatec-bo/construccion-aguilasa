@@ -128,14 +128,14 @@ $(document).ready(function() {
             callback: function (result) {
                 if(result)
                 {
-                    var entryDate = $("input[name=modify-manual-entry-date]").val();
+                    var entryDate = $(".date-time-picker").val();
                     updateManualEntry(logId, entryDate);
                 }
             }
         });
 
         var date = new Date();
-        $('input[name=modify-manual-entry-date]').datetimepicker({
+        $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             // defaultDate: date,
             format: 'DD-MM-YYYY HH:mm:ss'

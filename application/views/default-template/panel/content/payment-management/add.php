@@ -38,8 +38,8 @@
                                 <div class="input-group date date-time-picker">
                                     <input name="entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
                                     <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                                 <div id="error-entry-date"></div>
                             </div>

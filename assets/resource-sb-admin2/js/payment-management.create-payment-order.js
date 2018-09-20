@@ -5,7 +5,7 @@
 $(document).ready(function() {
     loadTable();
     var date = new Date();
-    $('input[name=entry-date]').datetimepicker({
+    $('.date-time-picker').datetimepicker({
         ignoreReadonly: true,
         defaultDate: date,
         format: 'DD-MM-YYYY'
