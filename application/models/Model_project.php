@@ -27,6 +27,19 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
+    /**
+     * @param $design
+     * @param $building
+     * @param $graphNumber
+     * @param $reservationNumber
+     * @param $transportation
+     * @param $liveLine
+     * @param $rightOfWay
+     * @param $statusId
+     * @param $statusDetail
+     * @param $manualEntryDate
+     * @param array $responsibleList array id list referenced to status responsible table
+     */
     public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
     {
         //Lets create a new log
@@ -219,4 +232,26 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    function approveThisProject($entryDate = "", $statusDetail = "", $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0,$rightOfWay = 0)
+    {
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = 11;
+        $design = str_replace(",","",$design);
+        $building = str_replace(",","",$building);
+        $transportation = str_replace(",","",$transportation);
+        $liveLine = str_replace(",","",$liveLine);
+        $rightOfWay = str_replace(",","",$rightOfWay);
+        $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("approved");
+        $responsibleList = array_column($responsibleList,"id_sre");
+        $this->_status = $statusId;
+        $this->save();
+        $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $wareHouse = Model_warehouse::getByProjectId($this->_id);
+        if(!$wareHouse instanceof Model_warehouse)
+        {
+            $this->startWarehouseProcess($entryDate);
+        }
+    }
 }

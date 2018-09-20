@@ -360,7 +360,7 @@ class ProjectStatus extends PrivateController
 
             $project->setStatus($statusId);
             $project->save();
-            $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
+            $project->saveConstructionAssignments(input, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
             $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");

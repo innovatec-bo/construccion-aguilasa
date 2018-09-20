@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <form role="form" method="post" name="project-add-form" data-parsley-validate>
+                    <form role="form" method="post" name="project-add-form" data-parsley-validate data-parsley-excluded="input[disabled]">
                         <input type="hidden" name="project-id" value="">
                         <div class="row">
                             <div class="col-md-3">
@@ -153,6 +153,82 @@
                                         <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="instant-approvement" value="1" <?php echo set_checkbox('instant-approvement', '1'); ?>>Voy a aprobar este proyecto
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="well well-lg hide" id="approvement-section">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Fecha de aprobacion</label>
+                                                <div class="input-group date date-time-picker">
+                                                    <input name="approved-entry-date" readonly="" class="form-control" required="" data-parsley-group="approved" data-parsley-errors-container="#error-approved-entry-date">
+                                                    <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                                </div>
+                                                <div id="error-approved-entry-date"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-inline">
+                                        <div class="col-md-12">
+                                            <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>
+                                            <div class="form-group">
+                                                <em>Diseño</em><br>
+                                                <input class="form-control input-masked" value="" name="design-budget" placeholder="Diseño" required="" data-parsley-group="approved" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                            </div>
+                                            <div class="form-group">
+                                                <em>Construccion</em><br>
+                                                <input class="form-control input-masked" value="" name="building-budget" placeholder="Construccion" required="" data-parsley-group="approved" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                            </div>
+                                            <div class="form-group">
+                                                <em>Transporte</em><br>
+                                                <input class="form-control input-masked" value="" name="transportation-budget" placeholder="Transporte" required="" data-parsley-group="approved" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                            </div>
+                                            <div class="form-group">
+                                                <em>Linea viva</em><br>
+                                                <input class="form-control input-masked" value="" name="live-line-budget" placeholder="Linea viva" required="" data-parsley-group="approved" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                            </div>
+                                            <div class="form-group">
+                                                <em>Derecho de via</em><br>
+                                                <input class="form-control input-masked" value="" name="right-of-way-budget" placeholder="Derecho de via" required="" data-parsley-group="approved" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Nro. de grafo</label>
+                                            <div class="form-group">
+                                                <input class="form-control" value="" name="graph-number-budget" placeholder="Grafo" data-parsley-type="number" required="" data-parsley-group="approved">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Nro. de reserva</label>
+                                            <div class="form-group">
+                                                <input class="form-control" value="" name="reservation-number-budget" placeholder="Reservacion" data-parsley-type="number" required="" data-parsley-group="approved">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Observaciones</label>
+                                        <textarea class="form-control" name="approved-detail" rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>

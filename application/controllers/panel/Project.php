@@ -52,6 +52,7 @@ class Project extends PrivateController
         $this->_validateFeature('project_add');
 
         /** View complements */
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
@@ -68,7 +69,12 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
-
+        $formData = $this->input->post();
+        if(isset($formData["instant-approvement"]))
+        {
+            $this->form_validation->set_rules('graph-number-budget', 'Numero de grafo', 'trim|required|numeric');
+            $this->form_validation->set_rules('reservation-number-budget', 'Numero de reserva', 'trim|required|numeric');
+        }
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
         $data["projectSystems"] = $this->_projectSystems;
@@ -78,7 +84,7 @@ class Project extends PrivateController
         }
         else
         {
-            $formData = $this->input->post();
+//            $formData = $this->input->post();
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
             $projectEntryDate = $formData["project-entry-date"];
@@ -221,5 +227,42 @@ class Project extends PrivateController
             $result = FALSE;
         }
         return $result;
+    }
+
+    private function saveApproved()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $design = $formData["design"];
+        $design = str_replace(",","",$design);
+        $building = $formData["building"];
+        $building = str_replace(",","",$building);
+        $graphNumber = $formData["graphNumber"];
+        $reservationNumber = $formData["reservationNumber"];
+        $transportation = $formData["transportation"];
+        $transportation = str_replace(",","",$transportation);
+        $liveLine = $formData["liveLine"];
+        $liveLine = str_replace(",","",$liveLine);
+        $rightOfWay = $formData["rightOfWay"];
+        $rightOfWay = str_replace(",","",$rightOfWay);
+        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $wareHouse = Model_warehouse::getByProjectId($project->getId());
+        if(!$wareHouse instanceof Model_warehouse)
+        {
+            $project->startWarehouseProcess($entryDate);
+        }
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
     }
 }
