@@ -69,12 +69,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
-        $formData = $this->input->post();
-        if(isset($formData["instant-approvement"]))
-        {
-            $this->form_validation->set_rules('graph-number-budget', 'Numero de grafo', 'trim|required|numeric');
-            $this->form_validation->set_rules('reservation-number-budget', 'Numero de reserva', 'trim|required|numeric');
-        }
+
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
         $data["projectSystems"] = $this->_projectSystems;
@@ -84,7 +79,7 @@ class Project extends PrivateController
         }
         else
         {
-//            $formData = $this->input->post();
+            $formData = $this->input->post();
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
             $projectEntryDate = $formData["project-entry-date"];
@@ -122,6 +117,21 @@ class Project extends PrivateController
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
             $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,$statusDetail,$projectEntryDate,$responsibleList);
+
+            if(isset($formData["instant-approvement"]))
+            {
+                $entryDate = $formData["approved-entry-date"];
+                $statusDetail = $formData["approved-detail"];
+                $design = $formData["design-budget"];
+                $building = $formData["building-budget"];
+                $graphNumber = $formData["graph-number-budget"];
+                $reservationNumber = $formData["reservation-number-budget"];
+                $transportation = $formData["transportation-budget"];
+                $liveLine = $formData["live-line-budget"];
+                $rightOfWay = $formData["right-of-way-budget"];
+                $project->approveThisProject($entryDate, $statusDetail, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay);
+            }
+
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
             redirect(base_url("panel/Project"));
         }
