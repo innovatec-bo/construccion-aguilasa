@@ -232,7 +232,7 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    function approveThisProject($entryDate = "", $statusDetail = "", $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0,$rightOfWay = 0)
+    public function approveThisProject($entryDate = "", $statusDetail = "", $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0,$rightOfWay = 0)
     {
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
@@ -253,5 +253,88 @@ class Model_project extends Model_project_base
         {
             $this->startWarehouseProcess($entryDate);
         }
+    }
+
+    public static function getWorkflowDetail()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        SELECT
+            id_pro,
+            code_pro,
+            entry_date_pro,
+            cre_fiscal_pro,
+            system_pro,
+            management_by_pro,
+            points_pro,
+            distance_pro,
+            quality_level_pro,
+            cre_design_completion_date_pro,
+            cre_building_completion_date_pro,
+            stakes.entry_date stake_date,	
+            stakes.responsible stake_responsible,
+            returned.entry_date returned_date,
+            digitization.entry_date digitization_date,
+            drawing.entry_date drawing_date,
+            schedulee.entry_date schedule_date,
+            already_sent.entry_date already_sent_date,
+            approved.entry_date approved_date,
+            canceled.entry_date canceled_date,
+            '' rectification_date
+            
+        FROM
+            wfl_projects
+        LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(20).") returned on returned.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(3).") digitization on digitization.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(5).") drawing on drawing.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(6).") schedulee on schedulee.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro
+        ";
+        echo "<pre>";var_dump($sql);exit;
+    }
+
+    /**
+     * This method is a complement of getWorkflowDetail method.
+     * @param $statusId
+     * @return string
+     */
+    private static function _statusDetailQuery($statusId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        select 
+			id_psl,
+			project_id_psl,
+			status_id_psl,	
+			filter.entry_date,
+			GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+		from 
+			wfl_project_status_log
+		RIGHT JOIN(
+				SELECT			
+					project_id_psl project_id,
+					max(manual_entry_date_psl) entry_date
+				FROM
+					wfl_project_status_log
+				WHERE		
+				status_id_psl = ".$ci->db->escape($statusId)."
+				and deleted_psl != 1
+				
+				GROUP BY project_id_psl
+		) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+		LEFT JOIN wfl_projects on id_pro = project_id_psl
+		LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+		LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+		LEFT JOIN sec_users on user_id_sre = id_usr
+		where deleted_pro != 1
+		GROUP BY id_psl
+        ";
+        return $sql;
     }
 }
