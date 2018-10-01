@@ -282,8 +282,33 @@ class Model_project extends Model_project_base
             already_sent.entry_date already_sent_date,
             approved.entry_date approved_date,
             canceled.entry_date canceled_date,
-            '' rectification_date
-            
+            'TO DO' rectification_date,
+            approved.design_prb design_budget,
+            approved.building_prb building_budget,
+            approved.transportation_prb transportation_budget,
+            approved.live_line_prb live_line_budget,
+            approved.right_of_way_prb right_of_way_budget,
+            record_building_materials.entry_date record_building_materials_date,                      
+            get_materials.entry_date get_materials_date,
+            deliver_materials.entry_date deliver_materials_date,
+            materials_reception.entry_date materials_reception_date,
+            assign_to.entry_date assign_to_date,
+            assign_to.responsible assign_to_responsible,
+            assign_to.live_line_cas live_line_assigned,
+            assign_to.power_down_cas power_down_assigned,
+            assign_to.maneuver_cas maneuver_assigned,
+            assign_to.start_date_cas start_date_assigned,
+            assign_to.end_date_cas end_date_assigned,
+            assign_to.estimated_time_cas estimated_time_assigned,
+            in_progress.entry_date in_progress_date,
+            paused.entry_date paused_date,
+            'TO DO' percentage_paused,
+            stopped.entry_date stopped_date,
+            'TO DO' percentage_stopped,
+            as_built.entry_date as_built_date,
+            conciliation_reception.entry_date conciliation_reception_date,
+            cre_return_order.entry_date cre_return_order_date,
+            project_return_materials.entry_date project_return_materials_date
         FROM
             wfl_projects
         LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
@@ -294,6 +319,19 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro
+        LEFT JOIN (".static::_warehouseStatusDetailQuery(23).") record_building_materials on record_building_materials.project_id_war = id_pro
+        LEFT JOIN (".static::_warehouseStatusDetailQuery(24).") get_materials on get_materials.project_id_war = id_pro
+        LEFT JOIN (".static::_warehouseStatusDetailQuery(25).") deliver_materials on deliver_materials.project_id_war = id_pro
+        LEFT JOIN (".static::_warehouseStatusDetailQuery(26).") materials_reception on materials_reception.project_id_war = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(27).") in_progress on in_progress.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(34).") conciliation_reception on conciliation_reception.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(38).") cre_return_order on cre_return_order.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro
         ";
         echo "<pre>";var_dump($sql);exit;
     }
@@ -313,27 +351,77 @@ class Model_project extends Model_project_base
 			project_id_psl,
 			status_id_psl,	
 			filter.entry_date,
-			GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible
+			GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+			design_prb,
+			building_prb,			
+			transportation_prb,
+			live_line_prb,
+			right_of_way_prb,
+			(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+			start_date_cas,
+			end_date_cas,
+			estimated_time_cas,
+			live_line_cas,
+			power_down_cas,
+			maneuver_cas
 		from 
 			wfl_project_status_log
 		RIGHT JOIN(
-				SELECT			
-					project_id_psl project_id,
-					max(manual_entry_date_psl) entry_date
-				FROM
-					wfl_project_status_log
-				WHERE		
-				status_id_psl = ".$ci->db->escape($statusId)."
-				and deleted_psl != 1
-				
-				GROUP BY project_id_psl
+            SELECT			
+                project_id_psl project_id,
+                max(manual_entry_date_psl) entry_date
+            FROM
+                wfl_project_status_log
+            WHERE		
+            status_id_psl = ".$ci->db->escape($statusId)."
+            and deleted_psl != 1
+            
+            GROUP BY project_id_psl
 		) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
 		LEFT JOIN wfl_projects on id_pro = project_id_psl
 		LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
 		LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
 		LEFT JOIN sec_users on user_id_sre = id_usr
+		LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		where deleted_pro != 1
 		GROUP BY id_psl
+        ";
+        return $sql;
+    }
+
+    /**
+     * @param $statusId
+     * @return string
+     */
+    private static function _warehouseStatusDetailQuery($statusId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        		select 
+			id_wsl,
+			project_id_war,
+			log_detail_wsl,
+			warehouse_id_wsl,
+			status_id_wsl,	
+			filter.entry_date
+		from 
+			wfl_warehouse_status_log
+		RIGHT JOIN(
+				SELECT			
+					warehouse_id_wsl warehouse_id,
+					max(manual_entry_date_wsl) entry_date
+				FROM
+					wfl_warehouse_status_log
+				WHERE		
+				status_id_wsl = ".$ci->db->escape($statusId)."
+				and deleted_wsl != 1				
+				GROUP BY warehouse_id_wsl
+		) as filter on filter.entry_date = manual_entry_date_wsl and filter.warehouse_id = warehouse_id_wsl
+		LEFT JOIN wfl_warehouses on id_war = warehouse_id_wsl		
+		where deleted_war != 1
+		GROUP BY id_wsl
         ";
         return $sql;
     }
