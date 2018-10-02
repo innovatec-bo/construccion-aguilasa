@@ -308,7 +308,18 @@ class Model_project extends Model_project_base
             as_built.entry_date as_built_date,
             conciliation_reception.entry_date conciliation_reception_date,
             cre_return_order.entry_date cre_return_order_date,
-            project_return_materials.entry_date project_return_materials_date
+            project_return_materials.entry_date project_return_materials_date,
+            payment_order_registered.entry_date payment_order_registered_date,
+            payment_order_registered.order_number_pao payment_order_registered_order_number,
+            payment_order_registered.design_budget_pop payment_order_registered_design_budget,
+            payment_order_registered.transportation_budget_pop payment_order_registered_transportation_budget,
+            payment_order_registered.live_line_budget_pop payment_order_registered_live_line_budget,
+			payment_order_registered.building_budget_pop payment_order_registered_building_budget,
+            payment_order_registered.right_of_way_budget_pop payment_order_registered_right_of_way_budget,
+            payment_order_registered.total_real_budget payment_order_registered_total_real_budget,
+            payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
+            payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,
+            payment_order_has_been_settled.entry_date payment_order_has_been_settled_date
         FROM
             wfl_projects
         LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
@@ -330,8 +341,11 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(34).") conciliation_reception on conciliation_reception.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro
-        LEFT JOIN (".static::_statusDetailQuery(38).") cre_return_order on cre_return_order.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(37).") cre_return_order on cre_return_order.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro
+        LEFT JOIN (".static::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro
+        LEFT JOIN (".static::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
+        LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
         ";
         echo "<pre>";var_dump($sql);exit;
     }
@@ -425,4 +439,51 @@ class Model_project extends Model_project_base
         ";
         return $sql;
     }
+
+	/**
+	 * @param $statusId
+	 * @return string
+	 */
+	private static function _paymentOrderStatusDetailQuery($statusId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+		select 
+			id_pos,
+            order_number_pao,
+            filter.entry_date,
+			project_id_pop,
+            design_budget_pop,
+            transportation_budget_pop,
+            live_line_budget_pop,
+			building_budget_pop,
+            right_of_way_budget_pop,
+            ifnull(design_budget_pop, 0) + ifnull(transportation_budget_pop, 0) + ifnull(live_line_budget_pop,0) + ifnull(building_budget_pop, 0) + ifnull(right_of_way_budget_pop, 0) total_real_budget,
+            invoice_number_pao,			
+            log_detail_pos,
+			payment_order_id_pos,
+			status_id_pos
+			
+		from 
+			wfl_payment_orders_status_log
+		RIGHT JOIN(
+				SELECT			
+					payment_order_id_pos payment_order_id,
+					max(manual_entry_date_pos) entry_date
+				FROM
+					wfl_payment_orders_status_log
+				WHERE		
+				status_id_pos = ".$ci->db->escape($statusId)."
+				and deleted_pos != 1				
+				GROUP BY payment_order_id_pos
+		) as filter on filter.entry_date = manual_entry_date_pos and filter.payment_order_id = payment_order_id_pos
+		LEFT JOIN wfl_payment_orders on id_pao = payment_order_id_pos		
+        left join wfl_payment_orders_projects on order_id_pop = id_pao 
+		where 
+			deleted_pao != 1
+            and deleted_pop != 1		
+        ";
+		return $sql;
+	}
 }
