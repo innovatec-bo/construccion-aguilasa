@@ -387,8 +387,10 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = $formData["rightOfWay"];
         $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
+        $secondaryCode = $formData["secondaryCode"];
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
+        $project->setSecondaryCode($secondaryCode);
         $project->save();
         $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());

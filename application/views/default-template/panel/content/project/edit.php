@@ -33,6 +33,14 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-3">
+                                <label>Codigo secundario</label>
+                                <div class="form-group">
+                                    <input class="form-control" value="<?=set_value('project-secondary-code', $project["secondary_code_pro"])?>" name="project-secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="approved">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6 hide">
                                 <div class="form-group">
                                     <label>Nombre del proyecto</label>
@@ -170,6 +178,26 @@
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Posicion presupuestaria</label>
+                                    <select  class="form-control" name="project-budgetary-position" required>
+                                        <option value="">Elija la posicion presupuestaria</option>
+                                        <?php
+                                        $html = "";
+                                        for ($i = 0; $i<10; $i++)
+                                        {
+                                            $position = ($i+1) * 10;
+                                            $selected = $project["budgetary_position_pro"] == $position?" selected ":"";
+                                            $html .= '<option '.$selected.' value="'.$position.'" >'.$position.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -27,9 +27,11 @@ class Model_project_base extends MY_Model
     protected $_qualityLevel;
     protected $_creDesignCompletionDate;
     protected $_creBuildingCompletionDate;
+    protected $_budgetaryPosition;
+    protected $_secondaryCode;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "")
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -47,6 +49,8 @@ class Model_project_base extends MY_Model
         $this->_qualityLevel = $qualityLevel;
         $this->_creDesignCompletionDate = $creDesignCompletionDate;
         $this->_creBuildingCompletionDate = $creBuildingCompletionDate;
+        $this->_budgetaryPosition = $budgetaryPosition;
+        $this->_secondaryCode = $secondaryCode;
     }
 
     /**
@@ -72,6 +76,8 @@ class Model_project_base extends MY_Model
             "quality_level_pro" => $this->_qualityLevel,
             "cre_design_completion_date_pro" => $this->_creDesignCompletionDate,
             "cre_building_completion_date_pro" => $this->_creBuildingCompletionDate,
+            "budgetary_position_pro" => $this->_budgetaryPosition,
+            "secondary_code_pro" => $this->_secondaryCode,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -110,7 +116,9 @@ class Model_project_base extends MY_Model
                 $object->management_by_pro,
                 $object->quality_level_pro,
                 $object->cre_design_completion_date_pro,
-                $object->cre_building_completion_date_pro
+                $object->cre_building_completion_date_pro,
+                $object->budgetary_position_pro,
+                $object->secondary_code_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -184,9 +192,24 @@ class Model_project_base extends MY_Model
         $this->_creBuildingCompletionDate = $creBuildingCompletionDate;
     }
 
+    public function setBudgetaryPosition($budgetaryPosition)
+    {
+        $this->_budgetaryPosition = $budgetaryPosition;
+    }
+
+    public function setSecondaryCode($secondaryCode)
+    {
+        $this->_secondaryCode = $secondaryCode;
+    }
+
     public function getCode()
     {
         return $this->_projectCode;
+    }
+
+    public function getSecondaryCode()
+    {
+        return $this->_secondaryCode;
     }
 
     public function getStatus()

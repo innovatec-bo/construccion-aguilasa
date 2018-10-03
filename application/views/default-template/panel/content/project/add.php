@@ -158,6 +158,25 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Posicion presupuestaria</label>
+                                    <select  class="form-control" name="project-budgetary-position" required>
+                                        <option value="">Elija la posicion presupuestaria</option>
+                                        <?php
+                                        $html = "";
+                                        for ($i = 0; $i<10; $i++)
+                                        {
+                                            $position = ($i+1) * 10;
+                                            $html .= '<option value="'.$position.'" >'.$position.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <div class="checkbox">
@@ -182,6 +201,14 @@
                                                 </span>
                                                 </div>
                                                 <div id="error-approved-entry-date"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Codigo secundario</label>
+                                            <div class="form-group">
+                                                <input class="form-control" value="" name="secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="approved">
                                             </div>
                                         </div>
                                     </div>
