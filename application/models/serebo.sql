@@ -1916,7 +1916,7 @@ INSERT INTO `wfl_construction_assignments` VALUES ('36', '567', '2018-08-31 10:0
 DROP TABLE IF EXISTS `wfl_incidents`;
 CREATE TABLE `wfl_incidents` (
   `id_inc` bigint(20) NOT NULL AUTO_INCREMENT,
-  `status_log_id_inc` bigint(20) DEFAULT NULL,
+  `status_id_inc` bigint(20) DEFAULT NULL,
   `percentage_inc` smallint(3) DEFAULT NULL,
   `detail_inc` text,
   `manual_entry_date_inc` datetime DEFAULT NULL,
