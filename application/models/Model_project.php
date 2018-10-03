@@ -302,9 +302,9 @@ class Model_project extends Model_project_base
             assign_to.estimated_time_cas estimated_time_assigned,
             in_progress.entry_date in_progress_date,
             paused.entry_date paused_date,
-            'TO DO' percentage_paused,
+            paused.percentage_paused percentage_paused,
             stopped.entry_date stopped_date,
-            'TO DO' percentage_stopped,
+            stopped.percentage_stopped percentage_stopped,
             as_built.entry_date as_built_date,
             conciliation_reception.entry_date conciliation_reception_date,
             cre_return_order.entry_date cre_return_order_date,
@@ -377,7 +377,9 @@ class Model_project extends Model_project_base
 			estimated_time_cas,
 			live_line_cas,
 			power_down_cas,
-			maneuver_cas
+			maneuver_cas,
+			pauseOnIncident.percentage_inc percentage_paused,
+			stopOnIncident.percentage_inc percentage_stopped
 		from 
 			wfl_project_status_log
 		RIGHT JOIN(
@@ -393,6 +395,44 @@ class Model_project extends Model_project_base
             GROUP BY project_id_psl
 		) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
 		LEFT JOIN wfl_projects on id_pro = project_id_psl
+		LEFT JOIN (
+                    select 
+                        wfl_incidents.* 
+                    from 
+                        wfl_incidents
+                    RIGHT JOIN 
+                    (
+                        SELECT
+                            project_id_inc project_id,
+                            MAX(manual_entry_date_inc) AS entry_date
+                        FROM
+                            wfl_incidents
+                        where 
+                            paused_inc = 1
+                        and deleted_inc != 1
+                        GROUP BY
+                            project_id_inc
+                    ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
+                ) pauseOnIncident on pauseOnIncident.project_id_inc = id_pro
+        LEFT JOIN (
+            select 
+                wfl_incidents.* 
+            from 
+                wfl_incidents
+            RIGHT JOIN 
+            (
+                SELECT
+                    project_id_inc project_id,
+                    MAX(manual_entry_date_inc) AS entry_date
+                FROM
+                    wfl_incidents
+                where 
+                    stopped_inc = 1
+                and deleted_inc != 1
+                GROUP BY
+                    project_id_inc
+            ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
+        ) stopOnIncident on stopOnIncident.project_id_inc = id_pro
 		LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
 		LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
 		LEFT JOIN sec_users on user_id_sre = id_usr
