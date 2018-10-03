@@ -29,7 +29,7 @@ class Model_incident extends Model_incident_base
             where 
             ".static::notDeleted()." 
             and project_id_inc = ".$ci->db->escape($projectId)." 
-            and status_log_id_inc = ".$ci->db->escape($statusId)."
+            and status_id_inc = ".$ci->db->escape($statusId)."
             order by manual_entry_date_inc desc
         ";
 

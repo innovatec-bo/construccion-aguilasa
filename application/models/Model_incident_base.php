@@ -17,8 +17,10 @@ class Model_incident_base extends MY_Model
     protected $_detail;
     protected $_manualEntryDate;
     protected $_projectId;
+    protected $_paused;
+    protected $_stopped;
 
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -26,6 +28,8 @@ class Model_incident_base extends MY_Model
         $this->_detail = $detail;
         $this->_manualEntryDate = $manualEntryDate;
         $this->_projectId = $projectId;
+        $this->_paused = $paused;
+        $this->_stopped = $stopped;
     }
 
     /**
@@ -36,11 +40,13 @@ class Model_incident_base extends MY_Model
     {
         $tableAttributes = array(
             "id_inc" => $this->_id,
-            "status_log_id_inc" => $this->_statusLogId,
+            "status_id_inc" => $this->_statusLogId,
             "percentage_inc" => $this->_percentage,
             "detail_inc" => $this->_detail,
             "manual_entry_date_inc" => $this->_manualEntryDate,
             "project_id_inc" => $this->_projectId,
+            "paused_inc" => $this->_paused,
+            "stopped_inc" => $this->_stopped,
             "deleted_inc" => $this->_deleted,
             "createdon_inc" => $this->_createdOn,
             "createdby_inc" => $this->_createdBy,
@@ -65,11 +71,13 @@ class Model_incident_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
-                $object->status_log_id_inc,
+                $object->status_id_inc,
                 $object->percentage_inc,
                 $object->detail_inc,
                 $object->manual_entry_date_inc,
-                $object->project_id_inc
+                $object->project_id_inc,
+                $object->paused_inc,
+                $object->stopped_inc
             );
             $instance->_id = $object->id_inc;
 
@@ -81,5 +89,15 @@ class Model_incident_base extends MY_Model
             $response = $instance;
         }
         return $response;
+    }
+
+    public function setPaused($paused)
+    {
+        $this->_paused = $paused;
+    }
+
+    public function setStopped($stopped)
+    {
+        $this->_stopped = $stopped;
     }
 }

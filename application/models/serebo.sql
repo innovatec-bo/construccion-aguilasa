@@ -241,7 +241,7 @@ DROP TABLE IF EXISTS `wfl_incidents`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wfl_incidents` (
   `id_inc` bigint(20) NOT NULL AUTO_INCREMENT,
-  `status_log_id_inc` bigint(20) DEFAULT NULL,
+  `status_id_inc` bigint(20) DEFAULT NULL,
   `percentage_inc` smallint(3) DEFAULT NULL,
   `detail_inc` text,
   `manual_entry_date_inc` datetime DEFAULT NULL,

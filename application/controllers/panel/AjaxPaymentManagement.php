@@ -163,7 +163,7 @@ class AjaxPaymentManagement extends PrivateController
             $paymentOrder->save();
             $paymentOrder->addStatusToLog($statusId, $detail, $entryDate);
             $paymentOrder->saveProjects($formData["projectList"]);
-            $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!");
+            $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!","paymentOrderId" => $paymentOrder->getId());
             $this->session->set_flashdata("successMessage", "Orden de pago registrada correctamente!");
         }
         echo json_encode($response);exit;

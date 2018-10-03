@@ -549,10 +549,14 @@ class AjaxProjectStatus extends PrivateController
             if($pauseProject == 1)
             {
                 $statusId = 31;//project paused
+                $incident->setPaused(1);
+                $incident->save();
             }
             if($stopProject == 1)
             {
                 $statusId = 30;//project stopped
+                $incident->setStopped(1);
+                $incident->save();
             }
 
             $project->setStatus($statusId);
