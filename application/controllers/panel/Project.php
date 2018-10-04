@@ -69,6 +69,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
+        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|required|numeric');
 
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
@@ -94,6 +95,7 @@ class Project extends PrivateController
             $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
             $managementBy = $formData["management-by"];
             $qualityLevel = $formData["quality-level"];
+
             $creDesignCompletionDate = $formData["cre-design-completion-date"];
             $creDesignCompletionDate = DateTime::createFromFormat('d-m-Y', $creDesignCompletionDate);
             $creDesignCompletionDate = date_format($creDesignCompletionDate, 'Y-m-d');
@@ -103,8 +105,10 @@ class Project extends PrivateController
             $creBuildingCompletionDate = DateTime::createFromFormat('d-m-Y', $creBuildingCompletionDate);
             $creBuildingCompletionDate = date_format($creBuildingCompletionDate, 'Y-m-d');
             $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
+
+            $budgetaryPosition = $formData["project-budgetary-position"];
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition);
             $project->save();
             $statusDetail = "Proyecto enviado a diseño";
             $keyword = "design";
@@ -129,7 +133,8 @@ class Project extends PrivateController
                 $transportation = $formData["transportation-budget"];
                 $liveLine = $formData["live-line-budget"];
                 $rightOfWay = $formData["right-of-way-budget"];
-                $project->approveThisProject($entryDate, $statusDetail, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay);
+                $secondaryCode = $formData["secondary-code"];
+                $project->approveThisProject($entryDate, $statusDetail, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $secondaryCode);
             }
 
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
@@ -151,10 +156,12 @@ class Project extends PrivateController
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-secondary-code', 'Codigo del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
         $this->form_validation->set_rules('project-system', 'sistema', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion', 'trim');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
+        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|required|numeric');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
         $data["lastProjectStatus"] = $getLastProjectStatus;
@@ -170,6 +177,7 @@ class Project extends PrivateController
         {
             $formData = $this->input->post();
 //            $projectCode = $formData["project-code"];
+            $secondaryCode = $formData["project-secondary-code"];
             $projectName = $formData["project-name"];
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
@@ -179,12 +187,14 @@ class Project extends PrivateController
             $qualityLevel = $formData["quality-level"];
             $creDesignCompletionDate = $formData["cre-design-completion-date"];
             $creBuildingCompletionDate = $formData["cre-building-completion-date"];
+            $budgetaryPosition = $formData["project-budgetary-position"];
 
             $project->setProjectName($projectName);
             if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);
             }
+            $project->setSecondaryCode($secondaryCode);
             $project->setCREFiscal($projectCreFiscal);
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);
@@ -192,6 +202,7 @@ class Project extends PrivateController
             $project->setQualityLevel($qualityLevel);
             $project->setCreDesignCompletionDate($creDesignCompletionDate);
             $project->setCreBuildingCompletionDate($creBuildingCompletionDate);
+            $project->setBudgetaryPosition($budgetaryPosition);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")

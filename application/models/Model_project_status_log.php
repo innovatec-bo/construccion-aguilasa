@@ -98,7 +98,8 @@ class Model_project_status_log extends Model_project_status_log_base
             keyword_pst,
             GROUP_CONCAT(
                 CONCAT('{','\"id\":',id_sre,',\"name\":\"',firstname_usr,' ',lastname_usr,'\"}')
-            ) jsonResponsible
+            ) jsonResponsible,
+            secondary_code_pro
         FROM
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
@@ -107,6 +108,7 @@ class Model_project_status_log extends Model_project_status_log_base
         LEFT JOIN wfl_status_log_responsibles on id_psl = status_log_id_slr
         LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         LEFT JOIN sec_users on id_usr = user_id_sre
+        LEFT JOIN  wfl_projects on project_id_psl = id_pro
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."

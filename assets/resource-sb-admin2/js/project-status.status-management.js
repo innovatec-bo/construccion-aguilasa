@@ -506,6 +506,7 @@ function saveApproved(statusId,statusKeyword)
     var liveLine = $("input[name=live-line-budget]").val();
     var rightOfWay = $("input[name=right-of-way-budget]").val();
     var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var secondaryCode = $("input[name=secondary-code]").val();
     var digitization = {
         projectId: projectId,
         entryDate:entryDate,
@@ -518,7 +519,8 @@ function saveApproved(statusId,statusKeyword)
         liveLine:liveLine,
         rightOfWay:rightOfWay,
         statusDetail: statusDetail,
-        responsibleList:responsibleList
+        responsibleList:responsibleList,
+        secondaryCode:secondaryCode
     };
 
     $.ajax({

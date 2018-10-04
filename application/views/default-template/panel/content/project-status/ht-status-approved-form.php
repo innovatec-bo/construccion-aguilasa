@@ -31,6 +31,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Codigo secundario</label>
+                                        <div class="form-group">
+                                            <input class="form-control" value="{{previousEntry.secondary_code_pro}}" name="secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row form-inline">
                                     <div class="col-md-6">
                                         <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>
