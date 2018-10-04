@@ -284,7 +284,8 @@ class Model_project extends Model_project_base
             already_sent.entry_date already_sent_date,
             approved.entry_date approved_date,
             canceled.entry_date canceled_date,
-            'TO DO' rectification_date,
+            rectify_design.entry_date rectify_design_date,
+            rectify_illustration.entry_date rectify_illustration_date,
             approved.design_prb design_budget,
             approved.building_prb building_budget,
             approved.transportation_prb transportation_budget,
@@ -332,12 +333,14 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(13).") rectify_design on rectify_design.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(14).") rectify_illustration on rectify_illustration.project_id_psl = id_pro
         LEFT JOIN (".static::_warehouseStatusDetailQuery(23).") record_building_materials on record_building_materials.project_id_war = id_pro
         LEFT JOIN (".static::_warehouseStatusDetailQuery(24).") get_materials on get_materials.project_id_war = id_pro
         LEFT JOIN (".static::_warehouseStatusDetailQuery(25).") deliver_materials on deliver_materials.project_id_war = id_pro
         LEFT JOIN (".static::_warehouseStatusDetailQuery(26).") materials_reception on materials_reception.project_id_war = id_pro
         LEFT JOIN (".static::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro
-        LEFT JOIN (".static::_statusDetailQuery(27).") in_progress on in_progress.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(29).") in_progress on in_progress.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro
