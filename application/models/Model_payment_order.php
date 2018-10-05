@@ -61,7 +61,10 @@ class Model_payment_order extends Model_payment_order_base
                 $responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
                 $responsibleList = array_column($responsibleList, "id");
                 //Saving real budget
-                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, 40, "Se definieron los importes reales", $this->_entryDate, $responsibleList);
+                $entryDate = strtotime('2018-10-01 12:27:40');
+                $entryDate = date('Y-m-d', $entryDate);
+                $entryDate = $entryDate." ".date("H:i:s");
+                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, 40, "Se definieron los importes reales", $entryDate, $responsibleList);
             }
         }
         if(count($arrayToInsert) > 0)
