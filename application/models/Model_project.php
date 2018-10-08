@@ -268,8 +268,25 @@ class Model_project extends Model_project_base
             code_pro,
             entry_date_pro,
             cre_fiscal_pro,
-            system_pro,
-            management_by_pro,
+            CASE
+                WHEN system_pro = 1 then 'Sistema Santa Cruz'
+                WHEN system_pro = 2 then 'Sistema velasco'
+                WHEN system_pro = 3 then 'Sistema misiones'
+                WHEN system_pro = 4 then 'Sistema camiri'
+                WHEN system_pro = 5 then 'Sistema German bush'
+                WHEN system_pro = 6 then 'Sistema robore'
+                WHEN system_pro = 7 then 'Sistema valles'
+            END system_pro,
+            CASE
+                WHEN management_by_pro = 1 then 'Sistema Santa Cruz'
+                WHEN management_by_pro = 2 then 'Sistema velasco'
+                WHEN management_by_pro = 3 then 'Sistema misiones'
+                WHEN management_by_pro = 4 then 'Sistema camiri'
+                WHEN management_by_pro = 5 then 'Sistema German bush'
+                WHEN management_by_pro = 6 then 'Sistema robore'
+                WHEN management_by_pro = 7 then 'Sistema valles'
+            END management_by_pro,
+            address_pro,
             points_pro,
             distance_pro,
             quality_level_pro,
@@ -277,10 +294,16 @@ class Model_project extends Model_project_base
             cre_building_completion_date_pro,
             stakes.entry_date stake_date,	
             stakes.responsible stake_responsible,
+            digitization.points_quantity_prp digitization_points_quantity,
+            digitization.distance_prp digitization_distance,
+            rd_digitization.points_quantity_prp rd_digitization_points_quantity,
+            rd_digitization.distance_prp rd_digitization_distance,
             returned.entry_date returned_date,
             digitization.entry_date digitization_date,
             drawing.entry_date drawing_date,
             schedulee.entry_date schedule_date,
+            project_start_pro schedule_start,
+            project_end_pro schedule_end,
             already_sent.entry_date already_sent_date,
             approved.entry_date approved_date,
             canceled.entry_date canceled_date,
@@ -291,7 +314,8 @@ class Model_project extends Model_project_base
             approved.transportation_prb transportation_budget,
             approved.live_line_prb live_line_budget,
             approved.right_of_way_prb right_of_way_budget,
-            record_building_materials.entry_date record_building_materials_date,                      
+            ifnull(approved.design_prb, 0) + ifnull(approved.building_prb, 0) + ifnull(approved.transportation_prb, 0) + ifnull(approved.live_line_prb, 0) + ifnull(approved.right_of_way_prb, 0) total_approved,               
+            record_building_materials.entry_date record_building_materials_date,
             get_materials.entry_date get_materials_date,
             deliver_materials.entry_date deliver_materials_date,
             materials_reception.entry_date materials_reception_date,
@@ -304,12 +328,14 @@ class Model_project extends Model_project_base
             assign_to.end_date_cas end_date_assigned,
             assign_to.estimated_time_cas estimated_time_assigned,
             in_progress.entry_date in_progress_date,
+            completed.entry_date completed_date,
             paused.entry_date paused_date,
             paused.percentage_paused percentage_paused,
             stopped.entry_date stopped_date,
             stopped.percentage_stopped percentage_stopped,
             as_built.entry_date as_built_date,
             conciliation_reception.entry_date conciliation_reception_date,
+            conciliation_shipment.entry_date conciliation_shipment_date,
             cre_return_order.entry_date cre_return_order_date,
             project_return_materials.entry_date project_return_materials_date,
             payment_order_registered.entry_date payment_order_registered_date,
@@ -326,6 +352,7 @@ class Model_project extends Model_project_base
         FROM
             wfl_projects
         LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(16).") rd_digitization on rd_digitization.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(20).") returned on returned.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(3).") digitization on digitization.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(5).") drawing on drawing.project_id_psl = id_pro
@@ -341,6 +368,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_warehouseStatusDetailQuery(26).") materials_reception on materials_reception.project_id_war = id_pro
         LEFT JOIN (".static::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(29).") in_progress on in_progress.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(32).") completed on completed.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro
@@ -384,7 +412,9 @@ class Model_project extends Model_project_base
 			power_down_cas,
 			maneuver_cas,
 			pauseOnIncident.percentage_inc percentage_paused,
-			stopOnIncident.percentage_inc percentage_stopped
+			stopOnIncident.percentage_inc percentage_stopped,
+			points_quantity_prp,
+			distance_prp
 		from 
 			wfl_project_status_log
 		RIGHT JOIN(
@@ -443,6 +473,7 @@ class Model_project extends Model_project_base
 		LEFT JOIN sec_users on user_id_sre = id_usr
 		LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
+		left join wfl_project_points on status_log_id_prp = id_psl
 		where deleted_pro != 1
 		GROUP BY id_psl
         ";
