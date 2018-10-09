@@ -15,7 +15,6 @@ class Home extends PrivateController
 
     public function index()
     {
-        Model_project::getWorkflowDetail();exit;
         $this->_validateFeature("home");
         $this->_loadPanelView('home/index');
     }

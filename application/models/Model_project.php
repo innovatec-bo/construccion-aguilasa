@@ -562,4 +562,39 @@ class Model_project extends Model_project_base
         ";
 		return $sql;
 	}
+
+	public static function getNewProjectsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT 	
+            projects.year 'year',	
+            count(CASE WHEN month = 1 THEN id_pro END) 'january',
+            count(CASE WHEN month = 2 THEN id_pro END) 'february',
+            count(CASE WHEN month = 3 THEN id_pro END) 'march',
+            count(CASE WHEN month = 4 THEN id_pro END) 'april',
+            count(CASE WHEN month = 5 THEN id_pro END) 'may',
+            count(CASE WHEN month = 6 THEN id_pro END) 'june',
+            count(CASE WHEN month = 7 THEN id_pro END) 'july',
+            count(CASE WHEN month = 8 THEN id_pro END) 'august',
+            count(CASE WHEN month = 9 THEN id_pro END) 'september',
+            count(CASE WHEN month = 10 THEN id_pro END) 'october',
+            count(CASE WHEN month = 11 THEN id_pro END) 'november',
+            count(CASE WHEN month = 12 THEN id_pro END) 'december'
+        FROM (
+            SELECT 
+                wfl_projects.*,
+            EXTRACT(YEAR  FROM entry_date_pro) year,
+            EXTRACT(MONTH FROM entry_date_pro) month
+                  FROM wfl_projects
+          ) projects
+        WHERE
+        deleted_pro != 1
+        GROUP BY EXTRACT(YEAR FROM entry_date_pro)
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

@@ -67,6 +67,13 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form name="report" action="<?=base_url("panel/Project/getNewProjectsByMonthAndYear")?>" method="post">
+                <input type="submit" value="get report">
+            </form>
+        </div>
+    </div>
     <!-- /.row -->
     <!-- /.row -->
 </div>

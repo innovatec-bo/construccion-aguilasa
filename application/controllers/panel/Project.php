@@ -286,4 +286,10 @@ class Project extends PrivateController
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
     }
+
+    public function getNewProjectsByMonthAndYear()
+    {
+        $excel = new ExcelNewProjectsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
 }
