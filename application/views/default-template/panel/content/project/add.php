@@ -55,6 +55,19 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Fecha de folder</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input name="project-folder-date" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
@@ -161,7 +174,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Posicion presupuestaria</label>
-                                    <select  class="form-control" name="project-budgetary-position" required>
+                                    <select  class="form-control" name="project-budgetary-position">
                                         <option value="">Elija la posicion presupuestaria</option>
                                         <?php
                                         $html = "";

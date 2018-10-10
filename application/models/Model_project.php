@@ -8,9 +8,9 @@
 
 class Model_project extends Model_project_base
 {
-    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0, $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "")
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0, $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "")
     {
-        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode);
+        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode, $folderDate);
     }
 
     public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
@@ -183,6 +183,19 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    public static function getBySecondaryCode($secondaryCode)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+          select * from ".static::TABLE_NAME." where ".static::notDeleted()." and secondary_code_pro = ".$ci->db->escape($secondaryCode)." 
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
+
     public function startWarehouseProcess($entryDate)
     {
         $warehouse = new Model_warehouse($this->_id);
@@ -254,5 +267,90 @@ class Model_project extends Model_project_base
         {
             $this->startWarehouseProcess($entryDate);
         }
+    }
+    public static function projectCodeDuplicated($projectCode, $projectId = NULL)
+    {
+        $alreadyExist = FALSE;
+        //add project
+        if(is_null($projectId))
+        {
+            $project = static::getByCode($projectCode);
+        }
+        //edit project
+        else
+        {
+            $project = static::getByProjectCodeAndNotProjectId($projectCode, $projectId);
+        }
+
+        if($project instanceof Model_project)
+        {
+            $alreadyExist = TRUE;
+        }
+
+        return $alreadyExist;
+    }
+
+    public static function getByProjectCodeAndNotProjectId($projectCode, $projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+                wfl_projects.*
+            FROM
+                wfl_projects
+            WHERE
+            code_pro = ".$ci->db->escape($projectCode)."
+            and id_pro != ".$ci->db->escape($projectId)."
+            and deleted_pro != 1
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
+
+    public static function projectSecondaryCodeDuplicated($secondaryCode, $projectId = NULL)
+    {
+        $alreadyExist = FALSE;
+        //add project
+        if(is_null($projectId))
+        {
+            $project = static::getBySecondaryCode($secondaryCode);
+        }
+        //edit project
+        else
+        {
+            $project = static::getBySecondaryCodeAndNotProjectId($secondaryCode, $projectId);
+        }
+
+        if($project instanceof Model_project)
+        {
+            $alreadyExist = TRUE;
+        }
+
+        return $alreadyExist;
+    }
+
+    public static function getBySecondaryCodeAndNotProjectId($secondaryCode, $projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+                wfl_projects.*
+            FROM
+                wfl_projects
+            WHERE
+            secondary_code_pro = ".$ci->db->escape($secondaryCode)."
+            and id_pro != ".$ci->db->escape($projectId)."
+            and deleted_pro != 1
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
     }
 }
