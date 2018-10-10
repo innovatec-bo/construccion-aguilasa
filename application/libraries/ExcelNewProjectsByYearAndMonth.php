@@ -17,10 +17,10 @@ class ExcelNewProjectsByYearAndMonth
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
-            ->setTitle("Summary report")
+            ->setTitle("New projects by year and month")
             ->setSubject("Project report")
-            ->setDescription("Report generated on ".date("Y-m-d H:i:s"))
-            ->setKeywords("Report detail")
+            ->setDescription("This report allow see the new projects detailed by year and month. Report generated on ".date("Y-m-d H:i:s"))
+            ->setKeywords("report new projects month year")
             ->setCategory("Report");
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A1', "AÑO")

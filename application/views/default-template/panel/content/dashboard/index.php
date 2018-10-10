@@ -70,7 +70,10 @@
     <div class="row">
         <div class="col-md-12">
             <form name="report" action="<?=base_url("panel/Project/getNewProjectsByMonthAndYear")?>" method="post">
-                <input type="submit" value="get report">
+                <input type="submit" value="Nuevos proyectos">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+                <input type="submit" value="Workflow">
             </form>
         </div>
     </div>

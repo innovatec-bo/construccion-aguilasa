@@ -23,12 +23,12 @@
                 </div>
                 <div class="panel-body">
                     <form role="form" method="post" name="proyect-edit-form" data-parsley-validate>
-                        <input type="hidden" name="project-id" value="">
+                        <input type="hidden" name="project-id" value="<?=$project["id_pro"]?>">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Codigo</label>
-                                    <input class="form-control" readonly value="<?=set_value('project-code', $project["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
+                                    <input class="form-control" value="<?=set_value('project-code', $project["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
                                 </div>
                             </div>
                         </div>
@@ -63,6 +63,28 @@
                                         }
                                         ?>
                                         <input name="project-entry-date" value="<?=set_value('project-entry-date', $entryDate)?>" readonly class="form-control" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Fecha de folder</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <?php
+                                        $folderDate = "";
+                                        if(isset($project["folder_date_pro"]))
+                                        {
+                                            $folderDate = $project["folder_date_pro"];
+                                            $folderDate = DateTime::createFromFormat('Y-m-d H:i:s', $folderDate);
+                                            $folderDate = date_format($folderDate, 'd-m-Y');
+                                        }
+                                        ?>
+                                        <input name="project-folder-date" value="<?=set_value('project-folder-date', $folderDate)?>" readonly class="form-control" />
                                         <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -185,7 +207,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Posicion presupuestaria</label>
-                                    <select  class="form-control" name="project-budgetary-position" required>
+                                    <select  class="form-control" name="project-budgetary-position">
                                         <option value="">Elija la posicion presupuestaria</option>
                                         <?php
                                         $html = "";

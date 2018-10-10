@@ -63,13 +63,14 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim');
         $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal de CRE', 'trim|required');
         $this->form_validation->set_rules('project-system', 'Sistema', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion/Ubicacion', 'trim|required');
         $this->form_validation->set_rules('project-points', 'Cantidad de puntos', 'trim|required|numeric');
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
-        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|required|numeric');
+        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
 
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
@@ -83,10 +84,17 @@ class Project extends PrivateController
             $formData = $this->input->post();
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
+
             $projectEntryDate = $formData["project-entry-date"];
             $projectEntryDate = DateTime::createFromFormat('d-m-Y', $projectEntryDate);
             $projectEntryDate = date_format($projectEntryDate, 'Y-m-d');
             $projectEntryDate = $projectEntryDate." ".date("H:i:s");
+
+            $projectFolderDate = $formData["project-folder-date"];
+            $projectFolderDate = DateTime::createFromFormat('d-m-Y', $projectFolderDate);
+            $projectFolderDate = date_format($projectFolderDate, 'Y-m-d');
+            $projectFolderDate = $projectFolderDate." ".date("H:i:s");
+
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
@@ -108,7 +116,7 @@ class Project extends PrivateController
 
             $budgetaryPosition = $formData["project-budgetary-position"];
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate);
             $project->save();
             $statusDetail = "Proyecto enviado a diseño";
             $keyword = "design";
@@ -155,13 +163,14 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.edit', TRUE);
 
         /** Server Side Validations **/
-        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required');
-        $this->form_validation->set_rules('project-secondary-code', 'Codigo del proyecto', 'trim|required');
+        $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
+        $this->form_validation->set_rules('project-secondary-code', 'Codigo del proyecto', 'trim|required|callback_validate_secondary_code');
+        $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim|required');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
         $this->form_validation->set_rules('project-system', 'sistema', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion', 'trim');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
-        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|required|numeric');
+        $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
         $data["lastProjectStatus"] = $getLastProjectStatus;
@@ -179,14 +188,29 @@ class Project extends PrivateController
 //            $projectCode = $formData["project-code"];
             $secondaryCode = $formData["project-secondary-code"];
             $projectName = $formData["project-name"];
+
+            $folderDate = $formData["project-folder-date"];
+            $folderDate = DateTime::createFromFormat('d-m-Y', $folderDate);
+            $folderDate = date_format($folderDate, 'Y-m-d');
+            $folderDate = $folderDate." ".date("H:i:s");
+
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
             $projectAddress = $formData["project-address"];
             $projectStatus = $formData["project-status"];
             $managementBy = $formData["management-by"];
             $qualityLevel = $formData["quality-level"];
+
             $creDesignCompletionDate = $formData["cre-design-completion-date"];
+            $creDesignCompletionDate = DateTime::createFromFormat('d-m-Y', $creDesignCompletionDate);
+            $creDesignCompletionDate = date_format($creDesignCompletionDate, 'Y-m-d');
+            $creDesignCompletionDate = $creDesignCompletionDate." ".date("H:i:s");
+
             $creBuildingCompletionDate = $formData["cre-building-completion-date"];
+            $creBuildingCompletionDate = DateTime::createFromFormat('d-m-Y', $creBuildingCompletionDate);
+            $creBuildingCompletionDate = date_format($creBuildingCompletionDate, 'Y-m-d');
+            $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
+
             $budgetaryPosition = $formData["project-budgetary-position"];
 
             $project->setProjectName($projectName);
@@ -195,6 +219,7 @@ class Project extends PrivateController
                 $project->setStatus($projectStatus);
             }
             $project->setSecondaryCode($secondaryCode);
+            $project->setFolderDate($folderDate);
             $project->setCREFiscal($projectCreFiscal);
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);
@@ -239,12 +264,28 @@ class Project extends PrivateController
     public function validate_code()
     {
         $formData = $this->input->post();
+        $projectId = isset($formData["project-id"])?$formData["project-id"]:"";
         $code = isset($formData["project-code"])?$formData["project-code"]:"";
-        $project = Model_project::getByCode($code);
+        $isDuplicated = Model_project::projectCodeDuplicated($code, $projectId);
         $result = TRUE;
-        if($project instanceof Model_project)
+        if($isDuplicated)
         {
             $this->form_validation->set_message('validate_code', 'Ya existe un proyecto con el codigo '.$code);
+            $result = FALSE;
+        }
+        return $result;
+    }
+
+    public function validate_secondary_code()
+    {
+        $formData = $this->input->post();
+        $projectId = isset($formData["project-id"])?$formData["project-id"]:"";
+        $code = isset($formData["project-secondary-code"])?$formData["project-secondary-code"]:"";
+        $isDuplicated = Model_project::projectSecondaryCodeDuplicated($code, $projectId);
+        $result = TRUE;
+        if($isDuplicated)
+        {
+            $this->form_validation->set_message('validate_secondary_code', 'Ya existe un proyecto con ese codigo secundario '.$code);
             $result = FALSE;
         }
         return $result;
@@ -290,6 +331,12 @@ class Project extends PrivateController
     public function getNewProjectsByMonthAndYear()
     {
         $excel = new ExcelNewProjectsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
+
+    public function getProjectWorkFlowReport()
+    {
+        $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->getReport();
     }
 }

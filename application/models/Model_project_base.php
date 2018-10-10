@@ -29,9 +29,10 @@ class Model_project_base extends MY_Model
     protected $_creBuildingCompletionDate;
     protected $_budgetaryPosition;
     protected $_secondaryCode;
+    protected $_folderDate;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "")
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -51,6 +52,7 @@ class Model_project_base extends MY_Model
         $this->_creBuildingCompletionDate = $creBuildingCompletionDate;
         $this->_budgetaryPosition = $budgetaryPosition;
         $this->_secondaryCode = $secondaryCode;
+        $this->_folderDate = $folderDate;
     }
 
     /**
@@ -78,6 +80,7 @@ class Model_project_base extends MY_Model
             "cre_building_completion_date_pro" => $this->_creBuildingCompletionDate,
             "budgetary_position_pro" => $this->_budgetaryPosition,
             "secondary_code_pro" => $this->_secondaryCode,
+            "folder_date_pro" => $this->_folderDate,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -118,7 +121,8 @@ class Model_project_base extends MY_Model
                 $object->cre_design_completion_date_pro,
                 $object->cre_building_completion_date_pro,
                 $object->budgetary_position_pro,
-                $object->secondary_code_pro
+                $object->secondary_code_pro,
+                $object->folder_date_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -200,6 +204,11 @@ class Model_project_base extends MY_Model
     public function setSecondaryCode($secondaryCode)
     {
         $this->_secondaryCode = $secondaryCode;
+    }
+
+    public function setFolderDate($folderDate)
+    {
+        $this->_folderDate = $folderDate;
     }
 
     public function getCode()
