@@ -11,8 +11,10 @@
         {{#ifCond keyword_pst "!=" "approvement"}}
             {{#ifCond keyword_pst "!=" "schedule"}}
                 {{var "className" ""}}
+                {{var "className2" ""}}
                 {{#ifCond ../allowUpdateHistory "==" 1}}
                     {{var "className" "edit-date"}}
+                    {{var "className2" "edit-points-distance"}}
                 {{/ifCond}}
                 <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right {{className}}" data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}">{{formatDate manual_entry_date_psl "short"}}</span></h6>
                 <blockquote>
@@ -21,15 +23,19 @@
                         <dd>{{responsible_user}}</dd>
                         {{#ifCond keyword_pst "==" "digitization"}}
                             <dt>Area del proyecto</dt>
-                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                            <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "rd_digitization"}}
                             <dt>Area del proyecto</dt>
-                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                            <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "ri_digitization"}}
                             <dt>Area del proyecto</dt>
-                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                            <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                        {{/ifCond}}
+                        {{#ifCond keyword_pst "==" "as_built"}}
+                            <dt>Area del proyecto</dt>
+                            <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "approved"}}
                             <dt>Importe de diseño</dt>

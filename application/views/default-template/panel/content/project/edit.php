@@ -138,7 +138,7 @@
                                         $html = "";
                                         foreach ($projectSystems as $key => $name)
                                         {
-                                            $selected = $project["system_pro"] == $key?" selected ":"";
+                                            $selected = $project["management_by_pro"] == $key?" selected ":"";
                                             $html .= '<option value="'.$key.'" '.$selected.'>'.$name.'</option>';
                                         }
                                         echo $html;

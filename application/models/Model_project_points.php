@@ -30,4 +30,19 @@ class Model_project_points extends Model_project_points_base
         $result = static::recast(get_called_class(),$query->row());
         return $result;
     }
+
+    public static function getByStatusLogId($statusLogId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            select * from ".static::TABLE_NAME."
+            where 
+            status_log_id_prp = ".$ci->db->escape($statusLogId)."
+            and ".static::notDeleted()."
+        ";
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
 }

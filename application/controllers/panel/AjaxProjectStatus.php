@@ -467,6 +467,30 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function saveAsBuilt()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $responsibleList = $formData["responsibleList"];
+
+        $projectPoints = $formData["projectPoints"];
+        $projectDistance = $formData["projectDistance"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+//        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
     public function getResponsibleByStatusKeyword()
     {
         $keyword = 'design';
@@ -505,19 +529,40 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($projectLog);exit;
     }
 
-    public function updateManualEntry()
+    public function updateLog()
     {
         $this->_validateFeature("project_update_history");
         $formData = $this->input->post();
         $logId = $formData["logId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
-        $projectStatusLog = Model_project_status_log::getById($logId);
-        $projectStatusLog->setManualEntryDate($entryDate);
-        $projectStatusLog->save();
-        $response["success"] = 1;
-        $response["message"] = "Manual entry updated successfully";
+
+        $response["success"] = 0;
+        $response["message"] = "Ocurrio un problema, por favor intente de nuevo.";
+
+        if(isset($formData["entryDate"]))
+        {
+            $entryDate = $formData["entryDate"];
+            $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
+
+            $projectStatusLog = Model_project_status_log::getById($logId);
+            $projectStatusLog->setManualEntryDate($entryDate);
+            $projectStatusLog->save();
+            $response["success"] = 1;
+            $response["message"] = "Se modifico la fecha del registro.";
+        }
+
+        if(isset($formData["points"]) && isset($formData["distance"]))
+        {
+            $points = $formData["points"];
+            $distance = $formData["distance"];
+            $projectPoints = Model_project_points::getByStatusLogId($logId);
+            $projectPoints->setPoints($points);
+            $projectPoints->setDistance($distance);
+            $projectPoints->save();
+            $response["success"] = 1;
+            $response["message"] = "Se actualizaron los puntos y distancia.";
+        }
+
         echo json_encode($response);exit;
     }
 

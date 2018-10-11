@@ -214,12 +214,11 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
-//        $this->complementHandler->addViewComplement("handlebars");
-//        $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addProjectCss('project-status.status-management',TRUE);
         $this->complementHandler->addProjectJs('project-status.status-management',TRUE);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
+        $this->complementHandler->addProjectJs('modify-log', TRUE);
 
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
         $data["project"] = $project;

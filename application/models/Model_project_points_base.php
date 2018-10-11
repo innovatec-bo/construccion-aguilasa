@@ -74,4 +74,15 @@ class Model_project_points_base extends MY_Model
         }
         return $response;
     }
+
+    //setters
+    public function setPoints($points)
+    {
+        $this->_pointsQuantity = $points;
+    }
+
+    public function setDistance($distance)
+    {
+        $this->_distance = $distance;
+    }
 }

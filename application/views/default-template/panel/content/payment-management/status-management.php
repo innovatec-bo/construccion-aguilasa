@@ -117,7 +117,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-payme
 $this->load->view("default-template/panel/content/project-status/ht-status-payment_order_has_been_settled-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-status-payment-management-log-quick-view");
-
+$this->load->view("default-template/panel/content/project-status/ht-modal-modify-log");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");
 ?>
