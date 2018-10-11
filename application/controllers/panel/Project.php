@@ -165,7 +165,7 @@ class Project extends PrivateController
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
         $this->form_validation->set_rules('project-secondary-code', 'Codigo del proyecto', 'trim|required|callback_validate_secondary_code');
-        $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim|required');
+        $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
         $this->form_validation->set_rules('project-system', 'sistema', 'trim|required');
         $this->form_validation->set_rules('project-address', 'Direccion', 'trim');
@@ -185,14 +185,18 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
-//            $projectCode = $formData["project-code"];
+            $projectCode = $formData["project-code"];
             $secondaryCode = $formData["project-secondary-code"];
             $projectName = $formData["project-name"];
 
-            $folderDate = $formData["project-folder-date"];
-            $folderDate = DateTime::createFromFormat('d-m-Y', $folderDate);
-            $folderDate = date_format($folderDate, 'Y-m-d');
-            $folderDate = $folderDate." ".date("H:i:s");
+            $folderDate = NULL;
+            if($formData["project-folder-date"] != "")
+            {
+                $folderDate = $formData["project-folder-date"];
+                $folderDate = DateTime::createFromFormat('d-m-Y', $folderDate);
+                $folderDate = date_format($folderDate, 'Y-m-d');
+                $folderDate = $folderDate." ".date("H:i:s");
+            }
 
             $projectCreFiscal = $formData["project-cre-fiscal"];
             $projectSystem = $formData["project-system"];
@@ -201,19 +205,29 @@ class Project extends PrivateController
             $managementBy = $formData["management-by"];
             $qualityLevel = $formData["quality-level"];
 
-            $creDesignCompletionDate = $formData["cre-design-completion-date"];
-            $creDesignCompletionDate = DateTime::createFromFormat('d-m-Y', $creDesignCompletionDate);
-            $creDesignCompletionDate = date_format($creDesignCompletionDate, 'Y-m-d');
-            $creDesignCompletionDate = $creDesignCompletionDate." ".date("H:i:s");
+            $creDesignCompletionDate = NULL;
+            if($formData["cre-design-completion-date"] != "")
+            {
+                $creDesignCompletionDate = $formData["cre-design-completion-date"];
+                $creDesignCompletionDate = DateTime::createFromFormat('d-m-Y', $creDesignCompletionDate);
+                $creDesignCompletionDate = date_format($creDesignCompletionDate, 'Y-m-d');
+                $creDesignCompletionDate = $creDesignCompletionDate." ".date("H:i:s");
+            }
 
-            $creBuildingCompletionDate = $formData["cre-building-completion-date"];
-            $creBuildingCompletionDate = DateTime::createFromFormat('d-m-Y', $creBuildingCompletionDate);
-            $creBuildingCompletionDate = date_format($creBuildingCompletionDate, 'Y-m-d');
-            $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
+            $creBuildingCompletionDate = NULL;
+            if($formData["cre-building-completion-date"] != "")
+            {
+                $creBuildingCompletionDate = $formData["cre-building-completion-date"];
+                $creBuildingCompletionDate = DateTime::createFromFormat('d-m-Y', $creBuildingCompletionDate);
+                $creBuildingCompletionDate = date_format($creBuildingCompletionDate, 'Y-m-d');
+                $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
+            }
+
 
             $budgetaryPosition = $formData["project-budgetary-position"];
 
             $project->setProjectName($projectName);
+            $project->setCode($projectCode);
             if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);
