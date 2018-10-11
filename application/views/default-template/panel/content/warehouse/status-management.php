@@ -156,7 +156,7 @@ $this->load->view("default-template/panel/content/project-status/ht-finished-sta
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
 $this->load->view("default-template/panel/content/project-status/ht-status-warehouse-log-quick-view");
-$this->load->view("default-template/panel/content/project-status/ht-modal-modify-history-manual-entry-date");
+$this->load->view("default-template/panel/content/project-status/ht-modal-modify-log");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");
 ?>

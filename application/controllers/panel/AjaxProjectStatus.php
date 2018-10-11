@@ -529,19 +529,40 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($projectLog);exit;
     }
 
-    public function updateManualEntry()
+    public function updateLog()
     {
         $this->_validateFeature("project_update_history");
         $formData = $this->input->post();
         $logId = $formData["logId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
-        $projectStatusLog = Model_project_status_log::getById($logId);
-        $projectStatusLog->setManualEntryDate($entryDate);
-        $projectStatusLog->save();
-        $response["success"] = 1;
-        $response["message"] = "Manual entry updated successfully";
+
+        $response["success"] = 0;
+        $response["message"] = "Ocurrio un problema, por favor intente de nuevo.";
+
+        if(isset($formData["entryDate"]))
+        {
+            $entryDate = $formData["entryDate"];
+            $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
+
+            $projectStatusLog = Model_project_status_log::getById($logId);
+            $projectStatusLog->setManualEntryDate($entryDate);
+            $projectStatusLog->save();
+            $response["success"] = 1;
+            $response["message"] = "Se modifico la fecha del registro.";
+        }
+
+        if(isset($formData["points"]) && isset($formData["distance"]))
+        {
+            $points = $formData["points"];
+            $distance = $formData["distance"];
+            $projectPoints = Model_project_points::getByStatusLogId($logId);
+            $projectPoints->setPoints($points);
+            $projectPoints->setDistance($distance);
+            $projectPoints->save();
+            $response["success"] = 1;
+            $response["message"] = "Se actualizaron los puntos y distancia.";
+        }
+
         echo json_encode($response);exit;
     }
 

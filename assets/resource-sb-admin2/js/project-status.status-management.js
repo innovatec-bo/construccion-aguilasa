@@ -109,43 +109,6 @@ $(document).ready(function() {
         loadStatusForm(statusKeyword,1);
     });
 
-    $(document).on("click",".edit-date",function(e){
-        e.preventDefault();
-
-        var logId = $(this).data("log-id");
-        var statusName = $(this).data("status-name");
-        var htmlSource   = $("#ht-modal-modify-history-manual-entry-date").html();
-        var template = Handlebars.compile(htmlSource);
-        var data = {statusName:statusName};
-        var html = template(data);
-        bootbox.confirm({
-            title: "Modificar fecha de "+statusName,
-            message: html,
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancelar'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Modificar'
-                }
-            },
-            callback: function (result) {
-                if(result)
-                {
-                    var entryDate = $(".date-time-picker").val();
-                    updateManualEntry(logId, entryDate);
-                }
-            }
-        });
-
-        var date = new Date();
-        $('.date-time-picker').datetimepicker({
-            ignoreReadonly: true,
-            // defaultDate: date,
-            format: 'DD-MM-YYYY HH:mm:ss'
-        });
-    });
-
     $("#add-incident").on("click",function(e){
        e.preventDefault();
         var status = $("ul.wizard li.active a").prop("id");
@@ -789,20 +752,6 @@ function getProjectLog()
             var data = {projectLog:response,allowUpdateHistory:allowUpdateHistory};
             var html = template(data);
             $logContent.html(html);
-        }
-    });
-}
-
-function updateManualEntry(logId, entryDate)
-{
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/updateManualEntry',
-        dataType  :"json",
-        type : "POST",
-        data : {logId:logId, entryDate:entryDate},
-        success:function(response){
-            getProjectLog();
-            // bootbox.alert(response.message);
         }
     });
 }
