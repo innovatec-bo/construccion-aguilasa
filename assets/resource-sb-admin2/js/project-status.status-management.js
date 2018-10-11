@@ -76,7 +76,11 @@ $(document).ready(function() {
                 case "paused":
                 case "stopped":
                 case "completed":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
                 case "as_built":
+                    saveAsBuilt(statusId, statusKeyword);
+                    break;
                 case "conciliation_reception":
                 case "conciliation_shipment":
                     saveBasicLog(statusId, statusKeyword);
@@ -322,6 +326,40 @@ function saveDigitization(statusId,statusKeyword, button)
                 loadStatusSavedView(statusKeyword);
                 getProjectLog();
             }
+        }
+    });
+}
+function saveAsBuilt(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var projectPoints = $("input[name=project-points]").val();
+    var projectDistance = $("input[name=project-meters-distance]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList,
+        projectPoints: projectPoints,
+        projectDistance: projectDistance
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveAsBuilt',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
         }
     });
 }

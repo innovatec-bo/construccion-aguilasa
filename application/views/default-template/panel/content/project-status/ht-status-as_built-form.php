@@ -31,6 +31,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row form-inline">
+                                    <div class="col-md-6">
+                                        <label>Area del proyecto</label><br>
+                                        <div class="form-group">
+                                            <em>Puntos</em><br>
+                                            <input class="form-control" value="{{points}}" name="project-points" placeholder="Puntos" required="" data-parsley-type="integer" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <em>Distancia Km</em><br>
+                                            <input class="form-control" value="{{distance}}" name="project-meters-distance" placeholder="Distancia" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>

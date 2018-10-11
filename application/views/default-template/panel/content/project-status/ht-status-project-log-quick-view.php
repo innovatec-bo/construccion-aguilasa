@@ -31,6 +31,10 @@
                             <dt>Area del proyecto</dt>
                             <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
+                        {{#ifCond keyword_pst "==" "as_built"}}
+                            <dt>Area del proyecto</dt>
+                            <dd>{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
+                        {{/ifCond}}
                         {{#ifCond keyword_pst "==" "approved"}}
                             <dt>Importe de diseño</dt>
                             <dd>{{design_prb}}</dd>
