@@ -7,7 +7,8 @@ $(document).ready(function() {
     var date = new Date();
     $('.input-group.date').datetimepicker({
         ignoreReadonly: true,
-        defaultDate: date,
+        // defaultDate: date,
+        showClear:true,
         format: 'DD-MM-YYYY'
     });
 
