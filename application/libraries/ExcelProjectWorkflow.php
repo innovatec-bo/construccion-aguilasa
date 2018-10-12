@@ -114,8 +114,8 @@ class ExcelProjectWorkflow
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A'.($i+1), $row["status_pro"])
                 ->setCellValue('B'.($i+1), $row["code_pro"])
-                ->setCellValue('C'.($i+1), $row["entry_date_pro"])
-                ->setCellValue('D'.($i+1), $row["folder_date_pro"])
+                ->setCellValue('C'.($i+1), $this->_dateFormat($row["entry_date_pro"]))
+                ->setCellValue('D'.($i+1), $this->_dateFormat($row["folder_date_pro"]))
                 ->setCellValue('E'.($i+1), $row["cre_fiscal_pro"])
                 ->setCellValue('F'.($i+1), $row["system_pro"])
                 ->setCellValue('G'.($i+1), $row["management_by_pro"])
@@ -124,53 +124,53 @@ class ExcelProjectWorkflow
                 ->setCellValue('J'.($i+1), $row["distance_pro"])
                 ->setCellValue('K'.($i+1), $row["quality_level_pro"])
                 ->setCellValue('L'.($i+1), $row["budgetary_position_pro"])
-                ->setCellValue('M'.($i+1), $row["cre_design_completion_date_pro"])
-                ->setCellValue('N'.($i+1), $row["cre_building_completion_date_pro"])
-                ->setCellValue('O'.($i+1), $row["stake_date"])
+                ->setCellValue('M'.($i+1), $this->_dateFormat($row["cre_design_completion_date_pro"]))
+                ->setCellValue('N'.($i+1), $this->_dateFormat($row["cre_building_completion_date_pro"]))
+                ->setCellValue('O'.($i+1), $this->_dateFormat($row["stake_date"]))
                 ->setCellValue('P'.($i+1), $row["stake_responsible"])
                 ->setCellValue('Q'.($i+1), $row["digitization_points_quantity"])
                 ->setCellValue('R'.($i+1), $row["digitization_distance"])
                 ->setCellValue('S'.($i+1), $row["rd_digitization_points_quantity"])
                 ->setCellValue('T'.($i+1), $row["rd_digitization_distance"])
-                ->setCellValue('U'.($i+1), $row["returned_date"])
-                ->setCellValue('V'.($i+1), $row["digitization_date"])
-                ->setCellValue('W'.($i+1), $row["drawing_date"])
-                ->setCellValue('X'.($i+1), $row["schedule_date"])
-                ->setCellValue('Y'.($i+1), $row["schedule_start"])
-                ->setCellValue('Z'.($i+1), $row["schedule_end"])
-                ->setCellValue('AA'.($i+1), $row["already_sent_date"])
-                ->setCellValue('AB'.($i+1), $row["approved_date"])
-                ->setCellValue('AC'.($i+1), $row["canceled_date"])
-                ->setCellValue('AD'.($i+1), $row["rectify_design_date"])
-                ->setCellValue('AE'.($i+1), $row["rectify_illustration_date"])
+                ->setCellValue('U'.($i+1), $this->_dateFormat($row["returned_date"]))
+                ->setCellValue('V'.($i+1), $this->_dateFormat($row["digitization_date"]))
+                ->setCellValue('W'.($i+1), $this->_dateFormat($row["drawing_date"]))
+                ->setCellValue('X'.($i+1), $this->_dateFormat($row["schedule_date"]))
+                ->setCellValue('Y'.($i+1), $this->_dateFormat($row["schedule_start"]))
+                ->setCellValue('Z'.($i+1), $this->_dateFormat($row["schedule_end"]))
+                ->setCellValue('AA'.($i+1), $this->_dateFormat($row["already_sent_date"]))
+                ->setCellValue('AB'.($i+1), $this->_dateFormat($row["approved_date"]))
+                ->setCellValue('AC'.($i+1), $this->_dateFormat($row["canceled_date"]))
+                ->setCellValue('AD'.($i+1), $this->_dateFormat($row["rectify_design_date"]))
+                ->setCellValue('AE'.($i+1), $this->_dateFormat($row["rectify_illustration_date"]))
                 ->setCellValue('AF'.($i+1), $row["design_budget"])
                 ->setCellValue('AG'.($i+1), $row["building_budget"])
                 ->setCellValue('AH'.($i+1), $row["transportation_budget"])
                 ->setCellValue('AI'.($i+1), $row["live_line_budget"])
                 ->setCellValue('AJ'.($i+1), $row["right_of_way_budget"])
                 ->setCellValue('AK'.($i+1), $row["total_approved"])
-                ->setCellValue('AL'.($i+1), $row["record_building_materials_date"])
-                ->setCellValue('AM'.($i+1), $row["get_materials_date"])
-                ->setCellValue('AN'.($i+1), $row["deliver_materials_date"])
-                ->setCellValue('AO'.($i+1), $row["materials_reception_date"])
-                ->setCellValue('AP'.($i+1), $row["assign_to_date"])
+                ->setCellValue('AL'.($i+1), $this->_dateFormat($row["record_building_materials_date"]))
+                ->setCellValue('AM'.($i+1), $this->_dateFormat($row["get_materials_date"]))
+                ->setCellValue('AN'.($i+1), $this->_dateFormat($row["deliver_materials_date"]))
+                ->setCellValue('AO'.($i+1), $this->_dateFormat($row["materials_reception_date"]))
+                ->setCellValue('AP'.($i+1), $this->_dateFormat($row["assign_to_date"]))
                 ->setCellValue('AQ'.($i+1), $row["assign_to_responsible"])
                 ->setCellValue('AR'.($i+1), $row["assign_to_responsible"])
-                ->setCellValue('AS'.($i+1), $row["start_date_assigned"])
-                ->setCellValue('AT'.($i+1), $row["end_date_assigned"])
+                ->setCellValue('AS'.($i+1), $this->_dateFormat($row["start_date_assigned"]))
+                ->setCellValue('AT'.($i+1), $this->_dateFormat($row["end_date_assigned"]))
                 ->setCellValue('AU'.($i+1), $row["estimated_time_assigned"])
-                ->setCellValue('AV'.($i+1), $row["in_progress_date"])
-                ->setCellValue('AW'.($i+1), $row["completed_date"])
-                ->setCellValue('AX'.($i+1), $row["paused_date"])
+                ->setCellValue('AV'.($i+1), $this->_dateFormat($row["in_progress_date"]))
+                ->setCellValue('AW'.($i+1), $this->_dateFormat($row["completed_date"]))
+                ->setCellValue('AX'.($i+1), $this->_dateFormat($row["paused_date"]))
                 ->setCellValue('AY'.($i+1), $row["percentage_paused"])
-                ->setCellValue('AZ'.($i+1), $row["stopped_date"])
+                ->setCellValue('AZ'.($i+1), $this->_dateFormat($row["stopped_date"]))
                 ->setCellValue('BA'.($i+1), $row["percentage_stopped"])
-                ->setCellValue('BB'.($i+1), $row["as_built_date"])
-                ->setCellValue('BC'.($i+1), $row["conciliation_reception_date"])
-                ->setCellValue('BD'.($i+1), $row["conciliation_shipment_date"])
-                ->setCellValue('BE'.($i+1), $row["cre_return_order_date"])
-                ->setCellValue('BF'.($i+1), $row["project_return_materials_date"])
-                ->setCellValue('BG'.($i+1), $row["payment_order_registered_date"])
+                ->setCellValue('BB'.($i+1), $this->_dateFormat($row["as_built_date"]))
+                ->setCellValue('BC'.($i+1), $this->_dateFormat($row["conciliation_reception_date"]))
+                ->setCellValue('BD'.($i+1), $this->_dateFormat($row["conciliation_shipment_date"]))
+                ->setCellValue('BE'.($i+1), $this->_dateFormat($row["cre_return_order_date"]))
+                ->setCellValue('BF'.($i+1), $this->_dateFormat($row["project_return_materials_date"]))
+                ->setCellValue('BG'.($i+1), $this->_dateFormat($row["payment_order_registered_date"]))
                 ->setCellValue('BH'.($i+1), $row["payment_order_registered_order_number"])
                 ->setCellValue('BI'.($i+1), $row["payment_order_registered_design_budget"])
                 ->setCellValue('BJ'.($i+1), $row["payment_order_registered_transportation_budget"])
@@ -179,8 +179,8 @@ class ExcelProjectWorkflow
                 ->setCellValue('BM'.($i+1), $row["payment_order_registered_right_of_way_budget"])
                 ->setCellValue('BN'.($i+1), $row["payment_order_registered_total_real_budget"])
                 ->setCellValue('BO'.($i+1), $row["payment_order_registered_invoice_number"])
-                ->setCellValue('BP'.($i+1), $row["payment_order_invoice_sent_date"])
-                ->setCellValue('BQ'.($i+1), $row["payment_order_has_been_settled_date"]);
+                ->setCellValue('BP'.($i+1), $this->_dateFormat($row["payment_order_invoice_sent_date"]))
+                ->setCellValue('BQ'.($i+1), $this->_dateFormat($row["payment_order_has_been_settled_date"]));
 
             $i++;
         }
@@ -227,10 +227,39 @@ class ExcelProjectWorkflow
             ->setCellValue('AP1', "ASIGNACION");
         $spreadsheet->getActiveSheet()->getStyle('AP1')->applyFromArray($titleStyleArray);
         $spreadsheet->getActiveSheet()->mergeCells('AP1:AU1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('AV1', "CONSTRUCCION");
+        $spreadsheet->getActiveSheet()->getStyle('AV1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('AV1:BB1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('BC1', "ADMINISTRACION");
+        $spreadsheet->getActiveSheet()->getStyle('BC1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('BC1:BF1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('BG1', "GESTION DE PAGO");
+        $spreadsheet->getActiveSheet()->getStyle('BG1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('BG1:BQ1');
+
+        $spreadsheet->getActiveSheet()->getStyle('A1:BQ1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
     }
 
     private function _headerColumn()
     {
 
+    }
+
+    private function _dateFormat($date)
+    {
+        $response = "";
+        if(isset($date) && $date != "" && $date != "0000-00-00 00:00:00")
+        {
+            $response = $date;
+            $response = DateTime::createFromFormat('Y-m-d H:i:s', $response);
+            $response = date_format($response, 'd-m-Y');
+        }
+        return $response;
     }
 }
