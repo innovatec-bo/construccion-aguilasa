@@ -31,7 +31,7 @@ class ExcelProjectWorkflow
         {
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A'.($i+1), $row["code_pro"])
-                ->setCellValue('B'.($i+1), $row["status_pro"])
+                ->setCellValue('B'.($i+1), $row["status_name_pst"])
                 ->setCellValue('C'.($i+1), $this->_dateFormat($row["entry_date_pro"]))
                 ->setCellValue('D'.($i+1), $this->_dateFormat($row["folder_date_pro"]))
                 ->setCellValue('E'.($i+1), $row["cre_fiscal_pro"])
@@ -104,9 +104,10 @@ class ExcelProjectWorkflow
         }
         $spreadsheet->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
         $this->_adjustColumnToText($spreadsheet);
-
-        $this->_specialColumnType1($spreadsheet,$i);
-        $this->_specialColumnType2($spreadsheet,$i);
+        $columnList = array("C","AA","AB","BB","BD","BF","BG","BQ");
+        $this->_highlightColumns($spreadsheet,$i,$columnList,'FFE699');
+        $columnList = array("O","P","Q","R","X","AF","AG","AH","AI","AJ","AK","AP","AQ","AR","AV","AW","BI","BJ","BK","BL","BM","BN","BP");
+        $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
@@ -268,37 +269,20 @@ class ExcelProjectWorkflow
 
     private function _adjustColumnToText($spreadsheet)
     {
-        $columnsToAdjust = array("E","B","F","G");
+        $columnsToAdjust = array("B","E","F","G");
         foreach ($columnsToAdjust as $key => $column)
         {
             $spreadsheet->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
         }
     }
 
-    private function _specialColumnType1($spreadsheet, $lastRow)
+    private function _highlightColumns($spreadsheet, $lastRow, $columnList, $color)
     {
-        $columnList = array("C","AA","AB","BB","BD","BF","BG","BQ");
         $titleStyleArray = [
             'font' => ['bold' => true],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FFE699']
-            ]
-        ];
-        foreach ($columnList as $key => $column)
-        {
-            $spreadsheet->getActiveSheet()->getStyle($column.'2:'.$column.$lastRow)->applyFromArray($titleStyleArray);
-        }
-    }
-
-    private function _specialColumnType2($spreadsheet, $lastRow)
-    {
-        $columnList = array("O","P","Q","R","X","AF","AG","AH","AI","AJ","AK","AP","AQ","AR","AV","AW","BI","BJ","BK","BL","BM","BN","BP");
-        $titleStyleArray = [
-            'font' => ['bold' => true],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'DDEBF7']
+                'startColor' => ['argb' => $color]
             ]
         ];
         foreach ($columnList as $key => $column)

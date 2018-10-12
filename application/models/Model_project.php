@@ -279,7 +279,7 @@ class Model_project extends Model_project_base
         $sql = "
         SELECT
             id_pro,
-            status_pro,
+            status_name_pst,
             code_pro,
             entry_date_pro,
             folder_date_pro,
@@ -396,6 +396,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
+        LEFT JOIN wfl_project_status on status_pro = id_pst
         where 
         deleted_pro != 1
         ";
