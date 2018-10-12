@@ -170,6 +170,7 @@ class ExcelProjectWorkflow
         $spreadsheet->getActiveSheet()->mergeCells('BG1:BQ1');
 
         $spreadsheet->getActiveSheet()->getStyle('A1:BQ1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
     }
 
