@@ -15,12 +15,7 @@ class ExcelProjectWorkflow
 
 
 
-        $headerStyleArray = [
-            'font' => ['bold' => true],
-            'alignment' => [
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ]
-        ];
+
 
         $projectWorkflow = Model_project::getWorkflowDetail();
         $spreadsheet = new Spreadsheet();
@@ -33,80 +28,7 @@ class ExcelProjectWorkflow
             ->setCategory("Report");
 
         $this->_headerColumnGroup($spreadsheet);
-
-
-        $spreadsheet->setActiveSheetIndex(0)
-
-            ->setCellValue('A2', "ESTADO")
-            ->setCellValue('B2', "CODIGO")
-            ->setCellValue('C2', "FECHA INGRESO")
-            ->setCellValue('D2', "FECHA CARPETA")
-            ->setCellValue('E2', "FISCAL DE CRE")
-            ->setCellValue('F2', "SISTEMA")
-            ->setCellValue('G2', "ADMINISTRADO POR")
-            ->setCellValue('H2', "DIRECCION")
-            ->setCellValue('I2', "PUNTOS")
-            ->setCellValue('J2', "DISTANCIA")
-            ->setCellValue('K2', "NIVEL DE CALIDAD")
-            ->setCellValue('L2', "POSICION PRESUPUESTARIA")
-            ->setCellValue('M2', "FECHA COMPLETADO DE DISEÑO")
-            ->setCellValue('N2', "FECHA COMPLETADO DE CONSTRUCCION")
-            ->setCellValue('O2', "FECHA DE ESTAQUEADO")
-            ->setCellValue('P2', "RESPONSABLES DE ESTAQUEADO")
-            ->setCellValue('Q2', "PUNTOS DIGITALIZADOS")
-            ->setCellValue('R2', "DISTANCIA DIGITALIZADA")
-            ->setCellValue('S2', "PUNTOS RECTIFICADOS EN DIGITALIZACION")
-            ->setCellValue('T2', "DISTANCIA RECTIFICADA EN DIGITALIZACION")
-            ->setCellValue('U2', "NO FACTIBLE - DEVUELTO A CRE")
-            ->setCellValue('V2', "FECHA DIGITALIZACION")
-            ->setCellValue('W2', "FECHA DIBUJO")
-            ->setCellValue('X2', "FECHA DEFINICION DE CRONOGRAMA")
-            ->setCellValue('Y2', "FECHA CRONOGRAMA INICIO")
-            ->setCellValue('Z2', "FECHA CRONOGRAMA FIN")
-            ->setCellValue('AA2', "FECHA PROYECTO ENVIADO A CRE")
-            ->setCellValue('AB2', "FECHA APROBACION")
-            ->setCellValue('AC2', "FECHA CANCELADO")
-            ->setCellValue('AD2', "FECHA RECTIFICACION DISEÑO")
-            ->setCellValue('AE2', "FECHA RECTIFICACION ILUSTRACION")
-            ->setCellValue('AF2', "IMPORTE DISEÑO")
-            ->setCellValue('AG2', "IMPORTE CONSTRUCCION")
-            ->setCellValue('AH2', "IMPORTE TRANSPORTE")
-            ->setCellValue('AI2', "LINEA VIVA")
-            ->setCellValue('AJ2', "DERECHO DE VIA")
-            ->setCellValue('AK2', "TOTAL IMPORTE APROBADO")
-            ->setCellValue('AL2', "FECHA GRABADO DE MATERIALES")
-            ->setCellValue('AM2', "FECHA RETIRO DE MATERIALES")
-            ->setCellValue('AN2', "FECHA MATERIALES A CONSTRUCCION")
-            ->setCellValue('AO2', "FECHA RECEPCION DE MATERIALES DE CONSTR.")
-            ->setCellValue('AP2', "FECHA ASIGNACION DE RESPONSABLES CONSTR.")
-            ->setCellValue('AQ2', "RESPONSABLE CONSTRUC.")
-            ->setCellValue('AR2', "RESPONSABLE FISCAL")
-            ->setCellValue('AS2', "INICIO DE OBRA EN ASIGNACION")
-            ->setCellValue('AT2', "FIN DE OBRA EN ASIGNACION")
-            ->setCellValue('AU2', "DIAS ESTIMADOS EN ASIGNACION")
-            ->setCellValue('AV2', "FECHA INICIO DE CONSTRUC.")
-            ->setCellValue('AW2', "CONSTRUCCION COMPLETADA")
-            ->setCellValue('AX2', "FECHA DE PAUSA DE CONSTRUC")
-            ->setCellValue('AY2', "% DE PAUSA")
-            ->setCellValue('AZ2', "FECHA DE CONSTRUCCION DETENIDA")
-            ->setCellValue('BA2', "% DE CONTRUC. DETENIDA")
-            ->setCellValue('BB2', "FECHA DE ENVIO DE AS BUILT")
-            ->setCellValue('BC2', "FECHA RECEPCION DE CONCILIACION")
-            ->setCellValue('BD2', "FECHA ENVIO DE CONCILIACION")
-            ->setCellValue('BE2', "ORDEN DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BF2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BG2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
-            ->setCellValue('BH2', "NRO ORDEN DE PAGO")
-            ->setCellValue('BI2', "IMPORTE REAL - DISEÑO")
-            ->setCellValue('BJ2', "IMPORTE REAL - TRANSPORTE")
-            ->setCellValue('BK2', "IMPORTE REAL - LINEA VIVA")
-            ->setCellValue('BL2', "IMPORTE REAL - CONSTRUCCION")
-            ->setCellValue('BM2', "IMPORTE REAL - DERECHO DE VIA")
-            ->setCellValue('BN2', "IMPORTE REAL - TOTAL")
-            ->setCellValue('BO2', "NRO FACTURA")
-            ->setCellValue('BP2', "FECHA DE ENVIO DE FACTURA")
-            ->setCellValue('BQ2', "FECHA DE LIQUIDACION");
-        $spreadsheet->getActiveSheet()->getStyle('A2:N2')->applyFromArray($headerStyleArray);
+        $this->_headerColumn($spreadsheet);
 
         $i = 2;
         foreach ($projectWorkflow as $row)
@@ -184,6 +106,11 @@ class ExcelProjectWorkflow
 
             $i++;
         }
+        $spreadsheet->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
+        $this->_adjustColumnToText($spreadsheet);
+
+
+
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="projects_workflow.xlsx"');
@@ -202,7 +129,6 @@ class ExcelProjectWorkflow
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
             ]
         ];
-
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('B1', "INGRESO DE PROYECTOS");
         $spreadsheet->getActiveSheet()->getStyle('B1')->applyFromArray($titleStyleArray);
@@ -244,11 +170,82 @@ class ExcelProjectWorkflow
         $spreadsheet->getActiveSheet()->mergeCells('BG1:BQ1');
 
         $spreadsheet->getActiveSheet()->getStyle('A1:BQ1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
     }
 
-    private function _headerColumn()
+    private function _headerColumn($spreadsheet)
     {
-
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A2', "ESTADO")
+            ->setCellValue('B2', "CODIGO")
+            ->setCellValue('C2', "FECHA INGRESO")
+            ->setCellValue('D2', "FECHA CARPETA")
+            ->setCellValue('E2', "FISCAL DE CRE")
+            ->setCellValue('F2', "SISTEMA")
+            ->setCellValue('G2', "ADMINISTRADO POR")
+            ->setCellValue('H2', "DIRECCION")
+            ->setCellValue('I2', "PUNTOS")
+            ->setCellValue('J2', "DISTANCIA")
+            ->setCellValue('K2', "NIVEL DE CALIDAD")
+            ->setCellValue('L2', "POSICION PRESUPUESTARIA")
+            ->setCellValue('M2', "FECHA COMPLETADO DE DISEÑO")
+            ->setCellValue('N2', "FECHA COMPLETADO DE CONSTRUCCION")
+            ->setCellValue('O2', "FECHA DE ESTAQUEADO")
+            ->setCellValue('P2', "RESPONSABLES DE ESTAQUEADO")
+            ->setCellValue('Q2', "PUNTOS DIGITALIZADOS")
+            ->setCellValue('R2', "DISTANCIA DIGITALIZADA")
+            ->setCellValue('S2', "PUNTOS RECTIFICADOS EN DIGITALIZACION")
+            ->setCellValue('T2', "DISTANCIA RECTIFICADA EN DIGITALIZACION")
+            ->setCellValue('U2', "NO FACTIBLE - DEVUELTO A CRE")
+            ->setCellValue('V2', "FECHA DIGITALIZACION")
+            ->setCellValue('W2', "FECHA DIBUJO")
+            ->setCellValue('X2', "FECHA DEFINICION DE CRONOGRAMA")
+            ->setCellValue('Y2', "FECHA CRONOGRAMA INICIO")
+            ->setCellValue('Z2', "FECHA CRONOGRAMA FIN")
+            ->setCellValue('AA2', "FECHA PROYECTO ENVIADO A CRE")
+            ->setCellValue('AB2', "FECHA APROBACION")
+            ->setCellValue('AC2', "FECHA CANCELADO")
+            ->setCellValue('AD2', "FECHA RECTIFICACION DISEÑO")
+            ->setCellValue('AE2', "FECHA RECTIFICACION ILUSTRACION")
+            ->setCellValue('AF2', "IMPORTE DISEÑO")
+            ->setCellValue('AG2', "IMPORTE CONSTRUCCION")
+            ->setCellValue('AH2', "IMPORTE TRANSPORTE")
+            ->setCellValue('AI2', "LINEA VIVA")
+            ->setCellValue('AJ2', "DERECHO DE VIA")
+            ->setCellValue('AK2', "TOTAL IMPORTE APROBADO")
+            ->setCellValue('AL2', "FECHA GRABADO DE MATERIALES")
+            ->setCellValue('AM2', "FECHA RETIRO DE MATERIALES")
+            ->setCellValue('AN2', "FECHA MATERIALES A CONSTRUCCION")
+            ->setCellValue('AO2', "FECHA RECEPCION DE MATERIALES DE CONSTR.")
+            ->setCellValue('AP2', "FECHA ASIGNACION DE RESPONSABLES CONSTR.")
+            ->setCellValue('AQ2', "RESPONSABLE CONSTRUC.")
+            ->setCellValue('AR2', "RESPONSABLE FISCAL")
+            ->setCellValue('AS2', "INICIO DE OBRA EN ASIGNACION")
+            ->setCellValue('AT2', "FIN DE OBRA EN ASIGNACION")
+            ->setCellValue('AU2', "DIAS ESTIMADOS EN ASIGNACION")
+            ->setCellValue('AV2', "FECHA INICIO DE CONSTRUC.")
+            ->setCellValue('AW2', "CONSTRUCCION COMPLETADA")
+            ->setCellValue('AX2', "FECHA DE PAUSA DE CONSTRUC")
+            ->setCellValue('AY2', "% DE PAUSA")
+            ->setCellValue('AZ2', "FECHA DE CONSTRUCCION DETENIDA")
+            ->setCellValue('BA2', "% DE CONTRUC. DETENIDA")
+            ->setCellValue('BB2', "FECHA DE ENVIO DE AS BUILT")
+            ->setCellValue('BC2', "FECHA RECEPCION DE CONCILIACION")
+            ->setCellValue('BD2', "FECHA ENVIO DE CONCILIACION")
+            ->setCellValue('BE2', "ORDEN DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BF2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BG2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
+            ->setCellValue('BH2', "NRO ORDEN DE PAGO")
+            ->setCellValue('BI2', "IMPORTE REAL - DISEÑO")
+            ->setCellValue('BJ2', "IMPORTE REAL - TRANSPORTE")
+            ->setCellValue('BK2', "IMPORTE REAL - LINEA VIVA")
+            ->setCellValue('BL2', "IMPORTE REAL - CONSTRUCCION")
+            ->setCellValue('BM2', "IMPORTE REAL - DERECHO DE VIA")
+            ->setCellValue('BN2', "IMPORTE REAL - TOTAL")
+            ->setCellValue('BO2', "NRO FACTURA")
+            ->setCellValue('BP2', "FECHA DE ENVIO DE FACTURA")
+            ->setCellValue('BQ2', "FECHA DE LIQUIDACION");
+        $spreadsheet->getActiveSheet()->getStyle('A2:BQ2')->getAlignment()->setWrapText(true);
     }
 
     private function _dateFormat($date)
@@ -261,5 +258,15 @@ class ExcelProjectWorkflow
             $response = date_format($response, 'd-m-Y');
         }
         return $response;
+    }
+
+    private function _adjustColumnToText($spreadsheet)
+    {
+        $columnsToAdjust = array("C","D","O");
+        $spreadsheet->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
+        foreach ($columnsToAdjust as $key => $column)
+        {
+            $spreadsheet->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
+        }
     }
 }
