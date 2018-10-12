@@ -13,13 +13,7 @@ class ExcelProjectWorkflow
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
-        $titleStyleArray = [
-            'font' => ['bold' => true],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ]
-        ];
+
 
         $headerStyleArray = [
             'font' => ['bold' => true],
@@ -38,10 +32,8 @@ class ExcelProjectWorkflow
             ->setKeywords("report workflow projects")
             ->setCategory("Report");
 
-        $spreadsheet->setActiveSheetIndex(0)
-                ->setCellValue('B1', "INGRESO DE PROYECTOS");
-        $spreadsheet->getActiveSheet()->getStyle('B1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('B1:M1');
+        $this->_headerColumnGroup($spreadsheet);
+
 
         $spreadsheet->setActiveSheetIndex(0)
 
@@ -70,7 +62,7 @@ class ExcelProjectWorkflow
             ->setCellValue('W2', "FECHA DIBUJO")
             ->setCellValue('X2', "FECHA DEFINICION DE CRONOGRAMA")
             ->setCellValue('Y2', "FECHA CRONOGRAMA INICIO")
-            ->setCellValue('Z2', "FECHA CRONOGRAMA INICIO")
+            ->setCellValue('Z2', "FECHA CRONOGRAMA FIN")
             ->setCellValue('AA2', "FECHA PROYECTO ENVIADO A CRE")
             ->setCellValue('AB2', "FECHA APROBACION")
             ->setCellValue('AC2', "FECHA CANCELADO")
@@ -97,23 +89,23 @@ class ExcelProjectWorkflow
             ->setCellValue('AX2', "FECHA DE PAUSA DE CONSTRUC")
             ->setCellValue('AY2', "% DE PAUSA")
             ->setCellValue('AZ2', "FECHA DE CONSTRUCCION DETENIDA")
-            ->setCellValue('AZ2', "% DE CONTRUC. DETENIDA")
-            ->setCellValue('BA2', "FECHA DE ENVIO DE AS BUILT")
-            ->setCellValue('BB2', "FECHA RECEPCION DE CONCILIACION")
-            ->setCellValue('BC2', "FECHA ENVIO DE CONCILIACION")
-            ->setCellValue('BD2', "ORDEN DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BE2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BF2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
-            ->setCellValue('BG2', "NRO ORDEN DE PAGO")
-            ->setCellValue('BH2', "IMPORTE REAL - DISEÑO")
-            ->setCellValue('BI2', "IMPORTE REAL - TRANSPORTE")
-            ->setCellValue('BJ2', "IMPORTE REAL - LINEA VIVA")
-            ->setCellValue('BK2', "IMPORTE REAL - CONSTRUCCION")
-            ->setCellValue('BL2', "IMPORTE REAL - DERECHO DE VIA")
-            ->setCellValue('BM2', "IMPORTE REAL - TOTAL")
-            ->setCellValue('BN2', "NRO FACTURA")
-            ->setCellValue('BO2', "FECHA DE ENVIO DE FACTURA")
-            ->setCellValue('BP2', "FECHA DE LIQUIDACION");
+            ->setCellValue('BA2', "% DE CONTRUC. DETENIDA")
+            ->setCellValue('BB2', "FECHA DE ENVIO DE AS BUILT")
+            ->setCellValue('BC2', "FECHA RECEPCION DE CONCILIACION")
+            ->setCellValue('BD2', "FECHA ENVIO DE CONCILIACION")
+            ->setCellValue('BE2', "ORDEN DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BF2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BG2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
+            ->setCellValue('BH2', "NRO ORDEN DE PAGO")
+            ->setCellValue('BI2', "IMPORTE REAL - DISEÑO")
+            ->setCellValue('BJ2', "IMPORTE REAL - TRANSPORTE")
+            ->setCellValue('BK2', "IMPORTE REAL - LINEA VIVA")
+            ->setCellValue('BL2', "IMPORTE REAL - CONSTRUCCION")
+            ->setCellValue('BM2', "IMPORTE REAL - DERECHO DE VIA")
+            ->setCellValue('BN2', "IMPORTE REAL - TOTAL")
+            ->setCellValue('BO2', "NRO FACTURA")
+            ->setCellValue('BP2', "FECHA DE ENVIO DE FACTURA")
+            ->setCellValue('BQ2', "FECHA DE LIQUIDACION");
         $spreadsheet->getActiveSheet()->getStyle('A2:N2')->applyFromArray($headerStyleArray);
 
         $i = 2;
@@ -162,32 +154,33 @@ class ExcelProjectWorkflow
                 ->setCellValue('AN'.($i+1), $row["deliver_materials_date"])
                 ->setCellValue('AO'.($i+1), $row["materials_reception_date"])
                 ->setCellValue('AP'.($i+1), $row["assign_to_date"])
-                ->setCellValue('AQ'.($i+1), $row[""])
-                ->setCellValue('AR'.($i+1), $row[""])
-                ->setCellValue('AS'.($i+1), $row[""])
-                ->setCellValue('AT'.($i+1), $row[""])
-                ->setCellValue('AU'.($i+1), $row[""])
-                ->setCellValue('AV'.($i+1), $row[""])
-                ->setCellValue('AW'.($i+1), $row[""])
-                ->setCellValue('AX'.($i+1), $row[""])
-                ->setCellValue('AY'.($i+1), $row[""])
-                ->setCellValue('AZ'.($i+1), $row[""])
-                ->setCellValue('BA'.($i+1), $row[""])
-                ->setCellValue('BB'.($i+1), $row[""])
-                ->setCellValue('BC'.($i+1), $row[""])
-                ->setCellValue('BD'.($i+1), $row[""])
-                ->setCellValue('BE'.($i+1), $row[""])
-                ->setCellValue('BF'.($i+1), $row[""])
-                ->setCellValue('BG'.($i+1), $row[""])
-                ->setCellValue('BH'.($i+1), $row[""])
-                ->setCellValue('BI'.($i+1), $row[""])
-                ->setCellValue('BJ'.($i+1), $row[""])
-                ->setCellValue('BK'.($i+1), $row[""])
-                ->setCellValue('BL'.($i+1), $row[""])
-                ->setCellValue('BM'.($i+1), $row[""])
-                ->setCellValue('BN'.($i+1), $row[""])
-                ->setCellValue('BO'.($i+1), $row[""])
-                ->setCellValue('BP'.($i+1), $row[""]);
+                ->setCellValue('AQ'.($i+1), $row["assign_to_responsible"])
+                ->setCellValue('AR'.($i+1), $row["assign_to_responsible"])
+                ->setCellValue('AS'.($i+1), $row["start_date_assigned"])
+                ->setCellValue('AT'.($i+1), $row["end_date_assigned"])
+                ->setCellValue('AU'.($i+1), $row["estimated_time_assigned"])
+                ->setCellValue('AV'.($i+1), $row["in_progress_date"])
+                ->setCellValue('AW'.($i+1), $row["completed_date"])
+                ->setCellValue('AX'.($i+1), $row["paused_date"])
+                ->setCellValue('AY'.($i+1), $row["percentage_paused"])
+                ->setCellValue('AZ'.($i+1), $row["stopped_date"])
+                ->setCellValue('BA'.($i+1), $row["percentage_stopped"])
+                ->setCellValue('BB'.($i+1), $row["as_built_date"])
+                ->setCellValue('BC'.($i+1), $row["conciliation_reception_date"])
+                ->setCellValue('BD'.($i+1), $row["conciliation_shipment_date"])
+                ->setCellValue('BE'.($i+1), $row["cre_return_order_date"])
+                ->setCellValue('BF'.($i+1), $row["project_return_materials_date"])
+                ->setCellValue('BG'.($i+1), $row["payment_order_registered_date"])
+                ->setCellValue('BH'.($i+1), $row["payment_order_registered_order_number"])
+                ->setCellValue('BI'.($i+1), $row["payment_order_registered_design_budget"])
+                ->setCellValue('BJ'.($i+1), $row["payment_order_registered_transportation_budget"])
+                ->setCellValue('BK'.($i+1), $row["payment_order_registered_live_line_budget"])
+                ->setCellValue('BL'.($i+1), $row["payment_order_registered_building_budget"])
+                ->setCellValue('BM'.($i+1), $row["payment_order_registered_right_of_way_budget"])
+                ->setCellValue('BN'.($i+1), $row["payment_order_registered_total_real_budget"])
+                ->setCellValue('BO'.($i+1), $row["payment_order_registered_invoice_number"])
+                ->setCellValue('BP'.($i+1), $row["payment_order_invoice_sent_date"])
+                ->setCellValue('BQ'.($i+1), $row["payment_order_has_been_settled_date"]);
 
             $i++;
         }
@@ -199,4 +192,45 @@ class ExcelProjectWorkflow
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
 	}
+
+	private function _headerColumnGroup($spreadsheet)
+    {
+        $titleStyleArray = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('B1', "INGRESO DE PROYECTOS");
+        $spreadsheet->getActiveSheet()->getStyle('B1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('B1:N1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('O1', "DISEÑO");
+        $spreadsheet->getActiveSheet()->getStyle('O1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('O1:AA1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('AB1', "APROBACION/CANCELACION");
+        $spreadsheet->getActiveSheet()->getStyle('AB1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('AB1:AK1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('AL1', "ALMACEN");
+        $spreadsheet->getActiveSheet()->getStyle('AL1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('AL1:AO1');
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('AP1', "ASIGNACION");
+        $spreadsheet->getActiveSheet()->getStyle('AP1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('AP1:AU1');
+    }
+
+    private function _headerColumn()
+    {
+
+    }
 }
