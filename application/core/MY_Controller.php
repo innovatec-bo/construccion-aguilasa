@@ -96,12 +96,12 @@ class PrivateController extends PublicController
         $this->complementHandler->addProjectJs('general-scripts');
         $this->_projectSystems = array(
             1 => "Sistema Santa Cruz",
-            2 => "Sistema velasco",
-            3 => "Sistema misiones",
-            4 => "Sistema camiri",
+            2 => "Sistema Velasco",
+            3 => "Sistema Misiones",
+            4 => "Sistema Camiri",
             5 => "Sistema German bush",
-            6 => "Sistema robore",
-            7 => "Sistema valles"
+            6 => "Sistema Robore",
+            7 => "Sistema Valles"
         );
         $this->_validateSession();
     }

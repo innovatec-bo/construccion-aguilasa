@@ -286,21 +286,21 @@ class Model_project extends Model_project_base
             cre_fiscal_pro,
             CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
-                WHEN system_pro = 2 then 'Sistema velasco'
-                WHEN system_pro = 3 then 'Sistema misiones'
-                WHEN system_pro = 4 then 'Sistema camiri'
+                WHEN system_pro = 2 then 'Sistema Velasco'
+                WHEN system_pro = 3 then 'Sistema Misiones'
+                WHEN system_pro = 4 then 'Sistema Camiri'
                 WHEN system_pro = 5 then 'Sistema German bush'
-                WHEN system_pro = 6 then 'Sistema robore'
-                WHEN system_pro = 7 then 'Sistema valles'
+                WHEN system_pro = 6 then 'Sistema Robore'
+                WHEN system_pro = 7 then 'Sistema Valles'
             END system_pro,
             CASE
                 WHEN management_by_pro = 1 then 'Sistema Santa Cruz'
-                WHEN management_by_pro = 2 then 'Sistema velasco'
-                WHEN management_by_pro = 3 then 'Sistema misiones'
-                WHEN management_by_pro = 4 then 'Sistema camiri'
+                WHEN management_by_pro = 2 then 'Sistema Velasco'
+                WHEN management_by_pro = 3 then 'Sistema Misiones'
+                WHEN management_by_pro = 4 then 'Sistema Camiri'
                 WHEN management_by_pro = 5 then 'Sistema German bush'
-                WHEN management_by_pro = 6 then 'Sistema robore'
-                WHEN management_by_pro = 7 then 'Sistema valles'
+                WHEN management_by_pro = 6 then 'Sistema Robore'
+                WHEN management_by_pro = 7 then 'Sistema Valles'
             END management_by_pro,
             address_pro,
             points_pro,
