@@ -102,6 +102,7 @@ class ExcelProjectWorkflow
 
             $i++;
         }
+        $this->_currencyFormatNumber($spreadsheet, $i);
         $spreadsheet->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
         $this->_adjustColumnToText($spreadsheet);
         $columnList = array("C","AA","AB","BB","BD","BF","BG","BQ");
@@ -291,8 +292,14 @@ class ExcelProjectWorkflow
         }
     }
 
-    private function _currencyFormatNumber($number)
+    private function _currencyFormatNumber($spreadsheet, $totalRows)
     {
-        return number_format($number,2,".",",");
+        $columnList = array("AF","AG","AH","AI","AJ","AK");
+
+        foreach($columnList as $key => $column)
+        {
+            $spreadsheet->getActiveSheet()->getStyle($column.'3:'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+        }
+
     }
 }
