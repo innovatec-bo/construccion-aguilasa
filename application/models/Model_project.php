@@ -734,5 +734,466 @@ class Model_project extends Model_project_base
         $result = static::recast(get_called_class(), $query->row());
         return $result;
     }
-}
 
+    public static function getApprovedProjectsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        SELECT 	
+            projects.year 'year',	
+            count(CASE WHEN month = 1 THEN id_pro END) 'january',
+            count(CASE WHEN month = 2 THEN id_pro END) 'february',
+            count(CASE WHEN month = 3 THEN id_pro END) 'march',
+            count(CASE WHEN month = 4 THEN id_pro END) 'april',
+            count(CASE WHEN month = 5 THEN id_pro END) 'may',
+            count(CASE WHEN month = 6 THEN id_pro END) 'june',
+            count(CASE WHEN month = 7 THEN id_pro END) 'july',
+            count(CASE WHEN month = 8 THEN id_pro END) 'august',
+            count(CASE WHEN month = 9 THEN id_pro END) 'september',
+            count(CASE WHEN month = 10 THEN id_pro END) 'october',
+            count(CASE WHEN month = 11 THEN id_pro END) 'november',
+            count(CASE WHEN month = 12 THEN id_pro END) 'december'
+        from 
+        (
+        SELECT 
+            wfl_projects.*,
+            EXTRACT(YEAR  FROM approved_log.entry_date) year,
+          EXTRACT(MONTH FROM approved_log.entry_date) month	
+        from 
+            wfl_projects
+        RIGHT JOIN (
+                select 
+                    id_psl,
+                    project_id_psl,
+                    status_id_psl,	
+                    filter.entry_date,
+                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                    design_prb,
+                    building_prb,			
+                    transportation_prb,
+                    live_line_prb,
+                    right_of_way_prb,
+                    (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget		
+                from 
+                    wfl_project_status_log
+                RIGHT JOIN(
+                    SELECT			
+                        project_id_psl project_id,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE		
+                    status_id_psl = 11
+                    and deleted_psl != 1
+                    
+                    GROUP BY project_id_psl
+                ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                LEFT JOIN sec_users on user_id_sre = id_usr
+                LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                where deleted_pro != 1
+                GROUP BY id_psl
+        ) approved_log on approved_log.project_id_psl = id_pro
+        WHERE
+        deleted_pro != 1					
+        ) projects
+        WHERE
+        deleted_pro != 1
+        GROUP BY projects.year
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getConciliatedProjectsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        SELECT 	
+            projects.year 'year',	
+            count(CASE WHEN month = 1 THEN id_pro END) 'january',
+            count(CASE WHEN month = 2 THEN id_pro END) 'february',
+            count(CASE WHEN month = 3 THEN id_pro END) 'march',
+            count(CASE WHEN month = 4 THEN id_pro END) 'april',
+            count(CASE WHEN month = 5 THEN id_pro END) 'may',
+            count(CASE WHEN month = 6 THEN id_pro END) 'june',
+            count(CASE WHEN month = 7 THEN id_pro END) 'july',
+            count(CASE WHEN month = 8 THEN id_pro END) 'august',
+            count(CASE WHEN month = 9 THEN id_pro END) 'september',
+            count(CASE WHEN month = 10 THEN id_pro END) 'october',
+            count(CASE WHEN month = 11 THEN id_pro END) 'november',
+            count(CASE WHEN month = 12 THEN id_pro END) 'december'
+        from 
+        (
+                SELECT 
+            wfl_projects.*,
+            EXTRACT(YEAR  FROM conciliated_log.entry_date) year,
+          EXTRACT(MONTH FROM conciliated_log.entry_date) month	
+        from 
+            wfl_projects
+        RIGHT JOIN (
+                select 
+                    id_psl,
+                    project_id_psl,
+                    status_id_psl,	
+                    filter.entry_date,
+                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                    design_prb,
+                    building_prb,			
+                    transportation_prb,
+                    live_line_prb,
+                    right_of_way_prb,
+                    (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget		
+                from 
+                    wfl_project_status_log
+                RIGHT JOIN(
+                    SELECT			
+                        project_id_psl project_id,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE		
+                    status_id_psl = 35
+                    and deleted_psl != 1
+                    
+                    GROUP BY project_id_psl
+                ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                LEFT JOIN sec_users on user_id_sre = id_usr
+                LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                where deleted_pro != 1
+                GROUP BY id_psl
+        ) conciliated_log on conciliated_log.project_id_psl = id_pro
+        WHERE
+        deleted_pro != 1					
+        ) projects
+        WHERE
+        deleted_pro != 1
+        GROUP BY projects.year
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getAsBuiltProjectsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT 	
+                projects.year 'year',	
+                count(CASE WHEN month = 1 THEN id_pro END) 'january',
+                count(CASE WHEN month = 2 THEN id_pro END) 'february',
+                count(CASE WHEN month = 3 THEN id_pro END) 'march',
+                count(CASE WHEN month = 4 THEN id_pro END) 'april',
+                count(CASE WHEN month = 5 THEN id_pro END) 'may',
+                count(CASE WHEN month = 6 THEN id_pro END) 'june',
+                count(CASE WHEN month = 7 THEN id_pro END) 'july',
+                count(CASE WHEN month = 8 THEN id_pro END) 'august',
+                count(CASE WHEN month = 9 THEN id_pro END) 'september',
+                count(CASE WHEN month = 10 THEN id_pro END) 'october',
+                count(CASE WHEN month = 11 THEN id_pro END) 'november',
+                count(CASE WHEN month = 12 THEN id_pro END) 'december'
+            from 
+            (
+                SELECT 
+                    wfl_projects.*,
+                    EXTRACT(YEAR  FROM as_built_log.entry_date) year,
+                    EXTRACT(MONTH FROM as_built_log.entry_date) month	
+                from 
+                    wfl_projects
+                RIGHT JOIN (
+                        select 
+                            id_psl,
+                            project_id_psl,
+                            status_id_psl,	
+                            filter.entry_date,
+                            GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                            design_prb,
+                            building_prb,			
+                            transportation_prb,
+                            live_line_prb,
+                            right_of_way_prb,
+                            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget		
+                        from 
+                            wfl_project_status_log
+                        RIGHT JOIN(
+                            SELECT			
+                                project_id_psl project_id,
+                                max(manual_entry_date_psl) entry_date
+                            FROM
+                                wfl_project_status_log
+                            WHERE		
+                            status_id_psl = 33
+                            and deleted_psl != 1
+                            
+                            GROUP BY project_id_psl
+                        ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                        LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                        LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                        LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                        LEFT JOIN sec_users on user_id_sre = id_usr
+                        LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                        where deleted_pro != 1
+                        GROUP BY id_psl
+                ) as_built_log on as_built_log.project_id_psl = id_pro
+                WHERE
+                deleted_pro != 1					
+            ) projects
+            WHERE
+            deleted_pro != 1
+            GROUP BY projects.year
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getOrderNumberAndTotalsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+            DATE_FORMAT(entry_date_pao, '%Y-%m') date,
+            id_pro,
+            code_pro,
+            approved_log.id_psl,
+            approved_log.design_prb design_budget,
+            approved_log.building_prb building_budget,			
+            approved_log.transportation_prb transportation_budget,
+            approved_log.live_line_prb live_line_budget,
+            approved_log.right_of_way_prb right_of_way_budget,
+            real_budget_log.design_reb design_real_budget,
+            real_budget_log.building_reb building_real_budget,			
+            real_budget_log.transportation_reb transportation_real_budget,
+            real_budget_log.live_line_reb live_line_real_budget,
+            real_budget_log.right_of_way_reb right_of_way_real_budget
+        FROM
+            wfl_payment_orders
+        LEFT JOIN wfl_payment_orders_projects on id_pao = order_id_pop and deleted_pop != 1
+        LEFT JOIN wfl_projects on id_pro = project_id_pop
+        LEFT JOIN (
+                select 
+                    id_psl,
+                    project_id_psl,
+                    status_id_psl,	
+                    filter.entry_date,
+                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                    design_prb,
+                    building_prb,			
+                    transportation_prb,
+                    live_line_prb,
+                    right_of_way_prb,
+                    (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                    design_reb,
+                    building_reb,			
+                    transportation_reb,
+                    live_line_reb,
+                    right_of_way_reb,
+                    (IFNULL(design_reb, 0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+                from 
+                    wfl_project_status_log
+                RIGHT JOIN(
+                    SELECT			
+                        project_id_psl project_id,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE		
+                    status_id_psl = 11
+                    and deleted_psl != 1
+                    
+                    GROUP BY project_id_psl
+                ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                LEFT JOIN sec_users on user_id_sre = id_usr
+                LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
+                where deleted_pro != 1
+                GROUP BY id_psl
+        ) approved_log on approved_log.project_id_psl = id_pro
+        LEFT JOIN (
+                select 
+                    id_psl,
+                    project_id_psl,
+                    status_id_psl,	
+                    filter.entry_date,
+                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                    design_prb,
+                    building_prb,			
+                    transportation_prb,
+                    live_line_prb,
+                    right_of_way_prb,
+                    (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                    design_reb,
+                    building_reb,			
+                    transportation_reb,
+                    live_line_reb,
+                    right_of_way_reb,
+                    (IFNULL(design_reb, 0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+                from 
+                    wfl_project_status_log
+                RIGHT JOIN(
+                    SELECT			
+                        project_id_psl project_id,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE		
+                    status_id_psl = 40
+                    and deleted_psl != 1
+                    
+                    GROUP BY project_id_psl
+                ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                LEFT JOIN sec_users on user_id_sre = id_usr
+                LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
+                where deleted_pro != 1
+                GROUP BY id_psl
+        ) real_budget_log on real_budget_log.project_id_psl = id_pro
+        ORDER BY date
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getPaymentSettledAndTotalsByYearAndMonth()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+                SELECT
+                    DATE_FORMAT(entry_date_pao, '%Y-%m') date,
+                    id_pro,
+                    code_pro,
+                    approved_log.id_psl,
+                    approved_log.design_prb design_budget,
+                    approved_log.building_prb building_budget,			
+                    approved_log.transportation_prb transportation_budget,
+                    approved_log.live_line_prb live_line_budget,
+                    approved_log.right_of_way_prb right_of_way_budget,
+                    real_budget_log.design_reb design_real_budget,
+                    real_budget_log.building_reb building_real_budget,			
+                    real_budget_log.transportation_reb transportation_real_budget,
+                    real_budget_log.live_line_reb live_line_real_budget,
+                    real_budget_log.right_of_way_reb right_of_way_real_budget
+                FROM
+                    wfl_payment_orders
+                LEFT JOIN wfl_payment_orders_projects on id_pao = order_id_pop and deleted_pop != 1
+                LEFT JOIN wfl_projects on id_pro = project_id_pop
+                LEFT JOIN (
+                        select 
+                            id_psl,
+                            project_id_psl,
+                            status_id_psl,	
+                            filter.entry_date,
+                            GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                            design_prb,
+                            building_prb,			
+                            transportation_prb,
+                            live_line_prb,
+                            right_of_way_prb,
+                            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                            design_reb,
+                            building_reb,			
+                            transportation_reb,
+                            live_line_reb,
+                            right_of_way_reb,
+                            (IFNULL(design_reb, 0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+                        from 
+                            wfl_project_status_log
+                        RIGHT JOIN(
+                            SELECT			
+                                project_id_psl project_id,
+                                max(manual_entry_date_psl) entry_date
+                            FROM
+                                wfl_project_status_log
+                            WHERE		
+                            status_id_psl = 11
+                            and deleted_psl != 1
+                            
+                            GROUP BY project_id_psl
+                        ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                        LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                        LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                        LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                        LEFT JOIN sec_users on user_id_sre = id_usr
+                        LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                        LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
+                        where deleted_pro != 1
+                        GROUP BY id_psl
+                ) approved_log on approved_log.project_id_psl = id_pro
+                LEFT JOIN (
+                        select 
+                            id_psl,
+                            project_id_psl,
+                            status_id_psl,	
+                            filter.entry_date,
+                            GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                            design_prb,
+                            building_prb,			
+                            transportation_prb,
+                            live_line_prb,
+                            right_of_way_prb,
+                            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                            design_reb,
+                            building_reb,			
+                            transportation_reb,
+                            live_line_reb,
+                            right_of_way_reb,
+                            (IFNULL(design_reb, 0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+                        from 
+                            wfl_project_status_log
+                        RIGHT JOIN(
+                            SELECT			
+                                project_id_psl project_id,
+                                max(manual_entry_date_psl) entry_date
+                            FROM
+                                wfl_project_status_log
+                            WHERE		
+                            status_id_psl = 44
+                            and deleted_psl != 1
+                            
+                            GROUP BY project_id_psl
+                        ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                        LEFT JOIN wfl_projects on id_pro = project_id_psl		
+                        LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                        LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
+                        LEFT JOIN sec_users on user_id_sre = id_usr
+                        LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                        LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
+                        where deleted_pro != 1
+                        GROUP BY id_psl
+                ) real_budget_log on real_budget_log.project_id_psl = id_pro
+                ORDER BY date
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+}

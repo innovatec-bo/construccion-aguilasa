@@ -353,4 +353,34 @@ class Project extends PrivateController
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->getReport();
     }
+
+    public function getApprovedProjectsByMonthAndYear()
+    {
+        $excel = new ExcelApprovedProjectsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
+
+    public function getConciliatedProjectsByMonthAndYear()
+    {
+        $excel = new ExcelConciliatedProjectsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
+
+    public function getAsBuiltProjectsByMonthAndYear()
+    {
+        $excel = new ExcelAsBuiltProjectsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
+
+    public function orderNumberAndTotalsByMonthAndYear()
+    {
+        $excel = new ExcelOrderNumberAndTotalsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
+
+    public function paymentSettledAndTotalsByMonthAndYear()
+    {
+        $excel = new ExcelPaymentSettledAndTotalsByYearAndMonth($this->sessionUser);
+        $excel->getReport();
+    }
 }

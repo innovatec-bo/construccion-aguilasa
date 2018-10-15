@@ -69,11 +69,27 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+
             <form name="report" action="<?=base_url("panel/Project/getNewProjectsByMonthAndYear")?>" method="post">
                 <input type="submit" value="Nuevos proyectos">
             </form>
             <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
                 <input type="submit" value="Workflow">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/getApprovedProjectsByMonthAndYear")?>" method="post">
+                <input type="submit" value="Projectos aprobados">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/getConciliatedProjectsByMonthAndYear")?>" method="post">
+                <input type="submit" value="Projectos conciliados">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/getAsBuiltProjectsByMonthAndYear")?>" method="post">
+                <input type="submit" value="Projectos construidos(as built enviado)">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/orderNumberAndTotalsByMonthAndYear")?>" method="post">
+                <input type="submit" value="Numero de orden  + importes">
+            </form>
+            <form name="report" action="<?=base_url("panel/Project/paymentSettledAndTotalsByMonthAndYear")?>" method="post">
+                <input type="submit" value="Proyectos pagados + importes">
             </form>
         </div>
     </div>

@@ -290,4 +290,9 @@ class ExcelProjectWorkflow
             $spreadsheet->getActiveSheet()->getStyle($column.'2:'.$column.$lastRow)->applyFromArray($titleStyleArray);
         }
     }
+
+    private function _currencyFormatNumber($number)
+    {
+        return number_format($number,2,".",",");
+    }
 }
