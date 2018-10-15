@@ -338,6 +338,8 @@ class Model_project extends Model_project_base
             materials_reception.entry_date materials_reception_date,
             assign_to.entry_date assign_to_date,
             assign_to.responsible assign_to_responsible,
+            assign_to.builder_responsible builder_responsible,
+            assign_to.fiscal_responsible fiscal_responsible,
             assign_to.live_line_cas live_line_assigned,
             assign_to.power_down_cas power_down_assigned,
             assign_to.maneuver_cas maneuver_assigned,
@@ -421,7 +423,9 @@ class Model_project extends Model_project_base
 			project_id_psl,
 			status_id_psl,	
 			filter.entry_date,
-			GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+			GROUP_CONCAT(CONCAT(responsible.firstname_usr,' ',responsible.lastname_usr)) responsible,
+			GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible,
+			GROUP_CONCAT(CONCAT(fiscal.fiscal_firstname,' ',fiscal.fiscal_lastname)) fiscal_responsible,
 			design_prb,
 			building_prb,			
 			transportation_prb,
@@ -493,7 +497,31 @@ class Model_project extends Model_project_base
         ) stopOnIncident on stopOnIncident.project_id_inc = id_pro
 		LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
 		LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
-		LEFT JOIN sec_users on user_id_sre = id_usr
+		LEFT JOIN sec_users responsible on user_id_sre = responsible.id_usr
+		LEFT JOIN (
+                SELECT
+                    id_usr builder_id,
+                    firstname_usr builder_firstname,
+                    lastname_usr builder_lastname
+                FROM
+                    sec_users
+                right JOIN sec_userroles on userid_uro = id_usr
+                where 
+                    roleid_uro = 9
+                and deleted_uro != 1
+            ) as builder on builder.builder_id = user_id_sre
+		LEFT JOIN (
+                SELECT
+                    id_usr fiscal_id,
+                    firstname_usr fiscal_firstname,
+                    lastname_usr fiscal_lastname
+                FROM
+                    sec_users
+                right JOIN sec_userroles on userid_uro = id_usr
+                where 
+                    roleid_uro = 8
+                and deleted_uro != 1
+            ) as fiscal on fiscal.fiscal_id = user_id_sre		
 		LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		left join wfl_project_points on status_log_id_prp = id_psl
