@@ -353,6 +353,8 @@ class Model_project extends Model_project_base
             stopped.entry_date stopped_date,
             stopped.percentage_stopped percentage_stopped,
             as_built.entry_date as_built_date,
+            as_built.points_quantity_prp as_built_points_quantity,
+            as_built.distance_prp as_built_distance,
             conciliation_reception.entry_date conciliation_reception_date,
             conciliation_shipment.entry_date conciliation_shipment_date,
             cre_return_order.entry_date cre_return_order_date,

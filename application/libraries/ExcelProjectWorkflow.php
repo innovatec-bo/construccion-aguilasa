@@ -84,30 +84,31 @@ class ExcelProjectWorkflow
                 ->setCellValue('AZ'.($i+1), $this->_dateFormat($row["stopped_date"]))
                 ->setCellValue('BA'.($i+1), $row["percentage_stopped"])
                 ->setCellValue('BB'.($i+1), $this->_dateFormat($row["as_built_date"]))
-                ->setCellValue('BC'.($i+1), $this->_dateFormat($row["conciliation_reception_date"]))
-                ->setCellValue('BD'.($i+1), $this->_dateFormat($row["conciliation_shipment_date"]))
-                ->setCellValue('BE'.($i+1), $this->_dateFormat($row["cre_return_order_date"]))
-                ->setCellValue('BF'.($i+1), $this->_dateFormat($row["project_return_materials_date"]))
-                ->setCellValue('BG'.($i+1), $this->_dateFormat($row["payment_order_registered_date"]))
-                ->setCellValue('BH'.($i+1), $row["payment_order_registered_order_number"])
-                ->setCellValue('BI'.($i+1), $row["payment_order_registered_design_budget"])
-                ->setCellValue('BJ'.($i+1), $row["payment_order_registered_transportation_budget"])
-                ->setCellValue('BK'.($i+1), $row["payment_order_registered_live_line_budget"])
-                ->setCellValue('BL'.($i+1), $row["payment_order_registered_building_budget"])
-                ->setCellValue('BM'.($i+1), $row["payment_order_registered_right_of_way_budget"])
-                ->setCellValue('BN'.($i+1), $row["payment_order_registered_total_real_budget"])
-                ->setCellValue('BO'.($i+1), $row["payment_order_registered_invoice_number"])
-                ->setCellValue('BP'.($i+1), $this->_dateFormat($row["payment_order_invoice_sent_date"]))
-                ->setCellValue('BQ'.($i+1), $this->_dateFormat($row["payment_order_has_been_settled_date"]));
+                ->setCellValue('BC'.($i+1), $row["as_built_points_quantity"])
+                ->setCellValue('BD'.($i+1), $row["as_built_distance"])
+                ->setCellValue('BE'.($i+1), $this->_dateFormat($row["conciliation_reception_date"]))
+                ->setCellValue('BF'.($i+1), $this->_dateFormat($row["conciliation_shipment_date"]))
+                ->setCellValue('BG'.($i+1), $this->_dateFormat($row["cre_return_order_date"]))
+                ->setCellValue('BH'.($i+1), $this->_dateFormat($row["project_return_materials_date"]))
+                ->setCellValue('BI'.($i+1), $this->_dateFormat($row["payment_order_registered_date"]))
+                ->setCellValue('BJ'.($i+1), $row["payment_order_registered_order_number"])
+                ->setCellValue('BK'.($i+1), $row["payment_order_registered_design_budget"])
+                ->setCellValue('BL'.($i+1), $row["payment_order_registered_transportation_budget"])
+                ->setCellValue('BM'.($i+1), $row["payment_order_registered_live_line_budget"])
+                ->setCellValue('BN'.($i+1), $row["payment_order_registered_building_budget"])
+                ->setCellValue('BO'.($i+1), $row["payment_order_registered_right_of_way_budget"])
+                ->setCellValue('BP'.($i+1), $row["payment_order_registered_total_real_budget"])
+                ->setCellValue('BQ'.($i+1), $row["payment_order_registered_invoice_number"])
+                ->setCellValue('BR'.($i+1), $this->_dateFormat($row["payment_order_invoice_sent_date"]))
+                ->setCellValue('BS'.($i+1), $this->_dateFormat($row["payment_order_has_been_settled_date"]));
 
             $i++;
         }
         $this->_currencyFormatNumber($spreadsheet, $i);
-        $spreadsheet->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
         $this->_adjustColumnToText($spreadsheet);
-        $columnList = array("C","AA","AB","BB","BD","BF","BG","BQ");
+        $columnList = array("C","AA","AB","BB","BC","BD","BF","BH","BI","BS");
         $this->_highlightColumns($spreadsheet,$i,$columnList,'FFE699');
-        $columnList = array("O","P","Q","R","X","AF","AG","AH","AI","AJ","AK","AP","AQ","AR","AV","AW","BI","BJ","BK","BL","BM","BN","BP");
+        $columnList = array("O","P","Q","R","X","AF","AG","AH","AI","AJ","AK","AP","AQ","AR","AV","AW","BI","BJ","BK","BL","BM","BN","BO","BP","BR");
         $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
 
         // redirect output to client browser
@@ -164,19 +165,19 @@ class ExcelProjectWorkflow
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('AV1', "CONSTRUCCION");
         $spreadsheet->getActiveSheet()->getStyle('AV1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('AV1:BB1');
+        $spreadsheet->getActiveSheet()->mergeCells('AV1:BD1');
 
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('BC1', "ADMINISTRACION");
-        $spreadsheet->getActiveSheet()->getStyle('BC1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('BC1:BF1');
+            ->setCellValue('BE1', "ADMINISTRACION");
+        $spreadsheet->getActiveSheet()->getStyle('BE1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('BE1:BH1');
 
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('BG1', "GESTION DE PAGO");
-        $spreadsheet->getActiveSheet()->getStyle('BG1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('BG1:BQ1');
+            ->setCellValue('BI1', "GESTION DE PAGO");
+        $spreadsheet->getActiveSheet()->getStyle('BI1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('BI1:BS1');
 
-        $spreadsheet->getActiveSheet()->getStyle('A1:BQ1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle('A1:BS1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
     }
@@ -238,21 +239,23 @@ class ExcelProjectWorkflow
             ->setCellValue('AZ2', "FECHA DE CONSTRUCCION DETENIDA")
             ->setCellValue('BA2', "% DE CONTRUC. DETENIDA")
             ->setCellValue('BB2', "FECHA DE ENVIO DE AS BUILT")
-            ->setCellValue('BC2', "FECHA RECEPCION DE CONCILIACION")
-            ->setCellValue('BD2', "FECHA ENVIO DE CONCILIACION")
-            ->setCellValue('BE2', "ORDEN DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BF2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
-            ->setCellValue('BG2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
-            ->setCellValue('BH2', "NRO ORDEN DE PAGO")
-            ->setCellValue('BI2', "IMPORTE REAL - DISEÑO")
-            ->setCellValue('BJ2', "IMPORTE REAL - TRANSPORTE")
-            ->setCellValue('BK2', "IMPORTE REAL - LINEA VIVA")
-            ->setCellValue('BL2', "IMPORTE REAL - CONSTRUCCION")
-            ->setCellValue('BM2', "IMPORTE REAL - DERECHO DE VIA")
-            ->setCellValue('BN2', "IMPORTE REAL - TOTAL")
-            ->setCellValue('BO2', "NRO FACTURA")
-            ->setCellValue('BP2', "FECHA DE ENVIO DE FACTURA")
-            ->setCellValue('BQ2', "FECHA DE LIQUIDACION");
+            ->setCellValue('BC2', "AS BUILT - PUNTOS")
+            ->setCellValue('BD2', "AS BUILT - DISTANCE")
+            ->setCellValue('BE2', "FECHA RECEPCION DE CONCILIACION")
+            ->setCellValue('BF2', "FECHA ENVIO DE CONCILIACION")
+            ->setCellValue('BG2', "ORDEN DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BH2', "CONFIRMACION DE DEVOLUCION DE MATERIALES")
+            ->setCellValue('BI2', "FECHA DE REGSITRO DE ORDEN DE PAGO")
+            ->setCellValue('BJ2', "NRO ORDEN DE PAGO")
+            ->setCellValue('BK2', "IMPORTE REAL - DISEÑO")
+            ->setCellValue('BL2', "IMPORTE REAL - TRANSPORTE")
+            ->setCellValue('BM2', "IMPORTE REAL - LINEA VIVA")
+            ->setCellValue('BN2', "IMPORTE REAL - CONSTRUCCION")
+            ->setCellValue('BO2', "IMPORTE REAL - DERECHO DE VIA")
+            ->setCellValue('BP2', "IMPORTE REAL - TOTAL")
+            ->setCellValue('BQ2', "NRO FACTURA")
+            ->setCellValue('BR2', "FECHA DE ENVIO DE FACTURA")
+            ->setCellValue('BS2', "FECHA DE LIQUIDACION");
         $spreadsheet->getActiveSheet()->getStyle('A2:BQ2')->getAlignment()->setWrapText(true);
     }
 
