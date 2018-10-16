@@ -33,20 +33,20 @@ class Model_payment_order extends Model_payment_order_base
             if($project["paymentOrderId"] == "")
             {
                 $projectId = $project["projectId"];
-                $designBudget = $project["designBudget"];
-                $transportationBudget = $project["transportationBudget"];
-                $buildingBudget = $project["buildingBudget"];
-                $liveLineBudget = $project["liveLineBudget"];
-                $rightOfWayBudget = $project["rightOfWayBudget"];
+                $designBudget = str_replace(",", "", $project["designBudget"]);
+                $transportationBudget = str_replace(",","",$project["transportationBudget"]);
+                $buildingBudget = str_replace(",","",$project["buildingBudget"]);
+                $liveLineBudget = str_replace(",", "",$project["liveLineBudget"]);
+                $rightOfWayBudget = str_replace(",","",$project["rightOfWayBudget"]);
 
                 $arrayToInsert[] = array(
                     "order_id_pop" => $this->_id,
                     "project_id_pop" => $projectId,
-                    "design_budget_pop" => str_replace(",", "", $designBudget),
-                    "transportation_budget_pop" => str_replace(",","",$transportationBudget),
-                    "building_budget_pop" => str_replace(",","",$buildingBudget),
-                    "live_line_budget_pop" => str_replace(",", "",$liveLineBudget),
-                    "right_of_way_budget_pop" => str_replace(",","",$rightOfWayBudget),
+                    "design_budget_pop" => $designBudget,
+                    "transportation_budget_pop" => $transportationBudget,
+                    "building_budget_pop" => $buildingBudget,
+                    "live_line_budget_pop" => $liveLineBudget,
+                    "right_of_way_budget_pop" => $rightOfWayBudget,
                     "deleted_pop" => 0,
                     "createdon_pop" => date("Y-m-d H:i:s"),
                     "createdby_pop" => $currentUserId
