@@ -89,7 +89,7 @@ $(document).ready(function() {
                     saveCreReturnOrder(statusId,statusKeyword);
                     break;
                 case "project_return_materials":
-                    saveBasicLog(statusId, statusKeyword);
+                    saveProjectReturnMaterials(statusId, statusKeyword);
                     break;
                 default:
                     bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
@@ -529,6 +529,44 @@ function saveApproved(statusId,statusKeyword)
         dataType  :"json",
         type : "POST",
         data : digitization,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+function saveProjectReturnMaterials(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var design = $("input[name=design-budget]").val();
+    var building = $("input[name=building-budget]").val();
+    var transportation = $("input[name=transportation-budget]").val();
+    var liveLine = $("input[name=live-line-budget]").val();
+    var rightOfWay = $("input[name=right-of-way-budget]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        design: design,
+        building: building,
+        transportation:transportation,
+        liveLine:liveLine,
+        rightOfWay:rightOfWay,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveProjectReturnMaterials',
+        dataType  :"json",
+        type : "POST",
+        data : data,
         success:function(response){
             loadStatusSavedView(statusKeyword);
             getProjectLog();

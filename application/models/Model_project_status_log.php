@@ -93,6 +93,7 @@ class Model_project_status_log extends Model_project_status_log_base
         SELECT
             wfl_project_status_log.*,
             wfl_project_budgets.*,
+            wfl_project_real_budgets.*,
             wfl_construction_assignments.*,
             status_name_pst,
             keyword_pst,
@@ -104,6 +105,7 @@ class Model_project_status_log extends Model_project_status_log_base
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_budgets on id_psl  = status_log_id_prb
+        LEFT JOIN wfl_project_real_budgets on id_psl  = status_log_id_reb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
         LEFT JOIN wfl_status_log_responsibles on id_psl = status_log_id_slr
         LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr

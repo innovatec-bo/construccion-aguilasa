@@ -403,6 +403,36 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function saveProjectReturnMaterials()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $design = $formData["design"];
+        $design = str_replace(",","",$design);
+        $building = $formData["building"];
+        $building = str_replace(",","",$building);
+        $transportation = $formData["transportation"];
+        $transportation = str_replace(",","", $transportation);
+        $liveLine = $formData["liveLine"];
+        $liveLine = str_replace(",","", $liveLine);
+        $rightOfWay = $formData["rightOfWay"];
+        $rightOfWay = str_replace(",","", $rightOfWay);
+        $responsibleList = $formData["responsibleList"];
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+
     public function saveCanceled()
     {
         $formData = $this->input->post();

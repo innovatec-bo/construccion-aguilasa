@@ -285,11 +285,11 @@ function savePaymentOrder()
             if(response.success == 1)
             {
                 loadTable();
-                bootbox.alert({
-                    title: "",
-                    message: "This is the small alert!",
-                    size: 'small'
-                });
+                // bootbox.alert({
+                //     title: "",
+                //     message: "This is the small alert!",
+                //     size: 'small'
+                // });
                 swal({ title:'Bien hecho!', html:response.message, type:"success"});
             }
             else
