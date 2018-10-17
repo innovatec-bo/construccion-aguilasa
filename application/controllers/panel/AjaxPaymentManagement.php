@@ -120,7 +120,7 @@ class AjaxPaymentManagement extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "approved");
+        $originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "project_return_materials");
         $response = array("design" => 0, "transportation" => 0, "building" => 0, "liveLine" => 0);
         if(count($originalBudgets) > 0)
         {
@@ -129,6 +129,11 @@ class AjaxPaymentManagement extends PrivateController
             $response["building"] = $originalBudgets[0]["building_prb"];
             $response["liveLine"] = $originalBudgets[0]["live_line_prb"];
             $response["rightOfWay"] = $originalBudgets[0]["right_of_way_prb"];
+            $response["rbDesign"] = $originalBudgets[0]["design_reb"];
+            $response["rbTransportation"] = $originalBudgets[0]["transportation_reb"];
+            $response["rbBuilding"] = $originalBudgets[0]["building_reb"];
+            $response["rbLiveLine"] = $originalBudgets[0]["live_line_reb"];
+            $response["rbRightOfWay"] = $originalBudgets[0]["right_of_way_reb"];
         }
         echo json_encode($response);exit;
     }

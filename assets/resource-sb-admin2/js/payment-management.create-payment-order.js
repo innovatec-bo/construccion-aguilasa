@@ -182,11 +182,11 @@ function getOriginalBudgets(projectId, row)
         dataType  :"json",
         data : {projectId:projectId},
         success:function(response){
-            row.find("input[name=design-budget]").val(response.design);
-            row.find("input[name=transportation-budget]").val(response.transportation);
-            row.find("input[name=building-budget]").val(response.building);
-            row.find("input[name=live-line-budget]").val(response.liveLine);
-            row.find("input[name=right-of-way-budget]").val(response.rightOfWay);
+            row.find("input[name=design-budget]").val(response.rbDesign);
+            row.find("input[name=transportation-budget]").val(response.rbTransportation);
+            row.find("input[name=building-budget]").val(response.rbBuilding);
+            row.find("input[name=live-line-budget]").val(response.rbLiveLine);
+            row.find("input[name=right-of-way-budget]").val(response.rbRightOfWay);
             updateTotalBudgets();
         }
     });
