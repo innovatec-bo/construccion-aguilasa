@@ -50,18 +50,25 @@ class Model_project_status_log extends Model_project_status_log_base
             reservation_number_prb,
             transportation_prb,
             live_line_prb,
+            right_of_way_prb,
             start_date_cas,
             end_date_cas,
             estimated_time_cas,
             live_line_cas,
             power_down_cas,
-            maneuver_cas
+            maneuver_cas,            
+            design_reb,
+            building_reb,
+            transportation_reb,
+            live_line_reb,
+            right_of_way_reb
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
         LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
         LEFT JOIN wfl_projects on id_pro = project_id_psl
         LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
+        LEFT JOIN wfl_project_real_budgets on id_psl = status_log_id_reb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
         LEFT JOIN (
             SELECT

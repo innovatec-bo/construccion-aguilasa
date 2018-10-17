@@ -82,14 +82,16 @@ $(document).ready(function() {
                     saveAsBuilt(statusId, statusKeyword);
                     break;
                 case "conciliation_reception":
-                case "conciliation_shipment":
                     saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "conciliation_shipment":
+                    saveConciliationShipment(statusId, statusKeyword);
                     break;
                 case "cre_return_order":
                     saveCreReturnOrder(statusId,statusKeyword);
                     break;
                 case "project_return_materials":
-                    saveProjectReturnMaterials(statusId, statusKeyword);
+                    saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
                     bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
@@ -535,7 +537,7 @@ function saveApproved(statusId,statusKeyword)
         }
     });
 }
-function saveProjectReturnMaterials(statusId,statusKeyword)
+function saveConciliationShipment(statusId,statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
     var responsibleList = [];
@@ -563,7 +565,7 @@ function saveProjectReturnMaterials(statusId,statusKeyword)
         responsibleList:responsibleList
     };
     $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/saveProjectReturnMaterials',
+        url : base_url + 'panel/AjaxProjectStatus/saveConciliationShipment',
         dataType  :"json",
         type : "POST",
         data : data,
