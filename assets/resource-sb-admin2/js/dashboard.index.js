@@ -5,6 +5,12 @@
 $(document).ready(function() {
     getUsersQuantity();
     getRolesQuantity();
+    var date = new Date();
+    $('input[name=report-year]').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'YYYY'
+    });
 
 });
 

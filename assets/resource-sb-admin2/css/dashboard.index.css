@@ -1,3 +1,10 @@
 div.dt-buttons {
     margin-bottom: 5px;
 }
+input[name=report-year]
+{
+    width: unset;
+    display: inline-block;
+    padding: 5px 5px;
+    height: 20px;
+}
