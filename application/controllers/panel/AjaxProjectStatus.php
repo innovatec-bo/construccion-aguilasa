@@ -403,7 +403,7 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function saveProjectReturnMaterials()
+    public function saveConciliationShipment()
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];

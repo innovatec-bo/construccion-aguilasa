@@ -120,7 +120,7 @@ class AjaxPaymentManagement extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "project_return_materials");
+        $originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "conciliation_shipment");
         $response = array("design" => 0, "transportation" => 0, "building" => 0, "liveLine" => 0);
         if(count($originalBudgets) > 0)
         {
