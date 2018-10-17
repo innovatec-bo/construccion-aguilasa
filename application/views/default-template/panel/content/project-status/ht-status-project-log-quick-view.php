@@ -46,10 +46,25 @@
                             <dd>{{transportation_prb}}</dd>
                             <dt>Importe de linea viva</dt>
                             <dd>{{live_line_prb}}</dd>
+                            <dt>Derecho de via</dt>
+                            <dd>{{right_of_way_prb}}</dd>
                             <dt>Numero de grafo</dt>
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
+                        {{/ifCond}}
+
+                        {{#ifCond keyword_pst "==" "project_return_materials"}}
+                            <dt>Importe de diseño</dt>
+                            <dd>{{design_reb}}</dd>
+                            <dt>Importe de construccion</dt>
+                            <dd>{{building_reb}}</dd>
+                            <dt>Importe de transporte</dt>
+                            <dd>{{transportation_reb}}</dd>
+                            <dt>Importe de linea viva</dt>
+                            <dd>{{live_line_reb}}</dd>
+                            <dt>Derecho de via</dt>
+                            <dd>{{right_of_way_reb}}</dd>
                         {{/ifCond}}
 
                         {{#ifCond keyword_pst "==" "assign_to"}}
