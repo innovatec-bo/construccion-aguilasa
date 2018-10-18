@@ -23,7 +23,7 @@ class AjaxDashboard extends PrivateController
         $formData = $this->input->post();
         $year = $formData["year"];
         $response = array();
-        $statusList = array('already_sent' => 'DISEÑADOS', 'approved' => 'APROBADOS', 'as_built' => 'CONSTRUIDOS', 'conciliation_shipment' => 'CONCILIADOS', );
+        $statusList = array('already_sent' => 'DISEÑADOS', 'approved' => 'APROBADOS', 'as_built' => 'CONSTRUIDOS', 'conciliation_shipment' => 'CONCILIADOS', 'project_real_budget_confirmation' => 'CON # ORDEN');
         $projectTotalsList = array();
         foreach ($statusList as $keyword => $criteria)
         {

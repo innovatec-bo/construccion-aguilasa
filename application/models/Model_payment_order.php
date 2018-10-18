@@ -54,7 +54,8 @@ class Model_payment_order extends Model_payment_order_base
                 //Getting the object form list using the projectId
                 $projectObject = $projectObjectList[$projectId];
                 //Save the real budget and status
-                $projectObject->setStatus(40);//defined real budget
+                $status = 45;//defined real budget confirmation
+                $projectObject->setStatus($status);
                 $projectObject->save();
                 //Getting responsible list
                 $responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
@@ -64,7 +65,7 @@ class Model_payment_order extends Model_payment_order_base
                 $entryDate = strtotime('2018-10-01 12:27:40');
                 $entryDate = date('Y-m-d', $entryDate);
                 $entryDate = $entryDate." ".date("H:i:s");
-                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, 40, "Se definieron los importes reales", $entryDate, $responsibleList);
+                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Se definieron los importes reales", $entryDate, $responsibleList);
             }
         }
         if(count($arrayToInsert) > 0)
