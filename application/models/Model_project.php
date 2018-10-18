@@ -1199,6 +1199,11 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    /**
+     * @param $keyword
+     * @param string $year
+     * @return array
+     */
     public static function getStatusQuantityDetailByYear($keyword, $year = "")
     {
         $ci = &get_instance();

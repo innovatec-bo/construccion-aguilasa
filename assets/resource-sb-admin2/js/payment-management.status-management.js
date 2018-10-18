@@ -157,7 +157,7 @@ function updateTotalOnApprovedForm()
     }
 }
 
-function saveBasicLog(statusId,statusKeyword)
+function saveBasicLog(statusId, statusKeyword)
 {
     var orderId = $("input[name=payment-order-id]").val();
     var entryDate = $("input[name=entry-date]").val();

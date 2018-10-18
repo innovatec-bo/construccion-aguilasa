@@ -76,10 +76,8 @@
                     <div class="pull-right">
                         <div class="btn-group">
                             <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
-<!--                                <input type="submit" value="Workflow">-->
                                 <button type="submit" class="btn btn-default btn-xs">Descargar workflow</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -87,135 +85,8 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>CRITERIO</th>
-                                        <th>ENERO</th>
-                                        <th>FEBRERO</th>
-                                        <th>MARZO</th>
-                                        <th>ABRIL</th>
-                                        <th>MAYO</th>
-                                        <th>JUNIO</th>
-                                        <th>JULIO</th>
-                                        <th>AGOSTO</th>
-                                        <th>SEPTIEMBRE</th>
-                                        <th>OCTUBRE</th>
-                                        <th>NOVIEMBRE</th>
-                                        <th>DICIEMBRE</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th>INGRESADOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>DISEÑADOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>APROBADOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>CONSTRUIDOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>CONCILIADOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>CON # ORDEN</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>PAGADOS</th>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                        <td class="text-center"><?=rand(3,6)?></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="col-lg-12" id="report-project-totals-table">
+                            Here goes the report project totals table
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.col-lg-4 (nested) -->
@@ -228,30 +99,13 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-<!--            <form name="report" action="--><?//=base_url("panel/Project/getNewProjectsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Nuevos proyectos">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/getProjectWorkFlowReport")?><!--" method="post">-->
-<!--                <input type="submit" value="Workflow">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/getApprovedProjectsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Projectos aprobados">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/getConciliatedProjectsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Projectos conciliados">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/getAsBuiltProjectsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Projectos construidos(as built enviado)">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/orderNumberAndTotalsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Numero de orden  + importes">-->
-<!--            </form>-->
-<!--            <form name="report" action="--><?//=base_url("panel/Project/paymentSettledAndTotalsByMonthAndYear")?><!--" method="post">-->
-<!--                <input type="submit" value="Proyectos pagados + importes">-->
-<!--            </form>-->
+
         </div>
     </div>
     <!-- /.row -->
     <!-- /.row -->
 </div>
 <!-- /.container-fluid -->
+<?php
+$this->load->view('default-template/panel/content/dashboard/ht-report-project-totals-table');
+?>
