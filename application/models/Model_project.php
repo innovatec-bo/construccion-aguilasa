@@ -1283,4 +1283,17 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getAllProject()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        select * from wfl_projects where ".static::notDeleted()."
+        ";
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
 }

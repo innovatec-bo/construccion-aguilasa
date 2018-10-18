@@ -225,6 +225,11 @@ class Model_project_base extends MY_Model
     {
         return $this->_status;
     }
+
+    public function getEntryDate()
+    {
+        return $this->_entryDate;
+    }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
     /**

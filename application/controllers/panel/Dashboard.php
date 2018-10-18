@@ -24,4 +24,22 @@ class Dashboard extends PrivateController
         $this->_loadPanelView('dashboard/index');
     }
 
+    public function addCratedDateToLog()
+    {
+        set_time_limit(300);
+        $projectList = Model_project::getAllProject();
+        echo"<pre>";var_dump($projectList);exit;
+        $statusId = "46";
+        $statusDetail = 'El proyecto ha sido creado';
+        $keyword = "project_has_been_created";
+        $responsibleList = Model_status_responsible::getUsersResponsible($keyword);
+        $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
+        $responsibleList = array($responsibleList['id_sre']);
+        foreach($projectList as $project)
+        {
+            $entryDate = $project->getEntryDate();
+            $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        }
+    }
+
 }
