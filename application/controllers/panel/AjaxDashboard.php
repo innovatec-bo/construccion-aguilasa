@@ -43,7 +43,8 @@ class AjaxDashboard extends PrivateController
                 $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
                 $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
             }
-            $projectTotalsList[] = $data;
+            $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+                $projectTotalsList[] = $data;
         }
         $response["success"] = 1;
         $response["data"] = $projectTotalsList;

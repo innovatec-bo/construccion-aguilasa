@@ -24,6 +24,7 @@
                 <th>OCTUBRE</th>
                 <th>NOVIEMBRE</th>
                 <th>DICIEMBRE</th>
+                <th>TOTAL</th>
             </tr>
             </thead>
             <tbody>
@@ -42,6 +43,7 @@
                     <td class="text-center">{{october}}</td>
                     <td class="text-center">{{november}}</td>
                     <td class="text-center">{{december}}</td>
+                    <td class="text-center">{{total}}</td>
                 </tr>
             {{/each}}
             </tbody>
