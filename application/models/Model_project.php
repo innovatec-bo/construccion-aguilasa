@@ -99,7 +99,7 @@ class Model_project extends Model_project_base
             $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
             $this->_status = $statusId;
-            $this->save();
+//            $this->save();
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
         }
@@ -1267,7 +1267,9 @@ class Model_project extends Model_project_base
                     LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
                     LEFT JOIN sec_users on user_id_sre = id_usr
                     LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                    LEFT JOIN wfl_project_status on id_pst = status_id_psl
                     where deleted_pro != 1
+                    and keyword_pst = ".$ci->db->escape($keyword)."
                     GROUP BY id_psl
             ) approved_log on approved_log.project_id_psl = id_pro
             WHERE

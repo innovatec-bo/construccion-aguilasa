@@ -128,6 +128,8 @@ class Project extends PrivateController
             $responsibleList = Model_status_responsible::getUsersResponsible($keyword);
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
+            $statusHasBeenCreated = "46";
+            $project->addStatusToLog($statusHasBeenCreated, $statusDetail, $projectEntryDate, $responsibleList);
             $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,$statusDetail,$projectEntryDate,$responsibleList);
 
             if(isset($formData["instant-approvement"]))

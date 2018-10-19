@@ -24,11 +24,12 @@ class Dashboard extends PrivateController
         $this->_loadPanelView('dashboard/index');
     }
 
+    //TODO: all project needs to register on log its creation date
     public function addCratedDateToLog()
     {
         set_time_limit(300);
         $projectList = Model_project::getAllProject();
-        echo"<pre>";var_dump($projectList);exit;
+//        echo"<pre>";var_dump($projectList);exit;
         $statusId = "46";
         $statusDetail = 'El proyecto ha sido creado';
         $keyword = "project_has_been_created";
