@@ -24,9 +24,8 @@ class Dashboard extends PrivateController
         $this->_loadPanelView('dashboard/index');
     }
 
-    //TODO: all project needs to register on log its creation date
-    public function addCratedDateToLog()
-    {
+//    public function addCratedDateToLog()
+//    {
 //        set_time_limit(300);
 //        $projectList = Model_project::getAllProject();
 //        echo"<pre>";var_dump($projectList);exit;
@@ -41,6 +40,6 @@ class Dashboard extends PrivateController
 //            $entryDate = $project->getEntryDate();
 //            $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
 //        }
-    }
+//    }
 
 }
