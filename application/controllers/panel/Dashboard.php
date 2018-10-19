@@ -18,8 +18,8 @@ class Dashboard extends PrivateController
         $this->_validateFeature("dashboard_index");
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
-        $this->complementHandler->addProjectCss('dashboard.index');
-        $this->complementHandler->addProjectJs('dashboard.index');
+        $this->complementHandler->addProjectCss('dashboard.index', TRUE);
+        $this->complementHandler->addProjectJs('dashboard.index', TRUE);
 
         $this->_loadPanelView('dashboard/index');
     }
