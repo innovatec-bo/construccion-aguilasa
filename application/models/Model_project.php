@@ -1202,34 +1202,25 @@ class Model_project extends Model_project_base
     /**
      * @param $keyword
      * @param string $year
-     * @return array
+     * @param string $columnType
+     * @return mixed
      */
-    public static function getStatusQuantityDetailByYear($keyword, $year = "")
+    public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId")
     {
         $ci = &get_instance();
         $ci->load->database();
 
         $yearFilter = $year == ""?"":" and projects.year = ".$ci->db->escape($year)." ";
-
+        $columns = static::_getStatusQuantityDetailByYearColumns($columnType);
         $sql = "
             SELECT 	
                 projects.year 'year',	
-                count(CASE WHEN month = 1 THEN id_pro END) 'january',
-                count(CASE WHEN month = 2 THEN id_pro END) 'february',
-                count(CASE WHEN month = 3 THEN id_pro END) 'march',
-                count(CASE WHEN month = 4 THEN id_pro END) 'april',
-                count(CASE WHEN month = 5 THEN id_pro END) 'may',
-                count(CASE WHEN month = 6 THEN id_pro END) 'june',
-                count(CASE WHEN month = 7 THEN id_pro END) 'july',
-                count(CASE WHEN month = 8 THEN id_pro END) 'august',
-                count(CASE WHEN month = 9 THEN id_pro END) 'september',
-                count(CASE WHEN month = 10 THEN id_pro END) 'october',
-                count(CASE WHEN month = 11 THEN id_pro END) 'november',
-                count(CASE WHEN month = 12 THEN id_pro END) 'december'
+                ".$columns."
             from 
             (
             SELECT 
                 wfl_projects.*,
+                approved_log.*,
                 EXTRACT(YEAR  FROM approved_log.entry_date) year,
               EXTRACT(MONTH FROM approved_log.entry_date) month	
             from 
@@ -1246,7 +1237,13 @@ class Model_project extends Model_project_base
                         transportation_prb,
                         live_line_prb,
                         right_of_way_prb,
-                        (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget		
+                        (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                        design_reb,
+                        building_reb,			
+                        transportation_reb,
+                        live_line_reb,
+                        right_of_way_reb,
+                        (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
                     from 
                         wfl_project_status_log
                     RIGHT JOIN(
@@ -1267,6 +1264,7 @@ class Model_project extends Model_project_base
                     LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre		
                     LEFT JOIN sec_users on user_id_sre = id_usr
                     LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+                    LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
                     LEFT JOIN wfl_project_status on id_pst = status_id_psl
                     where deleted_pro != 1
                     and keyword_pst = ".$ci->db->escape($keyword)."
@@ -1280,10 +1278,50 @@ class Model_project extends Model_project_base
             ".$yearFilter."
             GROUP BY projects.year
         ";
-
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
+    }
+
+    private static function _getStatusQuantityDetailByYearColumns($columnType)
+    {
+        $response = '';
+        switch($columnType)
+        {
+            case 'countId':
+                $response = "
+                count(CASE WHEN month = 1 THEN id_pro END) 'january',
+                count(CASE WHEN month = 2 THEN id_pro END) 'february',
+                count(CASE WHEN month = 3 THEN id_pro END) 'march',
+                count(CASE WHEN month = 4 THEN id_pro END) 'april',
+                count(CASE WHEN month = 5 THEN id_pro END) 'may',
+                count(CASE WHEN month = 6 THEN id_pro END) 'june',
+                count(CASE WHEN month = 7 THEN id_pro END) 'july',
+                count(CASE WHEN month = 8 THEN id_pro END) 'august',
+                count(CASE WHEN month = 9 THEN id_pro END) 'september',
+                count(CASE WHEN month = 10 THEN id_pro END) 'october',
+                count(CASE WHEN month = 11 THEN id_pro END) 'november',
+                count(CASE WHEN month = 12 THEN id_pro END) 'december'
+                ";
+                break;
+            case 'sumBudget':
+                $response = "
+                sum(CASE WHEN month = 1 THEN IFNULL(projects.total_budget,0) END) 'january',
+                sum(CASE WHEN month = 2 THEN IFNULL(projects.total_budget,0) END) 'february',
+                sum(CASE WHEN month = 3 THEN IFNULL(projects.total_budget,0) END) 'march',
+                sum(CASE WHEN month = 4 THEN IFNULL(projects.total_budget,0) END) 'april',
+                sum(CASE WHEN month = 5 THEN IFNULL(projects.total_budget,0) END) 'may',
+                sum(CASE WHEN month = 6 THEN IFNULL(projects.total_budget,0) END) 'june',
+                sum(CASE WHEN month = 7 THEN IFNULL(projects.total_budget,0) END) 'july',
+                sum(CASE WHEN month = 8 THEN IFNULL(projects.total_budget,0) END) 'august',
+                sum(CASE WHEN month = 9 THEN IFNULL(projects.total_budget,0) END) 'september',
+                sum(CASE WHEN month = 10 THEN IFNULL(projects.total_budget,0) END) 'october',
+                sum(CASE WHEN month = 11 THEN IFNULL(projects.total_budget,0) END) 'november',
+                sum(CASE WHEN month = 12 THEN IFNULL(projects.total_budget,0) END) 'december'
+                ";
+                break;
+        }
+        return $response;
     }
 
     public static function getAllProject()
@@ -1298,4 +1336,6 @@ class Model_project extends Model_project_base
         $result = static::recastArray(get_called_class(), $query->result());
         return $result;
     }
+
+
 }
