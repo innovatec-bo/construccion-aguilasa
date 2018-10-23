@@ -59,6 +59,10 @@ class AjaxDashboard extends PrivateController
         $response = array();
         $columnTypeList = array(
             'countId' => 'TOTALES',
+            'entryPoints' => 'INGRESO - PUNTOS',
+            'entryDistance' => 'INGRESO - DISTANCIA',
+            'digitizationPoints' => 'DISEÑO - PUNTOS',
+            'digitizationDistance' => 'DISEÑO - DISTANCIA',
             'sumDesignBudget' => 'IMPORTE DISEÑO',
             'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
             'sumTransportationBudget' => 'IMPORTE TRANSPORTE',

@@ -1220,9 +1220,9 @@ class Model_project extends Model_project_base
             (
             SELECT 
                 wfl_projects.*,
-                approved_log.*,
-                EXTRACT(YEAR  FROM approved_log.entry_date) year,
-              EXTRACT(MONTH FROM approved_log.entry_date) month	
+                status_log.*,
+                EXTRACT(YEAR  FROM status_log.entry_date) year,
+              EXTRACT(MONTH FROM status_log.entry_date) month	
             from 
                 wfl_projects
             RIGHT JOIN (
@@ -1243,7 +1243,9 @@ class Model_project extends Model_project_base
                         transportation_reb,
                         live_line_reb,
                         right_of_way_reb,
-                        (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+                        (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget,
+						points_quantity_prp,
+						distance_prp
                     from 
                         wfl_project_status_log
                     RIGHT JOIN(
@@ -1266,10 +1268,11 @@ class Model_project extends Model_project_base
                     LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
                     LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
                     LEFT JOIN wfl_project_status on id_pst = status_id_psl
+                    left join wfl_project_points on status_log_id_prp = id_psl
                     where deleted_pro != 1
                     and keyword_pst = ".$ci->db->escape($keyword)."
                     GROUP BY id_psl
-            ) approved_log on approved_log.project_id_psl = id_pro
+            ) status_log on status_log.project_id_psl = id_pro
             WHERE
             deleted_pro != 1					
             ) projects
@@ -1278,6 +1281,7 @@ class Model_project extends Model_project_base
             ".$yearFilter."
             GROUP BY projects.year
         ";
+//        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -1304,6 +1308,18 @@ class Model_project extends Model_project_base
         {
             case 'countId':
                 $col = "count(CASE WHEN month = {monthInt} THEN id_pro END) '{monthString}'";
+                break;
+            case 'entryPoints':
+                $col = "sum(CASE WHEN month = {monthInt} THEN points_pro END) '{monthString}'";
+                break;
+            case 'entryDistance':
+                $col = "sum(CASE WHEN month = {monthInt} THEN distance_pro END) '{monthString}'";
+                break;
+            case 'digitizationPoints':
+                $col = "sum(CASE WHEN month = {monthInt} THEN points_quantity_prp END) '{monthString}'";
+                break;
+            case 'digitizationDistance':
+                $col = "sum(CASE WHEN month = {monthInt} THEN distance_prp END) '{monthString}'";
                 break;
             case 'sumDesignBudget':
                 $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_prb,0) END) '{monthString}'";
