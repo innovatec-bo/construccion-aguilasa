@@ -54,7 +54,7 @@ class AjaxDashboard extends PrivateController
     public function getProjectNetBuilding()
     {
         $formData = $this->input->post();
-        $keyword = "approved";//$formData["keyword"];
+        $keyword = $formData["keyword"];
         $year = $formData["year"];
 //        $columnType = $formData["columnType"];
 //        $columnTypeList = array(

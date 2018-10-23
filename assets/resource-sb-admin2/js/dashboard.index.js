@@ -13,9 +13,21 @@ $(document).ready(function() {
         defaultDate: date,
         format: 'YYYY'
     });
-    $('.date-time').on("dp.change",function(e){
+    $('input[name=report-year]').on("dp.change",function(e){
         var date = new Date(e.date);
         getProjectTotalsTable(date.getFullYear());
+    });
+
+    $('input[name=building-report-year]').on("dp.change",function(e){
+        var date = new Date(e.date);
+        var keyword = $('select[name=keyword] option:selected').val();
+        getProjectNetBuilding(date.getFullYear(), keyword);
+    });
+
+    $('select[name=keyword]').on("change",function(e){
+        var year = $('input[name=building-report-year]').val();
+        var keyword = $(this).val();
+        getProjectNetBuilding(year, keyword);
     });
 
 });
@@ -69,7 +81,7 @@ function getProjectTotalsTable(year)
     });
 }
 
-function getProjectNetBuilding(year)
+function getProjectNetBuilding(year, keyword)
 {
     year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
     var $content = $("#net-building-report");
@@ -78,7 +90,7 @@ function getProjectNetBuilding(year)
         url : base_url + 'panel/AjaxDashboard/getProjectNetBuilding',
         dataType  :"json",
         type : "POST",
-        data:{year:year},
+        data:{year:year, keyword:keyword},
         success:function(response){
 
             if(response.success === 1)

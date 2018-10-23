@@ -12,7 +12,7 @@ div.dt-buttons {
 {
     font-size:10px;
 }
-select[name=criteria]
+select[name=keyword]
 {
     display: inline-block;
     width: 100px;
