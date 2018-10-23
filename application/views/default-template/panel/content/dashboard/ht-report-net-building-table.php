@@ -8,7 +8,7 @@
 ?>
 <script id="ht-report-net-building-table" type="text/x-handlebars-template">
     <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
+        <table class="table table-bordered table-hover table-striped table-minimum-padding">
             <thead>
             <tr>
                 <th>CRITERIO</th>
