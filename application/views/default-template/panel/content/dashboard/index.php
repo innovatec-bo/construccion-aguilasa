@@ -103,6 +103,16 @@
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Reporte de Construccion
                     <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+<!--                    <div class="form-group">-->
+                        <select class="form-control input-sm" name="criteria">
+                            <option>Ingresado</option>
+                            <option>Diseñado</option>
+                            <option>Aprobado</option>
+                            <option>Contruido</option>
+                            <option>Conciliado</option>
+                            <option>Con # orden</option>
+                        </select>
+<!--                    </div>-->
                     <div class="pull-right">
                         <div class="btn-group">
                             <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
