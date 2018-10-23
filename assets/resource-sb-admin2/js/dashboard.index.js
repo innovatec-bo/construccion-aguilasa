@@ -84,6 +84,7 @@ function getProjectTotalsTable(year)
 function getProjectNetBuilding(year, keyword)
 {
     year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    keyword = typeof keyword !== 'undefined' ? keyword : "project_has_been_created";
     var $content = $("#net-building-report");
     blockArea($content);
     $.ajax({

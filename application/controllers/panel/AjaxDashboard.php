@@ -56,15 +56,6 @@ class AjaxDashboard extends PrivateController
         $formData = $this->input->post();
         $keyword = $formData["keyword"];
         $year = $formData["year"];
-//        $columnType = $formData["columnType"];
-//        $columnTypeList = array(
-//            'project_has_been_created' => 'INGRESADOS',
-//            'already_sent' => 'DISEÑADOS',
-//            'approved' => 'APROBADOS',
-//            'as_built' => 'CONSTRUIDOS',
-//            'conciliation_shipment' => 'CONCILIADOS',
-//            'project_real_budget_confirmation' => 'CON # ORDEN'
-//        );
         $response = array();
         $columnTypeList = array(
             'countId' => 'TOTALES',
