@@ -102,15 +102,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Reporte de Construccion
+                    <select class="form-control input-sm" name="keyword">
+                        <option value="project_has_been_created">Ingresados</option>
+                        <option value="already_sent">Diseñados</option>
+                        <option value="approved">Aprobados</option>
+                        <option value="as_built">Contruidos</option>
+                        <option value="conciliation_shipment">Conciliados</option>
+                        <option value="project_real_budget_confirmation">Con # orden</option>
+                    </select>
                     <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
-                        <select class="form-control input-sm" name="keyword">
-                            <option value="project_has_been_created">Ingresado</option>
-                            <option value="already_sent">Diseñado</option>
-                            <option value="approved">Aprobado</option>
-                            <option value="as_built">Contruido</option>
-                            <option value="conciliation_shipment">Conciliado</option>
-                            <option value="project_real_budget_confirmation">Con # orden</option>
-                        </select>
                     <div class="pull-right">
                         <div class="btn-group">
                             <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
