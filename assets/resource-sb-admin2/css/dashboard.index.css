@@ -1,7 +1,7 @@
 div.dt-buttons {
     margin-bottom: 5px;
 }
-input[name=report-year]
+.date-time
 {
     width: unset;
     display: inline-block;
