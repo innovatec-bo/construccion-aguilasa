@@ -331,7 +331,7 @@ class Model_project extends Model_project_base
             approved.transportation_prb transportation_budget,
             approved.live_line_prb live_line_budget,
             approved.right_of_way_prb right_of_way_budget,
-            ifnull(approved.design_prb, 0) + ifnull(approved.building_prb, 0) + ifnull(approved.transportation_prb, 0) + ifnull(approved.live_line_prb, 0) + ifnull(approved.right_of_way_prb, 0) total_approved,               
+            approved.total_budget total_approved,               
             record_building_materials.entry_date record_building_materials_date,
             get_materials.entry_date get_materials_date,
             deliver_materials.entry_date deliver_materials_date,
@@ -361,12 +361,19 @@ class Model_project extends Model_project_base
             project_return_materials.entry_date project_return_materials_date,
             payment_order_registered.entry_date payment_order_registered_date,
             payment_order_registered.order_number_pao payment_order_registered_order_number,
-            payment_order_registered.design_budget_pop payment_order_registered_design_budget,
-            payment_order_registered.transportation_budget_pop payment_order_registered_transportation_budget,
-            payment_order_registered.live_line_budget_pop payment_order_registered_live_line_budget,
-			payment_order_registered.building_budget_pop payment_order_registered_building_budget,
-            payment_order_registered.right_of_way_budget_pop payment_order_registered_right_of_way_budget,
-            payment_order_registered.total_real_budget payment_order_registered_total_real_budget,
+            conciliation_shipment.design_reb payment_order_registered_design_budget,
+            conciliation_shipment.building_reb payment_order_registered_building_budget,
+            conciliation_shipment.transportation_reb payment_order_registered_transportation_budget,
+            conciliation_shipment.live_line_reb payment_order_registered_live_line_budget,
+            conciliation_shipment.right_of_way_prb payment_order_registered_right_of_way_budget,
+            conciliation_shipment.total_real_budget payment_order_registered_total_real_budget,
+--            ifnull(conciliation_shipment.design_reb, 0) + ifnull(conciliation_shipment.building_reb, 0) + ifnull(conciliation_shipment.transportation_reb, 0) + ifnull(conciliation_shipment.live_line_reb, 0) + ifnull(conciliation_shipment.right_of_way_reb, 0) payment_order_registered_total_real_budget,
+--            payment_order_registered.design_budget_pop payment_order_registered_design_budget,
+--            payment_order_registered.transportation_budget_pop payment_order_registered_transportation_budget,
+--            payment_order_registered.live_line_budget_pop payment_order_registered_live_line_budget,
+--			  payment_order_registered.building_budget_pop payment_order_registered_building_budget,
+--            payment_order_registered.right_of_way_budget_pop payment_order_registered_right_of_way_budget,
+--            payment_order_registered.total_real_budget payment_order_registered_total_real_budget,
             payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
             payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,
             payment_order_has_been_settled.entry_date payment_order_has_been_settled_date
@@ -434,6 +441,12 @@ class Model_project extends Model_project_base
 			live_line_prb,
 			right_of_way_prb,
 			(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+			design_reb,
+			building_reb,			
+			transportation_reb,
+			live_line_reb,
+			right_of_way_reb,
+			(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget,
 			start_date_cas,
 			end_date_cas,
 			estimated_time_cas,
@@ -525,6 +538,7 @@ class Model_project extends Model_project_base
                 and deleted_uro != 1
             ) as fiscal on fiscal.fiscal_id = user_id_sre		
 		LEFT JOIN wfl_project_budgets on status_log_id_prb = id_psl
+		LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		left join wfl_project_points on status_log_id_prp = id_psl
 		where deleted_pro != 1

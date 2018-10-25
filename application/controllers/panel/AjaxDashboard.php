@@ -84,25 +84,6 @@ class AjaxDashboard extends PrivateController
                                     'sumRealBudget' => 'TOTAL IMPORTE REAL'
                                 )
             );
-        $columnTypeList = array(
-//            'countId' => 'TOTALES',
-            'entryPoints' => 'INGRESO - PUNTOS',
-            'entryDistance' => 'INGRESO - DISTANCIA',
-            'digitizationPoints' => 'DISEÑO - PUNTOS',
-            'digitizationDistance' => 'DISEÑO - DISTANCIA',
-            'sumDesignBudget' => 'IMPORTE DISEÑO',
-            'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
-            'sumTransportationBudget' => 'IMPORTE TRANSPORTE',
-            'sumLiveLineBudget' => 'IMPORTE LINEA VIVA',
-            'sumRightOfWayBudget' => 'IMPORTE DERECHO DE VIA',
-            'sumBudget' => 'TOTAL IMPORTE',
-            'sumDesignRealBudget' => 'IMPORTE REAL - DISEÑO',
-            'sumBuildingRealBudget' => 'IMPORTE REAL - CONSTRUCCION',
-            'sumTransportationRealBudget' => 'IMPORTE REAL - TRANSPORTE',
-            'sumLiveLineRealBudget' => 'IMPORTE REAL - LINEA VIVA',
-            'sumRightOfWayRealBudget' => 'IMPORTE REAL - DERECHO DE VIA',
-            'sumRealBudget' => 'TOTAL IMPORTE REAL'
-        );
         $projectTotalsList = array();
         //begin - Adding total column
         $data = Model_project::getStatusQuantityDetailByYear($mainList, $year);
