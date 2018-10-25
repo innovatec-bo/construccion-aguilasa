@@ -99,7 +99,7 @@ class Model_project extends Model_project_base
             $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
             $this->_status = $statusId;
-//            $this->save();
+            $this->save();
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
         }
