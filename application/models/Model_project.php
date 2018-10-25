@@ -1205,13 +1205,14 @@ class Model_project extends Model_project_base
      * @param string $columnType
      * @return mixed
      */
-    public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId")
+    public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId", $mainList = "allProjects")
     {
         $ci = &get_instance();
         $ci->load->database();
 
         $yearFilter = $year == ""?"":" and projects.year = ".$ci->db->escape($year)." ";
         $columns = static::_getStatusQuantityDetailByYearColumns($columnType);
+        $mainList = static::_mainListFromFilter($mainList);
         $sql = "
             SELECT 	
                 projects.year 'year',	
@@ -1224,7 +1225,7 @@ class Model_project extends Model_project_base
                 EXTRACT(YEAR  FROM status_log.entry_date) year,
               EXTRACT(MONTH FROM status_log.entry_date) month	
             from 
-                wfl_projects
+                ".$mainList."
             RIGHT JOIN (
                     select 
                         id_psl,
@@ -1372,6 +1373,43 @@ class Model_project extends Model_project_base
         return $response;
     }
 
+    private static function _mainListFromFilter($list)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $mainList = " wfl_projects ";
+        if($list != "allProjects")
+        {
+            $mainList = " (
+							select 						
+                                wfl_projects.*
+							from 
+                                wfl_project_status_log
+							RIGHT JOIN(
+                                SELECT			
+                                    project_id_psl project_id,
+                                    max(manual_entry_date_psl) entry_date
+                                FROM
+                                    wfl_project_status_log
+                                LEFT JOIN wfl_project_status on id_pst = status_id_psl
+                                WHERE
+                                keyword_pst = ".$ci->db->escape($list)."
+                                and deleted_psl != 1
+                                
+                                GROUP BY project_id_psl
+							) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+							LEFT JOIN wfl_projects on id_pro = project_id_psl				
+							LEFT JOIN wfl_project_status on id_pst = status_id_psl				
+							where deleted_pro != 1
+							and keyword_pst = ".$ci->db->escape($list)."
+							GROUP BY id_psl
+							)
+							wfl_projects ";
+        }
+
+        return $mainList;
+    }
+
     public static function getAllProject()
     {
         $ci = &get_instance();
@@ -1384,6 +1422,7 @@ class Model_project extends Model_project_base
         $result = static::recastArray(get_called_class(), $query->result());
         return $result;
     }
+
 
 
 }
