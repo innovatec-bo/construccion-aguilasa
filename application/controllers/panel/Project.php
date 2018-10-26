@@ -130,6 +130,8 @@ class Project extends PrivateController
             $responsibleList = array($responsibleList['id_sre']);
             $statusHasBeenCreated = "46";
             $project->addStatusToLog($statusHasBeenCreated, $statusDetail, $projectEntryDate, $responsibleList);
+            $seconds = 1;
+            $projectEntryDate = date("Y-m-d H:i:s", (strtotime(date($projectEntryDate)) + $seconds));
             $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,$statusDetail,$projectEntryDate,$responsibleList);
 
             if(isset($formData["instant-approvement"]))
