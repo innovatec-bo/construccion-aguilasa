@@ -1219,6 +1219,7 @@ class Model_project extends Model_project_base
      * @param $keyword
      * @param string $year
      * @param string $columnType
+     * @param string $mainList
      * @return mixed
      */
     public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId", $mainList = "allProjects")
