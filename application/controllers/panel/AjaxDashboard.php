@@ -63,9 +63,13 @@ class AjaxDashboard extends PrivateController
                                                 'entryDistance' => 'INGRESO - DISTANCIA'
                                             ),
             'already_sent' => array(
-                                                'digitizationPoints' => 'DISEÑO - PUNTOS',
-                                                'digitizationDistance' => 'DISEÑO - DISTANCIA'
+                                                'digitizationPoints' => 'ESTACADO - PUNTOS',
+                                                'digitizationDistance' => 'ESTACADO - DISTANCIA'
                                             ),
+            'as_built' => array(
+                                        'digitizationPoints' => 'CONSTRUIDO - PUNTOS',
+                                        'digitizationDistance' => 'CONSTRUIDO - DISTANCIA'
+            ),
             'approved' => array(
                                     'sumDesignBudget' => 'IMPORTE DISEÑO',
                                     'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
