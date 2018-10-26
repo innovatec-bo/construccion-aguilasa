@@ -30,7 +30,7 @@
                             <i class="fa fa-users fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-users"></span></div>
+                            <div class="huge"><span id="dashboard-total-users"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
                             <div>Users!</div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                             <i class="fa fa-user fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-roles"></span></div>
+                            <div class="huge"><span id="dashboard-total-roles"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
                             <div>Roles!</div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                             <i class="fa fa-folder fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-projects"></span></div>
+                            <div class="huge"><span id="dashboard-total-projects"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
                             <div>Projects!</div>
                         </div>
                     </div>
