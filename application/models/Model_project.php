@@ -251,6 +251,8 @@ class Model_project extends Model_project_base
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
         $entryDate = $entryDate." ".date("H:i:s");
+        $seconds = 2;
+        $entryDate = date("Y-m-d H:i:s", (strtotime(date($entryDate)) + $seconds));
         $statusId = 11;
         $design = str_replace(",","",$design);
         $building = str_replace(",","",$building);
