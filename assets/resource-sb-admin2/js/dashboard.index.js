@@ -5,6 +5,7 @@
 $(document).ready(function() {
     getUsersQuantity();
     getRolesQuantity();
+    getProjectsQuantity();
     getProjectTotalsTable();
     getProjectNetBuilding();
     var date = new Date();
@@ -52,6 +53,18 @@ function getRolesQuantity()
         type : "POST",
         success:function(response){
             $("#dashboard-total-roles").text(response.total);
+        }
+    });
+}
+
+function getProjectsQuantity()
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxProject/getTotalProjects',
+        dataType  :"json",
+        type : "POST",
+        success:function(response){
+            $("#dashboard-total-projects").text(response.total);
         }
     });
 }

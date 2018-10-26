@@ -120,4 +120,11 @@ class AjaxProject extends PrivateController
         $resultArray['pagination'] = array("more" => $moreResults);
         echo json_encode($resultArray);exit;
     }
+
+    public function getTotalProjects()
+    {
+        $recordsTotal = Model_project::countAll();
+        $response["total"] = $recordsTotal;
+        echo json_encode($response);exit;
+    }
 }
