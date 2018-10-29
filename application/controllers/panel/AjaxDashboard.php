@@ -139,7 +139,6 @@ class AjaxDashboard extends PrivateController
     private function _formatNumbers($data)
     {
         $monthList = array("january","february","march","april","may","june","july","august","september","october","november","december","total");
-//        $rowKeyList = array("entryPoints","entryDistance","digitizationPoints","digitizationDistance","sumDesignBudget","");
         foreach ($data as $month => &$value)
         {
             if(in_array($month, $monthList))
@@ -147,7 +146,6 @@ class AjaxDashboard extends PrivateController
                 $value = number_format($value,2);
             }
         }
-//        echo"<pre>";var_dump($data);exit;
         return $data;
     }
 }
