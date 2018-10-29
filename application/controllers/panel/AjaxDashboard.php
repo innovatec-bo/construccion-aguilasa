@@ -110,6 +110,7 @@ class AjaxDashboard extends PrivateController
                 if(count($data) >= 1)
                 {
                     $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                    $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
                 }
                 else
                 {
@@ -117,6 +118,7 @@ class AjaxDashboard extends PrivateController
                     $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
                 }
                 $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+                $data = $this->_formatNumbers($data);
                 $projectTotalsList[] = $data;
             }
         }
@@ -132,5 +134,20 @@ class AjaxDashboard extends PrivateController
         $arr[$key] = $val;
         $arr = array_reverse($arr, true);
         return $arr;
+    }
+
+    private function _formatNumbers($data)
+    {
+        $monthList = array("january","february","march","april","may","june","july","august","september","october","november","december","total");
+//        $rowKeyList = array("entryPoints","entryDistance","digitizationPoints","digitizationDistance","sumDesignBudget","");
+        foreach ($data as $month => &$value)
+        {
+            if(in_array($month, $monthList))
+            {
+                $value = number_format($value,2);
+            }
+        }
+//        echo"<pre>";var_dump($data);exit;
+        return $data;
     }
 }
