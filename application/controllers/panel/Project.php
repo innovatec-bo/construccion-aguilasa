@@ -387,4 +387,10 @@ class Project extends PrivateController
         $excel = new ExcelPaymentSettledAndTotalsByYearAndMonth($this->sessionUser);
         $excel->getReport();
     }
+
+    public function networksBuilding()
+    {
+        $excel = new ExcelNetworksBuilding($this->sessionUser,"project_has_been_created","2018");
+        $excel->getReport();
+    }
 }
