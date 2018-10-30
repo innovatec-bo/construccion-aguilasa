@@ -390,7 +390,10 @@ class Project extends PrivateController
 
     public function networksBuilding()
     {
-        $excel = new ExcelNetworksBuilding($this->sessionUser,"project_has_been_created","2018");
+        $formData = $this->input->post();
+        $mainList = $formData["keyword"];
+        $year = $formData["building-report-year"];
+        $excel = new ExcelNetworksBuilding($this->sessionUser, $mainList, $year);
         $excel->getReport();
     }
 }

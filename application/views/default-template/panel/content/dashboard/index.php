@@ -123,23 +123,23 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-table fa-fw"></i> Reporte de Construccion
-                    <select class="form-control input-sm" name="keyword">
-                        <option value="project_has_been_created">Ingresados</option>
-                        <option value="already_sent">Diseñados</option>
-                        <option value="approved">Aprobados</option>
-                        <option value="as_built">Contruidos</option>
-                        <option value="conciliation_shipment">Conciliados</option>
-                        <option value="project_real_budget_confirmation">Con # orden</option>
-                    </select>
-                    <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
-                    <div class="pull-right">
-                        <div class="btn-group">
-                            <form name="report" action="<?=base_url("panel/Project/networksBuilding")?>" method="post">
-                                <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
-                            </form>
+                    <form name="report" action="<?=base_url("panel/Project/networksBuilding")?>" method="post">
+                        <i class="fa fa-table fa-fw"></i> Reporte de Construccion
+                        <select class="form-control input-sm" name="keyword">
+                            <option value="project_has_been_created">Ingresados</option>
+                            <option value="already_sent">Diseñados</option>
+                            <option value="approved">Aprobados</option>
+                            <option value="as_built">Contruidos</option>
+                            <option value="conciliation_shipment">Conciliados</option>
+                            <option value="project_real_budget_confirmation">Con # orden</option>
+                        </select>
+                        <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                    <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
