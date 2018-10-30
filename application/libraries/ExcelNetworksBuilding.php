@@ -21,6 +21,8 @@ class ExcelNetworksBuilding
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
         $spreadsheet = new Spreadsheet();
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
             ->setTitle("Networks building report")
@@ -29,32 +31,45 @@ class ExcelNetworksBuilding
             ->setKeywords("report networks building projects month year")
             ->setCategory("Report");
 
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A1', "2018");
-        $spreadsheet->getActiveSheet()->mergeCells('A1:B1');
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('C1', "ENERO")
-            ->setCellValue('D1', "FEBRERO")
-            ->setCellValue('E1', "MARZO")
-            ->setCellValue('F1', "ABRIL")
-            ->setCellValue('G1', "MAYO")
-            ->setCellValue('H1', "JUNIO")
-            ->setCellValue('I1', "JULIO")
-            ->setCellValue('J1', "AGOSTO")
-            ->setCellValue('K1', "SEPTIEMBRE")
-            ->setCellValue('L1', "OCTUBRE")
-            ->setCellValue('M1', "NOVIEMBRE")
-            ->setCellValue('N1', "DICIEMBRE")
-            ->setCellValue('O1', "TOTAL");
 
-//        $projectTotalsList = array();
-        $i = 1;
-        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+        $this->_headerColumn($spreadsheet);
+
+        //begin - Adding total column
+        $data = Model_project::getStatusQuantityDetailByYear($this->_mainList, $this->_year);
+        if(count($data) >= 1)
+        {
+            $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
+        }
+        else
+        {
+            $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
+            $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
+        }
+        $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+        $spreadsheet->setActiveSheetIndex(0)
+
+            ->setCellValue('B2', $data["criteria"])
+            ->setCellValue('C2', $data["january"])
+            ->setCellValue('D2', $data["february"])
+            ->setCellValue('E2', $data["march"])
+            ->setCellValue('F2', $data["april"])
+            ->setCellValue('G2', $data["may"])
+            ->setCellValue('H2', $data["june"])
+            ->setCellValue('I2', $data["july"])
+            ->setCellValue('J2', $data["august"])
+            ->setCellValue('K2', $data["september"])
+            ->setCellValue('L2', $data["october"])
+            ->setCellValue('M2', $data["november"])
+            ->setCellValue('N2', $data["december"])
+            ->setCellValue('O2', $data["total"]);
+        //end - adding total column
+        $i = 2;
         foreach($this->_reportSections as $keyword => $columnTypeList)
         {
+            $totalColumnsType = count($columnTypeList);
             foreach ($columnTypeList as $rowKey => $criteria)
             {
-                $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, $rowKey, $mainList);
+                $data = Model_project::getStatusQuantityDetailByYear($keyword, $this->_year, $rowKey, $this->_mainList);
                 if(count($data) >= 1)
                 {
                     $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
@@ -65,8 +80,17 @@ class ExcelNetworksBuilding
                     $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
                     $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
                 }
+
                 $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
-//                $projectTotalsList[] = $data;
+
+//                if($i == 2)
+//                {
+//                    $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.($i+1), $data["criteria"]);
+//                }
+//                else
+//                {
+//                    $spreadsheet->setActiveSheetIndex(0)->setCellValue('B'.($i+1), $data["criteria"]);
+//                }
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue('B'.($i+1), $data["criteria"])
                     ->setCellValue('C'.($i+1), $data["january"])
@@ -84,28 +108,16 @@ class ExcelNetworksBuilding
                     ->setCellValue('O'.($i+1), $data["total"]);
                 $i++;
             }
+            $groupRow = $this->_groupRows($keyword);
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.($i+1-$totalColumnsType), $groupRow);
+            if($keyword == "approved" || $keyword == "conciliation_shipment")
+                $spreadsheet->getActiveSheet()->getStyle('A'.($i+1-$totalColumnsType))->getAlignment()->setTextRotation(45);
+            $spreadsheet->getActiveSheet()->mergeCells('A'.($i+1-$totalColumnsType).':A'.($i));
         }
-
+        $this->_adjustColumnToText($spreadsheet);
+        $this->_leftColumn($spreadsheet, $i);
         $this->_currencyFormatNumber($spreadsheet, $i);
-//        foreach ($asBuiltProjectsByYearAndMonth as $row)
-//        {
-//            $spreadsheet->setActiveSheetIndex(0)
-//                ->setCellValue('B'.($i+1), $row["year"])
-//                ->setCellValue('C'.($i+1), $row["january"])
-//                ->setCellValue('D'.($i+1), $row["february"])
-//                ->setCellValue('E'.($i+1), $row["march"])
-//                ->setCellValue('F'.($i+1), $row["april"])
-//                ->setCellValue('G'.($i+1), $row["may"])
-//                ->setCellValue('H'.($i+1), $row["june"])
-//                ->setCellValue('I'.($i+1), $row["july"])
-//                ->setCellValue('J'.($i+1), $row["august"])
-//                ->setCellValue('K'.($i+1), $row["september"])
-//                ->setCellValue('L'.($i+1), $row["october"])
-//                ->setCellValue('M'.($i+1), $row["november"])
-//                ->setCellValue('N'.($i+1), $row["december"])
-//                ->setCellValue('O'.($i+1), $row["total"]);
-//            $i++;
-//        }
+
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="networks_building_report.xlsx"');
@@ -115,20 +127,73 @@ class ExcelNetworksBuilding
         $writer->save('php://output');
 	}
 
+    private function _headerColumn($spreadsheet)
+    {
+        $titleStyleArray = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', $this->_year)
+            ->setCellValue('C1', "ENERO")
+            ->setCellValue('D1', "FEBRERO")
+            ->setCellValue('E1', "MARZO")
+            ->setCellValue('F1', "ABRIL")
+            ->setCellValue('G1', "MAYO")
+            ->setCellValue('H1', "JUNIO")
+            ->setCellValue('I1', "JULIO")
+            ->setCellValue('J1', "AGOSTO")
+            ->setCellValue('K1', "SEPTIEMBRE")
+            ->setCellValue('L1', "OCTUBRE")
+            ->setCellValue('M1', "NOVIEMBRE")
+            ->setCellValue('N1', "DICIEMBRE")
+            ->setCellValue('O1', "TOTAL");
+        $spreadsheet->getActiveSheet()->getStyle('A1:O1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(20);
+        $spreadsheet->getActiveSheet()->mergeCells('A1:B1');
+        $spreadsheet->getActiveSheet()->mergeCells('A1:B1');
+    }
+
+    private function _leftColumn($spreadsheet, $totalRows)
+    {
+        $titleStyleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A3:A'.$totalRows)->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A3:B'.$totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+    }
+    private function _groupRows($key)
+    {
+        $groupRowsArray = array(
+                                "project_has_been_created" => "INGRESO",
+                                "already_sent" => "ESTACADO",
+                                "as_built" => "CONSTRUIDO",
+                                "approved" => "IMPORTE ORIGINAL",
+                                "conciliation_shipment" => "IMPORTE REAL"
+                                );
+        return $groupRowsArray[$key];
+    }
+
 	private function _setReportSections()
     {
         $this->_reportSections = array(
             'project_has_been_created' => array(
-                'entryPoints' => 'INGRESO - PUNTOS',
-                'entryDistance' => 'INGRESO - DISTANCIA'
+                'entryPoints' => 'PUNTOS',
+                'entryDistance' => 'DISTANCIA'
             ),
             'already_sent' => array(
-                'digitizationPoints' => 'ESTACADO - PUNTOS',
-                'digitizationDistance' => 'ESTACADO - DISTANCIA'
+                'digitizationPoints' => 'PUNTOS',
+                'digitizationDistance' => 'DISTANCIA'
             ),
             'as_built' => array(
-                'digitizationPoints' => 'CONSTRUIDO - PUNTOS',
-                'digitizationDistance' => 'CONSTRUIDO - DISTANCIA'
+                'digitizationPoints' => 'PUNTOS',
+                'digitizationDistance' => 'DISTANCIA'
             ),
             'approved' => array(
                 'sumDesignBudget' => 'IMPORTE DISEÑO',
@@ -147,6 +212,15 @@ class ExcelNetworksBuilding
                 'sumRealBudget' => 'TOTAL IMPORTE REAL'
             )
         );
+    }
+
+    private function _adjustColumnToText($spreadsheet)
+    {
+        $columnsToAdjust = array("A","B","D","E","F","G","H","I","J","K","L","M","N","O");
+        foreach ($columnsToAdjust as $key => $column)
+        {
+            $spreadsheet->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
+        }
     }
 
     private function _array_unshift_assoc(&$arr, $key, $val)

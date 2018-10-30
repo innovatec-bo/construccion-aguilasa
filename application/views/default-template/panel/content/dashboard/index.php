@@ -135,7 +135,7 @@
                     <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
                     <div class="pull-right">
                         <div class="btn-group">
-                            <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+                            <form name="report" action="<?=base_url("panel/Project/networksBuilding")?>" method="post">
                                 <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
                             </form>
                         </div>
