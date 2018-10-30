@@ -62,7 +62,7 @@ class AjaxDashboard extends PrivateController
                                                 'entryPoints' => 'INGRESO - PUNTOS',
                                                 'entryDistance' => 'INGRESO - DISTANCIA'
                                             ),
-            'already_sent' => array(
+            'digitization' => array(
                                                 'digitizationPoints' => 'ESTACADO - PUNTOS',
                                                 'digitizationDistance' => 'ESTACADO - DISTANCIA'
                                             ),

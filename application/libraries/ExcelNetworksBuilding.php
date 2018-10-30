@@ -187,7 +187,7 @@ class ExcelNetworksBuilding
                 'entryPoints' => 'PUNTOS',
                 'entryDistance' => 'DISTANCIA'
             ),
-            'already_sent' => array(
+            'digitization' => array(
                 'digitizationPoints' => 'PUNTOS',
                 'digitizationDistance' => 'DISTANCIA'
             ),
