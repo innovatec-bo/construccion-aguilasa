@@ -56,6 +56,7 @@ class AjaxDashboard extends PrivateController
         $formData = $this->input->post();
         $mainList = $formData["keyword"];
         $year = $formData["year"];
+
         $response = array();
         $reportSections = array(
             'project_has_been_created' => array(
@@ -71,6 +72,7 @@ class AjaxDashboard extends PrivateController
                                         'digitizationDistance' => 'CONSTRUIDO - DISTANCIA'
             ),
             'approved' => array(
+                                    'countBudgets' => 'PROYECTOS CON IMPORTE',
                                     'sumDesignBudget' => 'IMPORTE DISEÑO',
                                     'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
                                     'sumTransportationBudget' => 'IMPORTE TRANSPORTE',
@@ -87,6 +89,7 @@ class AjaxDashboard extends PrivateController
                                     'sumRealBudget' => 'TOTAL IMPORTE REAL'
                                 )
             );
+
         $projectTotalsList = array();
         //begin - Adding total column
         $data = Model_project::getStatusQuantityDetailByYear($mainList, $year);
@@ -102,6 +105,7 @@ class AjaxDashboard extends PrivateController
         $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
         $projectTotalsList[] = $data;
         //end - adding total column
+
         foreach($reportSections as $keyword => $columnTypeList)
         {
             foreach ($columnTypeList as $rowKey => $criteria)

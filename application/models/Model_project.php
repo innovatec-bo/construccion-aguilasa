@@ -1250,12 +1250,14 @@ class Model_project extends Model_project_base
                         status_id_psl,	
                         filter.entry_date,
                         GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                        id_prb,
                         design_prb,
                         building_prb,			
                         transportation_prb,
                         live_line_prb,
                         right_of_way_prb,
                         (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+                        id_reb,
                         design_reb,
                         building_reb,			
                         transportation_reb,
@@ -1299,7 +1301,6 @@ class Model_project extends Model_project_base
             ".$yearFilter."
             GROUP BY projects.year
         ";
-//        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -1338,6 +1339,9 @@ class Model_project extends Model_project_base
                 break;
             case 'digitizationDistance':
                 $col = "sum(CASE WHEN month = {monthInt} THEN distance_prp END) '{monthString}'";
+                break;
+            case 'countBudgets':
+                $col = "count(CASE WHEN month = {monthInt} THEN IFNULL(projects.id_prb,0) END) '{monthString}'";
                 break;
             case 'sumDesignBudget':
                 $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_prb,0) END) '{monthString}'";
