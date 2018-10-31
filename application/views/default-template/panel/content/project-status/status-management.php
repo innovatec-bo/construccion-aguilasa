@@ -169,6 +169,7 @@ $this->load->view("default-template/panel/content/project-status/ht-stakes-proje
 $this->load->view("default-template/panel/content/project-status/ht-status-unsigned-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-no-created-view-form");
 //diseño
+$this->load->view("default-template/panel/content/project-status/ht-status-project_has_been_created-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-design-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-stakes-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-returned-form");

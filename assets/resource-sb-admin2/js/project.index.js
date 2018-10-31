@@ -2,6 +2,7 @@
  * Created by Jair on 10/01/2018.
  */
 var statusSet = [];
+statusSet["46"] = "design";
 statusSet["1"] = "design";
 statusSet["2"] = "design";
 statusSet["20"] = "design";
