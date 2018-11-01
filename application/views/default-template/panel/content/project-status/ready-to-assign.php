@@ -138,7 +138,7 @@ foreach($responsibleList as $responsible)
                                 <fieldset>
                                     <label>Fiscal(es) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                     <div class="form-group">
-                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list1">
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1">
                                             <?php
 
                                             echo $fiscalHtml;
