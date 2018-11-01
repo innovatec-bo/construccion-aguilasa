@@ -29,31 +29,31 @@
                                 <input type="hidden" name="user-id" value="">
                                 <div class="form-group">
                                     <label>Nombre</label>
-                                    <input class="form-control" required name="first-name" placeholder="Enter first name">
+                                    <input class="form-control" required name="first-name" value="<?=set_value("first-name")?>" placeholder="Enter first name">
                                 </div>
                         </div>
                         <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Apellido</label>
-                                    <input class="form-control" required name="last-name" placeholder="Enter last name">
+                                    <input class="form-control" required name="last-name" value="<?=set_value("last-name")?>" placeholder="Enter last name">
                                 </div>
                         </div>
                         <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Correo</label>
-                                    <input type="email" class="form-control" required name="email" placeholder="Enter email">
+                                    <input type="email" class="form-control" required name="email" value="<?=set_value("email")?>" placeholder="Enter email">
                                 </div>
                         </div>
                         <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Contraseña</label>
-                                    <input class="form-control" required name="password" placeholder="Enter password" id="user-password">
+                                    <input class="form-control" required name="password" placeholder="Enter password" value="" id="user-password">
                                 </div>
                         </div>
                         <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Confirm password</label>
-                                    <input class="form-control" required name="confirm-password" placeholder="Confirm password" data-parsley-equalto="#user-password" data-parsley-equalto-message="Password and confirm password are different">
+                                    <input class="form-control" required name="confirm-password" placeholder="Confirm password" value="" data-parsley-equalto="#user-password" data-parsley-equalto-message="Password and confirm password are different">
                                 </div>
                         </div>
                         <div class="col-lg-6">
