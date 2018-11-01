@@ -211,7 +211,7 @@
                                         <option value="">Elija la posicion presupuestaria</option>
                                         <?php
                                         $html = "";
-                                        for ($i = 0; $i<10; $i++)
+                                        for ($i = 0; $i<11; $i++)
                                         {
                                             $position = ($i+1) * 10;
                                             $selected = $project["budgetary_position_pro"] == $position?" selected ":"";
