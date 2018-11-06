@@ -133,6 +133,8 @@ class Project extends PrivateController
             $seconds = 1;
             $projectEntryDate = date("Y-m-d H:i:s", (strtotime(date($projectEntryDate)) + $seconds));
             $project->savePoints($projectPoints, $projectMetersDistance,$projectStatus,$statusDetail,$projectEntryDate,$responsibleList);
+            $project->setStatus($projectStatus);
+            $project->save();
 
             if(isset($formData["instant-approvement"]))
             {
