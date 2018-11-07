@@ -1239,8 +1239,8 @@ class Model_project extends Model_project_base
             SELECT 
                 wfl_projects.*,
                 status_log.*,
-                EXTRACT(YEAR  FROM status_log.entry_date) year,
-              EXTRACT(MONTH FROM status_log.entry_date) month	
+                EXTRACT(YEAR  FROM wfl_projects.entry_date_main_list) year,
+	            EXTRACT(MONTH FROM wfl_projects.entry_date_main_list) month	
             from 
                 ".$mainList."
             RIGHT JOIN (
@@ -1292,8 +1292,8 @@ class Model_project extends Model_project_base
                     where deleted_pro != 1
                     and keyword_pst = ".$ci->db->escape($keyword)."
                     GROUP BY id_psl
-            -- ) status_log on status_log.project_id_psl = id_pro
-            ) status_log on status_log.project_id_psl = id_pro and DATE_FORMAT(status_log.entry_date,'%Y-%M') = DATE_FORMAT(wfl_projects.entry_date_main_list,'%Y-%M')
+            ) status_log on status_log.project_id_psl = id_pro
+            -- ) status_log on status_log.project_id_psl = id_pro and DATE_FORMAT(status_log.entry_date,'%Y-%M') = DATE_FORMAT(wfl_projects.entry_date_main_list,'%Y-%M')
             WHERE
             deleted_pro != 1					
             ) projects
