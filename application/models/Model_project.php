@@ -1292,7 +1292,8 @@ class Model_project extends Model_project_base
                     where deleted_pro != 1
                     and keyword_pst = ".$ci->db->escape($keyword)."
                     GROUP BY id_psl
-            ) status_log on status_log.project_id_psl = id_pro
+            -- ) status_log on status_log.project_id_psl = id_pro
+            ) status_log on status_log.project_id_psl = id_pro and DATE_FORMAT(status_log.entry_date,'%Y-%M') = DATE_FORMAT(wfl_projects.entry_date_main_list,'%Y-%M')
             WHERE
             deleted_pro != 1					
             ) projects
@@ -1301,6 +1302,7 @@ class Model_project extends Model_project_base
             ".$yearFilter."
             GROUP BY projects.year
         ";
+        // echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -1402,7 +1404,8 @@ class Model_project extends Model_project_base
         if($list != "allProjects")
         {
             $mainList = " (
-							select 						
+							select 		
+							    entry_date entry_date_main_list,				
                                 wfl_projects.*
 							from 
                                 wfl_project_status_log

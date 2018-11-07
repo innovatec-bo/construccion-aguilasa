@@ -33,7 +33,7 @@ class AjaxDashboard extends PrivateController
         $projectTotalsList = array();
         foreach ($statusList as $keyword => $criteria)
         {
-            $data = Model_project::getStatusQuantityDetailByYear($keyword, $year);
+            $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, "countId", $keyword);
             if(count($data) >= 1)
             {
                 $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
@@ -92,7 +92,7 @@ class AjaxDashboard extends PrivateController
 
         $projectTotalsList = array();
         //begin - Adding total column
-        $data = Model_project::getStatusQuantityDetailByYear($mainList, $year);
+        $data = Model_project::getStatusQuantityDetailByYear($mainList, $year,"countId", $mainList);
         if(count($data) >= 1)
         {
             $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
