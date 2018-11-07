@@ -1331,60 +1331,58 @@ class Model_project extends Model_project_base
                 $col = "count(CASE WHEN month = {monthInt} THEN id_pro END) '{monthString}'";
                 break;
             case 'entryPoints':
-                $col = "sum(CASE WHEN month = {monthInt} THEN points_pro END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(points_pro, 0) END), 0) '{monthString}'";
                 break;
             case 'entryDistance':
-                $col = "sum(CASE WHEN month = {monthInt} THEN distance_pro END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_pro, 0) END), 0) '{monthString}'";
                 break;
             case 'digitizationPoints':
-                $col = "sum(CASE WHEN month = {monthInt} THEN points_quantity_prp END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(points_quantity_prp, 0) END), 0) '{monthString}'";
                 break;
             case 'digitizationDistance':
-                $col = "sum(CASE WHEN month = {monthInt} THEN distance_prp END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_prp, 0) END), 0) '{monthString}'";
                 break;
             case 'countBudgets':
                 $col = "count(CASE WHEN month = {monthInt} THEN IFNULL(projects.id_prb,0) END) '{monthString}'";
                 break;
             case 'sumDesignBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_prb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_prb,0) END), 0) '{monthString}'";
                 break;
             case 'sumBuildingBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.building_prb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.building_prb,0) END), 0) '{monthString}'";
                 break;
             case 'sumTransportationBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.transportation_prb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.transportation_prb,0) END), 0) '{monthString}'";
                 break;
             case 'sumLiveLineBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.live_line_prb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.live_line_prb,0) END), 0) '{monthString}'";
                 break;
             case 'sumRightOfWayBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.right_of_way_prb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.right_of_way_prb,0) END), 0) '{monthString}'";
                 break;
             case 'sumBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.total_budget,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.total_budget,0) END), 0) '{monthString}'";
                 break;
             case 'sumDesignRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_reb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_reb,0) END), 0) '{monthString}'";
                 break;
             case 'sumBuildingRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.building_reb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.building_reb,0) END), 0) '{monthString}'";
                 break;
             case 'sumTransportationRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.transportation_reb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.transportation_reb,0) END), 0) '{monthString}'";
                 break;
             case 'sumLiveLineRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.live_line_reb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.live_line_reb,0) END), 0) '{monthString}'";
                 break;
             case 'sumRightOfWayRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.right_of_way_reb,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.right_of_way_reb,0) END), 0) '{monthString}'";
                 break;
             case 'sumRealBudget':
-                $col = "sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.total_real_budget,0) END) '{monthString}'";
+                $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.total_real_budget,0) END), 0) '{monthString}'";
                 break;
             default:
                 exit('column type needs to be passed.');
-
-
         }
         foreach($monthList as $int => $string)
         {

@@ -35,7 +35,7 @@ class ExcelNetworksBuilding
         $this->_headerColumn($spreadsheet);
 
         //begin - Adding total column
-        $data = Model_project::getStatusQuantityDetailByYear($this->_mainList, $this->_year);
+        $data = Model_project::getStatusQuantityDetailByYear($this->_mainList, $this->_year, "countId", $this->_mainList);
         if(count($data) >= 1)
         {
             $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
@@ -70,6 +70,7 @@ class ExcelNetworksBuilding
             foreach ($columnTypeList as $rowKey => $criteria)
             {
                 $data = Model_project::getStatusQuantityDetailByYear($keyword, $this->_year, $rowKey, $this->_mainList);
+
                 if(count($data) >= 1)
                 {
                     $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
@@ -91,6 +92,7 @@ class ExcelNetworksBuilding
 //                {
 //                    $spreadsheet->setActiveSheetIndex(0)->setCellValue('B'.($i+1), $data["criteria"]);
 //                }
+
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue('B'.($i+1), $data["criteria"])
                     ->setCellValue('C'.($i+1), $data["january"])
@@ -172,7 +174,7 @@ class ExcelNetworksBuilding
     {
         $groupRowsArray = array(
                                 "project_has_been_created" => "INGRESO",
-                                "already_sent" => "ESTACADO",
+                                "digitization" => "ESTACADO",
                                 "as_built" => "CONSTRUIDO",
                                 "approved" => "IMPORTE ORIGINAL",
                                 "conciliation_shipment" => "IMPORTE REAL"
@@ -196,6 +198,7 @@ class ExcelNetworksBuilding
                 'digitizationDistance' => 'DISTANCIA'
             ),
             'approved' => array(
+                'countBudgets' => 'PROYECTOS CON IMPORTE',
                 'sumDesignBudget' => 'IMPORTE DISEÑO',
                 'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
                 'sumTransportationBudget' => 'IMPORTE TRANSPORTE',
