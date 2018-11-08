@@ -1302,7 +1302,7 @@ class Model_project extends Model_project_base
             ".$yearFilter."
             GROUP BY projects.year
         ";
-        // echo"<pre>";var_dump($sql);exit;
+//         echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -1343,7 +1343,7 @@ class Model_project extends Model_project_base
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_prp, 0) END), 0) '{monthString}'";
                 break;
             case 'countBudgets':
-                $col = "count(CASE WHEN month = {monthInt} THEN IFNULL(projects.id_prb,0) END) '{monthString}'";
+                $col = "count(CASE WHEN month = {monthInt} THEN projects.id_prb END) '{monthString}'";
                 break;
             case 'sumDesignBudget':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_prb,0) END), 0) '{monthString}'";
@@ -1362,6 +1362,9 @@ class Model_project extends Model_project_base
                 break;
             case 'sumBudget':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.total_budget,0) END), 0) '{monthString}'";
+                break;
+            case 'countRealBudgets':
+                $col = "count(CASE WHEN month = {monthInt} THEN projects.id_reb END) '{monthString}'";
                 break;
             case 'sumDesignRealBudget':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(projects.design_reb,0) END), 0) '{monthString}'";

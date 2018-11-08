@@ -81,6 +81,7 @@ class AjaxDashboard extends PrivateController
                                     'sumBudget' => 'TOTAL IMPORTE'
                                 ),
             'conciliation_shipment' => array(
+                                    'countRealBudgets' => 'PROYECTOS CON IMPORTE REAL',
                                     'sumDesignRealBudget' => 'IMPORTE REAL - DISEÑO',
                                     'sumBuildingRealBudget' => 'IMPORTE REAL - CONSTRUCCION',
                                     'sumTransportationRealBudget' => 'IMPORTE REAL - TRANSPORTE',
