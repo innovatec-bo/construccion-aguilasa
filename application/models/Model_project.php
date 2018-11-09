@@ -1264,6 +1264,7 @@ class Model_project extends Model_project_base
                         live_line_reb,
                         right_of_way_reb,
                         (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget,
+						id_prp,
 						points_quantity_prp,
 						distance_prp
                     from 
@@ -1335,6 +1336,9 @@ class Model_project extends Model_project_base
                 break;
             case 'entryDistance':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_pro, 0) END), 0) '{monthString}'";
+                break;
+            case 'countDigitizationPoints':
+                $col = "count(CASE WHEN month = {monthInt} THEN id_prp END) '{monthString}'";
                 break;
             case 'digitizationPoints':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(points_quantity_prp, 0) END), 0) '{monthString}'";

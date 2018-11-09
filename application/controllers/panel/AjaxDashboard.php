@@ -64,15 +64,20 @@ class AjaxDashboard extends PrivateController
                                                 'entryDistance' => 'INGRESO - DISTANCIA'
                                             ),
             'digitization' => array(
-                                                'digitizationPoints' => 'ESTACADO - PUNTOS',
-                                                'digitizationDistance' => 'ESTACADO - DISTANCIA'
-                                            ),
+                                        'countDigitizationPoints' => 'PROYECTOS CON ESTACADO',
+                                        'countWithoutDigitizationPoints' => 'PROYECTOS SIN ESTACADO',
+                                        'digitizationPoints' => 'ESTACADO - PUNTOS',
+                                        'digitizationDistance' => 'ESTACADO - DISTANCIA'
+                                    ),
             'as_built' => array(
+                                        'countDigitizationPoints' => 'PROYECTOS CON AREA CONSTRUIDA',
+                                        'countWithoutDigitizationPoints' => 'PROYECTOS SIN AREA CONSTRUIDA',
                                         'digitizationPoints' => 'CONSTRUIDO - PUNTOS',
                                         'digitizationDistance' => 'CONSTRUIDO - DISTANCIA'
             ),
             'approved' => array(
                                     'countBudgets' => 'PROYECTOS CON IMPORTE',
+                                    'countWithoutBudgets' => 'PROYECTOS SIN IMPORTE',
                                     'sumDesignBudget' => 'IMPORTE DISEÑO',
                                     'sumBuildingBudget' => 'IMPORTE CONSTRUCCION',
                                     'sumTransportationBudget' => 'IMPORTE TRANSPORTE',
@@ -82,6 +87,7 @@ class AjaxDashboard extends PrivateController
                                 ),
             'conciliation_shipment' => array(
                                     'countRealBudgets' => 'PROYECTOS CON IMPORTE REAL',
+                                    'countWithoutRealBudgets' => 'PROYECTOS SIN IMPORTE REAL',
                                     'sumDesignRealBudget' => 'IMPORTE REAL - DISEÑO',
                                     'sumBuildingRealBudget' => 'IMPORTE REAL - CONSTRUCCION',
                                     'sumTransportationRealBudget' => 'IMPORTE REAL - TRANSPORTE',
@@ -92,11 +98,13 @@ class AjaxDashboard extends PrivateController
             );
 
         $projectTotalsList = array();
+        $totalRow = array();
         //begin - Adding total column
         $data = Model_project::getStatusQuantityDetailByYear($mainList, $year,"countId", $mainList);
         if(count($data) >= 1)
         {
             $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
+            $data = $this->_array_unshift_assoc($data, 'rowKey', "countId");
         }
         else
         {
@@ -106,25 +114,37 @@ class AjaxDashboard extends PrivateController
         $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
         $projectTotalsList[] = $data;
         //end - adding total column
-
+        $totalRow = $data;
+        $subArray = array();
         foreach($reportSections as $keyword => $columnTypeList)
         {
             foreach ($columnTypeList as $rowKey => $criteria)
             {
-                $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, $rowKey, $mainList);
-                if(count($data) >= 1)
+                if($rowKey == "countWithoutBudgets" || $rowKey == "countWithoutRealBudgets" || $rowKey == "countWithoutDigitizationPoints")
                 {
-                    $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                    $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
+                    $dataDiff = $this->_getDiff($totalRow, $subArray, $criteria, $rowKey);
+                    $dataDiff = $this->_formatNumbers($dataDiff);
+                    $projectTotalsList[] = $dataDiff;
                 }
                 else
                 {
-                    $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
-                    $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                    $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, $rowKey, $mainList);
+                    if(count($data) >= 1)
+                    {
+                        $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                        $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
+                    }
+                    else
+                    {
+                        $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
+                        $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                        $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
+                    }
+                    $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+                    $subArray = $data;
+                    $data = $this->_formatNumbers($data);
+                    $projectTotalsList[] = $data;
                 }
-                $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
-                $data = $this->_formatNumbers($data);
-                $projectTotalsList[] = $data;
             }
         }
 
@@ -152,5 +172,18 @@ class AjaxDashboard extends PrivateController
             }
         }
         return $data;
+    }
+
+    private function _getDiff($rowTotal, $subArray, $criteria, $rowKey)
+    {
+        $monthList = array("january","february","march","april","may","june","july","august","september","october","november","december","total");
+        $diffArray = array();
+        foreach ($monthList as $month)
+        {
+            $diffArray[$month] = $rowTotal[$month] - $subArray[$month];
+        }
+        $diffArray = $this->_array_unshift_assoc($diffArray, 'criteria', $criteria);
+        $diffArray = $this->_array_unshift_assoc($diffArray, 'rowKey', $rowKey);
+        return $diffArray;
     }
 }
