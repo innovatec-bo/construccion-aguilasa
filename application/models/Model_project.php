@@ -1452,6 +1452,73 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    public static function projectCurrentStatusSummary()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
 
-
+        $sql = "
+        SELECT
+            -- order_pst,
+            status_name_pst status_name,
+            -- keyword_pst keyword,
+            count(id_pro) total_projects,	
+            sum(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) approved_budgets,
+	        sum(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) real_budgets
+        FROM
+            wfl_projects
+        LEFT JOIN wfl_project_status on id_pst = status_pro
+        LEFT JOIN (
+        SELECT
+            wfl_project_status_log.*
+        FROM
+            wfl_project_status_log
+        RIGHT JOIN (
+            SELECT
+                project_id_psl project_id,
+                max(manual_entry_date_psl) entry_date
+            FROM
+                wfl_project_status_log
+            LEFT JOIN wfl_project_status ON id_pst = status_id_psl
+            WHERE
+                keyword_pst = 'approved'
+            AND deleted_psl != 1
+            GROUP BY
+                project_id_psl
+        ) AS filter ON filter.entry_date = manual_entry_date_psl
+            AND filter.project_id = project_id_psl
+        ) log_approved_budget on log_approved_budget.project_id_psl = id_pro
+        LEFT JOIN wfl_project_budgets on log_approved_budget.id_psl = status_log_id_prb
+        
+        LEFT JOIN (
+        SELECT
+            wfl_project_status_log.*
+        FROM
+            wfl_project_status_log
+        RIGHT JOIN (
+            SELECT
+                project_id_psl project_id,
+                max(manual_entry_date_psl) entry_date
+            FROM
+                wfl_project_status_log
+            LEFT JOIN wfl_project_status ON id_pst = status_id_psl
+            WHERE
+                keyword_pst = 'conciliation_shipment'
+            AND deleted_psl != 1
+            GROUP BY
+                project_id_psl
+        ) AS filter ON filter.entry_date = manual_entry_date_psl
+            AND filter.project_id = project_id_psl
+        ) log_conciliation_shipment_budget on log_conciliation_shipment_budget.project_id_psl = id_pro
+        LEFT JOIN wfl_project_real_budgets on log_conciliation_shipment_budget.id_psl = status_log_id_reb
+        
+        WHERE
+        deleted_pro != 1
+        GROUP BY keyword_pst
+        ORDER BY order_pst
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

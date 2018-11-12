@@ -93,6 +93,27 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12" id="current-status-summary-report">
+                            Here goes the current status report table
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.col-lg-4 (nested) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Tabla de totales
                     <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
                     <div class="pull-right">
@@ -156,6 +177,7 @@
             </div>
         </div>
     </div>
+
     <!-- /.row -->
     <!-- /.row -->
 </div>
@@ -163,4 +185,5 @@
 <?php
 $this->load->view('default-template/panel/content/dashboard/ht-report-project-totals-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-net-building-table');
+$this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
 ?>

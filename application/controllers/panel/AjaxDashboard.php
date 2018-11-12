@@ -186,4 +186,22 @@ class AjaxDashboard extends PrivateController
         $diffArray = $this->_array_unshift_assoc($diffArray, 'rowKey', $rowKey);
         return $diffArray;
     }
+
+    public function getCurrentStatusSummary()
+    {
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary();
+        $arrayData = array();
+        foreach ($currentStatusSummary as $summary)
+        {
+            $arrayData[] = array(
+                "statusName" => $summary["status_name"],
+                "totalProjects" => $summary["total_projects"],
+                "approvedBudgets" => number_format($summary["approved_budgets"],2),
+                "realBudgets" => $summary["real_budgets"]
+            );
+        }
+        $response["success"] = 1;
+        $response["data"] = $arrayData;
+        echo json_encode($response);exit;
+    }
 }

@@ -8,6 +8,7 @@ $(document).ready(function() {
     getProjectsQuantity();
     getProjectTotalsTable();
     getProjectNetBuilding();
+    getCurrentStatusSummary();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -112,6 +113,29 @@ function getProjectNetBuilding(year, keyword)
                 var htmlSource   = $("#ht-report-net-building-table").html();
                 var template = Handlebars.compile(htmlSource);
                 var data = {projectTotalsList:response.data};
+                var html = template(data);
+            }
+            $content.html(html);
+        }
+    });
+}
+
+function getCurrentStatusSummary()
+{
+    var $content = $("#current-status-summary-report");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getCurrentStatusSummary',
+        dataType  :"json",
+        type : "POST",
+        data:{},
+        success:function(response){
+
+            if(response.success === 1)
+            {
+                var htmlSource   = $("#ht-report-current-status-summary").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {statusSummaryList:response.data};
                 var html = template(data);
             }
             $content.html(html);
