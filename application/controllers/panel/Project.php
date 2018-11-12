@@ -398,4 +398,10 @@ class Project extends PrivateController
         $excel = new ExcelNetworksBuilding($this->sessionUser, $mainList, $year);
         $excel->getReport();
     }
+
+    public function getCurrentStatusSummary()
+    {
+        $excel = new ExcelCurrentStatusSummary($this->sessionUser);
+        $excel->getReport();
+    }
 }

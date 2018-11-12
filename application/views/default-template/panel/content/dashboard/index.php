@@ -94,6 +94,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
+                                <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
