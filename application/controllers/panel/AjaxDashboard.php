@@ -197,7 +197,7 @@ class AjaxDashboard extends PrivateController
                 "statusName" => $summary["status_name"],
                 "totalProjects" => $summary["total_projects"],
                 "approvedBudgets" => number_format($summary["approved_budgets"],2),
-                "realBudgets" => $summary["real_budgets"]
+                "realBudgets" => number_format($summary["real_budgets"],2)
             );
         }
         $response["success"] = 1;
