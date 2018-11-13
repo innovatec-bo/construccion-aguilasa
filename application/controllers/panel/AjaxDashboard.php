@@ -191,9 +191,16 @@ class AjaxDashboard extends PrivateController
     {
         $currentStatusSummary = Model_project::projectCurrentStatusSummary();
         $arrayData = array();
+        $totalApprovedBudget = 0;
+        $totalRealBudget = 0;
+        $totalProjects = 0;
         foreach ($currentStatusSummary as $summary)
         {
+            $totalApprovedBudget += $summary["keyword"] !="canceled"?$summary["approved_budgets"]:"0";
+            $totalRealBudget += $summary["keyword"] !="canceled"?$summary["real_budgets"]:"0";
+            $totalProjects += $summary["total_projects"];
             $arrayData[] = array(
+                "keyword" => $summary["keyword"],
                 "statusName" => $summary["status_name"],
                 "totalProjects" => $summary["total_projects"],
                 "approvedBudgets" => number_format($summary["approved_budgets"],2),
@@ -201,7 +208,10 @@ class AjaxDashboard extends PrivateController
             );
         }
         $response["success"] = 1;
-        $response["data"] = $arrayData;
+        $response["data"]["list"] = $arrayData;
+        $response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
+        $response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
+        $response["data"]["totalProjects"] = $totalProjects;
         echo json_encode($response);exit;
     }
 }

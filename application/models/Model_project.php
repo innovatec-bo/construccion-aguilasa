@@ -1461,7 +1461,7 @@ class Model_project extends Model_project_base
         SELECT
             -- order_pst,
             status_name_pst status_name,
-            -- keyword_pst keyword,
+            keyword_pst keyword,
             count(id_pro) total_projects,	
             sum(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) approved_budgets,
 	        sum(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) real_budgets

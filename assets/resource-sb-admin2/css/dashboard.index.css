@@ -30,3 +30,16 @@ select[name=keyword]
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th{
     padding: 1px;
 }
+
+.already_sent, .as_built, .conciliation_shipment
+{
+    background-color: #79B9D3!important;
+}
+.approved, .assigned_to, .completed, .conciliation_reception, .cre_return_order
+{
+    background-color: #FFFF00!important;
+}
+.canceled, .returned
+{
+    background-color: #FF0000!important;
+}

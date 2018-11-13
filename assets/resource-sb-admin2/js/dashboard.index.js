@@ -135,7 +135,7 @@ function getCurrentStatusSummary()
             {
                 var htmlSource   = $("#ht-report-current-status-summary").html();
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusSummaryList:response.data};
+                var data = {statusSummary:response.data};
                 var html = template(data);
             }
             $content.html(html);

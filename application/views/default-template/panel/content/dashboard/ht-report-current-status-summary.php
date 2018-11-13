@@ -18,8 +18,8 @@
             </tr>
             </thead>
             <tbody>
-            {{#each statusSummaryList}}
-                <tr>
+            {{#each statusSummary.list}}
+                <tr class="{{keyword}}">
                     <th>{{statusName}}</th>
                     <td class="text-center">{{totalProjects}}</td>
                     <td class="text-center">{{approvedBudgets}}</td>
@@ -27,6 +27,14 @@
                 </tr>
             {{/each}}
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>TOTAL</th>
+                    <td class="text-center">{{statusSummary.totalProjects}}</td>
+                    <td class="text-center">{{statusSummary.totalApprovedBudgets}}</td>
+                    <td class="text-center">{{statusSummary.totalRealBudgets}}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </script>
