@@ -39,7 +39,7 @@ class ExcelCurrentStatusSummary
                 ->setCellValue('B'.($i+1), $row["total_projects"])
                 ->setCellValue('C'.($i+1), $row["approved_budgets"])
                 ->setCellValue('D'.($i+1), $row["real_budgets"]);
-            $this->_highlightRow($spreadsheet,$i,$row["keyword"]);
+            $this->_highlightRow($spreadsheet,$i+1, $row["keyword"]);
             $i++;
         }
         $this->_footer($spreadsheet, $i, $totalProjects, $totalApprovedBudget, $totalRealBudget);
@@ -103,28 +103,21 @@ class ExcelCurrentStatusSummary
 
     private function _highlightRow($spreadsheet, $currentRow, $keyword)
     {
-        if(array_search($keyword,array("already_sent", "as_built", "conciliation_shipment")) !== FALSE)
+        $colors = array(
+            "79B9D3" => array("already_sent", "as_built", "conciliation_shipment"),
+            "FFFF00" => array("approved", "assigned_to", "completed", "conciliation_reception", "cre_return_order"),
+            "FF0000" => array("canceled", "returned")
+        );
+
+        foreach ($colors as $color => $statusList)
         {
-            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
-                ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
-                ->getFill()->getStartColor()->setARGB("79B9D3");
+            if(array_search($keyword, $statusList) !== FALSE)
+            {
+                $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
+                    ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
+                    ->getFill()->getStartColor()->setARGB($color);
+            }
         }
-//        if(array_search($keyword,array()) !== FALSE)
-//        {
-//            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)->applyFromArray($titleStyleArray);
-//        }
-//        if(array_search($keyword,array()) !== FALSE)
-//        {
-//            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)->applyFromArray($titleStyleArray);
-//        }
-//        if(array_search($keyword,array()) !== FALSE)
-//        {
-//            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)->applyFromArray($titleStyleArray);
-//        }
-//        if(array_search($keyword,array()) !== FALSE)
-//        {
-//            $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)->applyFromArray($titleStyleArray);
-//        }
     }
 }
