@@ -1337,12 +1337,15 @@ class Model_project extends Model_project_base
             case 'entryDistance':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_pro, 0) END), 0) '{monthString}'";
                 break;
+            case 'countAsBuiltPoints':
             case 'countDigitizationPoints':
                 $col = "count(CASE WHEN month = {monthInt} THEN id_prp END) '{monthString}'";
                 break;
+            case 'asBuiltPoints':
             case 'digitizationPoints':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(points_quantity_prp, 0) END), 0) '{monthString}'";
                 break;
+            case 'asBuiltDistance':
             case 'digitizationDistance':
                 $col = "IFNULL(sum(CASE WHEN month = {monthInt} THEN IFNULL(distance_prp, 0) END), 0) '{monthString}'";
                 break;

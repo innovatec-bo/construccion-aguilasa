@@ -29,7 +29,7 @@
             </thead>
             <tbody>
             {{#each projectTotalsList}}
-                <tr>
+                <tr class="{{rowKey}}">
                     <th>{{criteria}}</th>
                     <td class="text-center">{{january}}</td>
                     <td class="text-center">{{february}}</td>

@@ -304,4 +304,24 @@ class ExcelProjectWorkflow
         }
 
     }
+
+    private function _highlightRow($spreadsheet, $currentRow, $keyword)
+    {
+        $colors = array(
+            "79B9D3" => array("already_sent", "as_built", "conciliation_shipment"),
+            "FFFF00" => array("approved", "assigned_to", "completed", "conciliation_reception", "cre_return_order"),
+            "FF0000" => array("canceled", "returned")
+        );
+
+        foreach ($colors as $color => $statusList)
+        {
+            if(array_search($keyword, $statusList) !== FALSE)
+            {
+                $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
+                    ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                $spreadsheet->getActiveSheet()->getStyle('A'.$currentRow.':D'.$currentRow)
+                    ->getFill()->getStartColor()->setARGB($color);
+            }
+        }
+    }
 }

@@ -31,6 +31,7 @@ select[name=keyword]
     padding: 1px;
 }
 
+/********************** begin - status summary  */
 .already_sent, .as_built, .conciliation_shipment
 {
     background-color: #79B9D3!important;
@@ -43,3 +44,27 @@ select[name=keyword]
 {
     background-color: #FF0000!important;
 }
+/********************** end - status summary  */
+/********************** begin - net building report  */
+.countId
+{
+    background-color: #88B2E4!important;
+}
+.entryPoints, .entryDistance, .digitizationPoints, .digitizationDistance, .asBuiltPoints, .asBuiltDistance
+{
+    background-color: #F9FF00!important;
+}
+.countWithoutDigitizationPoints, .countWithoutAsBuiltPoints, .countWithoutBudgets, .countWithoutRealBudgets
+{
+    background-color: #DBE6F2!important;
+}
+
+.sumDesignBudget, .sumBuildingBudget, .sumTransportationBudget, .sumLiveLineBudget, .sumRightOfWayBudget, .sumDesignRealBudget, .sumBuildingRealBudget, .sumTransportationRealBudget, .sumLiveLineRealBudget, .sumRightOfWayRealBudget
+{
+    background-color: #E9F3DE!important;
+}
+.sumBudget, .sumRealBudget
+{
+    background-color: #79DA4C!important;
+}
+/********************** end - net building report  */

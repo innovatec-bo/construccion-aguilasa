@@ -70,10 +70,10 @@ class AjaxDashboard extends PrivateController
                                         'digitizationDistance' => 'ESTACADO - DISTANCIA'
                                     ),
             'as_built' => array(
-                                        'countDigitizationPoints' => 'PROYECTOS CON AREA CONSTRUIDA',
-                                        'countWithoutDigitizationPoints' => 'PROYECTOS SIN AREA CONSTRUIDA',
-                                        'digitizationPoints' => 'CONSTRUIDO - PUNTOS',
-                                        'digitizationDistance' => 'CONSTRUIDO - DISTANCIA'
+                                        'countAsBuiltPoints' => 'PROYECTOS CON AREA CONSTRUIDA',
+                                        'countWithoutAsBuiltPoints' => 'PROYECTOS SIN AREA CONSTRUIDA',
+                                        'asBuiltPoints' => 'CONSTRUIDO - PUNTOS',
+                                        'asBuiltDistance' => 'CONSTRUIDO - DISTANCIA'
             ),
             'approved' => array(
                                     'countBudgets' => 'PROYECTOS CON IMPORTE',
@@ -120,7 +120,7 @@ class AjaxDashboard extends PrivateController
         {
             foreach ($columnTypeList as $rowKey => $criteria)
             {
-                if($rowKey == "countWithoutBudgets" || $rowKey == "countWithoutRealBudgets" || $rowKey == "countWithoutDigitizationPoints")
+                if($rowKey == "countWithoutBudgets" || $rowKey == "countWithoutRealBudgets" || $rowKey == "countWithoutDigitizationPoints" || $rowKey == "countWithoutAsBuiltPoints")
                 {
                     $dataDiff = $this->_getDiff($totalRow, $subArray, $criteria, $rowKey);
                     $dataDiff = $this->_formatNumbers($dataDiff);
