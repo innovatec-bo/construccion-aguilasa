@@ -30,9 +30,10 @@ class Model_project_base extends MY_Model
     protected $_budgetaryPosition;
     protected $_secondaryCode;
     protected $_folderDate;
+    protected $_contractId;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "")
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL)
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -53,6 +54,7 @@ class Model_project_base extends MY_Model
         $this->_budgetaryPosition = $budgetaryPosition;
         $this->_secondaryCode = $secondaryCode;
         $this->_folderDate = $folderDate;
+        $this->_contractId = $contractId;
     }
 
     /**
@@ -81,6 +83,7 @@ class Model_project_base extends MY_Model
             "budgetary_position_pro" => $this->_budgetaryPosition,
             "secondary_code_pro" => $this->_secondaryCode,
             "folder_date_pro" => $this->_folderDate,
+            "contract_id_pro" => $this->_contractId,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -122,7 +125,8 @@ class Model_project_base extends MY_Model
                 $object->cre_building_completion_date_pro,
                 $object->budgetary_position_pro,
                 $object->secondary_code_pro,
-                $object->folder_date_pro
+                $object->folder_date_pro,
+                $object->contract_id_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -209,6 +213,11 @@ class Model_project_base extends MY_Model
     public function setFolderDate($folderDate)
     {
         $this->_folderDate = $folderDate;
+    }
+
+    public function setContractId($contractId)
+    {
+        $this->_contractId = $contractId;
     }
 
     public function getCode()

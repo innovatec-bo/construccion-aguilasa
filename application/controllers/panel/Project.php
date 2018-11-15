@@ -71,10 +71,14 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-meters-distance', 'Metros de distancia', 'trim|required|numeric');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
         $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
+        $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
 
         $projectStatusList = Model_project_status::getAll(100,0);
+        $contractList = Model_contract::getAll(100, 0);
         $data["projectStatusList"] = $projectStatusList;
         $data["projectSystems"] = $this->_projectSystems;
+        $data["contractList"] = $contractList;
+
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project/add",$data);
@@ -115,8 +119,9 @@ class Project extends PrivateController
             $creBuildingCompletionDate = $creBuildingCompletionDate." ".date("H:i:s");
 
             $budgetaryPosition = $formData["project-budgetary-position"];
+            $contractId = $formData["project-contract-id"];
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $projectStatus,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId);
             $project->save();
             $statusDetail = "Proyecto enviado a diseño";
             $keyword = "design";
@@ -177,13 +182,16 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-address', 'Direccion', 'trim');
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
         $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
+        $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
+        $contractList = Model_contract::getAll(100, 0);
         $data["lastProjectStatus"] = $getLastProjectStatus;
         $projectStatusList = Model_project_status::getAll(100,0);
         $data["projectStatusList"] = $projectStatusList;
         $data["project"] = $project->toArray();
         $data["projectSystems"] = $this->_projectSystems;
+        $data["contractList"] = $contractList;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("project/edit", $data);
@@ -231,6 +239,7 @@ class Project extends PrivateController
 
 
             $budgetaryPosition = $formData["project-budgetary-position"];
+            $contractId = $formData["project-contract-id"];
 
             $project->setProjectName($projectName);
             $project->setCode($projectCode);
@@ -248,6 +257,7 @@ class Project extends PrivateController
             $project->setCreDesignCompletionDate($creDesignCompletionDate);
             $project->setCreBuildingCompletionDate($creBuildingCompletionDate);
             $project->setBudgetaryPosition($budgetaryPosition);
+            $project->setContractId($contractId);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")

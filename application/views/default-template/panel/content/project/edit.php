@@ -93,6 +93,25 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Contrato</label>
+                                    <select  class="form-control" name="project-contract-id" required>
+                                        <option value="">Elija un contrato</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($contractList as $contract)
+                                        {
+                                            $selected = $project["contract_id_pro"] == $contract->id_con?" selected ":"";
+                                            $html .= '<option '.$selected.' value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
