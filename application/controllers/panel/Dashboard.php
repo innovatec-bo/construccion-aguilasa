@@ -20,8 +20,8 @@ class Dashboard extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectCss('dashboard.index', TRUE);
         $this->complementHandler->addProjectJs('dashboard.index', TRUE);
-
-        $this->_loadPanelView('dashboard/index');
+        $data["systemList"] = $this->_projectSystems;
+        $this->_loadPanelView('dashboard/index', $data);
     }
 
 //    public function addCratedDateToLog()

@@ -91,16 +91,38 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="panel-current-status-summary-report">
                 <div class="panel-heading">
-                    <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
-                    <div class="pull-right">
-                        <div class="btn-group">
-                            <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
+                    <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
+                        <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
+                        <select class="form-control input-sm" name="project-system">
+                            <option value="">Todos los sistemas</option>
+                            <?php
+                            $html = "";
+                            foreach ($systemList as $key => $name)
+                            {
+                                $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                            }
+                            echo $html;
+                            ?>
+                        </select>
+                        <select class="form-control input-sm" name="management-by">
+                            <option value="">Todas las administraciones</option>
+                            <?php
+                            $html = "";
+                            foreach ($systemList as $key => $name)
+                            {
+                                $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                            }
+                            echo $html;
+                            ?>
+                        </select>
+                        <div class="pull-right">
+                            <div class="btn-group">
                                 <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

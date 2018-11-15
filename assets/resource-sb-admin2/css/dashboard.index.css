@@ -12,7 +12,7 @@ div.dt-buttons {
 {
     font-size:10px;
 }
-select[name=keyword]
+.panel-heading select
 {
     display: inline-block;
     width: 100px;

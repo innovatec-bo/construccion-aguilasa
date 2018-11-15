@@ -189,7 +189,10 @@ class AjaxDashboard extends PrivateController
 
     public function getCurrentStatusSummary()
     {
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary();
+        $formData = $this->input->post();
+        $system = $formData["system"];
+        $management = $formData["management"];
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
         $arrayData = array();
         $totalApprovedBudget = 0;
         $totalRealBudget = 0;

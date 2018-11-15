@@ -4,16 +4,20 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ExcelCurrentStatusSummary
 {
     private $_sessionUser;
-	public function __construct($sessionUser)
+    private $_system;
+    private $_managementBy;
+	public function __construct($sessionUser, $system = "", $managementBy = "")
 	{
         $this->_sessionUser = $sessionUser;
+        $this->_system = $system;
+        $this->_managementBy = $managementBy;
 	}
 
 	function getReport()
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary();
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($this->_system, $this->_managementBy);
         $spreadsheet = new Spreadsheet();
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         $spreadsheet->getProperties()

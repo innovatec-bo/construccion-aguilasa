@@ -401,7 +401,10 @@ class Project extends PrivateController
 
     public function getCurrentStatusSummary()
     {
-        $excel = new ExcelCurrentStatusSummary($this->sessionUser);
+        $formData = $this->input->post();
+        $system = $formData["project-system"];
+        $managementBy = $formData["management-by"];
+        $excel = new ExcelCurrentStatusSummary($this->sessionUser, $system, $managementBy);
         $excel->getReport();
     }
 }

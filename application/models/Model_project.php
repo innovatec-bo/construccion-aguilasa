@@ -1455,10 +1455,13 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    public static function projectCurrentStatusSummary()
+    public static function projectCurrentStatusSummary($system = "", $management = "")
     {
         $ci = &get_instance();
         $ci->load->database();
+
+        $systemFilter = $system == ""?"":" and system_pro = ".$ci->db->escape($system);
+        $managementFilter = $management == ""?"":" and management_by_pro = ".$ci->db->escape($management);
 
         $sql = "
         SELECT
@@ -1517,6 +1520,8 @@ class Model_project extends Model_project_base
         
         WHERE
         deleted_pro != 1
+        ".$systemFilter."
+        ".$managementFilter."
         GROUP BY keyword_pst
         ORDER BY order_pst
         ";

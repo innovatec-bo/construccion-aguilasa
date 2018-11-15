@@ -32,6 +32,12 @@ $(document).ready(function() {
         getProjectNetBuilding(year, keyword);
     });
 
+    $('#panel-current-status-summary-report select').on("change",function(){
+        var projectSystem = $('select[name=project-system] option:selected').val();
+        var managementBy = $('select[name=management-by] option:selected').val();
+        getCurrentStatusSummary(projectSystem, managementBy);
+    });
+
 });
 
 function getUsersQuantity()
@@ -120,15 +126,17 @@ function getProjectNetBuilding(year, keyword)
     });
 }
 
-function getCurrentStatusSummary()
+function getCurrentStatusSummary(system, management)
 {
+    var system = typeof system !== 'undefined' ? system : "";
+    var management = typeof management !== 'undefined' ? management : "";
     var $content = $("#current-status-summary-report");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getCurrentStatusSummary',
         dataType  :"json",
         type : "POST",
-        data:{},
+        data:{system:system, management:management},
         success:function(response){
 
             if(response.success === 1)
