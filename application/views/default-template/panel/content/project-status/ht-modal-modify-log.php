@@ -54,3 +54,27 @@
         </div>
     </div>
 </script>
+
+<script id="ht-modal-modify-history-construction-responsible" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-md-12 status-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row form-inline">
+                        <div class="col-md-6">
+                            <label>Area del proyecto</label><br>
+                            <div class="form-group">
+                                <em>Puntos</em><br>
+                                <input class="form-control" value="" name="log-project-points" placeholder="Puntos" required="" data-parsley-type="integer">
+                            </div>
+                            <div class="form-group">
+                                <em>Distancia Km</em><br>
+                                <input class="form-control" value="" name="log-project-distance" placeholder="Distancia" data-parsley-type="number" required="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

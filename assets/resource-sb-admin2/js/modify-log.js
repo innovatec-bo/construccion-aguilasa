@@ -78,6 +78,39 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on("click",".edit-construction-assignments",function(e){
+        e.preventDefault();
+        var projectId = $("input[name=project-id]").val();
+        var htmlSource   = $("#ht-modal-modify-history-construction-responsible").html();
+        var template = Handlebars.compile(htmlSource);
+        var data = {};
+        var html = template(data);
+        bootbox.confirm({
+            title: "Responsables del proceso de construccion",
+            message: html,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Modificar'
+                }
+            },
+            callback: function (result) {
+                if(result)
+                {
+                    // var points = $("input[name=log-project-points]").val();
+                    // var distance = $("input[name=log-project-distance]").val();
+                    // var data = {
+                    //     projectId: projectId,
+                    //     points:points,
+                    //     distance:distance
+                    // };
+                    // updateLog(data);
+                }
+            }
+        });
+    });
 });
 
 function updateLog(data)

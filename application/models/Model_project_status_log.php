@@ -80,6 +80,7 @@ class Model_project_status_log extends Model_project_status_log_base
                 wfl_status_log_responsibles
             LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre
             LEFT JOIN sec_users on user_id_sre = id_usr 
+            and deleted_slr != 1
         ) responsible on responsible.status_log_id_slr = id_psl
         WHERE
                 project_id_psl = ".$ci->db->escape($projectId)."

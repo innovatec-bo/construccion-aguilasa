@@ -62,6 +62,12 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
             </dl>
         </div>
+        <?php
+        if($statusSet == "building")
+        {
+            echo '<button type="button" class="btn btn-primary edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
+        }
+        ?>
         <div class="col-md-10">
             <div class="tabbable">
                 <ul class="nav nav-tabs wizard">
@@ -98,8 +104,12 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
                     $unsigned = '';
                     echo $unsigned.$navTab;
+
+
                     ?>
+
                 </ul>
+
             </div>
         </div>
         <div class="col-md-1">
@@ -149,6 +159,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Historial
+
                 </div>
                 <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="<?=$updateHistory?>">
 

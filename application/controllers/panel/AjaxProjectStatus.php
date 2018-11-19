@@ -593,6 +593,27 @@ class AjaxProjectStatus extends PrivateController
             $response["message"] = "Se actualizaron los puntos y distancia.";
         }
 
+        if(isset($formData["responsibleIds"]))
+        {
+            $arrayKeywords = array(
+                            "assign_to",
+                            "building",
+                            "ready_to_start",
+                            "in_progress",
+                            "paused",
+                            "completed",
+                            "as_built",
+                            "conciliation_reception",
+                            "conciliation_shipment",
+                            "cre_return_order",
+                            "project_return_materials");
+            $statusList = Model_project_status::getByStatusKeywordList($arrayKeywords);
+            //TODO: Update status responsible list
+            Model_project_status_log::getLogByProjectId();
+            Model_status_log_responsible::addResponsible();
+
+        }
+
         echo json_encode($response);exit;
     }
 
