@@ -543,7 +543,7 @@ class Model_project extends Model_project_base
 		LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		left join wfl_project_points on status_log_id_prp = id_psl
-		where deleted_pro != 1
+		where deleted_pro != 1 and deleted_slr != 1
 		GROUP BY id_psl
         ";
         return $sql;
