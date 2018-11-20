@@ -44,10 +44,19 @@ class Model_status_responsible extends Model_status_responsible_base
         return $result;
     }
 
-    public static function getResponsibleDetailListByStatusKeyword($keyword)
+    public static function getResponsibleDetailListByStatusKeyword($statusKeyword, $roleKeyword)
     {
         $ci = &get_instance();
         $ci->load->database();
+
+        $roleKeywordSql = "";
+        foreach ($roleKeyword as $keyword)
+        {
+            $roleKeywordSql .= $ci->db->escape($keyword).', ';
+        }
+
+        $roleKeywordSql = substr($roleKeywordSql, 0, -2);
+
         $sql = "
         SELECT
             id_sre,
@@ -63,9 +72,9 @@ class Model_status_responsible extends Model_status_responsible_base
                 keyword_rol
             FROM sec_userroles 
             LEFT JOIN sec_roles on id_rol = roleid_uro
-            WHERE keyword_rol in ('fiscal', 'builder') and deleted_uro != 1
+            WHERE keyword_rol in (".$roleKeywordSql.") and deleted_uro != 1
         ) role on role.userid_uro = id_usr
-        where keyword_pst = ".$ci->db->escape($keyword)."
+        where keyword_pst = ".$ci->db->escape($statusKeyword)." and role.keyword_rol is not null
         ";
 
         $query = $ci->db->query($sql);

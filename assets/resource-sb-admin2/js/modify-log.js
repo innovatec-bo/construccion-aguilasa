@@ -81,9 +81,11 @@ $(document).ready(function() {
     $(document).on("click",".edit-construction-assignments",function(e){
         e.preventDefault();
         var projectId = $("input[name=project-id]").val();
+        var responsibleListFiscal = jQuery.parseJSON($("input[name=responsible-list-fiscal]").val());
+        var responsibleListBuilder = jQuery.parseJSON($("input[name=responsible-list-builder]").val());
         var htmlSource   = $("#ht-modal-modify-history-construction-responsible").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {};
+        var data = {responsibleListFiscal:responsibleListFiscal, responsibleListBuilder: responsibleListBuilder};
         var html = template(data);
         bootbox.confirm({
             title: "Responsables del proceso de construccion",
@@ -99,16 +101,39 @@ $(document).ready(function() {
             callback: function (result) {
                 if(result)
                 {
-                    // var points = $("input[name=log-project-points]").val();
-                    // var distance = $("input[name=log-project-distance]").val();
-                    // var data = {
-                    //     projectId: projectId,
-                    //     points:points,
-                    //     distance:distance
-                    // };
-                    // updateLog(data);
+                    var select2Data1 = $('#ajax-get-responsible-list1').select2("data");
+                    var select2Data2 = $('#ajax-get-responsible-list2').select2("data");
+                    Array.prototype.push.apply(select2Data1,select2Data2);
+                    var responsibleList = [];
+                    $.each(select2Data1, function(index, value){
+                        responsibleList.push(value.id);
+                    });
+                    console.log(responsibleList);
+                    var responsibleList = responsibleList;
+                    var data = {
+                        projectId: projectId,
+                        responsibleIds:responsibleList
+                    };
+                    updateLog(data);
                 }
             }
+        });
+        $(".ajax-get-responsible-list").select2({
+            placeholder: 'Responsables',
+            allowClear: true,
+            width:"60%"
+        });
+        $(document).on("change","#ajax-get-responsible-list2",function(e){
+            e.preventDefault();
+            if($(this).select2("data").length > 0){
+                var supervisingUser = $($(this).select2("data")[0].element).data("supervising-id");
+                var supervisingResponsibleId = $("#ajax-get-responsible-list1 option[data-user-id="+supervisingUser+"]").val();
+                // var fiscalResponsibleId = $("#ajax-get-responsible-list1 option");
+                $("#ajax-get-responsible-list1").val(supervisingResponsibleId).trigger("change");
+            }
+        });
+        $(document).on("change","#ajax-get-responsible-list2",function(e){
+            e.preventDefault();
         });
     });
 });

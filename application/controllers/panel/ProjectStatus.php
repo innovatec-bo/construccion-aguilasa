@@ -220,12 +220,16 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('modify-log', TRUE);
 
+        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
+        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
         $data["project"] = $project;
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
+        $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
+        $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
         $data["statusSet"] = $statusSet;
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         $data["projectLog"] = $projectLog;
@@ -320,14 +324,14 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('project-status.assign-project');
         $this->complementHandler->addProjectJs('project-status.assign-project');
-        $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to");
+        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
+        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
-        $data["responsibleList"] = $responsibleList;
         $data["project"] = $project->toArray();
         $data["previousEntry"] = $previousEntry;
-        $data["responsibleList"] = $responsibleList;
+        $data["responsibleListFiscal"] = $responsibleListFiscal;
+        $data["responsibleListBuilder"] = $responsibleListBuilder;
         $allIncidents = Model_incident::getAllByProjectId($projectId);
-//        echo"<pre>";var_dump($allIncidents);exit;
         $data["allIncidents"] = $allIncidents;
         if($this->form_validation->run() === FALSE)
         {

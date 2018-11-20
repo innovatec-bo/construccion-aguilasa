@@ -57,24 +57,32 @@
 
 <script id="ht-modal-modify-history-construction-responsible" type="text/x-handlebars-template">
     <div class="row">
-        <div class="col-md-12 status-content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row form-inline">
-                        <div class="col-md-6">
-                            <label>Area del proyecto</label><br>
-                            <div class="form-group">
-                                <em>Puntos</em><br>
-                                <input class="form-control" value="" name="log-project-points" placeholder="Puntos" required="" data-parsley-type="integer">
-                            </div>
-                            <div class="form-group">
-                                <em>Distancia Km</em><br>
-                                <input class="form-control" value="" name="log-project-distance" placeholder="Distancia" data-parsley-type="number" required="">
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-12">
+            <fieldset>
+                <label>Fiscal(es) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                <div class="form-group">
+                    <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1">
+                        {{#each responsibleListFiscal}}
+                            <option data-user-id="{{id_usr}}" value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                        {{/each}}
+                    </select>
                 </div>
-            </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+                <label>Constructore(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                <div class="form-group">
+                    <select class="form-control ajax-get-responsible-list" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list2">
+                        {{#each responsibleListBuilder}}
+                            <option data-supervising-id="{{supervising_user_usr}}" value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                        {{/each}}
+                    </select>
+                    <input type="hidden" name="responsible-list" value="">
+                </div>
+            </fieldset>
         </div>
     </div>
 </script>

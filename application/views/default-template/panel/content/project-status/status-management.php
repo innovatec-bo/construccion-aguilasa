@@ -65,7 +65,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         <?php
         if($statusSet == "building")
         {
-            echo '<button type="button" class="btn btn-primary edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
+            echo '<button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
         }
         ?>
         <div class="col-md-10">
@@ -128,6 +128,8 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     <form role="form" name="status-management" data-parsley-validate>
                         <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
+                        <input type="hidden" value='<?=$responsibleListFiscal?>' name="responsible-list-fiscal">
+                        <input type="hidden" value='<?=$responsibleListBuilder?>' name="responsible-list-builder">
                         <input type="hidden" value="<?=$statusSet?>" name="status-set">
                         <?php
                         $html = '

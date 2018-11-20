@@ -40,11 +40,8 @@ if(count($previousEntry) > 0)
 }
 $fiscalHtml = "";
 $builderHtml = "";
-//echo"<pre>";var_dump($currentResponsible);
-foreach($responsibleList as $responsible)
+foreach($responsibleListFiscal as $responsible)
 {
-    if($responsible['keyword_rol'] == "fiscal")
-    {
         $selected = "";
         if(count($currentResponsible))
         {
@@ -54,10 +51,9 @@ foreach($responsibleList as $responsible)
         $fiscalHtml .= '
             <option data-user-id="'.$responsible['id_usr'].'" value="'.$responsible['id_sre'].'" '.$selected.'>'.$responsible['firstname_usr'].' '.$responsible['lastname_usr'].'</option>    
         ';
-
-    }
-    elseif($responsible['keyword_rol'] == "builder")
-    {
+}
+foreach($responsibleListBuilder as $responsible)
+{
         $selected = "";
         if(count($currentResponsible))
         {
@@ -66,7 +62,6 @@ foreach($responsibleList as $responsible)
         $builderHtml .= '
             <option data-supervising-id="'.$responsible['supervising_user_usr'].'"value="'.$responsible['id_sre'].'" '.$selected.'>'.$responsible['firstname_usr'].' '.$responsible['lastname_usr'].'</option>    
         ';
-    }
 }
 ?>
 <div class="container-fluid">
@@ -140,7 +135,6 @@ foreach($responsibleList as $responsible)
                                     <div class="form-group">
                                         <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1">
                                             <?php
-
                                             echo $fiscalHtml;
                                             ?>
                                         </select>

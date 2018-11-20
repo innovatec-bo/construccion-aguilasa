@@ -563,13 +563,13 @@ class AjaxProjectStatus extends PrivateController
     {
         $this->_validateFeature("project_update_history");
         $formData = $this->input->post();
-        $logId = $formData["logId"];
 
         $response["success"] = 0;
         $response["message"] = "Ocurrio un problema, por favor intente de nuevo.";
 
         if(isset($formData["entryDate"]))
         {
+            $logId = $formData["logId"];
             $entryDate = $formData["entryDate"];
             $entryDate = DateTime::createFromFormat('d-m-Y H:i:s', $entryDate);
             $entryDate = date_format($entryDate, 'Y-m-d H:i:s');
@@ -583,6 +583,7 @@ class AjaxProjectStatus extends PrivateController
 
         if(isset($formData["points"]) && isset($formData["distance"]))
         {
+            $logId = $formData["logId"];
             $points = $formData["points"];
             $distance = $formData["distance"];
             $projectPoints = Model_project_points::getByStatusLogId($logId);
@@ -595,6 +596,8 @@ class AjaxProjectStatus extends PrivateController
 
         if(isset($formData["responsibleIds"]))
         {
+            $projectId = $formData["projectId"];
+            $responsibleIds = $formData["responsibleIds"];
             $arrayKeywords = array(
                             "assign_to",
                             "building",
@@ -607,11 +610,21 @@ class AjaxProjectStatus extends PrivateController
                             "conciliation_shipment",
                             "cre_return_order",
                             "project_return_materials");
-            $statusList = Model_project_status::getByStatusKeywordList($arrayKeywords);
-            //TODO: Update status responsible list
-            Model_project_status_log::getLogByProjectId();
-            Model_status_log_responsible::addResponsible();
+            $log = Model_project_status_log::getLogByProjectId($projectId);
 
+            foreach ($log as $record)
+            {
+                if(array_search($record["keyword_pst"],$arrayKeywords) !== FALSE)
+                {
+                    $statusLogId = $record["id_psl"];
+                    //let's remove the current responsible
+                    Model_status_log_responsible::removeResponsibleByStatusLogId($statusLogId);
+                    //After remove the responsible let's assigns the new responsible
+                    Model_status_log_responsible::addResponsible($statusLogId, $responsibleIds);
+                }
+            }
+            $response["success"] = 1;
+            $response["message"] = "Se asignaron nuevos responsables al proceso de construccion.";
         }
 
         echo json_encode($response);exit;

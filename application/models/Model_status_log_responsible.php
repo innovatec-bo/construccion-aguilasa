@@ -54,4 +54,15 @@ class Model_status_log_responsible extends Model_status_log_responsible_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function removeResponsibleByStatusLogId($statusLogId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            update ".static::TABLE_NAME." set deleted_slr = 1 where status_log_id_slr = ".$ci->db->escape($statusLogId)."
+        ";
+        $ci->db->query($sql);
+    }
 }
