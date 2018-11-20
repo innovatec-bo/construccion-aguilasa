@@ -30,7 +30,7 @@ switch (ENVIRONMENT)
         break;
     case 'testing':
     case 'production':
-        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'];
+        $config['base_url']	= 'https://'.$_SERVER['HTTP_HOST'];
         break;
 }
 /*

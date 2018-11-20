@@ -16,6 +16,8 @@ class PublicController extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('America/La_Paz');
+        $this->load->helper("ssl_helper");
+        $this->_evalSslUsage();
         $this->_ci = &get_instance();
         $this->load->driver('session');
         $this->load->library('form_validation');
@@ -73,6 +75,14 @@ class PublicController extends CI_Controller
         }
 
         return $object;
+    }
+
+    protected function _evalSslUsage()
+    {
+        if(ENVIRONMENT == "production" || ENVIRONMENT == "testing" )
+        {
+            force_ssl();
+        }
     }
 }
 
