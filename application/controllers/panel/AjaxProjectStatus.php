@@ -604,6 +604,7 @@ class AjaxProjectStatus extends PrivateController
                             "ready_to_start",
                             "in_progress",
                             "paused",
+                            "stopped",
                             "completed",
                             "as_built",
                             "conciliation_reception",
