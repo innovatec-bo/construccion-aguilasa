@@ -63,7 +63,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </dl>
         </div>
         <?php
-        if($statusSet == "building")
+        if($statusSet == "building" && $updateHistory == 1)
         {
             echo '<button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
         }
