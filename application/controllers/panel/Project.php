@@ -104,7 +104,6 @@ class Project extends PrivateController
             $projectAddress = $formData["project-address"];
             $projectPoints = $formData["project-points"];
             $projectMetersDistance = $formData["project-meters-distance"];
-            $projectStatus = $formData["project-status"] == ""?NULL:$formData["project-status"];
             $managementBy = $formData["management-by"];
             $qualityLevel = $formData["quality-level"];
 
@@ -146,10 +145,6 @@ class Project extends PrivateController
                 $project->setStatus($designStatus);//Design
                 $project->save();
             }
-
-
-
-
 
             if(isset($formData["instant-approvement"]))
             {

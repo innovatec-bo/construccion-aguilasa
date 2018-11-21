@@ -259,8 +259,13 @@ class Model_project extends Model_project_base
         $transportation = str_replace(",","",$transportation);
         $liveLine = str_replace(",","",$liveLine);
         $rightOfWay = str_replace(",","",$rightOfWay);
-        $responsibleList = Model_status_responsible::getResponsibleDetailListByStatusKeyword("approved");
-        $responsibleList = array_column($responsibleList,"id_sre");
+        $responsibleList = Model_status_responsible::getUsersResponsible("approved");
+        $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
+        $responsibleList = array($responsibleList['id_sre']);
+
+//        $responsibleList = Model_status_responsible::getUsersResponsible("approved");
+//        $responsibleList = array_column($responsibleList,"id_sre");
+
         $this->_status = $statusId;
         $this->_secondaryCode = $secondaryCode;
         $this->save();

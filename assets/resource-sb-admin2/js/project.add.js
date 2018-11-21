@@ -33,13 +33,13 @@ function defineSecondaryButtonVisibility(instantApprovement)
 {
     if(instantApprovement)
     {
-        $("[data-project-status=1]").addClass("hide");
+        $("[data-send-to-design=1]").addClass("hide");
         $("#approvement-section").removeClass("hide");
         $("#approvement-section").find("input[required]").attr("disabled",false);
     }
     else
     {
-        $("[data-project-status=1]").removeClass("hide");
+        $("[data-send-to-design=1]").removeClass("hide");
         $("#approvement-section").addClass("hide");
         $("#approvement-section").find("input[required]").attr("disabled",true);
     }
