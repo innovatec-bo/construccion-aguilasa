@@ -13,8 +13,8 @@ $(document).ready(function() {
     $(".input-masked").inputmask();
     $(document).on("click", ".save-project",function(e){
         e.preventDefault();
-        var projectStatus = $(this).data("project-status");
-        $("input[name=project-status]").val(projectStatus);
+        var projectStatus = $(this).data("send-to-design");
+        $("input[name=send-to-design]").val(projectStatus);
         $(this).closest("form").submit();
 
     });

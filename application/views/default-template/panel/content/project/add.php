@@ -294,9 +294,9 @@
                         <br>
                         <div class="row">
                             <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary save-project" data-project-status="7">Guardar</button>
-                                <button type="button" class="btn btn-info save-project" data-project-status="1">Guardar y enviar a diseño</button>
-                                <input type="hidden" name="project-status" value="">
+                                <button type="button" class="btn btn-primary save-project" data-send-to-design="0">Guardar</button>
+                                <button type="button" class="btn btn-info save-project" data-send-to-design="1">Guardar y enviar a diseño</button>
+                                <input type="hidden" name="send-to-design" value="">
                             </div>
                         </div>
                     <!-- /.row (nested) -->

@@ -244,28 +244,9 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
-
-                                <?php
-                                //If the project is unsigned then the user can choose between hold in unsigned or send to design
-                                if($project["status_pro"] == 7)
-                                {
-                                    ?>
-                                    <button type="button" class="btn btn-primary save-project" data-project-status="">Guardar</button>
-                                    <button type="button" class="btn btn-info save-project" data-project-status="1">
-                                        Guardar y enviar a diseño
-                                    </button>
-                                    <?php
-                                }
-                                //If the project is on status distinct to unsigned then hold on as well.
-                                else
-                                {
-                                    ?>
-                                    <button type="button" class="btn btn-info save-project" data-project-status="">
-                                        Guardar
-                                    </button>
-                                    <?php
-                                }
-                                ?>
+                                <button type="button" class="btn btn-info save-project" data-project-status="">
+                                    Guardar
+                                </button>
                                 <input type="hidden" name="project-status" value="">
                             </div>
                         </div>

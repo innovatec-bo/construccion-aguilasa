@@ -7,7 +7,8 @@
  */
 ?>
 <script id="ht-status-design-form" type="text/x-handlebars-template">
-    El formulario de diseño no tienen ninguna entrada solo ocupamos su parte completada indicando lo que deberia hacer el usuario
+    La etapa de diseño consiste en definir al personal que hara el estacado, digitalizar la informacion que fue reunida por lo estacadores
+    realizar el dibujo del area del proyecto y definir el cronograma.
 </script>
 
 <script id="ht-status-design-form-completed" type="text/x-handlebars-template">
