@@ -12,18 +12,18 @@
             <thead>
             <tr>
                 <th>CRITERIO</th>
-                <th>ENERO</th>
-                <th>FEBRERO</th>
-                <th>MARZO</th>
-                <th>ABRIL</th>
-                <th>MAYO</th>
-                <th>JUNIO</th>
-                <th>JULIO</th>
-                <th>AGOSTO</th>
-                <th>SEPTIEMBRE</th>
-                <th>OCTUBRE</th>
-                <th>NOVIEMBRE</th>
-                <th>DICIEMBRE</th>
+                <th data-month="01">ENERO</th>
+                <th data-month="02">FEBRERO</th>
+                <th data-month="03">MARZO</th>
+                <th data-month="04">ABRIL</th>
+                <th data-month="05">MAYO</th>
+                <th data-month="06">JUNIO</th>
+                <th data-month="07">JULIO</th>
+                <th data-month="08">AGOSTO</th>
+                <th data-month="09">SEPTIEMBRE</th>
+                <th data-month="10">OCTUBRE</th>
+                <th data-month="11">NOVIEMBRE</th>
+                <th data-month="12">DICIEMBRE</th>
                 <th>TOTAL</th>
             </tr>
             </thead>
@@ -31,19 +31,19 @@
             {{#each projectTotalsList}}
                 <tr class="{{rowKey}}">
                     <th>{{criteria}}</th>
-                    <td class="text-center">{{january}}</td>
-                    <td class="text-center">{{february}}</td>
-                    <td class="text-center">{{march}}</td>
-                    <td class="text-center">{{april}}</td>
-                    <td class="text-center">{{may}}</td>
-                    <td class="text-center">{{june}}</td>
-                    <td class="text-center">{{july}}</td>
-                    <td class="text-center">{{august}}</td>
-                    <td class="text-center">{{september}}</td>
-                    <td class="text-center">{{october}}</td>
-                    <td class="text-center">{{november}}</td>
-                    <td class="text-center">{{december}}</td>
-                    <td class="text-center">{{total}}</td>
+                    <td class="text-center"><a href="#" class="find-th">{{january}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{february}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{march}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{april}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{may}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{june}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{july}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{august}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{september}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{october}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{november}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{december}}</a></td>
+                    <td class="text-center"><a href="#" class="find-th">{{total}}</a></td>
                 </tr>
             {{/each}}
             </tbody>

@@ -38,6 +38,17 @@ $(document).ready(function() {
         getCurrentStatusSummary(projectSystem, managementBy);
     });
 
+    $(document).on("click",".find-th",function(e){
+        e.preventDefault();
+        var $td = $(this).closest("td");
+        var $th = $td.closest('table').find('th').eq($td.index());
+
+        var keyword = $td.closest(".panel.panel-default").find("select[name=keyword] option:selected").val();
+        var year = $td.closest(".panel.panel-default").find("input[name=building-report-year]").val();
+        var month = $th.data("month");
+        var rowKey = $td.closest("tr").attr("class");
+        console.log(keyword, rowKey, month, year);
+    });
 });
 
 function getUsersQuantity()

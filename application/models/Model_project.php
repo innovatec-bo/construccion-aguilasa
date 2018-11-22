@@ -278,7 +278,7 @@ class Model_project extends Model_project_base
     }
 
 
-    public static function getWorkflowDetail()
+    public static function getWorkflowDetail($aditionalFilters = array())
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -418,7 +418,7 @@ class Model_project extends Model_project_base
         where 
         deleted_pro != 1
         ";
-
+//        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -636,6 +636,30 @@ class Model_project extends Model_project_base
         ";
 		return $sql;
 	}
+
+	private static function workflowAditionalFilter($filters = array())
+    {
+        $keyword = $filters["keyword"];
+        $year = $filters["year"];
+        $rowKey = $filters["rowKey"];
+        $month = $filters["month"];
+        $sql = "";
+        switch ($keyword)
+        {
+            case 'project_has_been_created':
+                $sql = "";
+                break;
+            case 'already_sent':
+                $sql = " and already_sent.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                if($rowKey == "countWithoutDigitizationPoints")
+                    $sql .= " and digitization.points_quantity_prp is null and digitization.distance_prp is null ";
+                elseif($rowKey == "countDigitizationPoints")
+                    $sql .= " and digitization.points_quantity_prp is not null and digitization.distance_prp is not null ";
+                break;
+        }
+
+        return $sql;
+    }
 
 	public static function getNewProjectsByYearAndMonth()
     {
