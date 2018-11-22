@@ -81,4 +81,45 @@ class Model_status_responsible extends Model_status_responsible_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getStatusSetByRoleKeyword($roleKeyword)
+    {
+        //Responsible on design
+        $arrayStatus["design_process"][] = "design";
+        $arrayStatus["design_process"][] = "rectify_design";
+        $arrayStatus["design_process"][] = "rectify_illustration";
+        $arrayStatus["design_process"][] = "returned";
+
+        //Responsible on stakes
+        $arrayStatus["stakes_process"][] = "stakes";
+        $arrayStatus["stakes_process"][] = "rd_stakes";
+
+        //Responsible on digitization
+        $arrayStatus["digitization_process"][] = "drawing";
+        $arrayStatus["digitization_process"][] = "rd_drawing";
+        $arrayStatus["digitization_process"][] = "ri_drawing";
+
+        //Responsible on building process
+        $arrayStatus["building_process"][] = "assign_to";
+        $arrayStatus["building_process"][] = "building";
+        $arrayStatus["building_process"][] = "ready_to_start";
+        $arrayStatus["building_process"][] = "in_progress";
+        $arrayStatus["building_process"][] = "stopped";
+        $arrayStatus["building_process"][] = "paused";
+        $arrayStatus["building_process"][] = "completed";
+        $arrayStatus["building_process"][] = "as_built";
+        $arrayStatus["building_process"][] = "conciliation_reception";
+        $arrayStatus["building_process"][] = "conciliation_shipment";
+        $arrayStatus["building_process"][] = "cre_return_order";
+        $arrayStatus["building_process"][] = "project_return_materials";
+
+        //Responsible on warehouse process
+        $arrayStatus["warehouse_process"][] = "warehouse";
+        $arrayStatus["warehouse_process"][] = "record_building_materials";
+        $arrayStatus["warehouse_process"][] = "get_materials";
+        $arrayStatus["warehouse_process"][] = "deliver_materials";
+        $arrayStatus["warehouse_process"][] = "return_materials";
+
+        return $arrayStatus[$roleKeyword];
+    }
 }

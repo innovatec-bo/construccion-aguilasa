@@ -96,8 +96,7 @@ function reportMenu(node) {
                 launchAddForm(node);
             },
             "_class" : "class"
-        }
-        ,
+        },
         renameItem : {
             "label" : "Edit feature",
             "action" : function() {
