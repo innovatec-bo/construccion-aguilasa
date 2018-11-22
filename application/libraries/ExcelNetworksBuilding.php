@@ -276,7 +276,7 @@ class ExcelNetworksBuilding
         $colors = array(
             "88B2E4" => array("countId"),
             "F9FF00" => array("entryPoints", "entryDistance", "digitizationPoints", "digitizationDistance", "asBuiltPoints", "asBuiltDistance"),
-            "DBE6F2" => array("countWithoutDigitizationPoints", "countWithoutAsBuiltPoints", "countWithoutBudgets", "countWithoutRealBudgets"),
+            "FF0000" => array("countWithoutDigitizationPoints", "countWithoutAsBuiltPoints", "countWithoutBudgets", "countWithoutRealBudgets"),
             "E9F3DE" => array("sumDesignBudget", "sumBuildingBudget", "sumTransportationBudget", "sumLiveLineBudget", "sumRightOfWayBudget", "sumDesignRealBudget", "sumBuildingRealBudget", "sumTransportationRealBudget", "sumLiveLineRealBudget", "sumRightOfWayRealBudget"),
             "79DA4C" => array("sumBudget", "sumRealBudget")
         );

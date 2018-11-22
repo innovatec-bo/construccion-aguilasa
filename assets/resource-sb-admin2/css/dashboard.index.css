@@ -56,7 +56,7 @@ div.dt-buttons {
 }
 .countWithoutDigitizationPoints, .countWithoutAsBuiltPoints, .countWithoutBudgets, .countWithoutRealBudgets
 {
-    background-color: #DBE6F2!important;
+    background-color: #FF0000!important;
 }
 
 .sumDesignBudget, .sumBuildingBudget, .sumTransportationBudget, .sumLiveLineBudget, .sumRightOfWayBudget, .sumDesignRealBudget, .sumBuildingRealBudget, .sumTransportationRealBudget, .sumLiveLineRealBudget, .sumRightOfWayRealBudget
