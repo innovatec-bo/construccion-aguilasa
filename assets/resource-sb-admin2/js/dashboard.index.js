@@ -47,6 +47,12 @@ $(document).ready(function() {
         var year = $td.closest(".panel.panel-default").find("input[name=building-report-year]").val();
         var month = $th.data("month");
         var rowKey = $td.closest("tr").attr("class");
+        var $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=keyword]").val(keyword);
+        $form.find("input[name=year]").val(year);
+        $form.find("input[name=month]").val(month);
+        $form.find("input[name=rowKey]").val(rowKey);
+        $form.submit();
         console.log(keyword, rowKey, month, year);
     });
 });

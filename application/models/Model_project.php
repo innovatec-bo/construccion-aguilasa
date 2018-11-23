@@ -278,7 +278,7 @@ class Model_project extends Model_project_base
     }
 
 
-    public static function getWorkflowDetail($aditionalFilters = array())
+    public static function getWorkflowDetail($additionalFilters = array())
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -417,6 +417,7 @@ class Model_project extends Model_project_base
         LEFT JOIN wfl_project_status on status_pro = id_pst
         where 
         deleted_pro != 1
+        ".static::_workflowAdditionalFilter($additionalFilters)."
         ";
 //        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
@@ -637,24 +638,60 @@ class Model_project extends Model_project_base
 		return $sql;
 	}
 
-	private static function workflowAditionalFilter($filters = array())
+	private static function _workflowAdditionalFilter($filters = array())
     {
-        $keyword = $filters["keyword"];
-        $year = $filters["year"];
-        $rowKey = $filters["rowKey"];
-        $month = $filters["month"];
+        $keyword = isset($filters["keyword"])?$filters["keyword"]:"";
+        $year = isset($filters["year"])?$filters["year"]:"";
+        $rowKey = isset($filters["rowKey"])?$filters["rowKey"]:"";
+        $month = isset($filters["month"])?$filters["month"]:"";
         $sql = "";
         switch ($keyword)
         {
             case 'project_has_been_created':
-                $sql = "";
+                $sql = " and entry_date_pro BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
                 break;
             case 'already_sent':
                 $sql = " and already_sent.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
-                if($rowKey == "countWithoutDigitizationPoints")
-                    $sql .= " and digitization.points_quantity_prp is null and digitization.distance_prp is null ";
-                elseif($rowKey == "countDigitizationPoints")
-                    $sql .= " and digitization.points_quantity_prp is not null and digitization.distance_prp is not null ";
+                break;
+            case 'approved':
+                $sql = " and approved.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                break;
+            case 'as_built':
+                $sql = " and as_built.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                break;
+            case 'conciliation_shipment':
+                $sql = " and conciliation_shipment.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                break;
+            case 'project_real_budget_confirmation':
+                $sql = " and payment_order_registered.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                break;
+        }
+
+        switch($rowKey)
+        {
+            case "countDigitizationPoints":
+                $sql .= " and digitization.points_quantity_prp is not null and digitization.distance_prp is not null ";
+                break;
+            case "countWithoutDigitizationPoints":
+                $sql .= " and digitization.points_quantity_prp is null and digitization.distance_prp is null ";
+                break;
+            case "countAsBuiltPoints":
+                $sql .= " and as_built.points_quantity_prp is not null and as_built.distance_prp is not null ";
+                break;
+            case "countWithoutAsBuiltPoints":
+                $sql .= " and as_built.points_quantity_prp is null and as_built.distance_prp is null ";
+                break;
+            case "countBudgets":
+                $sql .= " and approved.total_budget is not null and approved.total_budget is not null ";
+                break;
+            case "countWithoutBudgets":
+                $sql .= " and approved.total_budget is null and approved.total_budget is null ";
+                break;
+            case "countRealBudgets":
+                $sql .= " and conciliation_shipment.total_real_budget is not null and conciliation_shipment.total_real_budget is not null ";
+                break;
+            case "countWithoutRealBudgets":
+                $sql .= " and conciliation_shipment.total_real_budget is null and conciliation_shipment.total_real_budget is null ";
                 break;
         }
 

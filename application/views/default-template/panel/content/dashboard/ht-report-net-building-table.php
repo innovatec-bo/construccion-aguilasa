@@ -43,7 +43,7 @@
                     <td class="text-center"><a href="#" class="find-th">{{october}}</a></td>
                     <td class="text-center"><a href="#" class="find-th">{{november}}</a></td>
                     <td class="text-center"><a href="#" class="find-th">{{december}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{total}}</a></td>
+                    <td class="text-center">{{total}}</td>
                 </tr>
             {{/each}}
             </tbody>

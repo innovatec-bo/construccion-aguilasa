@@ -422,4 +422,12 @@ class Project extends PrivateController
         $excel = new ExcelCurrentStatusSummary($this->sessionUser, $system, $managementBy);
         $excel->getReport();
     }
+
+    public function downloadWorkflowWithParameters()
+    {
+        $additionalParameters = $this->input->post();
+        $excel = new ExcelProjectWorkflow($this->sessionUser);
+        $excel->setAdditionalParameters($additionalParameters);
+        $excel->getReport();
+    }
 }

@@ -4,16 +4,19 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ExcelProjectWorkflow
 {
     private $_sessionUser;
+    private $_additionalParameters;
 	public function __construct($sessionUser)
 	{
         $this->_sessionUser = $sessionUser;
+        $this->_additionalParameters = array();
+
 	}
 
 	function getReport()
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
-        $projectWorkflow = Model_project::getWorkflowDetail();
+        $projectWorkflow = Model_project::getWorkflowDetail($this->_additionalParameters);
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -303,5 +306,10 @@ class ExcelProjectWorkflow
             $spreadsheet->getActiveSheet()->getStyle($column.'3:'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
         }
 
+    }
+
+    public function setAdditionalParameters($additionalParameters = array())
+    {
+        $this->_additionalParameters = $additionalParameters;
     }
 }
