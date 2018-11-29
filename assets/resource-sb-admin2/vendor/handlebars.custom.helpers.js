@@ -191,3 +191,25 @@
         // 10. January 2017. at 10:20
         return `${ day }. ${ month } ${ year }. at ${ hours }:${ minutes }`;
     }
+
+    Handlebars.registerHelper('netBuildingListener', function (value, options) {
+        // Helper parameters
+        var dl = options.hash['rowKey'] || "";
+
+        var response = '<th>{{criteria}}</th>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{january}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{february}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{march}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{april}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{may}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{june}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{july}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{august}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{september}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{october}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{november}}</a></td>\n' +
+        '<td class="text-center"><a href="#" class="find-th">{{december}}</a></td>\n' +
+        '<td class="text-center">{{total}}</td>';
+
+        return response;
+    });
