@@ -115,7 +115,19 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
-                                    <input class="form-control" value="<?=set_value('project-cre-fiscal', $project["cre_fiscal_pro"])?>" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">
+<!--                                    <input class="form-control" value="--><?//=set_value('project-cre-fiscal', $project["cre_fiscal_pro"])?><!--" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">-->
+                                    <select  class="form-control" name="project-cre-fiscal" required>
+                                        <option value="">Elija un Fiscal</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($creFiscalList as $fiscal)
+                                        {
+                                            $selected = $project["cre_fiscal_pro"] == $fiscal->id_cfi?" selected ":"";
+                                            $html .= '<option '.$selected.' value="'.$fiscal->id_cfi.'" >'.$fiscal->firstname_cfi.' '.$fiscal->lastname_cfi.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>

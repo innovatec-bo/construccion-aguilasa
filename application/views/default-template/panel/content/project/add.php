@@ -89,7 +89,18 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
-                                    <input class="form-control" required value="<?=set_value("project-cre-fiscal")?>" name="project-cre-fiscal" placeholder="Fiscal de CRE">
+<!--                                    <input class="form-control" required value="--><?//=set_value("project-cre-fiscal")?><!--" name="project-cre-fiscal" placeholder="Fiscal de CRE">-->
+                                    <select  class="form-control" name="project-cre-fiscal" required>
+                                        <option value="">Elija un Fiscal</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($creFiscalList as $fiscal)
+                                        {
+                                            $html .= '<option value="'.$fiscal->id_cfi.'" >'.$fiscal->firstname_cfi.' '.$fiscal->lastname_cfi.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
