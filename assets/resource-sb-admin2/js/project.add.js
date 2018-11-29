@@ -4,6 +4,7 @@
 
 $(document).ready(function() {
     // Basic date
+    $("select[name=project-cre-fiscal]").select2();
     var date = new Date();
     $('.input-group.date').datetimepicker({
         ignoreReadonly: true,

@@ -3,6 +3,8 @@
  */
 
 $(document).ready(function() {
+
+    $("select[name=project-cre-fiscal]").select2();
     // Basic date
     var date = new Date();
     $('.input-group.date').datetimepicker({

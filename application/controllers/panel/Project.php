@@ -52,6 +52,7 @@ class Project extends PrivateController
         $this->_validateFeature('project_add');
 
         /** View complements */
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
@@ -174,6 +175,7 @@ class Project extends PrivateController
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
 
         /** View complements */
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
