@@ -82,7 +82,8 @@ class Model_status_responsible extends Model_status_responsible_base
         return $result;
     }
 
-    public static function getStatusSetByRoleKeyword($roleKeyword)
+
+    public static function getStatusSetByResponsibleGroup($responsibleGroup)
     {
         //Responsible on design
         $arrayStatus["design_process"][] = "design";
@@ -120,6 +121,17 @@ class Model_status_responsible extends Model_status_responsible_base
         $arrayStatus["warehouse_process"][] = "deliver_materials";
         $arrayStatus["warehouse_process"][] = "return_materials";
 
-        return $arrayStatus[$roleKeyword];
+        return $arrayStatus[$responsibleGroup];
+    }
+
+    public static function saveUserResponsible($userId, $responsibleGroup)
+    {
+        $statusKeywordList = static::getStatusSetByResponsibleGroup($responsibleGroup);
+        $statusList = Model_project_status::getByStatusKeywordList($statusKeywordList);
+        foreach ($statusList as $status)
+        {
+            $statusResponsible = new Model_status_responsible($userId,$status->getId());
+            $statusResponsible->save();
+        }
     }
 }

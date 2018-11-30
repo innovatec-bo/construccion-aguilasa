@@ -24,63 +24,79 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <form role="form" method="post" name="user-add-form" data-parsley-validate>
-                                <input type="hidden" name="user-id" value="">
+                        <form role="form" method="post" name="user-add-form" data-parsley-validate>
+                            <div class="col-lg-6">
+                                    <input type="hidden" name="user-id" value="">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input class="form-control" required name="first-name" value="<?=set_value("first-name")?>" placeholder="Enter first name">
+                                    </div>
+                            </div>
+                            <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input class="form-control" required name="last-name" value="<?=set_value("last-name")?>" placeholder="Enter last name">
+                                    </div>
+                            </div>
+                            <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Correo</label>
+                                        <input type="email" class="form-control" required name="email" value="<?=set_value("email")?>" placeholder="Enter email">
+                                    </div>
+                            </div>
+                            <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Contraseña</label>
+                                        <input class="form-control" required name="password" placeholder="Enter password" value="" id="user-password">
+                                    </div>
+                            </div>
+                            <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Confirm password</label>
+                                        <input class="form-control" required name="confirm-password" placeholder="Confirm password" value="" data-parsley-equalto="#user-password" data-parsley-equalto-message="Password and confirm password are different">
+                                    </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Roles</label>
+                                        <?php
+                                        $html = "";
+                                        $i = 0;
+                                        foreach ($roleList as $role)
+                                        {
+                                            $role = (array)$role;
+                                            $parsleyValidation = $i == 0?' required data-parsley-errors-container="#role-error-container" data-parsley-error-message="Choose at least one role" ':'';
+                                            $html .= '
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="roles[]" value="'.$role["id_rol"].'" '.$parsleyValidation.'>'.$role["rolename_rol"].'
+                                                </label>
+                                            </div>
+                                            ';
+                                        }
+                                        echo $html;
+                                        ?>
+                                        <div id="role-error-container"></div>
+                                    </div>
+
+                            </div>
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input class="form-control" required name="first-name" value="<?=set_value("first-name")?>" placeholder="Enter first name">
+                                    <label>Responsable en</label>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="responsible-group" value="building_process">Proceso de construccion
+                                        </label>
+                                    </div>
                                 </div>
-                        </div>
-                        <div class="col-lg-6">
+                            </div>
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Apellido</label>
-                                    <input class="form-control" required name="last-name" value="<?=set_value("last-name")?>" placeholder="Enter last name">
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
-                        </div>
-                        <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Correo</label>
-                                    <input type="email" class="form-control" required name="email" value="<?=set_value("email")?>" placeholder="Enter email">
-                                </div>
-                        </div>
-                        <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Contraseña</label>
-                                    <input class="form-control" required name="password" placeholder="Enter password" value="" id="user-password">
-                                </div>
-                        </div>
-                        <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Confirm password</label>
-                                    <input class="form-control" required name="confirm-password" placeholder="Confirm password" value="" data-parsley-equalto="#user-password" data-parsley-equalto-message="Password and confirm password are different">
-                                </div>
-                        </div>
-                        <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Roles</label>
-                                    <?php
-                                    $html = "";
-                                    $i = 0;
-                                    foreach ($roleList as $role)
-                                    {
-                                        $role = (array)$role;
-                                        $parsleyValidation = $i == 0?' required data-parsley-errors-container="#role-error-container" data-parsley-error-message="Choose at least one role" ':'';
-                                        $html .= '
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="roles[]" value="'.$role["id_rol"].'" '.$parsleyValidation.'>'.$role["rolename_rol"].'
-                                            </label>
-                                        </div>
-                                        ';
-                                    }
-                                    echo $html;
-                                    ?>
-                                    <div id="role-error-container"></div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.row (nested) -->
                 </div>
