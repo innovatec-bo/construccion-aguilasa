@@ -47,7 +47,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         <div class="col-md-2">
             <dl class="header-description well well-sm">
                 <dt>FISCAL DE CRE</dt>
-                <dd><?=$project["cre_fiscal_pro"]?></dd>
+                <dd><?=$projectFullDetail["firstname_cfi"]." ".$projectFullDetail["lastname_cfi"]?></dd>
             </dl>
         </div>
         <div class="col-md-2">

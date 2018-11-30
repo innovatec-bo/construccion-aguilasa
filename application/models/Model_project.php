@@ -290,7 +290,7 @@ class Model_project extends Model_project_base
             code_pro,
             entry_date_pro,
             folder_date_pro,
-            cre_fiscal_pro,
+            concat(firstname_cfi,' ', lastname_cfi) cre_fiscal_pro,
             CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'
@@ -415,6 +415,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
         LEFT JOIN wfl_project_status on status_pro = id_pst
+        left join wfl_cre_fiscal on id_cfi = cre_fiscal_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
@@ -1595,4 +1596,27 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getProjectFullDetail($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            select 
+              ".static::TABLE_NAME.".*,
+              wfl_cre_fiscal.*
+            from
+              ".static::TABLE_NAME."
+            left join wfl_cre_fiscal on id_cfi = cre_fiscal_pro
+            where
+            id_pro = ".$ci->db->escape($projectId)."            
+            and ".static::notDeleted()."
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->row_array();
+        return $result;
+    }
+
 }
