@@ -377,7 +377,14 @@ class Project extends PrivateController
 
     public function getProjectWorkFlowReport()
     {
+        $formData = $this->input->post();
+        $codeList = $formData["code-list"];
+        $codeList = str_replace(" ",PHP_EOL, $codeList);
+        $codeList = explode(PHP_EOL, $codeList);
+        $codeList = array_values(array_filter($codeList));
+//        echo"<pre>";var_dump($codeList);exit;
         $excel = new ExcelProjectWorkflow($this->sessionUser);
+        $excel->setAdditionalParameters($formData);
         $excel->getReport();
     }
 

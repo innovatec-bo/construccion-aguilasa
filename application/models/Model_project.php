@@ -640,6 +640,9 @@ class Model_project extends Model_project_base
 
 	private static function _workflowAdditionalFilter($filters = array())
     {
+        $ci = &get_instance();
+        $ci->load->database();
+
         $keyword = isset($filters["keyword"])?$filters["keyword"]:"";
         $year = isset($filters["year"])?$filters["year"]:"";
         $rowKey = isset($filters["rowKey"])?$filters["rowKey"]:"";
@@ -693,6 +696,24 @@ class Model_project extends Model_project_base
             case "countWithoutRealBudgets":
                 $sql .= " and conciliation_shipment.total_real_budget is null and conciliation_shipment.total_real_budget is null ";
                 break;
+        }
+
+        if(isset($filters["code-list"]))
+        {
+            $codeList = $filters["code-list"];
+            $codeList = str_replace(" ",PHP_EOL, $codeList);
+            $codeList = explode(PHP_EOL, $codeList);
+            $codeList = array_values(array_filter($codeList));
+            $codeListFilter = "";
+            foreach ($codeList as $code)
+            {
+                $codeListFilter .= $ci->db->escape($code).", ";
+            }
+            $codeListFilter = substr($codeListFilter,0, -2);
+            if($codeListFilter != "")
+            {
+                $sql .= " and code_pro in (".$codeListFilter.") ";
+            }
         }
 
         return $sql;

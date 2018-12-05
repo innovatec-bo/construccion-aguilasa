@@ -91,6 +91,46 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            <div class="panel panel-default" id="panel-workflow-report">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Workflow report
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12" id="workflow-report">
+                            <form name="report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+                                <div class="form-group">
+                                    <label>Listas de seguimiento</label>
+                                    <select class="form-control">
+                                        <option>Si lo desea puede elegir una lista</option>
+                                        <option>Lista 1</option>
+                                        <option>Lista 2</option>
+                                        <option>Lista 3</option>
+                                        <option>Lista 4</option>
+                                        <option>Lista 5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pegue aqui los Proyectos(Códigos) que para que sean exportados en el reporte.<br><em>Los códigos deben estar separados por un espacio.</em></label>
+                                    <textarea name="code-list" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Descargar reporte</button>
+                                </div>
+                            </form>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.col-lg-4 (nested) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-default" id="panel-current-status-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
@@ -139,6 +179,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
