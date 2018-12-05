@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Pegue aqui los Proyectos(Códigos) que para que sean exportados en el reporte.<br><em>Los códigos deben estar separados por un espacio.</em></label>
-                                    <textarea name="code-list" class="form-control" rows="3"></textarea>
+                                    <textarea name="code-list" class="form-control" rows="3">Este campo no es obligatorio</textarea>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Descargar reporte</button>
