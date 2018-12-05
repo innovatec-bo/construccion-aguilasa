@@ -223,6 +223,8 @@ class ProjectStatus extends PrivateController
         $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
         $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
+//        echo"<pre>";var_dump($projectFullDetail);exit;
         $data["project"] = $project;
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
@@ -234,6 +236,7 @@ class ProjectStatus extends PrivateController
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         $data["projectLog"] = $projectLog;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+        $data["projectFullDetail"] = $projectFullDetail;
         $this->_loadPanelView("project-status/status-management", $data);
     }
 

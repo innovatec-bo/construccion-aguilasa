@@ -57,6 +57,7 @@ class User extends PrivateController
         else
         {
             $formData = $this->input->post();
+            $responsibleGroup = isset($formData["responsible-group"])?$formData["responsible-group"]:"";
             $firstName = $formData["first-name"];
             $lastName = $formData["last-name"];
             $email = $formData["email"];
@@ -72,6 +73,10 @@ class User extends PrivateController
             );
             $user->save();
             Model_user_role::saveUserRoleList($user->getId(), $userRoleList, $this->sessionUser);
+            if($responsibleGroup != "")
+            {
+                Model_status_responsible::saveUserResponsible($user->getId(),$responsibleGroup);
+            }
             $this->session->set_flashdata("successMessage", "User was added successfully");
             redirect(base_url("panel/User"));
         }
