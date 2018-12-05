@@ -9,6 +9,7 @@ $(document).ready(function() {
     getProjectTotalsTable();
     getProjectNetBuilding();
     getCurrentStatusSummary();
+    startSelect2TrackingList();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -53,7 +54,40 @@ $(document).ready(function() {
         $form.find("input[name=month]").val(month);
         $form.find("input[name=rowKey]").val(rowKey);
         $form.submit();
-        console.log(keyword, rowKey, month, year);
+    });
+
+    $("input[type=radio][name=workflow-additional-actions]").on("change",function(){
+       var action = $(this).val();
+       switch (action)
+       {
+           case "1":
+                $("input[name=tracking-list-name]").closest("div").slideDown();
+               break;
+           default:
+               $("input[name=tracking-list-name]").closest("div").slideUp();
+
+       }
+    });
+
+    // $("select[name=tracking-list-id]").on("change",function(){
+    //     var codeList = ""
+    //     if($(this).select2('data')[0] !== undefined)
+    //     {
+    //         codeList = $(this).select2('data')[0]["code_list"];
+    //     }
+    //
+    //     $("textarea[name=code-list]").val(codeList);
+    // });
+
+    $(".select2.tracking-list").on('select2:select', function (e) {
+        var data = e.params.data;
+        var codeList = data.code_list;
+        $("textarea[name=code-list]").val(codeList);
+        // console.log(data);
+    });
+
+    $("form[name=workflow-report]").on("submit", function(){
+       saveTrackingList();
     });
 });
 
@@ -165,6 +199,61 @@ function getCurrentStatusSummary(system, management)
             }
             $content.html(html);
         }
+    });
+}
+
+function saveTrackingList()
+{
+    var $formData = $("form[name=workflow-report]");
+    blockArea($formData);
+    $.ajax({
+        url : base_url + 'panel/AjaxTrackingList/saveTrackingList',
+        dataType  :"json",
+        type : "POST",
+        data:$formData.serialize(),
+        success:function(response){
+            $formData.unblock();
+            var messageType = "error";
+            if(response.success == 1)
+                messageType = "success";
+
+            swal({ title:'', text:response.message, type:messageType});
+            $("#workflow-additional-actions3").prop("checked", true);
+            $("input[name=tracking-list-name]").closest("div").slideUp();
+            $('.select2.tracking-list').select2('destroy');
+            startSelect2TrackingList()
+
+        }
+    });
+}
+function startSelect2TrackingList(selector)
+{
+    selector = selector || '.select2.tracking-list';
+    $(selector).select2({
+        placeholder: "Puede seleccionar una lista de seguimiento",
+        containerCssClass: 'select-xs',
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxTrackingList/select2',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                return {
+                    term : params.term || "", //search term
+                    limit : 5, // page size
+                    page: params.page || 1
+                };
+            },
+
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        width : "100%"
     });
 }
 function blockArea(content)

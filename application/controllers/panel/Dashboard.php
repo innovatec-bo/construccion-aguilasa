@@ -16,11 +16,16 @@ class Dashboard extends PrivateController
     public function index()
     {
         $this->_validateFeature("dashboard_index");
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('dashboard.index', TRUE);
         $this->complementHandler->addProjectJs('dashboard.index', TRUE);
+
+        $trackingList = Model_tracking_list::getAll(100, 0);
         $data["systemList"] = $this->_projectSystems;
+        $data["trackingList"] = $trackingList;
         $this->_loadPanelView('dashboard/index', $data);
     }
 

@@ -127,4 +127,6 @@ class AjaxProject extends PrivateController
         $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }
+
+
 }
