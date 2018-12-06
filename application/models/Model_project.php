@@ -702,6 +702,7 @@ class Model_project extends Model_project_base
         if(isset($filters["code-list"]))
         {
             $codeList = $filters["code-list"];
+            $codeList = str_replace("\r\n"," ", $codeList);
             $codeList = str_replace(" ",PHP_EOL, $codeList);
             $codeList = explode(PHP_EOL, $codeList);
             $codeList = array_values(array_filter($codeList));
@@ -714,6 +715,7 @@ class Model_project extends Model_project_base
             if($codeListFilter != "")
             {
                 $sql .= " and code_pro in (".$codeListFilter.") ";
+//                echo"<pre>";var_dump($sql);exit;
             }
         }
 
