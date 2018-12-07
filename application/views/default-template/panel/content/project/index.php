@@ -34,6 +34,10 @@
                     <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove parametros adicionales</button>
                 </div>
             </form>
+            <form name="workflow-with-parameters" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+                    <input type="hidden" name="is-super-admin" value="<?=$isSuperAdmin?>">
+                <input type="hidden" name="code-list" value="">
+            </form>
         </div>
         <div class="col-md-12">
             <div class="table-responsive">

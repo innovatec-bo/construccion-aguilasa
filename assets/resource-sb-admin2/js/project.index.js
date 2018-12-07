@@ -53,11 +53,24 @@ $(document).ready(function() {
     additionalParameter.loadEventHandlers();
 
     var buttonAdd = {
-        text: "Add",
-        action: function ( e, dt, node, config ) {
-            window.open(base_url + "panel/Project/add","_self");
+        text: "Workflow",
+        action: function ( e, dt, node, config )
+        {
+            var rowData = $('#project-index').DataTable().rows().data();
+            var codeList = "";
+            var $form = $("form[name=workflow-with-parameters]");
+            $.each(rowData, function(index, value){
+                codeList += value.code_pro+" ";
+            });
+            $form.find("input[name=code-list]").val(codeList);
+            $form.submit();
         }
     };
+    var buttons= ['excel', 'csv','pdf','print', buttonAdd];
+    if($("input[name=is-super-admin]").val() != 1)
+    {
+        buttons= ['excel', 'csv','pdf','print'];
+    }
     //Horizontal Icons dataTable
     // var statusSet = $("input[name=status-set]").val();
     var oTable = $('#project-index').dataTable({
@@ -174,7 +187,7 @@ $(document).ready(function() {
             this.api().column(0).visible(false);
             this.api().column(1).visible(false);
         },
-        "buttons": ['excel', 'csv','pdf','print']
+        "buttons": buttons
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Buscar');
     $('.dataTables_length select').addClass('form-control');
