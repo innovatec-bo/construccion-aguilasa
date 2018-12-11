@@ -255,6 +255,14 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Detalle del proyecto</label>
+                                    <input class="form-control" value="<?=$project["detail_pro"]?>" name="project-detail" placeholder="Puede ingresar un detalle acerca del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <button type="button" class="btn btn-info save-project" data-project-status="">
                                     Guardar

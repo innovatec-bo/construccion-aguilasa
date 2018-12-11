@@ -31,9 +31,10 @@ class Model_project_base extends MY_Model
     protected $_secondaryCode;
     protected $_folderDate;
     protected $_contractId;
+    protected $_detail;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL)
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "")
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -55,6 +56,7 @@ class Model_project_base extends MY_Model
         $this->_secondaryCode = $secondaryCode;
         $this->_folderDate = $folderDate;
         $this->_contractId = $contractId;
+        $this->_detail = $detail;
     }
 
     /**
@@ -84,6 +86,7 @@ class Model_project_base extends MY_Model
             "secondary_code_pro" => $this->_secondaryCode,
             "folder_date_pro" => $this->_folderDate,
             "contract_id_pro" => $this->_contractId,
+            "detail_pro" => $this->_detail,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -126,7 +129,8 @@ class Model_project_base extends MY_Model
                 $object->budgetary_position_pro,
                 $object->secondary_code_pro,
                 $object->folder_date_pro,
-                $object->contract_id_pro
+                $object->contract_id_pro,
+                $object->detail_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -218,6 +222,11 @@ class Model_project_base extends MY_Model
     public function setContractId($contractId)
     {
         $this->_contractId = $contractId;
+    }
+
+    public function setDetail($detail)
+    {
+        $this->_detail = $detail;
     }
 
     public function getCode()

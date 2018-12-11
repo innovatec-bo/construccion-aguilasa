@@ -122,10 +122,11 @@ class Project extends PrivateController
 
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
+            $detail = $formData["project-detail"];
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail);
             $project->save();
             //Let's search the status responsible
             $responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created");
@@ -251,6 +252,7 @@ class Project extends PrivateController
 
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
+            $detail = $formData["project-detail"];
 
             $project->setProjectName($projectName);
             $project->setCode($projectCode);
@@ -269,6 +271,7 @@ class Project extends PrivateController
             $project->setCreBuildingCompletionDate($creBuildingCompletionDate);
             $project->setBudgetaryPosition($budgetaryPosition);
             $project->setContractId($contractId);
+            $project->setDetail($detail);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")
