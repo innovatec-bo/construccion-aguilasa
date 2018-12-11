@@ -543,7 +543,8 @@ class AjaxProjectStatus extends PrivateController
         }
         if($statusSet == "warehouse" || $statusSet == "building")
         {
-            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
+            //Now the building progress has the complete team at "in_progress" step.
+            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "in_progress");
         }
         $response["previousEntry"] = $previousEntry;
         $response["scheduleEntry"] = $scheduleEntry;
@@ -615,13 +616,24 @@ class AjaxProjectStatus extends PrivateController
 
             foreach ($log as $record)
             {
-                if(array_search($record["keyword_pst"],$arrayKeywords) !== FALSE)
+                if(array_search($record["keyword_pst"], $arrayKeywords) !== FALSE)
                 {
                     $statusLogId = $record["id_psl"];
                     //let's remove the current responsible
                     Model_status_log_responsible::removeResponsibleByStatusLogId($statusLogId);
-                    //After remove the responsible let's assigns the new responsible
-                    Model_status_log_responsible::addResponsible($statusLogId, $responsibleIds);
+                    //If the step is "assign_to" then let's remove the builder form responsible list. On assign_to only is defined the fiscal.
+                    if($record["keyword_pst"] == "assign_to")
+                    {
+                        $responsibleIdsForAssignToStep = $responsibleIds;
+                        unset($responsibleIdsForAssignToStep[1]);
+                        //After remove the responsible let's assigns the new responsible
+                        Model_status_log_responsible::addResponsible($statusLogId, $responsibleIdsForAssignToStep);
+                    }
+                    else
+                    {
+                        //After remove the responsible let's assigns the new responsible
+                        Model_status_log_responsible::addResponsible($statusLogId, $responsibleIds);
+                    }
                 }
             }
             $response["success"] = 1;
@@ -648,7 +660,8 @@ class AjaxProjectStatus extends PrivateController
         $incident->save();
         if($pauseProject != 0|| $stopProject != 0)
         {
-            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
+            //Now the building team is completed at in_progress step
+            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "in_progress");
             $responsibleList = array();
             if(count($assignmentEntry) >= 0)
             {

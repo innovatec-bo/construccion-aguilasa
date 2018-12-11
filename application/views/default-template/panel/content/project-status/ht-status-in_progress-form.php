@@ -31,14 +31,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row hide">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <fieldset>
-                                            <label>Responsable(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                            <!-- select by default the fiscal assigned by copa-->
+                                            <label>Fiscal</label>
                                             <div class="form-group">
-                                                <select class="form-control" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list">
-                                                    {{#each assignmentResponsible}}
-                                                        <option value="{{id}}" selected>{{name}}</option>
+                                                <select disabled class="form-control select2 fiscal" multiple="multiple" data-parsley-required="" parsley-trigger="change">
+                                                    {{#each assignmentResponsibleFiscal}}
+                                                        <option value="{{id}}" selected > {{name}}</option>
                                                     {{/each}}
                                                 </select>
                                             </div>
@@ -46,6 +47,24 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <fieldset>
+                                            <label>Constructor</label>
+                                            <div class="form-group">
+                                                <select class="form-control select2 builders" data-parsley-required="" parsley-trigger="change">
+                                                    {{#each responsibleGroup.responsibleListBuilder}}
+                                                        {{var "selected" ""}}
+                                                        {{#ifCond ../assignmentResponsibleBuilder.id '==' id_sre}}
+                                                            {{var "selected" "selected"}}
+                                                        {{/ifCond}}
+                                                        <option {{selected}} value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="row hide">
                                     <div class="col-md-6">
                                         <fieldset>
                                             <label>Responsables de construccion</label><br>

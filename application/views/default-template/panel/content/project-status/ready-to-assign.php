@@ -120,8 +120,8 @@ foreach($responsibleListBuilder as $responsible)
                                         <div class="input-group date date-time-picker">
                                             <input name="entry-date" readonly="" class="form-control input-date" required="" data-parsley-errors-container="#error-entry-date">
                                             <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
                                         </div>
                                         <div id="error-entry-date"></div>
                                     </div>
@@ -131,7 +131,8 @@ foreach($responsibleListBuilder as $responsible)
                         <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
-                                    <label>Fiscal(es) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                    <label>Fiscal(es)</label>
+                                    <br><em>El constructor será asignado por el fiscal.</em>
                                     <div class="form-group">
                                         <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1">
                                             <?php
@@ -142,7 +143,7 @@ foreach($responsibleListBuilder as $responsible)
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row hide">
                             <div class="col-md-6">
                                 <fieldset>
                                     <label>Constructore(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>

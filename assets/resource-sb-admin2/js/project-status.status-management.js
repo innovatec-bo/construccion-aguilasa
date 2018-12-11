@@ -73,6 +73,8 @@ $(document).ready(function() {
                     saveCanceled(statusId,statusKeyword);
                     break;
                 case "in_progress":
+                    saveInProgress(statusId,statusKeyword);
+                    break;
                 case "paused":
                 case "stopped":
                 case "completed":
@@ -660,6 +662,39 @@ function saveCreReturnOrder(statusId,statusKeyword)
     });
 }
 
+function saveInProgress(statusId,statusKeyword)
+{
+    var select2Data1 = $('.select2.fiscal').select2("data");
+    var select2Data2 = $('.select2.builders').select2("data");
+    Array.prototype.push.apply(select2Data1,select2Data2);
+    var responsibleList = [];
+    $.each(select2Data1, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
 function saveBasicLog(statusId,statusKeyword)
 {
     var select2Data = $('#ajax-get-responsible-list').select2("data");
@@ -713,28 +748,35 @@ function loadStatusForm(statusKeyword, addMoreInfo)
             {
                 var points = $("#points").text();
                 var distance = $("#distance").text();
-                var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
-                var statusResponsible = [];
-                $.each(responsibleList,function(index,value){
-                    if(value.keyword_pst == statusKeyword)
-                        statusResponsible.push(value);
-                });
-                var responsibleListLength = statusResponsible.length;
+                var responsibleGroup = getResponsibleGroup(statusKeyword);
+                var statusResponsible = responsibleGroup.responsibleList;
+                var responsibleListLength = responsibleGroup.responsibleListLength;
+
                 var htmlSource   = $("#ht-status-not-created-view-form").html();
                 if($("#ht-status-"+statusKeyword+"-form").length === 1)
                     htmlSource  = $("#ht-status-"+statusKeyword+"-form").html();
 
                 var template = Handlebars.compile(htmlSource);
                 var assignmentResponsible = response.assignmentEntry.length > 0?jQuery.parseJSON("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
+                var assignmentResponsibleFiscal = [];
+                var assignmentResponsibleBuilder = [];
+                if(statusKeyword == "in_progress")
+                {
+                    assignmentResponsibleFiscal.push(assignmentResponsible[0]);
+                    assignmentResponsibleBuilder = assignmentResponsible[1] || {id:null, name:""};
+                }
                 var data = {
                     statusResponsible:statusResponsible,
                     responsibleListLength:responsibleListLength,
+                    responsibleGroup:responsibleGroup,
                     points:points,
                     distance:distance,
                     statusKeyword:statusKeyword,
                     statusSet:statusSet,
                     previousEntry:response.previousEntry[0],
-                    assignmentResponsible:assignmentResponsible
+                    assignmentResponsible:assignmentResponsible,
+                    assignmentResponsibleFiscal: assignmentResponsibleFiscal,
+                    assignmentResponsibleBuilder: assignmentResponsibleBuilder
                 };
                 var html = template(data);
                 $("#status-form-content").html(html);
@@ -743,6 +785,10 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                     ignoreReadonly: true,
                     defaultDate: date,
                     format: 'DD-MM-YYYY'
+                });
+                $(".select2").select2({
+                    placeholder: 'Asigne uno o mas responsables',
+                    allowClear: true
                 });
                 $("#ajax-get-responsible-list").select2({
                     placeholder: 'Asigne uno o mas responsables',
@@ -883,4 +929,41 @@ function checkIncidents()
             // });
         }
     });
+}
+
+function getResponsibleGroup(statusKeyword)
+{
+    //all responsible by status keyword
+    var response = {};
+    var responsibleList = $.parseJSON($("input[name=responsible-list]").val());
+    var statusResponsible = [];
+    $.each(responsibleList,function(index,value){
+        if(value.keyword_pst == statusKeyword)
+            statusResponsible.push(value);
+    });
+    var responsibleListLength = statusResponsible.length;
+    response.responsibleList = statusResponsible;
+    response.responsibleListLength = responsibleListLength;
+
+    //all responsible by status keyword and role fiscal
+    var responsibleListFiscal = $.parseJSON($("input[name=responsible-list-fiscal]").val());
+    var statusResponsibleFiscal = [];
+    $.each(responsibleListFiscal,function(index,value){
+            statusResponsibleFiscal.push(value);
+    });
+    var responsibleListFiscalLength = statusResponsibleFiscal.length;
+    response.responsibleListFiscal = statusResponsibleFiscal;
+    response.responsibleListFiscalLength = responsibleListFiscalLength;
+
+    //all responsible by status keyword and role builder
+    var responsibleListBuilder = $.parseJSON($("input[name=responsible-list-builder]").val());
+    var statusResponsibleBuilder = [];
+    $.each(responsibleListBuilder,function(index,value){
+        statusResponsibleBuilder.push(value);
+    });
+    var responsibleListBuilderLength = statusResponsibleBuilder.length;
+    response.responsibleListBuilder = statusResponsibleBuilder;
+    response.responsibleListBuilderLength = responsibleListBuilderLength;
+
+    return response;
 }

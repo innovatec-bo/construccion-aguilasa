@@ -224,7 +224,7 @@ class ProjectStatus extends PrivateController
         $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
-//        echo"<pre>";var_dump($projectFullDetail);exit;
+
         $data["project"] = $project;
         $data["statusList"] = $statusList;
         $data["projectSystems"] = $this->_projectSystems;
