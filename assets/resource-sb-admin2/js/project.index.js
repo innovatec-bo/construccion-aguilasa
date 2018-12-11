@@ -1,6 +1,7 @@
 /**
  * Created by Jair on 10/01/2018.
  */
+
 var statusSet = [];
 statusSet["46"] = "design";
 statusSet["1"] = "design";
@@ -45,6 +46,8 @@ statusSet["38"] = "building";
 statusSet["39"] = "building";
 
 $(document).ready(function() {
+
+
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
     additionalParameter.addParameterObject('status','text');
@@ -96,6 +99,21 @@ $(document).ready(function() {
         }, {
             "data" : "code_pro"
         }, {
+            "data" : "entry_date_pro",
+            "render" : function(data, type, row, meta) {
+                var result = "";
+                if(row.entry_date_pro !== "" && row.entry_date_pro !== null)
+                {
+                    var dateObject = new Date(row.entry_date_pro);
+                    var date = dateObject.getDate() < 10? "0"+dateObject.getDate():dateObject.getDate();
+                    var month = (dateObject.getMonth()+1) < 10? "0"+(dateObject.getMonth()+1):(dateObject.getMonth()+1);
+                    var year = dateObject.getFullYear();
+                    result = date+"-"+month+"-"+year;
+                }
+
+                return result;
+            }
+        }, {
             "data" : "manual_entry_date_psl",
             "render" : function(data, type, row, meta) {
                 var result = "";
@@ -109,6 +127,14 @@ $(document).ready(function() {
                 }
 
                 return result;
+            }
+        }, {
+            "defaultContent" : "",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var response = dateDiff(new Date(row.manual_entry_date_psl), new Date());
+                return response;
             }
         }, {
             "data" : "status_pro",
@@ -194,3 +220,10 @@ $(document).ready(function() {
     oTable.fnSetFilteringDelay(1000);
 });
 
+function dateDiff(d1, d2)
+{
+    var t2 = d2.getTime();
+    var t1 = d1.getTime();
+
+    return parseInt((t2-t1)/(24*3600*1000));
+}

@@ -47,7 +47,9 @@
                         <th>ID</th>
                         <th>ORDEN</th>
                         <th>CODIGO</th>
-                        <th>FECHA <BR>DE INGRESO</th>
+                        <th>INGRESO EN SISTEMA</th>
+                        <th>INGRESO EN ESTADO</th>
+                        <th>DIAS ESTATICO</th>
                         <th>ESTADO</th>
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
