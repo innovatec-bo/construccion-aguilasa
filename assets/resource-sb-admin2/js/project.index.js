@@ -230,8 +230,7 @@ $(document).ready(function() {
         }],
         "drawCallback" : function(object) {
             $('[data-toggle="tooltip"]').tooltip();
-            this.api().column(0).visible(false);
-            this.api().column(1).visible(false);
+            columnVisibility(this);
         },
         "buttons": buttons
     });
@@ -239,6 +238,23 @@ $(document).ready(function() {
     $('.dataTables_length select').addClass('form-control');
     oTable.fnSetFilteringDelay(1000);
 });
+
+function columnVisibility(_this)
+{
+    var method = window.location.pathname.split("/").pop();
+    _this.api().column(0).visible(false);
+    _this.api().column(1).visible(false);
+
+    switch (method)
+    {
+        case "stakesTeam":
+        case "digitization":
+        case "drawing":
+            _this.api().column(3).visible(false);
+            _this.api().column(6).visible(false);
+    }
+
+}
 
 function dateDiff(d1, d2)
 {
