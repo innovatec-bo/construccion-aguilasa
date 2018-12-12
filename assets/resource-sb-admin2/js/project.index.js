@@ -181,6 +181,26 @@ $(document).ready(function() {
         }, {
             "data" : "responsible"
         }, {
+            "data" : "address_pro",
+            "defaultContent" : "",
+            "searchable" : false,
+            "orderable" : false,
+            "render" : function(data, type, row, meta) {
+                var address = row.address_pro;
+                var response = "";
+                if(address.length > 11)
+                {
+                    address = address.substring(0,9)+"...";
+                    response = ' <a class="" href="javascript:void(0)" title="" data-original-title="'+row.address_pro+'"  data-toggle="tooltip" data-placement="top">'+address+'</a> ';
+                }
+                else
+                {
+                    response = address;
+                }
+
+                return response;
+            }
+        }, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,

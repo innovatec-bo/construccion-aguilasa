@@ -54,6 +54,7 @@
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
                         <th>RESPONSABLE</th>
+                        <th>UBICACION</th>
                         <th>ACCIONES</th>
                     </tr>
                     </thead>
