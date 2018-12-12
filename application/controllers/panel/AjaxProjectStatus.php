@@ -269,12 +269,15 @@ class AjaxProjectStatus extends PrivateController
         $statusDetail = $formData["statusDetail"];
         $responsibleList = Model_status_responsible::getUsersResponsible("schedule");
         $responsibleList = array_column($responsibleList,'id_sre');
+        $design = $formData["design"];
+        $design = str_replace(",","",$design);
         $project = Model_project::getById($projectId);
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
 
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+//        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList); the schedule step now register the design budget
+        $project->saveBudget($design, 0, "", "", 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
         $approvementEntryDate = $entryDate;
         $seconds = 1;
         $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));

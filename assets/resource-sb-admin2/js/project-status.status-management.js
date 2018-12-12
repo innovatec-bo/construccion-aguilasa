@@ -383,6 +383,7 @@ function saveSchedule(statusId,statusKeyword)
     var scheduleEntryDate = $("input[name=schedule-entry-date]").val();
     var projectStart = $("input[name=project-start]").val();
     var projectEnd = $("input[name=project-end]").val();
+    var design = $("input[name=design]").val();
     var statusDetail = $("textarea[name=schedule-detail]").val();
     var schedule = {
         projectId: projectId,
@@ -390,6 +391,7 @@ function saveSchedule(statusId,statusKeyword)
         projectStart: projectStart,
         projectEnd: projectEnd,
         statusId: statusId,
+        design: design,
         statusDetail: statusDetail,
         responsibleList:responsibleList
     };

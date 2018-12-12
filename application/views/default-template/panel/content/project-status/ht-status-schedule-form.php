@@ -24,10 +24,16 @@
                                             <div class="input-group date date-time-picker">
                                                 <input name="schedule-entry-date" readonly="" class="form-control" required="" data-parsley-group="schedule" data-parsley-errors-container="#error-schedule-entry-date">
                                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
                                             </div>
                                             <div id="error-schedule-entry-date"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Importe diseño</label>
+                                            <input required type="text" class="form-control input-masked" name="design" data-parsley-group="schedule"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                     </div>
                                 </div>
@@ -50,13 +56,14 @@
                                             <div class="input-group date date-time-picker">
                                                 <input name="project-end" readonly="" class="form-control" required="" data-parsley-group="schedule" data-parsley-errors-container="#error-project-end">
                                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
                                             </div>
                                             <div id="error-project-end"></div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label>Observaciones</label>
                                     <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
