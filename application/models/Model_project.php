@@ -287,6 +287,7 @@ class Model_project extends Model_project_base
         SELECT
             id_pro,
             status_name_pst,
+            TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
             code_pro,
             entry_date_pro,
             folder_date_pro,
@@ -416,6 +417,38 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
         LEFT JOIN wfl_project_status on status_pro = id_pst
         left join wfl_cre_fiscal on id_cfi = cre_fiscal_pro
+        LEFT JOIN (
+		    select * from (
+                select
+                    project_id_psl project_id, max(manual_entry_date_psl) max_date
+                    from (
+                        SELECT
+                            project_id_psl,
+                            manual_entry_date_psl
+                        FROM
+                            wfl_project_status_log
+                        LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                        where deleted_psl != 1 and deleted_slr != 1
+                        GROUP BY id_psl
+                    ) statusLogAndResponsible group by project_id_psl
+            ) as max_entry
+            LEFT JOIN (
+                        SELECT
+                            id_psl,
+                            project_id_psl,
+                            log_detail_psl,
+                            manual_entry_date_psl,
+                            GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                            GROUP_CONCAT(id_usr) responsible_ids
+                        FROM
+                            wfl_project_status_log
+                        LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                        LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                        LEFT JOIN sec_users on id_usr = user_id_sre
+                        where deleted_psl != 1  and deleted_slr != 1
+                        GROUP BY id_psl
+                        ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+        ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."

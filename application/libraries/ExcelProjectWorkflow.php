@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Jair Cussy
+ */
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ExcelProjectWorkflow
@@ -34,88 +37,17 @@ class ExcelProjectWorkflow
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder() );
         foreach ($projectWorkflow as $row)
         {
-//            $arrayCellContent = array(
-//                $row["code_pro"],
-//                $row["status_name_pst"],
-//                $row["entry_date_pro"],
-//                $row["folder_date_pro"],
-//                $row["cre_fiscal_pro"],
-//                $row["system_pro"],
-//                $row["management_by_pro"],
-//                $row["address_pro"],
-//                $row["points_pro"],
-//                $row["distance_pro"],
-//                $row["quality_level_pro"],
-//                $row["budgetary_position_pro"],
-//                $row["cre_design_completion_date_pro"],
-//                $row["cre_building_completion_date_pro"],
-//                $row["stake_date"],
-//                $row["stake_responsible"],
-//                $row["digitization_points_quantity"],
-//                $row["digitization_distance"],
-//                $row["rd_digitization_points_quantity"],
-//                $row["rd_digitization_distance"],
-//                $row["returned_date"],
-//                $row["digitization_date"],
-//                $row["drawing_date"],
-//                $row["schedule_date"],
-//                $row["schedule_start"],
-//                $row["schedule_end"],
-//                $row["already_sent_date"],
-//                $row["approved_date"],
-//                $row["canceled_date"],
-//                $row["rectify_design_date"],
-//                $row["rectify_illustration_date"],
-//                $row["design_budget"],
-//                $row["building_budget"],
-//                $row["transportation_budget"],
-//                $row["live_line_budget"],
-//                $row["right_of_way_budget"],
-//                $row["total_approved"],
-//                $row["record_building_materials_date"],
-//                $row["get_materials_date"],
-//                $row["deliver_materials_date"],
-//                $row["materials_reception_date"],
-//                $row["assign_to_date"],
-//                $row["builder_responsible"],
-//                $row["fiscal_responsible"],
-//                $row["start_date_assigned"],
-//                $row["end_date_assigned"],
-//                $row["estimated_time_assigned"],
-//                $row["in_progress_date"],
-//                $row["completed_date"],
-//                $row["paused_date"],
-//                $row["percentage_paused"],
-//                $row["stopped_date"],
-//                $row["percentage_stopped"],
-//                $row["as_built_date"],
-//                $row["as_built_points_quantity"],
-//                $row["as_built_distance"],
-//                $row["conciliation_reception_date"],
-//                $row["conciliation_shipment_date"],
-//                $row["cre_return_order_date"],
-//                $row["project_return_materials_date"],
-//                $row["payment_order_registered_date"],
-//                $row["payment_order_registered_order_number"],
-//                $row["payment_order_registered_design_budget"],
-//                $row["payment_order_registered_transportation_budget"],
-//                $row["payment_order_registered_live_line_budget"],
-//                $row["payment_order_registered_building_budget"],
-//                $row["payment_order_registered_right_of_way_budget"],
-//                $row["payment_order_registered_total_real_budget"],
-//                $row["payment_order_registered_invoice_number"],
-//                $row["payment_order_invoice_sent_date"],
-//                $row["payment_order_has_been_settled_date"]
-//            );
             $this->_drawRow($spreadsheet, ($i+1), $row);
             $i++;
         }
         $this->_currencyFormatNumber($spreadsheet, $i);
         $this->_dateFormat($spreadsheet, $i);
         $this->_adjustColumnToText($spreadsheet);
-        $columnList = array("C","AA","AB","BB","BC","BD","BF","BH","BI","BS");
-        $this->_highlightColumns($spreadsheet,$i,$columnList,'FFE699');
-        $columnList = array("O","P","Q","R","X","AF","AG","AH","AI","AJ","AK","AP","AQ","AR","AV","AW","BI","BJ","BK","BL","BM","BN","BO","BP","BR");
+        $columnList = array("entry_date_pro","already_sent_date","approved_date","as_built_date","as_built_points_quantity","as_built_distance","conciliation_shipment_date","project_return_materials_date","payment_order_has_been_settled_date");
+        $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
+        $this->_highlightColumns($spreadsheet, $i, $columnList,'FFE699');
+        $columnList = array("stake_date","stake_responsible","digitization_points_quantity","digitization_distance","schedule_date","design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved","assign_to_date","builder_responsible","fiscal_responsible","in_progress_date","completed_date","payment_order_registered_date","payment_order_registered_order_number","payment_order_registered_design_budget","payment_order_registered_transportation_budget","payment_order_registered_live_line_budget","payment_order_registered_building_budget","payment_order_registered_right_of_way_budget","payment_order_registered_total_real_budget","payment_order_invoice_sent_date");
+        $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
 
         // redirect output to client browser
@@ -140,138 +72,85 @@ class ExcelProjectWorkflow
                 'startColor' => ['argb' => 'DDEBF7']
             ]
         ];
+        $projectCode = $this->_getExcelColumnByDataKey("code_pro");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A1', "ETAPAS");
-        $spreadsheet->getActiveSheet()->getStyle('A1')->applyFromArray($titleStyleArray);
+            ->setCellValue($projectCode.'1', "ETAPAS");
+        $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
+        $statusName = $this->_getExcelColumnByDataKey("status_name_pst");
+        $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('B1', "INGRESO DE PROYECTOS");
-        $spreadsheet->getActiveSheet()->getStyle('B1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('B1:N1');
+            ->setCellValue($statusName.'1', "INGRESO DE PROYECTOS");
+        $spreadsheet->getActiveSheet()->getStyle($statusName.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($statusName.'1:'.$buildingCompletionDate.'1');
 
+        $stakeDate = $this->_getExcelColumnByDataKey("stake_date");
+        $alreadySentDate = $this->_getExcelColumnByDataKey("already_sent_date");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('O1', "DISEÑO");
-        $spreadsheet->getActiveSheet()->getStyle('O1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('O1:AA1');
+            ->setCellValue($stakeDate.'1', "DISEÑO");
+        $spreadsheet->getActiveSheet()->getStyle($stakeDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($stakeDate.'1:'.$alreadySentDate.'1');
 
+        $approvedDate = $this->_getExcelColumnByDataKey("approved_date");
+        $totalApproved = $this->_getExcelColumnByDataKey("total_approved");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('AB1', "APROBACION/CANCELACION");
-        $spreadsheet->getActiveSheet()->getStyle('AB1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('AB1:AK1');
+            ->setCellValue($approvedDate.'1', "APROBACION/CANCELACION");
+        $spreadsheet->getActiveSheet()->getStyle($approvedDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($approvedDate.'1:'.$totalApproved.'1');
 
+        $recordBuildingMaterialsDate = $this->_getExcelColumnByDataKey("record_building_materials_date");
+        $materialsReceptionDate = $this->_getExcelColumnByDataKey("materials_reception_date");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('AL1', "ALMACEN");
-        $spreadsheet->getActiveSheet()->getStyle('AL1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('AL1:AO1');
+            ->setCellValue($recordBuildingMaterialsDate.'1', "ALMACEN");
+        $spreadsheet->getActiveSheet()->getStyle($recordBuildingMaterialsDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($recordBuildingMaterialsDate.'1:'.$materialsReceptionDate.'1');
 
+        $assignToDate = $this->_getExcelColumnByDataKey("assign_to_date");
+        $estimatedTimeAssigned = $this->_getExcelColumnByDataKey("estimated_time_assigned");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('AP1', "ASIGNACION");
-        $spreadsheet->getActiveSheet()->getStyle('AP1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('AP1:AU1');
+            ->setCellValue($assignToDate.'1', "ASIGNACION");
+        $spreadsheet->getActiveSheet()->getStyle($assignToDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($assignToDate.'1:'.$estimatedTimeAssigned.'1');
 
+        $inProgressDate = $this->_getExcelColumnByDataKey("in_progress_date");
+        $asBuiltDistance = $this->_getExcelColumnByDataKey("as_built_distance");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('AV1', "CONSTRUCCION");
-        $spreadsheet->getActiveSheet()->getStyle('AV1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('AV1:BD1');
+            ->setCellValue($inProgressDate.'1', "CONSTRUCCION");
+        $spreadsheet->getActiveSheet()->getStyle($inProgressDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($inProgressDate.'1:'.$asBuiltDistance.'1');
 
+        $conciliationReceptionDate = $this->_getExcelColumnByDataKey("conciliation_reception_date");
+        $projectReturnMaterialsDate = $this->_getExcelColumnByDataKey("project_return_materials_date");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('BE1', "ADMINISTRACION");
-        $spreadsheet->getActiveSheet()->getStyle('BE1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('BE1:BH1');
+            ->setCellValue($conciliationReceptionDate.'1', "ADMINISTRACION");
+        $spreadsheet->getActiveSheet()->getStyle($conciliationReceptionDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($conciliationReceptionDate.'1:'.$projectReturnMaterialsDate.'1');
 
+        $paymentOrderRegisteredDate = $this->_getExcelColumnByDataKey("payment_order_registered_date");
+        $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('BI1', "GESTION DE PAGO");
-        $spreadsheet->getActiveSheet()->getStyle('BI1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('BI1:BS1');
+            ->setCellValue($paymentOrderRegisteredDate.'1', "GESTION DE PAGO");
+        $spreadsheet->getActiveSheet()->getStyle($paymentOrderRegisteredDate.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($paymentOrderRegisteredDate.'1:'.$paymentOrderHasBeenSettledDate.'1');
 
-        $spreadsheet->getActiveSheet()->getStyle('A1:BS1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle($projectCode.'1:'.$paymentOrderHasBeenSettledDate.'1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
     }
 
     private function _headerColumn($spreadsheet)
     {
-//        $arrayCellContent = array(
-//        "CODIGO",
-//        "ESTADO",
-//        "FECHA INGRESO",
-//        "FECHA CARPETA",
-//        "FISCAL DE CRE",
-//        "SISTEMA",
-//        "ADMINISTRADO POR",
-//        "DIRECCION",
-//        "PUNTOS",
-//        "DISTANCIA",
-//        "NIVEL DE CALIDAD",
-//        "POSICION PRESUPUESTARIA",
-//        "FECHA COMPLETADO DE DISEÑO",
-//        "FECHA COMPLETADO DE CONSTRUCCION",
-//        "FECHA DE ESTAQUEADO",
-//        "RESPONSABLES DE ESTAQUEADO",
-//        "PUNTOS DIGITALIZADOS",
-//        "DISTANCIA DIGITALIZADA",
-//        "PUNTOS RECTIFICADOS EN DIGITALIZACION",
-//        "DISTANCIA RECTIFICADA EN DIGITALIZACION",
-//        "NO FACTIBLE - DEVUELTO A CRE",
-//        "FECHA DIGITALIZACION",
-//        "FECHA DIBUJO",
-//        "FECHA DEFINICION DE CRONOGRAMA",
-//        "FECHA CRONOGRAMA INICIO",
-//        "FECHA CRONOGRAMA FIN",
-//        "FECHA PROYECTO ENVIADO A CRE",
-//        "FECHA APROBACION",
-//        "FECHA CANCELADO",
-//        "FECHA RECTIFICACION DISEÑO",
-//        "FECHA RECTIFICACION ILUSTRACION",
-//        "IMPORTE DISEÑO",
-//        "IMPORTE CONSTRUCCION",
-//        "IMPORTE TRANSPORTE",
-//        "LINEA VIVA",
-//        "DERECHO DE VIA",
-//        "TOTAL IMPORTE APROBADO",
-//        "FECHA GRABADO DE MATERIALES",
-//        "FECHA RETIRO DE MATERIALES",
-//        "FECHA MATERIALES A CONSTRUCCION",
-//        "FECHA RECEPCION DE MATERIALES DE CONSTR.",
-//        "FECHA ASIGNACION DE RESPONSABLES CONSTR.",
-//        "RESPONSABLE CONSTRUC.",
-//        "RESPONSABLE FISCAL",
-//        "INICIO DE OBRA EN ASIGNACION",
-//        "FIN DE OBRA EN ASIGNACION",
-//        "DIAS ESTIMADOS EN ASIGNACION",
-//        "FECHA INICIO DE CONSTRUC.",
-//        "CONSTRUCCION COMPLETADA",
-//        "FECHA DE PAUSA DE CONSTRUC",
-//        "% DE PAUSA",
-//        "FECHA DE CONSTRUCCION DETENIDA",
-//        "% DE CONTRUC. DETENIDA",
-//        "FECHA DE ENVIO DE AS BUILT",
-//        "AS BUILT - PUNTOS",
-//        "AS BUILT - DISTANCE",
-//        "FECHA RECEPCION DE CONCILIACION",
-//        "FECHA ENVIO DE CONCILIACION",
-//        "ORDEN DE DEVOLUCION DE MATERIALES",
-//        "CONFIRMACION DE DEVOLUCION DE MATERIALES",
-//        "FECHA DE REGSITRO DE ORDEN DE PAGO",
-//        "NRO ORDEN DE PAGO",
-//        "IMPORTE REAL - DISEÑO",
-//        "IMPORTE REAL - TRANSPORTE",
-//        "IMPORTE REAL - LINEA VIVA",
-//        "IMPORTE REAL - CONSTRUCCION",
-//        "IMPORTE REAL - DERECHO DE VIA",
-//        "IMPORTE REAL - TOTAL",
-//        "NRO FACTURA",
-//        "FECHA DE ENVIO DE FACTURA",
-//        "FECHA DE LIQUIDACION"
-//        );
         $this->_drawRow($spreadsheet,  2);
-        $spreadsheet->getActiveSheet()->getStyle('A2:BQ2')->getAlignment()->setWrapText(true);
+        $projectCode = $this->_getExcelColumnByDataKey("code_pro");
+        $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
+        $spreadsheet->getActiveSheet()->getStyle($projectCode.'2:'.$paymentOrderHasBeenSettledDate.'2')->getAlignment()->setWrapText(true);
     }
 
     private function _dateFormat($spreadsheet, $totalRows)
     {
-        $columnList = array("C", "D", "M", "N", "O", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AL","AM",
-                            "AN", "AO", "AP", "AS", "AT", "AV", "AW", "AX", "AZ", "BB", "BE", "BF", "BG", "BH", "BI", "BR", "BS");
+        $columnList = array("entry_date_pro", "folder_date_pro", "cre_design_completion_date_pro", "cre_building_completion_date_pro", "stake_date", "returned_date", "digitization_date", "drawing_date", "schedule_date", "schedule_start", "schedule_end", "already_sent_date", "approved_date", "canceled_date", "rectify_design_date", "rectify_illustration_date", "record_building_materials_date","get_materials_date",
+                            "deliver_materials_date", "materials_reception_date", "assign_to_date", "start_date_assigned", "end_date_assigned", "in_progress_date", "completed_date", "paused_date", "stopped_date", "as_built_date", "conciliation_reception_date", "conciliation_shipment_date", "cre_return_order_date", "project_return_materials_date", "payment_order_registered_date", "payment_order_invoice_sent_date", "payment_order_has_been_settled_date");
+        $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         foreach($columnList as $key => $column)
         {
             $spreadsheet->getActiveSheet()->getStyle($column.'3:'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
@@ -280,7 +159,8 @@ class ExcelProjectWorkflow
 
     private function _adjustColumnToText($spreadsheet)
     {
-        $columnsToAdjust = array("B","E","F","G");
+        $columnsToAdjust = array("status_name_pst","cre_fiscal_pro","system_pro","management_by_pro");
+        $columnsToAdjust = $this->_getExcelColumnListByArrayDataKey($columnsToAdjust);
         foreach ($columnsToAdjust as $key => $column)
         {
             $spreadsheet->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
@@ -304,8 +184,8 @@ class ExcelProjectWorkflow
 
     private function _currencyFormatNumber($spreadsheet, $totalRows)
     {
-        $columnList = array("AF","AG","AH","AI","AJ","AK");
-
+        $columnList = array("design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved");
+        $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         foreach($columnList as $key => $column)
         {
             $spreadsheet->getActiveSheet()->getStyle($column.'3:'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -323,6 +203,7 @@ class ExcelProjectWorkflow
         $this->_columnDefinition = array(
             "code_pro" => "CODIGO",
             "status_name_pst" => "ESTADO",
+            "static_days" => "DIAS ESTATICO",
             "entry_date_pro" => "FECHA INGRESO",
             "folder_date_pro" => "FECHA CARPETA",
             "cre_fiscal_pro" => "FISCAL DE CRE",
@@ -425,4 +306,60 @@ class ExcelProjectWorkflow
         }
     }
 
+    private function _getExcelColumnListByArrayDataKey($arrayDataKey = array())
+    {
+        $arrayRounds = array("","A","B");
+        $arrayAlphabet = range("A","Z");
+        $maxColumn = count($this->_columnDefinition);
+        $arrayKeys = array_keys($this->_columnDefinition);
+        $response = array();
+        $i = 0;
+        foreach ($arrayRounds as $round)
+        {
+            foreach ($arrayAlphabet as $char)
+            {
+                if(array_search($arrayKeys[$i], $arrayDataKey) !== FALSE)
+                {
+                    $excelColumn = $round.$char;
+                    $response[] = $excelColumn;
+                }
+                $i++;
+                if($maxColumn == $i)
+                {
+                    break;
+                }
+            }
+        }
+        return $response;
+    }
+
+    private function _getExcelColumnByDataKey($dataKey = "")
+    {
+        $arrayRounds = array("","A","B");
+        $arrayAlphabet = range("A","Z");
+        $maxColumn = count($this->_columnDefinition);
+        $arrayKeys = array_keys($this->_columnDefinition);
+        $response = "";
+        $i = 0;
+        foreach ($arrayRounds as $round)
+        {
+            foreach ($arrayAlphabet as $char)
+            {
+                if($arrayKeys[$i] == $dataKey)
+                {
+                    $excelColumn = $round.$char;
+                    $response = $excelColumn;
+                    break;
+                }
+                $i++;
+                if($maxColumn == $i)
+                {
+                    break;
+                }
+            }
+            if($response != "")
+                break;
+        }
+        return $response;
+    }
 }
