@@ -9,6 +9,7 @@ $(document).ready(function() {
     getProjectTotalsTable();
     getProjectNetBuilding();
     getCurrentStatusSummary();
+    getExecutiveSummary();
     startSelect2TrackingList();
     var date = new Date();
     $('.date-time').datetimepicker({
@@ -198,6 +199,31 @@ function getCurrentStatusSummary(system, management)
                 var html = template(data);
             }
             $content.html(html);
+        }
+    });
+}
+
+function getExecutiveSummary(system, management)
+{
+    var system = typeof system !== 'undefined' ? system : "";
+    var management = typeof management !== 'undefined' ? management : "";
+    var $content = $("#current-status-summary-report");
+    // blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
+        dataType  :"json",
+        type : "POST",
+        data:{system:system, management:management},
+        success:function(response){
+            console.log(response);
+            // if(response.success === 1)
+            // {
+            //     var htmlSource   = $("#ht-report-current-status-summary").html();
+            //     var template = Handlebars.compile(htmlSource);
+            //     var data = {statusSummary:response.data};
+            //     var html = template(data);
+            // }
+            // $content.html(html);
         }
     });
 }

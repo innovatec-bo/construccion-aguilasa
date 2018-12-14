@@ -217,4 +217,74 @@ class AjaxDashboard extends PrivateController
         $response["data"]["totalProjects"] = $totalProjects;
         echo json_encode($response);exit;
     }
+
+    public function getExecutiveSummary()
+    {
+        $formData = $this->input->post();
+        $system = $formData["system"];
+        $management = $formData["management"];
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
+        $reportSections = array(
+            "readyToDesign" => array("title" => "Listo para diseño", "keywords" => array("design")),
+            "design" => array("title" => "Diseño", "keywords" => array("stakes", "digitization", "drawing")),
+            "alreadySent" => array("title" => "Camino", "keywords" => array("schedule", "ready_to_send", "already_sent")),
+            "inProgress" => array("title" => "Construccion", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped")),
+            "closure" => array("title" =>"Cierre", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order")),
+            "closed" => array("title" => "Cerrado", "keywords" => array("project_return_materials"))
+        );
+        $groupList = array();
+        $totalProjects = 0;
+        foreach ($reportSections as $groupKey => $data)
+        {
+            $groupKeywords =  $data["keywords"];
+            for($i = 0; $i < count($groupKeywords); $i++)
+            {
+                for($j = 0; $j < count($currentStatusSummary); $j++)
+                {
+                    if($groupKeywords[$i] == $currentStatusSummary[$j]["keyword"])
+                    {
+                        $groupList[] = $currentStatusSummary[$j];
+                        $totalProjects += $currentStatusSummary[$j]["total_projects"];
+                    }
+                }
+            }
+            $reportSections[$groupKey]["list"] = $groupList;
+            $reportSections[$groupKey]["total"] = $totalProjects;
+            $groupList = array();
+            $totalProjects = 0;
+        }
+        echo json_encode(array_values($reportSections));exit;
+        $arrayData = array();
+        $totalApprovedBudget = 0;
+        $totalRealBudget = 0;
+        $totalProjects = 0;
+        $arrayResponse = array();
+        $singleList = array();
+        foreach ($currentStatusSummary as $summary)
+        {
+            $singleList =
+
+            $totalApprovedBudget += $summary["keyword"] !="canceled"?$summary["approved_budgets"]:"0";
+            $totalRealBudget += $summary["keyword"] !="canceled"?$summary["real_budgets"]:"0";
+            $totalProjects += $summary["total_projects"];
+            $arrayData[] = array(
+                "keyword" => $summary["keyword"],
+                "statusName" => $summary["status_name"],
+                "totalProjects" => $summary["total_projects"],
+                "approvedBudgets" => number_format($summary["approved_budgets"],2),
+                "realBudgets" => number_format($summary["real_budgets"],2)
+            );
+
+            if($summary["keyword"] = "design")
+            {
+
+            }
+        }
+        $response["success"] = 1;
+        $response["data"]["list"] = $arrayData;
+        $response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
+        $response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
+        $response["data"]["totalProjects"] = $totalProjects;
+        echo json_encode($response);exit;
+    }
 }
