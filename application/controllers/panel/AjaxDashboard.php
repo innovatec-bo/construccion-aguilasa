@@ -225,6 +225,7 @@ class AjaxDashboard extends PrivateController
         $management = $formData["management"];
         $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
         $reportSections = array(
+            "recentlyCreated" => array("title" => "Solo registro", "keywords" => array("project_has_been_created")),
             "readyToDesign" => array("title" => "Listo para diseño", "keywords" => array("design")),
             "design" => array("title" => "Diseño", "keywords" => array("stakes", "digitization", "drawing")),
             "alreadySent" => array("title" => "Camino", "keywords" => array("schedule", "ready_to_send", "already_sent")),
@@ -234,6 +235,10 @@ class AjaxDashboard extends PrivateController
         );
         $groupList = array();
         $totalProjects = 0;
+        $totalApprovedBudget = 0;
+        $totalApprovedBudgetBySection = 0;
+        $totalRealBudget = 0;
+        $totalProjectsBySection = 0;
         foreach ($reportSections as $groupKey => $data)
         {
             $groupKeywords =  $data["keywords"];
@@ -244,15 +249,35 @@ class AjaxDashboard extends PrivateController
                     if($groupKeywords[$i] == $currentStatusSummary[$j]["keyword"])
                     {
                         $groupList[] = $currentStatusSummary[$j];
+                        $totalProjectsBySection += $currentStatusSummary[$j]["total_projects"];
                         $totalProjects += $currentStatusSummary[$j]["total_projects"];
+                        $totalApprovedBudgetBySection += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
+                        $totalApprovedBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
+                        $totalRealBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["real_budgets"]:"0";
                     }
                 }
             }
+
             $reportSections[$groupKey]["list"] = $groupList;
-            $reportSections[$groupKey]["total"] = $totalProjects;
+            $reportSections[$groupKey]["totalProjectsBySection"] = $totalProjectsBySection;
+            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $totalApprovedBudgetBySection;
+            $reportSections[$groupKey]["totalRealBudget"] = $totalRealBudget;
             $groupList = array();
-            $totalProjects = 0;
+            $totalProjectsBySection = 0;
+            $totalApprovedBudgetBySection = 0;
+            $totalRealBudget = 0;
         }
+
+        foreach ($reportSections as $groupKey => $data)
+        {
+            $totalPercentageProjectsBySection = ($reportSections[$groupKey]["totalProjectsBySection"]*100) / $totalProjects;
+            $reportSections[$groupKey]["totalPercentageProjectsBySection"] = number_format($totalPercentageProjectsBySection,2);
+
+            $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
+            $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
+            $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
+        }
+
         echo json_encode(array_values($reportSections));exit;
         $arrayData = array();
         $totalApprovedBudget = 0;

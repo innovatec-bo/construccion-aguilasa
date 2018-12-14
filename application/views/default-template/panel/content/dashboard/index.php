@@ -292,4 +292,5 @@
 $this->load->view('default-template/panel/content/dashboard/ht-report-project-totals-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-net-building-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
+$this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
 ?>
