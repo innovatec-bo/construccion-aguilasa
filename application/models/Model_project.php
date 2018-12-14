@@ -288,6 +288,7 @@ class Model_project extends Model_project_base
             id_pro,
             status_name_pst,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
+            status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
             code_pro,
             entry_date_pro,
             folder_date_pro,
