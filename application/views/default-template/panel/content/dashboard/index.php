@@ -89,27 +89,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default" id="panel-executive-summary-report">
-                <div class="panel-heading">
-                    <i class="fa fa-table fa-fw"></i> Executive summary report
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12" id="executive-summary-report">
 
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.col-lg-4 (nested) -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.panel-body -->
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default" id="panel-workflow-report">
@@ -292,5 +272,5 @@
 $this->load->view('default-template/panel/content/dashboard/ht-report-project-totals-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-net-building-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
-$this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
+
 ?>
