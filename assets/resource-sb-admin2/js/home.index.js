@@ -3,14 +3,14 @@
  */
 
 $(document).ready(function() {
-    // launchPieChart();
+    launchPieChart();
 });
 
 function launchPieChart()
 {
     // Themes begin
-    am4core.useTheme(am4themes_animated);
-// Themes end
+    //am4core.useTheme(am4themes_animated);
+    // Themes end
 
     var chart = am4core.create("chartdiv", am4charts.PieChart3D);
     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
@@ -19,34 +19,34 @@ function launchPieChart()
 
     chart.data = [
         {
-            country: "Listo para diseño",
-            litres: 501.9
+            title: "Listo para diseño",
+            quantity: 501.9
         },
         {
-            country: "Diseño",
-            litres: 301.9
+            title: "Diseño",
+            quantity: 301.9
         },
         {
-            country: "Aprobacion",
-            litres: 201.1
+            title: "Aprobacion",
+            quantity: 201.1
         },
         {
-            country: "Construccion",
-            litres: 165.8
+            title: "Construccion",
+            quantity: 165.8
         },
         {
-            country: "Cierre",
-            litres: 139.9
+            title: "Cierre",
+            quantity: 139.9
         },
         {
-            country: "Cerrado",
-            litres: 128.3
+            title: "Cerrado",
+            quantity: 128.3
         }
     ];
 
     var series = chart.series.push(new am4charts.PieSeries3D());
-    series.dataFields.value = "litres";
-    series.dataFields.category = "country";
+        series.dataFields.value = "quantity";
+    series.dataFields.category = "title";
 }
 
 function blockArea(content)
