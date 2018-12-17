@@ -287,6 +287,7 @@ class Model_project extends Model_project_base
         SELECT
             id_pro,
             status_name_pst,
+            contract_number_con,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
             status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
             code_pro,
@@ -418,6 +419,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
         LEFT JOIN wfl_project_status on status_pro = id_pst
         left join wfl_cre_fiscal on id_cfi = cre_fiscal_pro
+        left join wfl_contracts on contract_id_pro = id_con
         LEFT JOIN (
 		    select * from (
                 select

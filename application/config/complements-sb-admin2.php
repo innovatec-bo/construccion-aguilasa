@@ -77,3 +77,7 @@ $config['complements']['select2']['js'] = assets_url('resource-sb-admin2/plugins
 
 $config['complements']['sweet-alert2']['css'] = assets_url('resource-sb-admin2/plugins/sweetalert2.min.css');
 $config['complements']['sweet-alert2']['js'] = assets_url('resource-sb-admin2/plugins/sweetalert2.min.js');
+
+$config['complements']['core']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/core.js');
+$config['complements']['charts']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/charts.js');
+$config['complements']['themes.animated']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/animated.js');

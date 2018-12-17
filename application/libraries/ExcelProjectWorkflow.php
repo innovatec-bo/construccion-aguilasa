@@ -78,11 +78,12 @@ class ExcelProjectWorkflow
         $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
         $statusName = $this->_getExcelColumnByDataKey("status_name_pst");
+        $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
         $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($statusName.'1', "INGRESO DE PROYECTOS");
-        $spreadsheet->getActiveSheet()->getStyle($statusName.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($statusName.'1:'.$buildingCompletionDate.'1');
+            ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
+        $spreadsheet->getActiveSheet()->getStyle($contractNumber.'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells($contractNumber.'1:'.$buildingCompletionDate.'1');
 
         $stakeDate = $this->_getExcelColumnByDataKey("stake_date");
         $alreadySentDate = $this->_getExcelColumnByDataKey("already_sent_date");
@@ -202,6 +203,7 @@ class ExcelProjectWorkflow
     {
         $this->_columnDefinition = array(
             "code_pro" => "CODIGO",
+            "contract_number_con" => "CONTRATO",
             "status_name_pst" => "ESTADO",
             "status_log_manual_entry_date" => "INGRESO EN STATUS",
             "static_days" => "DIAS ESTATICO",

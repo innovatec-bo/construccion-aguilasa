@@ -20,7 +20,9 @@
     </div>
     <!-- /.row -->
     <div class="row">
+        <div class="col-md-12" id="chartdiv" style="height: 500px">
 
+        </div>
     </div>
 </div>
 <!-- /.container-fluid -->

@@ -16,7 +16,11 @@ class Home extends PrivateController
     public function index()
     {
         $this->_validateFeature("home");
+        $this->complementHandler->addViewComplement("core");
+        $this->complementHandler->addViewComplement("charts");
+        $this->complementHandler->addViewComplement("themes.animated");
         $this->complementHandler->addProjectJs('home.index', TRUE);
+
         $this->_loadPanelView('home/index');
     }
 
