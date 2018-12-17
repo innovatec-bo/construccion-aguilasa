@@ -40,6 +40,11 @@ div.dt-buttons {
 {
     background-color: #FFFF00!important;
 }
+#current-status-summary-report .current-status-total
+{
+    background-color: #FF0000!important;
+    font-weight: 600;
+}
 /********************** end - status summary  */
 /********************** begin - net building report  */
 .countId

@@ -28,7 +28,7 @@
             {{/each}}
             </tbody>
             <tfoot>
-                <tr>
+                <tr class="current-status-total">
                     <th>TOTAL</th>
                     <td class="text-center">{{statusSummary.totalProjects}}</td>
                     <td class="text-center">{{statusSummary.totalApprovedBudgets}}</td>
