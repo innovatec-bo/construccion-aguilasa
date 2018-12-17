@@ -135,7 +135,7 @@ class ExcelExecutiveSummary
 
     private function _getData()
     {
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary();
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($this->_system, $this->_managementBy);
         $reportSections = array(
             "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
             "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design")),

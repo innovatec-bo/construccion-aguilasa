@@ -38,6 +38,7 @@ $(document).ready(function() {
         var projectSystem = $('select[name=project-system] option:selected').val();
         var managementBy = $('select[name=management-by] option:selected').val();
         getCurrentStatusSummary(projectSystem, managementBy);
+        getExecutiveSummary(projectSystem, managementBy);
     });
 
     $(document).on("click",".find-th",function(e){

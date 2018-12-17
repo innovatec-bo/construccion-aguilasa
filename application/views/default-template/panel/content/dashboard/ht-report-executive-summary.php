@@ -33,9 +33,9 @@
                 <tr class="executive-summary-total">
                     <td>TOTAL</td>
                     <td class="text-center">{{executiveSummary.totalProjects}}</td>
-                    <td class="text-center">100</td>
+                    <td class="text-center">{{executiveSummary.totalPercentageProjects}}</td>
                     <td class="text-center">{{executiveSummary.totalApprovedBudget}}</td>
-                    <td class="text-center">100</td>
+                    <td class="text-center">{{executiveSummary.totalPercentageApprovedBudget}}</td>
                 </tr>
             </tfoot>
         </table>

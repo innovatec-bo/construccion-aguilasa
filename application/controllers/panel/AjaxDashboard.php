@@ -268,18 +268,25 @@ class AjaxDashboard extends PrivateController
             $totalRealBudget = 0;
         }
 
+        $totalPercentageProjects = 0;
+        $totalPercentageApprovedBudget = 0;
         foreach ($reportSections as $groupKey => $data)
         {
-            $totalPercentageProjectsBySection = ($reportSections[$groupKey]["totalProjectsBySection"]*100) / $totalProjects;
+            $totalProjectsBySection = $reportSections[$groupKey]["totalProjectsBySection"];
+            $totalPercentageProjectsBySection = $totalProjectsBySection <= 0?0:($totalProjectsBySection*100) / $totalProjects;
             $reportSections[$groupKey]["totalPercentageProjectsBySection"] = number_format($totalPercentageProjectsBySection,2);
+            $totalPercentageProjects += $totalPercentageProjectsBySection;
 
             $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
+            $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
         }
         $response["success"] = 1;
         $response["totalProjects"] = $totalProjects;
+        $response["totalPercentageProjects"] = $totalPercentageProjects;
         $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
+        $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
         $response["list"] = array_values($reportSections);
 
         echo json_encode($response);exit;
