@@ -11,7 +11,7 @@
         <table class="table table-bordered table-hover table-striped table-minimum-padding">
             <thead>
             <tr>
-                <th>CANCHA</th>
+                <th>ETAPA</th>
                 <th>TOTAL</th>
                 <th>%</th>
                 <th>MONTO APROBADO</th>
