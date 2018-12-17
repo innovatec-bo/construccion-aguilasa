@@ -40,10 +40,6 @@ div.dt-buttons {
 {
     background-color: #FFFF00!important;
 }
-.canceled, .returned
-{
-    background-color: #FF0000!important;
-}
 /********************** end - status summary  */
 /********************** begin - net building report  */
 .countId
@@ -68,3 +64,25 @@ div.dt-buttons {
     background-color: #79DA4C!important;
 }
 /********************** end - net building report  */
+/********************** begin - executive summary report  */
+#executive-summary-report .design
+{
+    background-color: #8EA9DB!important;
+}
+#executive-summary-report .alreadySent
+{
+    background-color: #FFFF00!important;
+}
+#executive-summary-report .inProgress
+{
+    background-color: #92D050!important;
+}
+#executive-summary-report .closure
+{
+    background-color: #FFFF00!important;
+}
+#executive-summary-report .closed
+{
+    background-color: #00B0F0!important;
+}
+/********************** end - executive summary report  */

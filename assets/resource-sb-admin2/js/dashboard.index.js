@@ -203,31 +203,6 @@ function getCurrentStatusSummary(system, management)
     });
 }
 
-function getExecutiveSummary(system, management)
-{
-    var system = typeof system !== 'undefined' ? system : "";
-    var management = typeof management !== 'undefined' ? management : "";
-    var $content = $("#executive-summary-report");
-    blockArea($content);
-    $.ajax({
-        url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
-        dataType  :"json",
-        type : "POST",
-        data:{system:system, management:management},
-        success:function(response){
-            // if(response.success === 1)
-            // {
-                var htmlSource   = $("#ht-report-executive-summary").html();
-                var template = Handlebars.compile(htmlSource);
-                var data = {executiveSummary:response};
-                var html = template(data);
-            // }
-            $content.html(html);
-            console.log(response);
-        }
-    });
-}
-
 function saveTrackingList()
 {
     var $formData = $("form[name=workflow-report]");
@@ -280,6 +255,30 @@ function startSelect2TrackingList(selector)
             }
         },
         width : "100%"
+    });
+}
+function getExecutiveSummary(system, management)
+{
+    var system = typeof system !== 'undefined' ? system : "";
+    var management = typeof management !== 'undefined' ? management : "";
+    var $content = $("#executive-summary-report");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
+        dataType  :"json",
+        type : "POST",
+        data:{system:system, management:management},
+        success:function(response){
+            // if(response.success === 1)
+            // {
+            var htmlSource   = $("#ht-report-executive-summary").html();
+            var template = Handlebars.compile(htmlSource);
+            var data = {executiveSummary:response};
+            var html = template(data);
+            // }
+            $content.html(html);
+            console.log(response);
+        }
     });
 }
 function blockArea(content)

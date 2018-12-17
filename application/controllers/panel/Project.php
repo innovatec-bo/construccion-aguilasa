@@ -443,4 +443,11 @@ class Project extends PrivateController
         $excel->setAdditionalParameters($additionalParameters);
         $excel->getReport();
     }
+
+    public function getExecutiveSummaryReport()
+    {
+        $formData = $this->input->post();
+        $excel = new ExcelExecutiveSummary($this->sessionUser);
+        $excel->getReport();
+    }
 }

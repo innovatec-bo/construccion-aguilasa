@@ -225,13 +225,13 @@ class AjaxDashboard extends PrivateController
         $management = $formData["management"];
         $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
         $reportSections = array(
-            "recentlyCreated" => array("title" => "Solo registro", "keywords" => array("project_has_been_created")),
-            "readyToDesign" => array("title" => "Listo para diseño", "keywords" => array("design")),
-            "design" => array("title" => "Diseño", "keywords" => array("stakes", "digitization", "drawing")),
-            "alreadySent" => array("title" => "Camino", "keywords" => array("schedule", "ready_to_send", "already_sent")),
-            "inProgress" => array("title" => "Construccion", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped")),
-            "closure" => array("title" =>"Cierre", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order")),
-            "closed" => array("title" => "Cerrado", "keywords" => array("project_return_materials"))
+            "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
+            "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design")),
+            "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing")),
+            "alreadySent" => array("title" => "Camino", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent")),
+            "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped")),
+            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order")),
+            "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials"))
         );
         $groupList = array();
         $totalProjects = 0;

@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             {{#each executiveSummary}}
-                <tr class="{{keyword}}">
+                <tr class="{{section}}">
                     <th>{{title}}</th>
                     <td class="text-center">{{totalProjectsBySection}}</td>
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>

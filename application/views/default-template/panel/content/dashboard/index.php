@@ -147,7 +147,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="panel panel-default" id="panel-current-status-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
@@ -176,7 +176,7 @@
                         </select>
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>
+                                <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>
                             </div>
                         </div>
                     </form>
@@ -186,6 +186,32 @@
                     <div class="row">
                         <div class="col-lg-12" id="current-status-summary-report">
                             Here goes the current status report table
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.col-lg-4 (nested) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" id="panel-executive-summary-report">
+                <div class="panel-heading">
+                    <form name="report" action="<?=base_url("panel/Project/getExecutiveSummaryReport")?>" method="post">
+                        <i class="fa fa-table fa-fw"></i> Executive summary report
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-default btn-xs hidden"><i class="fa fa-download"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12" id="executive-summary-report">
+
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.col-lg-4 (nested) -->
@@ -272,5 +298,5 @@
 $this->load->view('default-template/panel/content/dashboard/ht-report-project-totals-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-net-building-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
-
+$this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
 ?>
