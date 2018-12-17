@@ -85,4 +85,9 @@ div.dt-buttons {
 {
     background-color: #00B0F0!important;
 }
+#executive-summary-report .executive-summary-total
+{
+    background-color: #FF0000!important;
+    font-weight: 600;
+}
 /********************** end - executive summary report  */

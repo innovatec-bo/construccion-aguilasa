@@ -19,16 +19,25 @@
             </tr>
             </thead>
             <tbody>
-            {{#each executiveSummary}}
+            {{#each executiveSummary.list}}
                 <tr class="{{section}}">
                     <th>{{title}}</th>
                     <td class="text-center">{{totalProjectsBySection}}</td>
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>
-                    <td class="text-center">{{totalApprovedBudgetBySection}}</td>
+                    <td class="text-center">{{numberFormat totalApprovedBudgetBySection decimalLength="2"}}</td>
                     <td class="text-center">{{totalPercentageApprovedBudgetBySection}}</td>
                 </tr>
             {{/each}}
             </tbody>
+            <tfoot>
+                <tr class="executive-summary-total">
+                    <td>TOTAL</td>
+                    <td class="text-center">{{executiveSummary.totalProjects}}</td>
+                    <td class="text-center">100</td>
+                    <td class="text-center">{{executiveSummary.totalApprovedBudget}}</td>
+                    <td class="text-center">100</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </script>

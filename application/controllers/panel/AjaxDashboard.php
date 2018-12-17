@@ -277,39 +277,11 @@ class AjaxDashboard extends PrivateController
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
         }
-
-        echo json_encode(array_values($reportSections));exit;
-        $arrayData = array();
-        $totalApprovedBudget = 0;
-        $totalRealBudget = 0;
-        $totalProjects = 0;
-        $arrayResponse = array();
-        $singleList = array();
-        foreach ($currentStatusSummary as $summary)
-        {
-            $singleList =
-
-            $totalApprovedBudget += $summary["keyword"] !="canceled"?$summary["approved_budgets"]:"0";
-            $totalRealBudget += $summary["keyword"] !="canceled"?$summary["real_budgets"]:"0";
-            $totalProjects += $summary["total_projects"];
-            $arrayData[] = array(
-                "keyword" => $summary["keyword"],
-                "statusName" => $summary["status_name"],
-                "totalProjects" => $summary["total_projects"],
-                "approvedBudgets" => number_format($summary["approved_budgets"],2),
-                "realBudgets" => number_format($summary["real_budgets"],2)
-            );
-
-            if($summary["keyword"] = "design")
-            {
-
-            }
-        }
         $response["success"] = 1;
-        $response["data"]["list"] = $arrayData;
-        $response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
-        $response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
-        $response["data"]["totalProjects"] = $totalProjects;
+        $response["totalProjects"] = $totalProjects;
+        $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
+        $response["list"] = array_values($reportSections);
+
         echo json_encode($response);exit;
     }
 }
