@@ -89,7 +89,11 @@ $(document).ready(function() {
     });
 
     $("form[name=workflow-report]").on("submit", function(){
-       saveTrackingList();
+        var additionalActions = $("input[name=workflow-additional-actions]:checked").val();
+        if(additionalActions !== "3")
+        {
+            saveTrackingList();
+        }
     });
 });
 
