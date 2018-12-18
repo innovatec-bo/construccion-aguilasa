@@ -19,19 +19,7 @@
         ?>
     </div>
     <!-- /.row -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
-                </div>
-                <div class="panel-body">
-                    <div id="chartdiv" style="height: 500px"></div>
-                </div>
-                <!-- /.panel-body -->
-            </div>
-        </div>
-    </div>
+
 </div>
 <!-- /.container-fluid -->
 <?php
