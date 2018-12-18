@@ -27,4 +27,9 @@ div.dt-buttons {
     display:inline-block;
     font-size: 10px;
     line-height: 0.6;
+
+}
+.dashboard-navigation .active a
+{
+    background-color: #0F263A!important;
 }

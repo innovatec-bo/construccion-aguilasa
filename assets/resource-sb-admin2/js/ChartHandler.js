@@ -16,13 +16,16 @@ function ChartHandler(objectContent) {
         _am4Core.useTheme(am4themes_animated);
         // Themes end
 
-        var chart = _am4Core.create($content.prop("id"), _am4Charts.PieChart3D);
-        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+        var pieChart3D = _am4Charts.PieChart3D;
 
+        var chart = _am4Core.create($content.prop("id"), pieChart3D);
+
+        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
         chart.legend = new _am4Charts.Legend();
 
         chart.data = data.list;
-
+        chart.angle = 50;
+        chart.depth = 35;
         var series = chart.series.push(new _am4Charts.PieSeries3D());
         series.dataFields.category = data.category;
         series.dataFields.value = data.value;
