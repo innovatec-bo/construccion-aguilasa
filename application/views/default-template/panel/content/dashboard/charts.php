@@ -12,6 +12,17 @@
     ?>
     <div class="row">
         <div class="col-md-6">
+            <div class="panel panel-primary" id="panel-status-summary-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Status summary
+                </div>
+                <div class="panel-body">
+                    <div id="status-summary-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="panel panel-primary" id="panel-executive-summary-chart">
                 <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i> Executive summary
