@@ -98,6 +98,7 @@ class PrivateController extends PublicController
     {
         parent::__construct();
         //Add General Components
+        $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("font-awesome");

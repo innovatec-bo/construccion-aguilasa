@@ -7,92 +7,12 @@
  */
 ?>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
+    <?php
+    $this->load->view("default-template/panel/content/dashboard/heading");
+    ?>
     <div class="row">
         <div class="col-md-12">
-            <?php
-            $this->load->view("default-template/flash-data-basic-messages");
-            ?>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-users fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-users"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                            <div>Users!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="<?=base_url("panel/User")?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-user fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-roles"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                            <div>Roles!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="<?=base_url("panel/Role")?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-folder fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge"><span id="dashboard-total-projects"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                            <div>Projects!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="<?=base_url("panel/Project")?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default" id="panel-workflow-report">
+            <div class="panel panel-primary" id="panel-workflow-report">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Workflow report
                 </div>
@@ -148,7 +68,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default" id="panel-current-status-summary-report">
+            <div class="panel panel-primary" id="panel-current-status-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
@@ -196,7 +116,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default" id="panel-executive-summary-report">
+            <div class="panel panel-primary" id="panel-executive-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getExecutiveSummaryReport")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Executive summary report
@@ -225,7 +145,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Tabla de totales
                     <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
@@ -248,7 +168,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/networksBuilding")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Reporte de Construccion

@@ -47,6 +47,8 @@ function launchPieChart()
     var series = chart.series.push(new am4charts.PieSeries3D());
         series.dataFields.value = "quantity";
     series.dataFields.category = "title";
+
+    chart.exporting.menu = new am4core.ExportMenu();
 }
 
 function blockArea(content)

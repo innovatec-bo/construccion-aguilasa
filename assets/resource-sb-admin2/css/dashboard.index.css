@@ -19,80 +19,12 @@ div.dt-buttons {
     padding: 0px 5px;
     height: 20px;
 }
-/*.table-minimum-padding>tbody th*/
-/*{*/
-    /*padding:1px;*/
-/*}*/
-/*.table-minimum-padding>tbody td*/
-/*{*/
-    /*padding:1px;*/
-/*}*/
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th{
     padding: 1px;
 }
-
-/********************** begin - status summary  */
-.already_sent, .as_built, .conciliation_shipment
+.dashboard-navigation
 {
-    background-color: #79B9D3!important;
+    display:inline-block;
+    font-size: 10px;
+    line-height: 0.6;
 }
-.approved, .assigned_to, .completed, .conciliation_reception, .cre_return_order
-{
-    background-color: #FFFF00!important;
-}
-#current-status-summary-report .current-status-total
-{
-    background-color: #FF0000!important;
-    font-weight: 600;
-}
-/********************** end - status summary  */
-/********************** begin - net building report  */
-.countId
-{
-    background-color: #88B2E4!important;
-}
-.entryPoints, .entryDistance, .digitizationPoints, .digitizationDistance, .asBuiltPoints, .asBuiltDistance
-{
-    background-color: #F9FF00!important;
-}
-.countWithoutDigitizationPoints, .countWithoutAsBuiltPoints, .countWithoutBudgets, .countWithoutRealBudgets
-{
-    background-color: #FF0000!important;
-}
-
-.sumDesignBudget, .sumBuildingBudget, .sumTransportationBudget, .sumLiveLineBudget, .sumRightOfWayBudget, .sumDesignRealBudget, .sumBuildingRealBudget, .sumTransportationRealBudget, .sumLiveLineRealBudget, .sumRightOfWayRealBudget
-{
-    background-color: #E9F3DE!important;
-}
-.sumBudget, .sumRealBudget
-{
-    background-color: #79DA4C!important;
-}
-/********************** end - net building report  */
-/********************** begin - executive summary report  */
-#executive-summary-report .design
-{
-    background-color: #8EA9DB!important;
-}
-#executive-summary-report .alreadySent
-{
-    background-color: #FFFF00!important;
-}
-#executive-summary-report .inProgress
-{
-    background-color: #92D050!important;
-}
-#executive-summary-report .closure
-{
-    background-color: #FFFF00!important;
-}
-#executive-summary-report .closed
-{
-    background-color: #00B0F0!important;
-}
-#executive-summary-report .executive-summary-total
-{
-    background-color: #FF0000!important;
-    font-weight: 600;
-}
-/********************** end - executive summary report  */
