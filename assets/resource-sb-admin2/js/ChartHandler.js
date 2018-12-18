@@ -12,6 +12,7 @@ function ChartHandler(objectContent) {
     this.launchPieChart = function(data)
     {
         // Themes begin
+        _am4Core.useTheme(am4themes_dark);
         _am4Core.useTheme(am4themes_animated);
         // Themes end
 

@@ -80,4 +80,5 @@ $config['complements']['sweet-alert2']['js'] = assets_url('resource-sb-admin2/pl
 
 $config['complements']['core']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/core.js');
 $config['complements']['charts']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/charts.js');
+$config['complements']['themes.dark']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/dark.js');
 $config['complements']['themes.animated']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/animated.js');
