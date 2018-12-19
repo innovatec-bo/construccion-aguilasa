@@ -9,10 +9,12 @@ class ExcelProjectWorkflow
     private $_sessionUser;
     private $_additionalParameters;
     private $_columnDefinition;
+    private $_arrayColumnDataCounter;
 	public function __construct($sessionUser)
 	{
         $this->_sessionUser = $sessionUser;
         $this->_additionalParameters = array();
+        $this->_arrayColumnDataCounter = array();
         $this->_setColumnDefinition();
 	}
 
@@ -34,12 +36,13 @@ class ExcelProjectWorkflow
         $this->_headerColumn($spreadsheet);
 
         $i = 2;
-        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder() );
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         foreach ($projectWorkflow as $row)
         {
             $this->_drawRow($spreadsheet, ($i+1), $row);
             $i++;
         }
+
         $this->_currencyFormatNumber($spreadsheet, $i);
         $this->_dateFormat($spreadsheet, $i);
         $this->_adjustColumnToText($spreadsheet);
@@ -49,7 +52,8 @@ class ExcelProjectWorkflow
         $columnList = array("stake_date","stake_responsible","digitization_points_quantity","digitization_distance","schedule_date","design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved","assign_to_date","builder_responsible","fiscal_responsible","in_progress_date","completed_date","payment_order_registered_date","payment_order_registered_order_number","payment_order_registered_design_budget","payment_order_registered_transportation_budget","payment_order_registered_live_line_budget","payment_order_registered_building_budget","payment_order_registered_right_of_way_budget","payment_order_registered_total_real_budget","payment_order_invoice_sent_date");
         $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
-
+        ;
+        $this->_hideColumns($spreadsheet, $this->_getNotEmptyColumns());
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="projects_workflow.xlsx"');
@@ -77,7 +81,6 @@ class ExcelProjectWorkflow
             ->setCellValue($projectCode.'1', "ETAPAS");
         $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
-        $statusName = $this->_getExcelColumnByDataKey("status_name_pst");
         $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
         $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
         $spreadsheet->setActiveSheetIndex(0)
@@ -301,6 +304,17 @@ class ExcelProjectWorkflow
                 else
                 {
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round.$char.$rowNumber, $rowData[$arrayKeys[$i]]);
+
+                    if($rowNumber == 3)
+                    {
+                        //Let's start our counter
+                        $this->_arrayColumnDataCounter[$arrayKeys[$i]] = 0;
+                    }
+                    if(!empty($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] != "0000-00-00 00:00:00")
+                    {
+                        //If there is any data then the counter will increase its value to these column
+                        $this->_arrayColumnDataCounter[$arrayKeys[$i]] ++;
+                    }
                 }
 
                 $i++;
@@ -365,6 +379,29 @@ class ExcelProjectWorkflow
             }
             if($response != "")
                 break;
+        }
+        return $response;
+    }
+
+    private function _hideColumns($spreadsheet, $columnList = array())
+    {
+        $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
+        foreach ($columnList as $column)
+        {
+            $spreadsheet->getActiveSheet()->getColumnDimension($column)->setVisible(FALSE);
+        }
+
+    }
+
+    private function _getNotEmptyColumns()
+    {
+        $response = array();
+        foreach($this->_arrayColumnDataCounter as $key => $value)
+        {
+            if($value <= 0)
+            {
+                $response[] = $key;
+            }
         }
         return $response;
     }
