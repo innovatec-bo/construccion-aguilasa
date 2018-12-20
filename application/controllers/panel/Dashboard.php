@@ -37,14 +37,21 @@ class Dashboard extends PrivateController
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("core");
+        $this->complementHandler->addViewComplement("charts");
+        $this->complementHandler->addViewComplement("themes.dark");
+        $this->complementHandler->addViewComplement("themes.animated");
+        $this->complementHandler->addProjectJs('ChartHandler', TRUE);
         $this->complementHandler->addProjectCss('dashboard.index', TRUE);
         $this->complementHandler->addProjectJs('dashboard.index', TRUE);
         $this->complementHandler->addProjectCss('dashboard.tables', TRUE);
         $this->complementHandler->addProjectJs('dashboard.tables', TRUE);
 
         $trackingList = Model_tracking_list::getAll(100, 0);
+        $contractList = Model_contract::getAll(100, 0);
         $data["systemList"] = $this->_projectSystems;
         $data["trackingList"] = $trackingList;
+        $data["contractList"] = $contractList;
         $data["view"] = "tables";
         $this->_loadPanelView('dashboard/tables', $data);
     }
@@ -66,8 +73,10 @@ class Dashboard extends PrivateController
         $this->complementHandler->addProjectJs('dashboard.charts', TRUE);
 
         $trackingList = Model_tracking_list::getAll(100, 0);
+        $contractList = Model_contract::getAll(100, 0);
         $data["systemList"] = $this->_projectSystems;
         $data["trackingList"] = $trackingList;
+        $data["contractList"] = $contractList;
         $data["view"] = "charts";
         $this->_loadPanelView('dashboard/charts', $data);
     }

@@ -3,8 +3,15 @@
  */
 
 $(document).ready(function() {
-    getCurrentStatusSummary();
+    // getCurrentStatusSummary();
     getExecutiveSummary();
+
+    $('#panel-executive-summary-chart select').on("change",function(){
+        var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
+        var managementBy = $('#panel-executive-summary-chart select[name=management-by] option:selected').val();
+        var contractNumber = $('#panel-executive-summary-chart select[name=contract-number] option:selected').val();
+        getExecutiveSummary(projectSystem, managementBy, contractNumber);
+    });
 });
 
 function getCurrentStatusSummary(system, management)
@@ -35,17 +42,18 @@ function getCurrentStatusSummary(system, management)
     });
 }
 
-function getExecutiveSummary(system, management)
+function getExecutiveSummary(system, management, contract)
 {
     var system = typeof system !== 'undefined' ? system : "";
     var management = typeof management !== 'undefined' ? management : "";
+    var contract = typeof contract !== 'undefined' ? contract : "";
     var $content = $("#executive-summary-chart-content");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
         dataType  :"json",
         type : "POST",
-        data:{system:system, management:management},
+        data:{system:system, management:management, contract:contract},
         success:function(response){
             var data  = {
                 category: 'title',

@@ -432,7 +432,8 @@ class Project extends PrivateController
         $formData = $this->input->post();
         $system = $formData["project-system"];
         $managementBy = $formData["management-by"];
-        $excel = new ExcelCurrentStatusSummary($this->sessionUser, $system, $managementBy);
+        $contract = $formData["contract-number"];
+        $excel = new ExcelCurrentStatusSummary($this->sessionUser, $system, $managementBy, $contract);
         $excel->getReport();
     }
 

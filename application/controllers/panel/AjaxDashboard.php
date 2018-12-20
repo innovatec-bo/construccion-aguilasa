@@ -192,7 +192,8 @@ class AjaxDashboard extends PrivateController
         $formData = $this->input->post();
         $system = $formData["system"];
         $management = $formData["management"];
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
+        $contract = $formData["contract"];
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
         $arrayData = array();
         $totalApprovedBudget = 0;
         $totalRealBudget = 0;
@@ -218,12 +219,16 @@ class AjaxDashboard extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function getExecutiveSummary()
+    public function getExecutiveSummary($ajaxRequest = TRUE, $system = "", $management = "", $contract = "")
     {
-        $formData = $this->input->post();
-        $system = $formData["system"];
-        $management = $formData["management"];
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management);
+        if($ajaxRequest)
+        {
+            $formData = $this->input->post();
+            $system = $formData["system"];
+            $management = $formData["management"];
+            $contract = $formData["contract"];
+        }
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
         $reportSections = array(
             "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
             "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design")),
@@ -288,6 +293,56 @@ class AjaxDashboard extends PrivateController
         $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
         $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
         $response["list"] = array_values($reportSections);
+
+        if($ajaxRequest)
+        {
+            echo json_encode($response);exit;
+        }
+        else
+        {
+            return $response;
+        }
+    }
+
+    public function getProjectProgressBySection()
+    {
+        $formData = $this->input->post();
+        $system = $formData["system"];
+        $management = $formData["management"];
+        $contractId = $formData["contract"];
+        $section = $formData["section"];
+        $executiveSummaryReport = $this->getExecutiveSummary($system, $management, $contractId);
+        $contractList = Model_contract::getAll(100, 0);
+        $sectionList = $executiveSummaryReport["list"];
+        $amountProgress = str_replace(",","",$executiveSummaryReport["totalApprovedBudget"]);
+        $contractAmount = 0;
+        foreach ($sectionList as $sectionData)
+        {
+            if($section == $sectionData["section"])
+            {
+                $amountProgress = str_replace(",","",$sectionData["totalApprovedBudgetBySection"]);
+                break;
+            }
+        }
+        foreach ($contractList as $contract)
+        {
+            if($contract->id_con == $contractId)
+            {
+                $contractAmount = $contract->amount_con;
+                break;
+            }
+            else
+            {
+                $contractAmount += $contract->amount_con;
+            }
+        }
+//        echo"<pre>";var_dump($contractAmount, $amountProgress);exit;
+        $percentage = ($contractAmount* 100) / $amountProgress;
+        $response["success"]  = 1;
+        $response["message"]  = "";
+        $response["percentage"] = $percentage;
+        $response["amountProgress"] = $amountProgress;
+        $response["contractAmount"] = $contractAmount;
 
         echo json_encode($response);exit;
     }

@@ -6,18 +6,20 @@ class ExcelCurrentStatusSummary
     private $_sessionUser;
     private $_system;
     private $_managementBy;
-	public function __construct($sessionUser, $system = "", $managementBy = "")
+    private $_contract;
+	public function __construct($sessionUser, $system = "", $managementBy = "", $contract = "")
 	{
         $this->_sessionUser = $sessionUser;
         $this->_system = $system;
         $this->_managementBy = $managementBy;
+        $this->_contract = $contract;
 	}
 
 	function getReport()
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary($this->_system, $this->_managementBy);
+        $currentStatusSummary = Model_project::projectCurrentStatusSummary($this->_system, $this->_managementBy, $this->_contract);
         $spreadsheet = new Spreadsheet();
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         $spreadsheet->getProperties()

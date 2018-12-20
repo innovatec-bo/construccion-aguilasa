@@ -34,8 +34,9 @@ $(document).ready(function() {
     $('#panel-current-status-summary-report select').on("change",function(){
         var projectSystem = $('select[name=project-system] option:selected').val();
         var managementBy = $('select[name=management-by] option:selected').val();
-        getCurrentStatusSummary(projectSystem, managementBy);
-        getExecutiveSummary(projectSystem, managementBy);
+        var contractNumber = $('select[name=contract-number] option:selected').val();
+        getCurrentStatusSummary(projectSystem, managementBy, contractNumber);
+        getExecutiveSummary(projectSystem, managementBy, contractNumber);
     });
 
     $(document).on("click",".find-th",function(e){
@@ -134,17 +135,18 @@ function getProjectNetBuilding(year, keyword)
     });
 }
 
-function getCurrentStatusSummary(system, management)
+function getCurrentStatusSummary(system, management, contract)
 {
     var system = typeof system !== 'undefined' ? system : "";
     var management = typeof management !== 'undefined' ? management : "";
+    var contract = typeof contract !== 'undefined' ? contract : "";
     var $content = $("#current-status-summary-report");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getCurrentStatusSummary',
         dataType  :"json",
         type : "POST",
-        data:{system:system, management:management},
+        data:{system:system, management:management, contract:contract},
         success:function(response){
 
             if(response.success === 1)
@@ -213,17 +215,18 @@ function startSelect2TrackingList(selector)
         width : "100%"
     });
 }
-function getExecutiveSummary(system, management)
+function getExecutiveSummary(system, management, contract)
 {
     var system = typeof system !== 'undefined' ? system : "";
     var management = typeof management !== 'undefined' ? management : "";
+    var contract = typeof contract !== 'undefined' ? contract : "";
     var $content = $("#executive-summary-report");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
         dataType  :"json",
         type : "POST",
-        data:{system:system, management:management},
+        data:{system:system, management:management, contract:contract},
         success:function(response){
             // if(response.success === 1)
             // {

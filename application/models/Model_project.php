@@ -1581,13 +1581,14 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    public static function projectCurrentStatusSummary($system = "", $management = "")
+    public static function projectCurrentStatusSummary($system = "", $management = "", $contractId = "")
     {
         $ci = &get_instance();
         $ci->load->database();
 
         $systemFilter = $system == ""?"":" and system_pro = ".$ci->db->escape($system);
         $managementFilter = $management == ""?"":" and management_by_pro = ".$ci->db->escape($management);
+        $contractIdFilter = $contractId == ""?"":" and contract_id_pro = ".$ci->db->escape($contractId);
 
         $sql = "
         SELECT
@@ -1648,6 +1649,7 @@ class Model_project extends Model_project_base
         deleted_pro != 1
         ".$systemFilter."
         ".$managementFilter."
+        ".$contractIdFilter."
         GROUP BY keyword_pst
         ORDER BY order_pst
         ";

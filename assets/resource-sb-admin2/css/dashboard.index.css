@@ -12,7 +12,7 @@ div.dt-buttons {
 {
     font-size:10px;
 }
-.panel-heading select
+.panel-heading select, .panel-footer select
 {
     display: inline-block;
     width: 100px;

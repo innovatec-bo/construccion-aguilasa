@@ -71,7 +71,7 @@
             <div class="panel panel-primary" id="panel-current-status-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
-                        <i class="fa fa-table fa-fw"></i> Reporte de estados actuales
+                        <i class="fa fa-table fa-fw"></i> Rep. Estados actuales
                         <select class="form-control input-sm" name="project-system">
                             <option value="">Todos los sistemas</option>
                             <?php
@@ -90,6 +90,17 @@
                             foreach ($systemList as $key => $name)
                             {
                                 $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                            }
+                            echo $html;
+                            ?>
+                        </select>
+                        <select class="form-control input-sm" name="contract-number">
+                            <option value="">Contrato</option>
+                            <?php
+                            $html = "";
+                            foreach ($contractList as $contract)
+                            {
+                                $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
                             }
                             echo $html;
                             ?>
