@@ -8,7 +8,7 @@ $(document).ready(function() {
     // getUsersQuantity();
     // getRolesQuantity();
     getProjectsQuantity();
-
+    getProjectProgressBySection();
 
     $(document).on("change","#panel-serebo-thermometer-chart select",function(e){
         var contractNumber = $('#panel-serebo-thermometer-chart select[name=contract-number] option:selected').val();
@@ -59,13 +59,20 @@ function getProjectProgressBySection(system, management, contract, section)
     var contract = typeof contract !== 'undefined' ? contract : "";
     var section = typeof section !== 'undefined' ? section : "";
     // _chartHandler = chartHandler;
+    var _chartHandler = chartHandler;
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getProjectProgressBySection',
         dataType  :"json",
         type : "POST",
         data:{system:system, management:management, contract:contract, section:section},
         success:function(response){
-            chartHandler.launchGaugeChartUpdate(response.percentage);
+            _chartHandler.launchGaugeChartUpdate(parseFloat(response.percentage));
         }
-    });
+    })/*.done(function(response) {
+        var randomValue = Math.floor((Math.random() * 100) + 1);
+        // setTimeout(function(){
+            _chartHandler.launchGaugeChartUpdate(parseInt(response.percentage));
+        // }, 3000);
+        console.log(randomValue, parseInt(response.percentage));
+    })*/;
 }

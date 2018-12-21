@@ -1653,6 +1653,7 @@ class Model_project extends Model_project_base
         GROUP BY keyword_pst
         ORDER BY order_pst
         ";
+//        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;

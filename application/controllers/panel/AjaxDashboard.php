@@ -311,7 +311,7 @@ class AjaxDashboard extends PrivateController
         $management = $formData["management"];
         $contractId = $formData["contract"];
         $section = $formData["section"];
-        $executiveSummaryReport = $this->getExecutiveSummary($system, $management, $contractId);
+        $executiveSummaryReport = $this->getExecutiveSummary(FALSE, $system, $management, $contractId);
         $contractList = Model_contract::getAll(100, 0);
         $sectionList = $executiveSummaryReport["list"];
         $amountProgress = str_replace(",","",$executiveSummaryReport["totalApprovedBudget"]);
@@ -320,6 +320,7 @@ class AjaxDashboard extends PrivateController
         {
             if($section == $sectionData["section"])
             {
+//                echo"<pre>";var_dump($executiveSummaryReport);exit;
                 $amountProgress = str_replace(",","",$sectionData["totalApprovedBudgetBySection"]);
                 break;
             }
@@ -337,10 +338,10 @@ class AjaxDashboard extends PrivateController
             }
         }
 //        echo"<pre>";var_dump($contractAmount, $amountProgress);exit;
-        $percentage = ($contractAmount* 100) / $amountProgress;
+        $percentage = ($amountProgress* 100) / $contractAmount;
         $response["success"]  = 1;
         $response["message"]  = "";
-        $response["percentage"] = $percentage;
+        $response["percentage"] = number_format($percentage,2);
         $response["amountProgress"] = $amountProgress;
         $response["contractAmount"] = $contractAmount;
 

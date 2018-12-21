@@ -32,9 +32,9 @@ $(document).ready(function() {
     });
 
     $('#panel-current-status-summary-report select').on("change",function(){
-        var projectSystem = $('select[name=project-system] option:selected').val();
-        var managementBy = $('select[name=management-by] option:selected').val();
-        var contractNumber = $('select[name=contract-number] option:selected').val();
+        var projectSystem = $('#panel-current-status-summary-report select[name=project-system] option:selected').val();
+        var managementBy = $('#panel-current-status-summary-report select[name=management-by] option:selected').val();
+        var contractNumber = $('#panel-current-status-summary-report select[name=contract-number] option:selected').val();
         getCurrentStatusSummary(projectSystem, managementBy, contractNumber);
         getExecutiveSummary(projectSystem, managementBy, contractNumber);
     });
