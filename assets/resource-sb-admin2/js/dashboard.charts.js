@@ -4,6 +4,7 @@
 
 $(document).ready(function() {
     getExecutiveSummary();
+    getProjectTotalsChart();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
