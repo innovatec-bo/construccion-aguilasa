@@ -216,7 +216,7 @@ function ChartHandler(objectContent) {
         axis2.min = 0;
         axis2.max = 100;
         axis2.renderer.innerRadius = 10;
-        axis2.strictMinMax = false;
+        axis2.strictMinMax = true;
         axis2.renderer.labels.template.disabled = true;
         axis2.renderer.ticks.template.disabled = true;
         axis2.renderer.grid.template.disabled = true;
