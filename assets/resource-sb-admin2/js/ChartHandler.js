@@ -9,54 +9,6 @@ function ChartHandler(objectContent) {
     var _am4Charts = am4charts;
     var $content = $("#"+objectContent);
 
-    this.launchPieChart2 = function(data)
-    {
-        // Themes begin
-        _am4Core.useTheme(am4themes_dark);
-        _am4Core.useTheme(am4themes_animated);
-        // Themes end
-        var pieChart3D = _am4Charts.PieChart3D;
-        var chart = _am4Core.create($content.prop("id"), pieChart3D);
-
-        chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-        chart.legend = new _am4Charts.Legend();
-        chart.legend.align = "right";
-        // chart.legend.useDefaultMarker = true;
-        chart.legend.fontSize = 10;
-        var marker = chart.legend.markers.template.children.getIndex(0);
-        marker.cornerRadius(12, 12, 12, 12);
-
-        chart.data = data.list;
-        chart.angle = 50;
-        chart.depth = 35;
-        var series = chart.series.push(new _am4Charts.PieSeries3D());
-        series.dataFields.category = data.category;
-        series.dataFields.value = data.value;
-
-        series.ticks.template.disabled = true;
-        series.alignLabels = false;
-        series.labels.template.text = "{value.percent.formatNumber('#.0')}%";
-        series.labels.template.radius = _am4Core.percent(-40);
-        series.labels.template.fill = _am4Core.color("white");
-
-        series.labels.template.adapter.add("radius", function(radius, target) {
-            if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-                return 50;
-            }
-            return radius;
-        });
-
-        series.labels.template.adapter.add("fill", function(color, target) {
-            if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-                return am4core.color("#fff");
-            }
-            return color;
-        });
-
-        chart.exporting.menu = new _am4Core.ExportMenu();
-
-    };
-
     this.launchPieChart = function(data)
     {
         /**
@@ -105,68 +57,6 @@ function ChartHandler(objectContent) {
         });
     };
 
-    this.launchGaugeChart2 = function()
-    {
-        // Themes begin
-        am4core.useTheme(am4themes_animated);
-// Themes end
-
-// create chart
-        // Create a container
-        var container = am4core.create("container", am4core.Container);
-        container.width = am4core.percent(100);
-        container.height = am4core.percent(100);
-        container.layout = "vertical";
-
-        // var chart = am4core.create("dashboard-gauge", am4charts.GaugeChart);
-        var chart = container.createChild(am4charts.GaugeChart);
-        chart.height = 50;
-        chart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
-        chart.responsive.enabled = true;
-        chart.responsive.useDefault = false;
-        chart.innerRadius = -30;
-
-        var axis = chart.xAxes.push(new am4charts.ValueAxis());
-        axis.min = 0;
-        axis.max = 100;
-        axis.strictMinMax = true;
-        axis.renderer.grid.template.stroke = new am4core.InterfaceColorSet().getFor("background");
-        axis.renderer.grid.template.strokeOpacity = 0.2;
-
-        var colorSet = new am4core.ColorSet();
-
-        var range0 = axis.axisRanges.create();
-        range0.value = 0;
-        range0.endValue = 50;
-        range0.axisFill.fillOpacity = 1;
-        range0.axisFill.fill = colorSet.getIndex(0);
-        range0.axisFill.zIndex = - 2;
-
-        var range1 = axis.axisRanges.create();
-        range1.value = 50;
-        range1.endValue = 80;
-        range1.axisFill.fillOpacity = 1;
-        range1.axisFill.fill = colorSet.getIndex(2);
-        range1.axisFill.zIndex = -2;
-
-        var range2 = axis.axisRanges.create();
-        range2.value = 80;
-        range2.endValue = 100;
-        range2.axisFill.fillOpacity = 1;
-        range2.axisFill.fill = colorSet.getIndex(4);
-        range2.axisFill.zIndex = -2;
-
-        var hand = chart.hands.push(new am4charts.ClockHand());
-        hand.showValue(Math.random() * 100, 1000, am4core.ease.cubicOut);
-
-        // using chart.setTimeout method as the timeout will be disposed together with a chart
-        // chart.setTimeout(randomValue, 2000);
-        // function randomValue() {
-        //     hand.showValue(Math.random() * 100, 1000, am4core.ease.cubicOut);
-        //     chart.setTimeout(randomValue, 2000);
-        // }
-    };
-
     this.launchGaugeChart = function()
     {
         // Themes begin
@@ -178,7 +68,7 @@ function ChartHandler(objectContent) {
         // create chart
         // Create a container
         var container = am4core.create($content.prop("id"), am4core.Container);
-        container.width = am4core.percent(100);
+            container.width = am4core.percent(100);
         container.height = am4core.percent(130);
         container.layout = "vertical";
 
@@ -275,7 +165,6 @@ function ChartHandler(objectContent) {
             property: "value",
             to: value
         }, 1000, am4core.ease.cubicOut).start();
-        console.log(value);
     };
 
     this.loadEventHandlers = function()

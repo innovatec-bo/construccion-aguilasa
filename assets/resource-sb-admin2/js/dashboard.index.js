@@ -1,19 +1,29 @@
 /**
  * Created by Jair on 30/05/2018.
  */
-var chartHandler = new ChartHandler("serebo-thermometer-chart-content");
-chartHandler.launchGaugeChart();
-chartHandler.launchGaugeChartUpdate(0);
+var sereboThermometer = new ChartHandler("serebo-thermometer-chart-content");
+sereboThermometer.launchGaugeChart();
+sereboThermometer.launchGaugeChartUpdate(0);
+
+var daysProgress = new ChartHandler("days-progress-chart-content");
+daysProgress.launchGaugeChart();
+daysProgress.launchGaugeChartUpdate(0);
 $(document).ready(function() {
     // getUsersQuantity();
     // getRolesQuantity();
     getProjectsQuantity();
     getProjectProgressBySection();
+    getContractTimeProgress();
 
-    $(document).on("change","#panel-serebo-thermometer-chart select",function(e){
+    $(document).on("change","#panel-serebo-thermometer-chart select",function(){
         var contractNumber = $('#panel-serebo-thermometer-chart select[name=contract-number] option:selected').val();
         var stage = $('#panel-serebo-thermometer-chart select[name=stage] option:selected').val();
         getProjectProgressBySection("","",contractNumber, stage);
+    });
+
+    $(document).on("change","#panel-days-progress-chart select",function(){
+        var contractNumber = $('#panel-days-progress-chart select[name=contract-number] option:selected').val();
+        getContractTimeProgress(contractNumber);
     });
 });
 
@@ -58,21 +68,27 @@ function getProjectProgressBySection(system, management, contract, section)
     var management = typeof management !== 'undefined' ? management : "";
     var contract = typeof contract !== 'undefined' ? contract : "";
     var section = typeof section !== 'undefined' ? section : "";
-    // _chartHandler = chartHandler;
-    var _chartHandler = chartHandler;
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getProjectProgressBySection',
         dataType  :"json",
         type : "POST",
         data:{system:system, management:management, contract:contract, section:section},
         success:function(response){
-            _chartHandler.launchGaugeChartUpdate(parseFloat(response.percentage));
+            sereboThermometer.launchGaugeChartUpdate(parseFloat(response.percentage));
         }
-    })/*.done(function(response) {
-        var randomValue = Math.floor((Math.random() * 100) + 1);
-        // setTimeout(function(){
-            _chartHandler.launchGaugeChartUpdate(parseInt(response.percentage));
-        // }, 3000);
-        console.log(randomValue, parseInt(response.percentage));
-    })*/;
+    });
+}
+
+function getContractTimeProgress(contract)
+{
+    contract = typeof contract !== 'undefined' ? contract : "";
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getContractTimeProgress',
+        dataType  :"json",
+        type : "POST",
+        data:{contract:contract},
+        success:function(response){
+            daysProgress.launchGaugeChartUpdate(parseFloat(response.percentage));
+        }
+    });
 }

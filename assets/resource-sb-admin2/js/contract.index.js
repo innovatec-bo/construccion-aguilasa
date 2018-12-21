@@ -51,7 +51,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var html = ' <a target="_blank" href="'+base_url+'panel/Contract/edit'+row.id_con+'" class="btn btn-primary btn-xs" data-role-id="'+row.id_con+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
+                var html = ' <a target="_blank" href="'+base_url+'panel/Contract/edit/'+row.id_con+'" class="btn btn-primary btn-xs" data-role-id="'+row.id_con+'" title="" data-original-title="EDIT"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                     // html += ' <a class="btn btn-danger btn-xs datatable-delete-button" data-object-id="'+row.id_con+'" data-url= "'+base_url+'panel/Role/delete/'+row.id_rol+'" title="" data-original-title="DELETE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 return html;
             }

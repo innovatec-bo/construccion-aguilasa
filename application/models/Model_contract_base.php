@@ -14,13 +14,15 @@ class Model_contract_base extends MY_Model
 
     protected $_contractNumber;
     protected $_amount;
+    protected $_startDate;
     protected $_expirationDate;
 
-    public function __construct($contractNumber = "", $amount = 0, $expirationDate = NULL)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL)
     {
         parent::__construct();
         $this->_contractNumber = $contractNumber;
         $this->_amount = $amount;
+        $this->_startDate = $startDate;
         $this->_expirationDate = $expirationDate;
     }
 
@@ -34,6 +36,7 @@ class Model_contract_base extends MY_Model
             "id_con" => $this->_id,
             "contract_number_con" => $this->_contractNumber,
             "amount_con" => $this->_amount,
+            "start_date_con" => $this->_startDate,
             "expiration_date_con" => $this->_expirationDate,
             "deleted_con" => $this->_deleted,
             "createdon_con" => $this->_createdOn,
@@ -61,6 +64,7 @@ class Model_contract_base extends MY_Model
             $instance = new $className(
                 $object->contract_number_con,
                 $object->amount_con,
+                $object->start_date_con,
                 $object->expiration_date_con
             );
             $instance->_id = $object->id_con;

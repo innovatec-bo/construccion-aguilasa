@@ -8,8 +8,8 @@
 
 class Model_contract extends Model_contract_base
 {
-    public function __construct($contractNumber = "", $amount = 0, $expirationDate = NULL)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL)
     {
-        parent::__construct($contractNumber, $amount, $expirationDate);
+        parent::__construct($contractNumber, $amount, $startDate, $expirationDate);
     }
 }

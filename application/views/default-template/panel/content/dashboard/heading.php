@@ -117,14 +117,21 @@
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-primary" id="panel-serebo-thermometer-chart">
             <div class="panel-heading">
-                <div class="row" id="serebo-thermometer-chart-content" style="height: 76px">
-
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-dollar fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right" id="serebo-thermometer-chart-content"  style="height: 76px">
+                    </div>
                 </div>
+<!--                <div class="row" id="serebo-thermometer-chart-content" style="height: 76px">-->
+<!---->
+<!--                </div>-->
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
                     <select class="form-control input-sm" name="contract-number">
-                        <option value="">Contrato</option>
+                        <option value="">Contratos</option>
                         <?php
                         $html = "";
                         foreach ($contractList as $contract)
@@ -137,12 +144,45 @@
                 </span>
                 <span class="pull-right">
                     <select class="form-control input-sm" name="stage" style="width: 90px">
-                        <option value="">Etapa</option>
+                        <option value="">Etapas</option>
                         <option value="total">Total</option>
                         <option value="inProgress">Contruccion</option>
                         <option value="closure">Cierre</option>
                         <option value="closed">Cerrado</option>
                     </select>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary" id="panel-days-progress-chart">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-hourglass fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right" id="days-progress-chart-content"  style="height: 76px">
+                    </div>
+                </div>
+<!--                <div class="row" id="days-progress-chart-content" style="height: 76px">-->
+<!---->
+<!--                </div>-->
+            </div>
+            <div class="panel-footer">
+                <span class="pull-left">
+                    <select class="form-control input-sm" name="contract-number">
+                        <option value="">Contratos</option>
+                        <?php
+                        $html = "";
+                        foreach ($contractList as $contract)
+                        {
+                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                        }
+                        echo $html;
+                        ?>
+                        </select>
                 </span>
                 <div class="clearfix"></div>
             </div>

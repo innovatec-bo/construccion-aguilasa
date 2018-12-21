@@ -347,4 +347,43 @@ class AjaxDashboard extends PrivateController
 
         echo json_encode($response);exit;
     }
+
+    public function getContractTimeProgress()
+    {
+        $formData = $this->input->post();
+        $contractId = $formData["contract"];
+        $contractList = Model_contract::getAll(100,0);
+
+        foreach ($contractList as $contract)
+        {
+            if($contract->id_con == $contractId)
+            {
+                $startDate = $contract->start_date_con;
+                $endDate = $contract->expiration_date_con;
+                break;
+            }
+            else
+            {
+                $contractList = json_decode(json_encode($contractList), True);
+                $startDateArray = array_column($contractList, "start_date_con");
+                $endDateArray = array_column($contractList, "expiration_date_con");
+                sort($startDateArray);
+                rsort($endDateArray);
+                $startDate = $startDateArray[0];
+                $endDate = $endDateArray[0];
+            }
+        }
+
+        $totalDays = round(abs(strtotime($startDate) - strtotime($endDate))/86400);
+        $daysProgress = round(abs(strtotime($startDate) - strtotime(date("Y-m-d")))/86400);
+        $percentage =  ($daysProgress * 100) / $totalDays;
+        $response["success"]  = 1;
+        $response["message"]  = "";
+        $response["percentage"] = number_format($percentage,2);
+        $response["daysProgress"] = $daysProgress;
+        $response["totalDays"] = $totalDays;
+        $response["startDate"] = $startDate;
+        $response["endDate"] = $endDate;
+        echo json_encode($response);exit;
+    }
 }
