@@ -15,7 +15,7 @@ div.dt-buttons {
 .panel-heading select, .panel-footer select
 {
     display: inline-block;
-    width: 100px;
+    width: 80px;
     padding: 0px 5px;
     height: 20px;
 }

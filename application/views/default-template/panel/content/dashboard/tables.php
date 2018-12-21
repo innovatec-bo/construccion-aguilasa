@@ -73,7 +73,7 @@
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Rep. Estados actuales
                         <select class="form-control input-sm" name="project-system">
-                            <option value="">Todos los sistemas</option>
+                            <option value="">Sistemas</option>
                             <?php
                             $html = "";
                             foreach ($systemList as $key => $name)
@@ -84,7 +84,7 @@
                             ?>
                         </select>
                         <select class="form-control input-sm" name="management-by">
-                            <option value="">Todas las administraciones</option>
+                            <option value="">Administraciones</option>
                             <?php
                             $html = "";
                             foreach ($systemList as $key => $name)
@@ -95,7 +95,7 @@
                             ?>
                         </select>
                         <select class="form-control input-sm" name="contract-number">
-                            <option value="">Contrato</option>
+                            <option value="">Contratos</option>
                             <?php
                             $html = "";
                             foreach ($contractList as $contract)

@@ -3,44 +3,25 @@
  */
 
 $(document).ready(function() {
-    // getCurrentStatusSummary();
     getExecutiveSummary();
-
+    var date = new Date();
+    $('.date-time').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'YYYY'
+    });
     $('#panel-executive-summary-chart select').on("change",function(){
         var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
         var managementBy = $('#panel-executive-summary-chart select[name=management-by] option:selected').val();
         var contractNumber = $('#panel-executive-summary-chart select[name=contract-number] option:selected').val();
         getExecutiveSummary(projectSystem, managementBy, contractNumber);
     });
-});
 
-function getCurrentStatusSummary(system, management)
-{
-    var system = typeof system !== 'undefined' ? system : "";
-    var management = typeof management !== 'undefined' ? management : "";
-    var $content = $("#status-summary-chart-content");
-    blockArea($content);
-    $.ajax({
-        url : base_url + 'panel/AjaxDashboard/getCurrentStatusSummary',
-        dataType  :"json",
-        type : "POST",
-        data:{system:system, management:management},
-        success:function(response){
-
-            if(response.success === 1)
-            {
-                var data  = {
-                    category: 'statusName',
-                    value: 'totalProjects',
-                    list:response.data.list
-                };
-                var chartHandler = new ChartHandler("status-summary-chart-content");
-                chartHandler.launchPieChart(data);
-                console.log(response);
-            }
-        }
+    $('#panel-project-totals-chart input[name=report-year]').on("dp.change",function(e){
+        var date = new Date(e.date);
+        getProjectTotalsChart(date.getFullYear());
     });
-}
+});
 
 function getExecutiveSummary(system, management, contract)
 {
@@ -62,6 +43,38 @@ function getExecutiveSummary(system, management, contract)
             };
             var chartHandler = new ChartHandler("executive-summary-chart-content");
             chartHandler.launchPieChart(data);
+        }
+    });
+}
+
+function getProjectTotalsChart(year)
+{
+    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    var $content = $("#project-totals-chart-content");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getProjectTotalsTable',
+        dataType  :"json",
+        type : "POST",
+        data:{year:year},
+        success:function(response){
+            var monthList = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+            var data = [];
+            var singleDataRow = {};
+            var seriesList = {};
+            $.each(monthList, function(i, month){
+
+                singleDataRow.month = month;
+                $.each(response.data, function(j, row){
+                    singleDataRow[j+row.criteriaKeyword] = row[singleDataRow.month];
+                    seriesList[j+row.criteriaKeyword] = row.criteria;
+                });
+                data.push(singleDataRow);
+                singleDataRow = {};
+            });
+            // console.log(data, seriesList);
+            var projectTotalsTable = new ChartHandler("project-totals-chart-content");
+            projectTotalsTable.launchXYChart(data, seriesList);
         }
     });
 }

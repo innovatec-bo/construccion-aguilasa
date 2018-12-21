@@ -8,6 +8,8 @@ sereboThermometer.launchGaugeChartUpdate(0);
 var daysProgress = new ChartHandler("days-progress-chart-content");
 daysProgress.launchGaugeChart();
 daysProgress.launchGaugeChartUpdate(0);
+
+
 $(document).ready(function() {
     // getUsersQuantity();
     // getRolesQuantity();

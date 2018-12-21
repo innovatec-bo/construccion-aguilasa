@@ -11,17 +11,6 @@
     $this->load->view("default-template/panel/content/dashboard/heading");
     ?>
     <div class="row">
-<!--        <div class="col-md-6 hidden">-->
-<!--            <div class="panel panel-primary" id="panel-status-summary-chart">-->
-<!--                <div class="panel-heading">-->
-<!--                    <i class="fa fa-bar-chart-o fa-fw"></i> Status summary-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div id="status-summary-chart-content" class="chart-content"></div>-->
-<!--                </div>-->
-<!--                <!-- /.panel-body -->
-<!--            </div>-->
-<!--        </div>-->
         <div class="col-md-12">
             <div class="panel panel-primary" id="panel-executive-summary-chart">
                 <div class="panel-heading">
@@ -69,6 +58,21 @@
                 </div>
                 <div class="panel-body">
                     <div id="executive-summary-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-project-totals-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Tabla de totales
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                </div>
+                <div class="panel-body">
+                    <div id="project-totals-chart-content" class="chart-content"></div>
                 </div>
                 <!-- /.panel-body -->
             </div>

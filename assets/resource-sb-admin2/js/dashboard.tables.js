@@ -236,7 +236,6 @@ function getExecutiveSummary(system, management, contract)
             var html = template(data);
             // }
             $content.html(html);
-            console.log(response);
         }
     });
 }
