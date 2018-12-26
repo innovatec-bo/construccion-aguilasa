@@ -5,6 +5,7 @@
 $(document).ready(function() {
     getExecutiveSummary();
     getProjectTotalsChart();
+    getProjectsEvolutionChart();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -21,6 +22,11 @@ $(document).ready(function() {
     $('#panel-project-totals-chart input[name=report-year]').on("dp.change",function(e){
         var date = new Date(e.date);
         getProjectTotalsChart(date.getFullYear());
+    });
+
+    $('#panel-projects-evolution-chart input[name=report-year]').on("dp.change",function(e){
+        var date = new Date(e.date);
+        getProjectsEvolutionChart(date.getFullYear());
     });
 });
 
@@ -76,6 +82,23 @@ function getProjectTotalsChart(year)
             // console.log(data, seriesList);
             var projectTotalsTable = new ChartHandler("project-totals-chart-content");
             projectTotalsTable.launchXYChart(data, seriesList);
+        }
+    });
+}
+
+function getProjectsEvolutionChart(year)
+{
+    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    var $content = $("#projects-evolution-chart-content");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getProjectTotalsTable',
+        dataType  :"json",
+        type : "POST",
+        data:{year:year},
+        success:function(response){
+            var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");
+            projectTotalsTable.launchHorizontalBarChart(response.data);
         }
     });
 }

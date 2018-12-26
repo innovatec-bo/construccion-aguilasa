@@ -78,7 +78,20 @@
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-projects-evolution-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Evolucion de proyectos
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                </div>
+                <div class="panel-body">
+                    <div id="projects-evolution-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
     <!-- /.row -->
     <!-- /.row -->
 </div>
