@@ -39,7 +39,7 @@ class Dashboard extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("core");
         $this->complementHandler->addViewComplement("charts");
-        $this->complementHandler->addViewComplement("themes.dark");
+        $this->complementHandler->addViewComplement("themes.kelly");
         $this->complementHandler->addViewComplement("themes.animated");
         $this->complementHandler->addProjectJs('ChartHandler', TRUE);
         $this->complementHandler->addProjectCss('dashboard.index', TRUE);

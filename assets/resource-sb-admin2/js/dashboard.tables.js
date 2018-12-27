@@ -14,9 +14,18 @@ $(document).ready(function() {
         defaultDate: date,
         format: 'YYYY'
     });
-    $('input[name=report-year]').on("dp.change",function(e){
+    $('#panel-report-project-totals-table input[name=report-year]').on("dp.change",function(e){
         var date = new Date(e.date);
-        getProjectTotalsTable(date.getFullYear());
+        var dataType = $(this).closest("div#panel-report-project-totals-table").find("select[name=data-type] option:selected").val();
+        var contractId = $(this).closest("div#panel-report-project-totals-table").find("input[name=contract-number]").val();
+        getProjectTotalsTable(date.getFullYear(), dataType, contractId);
+    });
+
+    $(document).on("change",'#panel-report-project-totals-table select[name=data-type], #panel-report-project-totals-table select[name=contract-number]',function(){
+        var date = $(this).closest("div#panel-report-project-totals-table").find("input[name=report-year]").val();
+        var dataType = $(this).closest("div#panel-report-project-totals-table").find("select[name=data-type] option:selected").val();
+        var contractId = $(this).closest("div#panel-report-project-totals-table").find("select[name=contract-number] option:selected").val();
+        getProjectTotalsTable(date, dataType, contractId);
     });
 
     $('input[name=building-report-year]').on("dp.change",function(e){
@@ -85,16 +94,18 @@ $(document).ready(function() {
     });
 });
 
-function getProjectTotalsTable(year)
+function getProjectTotalsTable(year, dataType, contractId)
 {
     year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    dataType = typeof dataType !== 'undefined' ? dataType : "countId";
+    contractId = typeof contractId !== 'undefined' ? contractId : "";
     var $content = $("#report-project-totals-table");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getProjectTotalsTable',
         dataType  :"json",
         type : "POST",
-        data:{year:year},
+        data:{year:year, dataType:dataType, contractId:contractId},
         success:function(response){
 
             if(response.success === 1)

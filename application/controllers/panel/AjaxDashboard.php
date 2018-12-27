@@ -22,6 +22,9 @@ class AjaxDashboard extends PrivateController
     {
         $formData = $this->input->post();
         $year = $formData["year"];
+        $dataType = isset($formData["dataType"])?$formData["dataType"]:"countId";
+        $contractId = isset($formData["contractId"])?$formData["contractId"]:"";
+
         $response = array();
         $statusList = array(
             'project_has_been_created' => 'INGRESADOS',
@@ -33,7 +36,8 @@ class AjaxDashboard extends PrivateController
         $projectTotalsList = array();
         foreach ($statusList as $keyword => $criteria)
         {
-            $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, "countId", $keyword);
+            $keywordFilter = $dataType == "countId"?$keyword:"approved";
+            $data = Model_project::getStatusQuantityDetailByYear($keywordFilter, $year, $dataType, $keyword, $contractId);
             if(count($data) >= 1)
             {
                 $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
@@ -235,7 +239,7 @@ class AjaxDashboard extends PrivateController
             "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
             "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design")),
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing")),
-            "alreadySent" => array("title" => "Camino", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent")),
+            "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent")),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped")),
             "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order")),
             "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials"))
@@ -386,41 +390,6 @@ class AjaxDashboard extends PrivateController
         $response["totalDays"] = $totalDays;
         $response["startDate"] = $startDate;
         $response["endDate"] = $endDate;
-        echo json_encode($response);exit;
-    }
-
-    public function getProjectProgressByAmount()
-    {
-        $formData = $this->input->post();
-        $year = $formData["year"];
-        $responseData = array();
-        $statusList = array(
-            'approved' => 'APROBADOS',
-            'as_built' => 'CONSTRUIDOS',
-            'conciliation_shipment' => 'CONCILIADOS');
-
-        foreach ($statusList as $keyword => $criteria)
-        {
-            $data = Model_project::getStatusQuantityDetailByYear("approved", $year, "sumBudget", $keyword);
-
-            if(count($data) >= 1)
-            {
-                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
-            }
-            else
-            {
-                $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
-                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
-            }
-            $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
-            $responseData[] = $data;
-        }
-
-        $response["success"] = 1;
-        $response["message"] = "";
-        $response["data"] = $responseData;
         echo json_encode($response);exit;
     }
 }

@@ -156,12 +156,26 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-primary" id="panel-report-project-totals-table">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Tabla de totales
                     <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                    <select class="form-control input-sm" name="data-type">
+                        <option value="countId">Unidades</option>
+                        <option value="sumBudget">Montos aprobados</option>
+                    </select>
+                    <select class="form-control input-sm" name="contract-number">
+                        <option value="">Contratos</option>
+                        <?php
+                        $html = "";
+                        foreach ($contractList as $contract)
+                        {
+                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                        }
+                        echo $html;
+                        ?>
+                    </select>
                 </div>
-
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">

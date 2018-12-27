@@ -144,7 +144,6 @@
                 </span>
                 <span class="pull-right">
                     <select class="form-control input-sm" name="stage" style="width: 90px">
-                        <option value="">Etapas</option>
                         <option value="total">Total</option>
                         <option value="inProgress">Contruccion</option>
                         <option value="closure">Cierre</option>

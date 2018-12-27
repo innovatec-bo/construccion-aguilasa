@@ -11,17 +11,6 @@ function ChartHandler(objectContent) {
 
     this.launchPieChart = function(data)
     {
-        /**
-         * ---------------------------------------
-         * This demo was created using amCharts 4.
-         *
-         * For more information visit:
-         * https://www.amcharts.com/
-         *
-         * Documentation is available at:
-         * https://www.amcharts.com/docs/v4/
-         * ---------------------------------------
-         */
         am4core.useTheme(am4themes_kelly);
         _am4Core.useTheme(am4themes_animated);
         // Create chart instance
@@ -32,14 +21,12 @@ function ChartHandler(objectContent) {
         // Add data
         chart.data = data.list;
         chart.legend = new _am4Charts.Legend();
+
         // Add and configure Series
         var series = chart.series.push(new _am4Charts.PieSeries3D());
         series.dataFields.value = data.value;
         series.dataFields.category = data.category;
 
-        // series.ticks.template.disabled = true;
-        // series.alignLabels = false;
-        // series.labels.template.text = "{value.percent.formatNumber('#.0')}%";
         series.labels.template.radius = _am4Core.percent(-40);
         series.labels.template.fill = _am4Core.color("white");
         series.labels.template.adapter.add("radius", function(radius, target) {

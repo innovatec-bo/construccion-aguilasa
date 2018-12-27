@@ -1346,14 +1346,16 @@ class Model_project extends Model_project_base
      * @param string $year
      * @param string $columnType
      * @param string $mainList
+     * @param string $contractId
      * @return mixed
      */
-    public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId", $mainList = "allProjects")
+    public static function getStatusQuantityDetailByYear($keyword, $year = "", $columnType = "countId", $mainList = "allProjects", $contractId = "")
     {
         $ci = &get_instance();
         $ci->load->database();
 
         $yearFilter = $year == ""?"":" and projects.year = ".$ci->db->escape($year)." ";
+        $contractIdFilter  = $contractId == ""?"":" and contract_id_pro = ".$ci->db->escape($contractId)." ";
         $columns = static::_getStatusQuantityDetailByYearColumns($columnType);
         $mainList = static::_mainListFromFilter($mainList);
         $sql = "
@@ -1420,12 +1422,13 @@ class Model_project extends Model_project_base
                     and keyword_pst = ".$ci->db->escape($keyword)."
                     GROUP BY id_psl
             ) status_log on status_log.project_id_psl = id_pro
-            -- ) status_log on status_log.project_id_psl = id_pro and DATE_FORMAT(status_log.entry_date,'%Y-%M') = DATE_FORMAT(wfl_projects.entry_date_main_list,'%Y-%M')
             WHERE
-            deleted_pro != 1					
+            deleted_pro != 1
+            
             ) projects
             WHERE
             deleted_pro != 1
+            ".$contractIdFilter."
             ".$yearFilter."
             GROUP BY projects.year
         ";
