@@ -92,6 +92,35 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-projects-progress-by-amount-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Avance de proyectos en montos
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                </div>
+                <div class="panel-body">
+                    <div id="projects-progress-by-amount-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-monthly-projects-by-total-budgets-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Proyectos mensuales en importes totales
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                </div>
+                <div class="panel-body">
+                    <div id="monthly-projects-by-total-budgets-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
     <!-- /.row -->
     <!-- /.row -->
 </div>

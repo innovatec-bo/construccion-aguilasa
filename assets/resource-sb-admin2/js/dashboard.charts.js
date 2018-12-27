@@ -6,6 +6,8 @@ $(document).ready(function() {
     getExecutiveSummary();
     getProjectTotalsChart();
     getProjectsEvolutionChart();
+    getProjectsByAmountChart();
+    getMonthlyProjectTotalBudgetChart();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -27,6 +29,16 @@ $(document).ready(function() {
     $('#panel-projects-evolution-chart input[name=report-year]').on("dp.change",function(e){
         var date = new Date(e.date);
         getProjectsEvolutionChart(date.getFullYear());
+    });
+
+    $('#panel-projects-progress-by-amount-chart input[name=report-year]').on("dp.change",function(e){
+        var date = new Date(e.date);
+        getProjectsByAmountChart(date.getFullYear());
+    });
+
+    $('#panel-monthly-projects-by-total-budgets-chart input[name=report-year]').on("dp.change",function(e){
+        var date = new Date(e.date);
+        getMonthlyProjectTotalBudgetChart(date.getFullYear());
     });
 });
 
@@ -86,6 +98,38 @@ function getProjectTotalsChart(year)
     });
 }
 
+function getMonthlyProjectTotalBudgetChart(year)
+{
+    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    var $content = $("#monthly-projects-by-total-budgets-chart-content");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getProjectProgressByAmount',
+        dataType  :"json",
+        type : "POST",
+        data:{year:year},
+        success:function(response){
+            var monthList = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+            var data = [];
+            var singleDataRow = {};
+            var seriesList = {};
+            $.each(monthList, function(i, month){
+
+                singleDataRow.month = month;
+                $.each(response.data, function(j, row){
+                    singleDataRow[j+row.criteriaKeyword] = row[singleDataRow.month];
+                    seriesList[j+row.criteriaKeyword] = row.criteria;
+                });
+                data.push(singleDataRow);
+                singleDataRow = {};
+            });
+            // console.log(data, seriesList);
+            var projectTotalsTable = new ChartHandler("monthly-projects-by-total-budgets-chart-content");
+            projectTotalsTable.launchXYChart(data, seriesList);
+        }
+    });
+}
+
 function getProjectsEvolutionChart(year)
 {
     year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
@@ -99,6 +143,24 @@ function getProjectsEvolutionChart(year)
         success:function(response){
             var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");
             projectTotalsTable.launchHorizontalBarChart(response.data);
+        }
+    });
+}
+
+function getProjectsByAmountChart(year)
+{
+    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    var $content = $("#projects-progress-by-amount-chart-content");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getProjectProgressByAmount',
+        dataType  :"json",
+        type : "POST",
+        data:{year:year},
+        success:function(response){
+            var projectTotalsTable = new ChartHandler("projects-progress-by-amount-chart-content");
+            projectTotalsTable.launchHorizontalBarChart(response.data);
+            console.log(response);
         }
     });
 }

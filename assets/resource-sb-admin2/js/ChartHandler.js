@@ -22,7 +22,7 @@ function ChartHandler(objectContent) {
          * https://www.amcharts.com/docs/v4/
          * ---------------------------------------
          */
-        _am4Core.useTheme(am4themes_dark);
+        am4core.useTheme(am4themes_kelly);
         _am4Core.useTheme(am4themes_animated);
         // Create chart instance
         var pieChart3D = _am4Charts.PieChart3D;
@@ -60,6 +60,7 @@ function ChartHandler(objectContent) {
     this.launchGaugeChart = function()
     {
         // Themes begin
+        am4core.useTheme(am4themes_kelly);
         am4core.useTheme(am4themes_animated);
         // Themes end
 
@@ -170,6 +171,7 @@ function ChartHandler(objectContent) {
     this.launchXYChart =function(data, seriesList)
     {
         // Themes begin
+        am4core.useTheme(am4themes_kelly);
         am4core.useTheme(am4themes_animated);
         // Themes end
 
@@ -229,6 +231,7 @@ function ChartHandler(objectContent) {
     this.launchHorizontalBarChart =function(data)
     {
         // Themes begin
+        am4core.useTheme(am4themes_kelly);
         am4core.useTheme(am4themes_animated);
         // Themes end
 
@@ -237,24 +240,19 @@ function ChartHandler(objectContent) {
 
         chart.data = [{
             "year": "2005",
-            "income": 23.5,
-            "expenses": 18.1
+            "income": 23.5
         }, {
             "year": "2006",
-            "income": 26.2,
-            "expenses": 22.8
+            "income": 26.2
         }, {
             "year": "2007",
-            "income": 30.1,
-            "expenses": 23.9
+            "income": 30.1
         }, {
             "year": "2008",
-            "income": 29.5,
-            "expenses": 25.1
+            "income": 29.5
         }, {
             "year": "2009",
-            "income": 24.6,
-            "expenses": 25
+            "income": 24.6
         }];
         chart.data = data;
         //create category axis for years

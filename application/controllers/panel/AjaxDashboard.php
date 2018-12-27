@@ -388,4 +388,39 @@ class AjaxDashboard extends PrivateController
         $response["endDate"] = $endDate;
         echo json_encode($response);exit;
     }
+
+    public function getProjectProgressByAmount()
+    {
+        $formData = $this->input->post();
+        $year = $formData["year"];
+        $responseData = array();
+        $statusList = array(
+            'approved' => 'APROBADOS',
+            'as_built' => 'CONSTRUIDOS',
+            'conciliation_shipment' => 'CONCILIADOS');
+
+        foreach ($statusList as $keyword => $criteria)
+        {
+            $data = Model_project::getStatusQuantityDetailByYear("approved", $year, "sumBudget", $keyword);
+
+            if(count($data) >= 1)
+            {
+                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
+            }
+            else
+            {
+                $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
+                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
+                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
+            }
+            $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+            $responseData[] = $data;
+        }
+
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"] = $responseData;
+        echo json_encode($response);exit;
+    }
 }
