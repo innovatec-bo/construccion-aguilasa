@@ -16,7 +16,8 @@ $(document).ready(function() {
         var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
         var managementBy = $('#panel-executive-summary-chart select[name=management-by] option:selected').val();
         var contractNumber = $('#panel-executive-summary-chart select[name=contract-number] option:selected').val();
-        getExecutiveSummary(projectSystem, managementBy, contractNumber);
+        var dataType = $('#panel-executive-summary-chart select[name=data-type] option:selected').val();
+        getExecutiveSummary(projectSystem, managementBy, contractNumber, dataType);
     });
 
     $('#panel-project-totals-chart input[name=report-year]').on("dp.change",function(e){
@@ -50,22 +51,23 @@ $(document).ready(function() {
 
 });
 
-function getExecutiveSummary(system, management, contract)
+function getExecutiveSummary(system, management, contract, dataType)
 {
     var system = typeof system !== 'undefined' ? system : "";
     var management = typeof management !== 'undefined' ? management : "";
     var contract = typeof contract !== 'undefined' ? contract : "";
+    var dataType = typeof dataType !== 'undefined' ? dataType : "totalProjectsBySection";
     var $content = $("#executive-summary-chart-content");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
         dataType  :"json",
         type : "POST",
-        data:{system:system, management:management, contract:contract},
+        data:{system:system, management:management, contract:contract, dataType:dataType},
         success:function(response){
             var data  = {
                 category: 'title',
-                value: 'totalProjectsBySection',
+                value: dataType,
                 list:response.list
             };
             var chartHandler = new ChartHandler("executive-summary-chart-content");

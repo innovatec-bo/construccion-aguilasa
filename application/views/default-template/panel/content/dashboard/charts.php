@@ -49,6 +49,10 @@
                             echo $html;
                             ?>
                         </select>
+                        <select class="form-control input-sm" name="data-type">
+                            <option value="totalProjectsBySection">Unidades</option>
+                            <option value="totalApprovedBudgetBySection">Montos aprobados</option>
+                        </select>
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>

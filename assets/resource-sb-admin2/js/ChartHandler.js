@@ -11,7 +11,7 @@ function ChartHandler(objectContent) {
 
     this.launchPieChart = function(data)
     {
-        am4core.useTheme(am4themes_kelly);
+        _am4Core.useTheme(am4themes_kelly);
         _am4Core.useTheme(am4themes_animated);
         // Create chart instance
         var pieChart3D = _am4Charts.PieChart3D;
@@ -28,7 +28,7 @@ function ChartHandler(objectContent) {
         series.dataFields.category = data.category;
 
         series.labels.template.radius = _am4Core.percent(-40);
-        series.labels.template.fill = _am4Core.color("white");
+        // series.labels.template.fill = _am4Core.color("white");
         series.labels.template.adapter.add("radius", function(radius, target) {
             if (target.dataItem && (target.dataItem.values.value.percent < 100)) {
                 return 20;
@@ -38,7 +38,7 @@ function ChartHandler(objectContent) {
 
         series.labels.template.adapter.add("fill", function(color, target) {
             if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-                return am4core.color("#fff");
+                // return am4core.color("#fff");
             }
             return color;
         });
