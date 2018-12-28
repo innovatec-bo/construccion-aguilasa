@@ -38,12 +38,14 @@ $(document).ready(function() {
     $('#panel-projects-evolution-chart input[name=report-year]').on("dp.change",function(e){
         var date = new Date(e.date);
         var dataType = $(this).closest("div#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
-        getProjectsEvolutionChart(date.getFullYear(), dataType);
+        var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
+        getProjectsEvolutionChart(date.getFullYear(), dataType, contractId);
     });
-    $('#panel-projects-evolution-chart select[name=data-type]').on("change",function(){
+    $(document).on("change",'#panel-projects-evolution-chart select[name=data-type], #panel-projects-evolution-chart select[name=contract-number]',function(){
         var date = $(this).closest("div#panel-projects-evolution-chart").find("input[name=report-year]").val();
-        var dataType = $(this).val();
-        getProjectsEvolutionChart(date, dataType);
+        var dataType = $(this).closest("div#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
+        var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
+        getProjectsEvolutionChart(date, dataType, contractId);
     });
 
 });
@@ -106,17 +108,18 @@ function getProjectTotalsChart(year, dataType, contractId)
     });
 }
 
-function getProjectsEvolutionChart(year, dataType)
+function getProjectsEvolutionChart(year, dataType, contractId)
 {
     year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
     dataType = typeof dataType !== 'undefined' ? dataType : "countId";
+    contractId = typeof contractId !== 'undefined' ? contractId : "";
     var $content = $("#projects-evolution-chart-content");
     blockArea($content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getProjectTotalsTable',
         dataType  :"json",
         type : "POST",
-        data:{year:year, dataType:dataType},
+        data:{year:year, dataType:dataType, contractId:contractId},
         success:function(response){
             var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");
             projectTotalsTable.launchHorizontalBarChart(response.data);

@@ -103,6 +103,17 @@
                         <option value="countId">Unidades</option>
                         <option value="sumBudget">Montos aprobados</option>
                     </select>
+                    <select class="form-control input-sm" name="contract-number">
+                        <option value="">Contrato</option>
+                        <?php
+                        $html = "";
+                        foreach ($contractList as $contract)
+                        {
+                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                        }
+                        echo $html;
+                        ?>
+                    </select>
                 </div>
                 <div class="panel-body">
                     <div id="projects-evolution-chart-content" class="chart-content"></div>
