@@ -16,6 +16,7 @@
                 <th>%</th>
                 <th>MONTO APROBADO</th>
                 <th>%</th>
+                <th>% Contrato</th>
             </tr>
             </thead>
             <tbody>
@@ -26,6 +27,7 @@
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>
                     <td class="text-center">{{numberFormat totalApprovedBudgetBySection decimalLength="2"}}</td>
                     <td class="text-center">{{totalPercentageApprovedBudgetBySection}}</td>
+                    <td class="text-center">{{contractAmountPercentageBySection}}</td>
                 </tr>
             {{/each}}
             </tbody>
@@ -36,6 +38,7 @@
                     <td class="text-center">{{executiveSummary.totalPercentageProjects}}</td>
                     <td class="text-center">{{executiveSummary.totalApprovedBudget}}</td>
                     <td class="text-center">{{executiveSummary.totalPercentageApprovedBudget}}</td>
+                    <td class="text-center">{{executiveSummary.totalContractAmountPercentage}}</td>
                 </tr>
             </tfoot>
         </table>

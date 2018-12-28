@@ -234,6 +234,17 @@ class AjaxDashboard extends PrivateController
             $management = $formData["management"];
             $contract = $formData["contract"];
         }
+        $contractAmount = 0;
+        $contractList = Model_contract::getAll(100, 0);
+        foreach ($contractList as $stdClass)
+        {
+            $contractAmount += $stdClass->amount_con;
+            if($stdClass->id_con == $contract)
+            {
+                $contractAmount = $stdClass->amount_con;
+                break;
+            }
+        }
         $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
         $reportSections = array(
             "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
@@ -273,6 +284,7 @@ class AjaxDashboard extends PrivateController
             $reportSections[$groupKey]["totalProjectsBySection"] = $totalProjectsBySection;
             $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $totalApprovedBudgetBySection;
             $reportSections[$groupKey]["totalRealBudget"] = $totalRealBudget;
+
             $groupList = array();
             $totalProjectsBySection = 0;
             $totalApprovedBudgetBySection = 0;
@@ -281,6 +293,7 @@ class AjaxDashboard extends PrivateController
 
         $totalPercentageProjects = 0;
         $totalPercentageApprovedBudget = 0;
+        $totalContractAmountPercentage = 0;
         foreach ($reportSections as $groupKey => $data)
         {
             $totalProjectsBySection = $reportSections[$groupKey]["totalProjectsBySection"];
@@ -292,12 +305,17 @@ class AjaxDashboard extends PrivateController
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
+
+            $contractAmountPercentageBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $contractAmount;
+            $totalContractAmountPercentage += $contractAmountPercentageBySection;
+            $reportSections[$groupKey]["contractAmountPercentageBySection"] = number_format($contractAmountPercentageBySection, 2);
         }
         $response["success"] = 1;
         $response["totalProjects"] = $totalProjects;
         $response["totalPercentageProjects"] = $totalPercentageProjects;
         $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
         $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
+        $response["totalContractAmountPercentage"] = number_format($totalContractAmountPercentage, 2);
         $response["list"] = array_values($reportSections);
 
         if($ajaxRequest)
