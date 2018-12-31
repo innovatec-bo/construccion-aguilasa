@@ -1,11 +1,23 @@
 /********************** begin - status summary  */
-.already_sent, .as_built, .conciliation_shipment
+.stakes, .digitization, .drawing
 {
-    background-color: #79B9D3!important;
+    background-color: #8EA9DB!important;
 }
-.approved, .assigned_to, .completed, .conciliation_reception, .cre_return_order
+.ready_to_send, .already_sent, .completed, .as_built, .conciliation_shipment, .cre_return_order
 {
     background-color: #FFFF00!important;
+}
+.approved, .assign_to, .in_progress, .paused, .stopped
+{
+    background-color: #92D050!important;
+}
+.returned, .canceled
+{
+    color: #305496!important;
+}
+.project_return_materials
+{
+    background-color: #00B0F0!important;
 }
 #current-status-summary-report .current-status-total
 {
