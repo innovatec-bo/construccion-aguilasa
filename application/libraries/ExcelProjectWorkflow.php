@@ -10,12 +10,14 @@ class ExcelProjectWorkflow
     private $_additionalParameters;
     private $_columnDefinition;
     private $_arrayColumnDataCounter;
+    private $_hideHeaderColumnGroup;
 	public function __construct($sessionUser)
 	{
         $this->_sessionUser = $sessionUser;
         $this->_additionalParameters = array();
         $this->_arrayColumnDataCounter = array();
-        $this->_setColumnDefinition();
+        $this->_hideHeaderColumnGroup = FALSE;
+        $this->setColumnDefinition();
 	}
 
 	function getReport()
@@ -35,7 +37,7 @@ class ExcelProjectWorkflow
         $this->_headerColumnGroup($spreadsheet);
         $this->_headerColumn($spreadsheet);
 
-        $i = 2;
+        $i = $this->startDataRow();
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         foreach ($projectWorkflow as $row)
         {
@@ -65,89 +67,92 @@ class ExcelProjectWorkflow
 
 	private function _headerColumnGroup($spreadsheet)
     {
-        $titleStyleArray = [
-            'font' => ['bold' => true],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'DDEBF7']
-            ]
-        ];
-        $projectCode = $this->_getExcelColumnByDataKey("code_pro");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($projectCode.'1', "ETAPAS");
-        $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
+        if($this->_hideHeaderColumnGroup === FALSE)
+        {
+            $titleStyleArray = [
+                'font' => ['bold' => true],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['argb' => 'DDEBF7']
+                ]
+            ];
+            $projectCode = $this->_getExcelColumnByDataKey("code_pro");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($projectCode.'1', "ETAPAS");
+            $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
-        $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
-        $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
-        $spreadsheet->getActiveSheet()->getStyle($contractNumber.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($contractNumber.'1:'.$buildingCompletionDate.'1');
+            $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
+            $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
+            $spreadsheet->getActiveSheet()->getStyle($contractNumber.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($contractNumber.'1:'.$buildingCompletionDate.'1');
 
-        $stakeDate = $this->_getExcelColumnByDataKey("stake_date");
-        $alreadySentDate = $this->_getExcelColumnByDataKey("already_sent_date");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($stakeDate.'1', "DISEÑO");
-        $spreadsheet->getActiveSheet()->getStyle($stakeDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($stakeDate.'1:'.$alreadySentDate.'1');
+            $stakeDate = $this->_getExcelColumnByDataKey("stake_date");
+            $alreadySentDate = $this->_getExcelColumnByDataKey("already_sent_date");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($stakeDate.'1', "DISEÑO");
+            $spreadsheet->getActiveSheet()->getStyle($stakeDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($stakeDate.'1:'.$alreadySentDate.'1');
 
-        $approvedDate = $this->_getExcelColumnByDataKey("approved_date");
-        $totalApproved = $this->_getExcelColumnByDataKey("total_approved");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($approvedDate.'1', "APROBACION/CANCELACION");
-        $spreadsheet->getActiveSheet()->getStyle($approvedDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($approvedDate.'1:'.$totalApproved.'1');
+            $approvedDate = $this->_getExcelColumnByDataKey("approved_date");
+            $totalApproved = $this->_getExcelColumnByDataKey("total_approved");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($approvedDate.'1', "APROBACION/CANCELACION");
+            $spreadsheet->getActiveSheet()->getStyle($approvedDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($approvedDate.'1:'.$totalApproved.'1');
 
-        $recordBuildingMaterialsDate = $this->_getExcelColumnByDataKey("record_building_materials_date");
-        $materialsReceptionDate = $this->_getExcelColumnByDataKey("materials_reception_date");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($recordBuildingMaterialsDate.'1', "ALMACEN");
-        $spreadsheet->getActiveSheet()->getStyle($recordBuildingMaterialsDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($recordBuildingMaterialsDate.'1:'.$materialsReceptionDate.'1');
+            $recordBuildingMaterialsDate = $this->_getExcelColumnByDataKey("record_building_materials_date");
+            $materialsReceptionDate = $this->_getExcelColumnByDataKey("materials_reception_date");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($recordBuildingMaterialsDate.'1', "ALMACEN");
+            $spreadsheet->getActiveSheet()->getStyle($recordBuildingMaterialsDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($recordBuildingMaterialsDate.'1:'.$materialsReceptionDate.'1');
 
-        $assignToDate = $this->_getExcelColumnByDataKey("assign_to_date");
-        $estimatedTimeAssigned = $this->_getExcelColumnByDataKey("estimated_time_assigned");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($assignToDate.'1', "ASIGNACION");
-        $spreadsheet->getActiveSheet()->getStyle($assignToDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($assignToDate.'1:'.$estimatedTimeAssigned.'1');
+            $assignToDate = $this->_getExcelColumnByDataKey("assign_to_date");
+            $estimatedTimeAssigned = $this->_getExcelColumnByDataKey("estimated_time_assigned");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($assignToDate.'1', "ASIGNACION");
+            $spreadsheet->getActiveSheet()->getStyle($assignToDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($assignToDate.'1:'.$estimatedTimeAssigned.'1');
 
-        $inProgressDate = $this->_getExcelColumnByDataKey("in_progress_date");
-        $asBuiltDistance = $this->_getExcelColumnByDataKey("as_built_distance");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($inProgressDate.'1', "CONSTRUCCION");
-        $spreadsheet->getActiveSheet()->getStyle($inProgressDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($inProgressDate.'1:'.$asBuiltDistance.'1');
+            $inProgressDate = $this->_getExcelColumnByDataKey("in_progress_date");
+            $asBuiltDistance = $this->_getExcelColumnByDataKey("as_built_distance");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($inProgressDate.'1', "CONSTRUCCION");
+            $spreadsheet->getActiveSheet()->getStyle($inProgressDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($inProgressDate.'1:'.$asBuiltDistance.'1');
 
-        $conciliationReceptionDate = $this->_getExcelColumnByDataKey("conciliation_reception_date");
-        $projectReturnMaterialsDate = $this->_getExcelColumnByDataKey("project_return_materials_date");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($conciliationReceptionDate.'1', "ADMINISTRACION");
-        $spreadsheet->getActiveSheet()->getStyle($conciliationReceptionDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($conciliationReceptionDate.'1:'.$projectReturnMaterialsDate.'1');
+            $conciliationReceptionDate = $this->_getExcelColumnByDataKey("conciliation_reception_date");
+            $projectReturnMaterialsDate = $this->_getExcelColumnByDataKey("project_return_materials_date");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($conciliationReceptionDate.'1', "ADMINISTRACION");
+            $spreadsheet->getActiveSheet()->getStyle($conciliationReceptionDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($conciliationReceptionDate.'1:'.$projectReturnMaterialsDate.'1');
 
-        $paymentOrderRegisteredDate = $this->_getExcelColumnByDataKey("payment_order_registered_date");
-        $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue($paymentOrderRegisteredDate.'1', "GESTION DE PAGO");
-        $spreadsheet->getActiveSheet()->getStyle($paymentOrderRegisteredDate.'1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells($paymentOrderRegisteredDate.'1:'.$paymentOrderHasBeenSettledDate.'1');
+            $paymentOrderRegisteredDate = $this->_getExcelColumnByDataKey("payment_order_registered_date");
+            $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue($paymentOrderRegisteredDate.'1', "GESTION DE PAGO");
+            $spreadsheet->getActiveSheet()->getStyle($paymentOrderRegisteredDate.'1')->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->mergeCells($paymentOrderRegisteredDate.'1:'.$paymentOrderHasBeenSettledDate.'1');
 
-        $spreadsheet->getActiveSheet()->getStyle($projectCode.'1:'.$paymentOrderHasBeenSettledDate.'1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-
+            $spreadsheet->getActiveSheet()->getStyle($projectCode.'1:'.$paymentOrderHasBeenSettledDate.'1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+        }
     }
 
     private function _headerColumn($spreadsheet)
     {
-        $this->_drawRow($spreadsheet,  2);
+        $startDataRow = $this->startDataRow();
+        $this->_drawRow($spreadsheet,  $startDataRow);
         $projectCode = $this->_getExcelColumnByDataKey("code_pro");
-        $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
-        $spreadsheet->getActiveSheet()->getStyle($projectCode.'2:'.$paymentOrderHasBeenSettledDate.'2')->getAlignment()->setWrapText(true);
+        $paymentOrderHasBeenSettledDate = $this->_getLastExcelColumn();
+        $spreadsheet->getActiveSheet()->getStyle($projectCode.$startDataRow.':'.$paymentOrderHasBeenSettledDate.$startDataRow)->getAlignment()->setWrapText(true);
     }
 
     private function _dateFormat($spreadsheet, $totalRows)
@@ -155,9 +160,11 @@ class ExcelProjectWorkflow
         $columnList = array("entry_date_pro", "status_log_manual_entry_date", "folder_date_pro", "cre_design_completion_date_pro", "cre_building_completion_date_pro", "stake_date", "returned_date", "digitization_date", "drawing_date", "schedule_date", "schedule_start", "schedule_end", "already_sent_date", "approved_date", "canceled_date", "rectify_design_date", "rectify_illustration_date", "record_building_materials_date","get_materials_date",
                             "deliver_materials_date", "materials_reception_date", "assign_to_date", "start_date_assigned", "end_date_assigned", "in_progress_date", "completed_date", "paused_date", "stopped_date", "as_built_date", "conciliation_reception_date", "conciliation_shipment_date", "cre_return_order_date", "project_return_materials_date", "payment_order_registered_date", "payment_order_invoice_sent_date", "payment_order_has_been_settled_date");
         $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
+        $startData = $this->startDataRow() + 1;
         foreach($columnList as $key => $column)
         {
-            $spreadsheet->getActiveSheet()->getStyle($column.'3:'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
+
+            $spreadsheet->getActiveSheet()->getStyle($column.$startData.':'.$column.$totalRows)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
         }
     }
 
@@ -202,7 +209,7 @@ class ExcelProjectWorkflow
         $this->_additionalParameters = $additionalParameters;
     }
 
-    private function _setColumnDefinition()
+    public function setColumnDefinition($columnsToExport = array())
     {
         $this->_columnDefinition = array(
             "code_pro" => "CODIGO",
@@ -283,6 +290,23 @@ class ExcelProjectWorkflow
             "payment_order_invoice_sent_date" => "FECHA DE ENVIO DE FACTURA",
             "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION"
         );
+
+        //If there is a columnArray to export then execute this code.
+        if(count($columnsToExport) > 1)
+        {
+            //If there is special columns to export then let's hide the column grouping.
+            $this->_hideHeaderColumnGroup = TRUE;
+
+            $this->_columnDefinition = array_filter(
+                                            $this->_columnDefinition,
+                                            function ($key) use ($columnsToExport)
+                                            {
+                                                return in_array($key, $columnsToExport);
+                                            },
+                                            ARRAY_FILTER_USE_KEY
+                                        );
+        }
+
     }
 
     private function _drawRow($spreadsheet, $rowNumber, $rowData = FALSE)
@@ -297,31 +321,35 @@ class ExcelProjectWorkflow
         {
             foreach ($arrayAlphabet as $char)
             {
-                if($rowData === FALSE)
+                if ($rowData === FALSE)
                 {
-                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round.$char.$rowNumber, $arrayTitles[$i]);
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $arrayTitles[$i]);
                 }
                 else
                 {
-                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round.$char.$rowNumber, $rowData[$arrayKeys[$i]]);
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $rowData[$arrayKeys[$i]]);
 
-                    if($rowNumber == 3)
+                    if ($rowNumber == ($this->startDataRow() + 1))
                     {
                         //Let's start our counter
                         $this->_arrayColumnDataCounter[$arrayKeys[$i]] = 0;
                     }
-                    if(!empty($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] != "0000-00-00 00:00:00")
+                    if (!empty($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] != "0000-00-00 00:00:00")
                     {
                         //If there is any data then the counter will increase its value to these column
-                        $this->_arrayColumnDataCounter[$arrayKeys[$i]] ++;
+
+                        $this->_arrayColumnDataCounter[$arrayKeys[$i]]++;
                     }
                 }
-
                 $i++;
-                if($i == $maxColumn)
+                if ($i == $maxColumn || !isset($arrayTitles[$i]))
                 {
                     break;
                 }
+            }
+            if ($i == $maxColumn || !isset($arrayTitles[$i]))
+            {
+                break;
             }
         }
     }
@@ -344,10 +372,14 @@ class ExcelProjectWorkflow
                     $response[] = $excelColumn;
                 }
                 $i++;
-                if($maxColumn == $i)
+                if ($i == $maxColumn || !isset($arrayKeys[$i]))
                 {
                     break;
                 }
+            }
+            if ($i == $maxColumn || !isset($arrayKeys[$i]))
+            {
+                break;
             }
         }
         return $response;
@@ -372,10 +404,14 @@ class ExcelProjectWorkflow
                     break;
                 }
                 $i++;
-                if($maxColumn == $i)
+                if ($i == $maxColumn || !isset($arrayKeys[$i]))
                 {
                     break;
                 }
+            }
+            if ($i == $maxColumn || !isset($arrayKeys[$i]))
+            {
+                break;
             }
             if($response != "")
                 break;
@@ -402,6 +438,51 @@ class ExcelProjectWorkflow
             {
                 $response[] = $key;
             }
+        }
+        return $response;
+    }
+
+    public function _hideHeaderColumnGroup()
+    {
+        $this->_hideHeaderColumnGroup = TRUE;
+    }
+
+    private function startDataRow()
+    {
+        $response = 2;
+        if($this->_hideHeaderColumnGroup)
+        {
+            $response = 1;
+        }
+        return $response;
+    }
+
+    private function _getLastExcelColumn()
+    {
+        $arrayRounds = array("","A","B");
+        $arrayAlphabet = range("A","Z");
+        $maxColumn = count($this->_columnDefinition);
+        $arrayKeys = array_keys($this->_columnDefinition);
+        $response = "";
+        $i = 0;
+        foreach ($arrayRounds as $round)
+        {
+            foreach ($arrayAlphabet as $char)
+            {
+                $excelColumn = $round.$char;
+                $response = $excelColumn;
+                $i++;
+                if ($i == $maxColumn || !isset($arrayKeys[$i]))
+                {
+                    break;
+                }
+            }
+            if ($i == $maxColumn || !isset($arrayKeys[$i]))
+            {
+                break;
+            }
+            if($response != "")
+                break;
         }
         return $response;
     }

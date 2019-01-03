@@ -37,6 +37,7 @@
             <form name="workflow-with-parameters" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
                     <input type="hidden" name="is-super-admin" value="<?=$isSuperAdmin?>">
                 <input type="hidden" name="code-list" value="">
+                <input type="hidden" name="main-design-report-columns" value="">
             </form>
         </div>
         <div class="col-md-12">

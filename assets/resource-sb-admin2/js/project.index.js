@@ -47,15 +47,13 @@ statusSet["39"] = "building";
 
 $(document).ready(function() {
 
-
-
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
     additionalParameter.addParameterObject('status','text');
     additionalParameter.setButtonFilter('#send-filters');
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
 
-    var buttonAdd = {
+    var buttonWorkflow = {
         text: "Workflow",
         action: function ( e, dt, node, config )
         {
@@ -69,10 +67,33 @@ $(document).ready(function() {
             $form.submit();
         }
     };
-    var buttons= ['excel', 'csv','pdf','print', buttonAdd];
+    var buttonMainDesignReport = {
+        text: "Design Rep.",
+        action: function ( e, dt, node, config )
+        {
+            var $form = $("form[name=workflow-with-parameters]");
+            var statusSet = [];
+            statusSet.push("code_pro");
+            statusSet.push("entry_date_pro");
+            statusSet.push("stake_date");
+            statusSet.push("digitization_date");
+            statusSet.push("drawing_date");
+            statusSet.push("already_sent_date");
+            statusSet.push("digitization_points_quantity");
+            statusSet.push("digitization_distance");
+            statusSet.push("stake_responsible");
+            statusSet.push("address_pro");
+            statusSet.push("cre_fiscal_pro");
+            // statusSet.push("design");//costo de estacado
+            // statusSet.push("design");//aprobados
+            $form.find("input[name=main-design-report-columns]").val(statusSet);
+            $form.submit();
+        }
+    };
+    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport, buttonWorkflow];
     if($("input[name=is-super-admin]").val() != 1)
     {
-        buttons= ['excel', 'csv','pdf','print'];
+        buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport];
     }
     //Horizontal Icons dataTable
     // var statusSet = $("input[name=status-set]").val();
