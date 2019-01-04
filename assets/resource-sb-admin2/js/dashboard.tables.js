@@ -289,3 +289,30 @@ function deleteTrackingList(trackingListId)
         }
     });
 }
+
+function chooseWorkflowColumnsToDownload()
+{
+    var data = $("input[name=workflow-column-list]").val();
+    data = jQuery.parseJSON(data);
+    var columnList = [];
+    $.each(data, function(index, value){
+        columnList.push({key:index, title:value});
+    });
+    var htmlSource   = $("#ht-workflow-report-columns-to-download").html();
+    var template = Handlebars.compile(htmlSource);
+    var data = {columnList:columnList};
+    var html = template(data);
+    swal({
+        title:'COLUMNAS A DESCARGAR',
+        html:html,
+        width:"80%",
+        customClass:"columns-to-download",
+        onClose: () =>
+        {
+            var checkboxList = $(".workflow-columns-to-download");
+            $.each(checkboxList, function(index, value){
+                console.log($(value).val());
+            });
+        }
+    });
+}

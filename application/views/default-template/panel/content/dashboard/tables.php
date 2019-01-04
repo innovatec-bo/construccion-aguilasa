@@ -21,6 +21,7 @@
                     <div class="row">
                         <div class="col-lg-12" id="workflow-report">
                             <form name="workflow-report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+                                <input type="hidden" name="workflow-column-list" value='<?=json_encode($workflowColumnList)?>'>
                                 <div class="form-group input-group">
                                     <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
                                     </select>
@@ -246,7 +247,6 @@
             </div>
         </div>
     </div>
-
     <!-- /.row -->
     <!-- /.row -->
 </div>
@@ -256,4 +256,5 @@ $this->load->view('default-template/panel/content/dashboard/ht-report-project-to
 $this->load->view('default-template/panel/content/dashboard/ht-report-net-building-table');
 $this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
 $this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
+$this->load->view('default-template/panel/content/dashboard/ht-workflow-report-columns-to-download');
 ?>

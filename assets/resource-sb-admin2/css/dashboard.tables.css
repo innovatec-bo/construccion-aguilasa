@@ -75,3 +75,12 @@
     font-weight: 600;
 }
 /********************** end - executive summary report  */
+.columns-to-download .checkbox
+{
+    font-size: 9px;
+    margin-bottom: 0px;
+    margin-top:0px;
+}
+.columns-to-download input[type=checkbox], input[type=radio] {
+    margin: 0px 0 0 -20px;
+}
