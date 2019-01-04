@@ -21,10 +21,22 @@
                     <div class="row">
                         <div class="col-lg-12" id="workflow-report">
                             <form name="workflow-report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
-                                <div class="form-group">
-                                    <label>Listas de seguimiento</label>
+                                <div class="form-group input-group">
                                     <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
                                     </select>
+                                    <span class="input-group-btn">
+<!--                                        <button class="btn btn-primary btn-sm" type="button"><i class="fa fa-plus"></i>-->
+<!--                                        </button>-->
+                                        <button class="btn btn-danger btn-sm delete-tracking-list" type="button"><i class="fa fa-trash"></i>
+                                        </button>
+<!--                                        <button class="btn btn-info btn-sm" type="button"><i class="fa fa-floppy-o"></i>-->
+<!--                                        </button>-->
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Listas de seguimiento</label>
+<!--                                    <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">-->
+<!--                                    </select>-->
                                 </div>
                                 <div class="form-group">
                                     <label>Pegue aqui los Proyectos(Códigos) que para que sean exportados en el reporte.<br><em>Los códigos deben estar separados por un espacio.</em></label>

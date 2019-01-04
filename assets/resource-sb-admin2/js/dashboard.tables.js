@@ -92,6 +92,18 @@ $(document).ready(function() {
             saveTrackingList();
         }
     });
+
+    $(".delete-tracking-list").on("click", function(){
+        var select2 = $("select[name=tracking-list-id]").select2("data");
+        if(typeof select2[0] === "undefined")
+        {
+            swal({ title:'', text:"Seleccione una lista para borrar", type:"error"});
+        }
+        else
+        {
+            deleteTrackingList(select2[0].id);
+        }
+    });
 });
 
 function getProjectTotalsTable(year, dataType, contractId)
@@ -247,6 +259,33 @@ function getExecutiveSummary(system, management, contract)
             var html = template(data);
             // }
             $content.html(html);
+        }
+    });
+}
+
+function deleteTrackingList(trackingListId)
+{
+    var $formData = $("form[name=workflow-report]");
+    blockArea($formData);
+    $.ajax({
+        url : base_url + 'panel/AjaxTrackingList/deleteTrackingList',
+        dataType  :"json",
+        type : "POST",
+        data:{trackingListId:trackingListId},
+        success:function(response){
+            $formData.unblock();
+            var messageType = "error";
+            if(response.success == 1)
+                messageType = "success";
+
+            swal({ title:'', text:response.message, type:messageType});
+            $("#workflow-additional-actions3").prop("checked", true);
+            $("input[name=tracking-list-name]").closest("div").slideUp();
+
+            $("select[name=tracking-list-id]").val(null).trigger("change");
+            $formData.find("textarea[name=code-list]").val("");
+            $('.select2.tracking-list').select2('destroy');
+            startSelect2TrackingList();
         }
     });
 }

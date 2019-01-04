@@ -89,4 +89,22 @@ class AjaxTrackingList extends PrivateController
         }
         echo json_encode($response);exit;
     }
+
+    public function deleteTrackingList()
+    {
+        $formData = $this->input->post();
+        $trackingListId = $formData["trackingListId"];
+        $trackingList = Model_tracking_list::getById($trackingListId);
+//        echo"<pre>";var_dump($trackingList);exit;
+        if($trackingList instanceof Model_tracking_list)
+        {
+            $trackingList->delete();
+            $response = array("success" => 1, "message" => "Lista de seguimiento eliminada correctamente.");
+        }
+        else
+        {
+            $response = array("success" => 0, "message" => "No se se encontro la lista de seguimiento.");
+        }
+        echo json_encode($response);exit;
+    }
 }
