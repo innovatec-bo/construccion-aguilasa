@@ -12,7 +12,11 @@
             <div class="col-md-3 text-left">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" class="workflow-columns-to-download" checked value="{{key}}">{{title}}
+                        {{var "readOnlyCheckbox" ""}}
+                        {{#ifCond key "==" "code_pro"}}
+                            {{var "readOnlyCheckbox" "disabled"}}
+                        {{/ifCond}}
+                        <input type="checkbox" class="workflow-columns-to-download" checked {{readOnlyCheckbox}} value="{{key}}">{{title}}
                     </label>
                 </div>
             </div>

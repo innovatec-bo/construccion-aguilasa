@@ -86,7 +86,7 @@ $(document).ready(function() {
             statusSet.push("cre_fiscal_pro");
             // statusSet.push("design");//costo de estacado
             // statusSet.push("design");//aprobados
-            $form.find("input[name=main-design-report-columns]").val(statusSet);
+            $form.find("input[name=columns-to-download]").val(statusSet);
             $form.submit();
         }
     };

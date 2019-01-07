@@ -22,6 +22,7 @@
                         <div class="col-lg-12" id="workflow-report">
                             <form name="workflow-report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
                                 <input type="hidden" name="workflow-column-list" value='<?=json_encode($workflowColumnList)?>'>
+                                <input type="hidden" name="columns-to-download" value=''>
                                 <div class="form-group input-group">
                                     <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
                                     </select>
@@ -66,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Descargar reporte</button>
+                                    <button type="button" class="btn btn-primary">Descargar reporte</button>
                                 </div>
                             </form>
                             <!-- /.table-responsive -->

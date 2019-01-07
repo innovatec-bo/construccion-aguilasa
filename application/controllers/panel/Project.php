@@ -382,7 +382,7 @@ class Project extends PrivateController
     {
         $formData = $this->input->post();
         $codeList = $formData["code-list"];
-        $specialColumns = $formData["main-design-report-columns"];
+        $specialColumns = isset($formData["columns-to-download"])?$formData["columns-to-download"]:array();
         $specialColumns = explode(",",$specialColumns);
         $additionalParameters = array("code-list" => $codeList);
         $excel = new ExcelProjectWorkflow($this->sessionUser);

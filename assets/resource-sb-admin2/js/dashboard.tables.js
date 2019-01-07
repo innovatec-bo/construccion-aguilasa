@@ -104,6 +104,11 @@ $(document).ready(function() {
             deleteTrackingList(select2[0].id);
         }
     });
+
+    $("form[name=workflow-report] button").on("click", function(e){
+        var response = chooseWorkflowColumnsToDownload();
+        // console.log(response);
+    });
 });
 
 function getProjectTotalsTable(year, dataType, contractId)
@@ -292,6 +297,7 @@ function deleteTrackingList(trackingListId)
 
 function chooseWorkflowColumnsToDownload()
 {
+    var $form = $("form[workflow-report]");
     var data = $("input[name=workflow-column-list]").val();
     data = jQuery.parseJSON(data);
     var columnList = [];
@@ -302,6 +308,7 @@ function chooseWorkflowColumnsToDownload()
     var template = Handlebars.compile(htmlSource);
     var data = {columnList:columnList};
     var html = template(data);
+    var columnListToDownload = [];
     swal({
         title:'COLUMNAS A DESCARGAR',
         html:html,
@@ -309,10 +316,12 @@ function chooseWorkflowColumnsToDownload()
         customClass:"columns-to-download",
         onClose: () =>
         {
-            var checkboxList = $(".workflow-columns-to-download");
+            var checkboxList = $(".workflow-columns-to-download:checked");
             $.each(checkboxList, function(index, value){
-                console.log($(value).val());
+                columnListToDownload.push($(value).val());
             });
+            $("input[name=columns-to-download]").val(columnListToDownload);
+            $("form[name=workflow-report]").submit();
         }
     });
 }
