@@ -12,6 +12,35 @@
     ?>
     <div class="row">
         <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-projects-evolution-chart">
+                <div class="panel-heading">
+                    <i class="fa fa-table fa-fw"></i> Evolucion de proyectos
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                    <select class="form-control input-sm" name="data-type">
+                        <option value="countId">Unidades</option>
+                        <option value="sumBudget">Montos aprobados</option>
+                    </select>
+                    <select class="form-control input-sm" name="contract-number">
+                        <option value="">Contrato</option>
+                        <?php
+                        $html = "";
+                        foreach ($contractList as $contract)
+                        {
+                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                        }
+                        echo $html;
+                        ?>
+                    </select>
+                </div>
+                <div class="panel-body">
+                    <div id="projects-evolution-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-primary" id="panel-executive-summary-chart">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
@@ -97,35 +126,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary" id="panel-projects-evolution-chart">
-                <div class="panel-heading">
-                    <i class="fa fa-table fa-fw"></i> Evolucion de proyectos
-                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
-                    <select class="form-control input-sm" name="data-type">
-                        <option value="countId">Unidades</option>
-                        <option value="sumBudget">Montos aprobados</option>
-                    </select>
-                    <select class="form-control input-sm" name="contract-number">
-                        <option value="">Contrato</option>
-                        <?php
-                        $html = "";
-                        foreach ($contractList as $contract)
-                        {
-                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
-                        }
-                        echo $html;
-                        ?>
-                    </select>
-                </div>
-                <div class="panel-body">
-                    <div id="projects-evolution-chart-content" class="chart-content"></div>
-                </div>
-                <!-- /.panel-body -->
-            </div>
-        </div>
-    </div>
+
     <!-- /.row -->
     <!-- /.row -->
 </div>

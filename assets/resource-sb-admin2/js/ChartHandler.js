@@ -20,28 +20,26 @@ function ChartHandler(objectContent) {
         chart.depth = 35;
         // Add data
         chart.data = data.list;
-        chart.legend = new _am4Charts.Legend();
+
 
         // Add and configure Series
         var series = chart.series.push(new _am4Charts.PieSeries3D());
+        series.legendSettings.labelText = '{category}';
+        series.legendSettings.valueText = ' ';
         series.dataFields.value = data.value;
         series.dataFields.category = data.category;
 
+        series.ticks.template.disabled = true;
+        series.labels.template.disabled = true;
         series.labels.template.radius = _am4Core.percent(-40);
-        // series.labels.template.fill = _am4Core.color("white");
+        // -- series.labels.template.fill = _am4Core.color("white");
         series.labels.template.adapter.add("radius", function(radius, target) {
             if (target.dataItem && (target.dataItem.values.value.percent < 100)) {
                 return 20;
             }
             return radius;
         });
-
-        series.labels.template.adapter.add("fill", function(color, target) {
-            if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-                // return am4core.color("#fff");
-            }
-            return color;
-        });
+        chart.legend = new _am4Charts.Legend();
     };
 
     this.launchGaugeChart = function()
