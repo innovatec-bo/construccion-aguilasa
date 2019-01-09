@@ -225,6 +225,35 @@ class AjaxDashboard extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function getSystemReport()
+    {
+        $formData = $this->input->post();
+        $arrayData = array();
+        $management = $formData["management"];
+        $contract = $formData["contract"];
+        $response = array();
+        foreach ($this->_projectSystems as $id => $system)
+        {
+            $currentStatusSummary = Model_project::projectCurrentStatusSummary($id, $management, $contract);
+            foreach ($currentStatusSummary as $summary)
+            {
+                if($summary["keyword"] == "approved")
+                {
+                    $arrayData[] = array(
+                        "id" => $id,
+                        "system" => $system,
+                        "total_projects" => $summary["total_projects"],
+                        "approved_budgets" => $summary["approved_budgets"]
+                    );
+                }
+            }
+        }
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"] = $arrayData;
+        echo json_encode($response);exit;
+    }
+
     public function getExecutiveSummary($ajaxRequest = TRUE, $system = "", $management = "", $contract = "")
     {
         if($ajaxRequest)

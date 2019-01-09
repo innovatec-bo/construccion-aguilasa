@@ -29,8 +29,8 @@ function ChartHandler(objectContent) {
         series.dataFields.value = data.value;
         series.dataFields.category = data.category;
 
-        series.ticks.template.disabled = true;
-        series.labels.template.disabled = true;
+        // series.ticks.template.disabled = true;
+        // series.labels.template.disabled = true;
         series.labels.template.radius = _am4Core.percent(-40);
         // -- series.labels.template.fill = _am4Core.color("white");
         series.labels.template.adapter.add("radius", function(radius, target) {

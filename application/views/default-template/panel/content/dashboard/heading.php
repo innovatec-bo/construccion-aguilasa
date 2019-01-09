@@ -29,9 +29,9 @@
             }
             ?>
             <ul class="nav nav-pills dashboard-navigation">
-                <li class="<?=$tablesActive?>"><a href="<?=$tablesUrl?>"><i class="fa fa-table fa-fw"></i></a>
-                </li>
                 <li class="<?=$chartsActive?>"><a href="<?=$chartsUrl?>"><i class="fa fa-bar-chart-o fa-fw"></i></a>
+                </li>
+                <li class="<?=$tablesActive?>"><a href="<?=$tablesUrl?>"><i class="fa fa-table fa-fw"></i></a>
                 </li>
             </ul>
         </h1>

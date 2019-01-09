@@ -6,6 +6,7 @@ $(document).ready(function() {
     getExecutiveSummary();
     getProjectTotalsChart();
     getProjectsEvolutionChart();
+    getSystemReport();
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -48,7 +49,13 @@ $(document).ready(function() {
         var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
         getProjectsEvolutionChart(date, dataType, contractId);
     });
-
+    $('#panel-system-chart select').on("change",function(){
+        var projectSystem = $('#panel-system-chart select[name=project-system] option:selected').val();
+        var managementBy = $('#panel-system-chart select[name=management-by] option:selected').val();
+        var contractNumber = $('#panel-system-chart select[name=contract-number] option:selected').val();
+        var dataType = $('#panel-system-chart select[name=data-type] option:selected').val();
+        getSystemReport(managementBy, contractNumber, dataType);
+    });
 });
 
 function getExecutiveSummary(system, management, contract, dataType)
@@ -125,6 +132,32 @@ function getProjectsEvolutionChart(year, dataType, contractId)
         success:function(response){
             var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");
             projectTotalsTable.launchHorizontalBarChart(response.data);
+        }
+    });
+}
+
+function getSystemReport(management, contract, dataType)
+{
+    var management = typeof management !== 'undefined' ? management : "";
+    var contract = typeof contract !== 'undefined' ? contract : "";
+    var dataType = typeof dataType !== 'undefined' ? dataType : "total_projects";
+    var $content = $("#system-chart-content");
+    blockArea($content);
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getSystemReport',
+        dataType  :"json",
+        type : "POST",
+        data:{management:management, contract:contract, dataType:dataType},
+        success:function(response){
+
+            var data  = {
+                category: 'system',
+                value: dataType,
+                list:response.data
+            };
+            var chartHandler = new ChartHandler("system-chart-content");
+            chartHandler.launchPieChart(data);
+            console.log(response);
         }
     });
 }

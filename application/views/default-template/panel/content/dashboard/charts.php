@@ -126,7 +126,52 @@
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" id="panel-system-chart">
+                <div class="panel-heading">
+                    <form name="report" action="<?=base_url("panel/Project/getCurrentStatusSummary")?>" method="post">
+                        <i class="fa fa-table fa-fw"></i> Reporte de Sistemas
+                        <select class="form-control input-sm" name="management-by">
+                            <option value="">Todas las administraciones</option>
+                            <?php
+                            $html = "";
+                            foreach ($systemList as $key => $name)
+                            {
+                                $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                            }
+                            echo $html;
+                            ?>
+                        </select>
+                        <select class="form-control input-sm" name="contract-number">
+                            <option value="">Contrato</option>
+                            <?php
+                            $html = "";
+                            foreach ($contractList as $contract)
+                            {
+                                $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                            }
+                            echo $html;
+                            ?>
+                        </select>
+                        <select class="form-control input-sm" name="data-type">
+                            <option value="total_projects">Unidades</option>
+                            <option value="approved_budgets">Montos aprobados</option>
+                        </select>
+                        <div class="pull-right">
+                            <div class="btn-group hide">
+                                <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-body">
+                    <div id="system-chart-content" class="chart-content"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
     <!-- /.row -->
     <!-- /.row -->
 </div>

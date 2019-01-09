@@ -13,7 +13,7 @@ class Dashboard extends PrivateController
         parent::__construct();
     }
 
-    public function index($view = "tables")
+    public function index($view = "charts")
     {
         $this->_validateFeature("dashboard_index");
         switch($view)
@@ -25,7 +25,7 @@ class Dashboard extends PrivateController
                 $this->_charts();
                 break;
             default:
-                $this->_tables();
+                $this->_charts();
         }
 
     }
