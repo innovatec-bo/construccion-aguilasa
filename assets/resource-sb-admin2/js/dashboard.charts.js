@@ -12,6 +12,7 @@ $(document).ready(function() {
         ignoreReadonly: true,
         defaultDate: date,
         format: 'YYYY'
+        // showClear: true
     });
     $('#panel-executive-summary-chart select').on("change",function(){
         var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();

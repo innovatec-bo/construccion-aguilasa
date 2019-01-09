@@ -235,18 +235,29 @@ class AjaxDashboard extends PrivateController
         foreach ($this->_projectSystems as $id => $system)
         {
             $currentStatusSummary = Model_project::projectCurrentStatusSummary($id, $management, $contract);
+            $totalProjects = 0;
+            $totalBudget = 0;
             foreach ($currentStatusSummary as $summary)
             {
-                if($summary["keyword"] == "approved")
+                if($summary["keyword"] != "returned" && $summary["keyword"] != "canceled")
                 {
-                    $arrayData[] = array(
-                        "id" => $id,
-                        "system" => $system,
-                        "total_projects" => $summary["total_projects"],
-                        "approved_budgets" => $summary["approved_budgets"]
-                    );
+                    $totalProjects += $summary["total_projects"];
+                    $totalBudget += $summary["approved_budgets"];
+//                    $arrayData[] = array(
+//                        "id" => $id,
+//                        "system" => $system,
+//                        "total_projects" => $totalProjects,
+//                        "approved_budgets" => $totalBudget
+//                    );
                 }
+
             }
+            $arrayData[] = array(
+                "id" => $id,
+                "system" => $system,
+                "total_projects" => $totalProjects,
+                "approved_budgets" => $totalBudget
+            );
         }
         $response["success"] = 1;
         $response["message"] = "";
