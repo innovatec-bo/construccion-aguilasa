@@ -7,6 +7,7 @@ $(document).ready(function() {
     getProjectTotalsChart();
     getProjectsEvolutionChart();
     getSystemReport();
+
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
@@ -14,6 +15,7 @@ $(document).ready(function() {
         format: 'YYYY',
         showClear: true
     });
+
     $('#panel-executive-summary-chart select').on("change",function(){
         var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
         var managementBy = $('#panel-executive-summary-chart select[name=management-by] option:selected').val();
