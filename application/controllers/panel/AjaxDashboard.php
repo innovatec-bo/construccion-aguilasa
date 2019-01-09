@@ -38,6 +38,9 @@ class AjaxDashboard extends PrivateController
         {
             $keywordFilter = $dataType == "countId"?$keyword:"approved";
             $data = Model_project::getStatusQuantityDetailByYear($keywordFilter, $year, $dataType, $keyword, $contractId);
+            //this method eval if the response has more than 1 result, if so then the result are stored in an unique array
+            $data = static::sumData($data);
+//            echo"<pre>";var_dump($keywordFilter, $year, $dataType, $keyword, $contractId, $data, $data1);exit;
             if(count($data) >= 1)
             {
                 $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
@@ -55,6 +58,47 @@ class AjaxDashboard extends PrivateController
         $response["success"] = 1;
         $response["data"] = $projectTotalsList;
         echo json_encode($response);exit;
+    }
+
+    public static function sumData($data = array())
+    {
+
+        if(count($data) > 1)
+        {
+            $result = array();
+            $result["year"] = "";
+            $result['january'] = 0;
+            $result['february'] = 0;
+            $result['march'] = 0;
+            $result['april'] = 0;
+            $result['may'] = 0;
+            $result['june'] = 0;
+            $result['july'] = 0;
+            $result['august'] = 0;
+            $result['september'] = 0;
+            $result['october'] = 0;
+            $result['november'] = 0;
+            $result['december'] = 0;
+
+            foreach ($data as $key => $value)
+            {
+                $result['january'] += $value['january'];
+                $result['february'] += $value['february'];
+                $result['march'] += $value['march'];
+                $result['april']  += $value['april'];
+                $result['may'] += $value['may'];
+                $result['june'] += $value['june'];
+                $result['july'] += $value['july'];
+                $result['august'] += $value['august'];
+                $result['september'] += $value['september'];
+                $result['october'] += $value['october'];
+                $result['november'] += $value['november'];
+                $result['december'] += $value['december'];
+            }
+            $data = array($result);
+        }
+
+        return $data    ;
     }
 
     public function getProjectNetBuilding()

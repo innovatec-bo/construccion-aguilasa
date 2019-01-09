@@ -11,8 +11,8 @@ $(document).ready(function() {
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
         defaultDate: date,
-        format: 'YYYY'
-        // showClear: true
+        format: 'YYYY',
+        showClear: true
     });
     $('#panel-executive-summary-chart select').on("change",function(){
         var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
@@ -27,11 +27,7 @@ $(document).ready(function() {
         var dataType = $(this).closest("div#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
         getProjectTotalsChart(date.getFullYear(), dataType);
     });
-    // $('#panel-project-totals-chart select[name=data-type]').on("change",function(){
-    //     var date = $(this).closest("div#panel-project-totals-chart").find("input[name=report-year]").val();
-    //     var dataType = $(this).val();
-    //     getProjectTotalsChart(date, dataType);
-    // });
+
     $(document).on("change",'#panel-project-totals-chart select[name=data-type], #panel-project-totals-chart select[name=contract-number]',function(){
         var date = $(this).closest("div#panel-project-totals-chart").find("input[name=report-year]").val();
         var dataType = $(this).closest("div#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
@@ -39,10 +35,10 @@ $(document).ready(function() {
         getProjectTotalsChart(date, dataType, contractId);
     });
     $('#panel-projects-evolution-chart input[name=report-year]').on("dp.change",function(e){
-        var date = new Date(e.date);
+        var year = e.date === false?"":new Date(e.date).getFullYear();
         var dataType = $(this).closest("div#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
         var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
-        getProjectsEvolutionChart(date.getFullYear(), dataType, contractId);
+        getProjectsEvolutionChart(year, dataType, contractId);
     });
     $(document).on("change",'#panel-projects-evolution-chart select[name=data-type], #panel-projects-evolution-chart select[name=contract-number]',function(){
         var date = $(this).closest("div#panel-projects-evolution-chart").find("input[name=report-year]").val();
