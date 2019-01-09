@@ -148,7 +148,7 @@ foreach($responsibleListBuilder as $responsible)
                                 <fieldset>
                                     <label>Constructore(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
                                     <div class="form-group">
-                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" data-parsley-required="" parsley-trigger="change" id="ajax-get-responsible-list2">
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list2">
                                             <?php
                                             echo $builderHtml;
                                             ?>
