@@ -165,9 +165,6 @@
                     <div class="col-xs-9 text-right" id="days-progress-chart-content"  style="height: 76px">
                     </div>
                 </div>
-<!--                <div class="row" id="days-progress-chart-content" style="height: 76px">-->
-<!---->
-<!--                </div>-->
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
@@ -185,6 +182,50 @@
                 </span>
                 <div class="clearfix"></div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="row hide">
+    <div class="col-md-12">
+        <div class="panel panel-primary" id="panel-main-report-control-filter">
+            <div class="panel-heading">
+                <i class="fa fa-cogs fa-fw"></i> Control Principal
+                <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                <select class="form-control input-sm" name="contract-number">
+                    <option value="">Contratos</option>
+                    <?php
+                    $html = "";
+                    foreach ($contractList as $contract)
+                    {
+                        $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+                    }
+                    echo $html;
+                    ?>
+                </select>
+                <select class="form-control input-sm" name="project-system">
+                    <option value="">Sistemas</option>
+                    <?php
+                    $html = "";
+                    foreach ($systemList as $key => $name)
+                    {
+                        $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                    }
+                    echo $html;
+                    ?>
+                </select>
+                <select class="form-control input-sm" name="management-by">
+                    <option value="">Administraciones</option>
+                    <?php
+                    $html = "";
+                    foreach ($systemList as $key => $name)
+                    {
+                        $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                    }
+                    echo $html;
+                    ?>
+                </select>
+            </div>
+            <!-- /.panel-heading -->
         </div>
     </div>
 </div>

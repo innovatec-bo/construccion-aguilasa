@@ -75,8 +75,8 @@ $(document).ready(function() {
                 getExecutiveAndCurrentStatusSummary(projectSystem, managementBy, contractNumber);
                 break;
         }
+    });
 
-    })
 });
 
 function getExecutiveSummary(system, management, contract, dataType)

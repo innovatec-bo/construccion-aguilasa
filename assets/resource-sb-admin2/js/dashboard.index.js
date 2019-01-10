@@ -27,6 +27,17 @@ $(document).ready(function() {
         var contractNumber = $('#panel-days-progress-chart select[name=contract-number] option:selected').val();
         getContractTimeProgress(contractNumber);
     });
+
+    //begin - general filter;
+    $("#panel-main-report-control-filter").on("change", "select", function(){
+        var $content = $("#panel-main-report-control-filter");
+        var year = $content.find('input[name=report-year]').val();
+        var projectSystem = $content.find('select[name=project-system] option:selected').val();
+        var managementBy = $content.find('select[name=management-by] option:selected').val();
+        var contractNumber = $content.find('select[name=contract-number] option:selected').val();
+        console.log(year, projectSystem,managementBy,contractNumber);
+    });
+    //end - general filter;
 });
 
 function getUsersQuantity()
