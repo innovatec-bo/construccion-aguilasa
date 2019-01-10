@@ -343,7 +343,7 @@ class AjaxDashboard extends PrivateController
         }
         $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
         $reportSections = array(
-            "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
+//            "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
             "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design")),
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing")),
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent")),

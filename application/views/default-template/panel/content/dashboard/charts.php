@@ -15,7 +15,7 @@
             <div class="panel panel-primary" id="panel-projects-evolution-chart">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Evolucion de proyectos
-                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                    <input name="report-year" readonly="" class="form-control input-sm date-time-default-blank" size="1" required="">
                     <select class="form-control input-sm" name="data-type">
                         <option value="countId">Unidades</option>
                         <option value="sumBudget">Montos aprobados</option>

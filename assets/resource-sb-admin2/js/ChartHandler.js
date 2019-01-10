@@ -26,8 +26,10 @@ function ChartHandler(objectContent) {
         var series = chart.series.push(new _am4Charts.PieSeries3D());
         series.legendSettings.labelText = '{category}';
         series.legendSettings.valueText = ' ';
+
         series.dataFields.value = data.value;
         series.dataFields.category = data.category;
+        series.dataFields.hidden = "hidden";
 
         // series.ticks.template.disabled = true;
         // series.labels.template.disabled = true;

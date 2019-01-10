@@ -12,6 +12,11 @@ $(document).ready(function() {
     $('.date-time').datetimepicker({
         ignoreReadonly: true,
         defaultDate: date,
+        format: 'YYYY'
+    });
+
+    $('.date-time-default-blank').datetimepicker({
+        ignoreReadonly: true,
         format: 'YYYY',
         showClear: true
     });
@@ -93,6 +98,19 @@ function getExecutiveSummary(system, management, contract, dataType)
         type : "POST",
         data:{system:system, management:management, contract:contract, dataType:dataType},
         success:function(response){
+            $.each(response.list, function(index, value){
+                if(dataType === "totalProjectsBySection")
+                {
+                    if(value.totalProjectsBySection <= 0)
+                        value.hidden = true;
+                }
+                else if(dataType === "totalApprovedBudgetBySection")
+                {
+                    if(value.totalApprovedBudgetBySection <= 0)
+                        value.hidden = true;
+                }
+
+            });
             var data  = {
                 category: 'title',
                 value: dataType,
@@ -140,7 +158,7 @@ function getProjectTotalsChart(year, dataType, contractId)
 
 function getProjectsEvolutionChart(year, dataType, contractId)
 {
-    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    year = typeof year !== 'undefined' ? year : "";
     dataType = typeof dataType !== 'undefined' ? dataType : "countId";
     contractId = typeof contractId !== 'undefined' ? contractId : "";
     var $content = $("#projects-evolution-chart-content");
@@ -170,6 +188,20 @@ function getSystemReport(management, contract, dataType)
         type : "POST",
         data:{management:management, contract:contract, dataType:dataType},
         success:function(response){
+
+            $.each(response.data, function(index, value){
+                if(dataType === "total_projects")
+                {
+                    if(value.total_projects <= 0)
+                        value.hidden = true;
+                }
+                else if(dataType === "approved_budgets")
+                {
+                    if(value.approved_budgets <= 0)
+                        value.hidden = true;
+                }
+
+            });
 
             var data  = {
                 category: 'system',
