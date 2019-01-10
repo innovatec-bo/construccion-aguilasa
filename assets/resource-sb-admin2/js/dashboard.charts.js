@@ -49,12 +49,34 @@ $(document).ready(function() {
         getProjectsEvolutionChart(date, dataType, contractId);
     });
     $('#panel-system-chart select').on("change",function(){
-        var projectSystem = $('#panel-system-chart select[name=project-system] option:selected').val();
         var managementBy = $('#panel-system-chart select[name=management-by] option:selected').val();
         var contractNumber = $('#panel-system-chart select[name=contract-number] option:selected').val();
         var dataType = $('#panel-system-chart select[name=data-type] option:selected').val();
         getSystemReport(managementBy, contractNumber, dataType);
     });
+
+    $(document).on("click", ".open-table", function(){
+        var $panelContent = $(this).closest(".panel.panel-primary");
+        var panelContentId = $panelContent.prop("id");
+
+        switch(panelContentId)
+        {
+            case "panel-projects-evolution-chart":
+                var date = $panelContent.find("input[name=report-year]").val();
+                var dataType = $panelContent.find("select[name=data-type] option:selected").val();
+                var contractId = $panelContent.find("select[name=contract-number] option:selected").val();
+                console.log(date, dataType, contractId);
+                break;
+            case "panel-executive-summary-chart":
+                var projectSystem = $panelContent.find('select[name=project-system] option:selected').val();
+                var managementBy = $panelContent.find('select[name=management-by] option:selected').val();
+                var contractNumber = $panelContent.find('select[name=contract-number] option:selected').val();
+                // console.log(projectSystem, managementBy, contractNumber);
+                getExecutiveAndCurrentStatusSummary(projectSystem, managementBy, contractNumber);
+                break;
+        }
+
+    })
 });
 
 function getExecutiveSummary(system, management, contract, dataType)
@@ -156,7 +178,46 @@ function getSystemReport(management, contract, dataType)
             };
             var chartHandler = new ChartHandler("system-chart-content");
             chartHandler.launchPieChart(data);
-            console.log(response);
+        }
+    });
+}
+
+function getExecutiveAndCurrentStatusSummary(system, management, contract)
+{
+    var system = typeof system !== 'undefined' ? system : "";
+    var management = typeof management !== 'undefined' ? management : "";
+    var contract = typeof contract !== 'undefined' ? contract : "";
+    $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getExecutiveSummaryAndCurrentStatusSummary',
+        dataType  :"json",
+        type : "POST",
+        data:{system:system, management:management, contract:contract},
+        success:function(response){
+
+            if(response.success === 1)
+            {
+                //pre compile sub templates
+                var reportCurrentStatusSummary = $("#ht-report-current-status-summary").html();
+                Handlebars.registerPartial("ht-report-current-status-summary", reportCurrentStatusSummary);
+                var reportExecutiveSummary = $("#ht-report-executive-summary").html();
+                Handlebars.registerPartial("ht-report-executive-summary", reportExecutiveSummary);
+
+                var htmlSource   = $("#ht-report-executive-summary-and-current-status-summary").html();
+                var template = Handlebars.compile(htmlSource);
+                var data = {report:response.data};
+                var html = template(data);
+                swal({
+                    title: "Resumen ejecutivo y Resumen de estados",
+                    html: html,
+                    width:"100%",
+                    allowOutsideClick:false
+                });
+            }
+            else
+            {
+                swal({html:response.message, type:"error"});
+            }
+
         }
     });
 }

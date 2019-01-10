@@ -31,6 +31,11 @@
                         echo $html;
                         ?>
                     </select>
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs open-table"><i class="fa fa-table"></i></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div id="projects-evolution-chart-content" class="chart-content"></div>
@@ -85,6 +90,7 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>
+                                <button type="button" class="btn btn-default btn-xs open-table"><i class="fa fa-table"></i></button>
                             </div>
                         </div>
                     </form>
@@ -176,3 +182,8 @@
     <!-- /.row -->
 </div>
 <!-- /.container-fluid -->
+<?php
+$this->load->view('default-template/panel/content/dashboard/ht-report-current-status-summary');
+$this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
+$this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary-and-current-status-summary');
+?>

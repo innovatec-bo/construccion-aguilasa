@@ -237,12 +237,15 @@ class AjaxDashboard extends PrivateController
         return $diffArray;
     }
 
-    public function getCurrentStatusSummary()
+    public function getCurrentStatusSummary($ajaxRequest = TRUE, $system = "", $management = "", $contract = "")
     {
-        $formData = $this->input->post();
-        $system = $formData["system"];
-        $management = $formData["management"];
-        $contract = $formData["contract"];
+        if($ajaxRequest)
+        {
+            $formData = $this->input->post();
+            $system = $formData["system"];
+            $management = $formData["management"];
+            $contract = $formData["contract"];
+        }
         $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
         $arrayData = array();
         $totalApprovedBudget = 0;
@@ -266,7 +269,16 @@ class AjaxDashboard extends PrivateController
         $response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
         $response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
         $response["data"]["totalProjects"] = $totalProjects;
-        echo json_encode($response);exit;
+
+        if($ajaxRequest)
+        {
+            echo json_encode($response);exit;
+        }
+        else
+        {
+            return $response;
+        }
+
     }
 
     public function getSystemReport()
@@ -492,6 +504,21 @@ class AjaxDashboard extends PrivateController
         $response["totalDays"] = $totalDays;
         $response["startDate"] = $startDate;
         $response["endDate"] = $endDate;
+        echo json_encode($response);exit;
+    }
+
+    public function getExecutiveSummaryAndCurrentStatusSummary()
+    {
+        $formData = $this->input->post();
+        $system = $formData["system"];
+        $management = $formData["management"];
+        $contract = $formData["contract"];
+        $executiveSummary = $this->getExecutiveSummary(FALSE, $system, $management, $contract);
+        $currentStatusSummary = $this->getCurrentStatusSummary(FALSE, $system, $management, $contract);
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"]["executiveSummary"] = $executiveSummary;
+        $response["data"]["currentStatusSummary"] = $currentStatusSummary;
         echo json_encode($response);exit;
     }
 }
