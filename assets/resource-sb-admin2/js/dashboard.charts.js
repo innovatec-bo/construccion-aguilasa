@@ -3,95 +3,70 @@
  */
 
 $(document).ready(function() {
-    getExecutiveSummary();
+    getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection");
+    getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection");
+    getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection");
     getProjectTotalsChart();
     getProjectsEvolutionChart();
     getSystemReport();
 
-    var date = new Date();
-    $('.date-time').datetimepicker({
-        ignoreReadonly: true,
-        defaultDate: date,
-        format: 'YYYY'
-    });
+    // $('#panel-executive-summary-units-chart select').on("change",function(){
+    //     var $content = $("#panel-executive-summary-units-chart");
+    //     var $chartContent = $("#executive-summary-units-chart-content");
+    //     var inputData = getInputData($content);
+    //     getExecutiveSummary($chartContent, "totalProjectsBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+    // });
 
-    $('.date-time-default-blank').datetimepicker({
-        ignoreReadonly: true,
-        format: 'YYYY',
-        showClear: true
-    });
+    // $('#panel-executive-summary-amounts-chart select').on("change",function(){
+    //     var $content = $("#panel-executive-summary-amounts-chart");
+    //     var $chartContent = $("#executive-summary-amounts-chart-content");
+    //     var inputData = getInputData($content);
+    //     getExecutiveSummary($chartContent, "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+    // });
 
-    $('#panel-executive-summary-chart select').on("change",function(){
-        var projectSystem = $('#panel-executive-summary-chart select[name=project-system] option:selected').val();
-        var managementBy = $('#panel-executive-summary-chart select[name=management-by] option:selected').val();
-        var contractNumber = $('#panel-executive-summary-chart select[name=contract-number] option:selected').val();
-        var dataType = $('#panel-executive-summary-chart select[name=data-type] option:selected').val();
-        getExecutiveSummary(projectSystem, managementBy, contractNumber, dataType);
-    });
+    // $('#panel-executive-summary-contract-percentage-chart select').on("change",function(){
+    //     var $content = $("#panel-executive-summary-contract-percentage-chart");
+    //     var $chartContent = $("#executive-summary-contract-percentage-chart-content");
+    //     var inputData = getInputData($content);
+    //     getExecutiveSummary($chartContent, "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+    // });
 
-    $('#panel-project-totals-chart input[name=report-year]').on("dp.change",function(e){
-        var date = new Date(e.date);
+    $(document).on("change",'#panel-project-totals-chart select[name=data-type]',function(){
         var dataType = $(this).closest("div#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
-        getProjectTotalsChart(date.getFullYear(), dataType);
+        var inputData = getInputData();
+        getProjectTotalsChart(inputData.year, dataType, inputData.contractNumber);
     });
 
-    $(document).on("change",'#panel-project-totals-chart select[name=data-type], #panel-project-totals-chart select[name=contract-number]',function(){
-        var date = $(this).closest("div#panel-project-totals-chart").find("input[name=report-year]").val();
-        var dataType = $(this).closest("div#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
-        var contractId = $(this).closest("div#panel-project-totals-chart").find("select[name=contract-number] option:selected").val();
-        getProjectTotalsChart(date, dataType, contractId);
-    });
-    $('#panel-projects-evolution-chart input[name=report-year]').on("dp.change",function(e){
-        var year = e.date === false?"":new Date(e.date).getFullYear();
+    $(document).on("change",'#panel-projects-evolution-chart select[name=data-type]',function(){
         var dataType = $(this).closest("div#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
-        var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
-        getProjectsEvolutionChart(year, dataType, contractId);
+        var inputData = getInputData();
+        getProjectsEvolutionChart(dataType.year, dataType, inputData.contractNumber);
     });
-    $(document).on("change",'#panel-projects-evolution-chart select[name=data-type], #panel-projects-evolution-chart select[name=contract-number]',function(){
-        var date = $(this).closest("div#panel-projects-evolution-chart").find("input[name=report-year]").val();
-        var dataType = $(this).closest("div#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
-        var contractId = $(this).closest("div#panel-projects-evolution-chart").find("select[name=contract-number] option:selected").val();
-        getProjectsEvolutionChart(date, dataType, contractId);
-    });
-    $('#panel-system-chart select').on("change",function(){
-        var managementBy = $('#panel-system-chart select[name=management-by] option:selected').val();
-        var contractNumber = $('#panel-system-chart select[name=contract-number] option:selected').val();
+
+    $(document).on("change","#panel-system-chart select[name=data-type]",function(){
         var dataType = $('#panel-system-chart select[name=data-type] option:selected').val();
-        getSystemReport(managementBy, contractNumber, dataType);
+        var inputData = getInputData();
+        getSystemReport(inputData.managementBy, inputData.contractNumber, dataType);
     });
 
     $(document).on("click", ".open-table", function(){
-        var $panelContent = $(this).closest(".panel.panel-primary");
-        var panelContentId = $panelContent.prop("id");
-
-        switch(panelContentId)
-        {
-            case "panel-projects-evolution-chart":
-                var date = $panelContent.find("input[name=report-year]").val();
-                var dataType = $panelContent.find("select[name=data-type] option:selected").val();
-                var contractId = $panelContent.find("select[name=contract-number] option:selected").val();
-                console.log(date, dataType, contractId);
-                break;
-            case "panel-executive-summary-chart":
-                var projectSystem = $panelContent.find('select[name=project-system] option:selected').val();
-                var managementBy = $panelContent.find('select[name=management-by] option:selected').val();
-                var contractNumber = $panelContent.find('select[name=contract-number] option:selected').val();
-                // console.log(projectSystem, managementBy, contractNumber);
-                getExecutiveAndCurrentStatusSummary(projectSystem, managementBy, contractNumber);
-                break;
-        }
+        var $panelContent = $("panel-main-report-control-filter");
+        var projectSystem = $panelContent.find('select[name=project-system] option:selected').val();
+        var managementBy = $panelContent.find('select[name=management-by] option:selected').val();
+        var contractNumber = $panelContent.find('select[name=contract-number] option:selected').val();
+        getExecutiveAndCurrentStatusSummary(projectSystem, managementBy, contractNumber);
     });
 
 });
 
-function getExecutiveSummary(system, management, contract, dataType)
+function getExecutiveSummary(content, dataType, system, management, contract)
 {
     var system = typeof system !== 'undefined' ? system : "";
     var management = typeof management !== 'undefined' ? management : "";
     var contract = typeof contract !== 'undefined' ? contract : "";
     var dataType = typeof dataType !== 'undefined' ? dataType : "totalProjectsBySection";
-    var $content = $("#executive-summary-chart-content");
-    blockArea($content);
+    // var $content = $("#executive-summary-chart-content");
+    blockArea(content);
     $.ajax({
         url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
         dataType  :"json",
@@ -109,6 +84,12 @@ function getExecutiveSummary(system, management, contract, dataType)
                     if(value.totalApprovedBudgetBySection <= 0)
                         value.hidden = true;
                 }
+                else if(dataType == "contractAmountPercentageBySection")
+                {
+                    if(value.contractAmountPercentageBySection <= 0)
+                        value.hidden = true;
+                }
+
 
             });
             var data  = {
@@ -116,7 +97,7 @@ function getExecutiveSummary(system, management, contract, dataType)
                 value: dataType,
                 list:response.list
             };
-            var chartHandler = new ChartHandler("executive-summary-chart-content");
+            var chartHandler = new ChartHandler(content.prop("id"));
             chartHandler.launchPieChart(data);
         }
     });
@@ -169,8 +150,24 @@ function getProjectsEvolutionChart(year, dataType, contractId)
         type : "POST",
         data:{year:year, dataType:dataType, contractId:contractId},
         success:function(response){
+            var list = [];
+            $.each(response.data, function(index, value){
+                if(dataType == "sumBudget")
+                {
+                    if(value.criteriaKeyword != "project_has_been_created" && value.criteriaKeyword != "already_sent")
+                    {
+                        list.push(value);
+                    }
+                }
+                else
+                {
+                    list.push(value);
+                }
+
+            });
+
             var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");
-            projectTotalsTable.launchHorizontalBarChart(response.data);
+            projectTotalsTable.launchHorizontalBarChart(list);
         }
     });
 }

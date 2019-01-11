@@ -11,6 +11,20 @@ daysProgress.launchGaugeChartUpdate(0);
 
 
 $(document).ready(function() {
+
+    var date = new Date();
+    $('.date-time').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'YYYY'
+    });
+
+    $('.date-time-default-blank').datetimepicker({
+        ignoreReadonly: true,
+        format: 'YYYY',
+        showClear: true
+    });
+
     // getUsersQuantity();
     // getRolesQuantity();
     getProjectsQuantity();
@@ -32,10 +46,27 @@ $(document).ready(function() {
     $("#panel-main-report-control-filter").on("change", "select", function(){
         var $content = $("#panel-main-report-control-filter");
         var year = $content.find('input[name=report-year]').val();
-        var projectSystem = $content.find('select[name=project-system] option:selected').val();
-        var managementBy = $content.find('select[name=management-by] option:selected').val();
-        var contractNumber = $content.find('select[name=contract-number] option:selected').val();
-        console.log(year, projectSystem,managementBy,contractNumber);
+        var inputData = getInputData($content);
+        getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getProjectTotalsChart(year,undefined,inputData.contractNumber);
+        getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
+        getSystemReport(inputData.managementBy, inputData.contractNumber);
+        // console.log(year, inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+    });
+
+    $("#panel-main-report-control-filter").on("dp.change", "input[name=report-year]", function(e){
+        var $content = $("#panel-main-report-control-filter");
+        var year = e.date === false?"":new Date(e.date).getFullYear();
+        var inputData = getInputData($content);
+        getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        getProjectTotalsChart(year,undefined,inputData.contractNumber);
+        getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
+        getSystemReport(inputData.managementBy, inputData.contractNumber);
+        // console.log(year, inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
     });
     //end - general filter;
 });
@@ -104,4 +135,15 @@ function getContractTimeProgress(contract)
             daysProgress.launchGaugeChartUpdate(parseFloat(response.percentage));
         }
     });
+}
+
+function getInputData()
+{
+    var $content = $("#panel-main-report-control-filter");
+    var inputData = {};
+    inputData.year = $content.find('input[name=report-year]').val();
+    inputData.projectSystem = $content.find('select[name=project-system] option:selected').val();
+    inputData.managementBy = $content.find('select[name=management-by] option:selected').val();
+    inputData.contractNumber = $content.find('select[name=contract-number] option:selected').val();
+    return inputData;
 }

@@ -185,12 +185,12 @@
         </div>
     </div>
 </div>
-<div class="row hide">
+<div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="panel-main-report-control-filter">
             <div class="panel-heading">
                 <i class="fa fa-cogs fa-fw"></i> Control Principal
-                <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                <input name="report-year" readonly="" class="form-control input-sm date-time-default-blank" size="1" required="">
                 <select class="form-control input-sm" name="contract-number">
                     <option value="">Contratos</option>
                     <?php
