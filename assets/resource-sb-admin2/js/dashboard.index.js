@@ -32,21 +32,23 @@ $(document).ready(function() {
     getContractTimeProgress();
 
     $(document).on("change","#panel-serebo-thermometer-chart select",function(){
-        var contractNumber = $('#panel-serebo-thermometer-chart select[name=contract-number] option:selected').val();
+        var inputData = getInputData();
         var stage = $('#panel-serebo-thermometer-chart select[name=stage] option:selected').val();
-        getProjectProgressBySection("","",contractNumber, stage);
+        getProjectProgressBySection("","",inputData.contractNumber, stage);
     });
 
     $(document).on("change","#panel-days-progress-chart select",function(){
-        var contractNumber = $('#panel-days-progress-chart select[name=contract-number] option:selected').val();
-        getContractTimeProgress(contractNumber);
+        var inputData = getInputData();
+        getContractTimeProgress(inputData.contractNumber);
     });
 
     //begin - general filter;
     $("#panel-main-report-control-filter").on("change", "select", function(){
         var $content = $("#panel-main-report-control-filter");
         var year = $content.find('input[name=report-year]').val();
-        var inputData = getInputData($content);
+        var inputData = getInputData();
+        getProjectProgressBySection("","",inputData.contractNumber);
+        getContractTimeProgress(inputData.contractNumber);
         getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
         getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
         getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
@@ -60,13 +62,8 @@ $(document).ready(function() {
         var $content = $("#panel-main-report-control-filter");
         var year = e.date === false?"":new Date(e.date).getFullYear();
         var inputData = getInputData($content);
-        getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
         getProjectTotalsChart(year,undefined,inputData.contractNumber);
         getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
-        getSystemReport(inputData.managementBy, inputData.contractNumber);
-        // console.log(year, inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
     });
     //end - general filter;
 });

@@ -130,17 +130,17 @@
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
-                    <select class="form-control input-sm" name="contract-number">
-                        <option value="">Contratos</option>
-                        <?php
-                        $html = "";
-                        foreach ($contractList as $contract)
-                        {
-                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
-                        }
-                        echo $html;
-                        ?>
-                        </select>
+<!--                    <select class="form-control input-sm" name="contract-number">-->
+<!--                        <option value="">Contratos</option>-->
+<!--                        --><?php
+//                        $html = "";
+//                        foreach ($contractList as $contract)
+//                        {
+//                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+//                        }
+//                        echo $html;
+//                        ?>
+<!--                        </select>-->
                 </span>
                 <span class="pull-right">
                     <select class="form-control input-sm" name="stage" style="width: 90px">
@@ -168,17 +168,17 @@
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
-                    <select class="form-control input-sm" name="contract-number">
-                        <option value="">Contratos</option>
-                        <?php
-                        $html = "";
-                        foreach ($contractList as $contract)
-                        {
-                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
-                        }
-                        echo $html;
-                        ?>
-                        </select>
+<!--                    <select class="form-control input-sm" name="contract-number">-->
+<!--                        <option value="">Contratos</option>-->
+<!--                        --><?php
+//                        $html = "";
+//                        foreach ($contractList as $contract)
+//                        {
+//                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+//                        }
+//                        echo $html;
+//                        ?>
+<!--                        </select>-->
                 </span>
                 <div class="clearfix"></div>
             </div>
