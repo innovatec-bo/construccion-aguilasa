@@ -412,6 +412,7 @@ class AjaxDashboard extends PrivateController
         $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
         $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
         $response["totalContractAmountPercentage"] = number_format($totalContractAmountPercentage, 2);
+        $response["totalContractAmount"] = $contractAmount;
         $response["list"] = array_values($reportSections);
 
         if($ajaxRequest)

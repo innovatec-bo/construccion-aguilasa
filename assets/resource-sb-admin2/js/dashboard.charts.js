@@ -52,6 +52,8 @@ function getExecutiveSummary(content, dataType, system, management, contract)
         type : "POST",
         data:{system:system, management:management, contract:contract, dataType:dataType},
         success:function(response){
+            var totalRemain = 0;
+            var totalRemainPercentage = 0;
             $.each(response.list, function(index, value){
                 if(dataType === "totalProjectsBySection")
                 {
@@ -60,17 +62,29 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 }
                 else if(dataType === "totalApprovedBudgetBySection")
                 {
+                    totalRemain = response.totalContractAmount - response.totalApprovedBudget.replace(/,/g, "");
                     if(value.totalApprovedBudgetBySection <= 0)
                         value.hidden = true;
                 }
                 else if(dataType == "contractAmountPercentageBySection")
                 {
+                    // totalRemainPercentage += value.contractAmountPercentageBySection;
+
                     if(value.contractAmountPercentageBySection <= 0)
                         value.hidden = true;
                 }
-
-
             });
+
+            if(dataType == "totalApprovedBudgetBySection")
+            {
+
+                response.list.push({"title": "Total restante", "totalApprovedBudgetBySection": totalRemain});
+            }
+            else if(dataType == "contractAmountPercentageBySection")
+            {
+                totalRemainPercentage = 100 - response.totalContractAmountPercentage;
+                response.list.push({"title": "Total restante", "contractAmountPercentageBySection": totalRemainPercentage});
+            }
             var data  = {
                 category: 'title',
                 value: dataType,
