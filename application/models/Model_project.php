@@ -291,6 +291,8 @@ class Model_project extends Model_project_base
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
             status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
             code_pro,
+            detail_pro,
+            budgetary_position_pro,
             entry_date_pro,
             folder_date_pro,
             concat(firstname_cfi,' ', lastname_cfi) cre_fiscal_pro,

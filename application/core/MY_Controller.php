@@ -237,6 +237,7 @@ class PrivateController extends PublicController
             "budgetary_position_pro" => "POSICION PRESUPUESTARIA",
             "cre_design_completion_date_pro" => "FECHA COMPLETADO DE DISEÑO",
             "cre_building_completion_date_pro" => "FECHA COMPLETADO DE CONSTRUCCION",
+            "detail_pro" => "DETALLE DEL PROYECTO",
             "stake_date" => "FECHA DE ESTAQUEADO",
             "stake_responsible" => "RESPONSABLES DE ESTAQUEADO",
             "digitization_points_quantity" => "PUNTOS DIGITALIZADOS",
