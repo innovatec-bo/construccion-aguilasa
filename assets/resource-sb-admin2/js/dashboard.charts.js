@@ -10,27 +10,6 @@ $(document).ready(function() {
     getProjectsEvolutionChart();
     getSystemReport();
 
-    // $('#panel-executive-summary-units-chart select').on("change",function(){
-    //     var $content = $("#panel-executive-summary-units-chart");
-    //     var $chartContent = $("#executive-summary-units-chart-content");
-    //     var inputData = getInputData($content);
-    //     getExecutiveSummary($chartContent, "totalProjectsBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-    // });
-
-    // $('#panel-executive-summary-amounts-chart select').on("change",function(){
-    //     var $content = $("#panel-executive-summary-amounts-chart");
-    //     var $chartContent = $("#executive-summary-amounts-chart-content");
-    //     var inputData = getInputData($content);
-    //     getExecutiveSummary($chartContent, "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-    // });
-
-    // $('#panel-executive-summary-contract-percentage-chart select').on("change",function(){
-    //     var $content = $("#panel-executive-summary-contract-percentage-chart");
-    //     var $chartContent = $("#executive-summary-contract-percentage-chart-content");
-    //     var inputData = getInputData($content);
-    //     getExecutiveSummary($chartContent, "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-    // });
-
     $(document).on("change",'#panel-project-totals-chart select[name=data-type]',function(){
         var dataType = $(this).closest("div#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
         var inputData = getInputData();
@@ -105,7 +84,7 @@ function getExecutiveSummary(content, dataType, system, management, contract)
 
 function getProjectTotalsChart(year, dataType, contractId)
 {
-    year = typeof year !== 'undefined' ? year : (new Date()).getFullYear();
+    year = typeof year !== 'undefined' ? year : "";
     dataType = typeof dataType !== 'undefined' ? dataType : "countId";
     contractId = typeof contractId !== 'undefined' ? contractId : "";
     var $content = $("#project-totals-chart-content");
