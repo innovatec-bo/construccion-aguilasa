@@ -75,11 +75,12 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 }
             });
 
-            // if(dataType == "totalApprovedBudgetBySection")
-            // {
-            //
-            //     response.list.push({"title": "Total restante", "totalApprovedBudgetBySection": totalRemain});
-            // }
+            var showValueInsteadPercentage = false;
+            if(dataType == "totalApprovedBudgetBySection")
+            {
+                showValueInsteadPercentage = true;
+                // response.list.push({"title": "Total restante", "totalApprovedBudgetBySection": totalRemain});
+            }
             if(dataType == "contractAmountPercentageBySection")
             {
                 totalRemainPercentage = 100 - response.totalContractAmountPercentage;
@@ -91,7 +92,7 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 list:response.list
             };
             var chartHandler = new ChartHandler(content.prop("id"));
-            chartHandler.launchPieChart(data);
+            chartHandler.launchPieChart(data, showValueInsteadPercentage);
         }
     });
 }

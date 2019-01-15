@@ -9,7 +9,7 @@ function ChartHandler(objectContent) {
     var _am4Charts = am4charts;
     var $content = $("#"+objectContent);
 
-    this.launchPieChart = function(data)
+    this.launchPieChart = function(data, showValueInsteadPercentage)
     {
         _am4Core.useTheme(am4themes_kelly);
         _am4Core.useTheme(am4themes_animated);
@@ -30,6 +30,10 @@ function ChartHandler(objectContent) {
         series.dataFields.value = data.value;
         series.dataFields.category = data.category;
         series.dataFields.hidden = "hidden";
+        if(showValueInsteadPercentage === true)
+        {
+            series.slices.template.tooltipText = "{category}: {value}";
+        }
 
         // series.ticks.template.disabled = true;
         // series.labels.template.disabled = true;
