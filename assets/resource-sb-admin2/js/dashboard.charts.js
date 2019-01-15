@@ -69,9 +69,12 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 else if(dataType == "contractAmountPercentageBySection")
                 {
                     // totalRemainPercentage += value.contractAmountPercentageBySection;
-
+                    value.contractAmountPercentageBySection = (value.contractAmountPercentageBySection/100) * response.totalContractAmount;
                     if(value.contractAmountPercentageBySection <= 0)
+                    {
                         value.hidden = true;
+                    }
+
                 }
             });
 
@@ -83,7 +86,7 @@ function getExecutiveSummary(content, dataType, system, management, contract)
             }
             if(dataType == "contractAmountPercentageBySection")
             {
-                totalRemainPercentage = 100 - response.totalContractAmountPercentage;
+                totalRemainPercentage = ((100 - response.totalContractAmountPercentage)/100) * response.totalContractAmount;
                 response.list.push({"title": "Total restante", "contractAmountPercentageBySection": totalRemainPercentage});
             }
             var data  = {
