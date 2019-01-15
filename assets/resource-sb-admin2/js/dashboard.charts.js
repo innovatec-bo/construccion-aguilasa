@@ -75,12 +75,12 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 }
             });
 
-            if(dataType == "totalApprovedBudgetBySection")
-            {
-
-                response.list.push({"title": "Total restante", "totalApprovedBudgetBySection": totalRemain});
-            }
-            else if(dataType == "contractAmountPercentageBySection")
+            // if(dataType == "totalApprovedBudgetBySection")
+            // {
+            //
+            //     response.list.push({"title": "Total restante", "totalApprovedBudgetBySection": totalRemain});
+            // }
+            if(dataType == "contractAmountPercentageBySection")
             {
                 totalRemainPercentage = 100 - response.totalContractAmountPercentage;
                 response.list.push({"title": "Total restante", "contractAmountPercentageBySection": totalRemainPercentage});
