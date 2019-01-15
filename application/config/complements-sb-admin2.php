@@ -83,3 +83,5 @@ $config['complements']['charts']['js'] = assets_url('resource-sb-admin2/plugins/
 $config['complements']['themes.dark']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/dark.js');
 $config['complements']['themes.kelly']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/kelly.js');
 $config['complements']['themes.animated']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/animated.js');
+
+$config['complements']['jquery.sticky']['js'] = assets_url('resource-sb-admin2/plugins/jquery.sticky.js');

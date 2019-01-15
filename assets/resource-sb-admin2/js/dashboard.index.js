@@ -12,6 +12,7 @@ daysProgress.launchGaugeChartUpdate(0);
 
 $(document).ready(function() {
 
+    $("#panel-main-report-control-filter").closest(".row").sticky({topSpacing:0,zIndex:1, center:true});
     var date = new Date();
     $('.date-time').datetimepicker({
         ignoreReadonly: true,

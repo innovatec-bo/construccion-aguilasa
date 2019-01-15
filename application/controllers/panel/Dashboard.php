@@ -16,6 +16,7 @@ class Dashboard extends PrivateController
     public function index($view = "charts")
     {
         $this->_validateFeature("dashboard_index");
+        $this->complementHandler->addViewComplement("jquery.sticky");
         switch($view)
         {
             case "tables":
