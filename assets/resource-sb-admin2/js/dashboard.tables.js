@@ -109,6 +109,20 @@ $(document).ready(function() {
         var response = chooseWorkflowColumnsToDownload();
         // console.log(response);
     });
+
+    var toggleCheckbox = 0;
+    $(document).on("click", ".toggle-checkbox-status", function(e){
+        e.preventDefault();
+        toggleCheckbox++;
+        if(toggleCheckbox%2 === 0)
+        {
+            $(".columns-to-download").find("input[type=checkbox]").not("[value=code_pro]").prop("checked", true);
+        }
+        else
+        {
+            $(".columns-to-download").find("input[type=checkbox]").not("[value=code_pro]").prop("checked", false);
+        }
+    });
 });
 
 function getProjectTotalsTable(year, dataType, contractId)
@@ -314,7 +328,21 @@ function chooseWorkflowColumnsToDownload()
         html:html,
         width:"80%",
         customClass:"columns-to-download",
-        onClose: () =>
+        showCancelButton: true,
+        confirmButtonText: 'Descargar!',
+        allowOutsideClick:false,
+        // onClose: () =>
+        // {
+        //     var checkboxList = $(".workflow-columns-to-download:checked");
+        //     $.each(checkboxList, function(index, value){
+        //         columnListToDownload.push($(value).val());
+        //     });
+        //     $("input[name=columns-to-download]").val(columnListToDownload);
+        //     $("form[name=workflow-report]").submit();
+        // }
+
+    }).then((result) => {
+        if (result.value)
         {
             var checkboxList = $(".workflow-columns-to-download:checked");
             $.each(checkboxList, function(index, value){

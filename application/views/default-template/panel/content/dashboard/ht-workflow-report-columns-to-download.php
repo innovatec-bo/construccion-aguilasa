@@ -8,6 +8,13 @@
 ?>
 <script id="ht-workflow-report-columns-to-download" type="text/x-handlebars-template">
     <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-sm toggle-checkbox-status">Marcar/Desmarcar todos</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         {{#each columnList}}
             <div class="col-md-3 text-left">
                 <div class="checkbox">
