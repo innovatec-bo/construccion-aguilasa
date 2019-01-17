@@ -53,9 +53,12 @@ $(document).ready(function() {
         getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
         getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
         getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        getProjectTotalsChart(year,undefined,inputData.contractNumber);
-        getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
-        getSystemReport(inputData.managementBy, inputData.contractNumber);
+        var dataType = $("#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
+        getProjectTotalsChart(year,dataType,inputData.contractNumber);
+        dataType = $("#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
+        getProjectsEvolutionChart(year,dataType,inputData.contractNumber);
+        dataType = $("#panel-system-chart").find("select[name=data-type] option:selected").val();
+        getSystemReport(inputData.managementBy, inputData.contractNumber, dataType);
         // console.log(year, inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
     });
 
