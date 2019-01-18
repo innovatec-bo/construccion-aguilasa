@@ -352,4 +352,63 @@ function chooseWorkflowColumnsToDownload()
             $("form[name=workflow-report]").submit();
         }
     });
+    enableSelect2ColumnsGroupsName();
+}
+
+function enableSelect2ColumnsGroupsName()
+{
+    $('#column-groups-name').select2({
+        width: '100%',
+        tags:true,
+        placeholder: 'Seleccionar o añadir',
+        insertTag: function (data, tag) {
+            tag.isTag = true;
+            // Insert the tag at the end of the results
+            data.push(tag);
+        },
+        templateResult: formatSelect2Option
+    }).on("select2:selecting select", function(e){
+        var selectedOption = e.data || e.params.args.data;
+
+        // If the selected option is a tag we trigger a custom event and prevent this one never happened.
+        if (selectedOption.isTag) {
+            // e.preventDefault();
+            // e.stopPropagation();
+            var groupList = [];
+            var checkboxList = $(".workflow-columns-to-download:checked");
+            $.each(checkboxList, function(index, value){
+                groupList.push($(value).val());
+            });
+            addWfColumnGroup(selectedOption.text, groupList);
+        }
+    });
+}
+function formatSelect2Option(option) {
+    if (option.isTag) {
+        return $('<div class="add-new"><i class="fa fa-plus-circle fa-fw"></i> ' + option.text + '</div>')
+    } else {
+        return option.text
+    }
+}
+
+function addWfColumnGroup(groupName, groupColumns)
+{
+    $.ajax({
+        url : base_url + 'panel/AjaxWorkflowColumnGroup/add',
+        dataType  :"json",
+        type : "POST",
+        data:{groupName:groupName, groupColumns:groupColumns},
+        success:function(response){
+            var data = {
+                id: response.wfColumnGroup.wfGroupId,
+                text: response.wfColumnGroup.wfGroupName
+            };
+            // $('#column-groups-name').trigger("select2:close");
+            var newOption = new Option(data.text, data.id, false, false);
+            $('#column-groups-name').append(newOption).trigger('change');
+            $('#column-groups-name').val(data.id); // Select the option with a value of '1'
+            $('#column-groups-name').trigger('change'); // Notify any JS components that the value changed
+            console.log(response);
+        }
+    });
 }

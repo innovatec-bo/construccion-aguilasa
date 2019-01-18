@@ -8,8 +8,15 @@
 ?>
 <script id="ht-workflow-report-columns-to-download" type="text/x-handlebars-template">
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
+        <div class="col-md-6">
+            <div class="form-group text-left">
+                <select name="tags" id="column-groups-name" class="form-control">
+<!--                    <option value="1">Awsome</option>-->
+<!--                    <option value="2">Cool</option>-->
+<!--                    <option value="3">Balls</option>-->
+                </select>
+            </div>
+            <div class="form-group text-left">
                 <button type="button" class="btn btn-primary btn-sm toggle-checkbox-status">Marcar/Desmarcar todos</button>
             </div>
         </div>
