@@ -123,6 +123,19 @@ $(document).ready(function() {
             $(".columns-to-download").find("input[type=checkbox]").not("[value=code_pro]").prop("checked", false);
         }
     });
+
+    // $(document).on("change", "#column-groups-name", function(index, value){
+    //
+    //     var columnList = $("#column-groups-name option:selected").data("column-list");
+    //     columnList = columnList === undefined?[]:columnList.split(",");
+    //     if(columnList.length > 0)
+    //     {
+    //         $(".columns-to-download").find("input[type=checkbox]").not("[value=code_pro]").prop("checked", false);
+    //         $.each(columnList, function(index, value){
+    //             $(".columns-to-download").find("input[type=checkbox][value="+value+"]").prop("checked",true);
+    //         });
+    //     }
+    // });
 });
 
 function getProjectTotalsTable(year, dataType, contractId)
@@ -229,13 +242,41 @@ function saveTrackingList()
 }
 function startSelect2TrackingList(selector)
 {
+    // selector = selector || '.select2.tracking-list';
+    // $(selector).select2({
+    //     placeholder: "Puede seleccionar una lista de seguimiento",
+    //     containerCssClass: 'select-xs',
+    //     allowClear : true,
+    //     ajax : {
+    //         url : base_url + 'panel/AjaxTrackingList/select2',
+    //         dataType : "json",
+    //         type : "post",
+    //         delay : 600,
+    //         data : function(params) {
+    //             return {
+    //                 term : params.term || "", //search term
+    //                 limit : 5, // page size
+    //                 page: params.page || 1
+    //             };
+    //         },
+    //
+    //         processResults: function (data) {
+    //             return {
+    //                 results: data.list,
+    //                 pagination: data.pagination
+    //             };
+    //         }
+    //     },
+    //     width : "100%"
+    // });
     selector = selector || '.select2.tracking-list';
+    //select2 ajax for projects
     $(selector).select2({
-        placeholder: "Puede seleccionar una lista de seguimiento",
+        placeholder: "Escriba un codigo de proyecto",
         containerCssClass: 'select-xs',
         allowClear : true,
         ajax : {
-            url : base_url + 'panel/AjaxTrackingList/select2',
+            url : base_url + 'panel/AjaxProject/select2ProjectsThatReturnedMaterials',
             dataType : "json",
             type : "post",
             delay : 600,
@@ -255,6 +296,8 @@ function startSelect2TrackingList(selector)
             }
         },
         width : "100%"
+        // escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        // templateResult: formatRepo
     });
 }
 function getExecutiveSummary(system, management, contract)
@@ -331,16 +374,6 @@ function chooseWorkflowColumnsToDownload()
         showCancelButton: true,
         confirmButtonText: 'Descargar!',
         allowOutsideClick:false,
-        // onClose: () =>
-        // {
-        //     var checkboxList = $(".workflow-columns-to-download:checked");
-        //     $.each(checkboxList, function(index, value){
-        //         columnListToDownload.push($(value).val());
-        //     });
-        //     $("input[name=columns-to-download]").val(columnListToDownload);
-        //     $("form[name=workflow-report]").submit();
-        // }
-
     }).then((result) => {
         if (result.value)
         {
@@ -352,36 +385,89 @@ function chooseWorkflowColumnsToDownload()
             $("form[name=workflow-report]").submit();
         }
     });
+    $('[data-toggle="tooltip"]').tooltip();
     enableSelect2ColumnsGroupsName();
 }
 
 function enableSelect2ColumnsGroupsName()
 {
-    $('#column-groups-name').select2({
-        width: '100%',
-        tags:true,
-        placeholder: 'Seleccionar o añadir',
-        insertTag: function (data, tag) {
-            tag.isTag = true;
-            // Insert the tag at the end of the results
-            data.push(tag);
-        },
-        templateResult: formatSelect2Option
-    }).on("select2:selecting select", function(e){
-        var selectedOption = e.data || e.params.args.data;
+    // $('#column-groups-name').select2({
+    //     placeholder: "Seleccionar o añadir",
+    //     containerCssClass: 'select-xs',
+    //     allowClear : true,
+    //     ajax : {
+    //         url : base_url+"panel/AjaxWorkflowColumnGroup/select2Ajax",
+    //         dataType : "json",
+    //         type : "post",
+    //         delay : 600,
+    //         data : function(params) {
+    //             return {
+    //                 term : params.term || "", //search term
+    //                 limit : 5, // page size
+    //                 page: params.page || 1
+    //             };
+    //         },
+    //         processResults: function (data) {
+    //             return {
+    //                 results: data.list,
+    //                 pagination: data.pagination
+    //             };
+    //         }
+    //     },
+    //     width : "100%"
+    // });
+    //select2 ajax for projects
+    $("#column-groups-name").select2({
+        placeholder: "Seleccionar o añadir",
+        containerCssClass: 'select-xs',
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxProject/select2ProjectsThatReturnedMaterials',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                return {
+                    term : params.term || "", //search term
+                    limit : 5, // page size
+                    page: params.page || 1
+                };
+            },
 
-        // If the selected option is a tag we trigger a custom event and prevent this one never happened.
-        if (selectedOption.isTag) {
-            // e.preventDefault();
-            // e.stopPropagation();
-            var groupList = [];
-            var checkboxList = $(".workflow-columns-to-download:checked");
-            $.each(checkboxList, function(index, value){
-                groupList.push($(value).val());
-            });
-            addWfColumnGroup(selectedOption.text, groupList);
-        }
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        width : "100%"
     });
+    // $('#column-groups-nameee').select2({
+    //     width: '100%',
+    //     tags:true,
+    //     placeholder: 'Seleccionar o añadir',
+    //     insertTag: function (data, tag) {
+    //         tag.isTag = true;
+    //         // Insert the tag at the end of the results
+    //         data.push(tag);
+    //     },
+    //     templateResult: formatSelect2Option
+    // }).on("select2:selecting select", function(e){
+    //     var selectedOption = e.data || e.params.args.data;
+    //
+    //     // If the selected option is a tag we trigger a custom event and prevent this one never happened.
+    //     if (selectedOption.isTag) {
+    //         // e.preventDefault();
+    //         // e.stopPropagation();
+    //         var groupList = [];
+    //         var checkboxList = $(".workflow-columns-to-download:checked");
+    //         $.each(checkboxList, function(index, value){
+    //             groupList.push($(value).val());
+    //         });
+    //         addWfColumnGroup(selectedOption.text, groupList);
+    //     }
+    // });
 }
 function formatSelect2Option(option) {
     if (option.isTag) {
@@ -408,6 +494,13 @@ function addWfColumnGroup(groupName, groupColumns)
             $('#column-groups-name').append(newOption).trigger('change');
             $('#column-groups-name').val(data.id); // Select the option with a value of '1'
             $('#column-groups-name').trigger('change'); // Notify any JS components that the value changed
+
+            //parse array as sigle list separated by comma and stored as option data
+            var result = groupColumns.map(function(val) {
+                return val;
+            }).join(',');
+
+            $("#column-groups-name option:selected").data("column-list", result);
             console.log(response);
         }
     });

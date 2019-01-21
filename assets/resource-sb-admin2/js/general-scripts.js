@@ -49,3 +49,34 @@ function blockArea(content)
         }
     });
 }
+
+// function startSelect2(containerSelector, baseUrl, containerCssClass)
+// {
+//     containerCssClass = containerCssClass === undefined?"":containerCssClass;
+//     var placeholder = $(containerSelector).data("placeholder");
+//     $('#ajax-select2-product-services').select2({
+//         placeholder: placeholder,
+//         allowClear : true,
+//         containerCssClass: containerCssClass,
+//         ajax : {
+//             url : baseUrl,
+//             dataType : "json",
+//             type : "post",
+//             delay : 600,
+//             data : function(params) {
+//                 return {
+//                     term : params.term || "", //search term
+//                     limit : 5, // page size
+//                     page: params.page || 1
+//                 };
+//             },
+//             processResults: function (data) {
+//                 return {
+//                     results: data.list,
+//                     pagination: data.pagination
+//                 };
+//             }
+//         },
+//         width : "100%"
+//     });
+// }

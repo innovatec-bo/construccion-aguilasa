@@ -73,7 +73,7 @@ $config['complements']['picker']['js'] = assets_url('resource-sb-admin2/vendor/p
 $config['complements']['pick-a-date']['js'] = assets_url('resource-sb-admin2/vendor/pickers/pickadate/js/picker.date.js');
 
 $config['complements']['select2']['css'] = assets_url('resource-sb-admin2/plugins/select2/dist/css/select2.css');
-$config['complements']['select2']['js'] = assets_url('resource-sb-admin2/plugins/select2/dist/js/select2.full.js');
+$config['complements']['select2']['js'] = assets_url('resource-sb-admin2/plugins/select2/dist/js/select2.full.min.js');
 
 $config['complements']['sweet-alert2']['css'] = assets_url('resource-sb-admin2/plugins/sweetalert2.min.css');
 $config['complements']['sweet-alert2']['js'] = assets_url('resource-sb-admin2/plugins/sweetalert2.min.js');

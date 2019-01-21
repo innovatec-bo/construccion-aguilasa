@@ -76,23 +76,8 @@ class AjaxWorkflowColumnGroup extends PrivateController
         }
     }
 
-    public function edit($roleId = NULL)
+    public function edit()
     {
-        $this->_validateFeature('role_edit');
-
-        if(!is_numeric($roleId))
-        {
-            $response["success"] = 0;
-            $response["message"] = "Invalid parameter.";
-            echo json_encode($response);exit;
-        }
-        $role = Model_role::getById($roleId);
-        if(!$role instanceof Model_role)
-        {
-            $response["success"] = 0;
-            $response["message"] = "Role not found.";
-            echo json_encode($response);exit;
-        }
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
@@ -120,10 +105,28 @@ class AjaxWorkflowColumnGroup extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function getTotalRoles()
+    public function select2Ajax()
     {
-        $recordsTotal = Model_role::countAll();
-        $response["total"] = $recordsTotal;
-        echo json_encode($response);exit;
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $offset = ($page-1)*$limit;
+        $objects = Model_workflow_column_group::search($term, $limit, $offset, 'column_group_name_wcg', 'asc', array('column_group_name_wcg'));
+        $recordsFiltered = Model_workflow_column_group::searchTotalCount($term, array('column_group_name_wcg'));
+
+        $resultArray = array();
+        $list = array();
+
+        foreach ($objects as $object)
+        {
+            $list[] = array(
+                "id" => $object->id_wcg,
+                "text" => $object->column_group_name_wcg
+            );
+        }
+        $moreResults = ($page * $limit) < $recordsFiltered;
+        $resultArray['list'] = $list;
+        $resultArray['pagination'] = array("more" => $moreResults);
+        echo json_encode($resultArray);exit ;
     }
 }

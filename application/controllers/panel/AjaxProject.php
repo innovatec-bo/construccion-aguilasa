@@ -91,7 +91,7 @@ class AjaxProject extends PrivateController
 
     public function select2ProjectsThatReturnedMaterials()
     {
-        $currentIds = $this->input->post("currentIds");
+        $currentIds = array();//$this->input->post("currentIds");
         $term = $this->input->post("term");
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");

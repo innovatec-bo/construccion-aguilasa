@@ -10,11 +10,17 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group text-left">
-                <select name="tags" id="column-groups-name" class="form-control">
-<!--                    <option value="1">Awsome</option>-->
-<!--                    <option value="2">Cool</option>-->
-<!--                    <option value="3">Balls</option>-->
-                </select>
+                <div class="form-group input-group">
+                    <select name="tags" id="column-groups-name" class="form-control">
+                    </select>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-sm" type="button" data-original-title="ACTUALIZAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-save"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" type="button" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash"></i>
+                        </button>
+                    </span>
+                </div>
+
             </div>
             <div class="form-group text-left">
                 <button type="button" class="btn btn-primary btn-sm toggle-checkbox-status">Marcar/Desmarcar todos</button>
