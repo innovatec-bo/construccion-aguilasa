@@ -67,7 +67,7 @@ class AjaxWorkflowColumnGroup extends PrivateController
             $wfColumnGroup = new Model_workflow_column_group($groupName, $groupColumns);
             $wfColumnGroup->save();
             $response["success"] = 1;
-            $response["message"] = "User was added successfully";
+            $response["message"] = "Group column added successfully";
             $wfColumnGroup = $wfColumnGroup->toArray();
             $response["wfColumnGroup"]["wfGroupId"] =  $wfColumnGroup["id_wcg"];
             $response["wfColumnGroup"]["wfGroupName"] =  $wfColumnGroup["column_group_name_wcg"];
@@ -78,31 +78,43 @@ class AjaxWorkflowColumnGroup extends PrivateController
 
     public function edit()
     {
-
+//        $this->_validateFeature('role_add');
         /** Server Side Validations **/
-        $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('groupId', 'Id', 'trim|required');
+        $this->form_validation->set_rules('groupColumns', 'Columns', 'trim');
 
         if($this->form_validation->run() === FALSE)
         {
-            $response["success"] = 1;
-            $response["message"] = "";
-            $response["template"] = $this->loadView("panel/content/role/ht-modal-edit", array(),true);
-            $role = $role->toArray();
-            $response["role"]["roleId"] = $role["id_rol"];
-            $response["role"]["roleName"] = $role["rolename_rol"];
-            $response["role"]["keyword"] = $role["keyword_rol"];
+            //Right now isn't necessary make a get request to add a new column group.
+//            $response["success"] = 1;
+//            $response["message"] = "";
+//            $response["template"] = $this->loadView("panel/content/role/ht-modal-add", array(),true);
+//            $response["role"] = array();
         }
         else
         {
             $formData = $this->input->post();
-            $roleName = $formData["role-name"];
-            $role->setRoleName($roleName);
-            $role->save();
+            $groupId = $formData["groupId"];
+            $groupColumns = $formData["groupColumns"];
+            if(is_array($groupColumns))
+            {
+                $groupColumns = implode(",",$groupColumns);
+            }
+            else
+            {
+                $groupColumns = "";
+            }
+            $wfColumnGroup = Model_workflow_column_group::getById($groupId);
+            $wfColumnGroup->setGroupColumns($groupColumns);
+            $wfColumnGroup->save();
             $response["success"] = 1;
-            $response["message"] = "User was added successfully";
-
+            $response["message"] = "Group column was updated successfully";
+            $wfColumnGroup = $wfColumnGroup->toArray();
+            $response["wfColumnGroup"]["wfGroupId"] =  $wfColumnGroup["id_wcg"];
+            $response["wfColumnGroup"]["wfGroupName"] =  $wfColumnGroup["column_group_name_wcg"];
+            $response["wfColumnGroup"]["wfGroupList"] =  $wfColumnGroup["column_list_wcg"];
+            echo json_encode($response);exit;
         }
-        echo json_encode($response);exit;
     }
 
     public function select2Ajax()
@@ -121,7 +133,8 @@ class AjaxWorkflowColumnGroup extends PrivateController
         {
             $list[] = array(
                 "id" => $object->id_wcg,
-                "text" => $object->column_group_name_wcg
+                "text" => $object->column_group_name_wcg,
+                "columnsList" => $object->column_list_wcg
             );
         }
         $moreResults = ($page * $limit) < $recordsFiltered;

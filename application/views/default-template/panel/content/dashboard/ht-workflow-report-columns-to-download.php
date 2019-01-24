@@ -12,11 +12,12 @@
             <div class="form-group text-left">
                 <div class="form-group input-group">
                     <select name="tags" id="column-groups-name" class="form-control">
+                        <option value="" selected></option>
                     </select>
                     <span class="input-group-btn">
-                        <button class="btn btn-info btn-sm" type="button" data-original-title="ACTUALIZAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-save"></i>
+                        <button class="btn btn-info btn-sm column-groups-name-btn-update" type="button" data-original-title="ACTUALIZAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-save"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" type="button" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash"></i>
+                        <button class="btn btn-danger btn-sm column-groups-name-btn-delete hide" type="button" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash"></i>
                         </button>
                     </span>
                 </div>

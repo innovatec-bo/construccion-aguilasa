@@ -70,4 +70,10 @@ class Model_workflow_column_group_base extends MY_Model
         }
         return $response;
     }
+
+    //begin - setters
+    public function setGroupColumns($columnGroups)
+    {
+        $this->_columnList = $columnGroups;
+    }
 }
