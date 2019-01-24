@@ -64,7 +64,7 @@ class AjaxWorkflowColumnGroup extends PrivateController
             {
                 $groupColumns = "";
             }
-            $wfColumnGroup = new Model_workflow_column_group($groupName, $groupColumns);
+            $wfColumnGroup = new Model_workflow_column_group($groupName, "code_pro");
             $wfColumnGroup->save();
             $response["success"] = 1;
             $response["message"] = "Group column added successfully";
