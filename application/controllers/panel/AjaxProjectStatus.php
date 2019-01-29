@@ -451,7 +451,7 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveBudget($design, 0, 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, 0, 0, 0, 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
