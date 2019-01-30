@@ -286,6 +286,7 @@ class Model_project extends Model_project_base
         $sql = "
         SELECT
             id_pro,
+            IF(energized_pro = 1, 'Si', 'No') energized_pro,
             status_name_pst,
             contract_number_con,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
