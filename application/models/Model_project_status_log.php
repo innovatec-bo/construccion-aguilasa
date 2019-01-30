@@ -104,11 +104,12 @@ class Model_project_status_log extends Model_project_status_log_base
             wfl_project_real_budgets.*,
             wfl_construction_assignments.*,
             status_name_pst,
-            keyword_pst,
+            keyword_pst,            
             GROUP_CONCAT(
                 CONCAT('{','\"id\":',id_sre,',\"name\":\"',firstname_usr,' ',lastname_usr,'\"}')
             ) jsonResponsible,
-            secondary_code_pro
+            secondary_code_pro,
+            energized_pro
         FROM
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst

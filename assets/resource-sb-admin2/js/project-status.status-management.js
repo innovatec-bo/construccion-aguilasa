@@ -80,6 +80,9 @@ $(document).ready(function() {
                 case "completed":
                     saveBasicLog(statusId, statusKeyword);
                     break;
+                case "project_energized":
+                    saveProjectEnergized(statusId, statusKeyword);
+                    break;
                 case "as_built":
                     saveAsBuilt(statusId, statusKeyword);
                     break;
@@ -718,6 +721,39 @@ function saveBasicLog(statusId,statusKeyword)
 
     $.ajax({
         url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+        dataType  :"json",
+        type : "POST",
+        data : data,
+        success:function(response){
+            loadStatusSavedView(statusKeyword);
+            getProjectLog();
+        }
+    });
+}
+
+function saveProjectEnergized(statusId,statusKeyword)
+{
+    var select2Data = $('#ajax-get-responsible-list').select2("data");
+    var responsibleList = [];
+    $.each(select2Data, function(index, value){
+        responsibleList.push(value.id);
+    });
+
+    var projectId = $("input[name=project-id]").val();
+    var entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+    var projectEnergized = $("input[name=project-energized]").is(":checked")?1:0;
+    var statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+    var data = {
+        projectId: projectId,
+        entryDate:entryDate,
+        projectEnergized:projectEnergized,
+        statusId: statusId,
+        statusDetail: statusDetail,
+        responsibleList:responsibleList
+    };
+
+    $.ajax({
+        url : base_url + 'panel/AjaxProjectStatus/saveProjectEnergized',
         dataType  :"json",
         type : "POST",
         data : data,

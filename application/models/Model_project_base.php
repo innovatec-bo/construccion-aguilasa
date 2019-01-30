@@ -32,9 +32,10 @@ class Model_project_base extends MY_Model
     protected $_folderDate;
     protected $_contractId;
     protected $_detail;
+    protected $_energized;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "")
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0)
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -57,6 +58,7 @@ class Model_project_base extends MY_Model
         $this->_folderDate = $folderDate;
         $this->_contractId = $contractId;
         $this->_detail = $detail;
+        $this->_energized = $energized;
     }
 
     /**
@@ -87,6 +89,7 @@ class Model_project_base extends MY_Model
             "folder_date_pro" => $this->_folderDate,
             "contract_id_pro" => $this->_contractId,
             "detail_pro" => $this->_detail,
+            "energized_pro" => $this->_energized,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -130,7 +133,8 @@ class Model_project_base extends MY_Model
                 $object->secondary_code_pro,
                 $object->folder_date_pro,
                 $object->contract_id_pro,
-                $object->detail_pro
+                $object->detail_pro,
+                $object->energized_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -229,6 +233,11 @@ class Model_project_base extends MY_Model
         $this->_detail = $detail;
     }
 
+    public function setEnergized($energized)
+    {
+        $this->_energized = $energized;
+    }
+
     public function getCode()
     {
         return $this->_projectCode;
@@ -247,6 +256,11 @@ class Model_project_base extends MY_Model
     public function getEntryDate()
     {
         return $this->_entryDate;
+    }
+
+    public function getEnergized()
+    {
+        return $this->_energized;
     }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
