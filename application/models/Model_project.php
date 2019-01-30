@@ -287,6 +287,8 @@ class Model_project extends Model_project_base
         SELECT
             id_pro,
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
+            percentage_inc,
+            detail_inc,
             status_name_pst,
             contract_number_con,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
@@ -380,13 +382,6 @@ class Model_project extends Model_project_base
             conciliation_shipment.live_line_reb payment_order_registered_live_line_budget,
             conciliation_shipment.right_of_way_prb payment_order_registered_right_of_way_budget,
             conciliation_shipment.total_real_budget payment_order_registered_total_real_budget,
---            ifnull(conciliation_shipment.design_reb, 0) + ifnull(conciliation_shipment.building_reb, 0) + ifnull(conciliation_shipment.transportation_reb, 0) + ifnull(conciliation_shipment.live_line_reb, 0) + ifnull(conciliation_shipment.right_of_way_reb, 0) payment_order_registered_total_real_budget,
---            payment_order_registered.design_budget_pop payment_order_registered_design_budget,
---            payment_order_registered.transportation_budget_pop payment_order_registered_transportation_budget,
---            payment_order_registered.live_line_budget_pop payment_order_registered_live_line_budget,
---			  payment_order_registered.building_budget_pop payment_order_registered_building_budget,
---            payment_order_registered.right_of_way_budget_pop payment_order_registered_right_of_way_budget,
---            payment_order_registered.total_real_budget payment_order_registered_total_real_budget,
             payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
             payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,
             payment_order_has_been_settled.entry_date payment_order_has_been_settled_date
@@ -455,6 +450,16 @@ class Model_project extends Model_project_base
                         GROUP BY id_psl
                         ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
         ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+        LEFT JOIN (
+            select inc.*
+            from (
+               select 
+                    project_id_inc,
+                    max(manual_entry_date_inc) manual_entry_date_inc
+                    from wfl_incidents
+                    GROUP BY project_id_inc
+            ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+        ) wfl_incidents on project_id_inc = id_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
