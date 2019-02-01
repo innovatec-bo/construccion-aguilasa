@@ -334,6 +334,7 @@ class Model_project extends Model_project_base
             digitization.entry_date digitization_date,
             drawing.entry_date drawing_date,
             schedulee.entry_date schedule_date,
+            schedulee.design_prb schedule_design_budget,
             project_start_pro schedule_start,
             project_end_pro schedule_end,
             already_sent.entry_date already_sent_date,

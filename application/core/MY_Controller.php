@@ -253,6 +253,7 @@ class PrivateController extends PublicController
             "schedule_date" => "FECHA DEFINICION DE CRONOGRAMA",
             "schedule_start" => "FECHA CRONOGRAMA INICIO",
             "schedule_end" => "FECHA CRONOGRAMA FIN",
+            "schedule_design_budget" => "CRONOGRAMA - IMPORTE DISEÑO",
             "already_sent_date" => "FECHA PROYECTO ENVIADO A CRE",
             "approved_date" => "FECHA APROBACION",
             "canceled_date" => "FECHA CANCELADO",
