@@ -33,9 +33,9 @@ class Model_project_base extends MY_Model
     protected $_contractId;
     protected $_detail;
     protected $_energized;
-
+    protected $_projectPercentage;
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
-                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0)
+                                $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0, $projectPercentage = 0)
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -59,6 +59,7 @@ class Model_project_base extends MY_Model
         $this->_contractId = $contractId;
         $this->_detail = $detail;
         $this->_energized = $energized;
+        $this->_projectPercentage = $projectPercentage;
     }
 
     /**
@@ -88,6 +89,7 @@ class Model_project_base extends MY_Model
             "secondary_code_pro" => $this->_secondaryCode,
             "folder_date_pro" => $this->_folderDate,
             "contract_id_pro" => $this->_contractId,
+            "project_percentage_pro" => $this->_projectPercentage,
             "detail_pro" => $this->_detail,
             "energized_pro" => $this->_energized,
             "deleted_pro" => $this->_deleted,
@@ -134,7 +136,8 @@ class Model_project_base extends MY_Model
                 $object->folder_date_pro,
                 $object->contract_id_pro,
                 $object->detail_pro,
-                $object->energized_pro
+                $object->energized_pro,
+                $object->project_percentage_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -238,6 +241,11 @@ class Model_project_base extends MY_Model
         $this->_energized = $energized;
     }
 
+    public function setProjectPercentage($projectPercentage)
+    {
+        $this->_projectPercentage = $projectPercentage;
+    }
+
     public function getCode()
     {
         return $this->_projectCode;
@@ -261,6 +269,11 @@ class Model_project_base extends MY_Model
     public function getEnergized()
     {
         return $this->_energized;
+    }
+
+    public function getProjectPercentage()
+    {
+        return $this->_projectPercentage;
     }
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 

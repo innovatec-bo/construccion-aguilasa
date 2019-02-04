@@ -8,9 +8,9 @@
 
 class Model_project extends Model_project_base
 {
-    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0, $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0)
+    public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0, $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0, $projectPercentage = 0)
     {
-        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode, $folderDate, $contractId, $detail, $energized);
+        parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode, $folderDate, $contractId, $detail, $energized, $projectPercentage);
     }
 
     public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
@@ -98,7 +98,7 @@ class Model_project extends Model_project_base
             //Lets create a new log
             $projectStatus = new Model_project_status_log($this->_id, $statusId, $detail, $manualEntryDate);
             $projectStatus->save();
-            $this->_status = $statusId;
+            $this->setStatus($statusId);
             $this->save();
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
@@ -266,7 +266,7 @@ class Model_project extends Model_project_base
 //        $responsibleList = Model_status_responsible::getUsersResponsible("approved");
 //        $responsibleList = array_column($responsibleList,"id_sre");
 
-        $this->_status = $statusId;
+        $this->setStatus($statusId);
         $this->_secondaryCode = $secondaryCode;
         $this->save();
         $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
@@ -1693,4 +1693,32 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    private function _setProjectPercentageProgress($status)
+    {
+        $statusProgress = array(
+            46 => 0,
+            2 => 10,
+            10 => 20,
+            11 => 25,
+            21 => 30,
+            29 => 40,
+            32 => 70,
+            47 => 80,
+            33 => 85,
+            35 => 90,
+            39 => 95,
+            44 => 100
+        );
+
+        if(isset($statusProgress[$status]))
+        {
+            $this->_projectPercentage = $statusProgress[$status];
+        }
+    }
+
+    public function setStatus($statusId)
+    {
+        parent::setStatus($statusId);
+        $this->_setProjectPercentageProgress($statusId);
+    }
 }
