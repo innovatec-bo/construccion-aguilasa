@@ -380,6 +380,7 @@ class Project extends PrivateController
 
     public function getProjectWorkFlowReport()
     {
+        set_time_limit(300);
         $formData = $this->input->post();
         $codeList = $formData["code-list"];
         $specialColumns = isset($formData["columns-to-download"])?$formData["columns-to-download"]:array();
@@ -442,6 +443,7 @@ class Project extends PrivateController
 
     public function downloadWorkflowWithParameters()
     {
+        set_time_limit(300);
         $additionalParameters = $this->input->post();
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->setAdditionalParameters($additionalParameters);
