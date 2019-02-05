@@ -12,12 +12,12 @@ class Model_payment_order extends Model_payment_order_base
     const PAYMENT_ORDER_INVOICED_AND_SEND = 2;
     const PAYMENT_ORDER_HAS_BEEN_SETTLED = 3;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = "")
-	{
-		parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate);
-	}
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL)
+    {
+        parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate);
+    }
 
-	public function saveProjects($projectList = array())
+    public function saveProjects($projectList = array())
     {
     	static::deleteProjectsFromPaymentOrder($this->_id);
         $arrayToInsert = array();

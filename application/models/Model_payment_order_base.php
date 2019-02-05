@@ -19,7 +19,7 @@ class Model_payment_order_base extends MY_Model
     protected $_detail;
     protected $_invoiceDate;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = "")
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL)
     {
         parent::__construct();
         $this->_orderNumber = $orderNumber;
