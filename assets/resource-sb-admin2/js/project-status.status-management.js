@@ -142,7 +142,16 @@ $(document).ready(function() {
             callback: function (result) {
                 if(result)
                 {
-                    addIncident();
+                    var $form = $("form[name=incident-form]");
+                    if($form.parsley().isValid())
+                    {
+                        addIncident();
+                    }
+                    else
+                    {
+                        $form.parsley().validate();
+                        return false;
+                    }
                 }
             }
         });

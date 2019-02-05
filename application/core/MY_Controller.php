@@ -222,7 +222,7 @@ class PrivateController extends PublicController
         $columnList = array(
             "code_pro" => "CODIGO",
             "energized_pro" => "ENERGIZADO",
-            "percentage_inc" => "% EN INCIDENCIA",
+            "percentage_inc" => "CONSTRUCCION - % FISICO",
             "detail_inc" => "DETALLE - INCIDENCIA",
             "contract_number_con" => "CONTRATO",
             "status_name_pst" => "ESTADO",
