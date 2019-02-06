@@ -495,6 +495,13 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
+        if($statusId == 32)
+        {
+            $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId);
+            $incident->save();
+        }
+
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
