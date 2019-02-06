@@ -741,4 +741,9 @@ class AjaxProjectStatus extends PrivateController
         $response["incidentList"] = $incidentList;
         echo json_encode($response);exit;
     }
+
+    public function addQuickIncidents()
+    {
+
+    }
 }

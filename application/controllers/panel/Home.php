@@ -16,6 +16,10 @@ class Home extends PrivateController
     public function index()
     {
         $this->_validateFeature("home");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("core");
         $this->complementHandler->addViewComplement("charts");
         $this->complementHandler->addViewComplement("themes.animated");

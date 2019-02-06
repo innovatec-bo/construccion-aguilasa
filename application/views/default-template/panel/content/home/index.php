@@ -24,4 +24,5 @@
 <!-- /.container-fluid -->
 <?php
 $this->load->view('default-template/panel/content/dashboard/ht-report-executive-summary');
+$this->load->view('default-template/panel/content/project-status/ht-modal-incident-form');
 ?>

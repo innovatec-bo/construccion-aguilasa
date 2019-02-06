@@ -161,7 +161,7 @@ $(document).ready(function() {
             defaultDate: date,
             format: 'DD-MM-YYYY'
         });
-    })
+    });
 
     $(document).on("click",".check-incidents",function(e){
         e.preventDefault();
