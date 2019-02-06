@@ -290,6 +290,7 @@ class Model_project extends Model_project_base
             percentage_inc,
             detail_inc,
             status_name_pst,
+            project_percentage_pro,
             contract_number_con,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
             status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
@@ -458,7 +459,7 @@ class Model_project extends Model_project_base
                     project_id_inc,
                     max(manual_entry_date_inc) manual_entry_date_inc
                     from wfl_incidents
-                    where status_id_inc = 29 -- in_progress 
+                    where status_id_inc in (29) -- in_progress 
                     GROUP BY project_id_inc
             ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
         ) wfl_incidents on project_id_inc = id_pro

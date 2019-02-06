@@ -221,11 +221,11 @@ class PrivateController extends PublicController
     {
         $columnList = array(
             "code_pro" => "CODIGO",
-            "energized_pro" => "ENERGIZADO",
             "percentage_inc" => "CONSTRUCCION - % FISICO",
             "detail_inc" => "DETALLE - INCIDENCIA",
             "contract_number_con" => "CONTRATO",
             "status_name_pst" => "ESTADO",
+            "project_percentage_pro" => "PROGRESO GENERAL",
             "status_log_manual_entry_date" => "INGRESO EN STATUS",
             "static_days" => "DIAS ESTATICO",
             "entry_date_pro" => "FECHA INGRESO",
@@ -280,6 +280,7 @@ class PrivateController extends PublicController
             "estimated_time_assigned" => "DIAS ESTIMADOS EN ASIGNACION",
             "in_progress_date" => "FECHA INICIO DE CONSTRUC.",
             "completed_date" => "CONSTRUCCION COMPLETADA",
+            "energized_pro" => "ENERGIZADO",
             "paused_date" => "FECHA DE PAUSA DE CONSTRUC",
             "percentage_paused" => "% DE PAUSA",
             "stopped_date" => "FECHA DE CONSTRUCCION DETENIDA",
