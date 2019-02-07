@@ -14,7 +14,11 @@
             {{var "class" "timeline-inverted"}}
             {{/ifCond}}
             <a href="javascript:void(0)" class="list-group-item" data-project-percentage="{{percentage_inc}}">
-                <i class="fa fa-info-circle"></i> ({{percentage_inc}}%) {{detail_inc}}
+                <i class="fa fa-info-circle"></i>
+                {{#ifCond status_id_inc "==" 29}}
+                    ({{percentage_inc}}%)
+                {{/ifCond}}
+                {{detail_inc}}
                 <span class="pull-right text-muted small"><em>{{formatDate manual_entry_date_inc "short"}} - {{full_name}}</em>
                                 </span>
             </a>

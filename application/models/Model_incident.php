@@ -8,9 +8,9 @@
 
 class Model_incident extends Model_incident_base
 {
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL)
     {
-        parent::__construct($statusLogId, $percentage, $detail, $manualEntryDate, $projectId);
+        parent::__construct($statusLogId, $percentage, $detail, $manualEntryDate, $projectId, $paused, $stopped, $incidentType);
     }
 
     public static function getAllByProjectIdAndStatusId($projectId, $statusId)
@@ -60,5 +60,35 @@ class Model_incident extends Model_incident_base
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
+    }
+
+    public function pauseStopProject($statusId)
+    {
+        if($this->_paused == 1 || $this->_stopped == 1)
+        {
+            //Now the building team is completed at in_progress step
+            $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($this->_projectId, "in_progress");
+            $responsibleList = array();
+            if(count($assignmentEntry) >= 0)
+            {
+                $responsibleList = json_decode("[".$assignmentEntry[0]["jsonResponsible"]."]",TRUE);
+                $responsibleList = array_column($responsibleList, "id");
+            }
+
+            $project = Model_project::getById($this->_projectId);
+
+            if($this->_paused == 1)
+            {
+                $statusId = 31;//project paused
+            }
+            if($this->_stopped == 1)
+            {
+                $statusId = 30;//project stopped
+            }
+
+            $project->setStatus($statusId);
+            $project->save();
+            $project->addStatusToLog($statusId, $this->_detail, $this->_manualEntryDate, $responsibleList);
+        }
     }
 }

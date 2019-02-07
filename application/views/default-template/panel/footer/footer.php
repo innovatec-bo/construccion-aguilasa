@@ -2,10 +2,4 @@
 $complementHandler->printViewjs();
 ?>
 </body>
-<?php
-//echo"<pre>";var_dump($sessionUser);
-?>
-<script>
-    swalList();
-</script>
 </html>

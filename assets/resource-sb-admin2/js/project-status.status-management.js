@@ -116,52 +116,52 @@ $(document).ready(function() {
         loadStatusForm(statusKeyword,1);
     });
 
-    $("#add-incident").on("click",function(e){
-       e.preventDefault();
-        var status = $("ul.wizard li.active a").prop("id");
-        console.log(status);
-        var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
-        currentPercentage =  currentPercentage == undefined?0:currentPercentage;
-        var htmlSource   = $("#ht-modal-incident-form").html();
-        var template = Handlebars.compile(htmlSource);
-        var data = {currentPercentage:currentPercentage,statusKeyword:status};
-        var html = template(data);
-        bootbox.confirm({
-            title:"Detalle de la incidencia",
-            message: html,
-            buttons: {
-                confirm: {
-                    label: 'Agregar incidente',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'Cancelar',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if(result)
-                {
-                    var $form = $("form[name=incident-form]");
-                    if($form.parsley().isValid())
-                    {
-                        addIncident();
-                    }
-                    else
-                    {
-                        $form.parsley().validate();
-                        return false;
-                    }
-                }
-            }
-        });
-        var date = new Date();
-        $('input[name=incident-manual-entry-date]').datetimepicker({
-            ignoreReadonly: true,
-            defaultDate: date,
-            format: 'DD-MM-YYYY'
-        });
-    });
+    // $("#add-incident").on("click",function(e){
+    //    e.preventDefault();
+    //     var status = $("ul.wizard li.active a").prop("id");
+    //     console.log(status);
+    //     var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
+    //     currentPercentage =  currentPercentage == undefined?0:currentPercentage;
+    //     var htmlSource   = $("#ht-modal-incident-form").html();
+    //     var template = Handlebars.compile(htmlSource);
+    //     var data = {currentPercentage:currentPercentage,statusKeyword:status};
+    //     var html = template(data);
+    //     bootbox.confirm({
+    //         title:"Detalle de la incidencia",
+    //         message: html,
+    //         buttons: {
+    //             confirm: {
+    //                 label: 'Agregar incidente',
+    //                 className: 'btn-success'
+    //             },
+    //             cancel: {
+    //                 label: 'Cancelar',
+    //                 className: 'btn-danger'
+    //             }
+    //         },
+    //         callback: function (result) {
+    //             if(result)
+    //             {
+    //                 var $form = $("form[name=incident-form]");
+    //                 if($form.parsley().isValid())
+    //                 {
+    //                     addIncident();
+    //                 }
+    //                 else
+    //                 {
+    //                     $form.parsley().validate();
+    //                     return false;
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     var date = new Date();
+    //     $('input[name=incident-manual-entry-date]').datetimepicker({
+    //         ignoreReadonly: true,
+    //         defaultDate: date,
+    //         format: 'DD-MM-YYYY'
+    //     });
+    // });
 
     $(document).on("click",".check-incidents",function(e){
         e.preventDefault();
@@ -906,43 +906,43 @@ function blockArea(content)
     });
 }
 
-function addIncident()
-{
-    var projectId = $("input[name=project-id]").val();
-    var statusLogId = $(".active a").data("status-id");
-    var detail = $('textarea[name=incident-detail]').val();
-    var percentage = $('input[name=incident-percentage]').val();
-    var entryDate = $('input[name=incident-manual-entry-date]').val();
-    var pauseProject = $("input[name=pause-project]").is(":checked")?1:0;
-    var stopProject = $("input[name=stop-project]").is(":checked")?1:0;
-    var data = {
-        projectId:projectId,
-        statusLogId:statusLogId,
-        detail:detail,
-        percentage:percentage,
-        entryDate:entryDate,
-        pauseProject:pauseProject,
-        stopProject:stopProject
-    };
-    $.ajax({
-        url : base_url + 'panel/AjaxProjectStatus/addIncident',
-        dataType  :"json",
-        type : "POST",
-        data:data,
-        success:function(response){
-            if(pauseProject || stopProject)
-            {
-                window.location.reload();
-            }
-            else
-            {
-                checkIncidents();
-            }
-
-
-        }
-    });
-}
+// function addIncident()
+// {
+//     var projectId = $("input[name=project-id]").val();
+//     var statusLogId = $(".active a").data("status-id");
+//     var detail = $('textarea[name=incident-detail]').val();
+//     var percentage = $('input[name=incident-percentage]').val();
+//     var entryDate = $('input[name=incident-manual-entry-date]').val();
+//     var pauseProject = $("input[name=pause-project]").is(":checked")?1:0;
+//     var stopProject = $("input[name=stop-project]").is(":checked")?1:0;
+//     var data = {
+//         projectId:projectId,
+//         statusLogId:statusLogId,
+//         detail:detail,
+//         percentage:percentage,
+//         entryDate:entryDate,
+//         pauseProject:pauseProject,
+//         stopProject:stopProject
+//     };
+//     $.ajax({
+//         url : base_url + 'panel/AjaxProjectStatus/addIncident',
+//         dataType  :"json",
+//         type : "POST",
+//         data:data,
+//         success:function(response){
+//             if(pauseProject || stopProject)
+//             {
+//                 window.location.reload();
+//             }
+//             else
+//             {
+//                 checkIncidents();
+//             }
+//
+//
+//         }
+//     });
+// }
 
 function checkIncidents()
 {

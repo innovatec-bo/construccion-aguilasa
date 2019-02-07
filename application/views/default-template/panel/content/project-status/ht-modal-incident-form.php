@@ -12,6 +12,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <form name="incident-form" data-parsley-validate>
+                        <input type="hidden" name="status-keyword" value="{{projectData.keyword_pst}}">
+                        <input type="hidden" name="project-id" value="{{projectData.id_pro}}">
+                        <input type="hidden" name="status-id" value="{{projectData.status_pro}}">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -25,12 +28,12 @@
                                     <div id="error-incident-manual-entry-date"></div>
                                 </div>
                             </div>
-                            {{#ifCond statusKeyword "==" "in_progress"}}
+                            {{#ifCond projectData.keyword_pst "==" "in_progress"}}
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>% fisico</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="incident-percentage" value="{{currentPercentage}}" min="{{currentPercentage}}" max="99" class="form-control" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage">
+                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage">
                                         <span class="input-group-addon">
                                             %
                                         </span>
@@ -44,7 +47,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Tipo de incidentes</label>
-                                    <select class="form-control">
+                                    <select class="form-control" name="incident-type" required>
+                                        <option value=""></option>
                                         <option value="1">Permisos</option>
                                         <option value="2">Fiscales</option>
                                         <option value="3">Vecinos</option>
@@ -57,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{#ifCond statusKeyword "==" "in_progress"}}
+                        {{#ifCond projectData.keyword_pst "==" "in_progress"}}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="checkbox">
@@ -68,7 +72,7 @@
                                 </div>
                             </div>
                         {{/ifCond}}
-                        {{#ifCond statusKeyword "==" "paused"}}
+                        {{#ifCond projectData.keyword_pst "==" "paused"}}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="checkbox">

@@ -40,6 +40,18 @@
                 <input type="hidden" name="columns-to-download" value="">
             </form>
         </div>
+        <?php
+        if($statusSet == "building") {
+            ?>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-warning add-incident" data-status-id="<?=$status?>" data-project-id="all"><i class="fa fa-flag-o fa-fw"></i> Añadir incidencia a todos los proyectos
+                    </button>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
         <div class="col-md-12">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover" id="project-index" data-project-systems='<?=json_encode($projectSystems)?>' data-project-status='<?=$projectStatusJson?>'>

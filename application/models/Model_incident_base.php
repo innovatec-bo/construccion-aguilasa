@@ -19,8 +19,9 @@ class Model_incident_base extends MY_Model
     protected $_projectId;
     protected $_paused;
     protected $_stopped;
+    protected $_incidentType;
 
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -30,6 +31,7 @@ class Model_incident_base extends MY_Model
         $this->_projectId = $projectId;
         $this->_paused = $paused;
         $this->_stopped = $stopped;
+        $this->_incidentType = $incidentType;
     }
 
     /**
@@ -47,6 +49,7 @@ class Model_incident_base extends MY_Model
             "project_id_inc" => $this->_projectId,
             "paused_inc" => $this->_paused,
             "stopped_inc" => $this->_stopped,
+            "incident_type_inc" => $this->_incidentType,
             "deleted_inc" => $this->_deleted,
             "createdon_inc" => $this->_createdOn,
             "createdby_inc" => $this->_createdBy,
@@ -77,7 +80,8 @@ class Model_incident_base extends MY_Model
                 $object->manual_entry_date_inc,
                 $object->project_id_inc,
                 $object->paused_inc,
-                $object->stopped_inc
+                $object->stopped_inc,
+                $object->incident_type_inc
             );
             $instance->_id = $object->id_inc;
 

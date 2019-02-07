@@ -104,6 +104,7 @@ class PrivateController extends PublicController
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addProjectCss('general-custom-style');
         $this->complementHandler->addViewComplement("jquery.blockui");
+        $this->complementHandler->addProjectJs('IncidentHandler');
         $this->complementHandler->addProjectJs('general-scripts');
         $this->_projectSystems = array(
             1 => "Sistema Santa Cruz",

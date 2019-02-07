@@ -3,10 +3,13 @@
  */
 
 $(document).ready(function() {
+    let incidentHandler = new IncidentHandler();
+    // incidentHandler.add(undefined, 30, 63);
+    incidentHandler.loadEventHandlers();
     $(document).on("click",".datatable-delete-button",function(e){
         e.preventDefault();
-        var objectId = $(this).data("object-id");
-        var url = $(this).data("url");
+        let objectId = $(this).data("object-id");
+        let url = $(this).data("url");
         deleteObject(objectId, url);
     });
 });

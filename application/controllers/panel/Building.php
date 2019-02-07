@@ -12,6 +12,10 @@ class Building extends PrivateController
     public function __construct()
     {
         parent::__construct();
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
     }
 
     public function readyToStart()
