@@ -202,11 +202,6 @@ foreach($responsibleListBuilder as $responsible)
                                     <label>Adicionales</label>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="live-line" value="1" <?=$liveLine == "1"?"checked":""?>>Linea viva
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
                                             <input type="checkbox" name="power-down" value="1" <?=$powerDown == "1"?"checked":""?>>Corte
                                         </label>
                                     </div>

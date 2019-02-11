@@ -342,6 +342,9 @@ class ProjectStatus extends PrivateController
         }
         else
         {
+            $previousEntryApproved = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "approved");
+//            echo"<pre>";var_dump($previousEntryApproved[0]["live_line_prb"]);exit;
+
             $formData = $this->input->post();
             $entryDate = $formData["entry-date"];
             $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
@@ -358,7 +361,9 @@ class ProjectStatus extends PrivateController
             $endDate = date_format($endDate, 'Y-m-d');
             $endDate = $endDate." ".date("H:i:s");
             $estimatedTime = $formData["estimated-time"];
-            $liveLine = isset($formData["live-line"])?1:0;
+//            $liveLine = isset($formData["live-line"])?1:0;
+            //Now the live line is defined by the approved budget(if exist)
+            $liveLine = isset($previousEntryApproved[0]) && $previousEntryApproved[0]["live_line_prb"] > 0?1:0;
             $powerDown = isset($formData["power-down"])?1:0;
             $maneuver = isset($formData["maneuver"])?1:0;
             $statusId = 21;//assign_to
