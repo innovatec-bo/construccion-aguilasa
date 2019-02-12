@@ -690,11 +690,11 @@ class Model_project extends Model_project_base
     {
         $ci = &get_instance();
         $ci->load->database();
-
-        $keyword = isset($filters["keyword"])?$filters["keyword"]:"";
-        $year = isset($filters["year"])?$filters["year"]:"";
-        $rowKey = isset($filters["rowKey"])?$filters["rowKey"]:"";
-        $month = isset($filters["month"])?$filters["month"]:"";
+//        echo "<pre>";var_dump($filters);exit;
+        $keyword = isset($filters["keyword"]) && $filters["keyword"] != ""?$filters["keyword"]:"";
+        $year = isset($filters["year"]) && $filters["year"] != ""?$filters["year"]:"";
+        $rowKey = isset($filters["rowKey"]) && $filters["rowKey"] != ""?$filters["rowKey"]:"";
+        $month = isset($filters["month"]) && $filters["month"] != ""?$filters["month"]:"";
         $sql = "";
         switch ($keyword)
         {
@@ -765,7 +765,7 @@ class Model_project extends Model_project_base
 //                echo"<pre>";var_dump($sql);exit;
             }
         }
-
+                echo"<pre>";var_dump($sql);exit;
         return $sql;
     }
 

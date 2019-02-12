@@ -39,6 +39,7 @@ class ExcelProjectWorkflow
 
         $i = $this->startDataRow();
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+
         foreach ($projectWorkflow as $row)
         {
             $this->_drawRow($spreadsheet, ($i+1), $row);
@@ -86,11 +87,11 @@ class ExcelProjectWorkflow
             $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
             $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
-            $buildingCompletionDate = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
+            $projectDetail = $this->_getExcelColumnByDataKey("detail_pro");
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
             $spreadsheet->getActiveSheet()->getStyle($contractNumber.'1')->applyFromArray($titleStyleArray);
-            $spreadsheet->getActiveSheet()->mergeCells($contractNumber.'1:'.$buildingCompletionDate.'1');
+            $spreadsheet->getActiveSheet()->mergeCells($contractNumber.'1:'.$projectDetail.'1');
 
             $stakeDate = $this->_getExcelColumnByDataKey("stake_date");
             $alreadySentDate = $this->_getExcelColumnByDataKey("already_sent_date");
@@ -135,7 +136,7 @@ class ExcelProjectWorkflow
             $spreadsheet->getActiveSheet()->mergeCells($conciliationReceptionDate.'1:'.$projectReturnMaterialsDate.'1');
 
             $paymentOrderRegisteredDate = $this->_getExcelColumnByDataKey("payment_order_registered_date");
-            $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");
+            $paymentOrderHasBeenSettledDate = $this->_getExcelColumnByDataKey("payment_order_has_been_settled_date");//echo"<pre>";var_dump($paymentOrderRegisteredDate,$paymentOrderHasBeenSettledDate);exit;
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($paymentOrderRegisteredDate.'1', "GESTION DE PAGO");
             $spreadsheet->getActiveSheet()->getStyle($paymentOrderRegisteredDate.'1')->applyFromArray($titleStyleArray);
@@ -233,12 +234,13 @@ class ExcelProjectWorkflow
 
     private function _drawRow($spreadsheet, $rowNumber, $rowData = FALSE)
     {
-        $arrayRounds = array("","A","B");
+        $arrayRounds = array("","A","B","C");
         $arrayAlphabet = range("A","Z");
         $maxColumn = count($this->_columnDefinition);
         $arrayTitles = array_values($this->_columnDefinition);
         $arrayKeys = array_keys($this->_columnDefinition);
         $i = 0;
+
         foreach ($arrayRounds as $round)
         {
             foreach ($arrayAlphabet as $char)
@@ -278,7 +280,7 @@ class ExcelProjectWorkflow
 
     private function _getExcelColumnListByArrayDataKey($arrayDataKey = array())
     {
-        $arrayRounds = array("","A","B");
+        $arrayRounds = array("","A","B","C");
         $arrayAlphabet = range("A","Z");
         $maxColumn = count($this->_columnDefinition);
         $arrayKeys = array_keys($this->_columnDefinition);
@@ -304,12 +306,13 @@ class ExcelProjectWorkflow
                 break;
             }
         }
+
         return $response;
     }
 
     private function _getExcelColumnByDataKey($dataKey = "")
     {
-        $arrayRounds = array("","A","B");
+        $arrayRounds = array("","A","B","C");
         $arrayAlphabet = range("A","Z");
         $maxColumn = count($this->_columnDefinition);
         $arrayKeys = array_keys($this->_columnDefinition);
@@ -381,7 +384,7 @@ class ExcelProjectWorkflow
 
     private function _getLastExcelColumn()
     {
-        $arrayRounds = array("","A","B");
+        $arrayRounds = array("","A","B", "C");
         $arrayAlphabet = range("A","Z");
         $maxColumn = count($this->_columnDefinition);
         $arrayKeys = array_keys($this->_columnDefinition);

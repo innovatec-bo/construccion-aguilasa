@@ -21,6 +21,7 @@
             {{#each statusSummary.list}}
                 <tr class="{{keyword}}">
                     <th>{{statusName}}</th>
+<!--                    <td class="text-center"><a href="#" class="status-summary-selective-download">{{totalProjects}}</a></td>-->
                     <td class="text-center">{{totalProjects}}</td>
                     <td class="text-center">{{approvedBudgets}}</td>
                     <td class="text-center">{{realBudgets}}</td>
