@@ -53,7 +53,8 @@ $(document).ready(function() {
         let $td = $(this).closest("td");
         let keyword = $td.closest("tr").attr("class");
         let $form = $("form[name=workflow-with-parameters]");
-        $form.find("input[name=keyword]").val(keyword);
+        $form.find("input[name=status-keyword]").val(keyword);
+        $form.find("input[name=keyword]").val("");
         $form.find("input[name=year]").val("");
         $form.find("input[name=month]").val("");
         $form.find("input[name=rowKey]").val("");
@@ -70,6 +71,7 @@ $(document).ready(function() {
         let month = $th.data("month");
         let rowKey = $td.closest("tr").attr("class");
         let $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=status-keyword]").val("");
         $form.find("input[name=keyword]").val(keyword);
         $form.find("input[name=year]").val(year);
         $form.find("input[name=month]").val(month);

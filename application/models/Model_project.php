@@ -762,10 +762,12 @@ class Model_project extends Model_project_base
             if($codeListFilter != "")
             {
                 $sql .= " and code_pro in (".$codeListFilter.") ";
-//                echo"<pre>";var_dump($sql);exit;
             }
         }
-//                echo"<pre>";var_dump($sql);exit;
+        if(isset($filters["status-keyword"]))
+        {
+            $sql .= " and keyword_pst = ".$ci->db->escape($filters["status-keyword"])." ";
+        }
         return $sql;
     }
 
