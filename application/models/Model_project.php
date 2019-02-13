@@ -711,7 +711,7 @@ class Model_project extends Model_project_base
                 $sql = " and as_built.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
                 break;
             case 'conciliation_shipment':
-                $sql = " and conciliation_shipment.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and conciliation_shipment.entry_date BETWEEN '2016-01-01' and '2020-12-31'";
                 break;
             case 'project_real_budget_confirmation':
                 $sql = " and payment_order_registered.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
@@ -765,7 +765,7 @@ class Model_project extends Model_project_base
 //                echo"<pre>";var_dump($sql);exit;
             }
         }
-                echo"<pre>";var_dump($sql);exit;
+//                echo"<pre>";var_dump($sql);exit;
         return $sql;
     }
 
