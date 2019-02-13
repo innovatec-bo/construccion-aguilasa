@@ -45,29 +45,40 @@ $(document).ready(function() {
 
     //begin - general filter;
     $("#panel-main-report-control-filter").on("change", "select", function(){
-        var $content = $("#panel-main-report-control-filter");
-        var year = $content.find('input[name=report-year]').val();
-        var inputData = getInputData();
-        getProjectProgressBySection("","",inputData.contractNumber);
-        getContractTimeProgress(inputData.contractNumber);
-        getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
-        var dataType = $("#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
-        getProjectTotalsChart(year,dataType,inputData.contractNumber);
+        let $content = $("#panel-main-report-control-filter");
+        let year = $content.find('input[name=report-year]').val();
+        let inputData = getInputData();
+        if(typeof getProjectProgressBySection === "function")
+            getProjectProgressBySection("","",inputData.contractNumber);
+        if(typeof getContractTimeProgress === "function")
+            getContractTimeProgress(inputData.contractNumber);
+        if(typeof getExecutiveSummary === "function")
+        {
+            getExecutiveSummary($("#executive-summary-units-chart-content"), "totalProjectsBySection",inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+            getExecutiveSummary($("#executive-summary-amounts-chart-content"), "totalApprovedBudgetBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+            getExecutiveSummary($("#executive-summary-contract-percentage-chart-content"), "contractAmountPercentageBySection", inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
+        }
+
+        let dataType = $("#panel-project-totals-chart").find("select[name=data-type] option:selected").val();
+        if(typeof getProjectTotalsChart === "function")
+            getProjectTotalsChart(year,dataType,inputData.contractNumber);
         dataType = $("#panel-projects-evolution-chart").find("select[name=data-type] option:selected").val();
-        getProjectsEvolutionChart(year,dataType,inputData.contractNumber);
+        if(typeof getProjectsEvolutionChart === "function")
+            getProjectsEvolutionChart(year,dataType,inputData.contractNumber);
         dataType = $("#panel-system-chart").find("select[name=data-type] option:selected").val();
-        getSystemReport(inputData.managementBy, inputData.contractNumber, dataType);
+        if(typeof getSystemReport === "function")
+            getSystemReport(inputData.managementBy, inputData.contractNumber, dataType);
         // console.log(year, inputData.projectSystem, inputData.managementBy, inputData.contractNumber);
     });
 
     $("#panel-main-report-control-filter").on("dp.change", "input[name=report-year]", function(e){
-        var $content = $("#panel-main-report-control-filter");
-        var year = e.date === false?"":new Date(e.date).getFullYear();
-        var inputData = getInputData($content);
-        getProjectTotalsChart(year,undefined,inputData.contractNumber);
-        getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
+        let $content = $("#panel-main-report-control-filter");
+        let year = e.date === false?"":new Date(e.date).getFullYear();
+        let inputData = getInputData($content);
+        if(typeof getProjectTotalsChart === "function")
+            getProjectTotalsChart(year,undefined,inputData.contractNumber);
+        if(typeof getProjectsEvolutionChart === "function")
+            getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
     });
     //end - general filter;
 });
