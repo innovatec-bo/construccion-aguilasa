@@ -89,7 +89,7 @@
 
 <script id="ht-status-project_energized-form-completed" type="text/x-handlebars-template">
     <div class="well">
-        <h4>Se registro la recepcion de conciliacion de CRE!</h4>
+        <h4>Se ha especificado que este proyecto esta energizado!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
     </div>
 </script>
