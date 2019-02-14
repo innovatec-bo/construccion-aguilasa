@@ -65,7 +65,7 @@ class Model_payment_order extends Model_payment_order_base
                 $entryDate = strtotime('2018-10-01 12:27:40');
                 $entryDate = date('Y-m-d', $entryDate);
                 $entryDate = $entryDate." ".date("H:i:s");
-                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Se definieron los importes reales", $entryDate, $responsibleList);
+                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Proyecto asignado a un numero de orden", $entryDate, $responsibleList);
             }
         }
         if(count($arrayToInsert) > 0)

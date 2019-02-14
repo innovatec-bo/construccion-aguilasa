@@ -57,7 +57,16 @@ $(document).ready(function() {
     });
 
     $(document).on("click",".save-payment-order-project",function(){
-        savePaymentOrder();
+        var $form = $("form[name=payment-order-edit]");
+        if($form .parsley().isValid())
+        {
+            savePaymentOrder();
+        }
+        else
+        {
+            $form.parsley().validate();
+        }
+
     });
 });
 
