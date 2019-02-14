@@ -282,6 +282,7 @@ class PrivateController extends PublicController
             "in_progress_date" => "FECHA INICIO DE CONSTRUC.",
             "completed_date" => "CONSTRUCCION COMPLETADA",
             "energized_pro" => "ENERGIZADO",
+            "project_energized_entry_date" => "FECHA DE ENERGIZADO",
             "paused_date" => "FECHA DE PAUSA DE CONSTRUC",
             "percentage_paused" => "% DE PAUSA",
             "stopped_date" => "FECHA DE CONSTRUCCION DETENIDA",

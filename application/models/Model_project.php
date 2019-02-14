@@ -287,6 +287,7 @@ class Model_project extends Model_project_base
         SELECT
             id_pro,
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
+            project_energized.entry_date project_energized_entry_date,
             percentage_inc,
             detail_inc,
             status_name_pst,
@@ -414,6 +415,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(37).") cre_return_order on cre_return_order.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(47).") project_energized on project_energized.project_id_psl = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
