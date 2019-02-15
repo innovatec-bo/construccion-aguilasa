@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     <label>Fecha del incidente</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="incident-manual-entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-incident-manual-entry-date">
+                                        <input name="incident-manual-entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-incident-manual-entry-date" data-parsley-group="none-incident">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <label>% fisico</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage">
+                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage" data-parsley-group="none-incident">
                                         <span class="input-group-addon">
                                             %
                                         </span>
@@ -47,7 +47,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Tipo de incidentes</label>
-                                    <select class="form-control" name="incident-type" required>
+                                    <select class="form-control" name="incident-type" required data-parsley-group="none-incident">
                                         <option value=""></option>
                                         <option value="1">Permisos</option>
                                         <option value="2">Fiscales</option>
@@ -57,6 +57,7 @@
                                         <option value="6">Materiales incompletos</option>
                                         <option value="7">Climatológico</option>
                                         <option value="8">Otros</option>
+                                        <option value="9">Ninguno</option>
                                     </select>
                                 </div>
                             </div>

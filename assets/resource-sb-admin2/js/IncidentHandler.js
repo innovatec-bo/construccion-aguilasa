@@ -80,8 +80,13 @@ function IncidentHandler() {
             progressSteps: queue.steps,
             preConfirm: () => {
                 let $form = $("form[name=incident-form]");
-
-                if($form.parsley().isValid())
+                let incidentType = $("select[name=incident-type] option:selected").val();
+                let noneIncidentGroup = {};
+                if(incidentType == 9)
+                {
+                    noneIncidentGroup = {group: "none-incident"};
+                }
+                if($form.parsley().isValid(noneIncidentGroup))
                 {
                     let projectId = $("input[name=project-id]").val();
                     let statusId = $("input[name=status-id]").val();
@@ -90,7 +95,7 @@ function IncidentHandler() {
                     let entryDate = $('input[name=incident-manual-entry-date]').val();
                     let pauseProject = $("input[name=pause-project]").is(":checked")?1:0;
                     let stopProject = $("input[name=stop-project]").is(":checked")?1:0;
-                    let incidentType = $("select[name=incident-type] option:selected").val();
+
                     let formData = {
                         projectId:projectId,
                         statusId:statusId,
