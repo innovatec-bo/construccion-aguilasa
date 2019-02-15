@@ -23,7 +23,8 @@
             {{#each executiveSummary.list}}
                 <tr class="{{section}}">
                     <th>{{title}}</th>
-                    <td class="text-center">{{totalProjectsBySection}}</td>
+<!--                    <td class="text-center">{{totalProjectsBySection}}</td>-->
+                    <td class="text-center"><a href="#">{{totalProjectsBySection}}</a></td>
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>
                     <td class="text-center">{{numberFormat totalApprovedBudgetBySection decimalLength="2"}}</td>
                     <td class="text-center">{{totalPercentageApprovedBudgetBySection}}</td>
