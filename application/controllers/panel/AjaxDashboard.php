@@ -349,7 +349,7 @@ class AjaxDashboard extends PrivateController
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent")),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped")),
             "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order")),
-            "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials"))
+            "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"))
         );
         $groupList = array();
         $totalProjects = 0;
