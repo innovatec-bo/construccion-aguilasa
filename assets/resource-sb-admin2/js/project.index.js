@@ -45,6 +45,7 @@ statusSet["35"] = "building";
 statusSet["38"] = "building";
 statusSet["39"] = "building";
 statusSet["47"] = "building";
+statusSet["45"] = "building";
 
 $(document).ready(function() {
 

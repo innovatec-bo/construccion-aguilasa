@@ -96,6 +96,7 @@ $(document).ready(function() {
                     saveCreReturnOrder(statusId,statusKeyword);
                     break;
                 case "project_return_materials":
+                case "project_real_budget_confirmation":
                     saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
@@ -849,7 +850,7 @@ function loadStatusForm(statusKeyword, addMoreInfo)
                 // var htmlSource = $("#ht-status-already-has-data").html();
                 var htmlSource = $("#ht-status-"+statusKeyword+"-form-completed").html();
                 var template = Handlebars.compile(htmlSource);
-                var data = {statusKeyword:statusKeyword,statusSet:statusSet};
+                var data = {statusKeyword:statusKeyword,statusSet:statusSet,previousEntry:response.previousEntry[0]};
                 var html = template(data);
                 $("#status-form-content").html(html);
             }

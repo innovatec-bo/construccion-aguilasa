@@ -217,6 +217,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-conci
 $this->load->view("default-template/panel/content/project-status/ht-status-conciliation_shipment-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-cre_return_order-form");
 $this->load->view("default-template/panel/content/project-status/ht-status-project_return_materials-form");
+$this->load->view("default-template/panel/content/project-status/ht-status-project_real_budget_confirmation-form");
 
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");

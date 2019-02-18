@@ -103,6 +103,7 @@ class Model_project_status_log extends Model_project_status_log_base
             wfl_project_budgets.*,
             wfl_project_real_budgets.*,
             wfl_construction_assignments.*,
+            wfl_payment_orders.*,
             status_name_pst,
             keyword_pst,            
             GROUP_CONCAT(
@@ -120,6 +121,8 @@ class Model_project_status_log extends Model_project_status_log_base
         LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
         LEFT JOIN sec_users on id_usr = user_id_sre
         LEFT JOIN  wfl_projects on project_id_psl = id_pro
+        LEFT JOIN wfl_payment_orders_projects on id_pro = project_id_pop
+        LEFT JOIN wfl_payment_orders on id_pao = order_id_pop
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."
