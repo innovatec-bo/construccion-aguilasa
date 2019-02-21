@@ -2,7 +2,7 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    let statusManagementHandler = new StatusManagementHandler(421, "design");
+    let statusManagementHandler = new StatusManagementHandler("design", 421);
     statusManagementHandler.loadView();
 
     var status = $("ul.wizard li.active a").prop("id");

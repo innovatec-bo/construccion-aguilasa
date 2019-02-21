@@ -24,7 +24,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
-        <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?>(<?=$project["project_percentage_pro"]?>%)</em></h1>
+        <h1 class="page-header">{{viewData.statusName}}<em class="subtext">{{viewData.project.code_pro}} ({{viewData.project.project_percentage_pro}}%)</em></h1>
     </div>
     <div class="col-md-12">
         <?php
@@ -34,39 +34,36 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     <div class="col-md-2">
         <dl class="header-description well well-sm">
             <dt>SISTEMA</dt>
-            <dd><?=$projectSystem?></dd>
+            <dd>{{viewData.project.system}}</dd>
         </dl>
     </div>
     <div class="col-md-2">
         <dl class="header-description well well-sm">
             <dt>FECHA DE INGRESO</dt>
-            <dd><?=$entryDate?></dd>
+            <dd>{{formatDate viewData.project.entry_date_pro "short"}}</dd>
         </dl>
     </div>
     <div class="col-md-2">
         <dl class="header-description well well-sm">
             <dt>FISCAL DE CRE</dt>
-            <dd><?=$projectFullDetail["firstname_cfi"]." ".$projectFullDetail["lastname_cfi"]?></dd>
+            <dd>{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</dd>
         </dl>
     </div>
     <div class="col-md-2">
         <dl class="header-description well well-sm">
             <dt>DIRECCION</dt>
-            <dd><dd><?=$project["address_pro"]?></dd></dd>
+            <dd><dd>{{viewData.project.address_pro}}</dd></dd>
         </dl>
     </div>
     <div class="col-md-2">
         <dl class="header-description well well-sm">
             <dt>AREA</dt>
-            <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
+            <dd><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</dd>
         </dl>
     </div>
-    <?php
-    if($statusSet == "building" && $updateHistory == 1)
-    {
-        echo '<button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
-    }
-    ?>
+    {{#ifCond showBtnEditConstructionAssignments "==" 1}}
+        <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
+    {{/ifCond}}
     <div class="col-md-10">
         <div class="tabbable">
             <ul class="nav nav-tabs wizard">
@@ -82,7 +79,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     if($status["keyword_pst"] == "returned")
                         continue;
 
-                    $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
+                    $class = $currentStatus != 1?'completed':"";
                     $disabled = $disableStatus?" disabled ":"";
                     if($status["id_pst"] === $currentStatus)
                     {

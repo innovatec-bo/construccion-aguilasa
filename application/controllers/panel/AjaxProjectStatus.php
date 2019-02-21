@@ -757,10 +757,15 @@ class AjaxProjectStatus extends PrivateController
         $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
         $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $statusListArray = array();
+        foreach ($statusList as $status)
+        {
+            $statusListArray[] = $status->toArray();
+        }
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
 
         $data["project"] = $project;
-        $data["statusList"] = $statusList;
+        $data["statusList"] = $statusListArray;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);

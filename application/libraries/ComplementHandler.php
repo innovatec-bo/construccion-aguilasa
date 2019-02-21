@@ -11,6 +11,7 @@ class ComplementHandler
     private $_viewJavascript;
     private $_viewCss;
     private $_complements;
+    private $_projectTsPath;
     private $_projectJsPath;
     private $_projectCssPath;
 
@@ -19,6 +20,7 @@ class ComplementHandler
         $ci = get_instance();
         $ci->config->load("complements-sb-admin2");
         $this->_complements = $ci->config->item("complements");
+        $this->_projectTsPath = $ci->config->item("projectTsPath");
         $this->_projectJsPath = $ci->config->item("projectJsPath");
         $this->_projectCssPath = $ci->config->item("projectCssPath");
         $this->_publicJsPath = $ci->config->item("publicJsPath");
@@ -38,6 +40,26 @@ class ComplementHandler
                 $this->_viewCss[] = $this->_complements[$name]["css"];
             }
         }
+    }
+
+    public function addProjectTs($name, $applyVersion = FALSE)
+    {
+        $version = "";
+        if($applyVersion)
+        {
+            $version = strtotime(date("Y-m-d"));
+        }
+        $this->_viewJavascript[] = $this->_projectTsPath . "/" . $name . ".ts?v=".$version;
+    }
+
+    public function addProjectTsJs($name, $applyVersion = FALSE)
+    {
+        $version = "";
+        if($applyVersion)
+        {
+            $version = strtotime(date("Y-m-d"));
+        }
+        $this->_viewJavascript[] = $this->_projectTsPath . "/" . $name . ".ts?v=".$version;
     }
 
     public function addProjectJs($name, $applyVersion = FALSE)

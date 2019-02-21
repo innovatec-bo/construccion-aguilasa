@@ -5,6 +5,7 @@
  * Date: 2017-10-17
  * Time: 12:28 AM
  */
+$config['projectTsPath'] = assets_url("resource-sb-admin2/ts");
 $config['projectJsPath'] = assets_url("resource-sb-admin2/js");
 $config['projectCssPath'] = assets_url("resource-sb-admin2/css");
 

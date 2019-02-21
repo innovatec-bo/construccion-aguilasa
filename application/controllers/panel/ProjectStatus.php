@@ -215,6 +215,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectJs('StatusManagementHandler',TRUE);
+        $this->complementHandler->addProjectJs('greeter',TRUE);
         $this->complementHandler->addProjectCss('project-status.status-management',TRUE);
         $this->complementHandler->addProjectJs('project-status.status-management',TRUE);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
