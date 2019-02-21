@@ -23,7 +23,7 @@ $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"
 $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="status-management-content">
         <div class="col-lg-12">
             <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?>(<?=$project["project_percentage_pro"]?>%)</em></h1>
         </div>

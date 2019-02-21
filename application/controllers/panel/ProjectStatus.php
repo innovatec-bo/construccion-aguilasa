@@ -214,6 +214,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addProjectJs('StatusManagementHandler',TRUE);
         $this->complementHandler->addProjectCss('project-status.status-management',TRUE);
         $this->complementHandler->addProjectJs('project-status.status-management',TRUE);
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
@@ -240,36 +241,7 @@ class ProjectStatus extends PrivateController
         $this->_loadPanelView("project-status/status-management", $data);
     }
 
-    private function _validateStatusSet($statusSet, $project)
-    {
-        switch ($statusSet)
-        {
-            case 'design':
-                $keywordList = array("project_has_been_created","design","stakes","returned","digitization","drawing","schedule");
-                break;
-            case 'approvement':
-                $keywordList = array("ready_to_send","already_sent","approved","canceled");
-                break;
-            case 'rectify_design':
-                $keywordList = array("rectify_design", "rd_stakes", "rd_digitization", "rd_drawing");
-                break;
-            case 'rectify_illustration':
-                $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
-                break;
-//            case 'warehouse':
-//                $keywordList = array("warehouse","record_building_materials", "get_materials", "deliver_materials", "assign_to", "return_materials","materials_reception");
-//                break;
-            case 'building':
-                $keywordList = array("assign_to","in_progress", "paused", "stopped", "completed","project_energized","as_built", "conciliation_reception", "conciliation_shipment","cre_return_order","project_return_materials", "project_real_budget_confirmation");
-                break;
-            default:
-                $keywordList = array();
-                $this->session->set_flashdata("errorMessage","El conjunto de estados es incorrecto!");
-                redirect("panel/Project");
-        }
 
-        return $keywordList;
-    }
 
     public function readyToAssign()
     {

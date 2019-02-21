@@ -22,159 +22,156 @@ $projectSystem = $projectSystems[$project["system_pro"]];
 $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
 $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?>(<?=$project["project_percentage_pro"]?>%)</em></h1>
-        </div>
-        <div class="col-md-12">
-            <?php
-            $this->load->view("default-template/flash-data-basic-messages");
-            ?>
-        </div>
-        <div class="col-md-2">
-            <dl class="header-description well well-sm">
-                <dt>SISTEMA</dt>
-                <dd><?=$projectSystem?></dd>
-            </dl>
-        </div>
-        <div class="col-md-2">
-            <dl class="header-description well well-sm">
-                <dt>FECHA DE INGRESO</dt>
-                <dd><?=$entryDate?></dd>
-            </dl>
-        </div>
-        <div class="col-md-2">
-            <dl class="header-description well well-sm">
-                <dt>FISCAL DE CRE</dt>
-                <dd><?=$projectFullDetail["firstname_cfi"]." ".$projectFullDetail["lastname_cfi"]?></dd>
-            </dl>
-        </div>
-        <div class="col-md-2">
-            <dl class="header-description well well-sm">
-                <dt>DIRECCION</dt>
-                <dd><dd><?=$project["address_pro"]?></dd></dd>
-            </dl>
-        </div>
-        <div class="col-md-2">
-            <dl class="header-description well well-sm">
-                <dt>AREA</dt>
-                <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
-            </dl>
-        </div>
+<script id="ht-status-management" type="text/x-handlebars-template">
+    <div class="col-lg-12">
+        <h1 class="page-header"><?=$statusName?><em class="subtext"><?=$project["code_pro"]?>(<?=$project["project_percentage_pro"]?>%)</em></h1>
+    </div>
+    <div class="col-md-12">
         <?php
-        if($statusSet == "building" && $updateHistory == 1)
-        {
-            echo '<button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
-        }
+        $this->load->view("default-template/flash-data-basic-messages");
         ?>
-        <div class="col-md-10">
-            <div class="tabbable">
-                <ul class="nav nav-tabs wizard">
-                    <?php
-                    $navTab = '';
-                    $i = 1;
+    </div>
+    <div class="col-md-2">
+        <dl class="header-description well well-sm">
+            <dt>SISTEMA</dt>
+            <dd><?=$projectSystem?></dd>
+        </dl>
+    </div>
+    <div class="col-md-2">
+        <dl class="header-description well well-sm">
+            <dt>FECHA DE INGRESO</dt>
+            <dd><?=$entryDate?></dd>
+        </dl>
+    </div>
+    <div class="col-md-2">
+        <dl class="header-description well well-sm">
+            <dt>FISCAL DE CRE</dt>
+            <dd><?=$projectFullDetail["firstname_cfi"]." ".$projectFullDetail["lastname_cfi"]?></dd>
+        </dl>
+    </div>
+    <div class="col-md-2">
+        <dl class="header-description well well-sm">
+            <dt>DIRECCION</dt>
+            <dd><dd><?=$project["address_pro"]?></dd></dd>
+        </dl>
+    </div>
+    <div class="col-md-2">
+        <dl class="header-description well well-sm">
+            <dt>AREA</dt>
+            <dd><span id="points"><?=$project["points_pro"]?></span>p/<span id="distance"><?=$project["distance_pro"]?></span>Km</dd>
+        </dl>
+    </div>
+    <?php
+    if($statusSet == "building" && $updateHistory == 1)
+    {
+        echo '<button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>';
+    }
+    ?>
+    <div class="col-md-10">
+        <div class="tabbable">
+            <ul class="nav nav-tabs wizard">
+                <?php
+                $navTab = '';
+                $i = 1;
 
-                    $activeFound = FALSE;
-                    $currentStatus = $project["status_pro"];
-                    foreach ($statusList as $status)
+                $activeFound = FALSE;
+                $currentStatus = $project["status_pro"];
+                foreach ($statusList as $status)
+                {
+                    $status = $status->toArray();
+                    if($status["keyword_pst"] == "returned")
+                        continue;
+
+                    $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
+                    $disabled = $disableStatus?" disabled ":"";
+                    if($status["id_pst"] === $currentStatus)
                     {
-                        $status = $status->toArray();
-                        if($status["keyword_pst"] == "returned")
-                            continue;
-
-                        $class = $currentStatus != 1 && $currentStatus !=7?'completed':"";
-                        $disabled = $disableStatus?" disabled ":"";
-                        if($status["id_pst"] === $currentStatus)
-                        {
-                            $class = 'active';
-                            $activeFound = TRUE;
-                        }
-                        elseif($activeFound)
-                        {
-                            $class = '';
-                        }
-                        $navTab .= '
-                                <li class="'.$class.' '.$disabled.'">
-                                    <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
-                                </li>
-                                ';
-                        $i++;
+                        $class = 'active';
+                        $activeFound = TRUE;
                     }
-                    $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
-                    $unsigned = '';
-                    echo $unsigned.$navTab;
+                    elseif($activeFound)
+                    {
+                        $class = '';
+                    }
+                    $navTab .= '
+                            <li class="'.$class.' '.$disabled.'">
+                                <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
+                            </li>
+                            ';
+                    $i++;
+                }
+                $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
+                $unsigned = '';
+                echo $unsigned.$navTab;
 
 
+                ?>
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="tabbable">
+            <a href="#next-step" id="next-step">Siguiente</a>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="tabbable">
+            <a href="#next-step" class="add-incident" data-status-id="<?=$project["status_pro"]?>" data-project-id="<?=$project["id_pro"]?>" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <section>
+            <div class="wizard">
+                <form role="form" name="status-management" data-parsley-validate>
+                    <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
+                    <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
+                    <input type="hidden" value='<?=$responsibleListFiscal?>' name="responsible-list-fiscal">
+                    <input type="hidden" value='<?=$responsibleListBuilder?>' name="responsible-list-builder">
+                    <input type="hidden" value="<?=$statusSet?>" name="status-set">
+                    <?php
+                    $html = '
+                            <div class="tab-content">
+                             <div class="well">
+                                <h4>Esta etapa ha finalizado!</h4>
+                            </div>
+                            </div>    
+                        ';
+                    if($projectOnCurrentStage)
+                    {
+                        $html = '
+                            <div class="tab-content" id="status-form-content">
+                            </div>    
+                        ';
+                    }
+                    $html = '
+                            <div class="tab-content" id="status-form-content">
+                            </div>    
+                        ';
+                    echo $html;
                     ?>
 
-                </ul>
-
+                </form>
             </div>
-        </div>
-        <div class="col-md-1">
-            <div class="tabbable">
-                <a href="#next-step" id="next-step">Siguiente</a>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="tabbable">
-                <a href="#next-step" class="add-incident" data-status-id="<?=$project["status_pro"]?>" data-project-id="<?=$project["id_pro"]?>" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <section>
-                <div class="wizard">
-                    <form role="form" name="status-management" data-parsley-validate>
-                        <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
-                        <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
-                        <input type="hidden" value='<?=$responsibleListFiscal?>' name="responsible-list-fiscal">
-                        <input type="hidden" value='<?=$responsibleListBuilder?>' name="responsible-list-builder">
-                        <input type="hidden" value="<?=$statusSet?>" name="status-set">
-                        <?php
-                        $html = '
-                                <div class="tab-content">
-                                 <div class="well">
-                                    <h4>Esta etapa ha finalizado!</h4>
-                                </div>
-                                </div>    
-                            ';
-                        if($projectOnCurrentStage)
-                        {
-                            $html = '
-                                <div class="tab-content" id="status-form-content">
-                                </div>    
-                            ';
-                        }
-                        $html = '
-                                <div class="tab-content" id="status-form-content">
-                                </div>    
-                            ';
-                        echo $html;
-                        ?>
-
-                    </form>
-                </div>
-            </section>
-        </div>
-        <div class="col-md-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Historial
-
-                </div>
-                <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="<?=$updateHistory?>">
-
-                </div>
-                <!-- /.panel-body -->
-            </div>
-        </div>
-        <div class="col-md-12" id="incident-content">
-        </div>
-        <!-- /.col-lg-12 -->
+        </section>
     </div>
-    <!-- /.row -->
-</div>
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Historial
+
+            </div>
+            <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="<?=$updateHistory?>">
+
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <div class="col-md-12" id="incident-content">
+    </div>
+    <!-- /.col-lg-12 -->
+</script>
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/project-status/ht-stakes-project");

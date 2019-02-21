@@ -746,4 +746,36 @@ class AjaxProjectStatus extends PrivateController
     {
 
     }
+
+    public function statusManagement($statusSet = "", $projectId = NULL)
+    {
+        $this->_validateFeature('project_status_management');
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $project = $project->toArray();
+        $keywordList = $this->_validateStatusSet($statusSet, $project);
+
+        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
+        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
+        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
+
+        $data["project"] = $project;
+        $data["statusList"] = $statusList;
+        $data["projectSystems"] = $this->_projectSystems;
+        $responsibleList = Model_status_responsible::getUsersResponsible();
+        $data["responsibleList"] = json_encode($responsibleList);
+        $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
+        $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
+        $data["statusSet"] = $statusSet;
+        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+        $data["projectLog"] = $projectLog;
+        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+        $data["projectFullDetail"] = $projectFullDetail;
+        $data["template"] = $this->loadView("panel/content/project-status/ht-status-management", array(), TRUE);
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"] = $data;
+        echo json_encode($response);
+
+    }
 }
