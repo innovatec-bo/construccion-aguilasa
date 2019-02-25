@@ -24,7 +24,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
-        <h1 class="page-header">{{viewData.statusName}}<em class="subtext">{{viewData.project.code_pro}} ({{viewData.project.project_percentage_pro}}%)</em></h1>
+        <h1 class="page-header">{{viewData.statusName}}<em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em></h1>
     </div>
     <div class="col-md-12">
         <?php
@@ -66,46 +66,46 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     {{/ifCond}}
     <div class="col-md-10">
         <div class="tabbable">
-            <ul class="nav nav-tabs wizard">
+            <ul class="nav nav-tabs wizard step-list">
+                {{#each viewData.stepList}}
+                    {{> ht-wizard-step}}
+                {{/each}}
+
                 <?php
-                $navTab = '';
-                $i = 1;
-
-                $activeFound = FALSE;
-                $currentStatus = $project["status_pro"];
-                foreach ($statusList as $status)
-                {
-                    $status = $status->toArray();
-                    if($status["keyword_pst"] == "returned")
-                        continue;
-
-                    $class = $currentStatus != 1?'completed':"";
-                    $disabled = $disableStatus?" disabled ":"";
-                    if($status["id_pst"] === $currentStatus)
-                    {
-                        $class = 'active';
-                        $activeFound = TRUE;
-                    }
-                    elseif($activeFound)
-                    {
-                        $class = '';
-                    }
-                    $navTab .= '
-                            <li class="'.$class.' '.$disabled.'">
-                                <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
-                            </li>
-                            ';
-                    $i++;
-                }
-                $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
-                $unsigned = '';
-                echo $unsigned.$navTab;
-
-
+//                $navTab = '';
+//                $i = 1;
+//
+//                $activeFound = FALSE;
+//                $currentStatus = $project["status_pro"];
+//                foreach ($statusList as $status)
+//                {
+//                    $status = $status->toArray();
+//                    if($status["keyword_pst"] == "returned")
+//                        continue;
+//
+//                    $class = $currentStatus != 1?'completed':"";
+//                    $disabled = $disableStatus?" disabled ":"";
+//                    if($status["id_pst"] === $currentStatus)
+//                    {
+//                        $class = 'active';
+//                        $activeFound = TRUE;
+//                    }
+//                    elseif($activeFound)
+//                    {
+//                        $class = '';
+//                    }
+//                    $navTab .= '
+//                            <li class="'.$class.' '.$disabled.'">
+//                                <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
+//                            </li>
+//                            ';
+//                    $i++;
+//                }
+//                $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
+//                $unsigned = '';
+//                echo $unsigned.$navTab;
                 ?>
-
             </ul>
-
         </div>
     </div>
     <div class="col-md-1">
@@ -115,38 +115,39 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     </div>
     <div class="col-md-1">
         <div class="tabbable">
-            <a href="#next-step" class="add-incident" data-status-id="<?=$project["status_pro"]?>" data-project-id="<?=$project["id_pro"]?>" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
+            <a href="#next-step" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
         </div>
     </div>
     <div class="col-md-9">
         <section>
             <div class="wizard">
                 <form role="form" name="status-management" data-parsley-validate>
-                    <input type="hidden" value="<?=$project["id_pro"]?>" name="project-id">
-                    <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
-                    <input type="hidden" value='<?=$responsibleListFiscal?>' name="responsible-list-fiscal">
-                    <input type="hidden" value='<?=$responsibleListBuilder?>' name="responsible-list-builder">
-                    <input type="hidden" value="<?=$statusSet?>" name="status-set">
+                    <input type="hidden" value="{{viewData.project.id_pro}}" name="project-id">
+                    <input type="hidden" value='{{viewData.responsibleList}}' name="responsible-list">
+                    <input type="hidden" value='{{viewData.responsibleListFiscal}}' name="responsible-list-fiscal">
+                    <input type="hidden" value='{{viewData.responsibleListBuilder}}' name="responsible-list-builder">
+                    <input type="hidden" value="{{viewData.statusSet}}" name="status-set">
+                    <div class="tab-content" id="status-form-content"></div>
                     <?php
-                    $html = '
-                            <div class="tab-content">
-                             <div class="well">
-                                <h4>Esta etapa ha finalizado!</h4>
-                            </div>
-                            </div>    
-                        ';
-                    if($projectOnCurrentStage)
-                    {
-                        $html = '
-                            <div class="tab-content" id="status-form-content">
-                            </div>    
-                        ';
-                    }
-                    $html = '
-                            <div class="tab-content" id="status-form-content">
-                            </div>    
-                        ';
-                    echo $html;
+//                    $html = '
+//                            <div class="tab-content">
+//                             <div class="well">
+//                                <h4>Esta etapa ha finalizado!</h4>
+//                            </div>
+//                            </div>
+//                        ';
+//                    if($projectOnCurrentStage)
+//                    {
+//                        $html = '
+//                            <div class="tab-content" id="status-form-content">
+//                            </div>
+//                        ';
+//                    }
+//                    $html = '
+//                            <div class="tab-content" id="status-form-content">
+//                            </div>
+//                        ';
+//                    echo $html;
                     ?>
 
                 </form>
@@ -159,7 +160,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 Historial
 
             </div>
-            <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="<?=$updateHistory?>">
+            <div class="panel-body" style="overflow: auto;height: 50vh;" id="status-project-log-content" data-allow-update-history="{{viewData.updateHistory}}">
 
             </div>
             <!-- /.panel-body -->
@@ -168,6 +169,11 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     <div class="col-md-12" id="incident-content">
     </div>
     <!-- /.col-lg-12 -->
+</script>
+<script id="ht-wizard-step" type="text/x-handlebars-template">
+    <li class="{{stepStatus}}">
+        <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}">{{stepName}}</a>
+    </li>
 </script>
 <!-- /.container-fluid -->
 <?php

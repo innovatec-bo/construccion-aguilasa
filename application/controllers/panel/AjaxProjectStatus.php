@@ -765,6 +765,7 @@ class AjaxProjectStatus extends PrivateController
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
 
         $data["project"] = $project;
+        $data["steps"] = Model_project_status::projectStages($statusSet);
         $data["statusList"] = $statusListArray;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();

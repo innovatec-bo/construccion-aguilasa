@@ -148,4 +148,21 @@ class Model_project_status extends Model_project_status_base
         $result = (array)$query->row();
         return $result;
     }
+
+    public static function projectStages($statusSet)
+    {
+        $stageList = array();
+
+        $design = array(
+            array("project_has_been_created"),
+            array("design"),
+            array("stakes"),
+            array("digitization","drawing", "returned"),
+            array("digitization","drawing", "returned"),
+            array("schedule")
+        );
+
+        $stageList["design"] = $design;
+        return $stageList[$statusSet];
+    }
 }

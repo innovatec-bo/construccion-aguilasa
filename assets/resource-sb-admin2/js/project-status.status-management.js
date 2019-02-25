@@ -2,12 +2,12 @@
  * Created by Jair on 12/06/2018.
  */
 $(document).ready(function() {
-    let statusManagementHandler = new StatusManagementHandler("design", 421);
+    let statusManagementHandler = new StatusManagementHandler("design", 438);
     statusManagementHandler.loadView();
 
     var status = $("ul.wizard li.active a").prop("id");
-    getProjectLog();
-    loadStatusForm(status);
+    // getProjectLog();
+    // loadStatusForm(status);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if(!$(this).parent().hasClass("disabled"))
         {
