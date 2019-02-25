@@ -51,7 +51,7 @@ $(document).ready(function() {
     $(document).on("click",".executive-summary-selective-download",function(e){
         e.preventDefault();
         let $td = $(this).closest("td");
-        let keyword = $td.closest("tr").attr("class");
+        let keyword = $td.closest("tr").data("keyword-list");
         let $form = $("form[name=workflow-with-parameters]");
         $form.find("input[name=status-keyword]").val(keyword);
         $form.find("input[name=keyword]").val("");

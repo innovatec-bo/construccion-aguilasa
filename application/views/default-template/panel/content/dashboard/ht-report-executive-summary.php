@@ -21,7 +21,7 @@
             </thead>
             <tbody>
             {{#each executiveSummary.list}}
-                <tr class="{{section}} {{keywordStringList}}">
+                <tr class="{{section}}" data-keyword-list="{{keywordStringList}}">
                     <th>{{title}}</th>
 <!--                    <td class="text-center">{{totalProjectsBySection}}</td>-->
                     <td class="text-center"><a href="#" class="executive-summary-selective-download">{{totalProjectsBySection}}</a></td>
