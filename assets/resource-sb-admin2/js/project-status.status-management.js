@@ -4,167 +4,121 @@
 $(document).ready(function() {
     let statusManagementHandler = new StatusManagementHandler("design", 438);
     statusManagementHandler.loadView();
+    statusManagementHandler.loadEventHandler();
 
     var status = $("ul.wizard li.active a").prop("id");
-    // getProjectLog();
-    // loadStatusForm(status);
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if(!$(this).parent().hasClass("disabled"))
-        {
-            status = $(e.target).attr("id");
-            loadStatusForm(status);
-        }
-        else {
-            return false;
-        }
-    });
-    $(document).on("click","#next-step",function(e){
-        e.preventDefault();
-        $("ul.wizard li.active").next().find("a").trigger("click");
-    });
-    $(document).on("click", ".check-stakes-team",function(e){
-        e.preventDefault();
-        getStakesLeaderProjects();
-    });
+        // getProjectLog();
+        // loadStatusForm(status);
+    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     if(!$(this).parent().hasClass("disabled"))
+    //     {
+    //         status = $(e.target).attr("id");
+    //         loadStatusForm(status);
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // });
+    // $(document).on("click","#next-step",function(e){
+    //     e.preventDefault();
+    //     $("ul.wizard li.active").next().find("a").trigger("click");
+    // });
+    // $(document).on("click", ".check-stakes-team",function(e){
+    //     e.preventDefault();
+    //     getStakesLeaderProjects();
+    // });
 
-    $(document).on("click",".save-status",function(e){
-        e.preventDefault();
-        var $form = $("form[name=status-management]");
-        var statusKeyword = $(this).data("status-keyword");
-        var statusId = $(this).data("status-id");
-        var $button = $(this);
-
-        if($form.parsley().isValid({group: statusKeyword}))
-        {
-            var $content = $("#status-form-content");
-            blockArea($content);
-            switch(statusKeyword)
-            {
-                case "rd_stakes":
-                case "stakes":
-                    saveStakesTeam(statusId,statusKeyword);
-                    break;
-                case "returned":
-                    saveReturned(statusId,statusKeyword);
-                    break;
-                case "ri_digitization":
-                case "rd_digitization":
-                case "digitization":
-                    saveDigitization(statusId,statusKeyword,$button);
-                    break;
-                case "ri_drawing":
-                case "rd_drawing":
-                case "drawing":
-                    saveDrawing(statusId,statusKeyword,$button);
-                    break;
-                case "schedule":
-                    saveSchedule(statusId,statusKeyword);
-                    break;
-                case "already_sent":
-                    saveAlreadySent(statusId,statusKeyword);
-                    break;
-                case "rectify_design":
-                    saveRectifyDesign(statusId,statusKeyword);
-                    break;
-                case "rectify_illustration":
-                    saveRectifyIllustration(statusId,statusKeyword);
-                    break;
-                case "approved":
-                    saveApproved(statusId,statusKeyword);
-                    break;
-                case "canceled":
-                    saveCanceled(statusId,statusKeyword);
-                    break;
-                case "in_progress":
-                    saveInProgress(statusId,statusKeyword);
-                    break;
-                case "paused":
-                case "stopped":
-                case "completed":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "project_energized":
-                    saveProjectEnergized(statusId, statusKeyword);
-                    break;
-                case "as_built":
-                    saveAsBuilt(statusId, statusKeyword);
-                    break;
-                case "conciliation_reception":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "conciliation_shipment":
-                    saveConciliationShipment(statusId, statusKeyword);
-                    break;
-                case "cre_return_order":
-                    saveCreReturnOrder(statusId,statusKeyword);
-                    break;
-                case "project_return_materials":
-                case "project_real_budget_confirmation":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                default:
-                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
-                    break;
-            }
-        }
-        else
-        {
-            $form.parsley().validate({group: statusKeyword});
-        }
-
-    });
-
-    $(document).on("click",".send-to-rectify",function(e){
-        e.preventDefault();
-        var statusKeyword = $(this).data("status-keyword");
-        loadStatusForm(statusKeyword,1);
-    });
-
-    // $("#add-incident").on("click",function(e){
-    //    e.preventDefault();
-    //     var status = $("ul.wizard li.active a").prop("id");
-    //     console.log(status);
-    //     var currentPercentage = $("#incident-content .list-group").data("last-project-percentage");
-    //     currentPercentage =  currentPercentage == undefined?0:currentPercentage;
-    //     var htmlSource   = $("#ht-modal-incident-form").html();
-    //     var template = Handlebars.compile(htmlSource);
-    //     var data = {currentPercentage:currentPercentage,statusKeyword:status};
-    //     var html = template(data);
-    //     bootbox.confirm({
-    //         title:"Detalle de la incidencia",
-    //         message: html,
-    //         buttons: {
-    //             confirm: {
-    //                 label: 'Agregar incidente',
-    //                 className: 'btn-success'
-    //             },
-    //             cancel: {
-    //                 label: 'Cancelar',
-    //                 className: 'btn-danger'
-    //             }
-    //         },
-    //         callback: function (result) {
-    //             if(result)
-    //             {
-    //                 var $form = $("form[name=incident-form]");
-    //                 if($form.parsley().isValid())
-    //                 {
-    //                     addIncident();
-    //                 }
-    //                 else
-    //                 {
-    //                     $form.parsley().validate();
-    //                     return false;
-    //                 }
-    //             }
+    // $(document).on("click",".save-status",function(e){
+    //     e.preventDefault();
+    //     var $form = $("form[name=status-management]");
+    //     var statusKeyword = $(this).data("status-keyword");
+    //     var statusId = $(this).data("status-id");
+    //     var $button = $(this);
+    //
+    //     if($form.parsley().isValid({group: statusKeyword}))
+    //     {
+    //         var $content = $("#status-form-content");
+    //         blockArea($content);
+    //         switch(statusKeyword)
+    //         {
+    //             case "rd_stakes":
+    //             case "stakes":
+    //                 saveStakesTeam(statusId,statusKeyword);
+    //                 break;
+    //             case "returned":
+    //                 saveReturned(statusId,statusKeyword);
+    //                 break;
+    //             case "ri_digitization":
+    //             case "rd_digitization":
+    //             case "digitization":
+    //                 saveDigitization(statusId,statusKeyword,$button);
+    //                 break;
+    //             case "ri_drawing":
+    //             case "rd_drawing":
+    //             case "drawing":
+    //                 saveDrawing(statusId,statusKeyword,$button);
+    //                 break;
+    //             case "schedule":
+    //                 saveSchedule(statusId,statusKeyword);
+    //                 break;
+    //             case "already_sent":
+    //                 saveAlreadySent(statusId,statusKeyword);
+    //                 break;
+    //             case "rectify_design":
+    //                 saveRectifyDesign(statusId,statusKeyword);
+    //                 break;
+    //             case "rectify_illustration":
+    //                 saveRectifyIllustration(statusId,statusKeyword);
+    //                 break;
+    //             case "approved":
+    //                 saveApproved(statusId,statusKeyword);
+    //                 break;
+    //             case "canceled":
+    //                 saveCanceled(statusId,statusKeyword);
+    //                 break;
+    //             case "in_progress":
+    //                 saveInProgress(statusId,statusKeyword);
+    //                 break;
+    //             case "paused":
+    //             case "stopped":
+    //             case "completed":
+    //                 saveBasicLog(statusId, statusKeyword);
+    //                 break;
+    //             case "project_energized":
+    //                 saveProjectEnergized(statusId, statusKeyword);
+    //                 break;
+    //             case "as_built":
+    //                 saveAsBuilt(statusId, statusKeyword);
+    //                 break;
+    //             case "conciliation_reception":
+    //                 saveBasicLog(statusId, statusKeyword);
+    //                 break;
+    //             case "conciliation_shipment":
+    //                 saveConciliationShipment(statusId, statusKeyword);
+    //                 break;
+    //             case "cre_return_order":
+    //                 saveCreReturnOrder(statusId,statusKeyword);
+    //                 break;
+    //             case "project_return_materials":
+    //             case "project_real_budget_confirmation":
+    //                 saveBasicLog(statusId, statusKeyword);
+    //                 break;
+    //             default:
+    //                 bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
+    //                 break;
     //         }
-    //     });
-    //     var date = new Date();
-    //     $('input[name=incident-manual-entry-date]').datetimepicker({
-    //         ignoreReadonly: true,
-    //         defaultDate: date,
-    //         format: 'DD-MM-YYYY'
-    //     });
+    //     }
+    //     else
+    //     {
+    //         $form.parsley().validate({group: statusKeyword});
+    //     }
+    //
+    // });
+
+    // $(document).on("click",".send-to-rectify",function(e){
+    //     e.preventDefault();
+    //     var statusKeyword = $(this).data("status-keyword");
+    //     loadStatusForm(statusKeyword,1);
     // });
 
     $(document).on("click",".check-incidents",function(e){

@@ -6,6 +6,8 @@ var StatusManagementHandler = (function () {
         this.projectId = projectID;
         this.buttonAdd = ".add-status";
         this.buttonEdit = ".edit-status";
+        this.buttonAddStep = ".add-step";
+        this.buttonRemoveStep = ".remove-step";
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
     }
@@ -31,7 +33,7 @@ var StatusManagementHandler = (function () {
                     _this.projectLog();
                 }
                 else {
-                    console.log("error: " + response.message);
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -50,10 +52,8 @@ var StatusManagementHandler = (function () {
         var disableStatus = false;
         if (project.status_pro == 20) {
             statusName = "Este proyecto ha sido devuelto a CRE";
-            disableStatus = true;
         }
         else if (statusList.hasOwnProperty(project.status_pro)) {
-            projectOnCurrentStage = true;
             statusName = statusList[project.status_pro].status_name_pst;
         }
         var showBtnEditConstructionAssignments = false;
@@ -70,7 +70,6 @@ var StatusManagementHandler = (function () {
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.stepList = this.stepList();
-        console.log(this.loadViewResponse.data.project);
     };
     StatusManagementHandler.prototype.stepList = function () {
         var projectLog = this.loadViewResponse.data.projectLog;
@@ -81,12 +80,17 @@ var StatusManagementHandler = (function () {
         $.each(projectLog, function (index, value) {
             if (previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0) {
                 previousStatusId = value.status_id_psl;
-                var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : "";
-                var step = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
-                stepList.push(step);
+                var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
+                var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
+                var step_1 = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
+                stepList.push(step_1);
             }
         });
-        return stepList.reverse();
+        stepList.reverse();
+        //Button to add more steps
+        var step = { stepId: null, stepName: "", stepKeyword: null, stepStatus: "li-add-step" };
+        stepList.push(step);
+        return stepList;
     };
     StatusManagementHandler.prototype.statusSetList = function () {
         var statusSet = [];
@@ -112,6 +116,54 @@ var StatusManagementHandler = (function () {
                 var html = template(data);
                 $logContent.html(html);
             }
+        });
+    };
+    StatusManagementHandler.prototype.loadEventHandler = function () {
+        var _this = this;
+        $(document).on("click", this.buttonAddStep, function (e) {
+            e.preventDefault();
+            var currentStepsQuantity = $(".step-list").children().length;
+            var nextStep = _this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+            var statusList = _this.loadViewResponse.data.statusList;
+            var $template = $("<div>" + _this.loadViewTemplate + "</div>");
+            var htmlSource = $template.find("#ht-wizard-step").html();
+            var template = Handlebars.compile(htmlSource);
+            var step = {};
+            $.each(statusList, function (index, value) {
+                if (value.keyword_pst == nextStep[0]) {
+                    step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
+                }
+            });
+            var html = template(step);
+            $(html).insertBefore($(".li-add-step"));
+            $(this).parent().removeClass("li-add-step").addClass("li-remove-step");
+            $(".step-list li").removeClass("active").addClass("completed");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).removeClass("add-step").addClass("remove-step");
+            $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
+            console.log(nextStep);
+        });
+        $(document).on("click", this.buttonRemoveStep, function (e) {
+            e.preventDefault();
+            $(".step-list li:last-child").prev().remove();
+            $(this).removeClass("remove-step").addClass("add-step");
+            $(".step-list li").removeClass("active").addClass("completed");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).parent().removeClass("li-remove-step").addClass("li-add-step");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
+        });
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            e.preventDefault();
+            // console.log("toc toc");
+            // if(!$(this).parent().hasClass("disabled"))
+            // {
+            //     status = $(e.target).attr("id");
+            //     loadStatusForm(status);
+            // }
+            // else {
+            return false;
+            // }
         });
     };
     return StatusManagementHandler;

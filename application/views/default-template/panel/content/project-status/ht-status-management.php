@@ -172,7 +172,12 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 </script>
 <script id="ht-wizard-step" type="text/x-handlebars-template">
     <li class="{{stepStatus}}">
-        <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}">{{stepName}}</a>
+        {{#ifCond stepId "==" null}}
+            <a href="#none" class="add-step" data-toggle="" aria-expanded="false"><i class="fa fa-plus fa-fw"></i></a>
+        {{/ifCond}}
+        {{#ifCond stepId "!=" null}}
+            <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}">{{stepName}}</a>
+        {{/ifCond}}
     </li>
 </script>
 <!-- /.container-fluid -->

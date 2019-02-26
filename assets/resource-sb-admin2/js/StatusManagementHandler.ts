@@ -7,6 +7,8 @@ class StatusManagementHandler
 
     private statusSet: string;
     private projectId: number;
+    private buttonAddStep: string;
+    private buttonRemoveStep: string;
     buttonAdd: string;
     buttonEdit: string;
     statusManagementContentSelector: string;
@@ -19,6 +21,8 @@ class StatusManagementHandler
         this.projectId = projectID;
         this.buttonAdd = ".add-status";
         this.buttonEdit = ".edit-status";
+        this.buttonAddStep = ".add-step";
+        this.buttonRemoveStep = ".remove-step";
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
     }
@@ -50,7 +54,7 @@ class StatusManagementHandler
                 }
                 else
                 {
-                    console.log("error: "+response.message);
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -71,11 +75,9 @@ class StatusManagementHandler
         if(project.status_pro == 20)
         {
             statusName = "Este proyecto ha sido devuelto a CRE";
-            disableStatus = true;
         }
         else if(statusList.hasOwnProperty(project.status_pro))
         {
-            projectOnCurrentStage = true;
             statusName = statusList[project.status_pro].status_name_pst
         }
 
@@ -95,8 +97,6 @@ class StatusManagementHandler
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.stepList = this.stepList();
-
-        console.log(this.loadViewResponse.data.project);
     }
 
     stepList()
@@ -110,12 +110,17 @@ class StatusManagementHandler
             if(previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0)
             {
                 previousStatusId = value.status_id_psl;
-                let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":"";
+                let completed = statusSetList.indexOf(value.keyword_pst) >= 0?" completed ":"";
+                let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":completed;
                 let step = {stepId:value.status_id_psl, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:stepStatus};
                 stepList.push(step);
             }
         });
-        return stepList.reverse();
+        stepList.reverse();
+        //Button to add more steps
+        let step = {stepId:null, stepName:"", stepKeyword: null, stepStatus:"li-add-step"};
+        stepList.push(step);
+        return stepList;
 
     }
     statusSetList()
@@ -145,6 +150,61 @@ class StatusManagementHandler
                 let html = template(data);
                 $logContent.html(html);
             }
+        });
+    }
+    loadEventHandler()
+    {
+        let _this = this;
+        $(document).on("click", this.buttonAddStep, function(e){
+            e.preventDefault();
+            let currentStepsQuantity = $(".step-list").children().length;
+            let nextStep = _this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+            let statusList = _this.loadViewResponse.data.statusList;
+            let $template = $("<div>"+_this.loadViewTemplate+"</div>");
+            let htmlSource   = $template.find("#ht-wizard-step").html();
+            let template = Handlebars.compile(htmlSource);
+            let step = {};
+            $.each(statusList, function(index, value){
+                if(value.keyword_pst == nextStep[0])
+                {
+                    step = {stepId:value.id_pst, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:""};
+                }
+            });
+
+            let html = template(step);
+            $(html).insertBefore($(".li-add-step"));
+
+            $(this).parent().removeClass("li-add-step").addClass("li-remove-step");
+            $(".step-list li").removeClass("active").addClass("completed");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).removeClass("add-step").addClass("remove-step");
+            $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
+            console.log(nextStep);
+        });
+
+        $(document).on("click", this.buttonRemoveStep, function(e){
+            e.preventDefault();
+            $(".step-list li:last-child").prev().remove();
+
+            $(this).removeClass("remove-step").addClass("add-step");
+            $(".step-list li").removeClass("active").addClass("completed");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).parent().removeClass("li-remove-step").addClass("li-add-step");
+            $(this).parent().prev().removeClass("completed").addClass("active");
+            $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
+        });
+
+        $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) {
+            e.preventDefault();
+            // console.log("toc toc");
+            // if(!$(this).parent().hasClass("disabled"))
+            // {
+            //     status = $(e.target).attr("id");
+            //     loadStatusForm(status);
+            // }
+            // else {
+                return false;
+            // }
         });
     }
 }
