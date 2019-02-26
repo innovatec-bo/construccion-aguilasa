@@ -48,6 +48,19 @@ $(document).ready(function() {
         getExecutiveSummary(projectSystem, managementBy, contractNumber);
     });
 
+    $(document).on("click",".executive-summary-selective-download",function(e){
+        e.preventDefault();
+        let $td = $(this).closest("td");
+        let keyword = $td.closest("tr").data("keyword-list");
+        let $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=status-keyword]").val(keyword);
+        $form.find("input[name=keyword]").val("");
+        $form.find("input[name=year]").val("");
+        $form.find("input[name=month]").val("");
+        $form.find("input[name=rowKey]").val("");
+        $form.submit();
+    });
+
     $(document).on("click",".status-summary-selective-download",function(e){
         e.preventDefault();
         let $td = $(this).closest("td");

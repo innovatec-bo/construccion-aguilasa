@@ -769,8 +769,20 @@ class Model_project extends Model_project_base
         }
         if(isset($filters["status-keyword"]))
         {
-            $sql .= " and keyword_pst = ".$ci->db->escape($filters["status-keyword"])." ";
+            $statusKeyword = $filters["status-keyword"];
+            if(strpos($statusKeyword,",") !== FALSE)
+            {
+                $statusList = explode(",", $statusKeyword);
+                $statusKeyword = "";
+                foreach ($statusList as $status)
+                {
+                    $statusKeyword .= $ci->db->escape($status).", ";
+                }
+                $statusKeyword = substr($statusKeyword,0, -2);
+            }
+            $sql .= " and keyword_pst in( ".$statusKeyword." )";
         }
+//        echo"<pre>";var_dump($sql);exit;
         return $sql;
     }
 
