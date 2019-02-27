@@ -229,3 +229,10 @@
         </div>
     </div>
 </div>
+<form name="workflow-with-parameters" action="<?=base_url("panel/Project/downloadWorkflowWithParameters")?>" method="post">
+    <input type="hidden" name="status-keyword" value="">
+    <input type="hidden" name="keyword" value="">
+    <input type="hidden" name="year" value="">
+    <input type="hidden" name="month" value="">
+    <input type="hidden" name="rowKey" value="">
+</form>

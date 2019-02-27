@@ -780,6 +780,10 @@ class Model_project extends Model_project_base
                 }
                 $statusKeyword = substr($statusKeyword,0, -2);
             }
+            else
+            {
+                $statusKeyword = $ci->db->escape($statusKeyword);
+            }
             $sql .= " and keyword_pst in( ".$statusKeyword." )";
         }
 //        echo"<pre>";var_dump($sql);exit;

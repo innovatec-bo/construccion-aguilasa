@@ -81,6 +81,49 @@ $(document).ready(function() {
             getProjectsEvolutionChart(year,undefined,inputData.contractNumber);
     });
     //end - general filter;
+    $(document).on("click",".executive-summary-selective-download",function(e){
+        e.preventDefault();
+        let $td = $(this).closest("td");
+        let keyword = $td.closest("tr").data("keyword-list");
+        let $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=status-keyword]").val(keyword);
+        $form.find("input[name=keyword]").val("");
+        $form.find("input[name=year]").val("");
+        $form.find("input[name=month]").val("");
+        $form.find("input[name=rowKey]").val("");
+        $form.submit();
+    });
+
+    $(document).on("click",".status-summary-selective-download",function(e){
+        e.preventDefault();
+        let $td = $(this).closest("td");
+        let keyword = $td.closest("tr").attr("class");
+        let $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=status-keyword]").val(keyword);
+        $form.find("input[name=keyword]").val("");
+        $form.find("input[name=year]").val("");
+        $form.find("input[name=month]").val("");
+        $form.find("input[name=rowKey]").val("");
+        $form.submit();
+    });
+
+    $(document).on("click",".find-th",function(e){
+        e.preventDefault();
+        let $td = $(this).closest("td");
+        let $th = $td.closest('table').find('th').eq($td.index());
+
+        let keyword = $td.closest(".panel.panel-default").find("select[name=keyword] option:selected").val();
+        let year = $td.closest(".panel.panel-default").find("input[name=building-report-year]").val();
+        let month = $th.data("month");
+        let rowKey = $td.closest("tr").attr("class");
+        let $form = $("form[name=workflow-with-parameters]");
+        $form.find("input[name=status-keyword]").val("");
+        $form.find("input[name=keyword]").val(keyword);
+        $form.find("input[name=year]").val(year);
+        $form.find("input[name=month]").val(month);
+        $form.find("input[name=rowKey]").val(rowKey);
+        $form.submit();
+    });
 });
 
 function getUsersQuantity()
