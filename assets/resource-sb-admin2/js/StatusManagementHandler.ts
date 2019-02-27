@@ -2,6 +2,7 @@
 declare let Handlebars: any;
 declare let blockArea: any;
 declare let base_url: any;
+declare let popover: any;
 class StatusManagementHandler
 {
 
@@ -152,34 +153,59 @@ class StatusManagementHandler
             }
         });
     }
+    
+    addStep(button)
+    {
+        this.launchStepSelector(button);
+        let currentStepsQuantity = $(".step-list").children().length;
+        let nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        let statusList = this.loadViewResponse.data.statusList;
+        let $template = $("<div>"+this.loadViewTemplate+"</div>");
+        let htmlSource   = $template.find("#ht-wizard-step").html();
+        let template = Handlebars.compile(htmlSource);
+        let step = {};
+        $.each(statusList, function(index, value){
+            if(value.keyword_pst == nextStep[0])
+            {
+                step = {stepId:value.id_pst, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:""};
+            }
+        });
+
+        let html = template(step);
+        $(html).insertBefore($(".li-add-step"));
+
+        button.parent().removeClass("li-add-step").addClass("li-remove-step");
+        $(".step-list li").removeClass("active").addClass("completed");
+        button.parent().prev().removeClass("completed").addClass("active");
+        button.removeClass("add-step").addClass("remove-step");
+        button.find("i").removeClass("fa-plus").addClass("fa-minus");
+        console.log(nextStep);
+    }
+
+    launchStepSelector(button)
+    {
+        let currentStepsQuantity = $(".step-list").children().length;
+        let nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        let $template = $("<div>"+this.loadViewTemplate+"</div>");
+        let htmlSource   = $template.find("#ht-select-next-step").html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({});
+        button.parent().popover({
+            title:'Elija el siguiente paso',
+            html:true,
+            content:html
+        });
+        button.parent().trigger("click");
+    }
+
     loadEventHandler()
     {
         let _this = this;
         $(document).on("click", this.buttonAddStep, function(e){
             e.preventDefault();
-            let currentStepsQuantity = $(".step-list").children().length;
-            let nextStep = _this.loadViewResponse.data.steps[currentStepsQuantity - 1];
-            let statusList = _this.loadViewResponse.data.statusList;
-            let $template = $("<div>"+_this.loadViewTemplate+"</div>");
-            let htmlSource   = $template.find("#ht-wizard-step").html();
-            let template = Handlebars.compile(htmlSource);
-            let step = {};
-            $.each(statusList, function(index, value){
-                if(value.keyword_pst == nextStep[0])
-                {
-                    step = {stepId:value.id_pst, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:""};
-                }
-            });
+            let $button = $(this);
+            _this.addStep($button);
 
-            let html = template(step);
-            $(html).insertBefore($(".li-add-step"));
-
-            $(this).parent().removeClass("li-add-step").addClass("li-remove-step");
-            $(".step-list li").removeClass("active").addClass("completed");
-            $(this).parent().prev().removeClass("completed").addClass("active");
-            $(this).removeClass("add-step").addClass("remove-step");
-            $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-            console.log(nextStep);
         });
 
         $(document).on("click", this.buttonRemoveStep, function(e){

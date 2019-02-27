@@ -118,30 +118,49 @@ var StatusManagementHandler = (function () {
             }
         });
     };
+    StatusManagementHandler.prototype.addStep = function (button) {
+        this.launchStepSelector(button);
+        var currentStepsQuantity = $(".step-list").children().length;
+        var nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        var statusList = this.loadViewResponse.data.statusList;
+        var $template = $("<div>" + this.loadViewTemplate + "</div>");
+        var htmlSource = $template.find("#ht-wizard-step").html();
+        var template = Handlebars.compile(htmlSource);
+        var step = {};
+        $.each(statusList, function (index, value) {
+            if (value.keyword_pst == nextStep[0]) {
+                step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
+            }
+        });
+        var html = template(step);
+        $(html).insertBefore($(".li-add-step"));
+        button.parent().removeClass("li-add-step").addClass("li-remove-step");
+        $(".step-list li").removeClass("active").addClass("completed");
+        button.parent().prev().removeClass("completed").addClass("active");
+        button.removeClass("add-step").addClass("remove-step");
+        button.find("i").removeClass("fa-plus").addClass("fa-minus");
+        console.log(nextStep);
+    };
+    StatusManagementHandler.prototype.launchStepSelector = function (button) {
+        var currentStepsQuantity = $(".step-list").children().length;
+        var nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        var $template = $("<div>" + this.loadViewTemplate + "</div>");
+        var htmlSource = $template.find("#ht-select-next-step").html();
+        var template = Handlebars.compile(htmlSource);
+        var html = template({});
+        button.parent().popover({
+            title: 'Elija el siguiente paso',
+            html: true,
+            content: html
+        });
+        button.parent().trigger("click");
+    };
     StatusManagementHandler.prototype.loadEventHandler = function () {
         var _this = this;
         $(document).on("click", this.buttonAddStep, function (e) {
             e.preventDefault();
-            var currentStepsQuantity = $(".step-list").children().length;
-            var nextStep = _this.loadViewResponse.data.steps[currentStepsQuantity - 1];
-            var statusList = _this.loadViewResponse.data.statusList;
-            var $template = $("<div>" + _this.loadViewTemplate + "</div>");
-            var htmlSource = $template.find("#ht-wizard-step").html();
-            var template = Handlebars.compile(htmlSource);
-            var step = {};
-            $.each(statusList, function (index, value) {
-                if (value.keyword_pst == nextStep[0]) {
-                    step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
-                }
-            });
-            var html = template(step);
-            $(html).insertBefore($(".li-add-step"));
-            $(this).parent().removeClass("li-add-step").addClass("li-remove-step");
-            $(".step-list li").removeClass("active").addClass("completed");
-            $(this).parent().prev().removeClass("completed").addClass("active");
-            $(this).removeClass("add-step").addClass("remove-step");
-            $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-            console.log(nextStep);
+            var $button = $(this);
+            _this.addStep($button);
         });
         $(document).on("click", this.buttonRemoveStep, function (e) {
             e.preventDefault();

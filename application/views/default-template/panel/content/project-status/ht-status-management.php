@@ -180,6 +180,20 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         {{/ifCond}}
     </li>
 </script>
+<script id="ht-select-next-step" type="text/x-handlebars-template">
+    <a class="btn btn-block btn-social btn-primary btn-xs">
+        Estaqueado
+    </a>
+    <a class="btn btn-block btn-social btn-primary btn-xs">
+        Digitalizacion
+    </a>
+    <a class="btn btn-block btn-social btn-primary btn-xs">
+        Dibujo
+    </a>
+    <a class="btn btn-block btn-social btn-danger btn-xs">
+        Cancelar
+    </a>
+</script>
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/project-status/ht-stakes-project");
