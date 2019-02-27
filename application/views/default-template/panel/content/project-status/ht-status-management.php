@@ -190,7 +190,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     <a class="btn btn-block btn-social btn-primary btn-xs">
         Dibujo
     </a>
-    <a class="btn btn-block btn-social btn-danger btn-xs">
+    <a class="btn btn-block btn-social btn-danger btn-xs cancel-add-step">
         Cancelar
     </a>
 </script>

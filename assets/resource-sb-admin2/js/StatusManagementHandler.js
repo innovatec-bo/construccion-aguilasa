@@ -184,6 +184,11 @@ var StatusManagementHandler = (function () {
             return false;
             // }
         });
+        $(document).on("click", ".cancel-add-step", function (e) {
+            e.preventDefault();
+            // let $popOver = $('.popover');
+            $('.popover').popover('hide');
+        });
     };
     return StatusManagementHandler;
 }());
