@@ -204,9 +204,9 @@ class ProjectStatus extends PrivateController
     public function statusManagement($statusSet = "", $projectId = NULL)
     {
         $this->_validateFeature('project_status_management');
-        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
-        $project = $project->toArray();
-        $keywordList = $this->_validateStatusSet($statusSet, $project);
+        $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+//        $project = $project->toArray();
+//        $keywordList = $this->_validateStatusSet($statusSet, $project);
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
@@ -222,23 +222,24 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('modify-log', TRUE);
 
-        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
-        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
-        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
-        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
-
-        $data["project"] = $project;
-        $data["statusList"] = $statusList;
-        $data["projectSystems"] = $this->_projectSystems;
-        $responsibleList = Model_status_responsible::getUsersResponsible();
-        $data["responsibleList"] = json_encode($responsibleList);
-        $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
-        $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
-        $data["statusSet"] = $statusSet;
-        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
-        $data["projectLog"] = $projectLog;
-        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
-        $data["projectFullDetail"] = $projectFullDetail;
+//        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
+//        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
+//        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
+//        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
+//
+//        $data["project"] = $project;
+//        $data["statusList"] = $statusList;
+//        $data["projectSystems"] = $this->_projectSystems;
+//        $responsibleList = Model_status_responsible::getUsersResponsible();
+//        $data["responsibleList"] = json_encode($responsibleList);
+//        $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
+//        $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
+//        $data["statusSet"] = $statusSet;
+//        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+//        $data["projectLog"] = $projectLog;
+//        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+//        $data["projectFullDetail"] = $projectFullDetail;
+        $data = array();
         $this->_loadPanelView("project-status/status-management", $data);
     }
 

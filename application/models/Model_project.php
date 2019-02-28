@@ -1702,10 +1702,12 @@ class Model_project extends Model_project_base
         $sql = "
             select 
               ".static::TABLE_NAME.".*,
-              wfl_cre_fiscal.*
+              wfl_cre_fiscal.*,
+              keyword_pst
             from
               ".static::TABLE_NAME."
             left join wfl_cre_fiscal on id_cfi = cre_fiscal_pro
+            left join wfl_project_status on id_pst = status_pro
             where
             id_pro = ".$ci->db->escape($projectId)."            
             and ".static::notDeleted()."

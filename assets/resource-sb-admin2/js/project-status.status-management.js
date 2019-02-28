@@ -1,12 +1,15 @@
 /**
  * Created by Jair on 12/06/2018.
  */
-$(document).ready(function() {
-    let statusManagementHandler = new StatusManagementHandler("design", 438);
+$(function() {
+    let url = $(location).attr('href').split("/");
+    let statusSet = url[url.length - 2];
+    let projectId = url[url.length - 1];
+    let statusManagementHandler = new StatusManagementHandler(statusSet, projectId);
     statusManagementHandler.loadView();
     statusManagementHandler.loadEventHandler();
 
-    var status = $("ul.wizard li.active a").prop("id");
+    // var status = $("ul.wizard li.active a").prop("id");
         // getProjectLog();
         // loadStatusForm(status);
     // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

@@ -156,7 +156,7 @@ class Model_project_status extends Model_project_status_base
         $design = array(
             array("project_has_been_created"),
             array("design"),
-            array("stakes"),
+            array("stakes","drawing"),
             array("digitization","drawing", "returned"),
             array("digitization","drawing", "returned"),
             array("schedule")

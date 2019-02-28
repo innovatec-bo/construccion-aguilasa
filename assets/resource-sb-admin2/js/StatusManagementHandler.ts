@@ -1,21 +1,20 @@
-// declare let jquery: any;
+// export {};
 declare let Handlebars: any;
 declare let blockArea: any;
 declare let base_url: any;
-declare let popover: any;
+declare let $: any;
 class StatusManagementHandler
 {
-
     private statusSet: string;
     private projectId: number;
     private buttonAddStep: string;
     private buttonRemoveStep: string;
-    buttonAdd: string;
-    buttonEdit: string;
-    statusManagementContentSelector: string;
-    loadViewResponse: any;
-    loadViewTemplate: any;
-    viewData: any;
+    private buttonAdd: string;
+    private buttonEdit: string;
+    private statusManagementContentSelector: string;
+    private loadViewResponse: any;
+    private loadViewTemplate: any;
+    private viewData: any;
     constructor(private projectStatusSet: string, private projectID: number)
     {
         this.statusSet = projectStatusSet;
@@ -43,14 +42,11 @@ class StatusManagementHandler
                     _this.prepareViewData();
                     _this.loadViewTemplate = response.data.template;
                     let $template = $("<div>"+_this.loadViewTemplate+"</div>");
-
                     let htWizardStep = $template.find("#ht-wizard-step").html();
                     Handlebars.registerPartial("ht-wizard-step", htWizardStep);
-
-                    let htmlSource = $template.find("#ht-status-management").html();
-                    let template = Handlebars.compile(htmlSource);
-                    let html = template({viewData:_this.viewData});
+                    let html = _this.getHandlebarHtml("#ht-status-management",{viewData:_this.viewData});
                     $(_this.statusManagementContentSelector).html(html);
+                    _this.loadStatusForm(_this.viewData.project.keyword_pst,0);
                     _this.projectLog();
                 }
                 else
@@ -60,6 +56,7 @@ class StatusManagementHandler
             }
         });
     }
+
     prepareViewData()
     {
         let project = this.loadViewResponse.data.projectFullDetail;
@@ -71,8 +68,6 @@ class StatusManagementHandler
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         let responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         let statusName = "Este proyecto no esta en esta etapa";
-        let projectOnCurrentStage = false;
-        let disableStatus = false;
         if(project.status_pro == 20)
         {
             statusName = "Este proyecto ha sido devuelto a CRE";
@@ -122,8 +117,8 @@ class StatusManagementHandler
         let step = {stepId:null, stepName:"", stepKeyword: null, stepStatus:"li-add-step"};
         stepList.push(step);
         return stepList;
-
     }
+
     statusSetList()
     {
         let statusSet = [];
@@ -133,22 +128,19 @@ class StatusManagementHandler
 
     projectLog()
     {
+        let _this = this;
         let viewData = this.viewData;
-        let projectId = $("input[name=project-id]").val();
         let $logContent = $("#status-project-log-content");
-        let $template = $("<div>"+this.loadViewTemplate+"</div>");
         blockArea($logContent);
         $.ajax({
             url : base_url + 'panel/AjaxProjectStatus/getProjectLog',
             dataType  :"json",
             type : "POST",
-            data : {projectId:projectId},
+            data : {projectId:_this.projectId},
             success:function(response){
                 let allowUpdateHistory = viewData.allowUpdateHistory;
-                let htmlSource   = $template.find("#ht-status-project-log-quick-view").html();
-                let template = Handlebars.compile(htmlSource);
                 let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory};
-                let html = template(data);
+                let html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
             }
         });
@@ -156,38 +148,51 @@ class StatusManagementHandler
     
     addStep(button)
     {
-        this.launchStepSelector(button);
         let currentStepsQuantity = $(".step-list").children().length;
         let nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        let nextStepObjectArray = [];
         let statusList = this.loadViewResponse.data.statusList;
-        let $template = $("<div>"+this.loadViewTemplate+"</div>");
-        let htmlSource   = $template.find("#ht-wizard-step").html();
-        let template = Handlebars.compile(htmlSource);
-        let step = {};
         $.each(statusList, function(index, value){
-            if(value.keyword_pst == nextStep[0])
+            if(nextStep.includes(value.keyword_pst))
             {
-                step = {stepId:value.id_pst, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:""};
+                let step = {stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword:  value.keyword_pst, stepStatus:""};
+                nextStepObjectArray.push(step);
             }
         });
 
-        let html = template(step);
-        $(html).insertBefore($(".li-add-step"));
-
-        StatusManagementHandler.applyStepListClass(button,"addStep");
+        //if there is more than 1 step then let's show a component to select the next step
+        if(nextStepObjectArray.length > 1)
+        {
+            this.launchStepSelector(button, nextStepObjectArray);
+        }
+        //if there is just one step then let's insert it in step list
+        else
+        {
+            let step = nextStepObjectArray[0];
+            this.insertStep(step);
+            StatusManagementHandler.applyStepListClass(button,"addStep");
+        }
     }
 
-    removeStep(button)
+    insertStep(step)
+    {
+        let html = this.getHandlebarHtml("#ht-wizard-step", step);
+        $(html).insertBefore($(".li-add-step"));
+    }
+
+    static removeStep(button)
     {
         StatusManagementHandler.applyStepListClass(button, "removeStep");
     }
+
     static applyStepListClass(button, event)
     {
+        let $liStep : any = $(".step-list li");
         switch (event)
         {
             case 'addStep':
                 button.parent().removeClass("li-add-step").addClass("li-remove-step");
-                $(".step-list li").removeClass("active").addClass("completed");
+                $liStep.removeClass("active").addClass("completed");
                 button.parent().prev().removeClass("completed").addClass("active");
                 button.removeClass("add-step").addClass("remove-step");
                 button.find("i").removeClass("fa-plus").addClass("fa-minus");
@@ -195,7 +200,7 @@ class StatusManagementHandler
             case 'removeStep':
                 $(".step-list li:last-child").prev().remove();
                 button.removeClass("remove-step").addClass("add-step");
-                $(".step-list li").removeClass("active").addClass("completed");
+                $liStep.removeClass("active").addClass("completed");
                 button.parent().prev().removeClass("completed").addClass("active");
                 button.parent().removeClass("li-remove-step").addClass("li-add-step");
                 button.parent().prev().removeClass("completed").addClass("active");
@@ -204,14 +209,11 @@ class StatusManagementHandler
         }
     }
 
-    launchStepSelector(button)
+    launchStepSelector(button, nextStepObjectArray)
     {
-        let currentStepsQuantity = $(".step-list").children().length;
-        let nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
-        let $template = $("<div>"+this.loadViewTemplate+"</div>");
-        let htmlSource   = $template.find("#ht-select-next-step").html();
-        let template = Handlebars.compile(htmlSource);
-        let html = template({});
+        let data = {nextStepObjectArray:nextStepObjectArray};
+        let html = this.getHandlebarHtml("#ht-select-next-step", data);
+        button.parent().popover("destroy");
         button.parent().popover({
             title:'Elija el siguiente paso',
             html:true,
@@ -220,39 +222,232 @@ class StatusManagementHandler
         button.parent().trigger("click");
     }
 
+    addStepFromList(step)
+    {
+        this.insertStep(step);
+        let $button = $(".step-list .li-add-step").find("a");
+        StatusManagementHandler.applyStepListClass($button,"addStep");
+        $('.popover').popover('destroy');
+    }
+
+    loadStatusForm(statusKeyword, addMoreInfo)
+    {
+        let _this = this;
+        let $statusFormContent = $("#status-form-content");
+        blockArea($statusFormContent);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/verifyPreviousEntry',
+            dataType  :"json",
+            type : "POST",
+            data : {projectId:_this.projectId, statusKeyword:statusKeyword, statusSet:_this.statusSet},
+            success:function(response){
+
+                // if(response.scheduleEntry[0] !== undefined && response.scheduleEntry[0].id_psl !== null)
+                // {
+                //     let data = {};
+                //     let html = _this.getHandlebarHtml("#ht-finished-stage-design",data);
+                //     $statusFormContent.html(html);
+                // }
+                if(response.previousEntry[0] === undefined || addMoreInfo ==  1)
+                {
+                    let points = $("#points").text();
+                    let distance = $("#distance").text();
+                    let responsibleGroup = StatusManagementHandler.getResponsibleGroup(statusKeyword);
+                    let statusResponsible = responsibleGroup.responsibleList;
+                    let responsibleListLength = responsibleGroup.responsibleListLength;
+                    let $statusForm = $("#ht-status-"+statusKeyword+"-form");
+                    let htmlSource   = $("#ht-status-not-created-view-form").html();
+                    if($statusForm.length === 1)
+                        htmlSource  = $statusForm.html();
+
+                    let template = Handlebars.compile(htmlSource);
+                    let assignmentResponsible = response.assignmentEntry.length > 0?JSON.parse("["+response.assignmentEntry[0].jsonResponsible+"]"):[];
+                    let assignmentResponsibleFiscal = [];
+                    let assignmentResponsibleBuilder = [];
+                    if(statusKeyword == "in_progress")
+                    {
+                        assignmentResponsibleFiscal.push(assignmentResponsible[0]);
+                        assignmentResponsibleBuilder = assignmentResponsible[1] || {id:null, name:""};
+                    }
+                    let data = {
+                        statusResponsible:statusResponsible,
+                        responsibleListLength:responsibleListLength,
+                        responsibleGroup:responsibleGroup,
+                        points:points,
+                        distance:distance,
+                        statusKeyword:statusKeyword,
+                        statusSet:_this.statusSet,
+                        previousEntry:response.previousEntry[0],
+                        assignmentResponsible:assignmentResponsible,
+                        assignmentResponsibleFiscal: assignmentResponsibleFiscal,
+                        assignmentResponsibleBuilder: assignmentResponsibleBuilder
+                    };
+                    let html = template(data);
+                    $statusFormContent.html(html);
+                    StatusManagementHandler.statusFormStartSpecialComponents();
+                    StatusManagementHandler.updateTotalOnApprovedForm();
+                }
+                else
+                {
+                    let data = {statusKeyword:statusKeyword,statusSet:_this.statusSet,previousEntry:response.previousEntry[0]};
+                    let html = _this.getHandlebarHtml("#ht-status-"+statusKeyword+"-form-completed", data);
+                    $statusFormContent.html(html);
+                }
+                _this.checkIncidents();
+            }
+        });
+    }
+
+    getHandlebarHtml(templateId, dataObject)
+    {
+        let $template = $("<div>"+this.loadViewTemplate+"</div>");
+        let htmlSource   = $template.find(templateId).html();
+        let template = Handlebars.compile(htmlSource);
+        return template(dataObject);
+    }
+
+    static updateTotalOnApprovedForm()
+    {
+        let $totalAmountContent : any = $("#total-project-amount");
+        if($totalAmountContent.length == 1)
+        {
+            let design : number = parseFloat($("input[name=design-budget]").val().replace(",",""));
+            design = isNaN(design)?0:design;
+            let building : number = parseFloat($("input[name=building-budget]").val().replace(",",""));
+            building = isNaN(building)?0:building;
+            let transportation : number = parseFloat($("input[name=transportation-budget]").val().replace(",",""));
+            transportation = isNaN(transportation)?0:transportation;
+            let liveLine : number = parseFloat($("input[name=live-line-budget]").val().replace(",",""));
+            liveLine = isNaN(liveLine)?0:liveLine;
+            let rightOfWay : number = parseFloat($("input[name=right-of-way-budget]").val().replace(",",""));
+            rightOfWay = isNaN(rightOfWay)?0:rightOfWay;
+            let total : number = design + building + transportation + liveLine + rightOfWay;
+            total = parseFloat(total.toFixed(2));
+            $totalAmountContent.text(total);
+        }
+    }
+
+    static statusFormStartSpecialComponents()
+    {
+        let date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: date,
+            format: 'DD-MM-YYYY'
+        });
+        $(".select2").select2({
+            placeholder: 'Asigne uno o mas responsables',
+            allowClear: true
+        });
+        $("#ajax-get-responsible-list").select2({
+            placeholder: 'Asigne uno o mas responsables',
+            allowClear: true
+        });
+        $(".input-masked").inputmask();
+    }
+
+    static getResponsibleGroup(statusKeyword)
+    {
+        //all responsible by status keyword
+        let response: any = {};
+        let responsibleString : string = $("input[name=responsible-list]").val().toString();
+        let responsibleList = JSON.parse(responsibleString);
+        let statusResponsible: any[] = [];
+        $.each(responsibleList,function(index,value){
+            if(value.keyword_pst == statusKeyword)
+                statusResponsible.push(value);
+        });
+        let responsibleListLength = statusResponsible.length;
+        response.responsibleList = statusResponsible;
+        response.responsibleListLength = responsibleListLength;
+
+        //all responsible by status keyword and role fiscal
+        responsibleString = $("input[name=responsible-list-fiscal]").val().toString();
+        let responsibleListFiscal = JSON.parse(responsibleString);
+        let statusResponsibleFiscal = [];
+        $.each(responsibleListFiscal,function(index,value){
+            statusResponsibleFiscal.push(value);
+        });
+        let responsibleListFiscalLength = statusResponsibleFiscal.length;
+        response.responsibleListFiscal = statusResponsibleFiscal;
+        response.responsibleListFiscalLength = responsibleListFiscalLength;
+
+        //all responsible by status keyword and role builder
+        responsibleString = $("input[name=responsible-list-builder]").val().toString();
+        let responsibleListBuilder = JSON.parse(responsibleString);
+        let statusResponsibleBuilder = [];
+        $.each(responsibleListBuilder,function(index,value){
+            statusResponsibleBuilder.push(value);
+        });
+        let responsibleListBuilderLength = statusResponsibleBuilder.length;
+        response.responsibleListBuilder = statusResponsibleBuilder;
+        response.responsibleListBuilderLength = responsibleListBuilderLength;
+
+        return response;
+    }
+
+    checkIncidents()
+    {
+        let _this : any = this;
+        let $activeLink : any = $(".active a");
+        let statusId : number = $activeLink.data("status-id");
+        let data : any = {
+            projectId: this.projectId,
+            statusId: statusId
+        };
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/checkIncidents',
+            dataType  :"json",
+            type : "POST",
+            data:data,
+            success:function(response){
+                let currentProjectPercentage: number = 0;
+                if(response.allIncidents.length > 0)
+                {
+                    currentProjectPercentage = response.allIncidents[0].percentage_inc;
+                }
+                let data = {incidentList:response.incidentList, currentProjectPercentage:currentProjectPercentage};
+                let html = _this.getHandlebarHtml("#ht-modal-incident-list", data);
+                $("#incident-content").html(html);
+            }
+        });
+    }
+
     loadEventHandler()
     {
         let _this = this;
         $(document).on("click", this.buttonAddStep, function(e){
             e.preventDefault();
             let $button = $(this);
+            $('.popover').popover('destroy');
             _this.addStep($button);
 
+        });
+
+        $(document).on("click",".add-step-from-list", function(e){
+           e.preventDefault();
+           let stepId = $(this).data("step-id");
+           let stepName = $(this).data("step-name");
+           let keyword = $(this).data("keyword");
+           let step = {stepId: stepId, stepName: stepName, keyword:keyword, stepStatus:"active"};
+           _this.addStepFromList(step);
         });
 
         $(document).on("click", this.buttonRemoveStep, function(e){
             e.preventDefault();
             let $button = $(this);
-            _this.removeStep($button);
+            StatusManagementHandler.removeStep($button);
         });
 
         $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) {
             e.preventDefault();
-            // console.log("toc toc");
-            // if(!$(this).parent().hasClass("disabled"))
-            // {
-            //     status = $(e.target).attr("id");
-            //     loadStatusForm(status);
-            // }
-            // else {
-                return false;
-            // }
+            let keyword = $(this).prop("id");
+            _this.loadStatusForm(keyword,0);
         });
 
         $(document).on("click",".cancel-add-step",function(e){
            e.preventDefault();
-           // let $popOver = $('.popover');
-            $('.popover').popover('hide');
+            $('.popover').popover('destroy');
         });
     }
 }

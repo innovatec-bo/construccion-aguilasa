@@ -26,13 +26,13 @@ var StatusManagementHandler = (function () {
                     var $template = $("<div>" + _this.loadViewTemplate + "</div>");
                     var htWizardStep = $template.find("#ht-wizard-step").html();
                     Handlebars.registerPartial("ht-wizard-step", htWizardStep);
-                    var htmlSource = $template.find("#ht-status-management").html();
-                    var template = Handlebars.compile(htmlSource);
-                    var html = template({ viewData: _this.viewData });
+                    var html = _this.getHandlebarHtml("#ht-status-management", { viewData: _this.viewData });
                     $(_this.statusManagementContentSelector).html(html);
+                    _this.loadStatusForm(_this.viewData.project.keyword_pst, 0);
                     _this.projectLog();
                 }
                 else {
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -47,8 +47,6 @@ var StatusManagementHandler = (function () {
         var responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         var responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         var statusName = "Este proyecto no esta en esta etapa";
-        var projectOnCurrentStage = false;
-        var disableStatus = false;
         if (project.status_pro == 20) {
             statusName = "Este proyecto ha sido devuelto a CRE";
         }
@@ -97,52 +95,57 @@ var StatusManagementHandler = (function () {
         return statusSet[this.statusSet];
     };
     StatusManagementHandler.prototype.projectLog = function () {
+        var _this = this;
         var viewData = this.viewData;
-        var projectId = $("input[name=project-id]").val();
         var $logContent = $("#status-project-log-content");
-        var $template = $("<div>" + this.loadViewTemplate + "</div>");
         blockArea($logContent);
         $.ajax({
             url: base_url + 'panel/AjaxProjectStatus/getProjectLog',
             dataType: "json",
             type: "POST",
-            data: { projectId: projectId },
+            data: { projectId: _this.projectId },
             success: function (response) {
                 var allowUpdateHistory = viewData.allowUpdateHistory;
-                var htmlSource = $template.find("#ht-status-project-log-quick-view").html();
-                var template = Handlebars.compile(htmlSource);
                 var data = { projectLog: response, allowUpdateHistory: allowUpdateHistory };
-                var html = template(data);
+                var html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
             }
         });
     };
     StatusManagementHandler.prototype.addStep = function (button) {
-        this.launchStepSelector(button);
         var currentStepsQuantity = $(".step-list").children().length;
         var nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        var nextStepObjectArray = [];
         var statusList = this.loadViewResponse.data.statusList;
-        var $template = $("<div>" + this.loadViewTemplate + "</div>");
-        var htmlSource = $template.find("#ht-wizard-step").html();
-        var template = Handlebars.compile(htmlSource);
-        var step = {};
         $.each(statusList, function (index, value) {
-            if (value.keyword_pst == nextStep[0]) {
-                step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
+            if (nextStep.includes(value.keyword_pst)) {
+                var step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
+                nextStepObjectArray.push(step);
             }
         });
-        var html = template(step);
-        $(html).insertBefore($(".li-add-step"));
-        StatusManagementHandler.applyStepListClass(button, "addStep");
+        //if there is more than 1 step then let's show a component to select the next step
+        if (nextStepObjectArray.length > 1) {
+            this.launchStepSelector(button, nextStepObjectArray);
+        }
+        else {
+            var step = nextStepObjectArray[0];
+            this.insertStep(step);
+            StatusManagementHandler.applyStepListClass(button, "addStep");
+        }
     };
-    StatusManagementHandler.prototype.removeStep = function (button) {
+    StatusManagementHandler.prototype.insertStep = function (step) {
+        var html = this.getHandlebarHtml("#ht-wizard-step", step);
+        $(html).insertBefore($(".li-add-step"));
+    };
+    StatusManagementHandler.removeStep = function (button) {
         StatusManagementHandler.applyStepListClass(button, "removeStep");
     };
     StatusManagementHandler.applyStepListClass = function (button, event) {
+        var $liStep = $(".step-list li");
         switch (event) {
             case 'addStep':
                 button.parent().removeClass("li-add-step").addClass("li-remove-step");
-                $(".step-list li").removeClass("active").addClass("completed");
+                $liStep.removeClass("active").addClass("completed");
                 button.parent().prev().removeClass("completed").addClass("active");
                 button.removeClass("add-step").addClass("remove-step");
                 button.find("i").removeClass("fa-plus").addClass("fa-minus");
@@ -150,7 +153,7 @@ var StatusManagementHandler = (function () {
             case 'removeStep':
                 $(".step-list li:last-child").prev().remove();
                 button.removeClass("remove-step").addClass("add-step");
-                $(".step-list li").removeClass("active").addClass("completed");
+                $liStep.removeClass("active").addClass("completed");
                 button.parent().prev().removeClass("completed").addClass("active");
                 button.parent().removeClass("li-remove-step").addClass("li-add-step");
                 button.parent().prev().removeClass("completed").addClass("active");
@@ -158,13 +161,10 @@ var StatusManagementHandler = (function () {
                 break;
         }
     };
-    StatusManagementHandler.prototype.launchStepSelector = function (button) {
-        var currentStepsQuantity = $(".step-list").children().length;
-        var nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
-        var $template = $("<div>" + this.loadViewTemplate + "</div>");
-        var htmlSource = $template.find("#ht-select-next-step").html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({});
+    StatusManagementHandler.prototype.launchStepSelector = function (button, nextStepObjectArray) {
+        var data = { nextStepObjectArray: nextStepObjectArray };
+        var html = this.getHandlebarHtml("#ht-select-next-step", data);
+        button.parent().popover("destroy");
         button.parent().popover({
             title: 'Elija el siguiente paso',
             html: true,
@@ -172,34 +172,202 @@ var StatusManagementHandler = (function () {
         });
         button.parent().trigger("click");
     };
+    StatusManagementHandler.prototype.addStepFromList = function (step) {
+        this.insertStep(step);
+        var $button = $(".step-list .li-add-step").find("a");
+        StatusManagementHandler.applyStepListClass($button, "addStep");
+        $('.popover').popover('destroy');
+    };
+    StatusManagementHandler.prototype.loadStatusForm = function (statusKeyword, addMoreInfo) {
+        var _this = this;
+        var $statusFormContent = $("#status-form-content");
+        blockArea($statusFormContent);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/verifyPreviousEntry',
+            dataType: "json",
+            type: "POST",
+            data: { projectId: _this.projectId, statusKeyword: statusKeyword, statusSet: _this.statusSet },
+            success: function (response) {
+                // if(response.scheduleEntry[0] !== undefined && response.scheduleEntry[0].id_psl !== null)
+                // {
+                //     let data = {};
+                //     let html = _this.getHandlebarHtml("#ht-finished-stage-design",data);
+                //     $statusFormContent.html(html);
+                // }
+                if (response.previousEntry[0] === undefined || addMoreInfo == 1) {
+                    var points = $("#points").text();
+                    var distance = $("#distance").text();
+                    var responsibleGroup = StatusManagementHandler.getResponsibleGroup(statusKeyword);
+                    var statusResponsible = responsibleGroup.responsibleList;
+                    var responsibleListLength = responsibleGroup.responsibleListLength;
+                    var $statusForm = $("#ht-status-" + statusKeyword + "-form");
+                    var htmlSource = $("#ht-status-not-created-view-form").html();
+                    if ($statusForm.length === 1)
+                        htmlSource = $statusForm.html();
+                    var template = Handlebars.compile(htmlSource);
+                    var assignmentResponsible = response.assignmentEntry.length > 0 ? JSON.parse("[" + response.assignmentEntry[0].jsonResponsible + "]") : [];
+                    var assignmentResponsibleFiscal = [];
+                    var assignmentResponsibleBuilder = [];
+                    if (statusKeyword == "in_progress") {
+                        assignmentResponsibleFiscal.push(assignmentResponsible[0]);
+                        assignmentResponsibleBuilder = assignmentResponsible[1] || { id: null, name: "" };
+                    }
+                    var data = {
+                        statusResponsible: statusResponsible,
+                        responsibleListLength: responsibleListLength,
+                        responsibleGroup: responsibleGroup,
+                        points: points,
+                        distance: distance,
+                        statusKeyword: statusKeyword,
+                        statusSet: _this.statusSet,
+                        previousEntry: response.previousEntry[0],
+                        assignmentResponsible: assignmentResponsible,
+                        assignmentResponsibleFiscal: assignmentResponsibleFiscal,
+                        assignmentResponsibleBuilder: assignmentResponsibleBuilder
+                    };
+                    var html = template(data);
+                    $statusFormContent.html(html);
+                    StatusManagementHandler.statusFormStartSpecialComponents();
+                    StatusManagementHandler.updateTotalOnApprovedForm();
+                }
+                else {
+                    var data = { statusKeyword: statusKeyword, statusSet: _this.statusSet, previousEntry: response.previousEntry[0] };
+                    var html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form-completed", data);
+                    $statusFormContent.html(html);
+                }
+                _this.checkIncidents();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.getHandlebarHtml = function (templateId, dataObject) {
+        var $template = $("<div>" + this.loadViewTemplate + "</div>");
+        var htmlSource = $template.find(templateId).html();
+        var template = Handlebars.compile(htmlSource);
+        return template(dataObject);
+    };
+    StatusManagementHandler.updateTotalOnApprovedForm = function () {
+        var $totalAmountContent = $("#total-project-amount");
+        if ($totalAmountContent.length == 1) {
+            var design = parseFloat($("input[name=design-budget]").val().replace(",", ""));
+            design = isNaN(design) ? 0 : design;
+            var building = parseFloat($("input[name=building-budget]").val().replace(",", ""));
+            building = isNaN(building) ? 0 : building;
+            var transportation = parseFloat($("input[name=transportation-budget]").val().replace(",", ""));
+            transportation = isNaN(transportation) ? 0 : transportation;
+            var liveLine = parseFloat($("input[name=live-line-budget]").val().replace(",", ""));
+            liveLine = isNaN(liveLine) ? 0 : liveLine;
+            var rightOfWay = parseFloat($("input[name=right-of-way-budget]").val().replace(",", ""));
+            rightOfWay = isNaN(rightOfWay) ? 0 : rightOfWay;
+            var total = design + building + transportation + liveLine + rightOfWay;
+            total = parseFloat(total.toFixed(2));
+            $totalAmountContent.text(total);
+        }
+    };
+    StatusManagementHandler.statusFormStartSpecialComponents = function () {
+        var date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: date,
+            format: 'DD-MM-YYYY'
+        });
+        $(".select2").select2({
+            placeholder: 'Asigne uno o mas responsables',
+            allowClear: true
+        });
+        $("#ajax-get-responsible-list").select2({
+            placeholder: 'Asigne uno o mas responsables',
+            allowClear: true
+        });
+        $(".input-masked").inputmask();
+    };
+    StatusManagementHandler.getResponsibleGroup = function (statusKeyword) {
+        //all responsible by status keyword
+        var response = {};
+        var responsibleString = $("input[name=responsible-list]").val().toString();
+        var responsibleList = JSON.parse(responsibleString);
+        var statusResponsible = [];
+        $.each(responsibleList, function (index, value) {
+            if (value.keyword_pst == statusKeyword)
+                statusResponsible.push(value);
+        });
+        var responsibleListLength = statusResponsible.length;
+        response.responsibleList = statusResponsible;
+        response.responsibleListLength = responsibleListLength;
+        //all responsible by status keyword and role fiscal
+        responsibleString = $("input[name=responsible-list-fiscal]").val().toString();
+        var responsibleListFiscal = JSON.parse(responsibleString);
+        var statusResponsibleFiscal = [];
+        $.each(responsibleListFiscal, function (index, value) {
+            statusResponsibleFiscal.push(value);
+        });
+        var responsibleListFiscalLength = statusResponsibleFiscal.length;
+        response.responsibleListFiscal = statusResponsibleFiscal;
+        response.responsibleListFiscalLength = responsibleListFiscalLength;
+        //all responsible by status keyword and role builder
+        responsibleString = $("input[name=responsible-list-builder]").val().toString();
+        var responsibleListBuilder = JSON.parse(responsibleString);
+        var statusResponsibleBuilder = [];
+        $.each(responsibleListBuilder, function (index, value) {
+            statusResponsibleBuilder.push(value);
+        });
+        var responsibleListBuilderLength = statusResponsibleBuilder.length;
+        response.responsibleListBuilder = statusResponsibleBuilder;
+        response.responsibleListBuilderLength = responsibleListBuilderLength;
+        return response;
+    };
+    StatusManagementHandler.prototype.checkIncidents = function () {
+        var _this = this;
+        var $activeLink = $(".active a");
+        var statusId = $activeLink.data("status-id");
+        var data = {
+            projectId: this.projectId,
+            statusId: statusId
+        };
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/checkIncidents',
+            dataType: "json",
+            type: "POST",
+            data: data,
+            success: function (response) {
+                var currentProjectPercentage = 0;
+                if (response.allIncidents.length > 0) {
+                    currentProjectPercentage = response.allIncidents[0].percentage_inc;
+                }
+                var data = { incidentList: response.incidentList, currentProjectPercentage: currentProjectPercentage };
+                var html = _this.getHandlebarHtml("#ht-modal-incident-list", data);
+                $("#incident-content").html(html);
+            }
+        });
+    };
     StatusManagementHandler.prototype.loadEventHandler = function () {
         var _this = this;
         $(document).on("click", this.buttonAddStep, function (e) {
             e.preventDefault();
             var $button = $(this);
+            $('.popover').popover('destroy');
             _this.addStep($button);
+        });
+        $(document).on("click", ".add-step-from-list", function (e) {
+            e.preventDefault();
+            var stepId = $(this).data("step-id");
+            var stepName = $(this).data("step-name");
+            var keyword = $(this).data("keyword");
+            var step = { stepId: stepId, stepName: stepName, keyword: keyword, stepStatus: "active" };
+            _this.addStepFromList(step);
         });
         $(document).on("click", this.buttonRemoveStep, function (e) {
             e.preventDefault();
             var $button = $(this);
-            _this.removeStep($button);
+            StatusManagementHandler.removeStep($button);
         });
         $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
             e.preventDefault();
-            // console.log("toc toc");
-            // if(!$(this).parent().hasClass("disabled"))
-            // {
-            //     status = $(e.target).attr("id");
-            //     loadStatusForm(status);
-            // }
-            // else {
-            return false;
-            // }
+            var keyword = $(this).prop("id");
+            _this.loadStatusForm(keyword, 0);
         });
         $(document).on("click", ".cancel-add-step", function (e) {
             e.preventDefault();
-            // let $popOver = $('.popover');
-            $('.popover').popover('hide');
+            $('.popover').popover('destroy');
         });
     };
     return StatusManagementHandler;

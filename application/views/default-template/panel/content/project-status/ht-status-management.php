@@ -70,51 +70,16 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 {{#each viewData.stepList}}
                     {{> ht-wizard-step}}
                 {{/each}}
-
-                <?php
-//                $navTab = '';
-//                $i = 1;
-//
-//                $activeFound = FALSE;
-//                $currentStatus = $project["status_pro"];
-//                foreach ($statusList as $status)
-//                {
-//                    $status = $status->toArray();
-//                    if($status["keyword_pst"] == "returned")
-//                        continue;
-//
-//                    $class = $currentStatus != 1?'completed':"";
-//                    $disabled = $disableStatus?" disabled ":"";
-//                    if($status["id_pst"] === $currentStatus)
-//                    {
-//                        $class = 'active';
-//                        $activeFound = TRUE;
-//                    }
-//                    elseif($activeFound)
-//                    {
-//                        $class = '';
-//                    }
-//                    $navTab .= '
-//                            <li class="'.$class.' '.$disabled.'">
-//                                <a href="#step_'.$status["keyword_pst"].'" data-toggle="tab" aria-expanded="false" data-status-id="'.$status["id_pst"].'" id="'.$status["keyword_pst"].'">'.$status["status_name_pst"].'</a>
-//                            </li>
-//                            ';
-//                    $i++;
-//                }
-//                $unsignedAsDefault = $class == '' && !$activeFound?'active':'completed';
-//                $unsigned = '';
-//                echo $unsigned.$navTab;
-                ?>
             </ul>
         </div>
     </div>
     <div class="col-md-1">
-        <div class="tabbable">
+        <div class="">
             <a href="#next-step" id="next-step">Siguiente</a>
         </div>
     </div>
     <div class="col-md-1">
-        <div class="tabbable">
+        <div class="">
             <a href="#next-step" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
         </div>
     </div>
@@ -181,15 +146,11 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     </li>
 </script>
 <script id="ht-select-next-step" type="text/x-handlebars-template">
-    <a class="btn btn-block btn-social btn-primary btn-xs">
-        Estaqueado
-    </a>
-    <a class="btn btn-block btn-social btn-primary btn-xs">
-        Digitalizacion
-    </a>
-    <a class="btn btn-block btn-social btn-primary btn-xs">
-        Dibujo
-    </a>
+    {{#each nextStepObjectArray}}
+        <a class="btn btn-block btn-social btn-primary btn-xs add-step-from-list" data-step-id="{{stepId}}" data-step-name="{{stepName}}" data-step-status="active" data-keyword="{{stepKeyword}}">
+            {{stepName}}
+        </a>
+    {{/each}}
     <a class="btn btn-block btn-social btn-danger btn-xs cancel-add-step">
         Cancelar
     </a>
