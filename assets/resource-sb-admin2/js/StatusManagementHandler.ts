@@ -174,12 +174,34 @@ class StatusManagementHandler
         let html = template(step);
         $(html).insertBefore($(".li-add-step"));
 
-        button.parent().removeClass("li-add-step").addClass("li-remove-step");
-        $(".step-list li").removeClass("active").addClass("completed");
-        button.parent().prev().removeClass("completed").addClass("active");
-        button.removeClass("add-step").addClass("remove-step");
-        button.find("i").removeClass("fa-plus").addClass("fa-minus");
-        console.log(nextStep);
+        StatusManagementHandler.applyStepListClass(button,"addStep");
+    }
+
+    removeStep(button)
+    {
+        StatusManagementHandler.applyStepListClass(button, "removeStep");
+    }
+    static applyStepListClass(button, event)
+    {
+        switch (event)
+        {
+            case 'addStep':
+                button.parent().removeClass("li-add-step").addClass("li-remove-step");
+                $(".step-list li").removeClass("active").addClass("completed");
+                button.parent().prev().removeClass("completed").addClass("active");
+                button.removeClass("add-step").addClass("remove-step");
+                button.find("i").removeClass("fa-plus").addClass("fa-minus");
+                break;
+            case 'removeStep':
+                $(".step-list li:last-child").prev().remove();
+                button.removeClass("remove-step").addClass("add-step");
+                $(".step-list li").removeClass("active").addClass("completed");
+                button.parent().prev().removeClass("completed").addClass("active");
+                button.parent().removeClass("li-remove-step").addClass("li-add-step");
+                button.parent().prev().removeClass("completed").addClass("active");
+                button.find("i").removeClass("fa-minus").addClass("fa-plus");
+                break;
+        }
     }
 
     launchStepSelector(button)
@@ -210,14 +232,8 @@ class StatusManagementHandler
 
         $(document).on("click", this.buttonRemoveStep, function(e){
             e.preventDefault();
-            $(".step-list li:last-child").prev().remove();
-
-            $(this).removeClass("remove-step").addClass("add-step");
-            $(".step-list li").removeClass("active").addClass("completed");
-            $(this).parent().prev().removeClass("completed").addClass("active");
-            $(this).parent().removeClass("li-remove-step").addClass("li-add-step");
-            $(this).parent().prev().removeClass("completed").addClass("active");
-            $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
+            let $button = $(this);
+            _this.removeStep($button);
         });
 
         $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) {
@@ -240,18 +256,3 @@ class StatusManagementHandler
         });
     }
 }
-
-// interface Person
-// {
-//     firstName: string;
-//     lastName: string;
-// }
-//
-// function greeter(person : Person)
-// {
-//     return "Hello, " + person.firstName + " " + person.lastName;
-// }
-//
-// let user = new StatusManagementHandler("Jane", "M.", "User");
-//
-// document.body.innerHTML = greeter(user);
