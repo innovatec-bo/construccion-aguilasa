@@ -31,92 +31,92 @@ $(function() {
     //     getStakesLeaderProjects();
     // });
 
-    // $(document).on("click",".save-status",function(e){
-    //     e.preventDefault();
-    //     var $form = $("form[name=status-management]");
-    //     var statusKeyword = $(this).data("status-keyword");
-    //     var statusId = $(this).data("status-id");
-    //     var $button = $(this);
-    //
-    //     if($form.parsley().isValid({group: statusKeyword}))
-    //     {
-    //         var $content = $("#status-form-content");
-    //         blockArea($content);
-    //         switch(statusKeyword)
-    //         {
-    //             case "rd_stakes":
-    //             case "stakes":
-    //                 saveStakesTeam(statusId,statusKeyword);
-    //                 break;
-    //             case "returned":
-    //                 saveReturned(statusId,statusKeyword);
-    //                 break;
-    //             case "ri_digitization":
-    //             case "rd_digitization":
-    //             case "digitization":
-    //                 saveDigitization(statusId,statusKeyword,$button);
-    //                 break;
-    //             case "ri_drawing":
-    //             case "rd_drawing":
-    //             case "drawing":
-    //                 saveDrawing(statusId,statusKeyword,$button);
-    //                 break;
-    //             case "schedule":
-    //                 saveSchedule(statusId,statusKeyword);
-    //                 break;
-    //             case "already_sent":
-    //                 saveAlreadySent(statusId,statusKeyword);
-    //                 break;
-    //             case "rectify_design":
-    //                 saveRectifyDesign(statusId,statusKeyword);
-    //                 break;
-    //             case "rectify_illustration":
-    //                 saveRectifyIllustration(statusId,statusKeyword);
-    //                 break;
-    //             case "approved":
-    //                 saveApproved(statusId,statusKeyword);
-    //                 break;
-    //             case "canceled":
-    //                 saveCanceled(statusId,statusKeyword);
-    //                 break;
-    //             case "in_progress":
-    //                 saveInProgress(statusId,statusKeyword);
-    //                 break;
-    //             case "paused":
-    //             case "stopped":
-    //             case "completed":
-    //                 saveBasicLog(statusId, statusKeyword);
-    //                 break;
-    //             case "project_energized":
-    //                 saveProjectEnergized(statusId, statusKeyword);
-    //                 break;
-    //             case "as_built":
-    //                 saveAsBuilt(statusId, statusKeyword);
-    //                 break;
-    //             case "conciliation_reception":
-    //                 saveBasicLog(statusId, statusKeyword);
-    //                 break;
-    //             case "conciliation_shipment":
-    //                 saveConciliationShipment(statusId, statusKeyword);
-    //                 break;
-    //             case "cre_return_order":
-    //                 saveCreReturnOrder(statusId,statusKeyword);
-    //                 break;
-    //             case "project_return_materials":
-    //             case "project_real_budget_confirmation":
-    //                 saveBasicLog(statusId, statusKeyword);
-    //                 break;
-    //             default:
-    //                 bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
-    //                 break;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         $form.parsley().validate({group: statusKeyword});
-    //     }
-    //
-    // });
+    $(document).on("click",".save-status_deprecated",function(e){
+        e.preventDefault();
+        let $form = $("form[name=status-management]");
+        let statusKeyword = $(this).data("status-keyword");
+        let statusId = $(this).data("status-id");
+        let $button = $(this);
+
+        if($form.parsley().isValid({group: statusKeyword}))
+        {
+            let $content = $("#status-form-content");
+            blockArea($content);
+            switch(statusKeyword)
+            {
+                case "rd_stakes":
+                case "stakes":
+                    saveStakesTeam(statusId,statusKeyword);
+                    break;
+                case "returned":
+                    saveReturned(statusId,statusKeyword);
+                    break;
+                case "ri_digitization":
+                case "rd_digitization":
+                case "digitization":
+                    saveDigitization(statusId,statusKeyword,$button);
+                    break;
+                case "ri_drawing":
+                case "rd_drawing":
+                case "drawing":
+                    saveDrawing(statusId,statusKeyword,$button);
+                    break;
+                case "schedule":
+                    saveSchedule(statusId,statusKeyword);
+                    break;
+                case "already_sent":
+                    saveAlreadySent(statusId,statusKeyword);
+                    break;
+                case "rectify_design":
+                    saveRectifyDesign(statusId,statusKeyword);
+                    break;
+                case "rectify_illustration":
+                    saveRectifyIllustration(statusId,statusKeyword);
+                    break;
+                case "approved":
+                    saveApproved(statusId,statusKeyword);
+                    break;
+                case "canceled":
+                    saveCanceled(statusId,statusKeyword);
+                    break;
+                case "in_progress":
+                    saveInProgress(statusId,statusKeyword);
+                    break;
+                case "paused":
+                case "stopped":
+                case "completed":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "project_energized":
+                    saveProjectEnergized(statusId, statusKeyword);
+                    break;
+                case "as_built":
+                    saveAsBuilt(statusId, statusKeyword);
+                    break;
+                case "conciliation_reception":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "conciliation_shipment":
+                    saveConciliationShipment(statusId, statusKeyword);
+                    break;
+                case "cre_return_order":
+                    saveCreReturnOrder(statusId,statusKeyword);
+                    break;
+                case "project_return_materials":
+                case "project_real_budget_confirmation":
+                    saveBasicLog(statusId, statusKeyword);
+                    break;
+                default:
+                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
+                    break;
+            }
+        }
+        else
+        {
+            $form.parsley().validate({group: statusKeyword});
+        }
+
+    });
 
     // $(document).on("click",".send-to-rectify",function(e){
     //     e.preventDefault();
@@ -178,6 +178,7 @@ function saveStakesTeam(statusId, statusKeyword)
         projectId: projectId,
         entryDate:entryDate,
         statusId: statusId,
+        statusKeyword: statusKeyword,
         statusDetail: statusDetail,
         responsibleList: responsibleList
     };

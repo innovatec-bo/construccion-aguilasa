@@ -165,4 +165,21 @@ class Model_project_status extends Model_project_status_base
         $stageList["design"] = $design;
         return $stageList[$statusSet];
     }
+
+    public static function getByStatusKeyword($statusKeyword)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+            ".static::TABLE_NAME.".*
+        FROM
+            ".static::TABLE_NAME."
+        where 
+            and keyword_pst = ".$ci->db->escape($statusKeyword)."
+        ";
+        $query = $ci->db->query($sql);
+        $result = static::recast(get_called_class(),$query->row());
+        return $result;
+    }
 }

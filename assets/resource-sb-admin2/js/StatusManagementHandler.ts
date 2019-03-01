@@ -19,7 +19,7 @@ class StatusManagementHandler
     {
         this.statusSet = projectStatusSet;
         this.projectId = projectID;
-        this.buttonAdd = ".add-status";
+        this.buttonAdd = ".save-status";
         this.buttonEdit = ".edit-status";
         this.buttonAddStep = ".add-step";
         this.buttonRemoveStep = ".remove-step";
@@ -179,11 +179,14 @@ class StatusManagementHandler
     {
         let html = this.getHandlebarHtml("#ht-wizard-step", step);
         $(html).insertBefore($(".li-add-step"));
+        this.loadStatusForm(step.stepKeyword,1);
     }
 
-    static removeStep(button)
+    removeStep(button)
     {
         StatusManagementHandler.applyStepListClass(button, "removeStep");
+        let statusKeyword = $(".step-list li.active a").prop("id");
+        this.loadStatusForm(statusKeyword, 0);
     }
 
     static applyStepListClass(button, event)
@@ -418,6 +421,127 @@ class StatusManagementHandler
         });
     }
 
+    saveStatus()
+    {
+        let $form = $("form[name=status-management]");
+        let $content = $("#status-form-content");
+        let statusKeyword = $(this).data("status-keyword");
+        let statusId = $(this).data("status-id");
+        let $button = $(this);
+
+        if($form.parsley().isValid({group: statusKeyword}))
+        {
+            blockArea($content);
+            switch(statusKeyword)
+            {
+                case "rd_stakes":
+                case "stakes":
+                    saveStakesTeam(statusId,statusKeyword);
+                    break;
+                case "returned":
+                    saveReturned(statusId,statusKeyword);
+                    break;
+                case "ri_digitization":
+                case "rd_digitization":
+                case "digitization":
+                    saveDigitization(statusId,statusKeyword,$button);
+                    break;
+                case "ri_drawing":
+                case "rd_drawing":
+                case "drawing":
+                    saveDrawing(statusId,statusKeyword,$button);
+                    break;
+                case "schedule":
+                    saveSchedule(statusId,statusKeyword);
+                    break;
+                case "already_sent":
+                    saveAlreadySent(statusId,statusKeyword);
+                    break;
+                case "rectify_design":
+                    saveRectifyDesign(statusId,statusKeyword);
+                    break;
+                case "rectify_illustration":
+                    saveRectifyIllustration(statusId,statusKeyword);
+                    break;
+                case "approved":
+                    saveApproved(statusId,statusKeyword);
+                    break;
+                case "canceled":
+                    saveCanceled(statusId,statusKeyword);
+                    break;
+                case "in_progress":
+                    saveInProgress(statusId,statusKeyword);
+                    break;
+                case "paused":
+                case "stopped":
+                case "completed":
+                    this.saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "project_energized":
+                    saveProjectEnergized(statusId, statusKeyword);
+                    break;
+                case "as_built":
+                    saveAsBuilt(statusId, statusKeyword);
+                    break;
+                case "conciliation_reception":
+                    this.saveBasicLog(statusId, statusKeyword);
+                    break;
+                case "conciliation_shipment":
+                    saveConciliationShipment(statusId, statusKeyword);
+                    break;
+                case "cre_return_order":
+                    saveCreReturnOrder(statusId,statusKeyword);
+                    break;
+                case "project_return_materials":
+                case "project_real_budget_confirmation":
+                    this.saveBasicLog(statusId, statusKeyword);
+                    break;
+                default:
+                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
+                    break;
+            }
+        }
+        else
+        {
+            $form.parsley().validate({group: statusKeyword});
+        }
+    }
+    saveBasicLog(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+            dataType  :"json",
+            type : "POST",
+            data : data,
+            success:function(response){
+                // loadStatusSavedView(statusKeyword);
+                _this.projectLog();
+            }
+        });
+    }
+
+    prepareDataToSave(statusId, statusKeyword)
+    {
+        let projectId = this.projectId;
+        let select2Data = $('#ajax-get-responsible-list').select2("data");
+        let responsibleList = [];
+        $.each(select2Data, function(index, value){
+            responsibleList.push(value.id);
+        });
+        let entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
+        let statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
+        let data = {
+            projectId: projectId,
+            entryDate:entryDate,
+            statusId: statusId,
+            statusDetail: statusDetail,
+            responsibleList:responsibleList
+        };
+        return data;
+    }
+
     loadEventHandler()
     {
         let _this = this;
@@ -434,14 +558,14 @@ class StatusManagementHandler
            let stepId = $(this).data("step-id");
            let stepName = $(this).data("step-name");
            let keyword = $(this).data("keyword");
-           let step = {stepId: stepId, stepName: stepName, keyword:keyword, stepStatus:"active"};
+           let step = {stepId: stepId, stepName: stepName, stepKeyword:keyword, stepStatus:"active"};
            _this.addStepFromList(step);
         });
 
         $(document).on("click", this.buttonRemoveStep, function(e){
             e.preventDefault();
             let $button = $(this);
-            StatusManagementHandler.removeStep($button);
+            _this.removeStep($button);
         });
 
         $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) {
@@ -460,6 +584,11 @@ class StatusManagementHandler
             let keyword = $(this).data("keyword");
             _this.loadStatusForm(keyword,1);
             // console.log(keyword);
+        });
+
+        $(document).on("click", this.buttonAdd, function(e){
+           e.preventDefault();
+           _this.saveStatus();
         });
     }
 }

@@ -488,7 +488,7 @@ class AjaxProjectStatus extends PrivateController
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
         $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
+        $statusId = Model_project_status::getByStatusKeyword($formData["statusKeyword"]);
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
