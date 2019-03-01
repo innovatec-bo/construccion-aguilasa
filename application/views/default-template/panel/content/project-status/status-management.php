@@ -7,7 +7,7 @@
  */
 ?>
 <div class="container-fluid">
-    <div class="row" id="status-management-content">
+    <div class="row" id="status-management-content" style="height: 50vh">
 
     </div>
     <!-- /.row -->

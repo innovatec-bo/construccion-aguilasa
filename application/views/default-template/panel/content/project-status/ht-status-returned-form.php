@@ -71,6 +71,6 @@
 <script id="ht-status-returned-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>Este proyecto ha sido devuelto a CRE!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
     </div>
 </script>

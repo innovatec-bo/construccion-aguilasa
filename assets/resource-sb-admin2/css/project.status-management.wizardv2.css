@@ -36,7 +36,7 @@
 
 .nav-tabs.wizard li>* {
     position: relative;
-    padding: 1em .8em .8em 1.7em;
+    padding: 1em .3em .8em 2.5em;
     color: #999999;
     background-color: #dedede;
     border-color: #dedede;
@@ -73,7 +73,7 @@
 
 .nav-tabs.wizard > li > a {
     opacity: 1;
-    font-size: 14px;
+    font-size: 11px;
 }
 
 .nav-tabs.wizard a:hover {
@@ -86,8 +86,8 @@
     margin-top: 5px;
     border: 1px solid gray;
     display: inline-block;
-    padding: 0 0 0 3px;
-    border-radius: 30px 0px 30px 0px;
+    padding: 0 2px 0 4px;
+    border-radius: 35px 0px 35px 0px;
 }
 span.nmbr {
     display: inline-block;
@@ -115,7 +115,7 @@ span.nmbr {
         text-align: center;
     }
     .nav-tabs.wizard li.active a {
-        padding-top: 15px;
+        padding-top: 11px;
     }
     .nav-tabs.wizard li::after,
     .nav-tabs.wizard li>*::after {
@@ -125,7 +125,7 @@ span.nmbr {
         left: 100%;
         height: 0;
         width: 0;
-        border: 23px solid transparent;
+        border: 18px solid transparent;
         border-right-width: 0;
         /*border-left-width: 20px*/
     }
@@ -150,6 +150,7 @@ span.nmbr {
     .nav-tabs.wizard li:last-child a {
         /* border-top-right-radius: 10px; */
         border-bottom-right-radius: 30px;
+        padding-right: 17px;
     }
     .nav-tabs.wizard li:last-child {
         margin-right: 0;

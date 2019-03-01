@@ -13,6 +13,7 @@ var StatusManagementHandler = (function () {
     }
     StatusManagementHandler.prototype.loadView = function () {
         var _this = this;
+        blockArea($(_this.statusManagementContentSelector));
         $.ajax({
             url: base_url + 'panel/AjaxProjectStatus/statusManagement/' + _this.statusSet + '/' + _this.projectId,
             dataType: "json",
@@ -32,7 +33,6 @@ var StatusManagementHandler = (function () {
                     _this.projectLog();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -188,23 +188,13 @@ var StatusManagementHandler = (function () {
             type: "POST",
             data: { projectId: _this.projectId, statusKeyword: statusKeyword, statusSet: _this.statusSet },
             success: function (response) {
-                // if(response.scheduleEntry[0] !== undefined && response.scheduleEntry[0].id_psl !== null)
-                // {
-                //     let data = {};
-                //     let html = _this.getHandlebarHtml("#ht-finished-stage-design",data);
-                //     $statusFormContent.html(html);
-                // }
+                var html = "something went wrong";
                 if (response.previousEntry[0] === undefined || addMoreInfo == 1) {
                     var points = $("#points").text();
                     var distance = $("#distance").text();
                     var responsibleGroup = StatusManagementHandler.getResponsibleGroup(statusKeyword);
                     var statusResponsible = responsibleGroup.responsibleList;
                     var responsibleListLength = responsibleGroup.responsibleListLength;
-                    var $statusForm = $("#ht-status-" + statusKeyword + "-form");
-                    var htmlSource = $("#ht-status-not-created-view-form").html();
-                    if ($statusForm.length === 1)
-                        htmlSource = $statusForm.html();
-                    var template = Handlebars.compile(htmlSource);
                     var assignmentResponsible = response.assignmentEntry.length > 0 ? JSON.parse("[" + response.assignmentEntry[0].jsonResponsible + "]") : [];
                     var assignmentResponsibleFiscal = [];
                     var assignmentResponsibleBuilder = [];
@@ -225,16 +215,15 @@ var StatusManagementHandler = (function () {
                         assignmentResponsibleFiscal: assignmentResponsibleFiscal,
                         assignmentResponsibleBuilder: assignmentResponsibleBuilder
                     };
-                    var html = template(data);
-                    $statusFormContent.html(html);
-                    StatusManagementHandler.statusFormStartSpecialComponents();
-                    StatusManagementHandler.updateTotalOnApprovedForm();
+                    html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form", data);
                 }
                 else {
                     var data = { statusKeyword: statusKeyword, statusSet: _this.statusSet, previousEntry: response.previousEntry[0] };
-                    var html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form-completed", data);
-                    $statusFormContent.html(html);
+                    html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form-completed", data);
                 }
+                $statusFormContent.html(html);
+                StatusManagementHandler.statusFormStartSpecialComponents();
+                StatusManagementHandler.updateTotalOnApprovedForm();
                 _this.checkIncidents();
             }
         });
@@ -265,20 +254,32 @@ var StatusManagementHandler = (function () {
     };
     StatusManagementHandler.statusFormStartSpecialComponents = function () {
         var date = new Date();
-        $('.date-time-picker').datetimepicker({
-            ignoreReadonly: true,
-            defaultDate: date,
-            format: 'DD-MM-YYYY'
-        });
-        $(".select2").select2({
-            placeholder: 'Asigne uno o mas responsables',
-            allowClear: true
-        });
-        $("#ajax-get-responsible-list").select2({
-            placeholder: 'Asigne uno o mas responsables',
-            allowClear: true
-        });
-        $(".input-masked").inputmask();
+        var $dateTimePickerComponent = $('.date-time-picker');
+        if ($dateTimePickerComponent.length > 0) {
+            $dateTimePickerComponent.datetimepicker({
+                ignoreReadonly: true,
+                defaultDate: date,
+                format: 'DD-MM-YYYY'
+            });
+        }
+        var $select2 = $(".select2");
+        if ($select2.length > 0) {
+            $select2.select2({
+                placeholder: 'Asigne uno o mas responsables',
+                allowClear: true
+            });
+        }
+        var $responsibleList = $("#ajax-get-responsible-list");
+        if ($responsibleList.length > 0) {
+            $responsibleList.select2({
+                placeholder: 'Asigne uno o mas responsables',
+                allowClear: true
+            });
+        }
+        var $inputMasked = $(".input-masked");
+        if ($inputMasked.length > 0) {
+            $inputMasked.inputmask();
+        }
     };
     StatusManagementHandler.getResponsibleGroup = function (statusKeyword) {
         //all responsible by status keyword
@@ -368,6 +369,12 @@ var StatusManagementHandler = (function () {
         $(document).on("click", ".cancel-add-step", function (e) {
             e.preventDefault();
             $('.popover').popover('destroy');
+        });
+        $(document).on("click", ".load-status-form-new-info", function (e) {
+            e.preventDefault();
+            var keyword = $(this).data("keyword");
+            _this.loadStatusForm(keyword, 1);
+            // console.log(keyword);
         });
     };
     return StatusManagementHandler;
