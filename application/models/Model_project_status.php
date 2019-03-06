@@ -155,14 +155,20 @@ class Model_project_status extends Model_project_status_base
 
         $design = array(
             array("project_has_been_created"),
-            array("design"),
-            array("stakes","drawing"),
+            array("stakes"),
             array("digitization","drawing", "returned"),
             array("digitization","drawing", "returned"),
             array("schedule")
         );
 
+        $approvement = array(
+            array("ready_to_send"),
+            array("already_sent"),
+            array("approved", "canceled","rectify_design","rectify_illustration")
+        );
+
         $stageList["design"] = $design;
+        $stageList["approvement"] = $approvement;
         return $stageList[$statusSet];
     }
 
@@ -176,7 +182,7 @@ class Model_project_status extends Model_project_status_base
         FROM
             ".static::TABLE_NAME."
         where 
-            and keyword_pst = ".$ci->db->escape($statusKeyword)."
+            keyword_pst = ".$ci->db->escape($statusKeyword)."
         ";
         $query = $ci->db->query($sql);
         $result = static::recast(get_called_class(),$query->row());

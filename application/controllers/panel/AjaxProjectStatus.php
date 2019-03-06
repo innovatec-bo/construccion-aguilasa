@@ -253,7 +253,7 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $entryDate = $formData["scheduleEntryDate"];
+        $entryDate = $formData["entryDate"];
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
         $entryDate = $entryDate." ".date("H:i:s");
@@ -291,11 +291,14 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function saveAlreadySent()
+    /**
+     * @deprecated
+     */
+    public function saveAlreadySent_deprecated()
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $alreadySentEntryDate = $formData["alreadySentEntryDate"];
+        $alreadySentEntryDate = $formData["entryDate"];
         $alreadySentEntryDate = DateTime::createFromFormat('d-m-Y', $alreadySentEntryDate);
         $alreadySentEntryDate = date_format($alreadySentEntryDate, 'Y-m-d');
         $alreadySentEntryDate = $alreadySentEntryDate." ".date("H:i:s");
@@ -488,7 +491,9 @@ class AjaxProjectStatus extends PrivateController
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
         $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = Model_project_status::getByStatusKeyword($formData["statusKeyword"]);
+        $statusKeyword = $formData["statusKeyword"];
+        $status = Model_project_status::getByStatusKeyword($statusKeyword);
+        $statusId = $status->getId();
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
@@ -496,7 +501,7 @@ class AjaxProjectStatus extends PrivateController
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
-        if($statusId == 32)
+        if($statusKeyword == "completed")
         {
             $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId);
             $incident->save();
@@ -760,7 +765,7 @@ class AjaxProjectStatus extends PrivateController
         $statusListArray = array();
         foreach ($statusList as $status)
         {
-            $statusListArray[] = $status->toArray();
+            $statusListArray[$status->getId()] = $status->toArray();
         }
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
 

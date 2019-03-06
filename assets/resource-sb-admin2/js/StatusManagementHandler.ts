@@ -3,6 +3,8 @@ declare let Handlebars: any;
 declare let blockArea: any;
 declare let base_url: any;
 declare let $: any;
+declare let Object: any;
+declare let window: any;
 class StatusManagementHandler
 {
     private statusSet: string;
@@ -123,7 +125,11 @@ class StatusManagementHandler
     statusSetList()
     {
         let statusSet = [];
-        statusSet["design"] = ["project_has_been_created", "design", "stakes", "digitization", "schedule","returned"];
+        statusSet["design"] = ["project_has_been_created", "stakes", "digitization", "drawing", "schedule","returned"];
+        statusSet["approvement"] = ["ready_to_send", "already_sent", "approved", "canceled", "rectify_design","rectify_illustration"];
+        statusSet["rectify_design"] = ["rectify_design", "rd_stakes", "rd_digitization", "rd_drawing"];
+        statusSet["rectify_illustration"] = ["rectify_illustration", "ri_digitization", "ri_drawing"];
+        statusSet["building"] = ["assign_to", "in_progress", "paused","stopped","completed","project_energized","as_built","conciliation_reception","conciliation_shipment","cre_return_order","project_return_materials","project_real_budget_confirmation"];
         return statusSet[this.statusSet];
     }
 
@@ -425,9 +431,9 @@ class StatusManagementHandler
     {
         let $form = $("form[name=status-management]");
         let $content = $("#status-form-content");
-        let statusKeyword = $(this).data("status-keyword");
-        let statusId = $(this).data("status-id");
-        let $button = $(this);
+        let $button = $(".save-status");
+        let statusKeyword = $button.data("status-keyword");
+        let statusId = $button.data("status-id");
 
         if($form.parsley().isValid({group: statusKeyword}))
         {
@@ -436,26 +442,26 @@ class StatusManagementHandler
             {
                 case "rd_stakes":
                 case "stakes":
-                    saveStakesTeam(statusId,statusKeyword);
+                    this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "returned":
-                    saveReturned(statusId,statusKeyword);
+                    this.saveBasicLog(statusId,statusKeyword);
                     break;
                 case "ri_digitization":
                 case "rd_digitization":
                 case "digitization":
-                    saveDigitization(statusId,statusKeyword,$button);
+                    this.saveDigitization(statusId,statusKeyword, $button);
                     break;
                 case "ri_drawing":
                 case "rd_drawing":
                 case "drawing":
-                    saveDrawing(statusId,statusKeyword,$button);
+                    this.saveDrawing(statusId,statusKeyword,$button);
                     break;
                 case "schedule":
-                    saveSchedule(statusId,statusKeyword);
+                    this.saveSchedule(statusId,statusKeyword);
                     break;
                 case "already_sent":
-                    saveAlreadySent(statusId,statusKeyword);
+                    this.saveBasicLog(statusId,statusKeyword);
                     break;
                 case "rectify_design":
                     saveRectifyDesign(statusId,statusKeyword);
@@ -464,7 +470,7 @@ class StatusManagementHandler
                     saveRectifyIllustration(statusId,statusKeyword);
                     break;
                 case "approved":
-                    saveApproved(statusId,statusKeyword);
+                    this.saveApproved(statusId,statusKeyword);
                     break;
                 case "canceled":
                     saveCanceled(statusId,statusKeyword);
@@ -506,6 +512,7 @@ class StatusManagementHandler
             $form.parsley().validate({group: statusKeyword});
         }
     }
+
     saveBasicLog(statusId,statusKeyword)
     {
         let _this = this;
@@ -515,9 +522,131 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : data,
+            success:function(){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveDigitization(statusId, statusKeyword, button)
+    {
+        let _this = this;
+
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+        let projectPoints = $("input[name=project-points]").val();
+        let projectDistance = $("input[name=project-meters-distance]").val();
+        let lastPoints = $("input[name=current-project-points]").val();
+        let lastDistance = $("input[name=current-project-meters-distance]").val();
+        let sendToApprovement = button.data("send-to-approvement");
+        let digitization = {
+            projectPoints: projectPoints,
+            projectDistance: projectDistance,
+            lastPoints: lastPoints,
+            lastDistance: lastDistance,
+            sendToApprovement:sendToApprovement
+        };
+        let dataResult = Object.assign(data, digitization);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveDigitization',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
             success:function(response){
-                // loadStatusSavedView(statusKeyword);
-                _this.projectLog();
+                if(sendToApprovement == 1)
+                {
+                    window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+data.projectId;
+                }
+                else
+                {
+                    _this.loadView();
+                }
+            }
+        });
+    }
+
+    saveDrawing(statusId,statusKeyword,button)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+        let sendToApprovement = button.data("send-to-approvement");
+        let drawing = {
+            sendToApprovement:sendToApprovement
+        };
+        let dataResult = Object.assign(data, drawing);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveDrawing',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                if(sendToApprovement == 1)
+                {
+                    window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+data.projectId;
+                }
+                else
+                {
+                    _this.loadView();
+                }
+            }
+        });
+    }
+
+    saveSchedule(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+        let projectStart = $("input[name=project-start]").val();
+        let projectEnd = $("input[name=project-end]").val();
+        let design = $("input[name=design]").val();
+        let schedule = {
+            projectStart: projectStart,
+            projectEnd: projectEnd,
+            design: design
+        };
+        let dataResult = Object.assign(data, schedule);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveSchedule',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveApproved(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let design = $("input[name=design-budget]").val();
+        let building = $("input[name=building-budget]").val();
+        let graphNumber = $("input[name=graph-number-budget]").val();
+        let reservationNumber = $("input[name=reservation-number-budget]").val();
+        let transportation = $("input[name=transportation-budget]").val();
+        let liveLine = $("input[name=live-line-budget]").val();
+        let rightOfWay = $("input[name=right-of-way-budget]").val();
+        let secondaryCode = $("input[name=secondary-code]").val();
+        let approved = {
+            design: design,
+            building: building,
+            graphNumber: graphNumber,
+            reservationNumber: reservationNumber,
+            transportation:transportation,
+            liveLine:liveLine,
+            rightOfWay:rightOfWay,
+            secondaryCode:secondaryCode
+        };
+        let dataResult = Object.assign(data, approved);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveApproved',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
             }
         });
     }
@@ -536,6 +665,7 @@ class StatusManagementHandler
             projectId: projectId,
             entryDate:entryDate,
             statusId: statusId,
+            statusKeyword: statusKeyword,
             statusDetail: statusDetail,
             responsibleList:responsibleList
         };

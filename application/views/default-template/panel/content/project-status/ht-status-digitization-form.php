@@ -84,11 +84,6 @@
 <script id="ht-status-digitization-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>Ya se definió responsable de digitalizacion en este proyecto!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('returned',1)">Devolver a CRE</button>
-            </div>
-        </div>
+        <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
     </div>
 </script>

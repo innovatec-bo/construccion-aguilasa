@@ -140,20 +140,20 @@ class Project extends PrivateController
 //            $project->addStatusToLog($statusHasBeenCreated, "El proyecto ha sido creado.", $projectEntryDate, $responsibleList);
             $project->savePoints($projectPoints, $projectMetersDistance, $statusHasBeenCreated,"El proyecto ha sido creado.", $projectEntryDate,$responsibleList);
             //Now let's verify if create or not a new status
-            if($formData["send-to-design"] == 1)
-            {
+//            if($formData["send-to-design"] == 1)
+//            {
                 //Newly we get the responsible from design status
-                $responsibleList = Model_status_responsible::getUsersResponsible("design");
-                $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
-                $responsibleList = array($responsibleList['id_sre']);
-
-                $seconds = 1;
-                $designStatus = 1;
-                $projectEntryDate = date("Y-m-d H:i:s", (strtotime(date($projectEntryDate)) + $seconds));
-                $project->addStatusToLog($designStatus, "Proyecto enviado a diseño", $projectEntryDate, $responsibleList);
-                $project->setStatus($designStatus);//Design
-                $project->save();
-            }
+//                $responsibleList = Model_status_responsible::getUsersResponsible("design");
+//                $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
+//                $responsibleList = array($responsibleList['id_sre']);
+//
+//                $seconds = 1;
+//                $designStatus = 1;
+//                $projectEntryDate = date("Y-m-d H:i:s", (strtotime(date($projectEntryDate)) + $seconds));
+//                $project->addStatusToLog($designStatus, "Proyecto enviado a diseño", $projectEntryDate, $responsibleList);
+//                $project->setStatus($designStatus);//Design
+//                $project->save();
+//            }
 
             if(isset($formData["instant-approvement"]))
             {

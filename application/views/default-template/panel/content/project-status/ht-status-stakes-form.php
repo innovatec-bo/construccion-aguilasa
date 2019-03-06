@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     <label>Fecha de asignacion</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="stakes-team-entry-date" readonly="" required="" class="form-control" data-parsley-group="stakes" data-parsley-errors-container="#error-stakes-team-entry-date">
+                                        <input name="stakes-entry-date" readonly="" required="" class="form-control" data-parsley-group="stakes" data-parsley-errors-container="#error-stakes-team-entry-date">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -68,10 +68,5 @@
     <div class="well">
         <h4>Ya se definieron responsables de estaqueado para este proyecto!</h4>
         <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary" onclick="loadStatusForm('returned',1)">Devolver a CRE</button>
-            </div>
-        </div>
     </div>
 </script>

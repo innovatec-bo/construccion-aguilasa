@@ -66,7 +66,7 @@
 
                                 <div class="form-group">
                                     <label>Observaciones</label>
-                                    <textarea class="form-control" name="schedule-detail" rows="2"></textarea>
+                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>

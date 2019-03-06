@@ -73,15 +73,8 @@
 <script id="ht-status-already_sent-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <p>
-            Si la fecha de envio fue incorrecta o va a registrar un nuevo envio puede hacerlo <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui.</a><br>
-            Si el proyecto ha tenido observaciones puede enviarlo a RECTIFICACION DE DISEÑO ó RECTIFICACION DE ILUSTRACION
+            Si la fecha de envio fue incorrecta o va a registrar un nuevo envio puede hacerlo <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a>
         </p>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-primary send-to-rectify" data-status-id="13" data-status-keyword="rectify_design">Rectificar diseño</button>
-                <button type="button" class="btn btn-primary send-to-rectify" data-status-id="14" data-status-keyword="rectify_illustration">Rectificar ilustración</button>
-            </div>
-        </div>
     </div>
 </script>
 

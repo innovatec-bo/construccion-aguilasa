@@ -90,10 +90,10 @@ class PublicController extends CI_Controller
         switch ($statusSet)
         {
             case 'design':
-                $keywordList = array("project_has_been_created","design","stakes","returned","digitization","drawing","schedule");
+                $keywordList = array("project_has_been_created","stakes","returned","digitization","drawing","schedule");
                 break;
             case 'approvement':
-                $keywordList = array("ready_to_send","already_sent","approved","canceled");
+                $keywordList = array("ready_to_send","already_sent","approved","canceled","rectify_design","rectify_illustration");
                 break;
             case 'rectify_design':
                 $keywordList = array("rectify_design", "rd_stakes", "rd_digitization", "rd_drawing");
