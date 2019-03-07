@@ -108,6 +108,10 @@ class StatusManagementHandler
         $.each(projectLog, function(index, value){
             if(previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0)
             {
+                if(viewData.project.keyword_pst == "completed")
+                {
+                    return true;
+                }
                 previousStatusId = value.status_id_psl;
                 let completed = statusSetList.indexOf(value.keyword_pst) >= 0?" completed ":"";
                 let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":completed;
@@ -476,7 +480,7 @@ class StatusManagementHandler
                     saveCanceled(statusId,statusKeyword);
                     break;
                 case "in_progress":
-                    saveInProgress(statusId,statusKeyword);
+                    this.saveInProgress(statusId,statusKeyword);
                     break;
                 case "paused":
                 case "stopped":
@@ -645,6 +649,31 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveInProgress(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let select2Data1 = $('.select2.fiscal').select2("data");
+        let select2Data2 = $('.select2.builders').select2("data");
+        Array.prototype.push.apply(select2Data1,select2Data2);
+        let responsibleList = [];
+        $.each(select2Data1, function(index, value){
+            responsibleList.push(value.id);
+        });
+        data.responsibleList = responsibleList;
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+            dataType  :"json",
+            type : "POST",
+            data : data,
             success:function(response){
                 _this.loadView();
             }

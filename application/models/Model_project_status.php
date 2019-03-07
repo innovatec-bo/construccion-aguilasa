@@ -167,8 +167,21 @@ class Model_project_status extends Model_project_status_base
             array("approved", "canceled","rectify_design","rectify_illustration")
         );
 
+        $building = array(
+            array("assign_to"),
+            array("in_progress"),
+            array("completed"),
+            array("project_energized", "as_built"),
+            array("conciliation_reception"),
+            array("conciliation_shipment"),
+            array("cre_return_order"),
+            array("project_return_materials"),
+            array("project_real_budget_confirmation")
+        );
+
         $stageList["design"] = $design;
         $stageList["approvement"] = $approvement;
+        $stageList["building"] = $building;
         return $stageList[$statusSet];
     }
 

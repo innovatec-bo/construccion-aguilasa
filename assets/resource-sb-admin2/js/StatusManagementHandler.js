@@ -77,6 +77,9 @@ var StatusManagementHandler = (function () {
         var statusSetList = this.statusSetList();
         $.each(projectLog, function (index, value) {
             if (previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0) {
+                if (viewData.project.keyword_pst == "completed") {
+                    return true;
+                }
                 previousStatusId = value.status_id_psl;
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
@@ -393,7 +396,7 @@ var StatusManagementHandler = (function () {
                     saveCanceled(statusId, statusKeyword);
                     break;
                 case "in_progress":
-                    saveInProgress(statusId, statusKeyword);
+                    this.saveInProgress(statusId, statusKeyword);
                     break;
                 case "paused":
                 case "stopped":
@@ -544,6 +547,27 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveInProgress = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var select2Data1 = $('.select2.fiscal').select2("data");
+        var select2Data2 = $('.select2.builders').select2("data");
+        Array.prototype.push.apply(select2Data1, select2Data2);
+        var responsibleList = [];
+        $.each(select2Data1, function (index, value) {
+            responsibleList.push(value.id);
+        });
+        data.responsibleList = responsibleList;
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveBasicLog',
+            dataType: "json",
+            type: "POST",
+            data: data,
             success: function (response) {
                 _this.loadView();
             }
