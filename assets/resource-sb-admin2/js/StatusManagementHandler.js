@@ -77,9 +77,10 @@ var StatusManagementHandler = (function () {
         var statusSetList = this.statusSetList();
         $.each(projectLog, function (index, value) {
             if (previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0) {
-                if (viewData.project.keyword_pst == "completed") {
-                    return true;
-                }
+                // if(viewData.project.keyword_pst == "completed" && value.keyword_pst == "completed")
+                // {
+                //     return true;
+                // }
                 previousStatusId = value.status_id_psl;
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
@@ -122,7 +123,9 @@ var StatusManagementHandler = (function () {
     };
     StatusManagementHandler.prototype.addStep = function (button) {
         var currentStepsQuantity = $(".step-list").children().length;
-        var nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        var viewData = this.viewData;
+        var stepsIndex = viewData.project.keyword_pst == "completed" ? currentStepsQuantity : currentStepsQuantity - 1;
+        var nextStep = this.loadViewResponse.data.steps[stepsIndex];
         var nextStepObjectArray = [];
         var statusList = this.loadViewResponse.data.statusList;
         $.each(statusList, function (index, value) {
@@ -384,16 +387,16 @@ var StatusManagementHandler = (function () {
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "rectify_design":
-                    saveRectifyDesign(statusId, statusKeyword);
+                    this.saveRectifyDesign(statusId, statusKeyword);
                     break;
                 case "rectify_illustration":
-                    saveRectifyIllustration(statusId, statusKeyword);
+                    this.saveRectifyIllustration(statusId, statusKeyword);
                     break;
                 case "approved":
                     this.saveApproved(statusId, statusKeyword);
                     break;
                 case "canceled":
-                    saveCanceled(statusId, statusKeyword);
+                    this.saveCanceled(statusId, statusKeyword);
                     break;
                 case "in_progress":
                     this.saveInProgress(statusId, statusKeyword);
@@ -404,27 +407,30 @@ var StatusManagementHandler = (function () {
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "project_energized":
-                    saveProjectEnergized(statusId, statusKeyword);
+                    this.saveProjectEnergized(statusId, statusKeyword);
                     break;
                 case "as_built":
-                    saveAsBuilt(statusId, statusKeyword);
+                    this.saveAsBuilt(statusId, statusKeyword);
                     break;
                 case "conciliation_reception":
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "conciliation_shipment":
-                    saveConciliationShipment(statusId, statusKeyword);
+                    this.saveConciliationShipment(statusId, statusKeyword);
                     break;
                 case "cre_return_order":
-                    saveCreReturnOrder(statusId, statusKeyword);
+                    this.saveCreReturnOrder(statusId, statusKeyword);
                     break;
                 case "project_return_materials":
                 case "project_real_budget_confirmation":
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
-                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
-                    break;
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Disculpe las molestias, aun no se ha establecido la logica para el guardado de los datos en esta etapa.'
+                    });
             }
         }
         else {
@@ -520,6 +526,32 @@ var StatusManagementHandler = (function () {
             }
         });
     };
+    StatusManagementHandler.prototype.saveRectifyDesign = function (statusId, statusKeyword) {
+        var _this = this;
+        var dataResult = this.prepareDataToSave(statusId, statusKeyword);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveRectifyDesign',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/" + _this.projectId;
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveRectifyIllustration = function (statusId, statusKeyword) {
+        var _this = this;
+        var dataResult = this.prepareDataToSave(statusId, statusKeyword);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveRectifyIllustration',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/" + _this.projectId;
+            }
+        });
+    };
     StatusManagementHandler.prototype.saveApproved = function (statusId, statusKeyword) {
         var _this = this;
         var data = this.prepareDataToSave(statusId, statusKeyword);
@@ -552,6 +584,26 @@ var StatusManagementHandler = (function () {
             }
         });
     };
+    StatusManagementHandler.prototype.saveCanceled = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var design = $("input[name=design-budget]").val();
+        var building = $("input[name=building-budget]").val();
+        var canceled = {
+            design: design,
+            building: building
+        };
+        var dataResult = Object.assign(data, canceled);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveCanceled',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
     StatusManagementHandler.prototype.saveInProgress = function (statusId, statusKeyword) {
         var _this = this;
         var data = this.prepareDataToSave(statusId, statusKeyword);
@@ -568,6 +620,83 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: data,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveAsBuilt = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var projectPoints = $("input[name=project-points]").val();
+        var projectDistance = $("input[name=project-meters-distance]").val();
+        var asBuilt = {
+            projectPoints: projectPoints,
+            projectDistance: projectDistance
+        };
+        var dataResult = Object.assign(data, asBuilt);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveAsBuilt',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveProjectEnergized = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var projectEnergized = $("input[name=project-energized]").is(":checked") ? 1 : 0;
+        var energized = {
+            projectEnergized: projectEnergized,
+        };
+        var dataResult = Object.assign(data, energized);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveProjectEnergized',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveConciliationShipment = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var design = $("input[name=design-budget]").val();
+        var building = $("input[name=building-budget]").val();
+        var transportation = $("input[name=transportation-budget]").val();
+        var liveLine = $("input[name=live-line-budget]").val();
+        var rightOfWay = $("input[name=right-of-way-budget]").val();
+        var conciliationShipment = {
+            design: design,
+            building: building,
+            transportation: transportation,
+            liveLine: liveLine,
+            rightOfWay: rightOfWay,
+        };
+        var dataResult = Object.assign(data, conciliationShipment);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveConciliationShipment',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function (response) {
+                _this.loadView();
+            }
+        });
+    };
+    StatusManagementHandler.prototype.saveCreReturnOrder = function (statusId, statusKeyword) {
+        var _this = this;
+        var dataResult = this.prepareDataToSave(statusId, statusKeyword);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveCreReturnOrder',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
             success: function (response) {
                 _this.loadView();
             }

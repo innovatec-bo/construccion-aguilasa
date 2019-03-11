@@ -5,6 +5,7 @@ declare let base_url: any;
 declare let $: any;
 declare let Object: any;
 declare let window: any;
+declare let Swal: any;
 class StatusManagementHandler
 {
     private statusSet: string;
@@ -108,10 +109,10 @@ class StatusManagementHandler
         $.each(projectLog, function(index, value){
             if(previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0)
             {
-                if(viewData.project.keyword_pst == "completed")
-                {
-                    return true;
-                }
+                // if(viewData.project.keyword_pst == "completed" && value.keyword_pst == "completed")
+                // {
+                //     return true;
+                // }
                 previousStatusId = value.status_id_psl;
                 let completed = statusSetList.indexOf(value.keyword_pst) >= 0?" completed ":"";
                 let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":completed;
@@ -160,7 +161,9 @@ class StatusManagementHandler
     addStep(button)
     {
         let currentStepsQuantity = $(".step-list").children().length;
-        let nextStep = this.loadViewResponse.data.steps[currentStepsQuantity - 1];
+        let viewData = this.viewData;
+        let stepsIndex = viewData.project.keyword_pst == "completed"?currentStepsQuantity:currentStepsQuantity - 1;
+        let nextStep = this.loadViewResponse.data.steps[stepsIndex];
         let nextStepObjectArray = [];
         let statusList = this.loadViewResponse.data.statusList;
         $.each(statusList, function(index, value){
@@ -468,16 +471,16 @@ class StatusManagementHandler
                     this.saveBasicLog(statusId,statusKeyword);
                     break;
                 case "rectify_design":
-                    saveRectifyDesign(statusId,statusKeyword);
+                    this.saveRectifyDesign(statusId,statusKeyword);
                     break;
                 case "rectify_illustration":
-                    saveRectifyIllustration(statusId,statusKeyword);
+                    this.saveRectifyIllustration(statusId,statusKeyword);
                     break;
                 case "approved":
                     this.saveApproved(statusId,statusKeyword);
                     break;
                 case "canceled":
-                    saveCanceled(statusId,statusKeyword);
+                    this.saveCanceled(statusId,statusKeyword);
                     break;
                 case "in_progress":
                     this.saveInProgress(statusId,statusKeyword);
@@ -488,27 +491,30 @@ class StatusManagementHandler
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "project_energized":
-                    saveProjectEnergized(statusId, statusKeyword);
+                    this.saveProjectEnergized(statusId, statusKeyword);
                     break;
                 case "as_built":
-                    saveAsBuilt(statusId, statusKeyword);
+                    this.saveAsBuilt(statusId, statusKeyword);
                     break;
                 case "conciliation_reception":
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 case "conciliation_shipment":
-                    saveConciliationShipment(statusId, statusKeyword);
+                    this.saveConciliationShipment(statusId, statusKeyword);
                     break;
                 case "cre_return_order":
-                    saveCreReturnOrder(statusId,statusKeyword);
+                    this.saveCreReturnOrder(statusId,statusKeyword);
                     break;
                 case "project_return_materials":
                 case "project_real_budget_confirmation":
                     this.saveBasicLog(statusId, statusKeyword);
                     break;
                 default:
-                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
-                    break;
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Disculpe las molestias, aun no se ha establecido la logica para el guardado de los datos en esta etapa.'
+                    });
             }
         }
         else
@@ -620,6 +626,38 @@ class StatusManagementHandler
         });
     }
 
+    saveRectifyDesign(statusId,statusKeyword)
+    {
+        let _this = this;
+        let dataResult = this.prepareDataToSave(statusId, statusKeyword);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveRectifyDesign',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/"+_this.projectId;
+            }
+        });
+    }
+
+    saveRectifyIllustration(statusId,statusKeyword)
+    {
+        let _this = this;
+        let dataResult = this.prepareDataToSave(statusId, statusKeyword);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveRectifyIllustration',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/"+_this.projectId;
+            }
+        });
+    }
+
     saveApproved(statusId,statusKeyword)
     {
         let _this = this;
@@ -655,6 +693,29 @@ class StatusManagementHandler
         });
     }
 
+    saveCanceled(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let design = $("input[name=design-budget]").val();
+        let building = $("input[name=building-budget]").val();
+        let canceled = {
+            design: design,
+            building: building
+        };
+        let dataResult = Object.assign(data, canceled);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveCanceled',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
     saveInProgress(statusId,statusKeyword)
     {
         let _this = this;
@@ -674,6 +735,96 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : data,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveAsBuilt(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+        let projectPoints = $("input[name=project-points]").val();
+        let projectDistance = $("input[name=project-meters-distance]").val();
+        let asBuilt = {
+            projectPoints: projectPoints,
+            projectDistance: projectDistance
+        };
+        let dataResult = Object.assign(data, asBuilt);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveAsBuilt',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveProjectEnergized(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let projectEnergized = $("input[name=project-energized]").is(":checked")?1:0;
+        let energized = {
+            projectEnergized:projectEnergized,
+        };
+        let dataResult = Object.assign(data, energized);
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveProjectEnergized',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveConciliationShipment(statusId,statusKeyword)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let design = $("input[name=design-budget]").val();
+        let building = $("input[name=building-budget]").val();
+        let transportation = $("input[name=transportation-budget]").val();
+        let liveLine = $("input[name=live-line-budget]").val();
+        let rightOfWay = $("input[name=right-of-way-budget]").val();
+        let conciliationShipment = {
+            design: design,
+            building: building,
+            transportation:transportation,
+            liveLine:liveLine,
+            rightOfWay:rightOfWay,
+        };
+
+        let dataResult = Object.assign(data, conciliationShipment);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveConciliationShipment',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(response){
+                _this.loadView();
+            }
+        });
+    }
+
+    saveCreReturnOrder(statusId,statusKeyword)
+    {
+        let _this = this;
+        let dataResult = this.prepareDataToSave(statusId, statusKeyword);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveCreReturnOrder',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
             success:function(response){
                 _this.loadView();
             }

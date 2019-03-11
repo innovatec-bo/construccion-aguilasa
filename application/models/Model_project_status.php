@@ -170,7 +170,9 @@ class Model_project_status extends Model_project_status_base
         $building = array(
             array("assign_to"),
             array("in_progress"),
-            array("completed"),
+            array("paused","completed"),
+            array("stopped","completed"),
+            array("project_energized", "as_built"),
             array("project_energized", "as_built"),
             array("conciliation_reception"),
             array("conciliation_shipment"),

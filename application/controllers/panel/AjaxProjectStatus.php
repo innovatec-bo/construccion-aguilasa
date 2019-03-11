@@ -476,7 +476,6 @@ class AjaxProjectStatus extends PrivateController
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         $warehouse = Model_warehouse::getByProjectId($project->getId());
-//        echo"<pre>";var_dump($project->getId(), $warehouse);exit;
         $warehouse->addStatusToLog(37, "El fiscal ha recibido la orden de devolucion a CRE", $entryDate);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
