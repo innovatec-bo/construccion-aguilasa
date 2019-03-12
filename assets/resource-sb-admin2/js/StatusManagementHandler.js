@@ -33,7 +33,6 @@ var StatusManagementHandler = (function () {
                     _this.projectLog();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
