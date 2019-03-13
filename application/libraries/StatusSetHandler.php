@@ -7,7 +7,7 @@ class StatusSetHandler
         $this->_statusSet = $statusSet;
 	}
 
-    public static function projectStages($statusSet)
+    public static function projectStages($statusSet = "building")
     {
         $stageList = array();
 
@@ -25,23 +25,11 @@ class StatusSetHandler
             array("approved", "canceled","rectify_design","rectify_illustration")
         );
 
-        $building = array(
-            array("assign_to"),
-            array("in_progress"),
-            array("paused","completed"),
-            array("stopped","completed"),
-            array("project_energized", "as_built"),
-            array("project_energized", "as_built"),
-            array("conciliation_reception"),
-            array("conciliation_shipment"),
-            array("cre_return_order"),
-            array("project_return_materials"),
-            array("project_real_budget_confirmation")
-        );
+        $building = '[{"step":"assign_to","children":[{"step":"in_progress","children":[{"step":"paused","children":[{"step":"completed","children":[{"step":"project_energized","children":[{"step":"as_built","children":[{"step":"conciliation_reception","children":[{"step":"conciliation_shipment","children":[{"step":"cre_return_order","children":[{"step":"project_return_materials","children":[]}]}]}]}]}]},{"step":"as_built","children":[{"step":"project_energized","children":[{"step":"as_built","children":[{"step":"conciliation_reception","children":[{"step":"conciliation_shipment","children":[{"step":"cre_return_order","children":[{"step":"project_return_materials","children":[]}]}]}]}]}]}]}]},{"step":"stopped","children":[{"step":"as_built","children":[{"step":"conciliation_reception","children":[{"step":"conciliation_shipment","children":[{"step":"cre_return_order","children":[{"step":"project_return_materials","children":[]}]}]}]}]}]}]},{"step":"completed","children":[{"step":"project_energized","children":[{"step":"as_built","children":[{"step":"conciliation_reception","children":[{"step":"conciliation_shipment","children":[{"step":"cre_return_order","children":[{"step":"project_return_materials","children":[]}]}]}]}]}]},{"step":"as_built","children":[{"step":"conciliation_reception","children":[{"step":"conciliation_shipment","children":[{"step":"cre_return_order","children":[{"step":"project_return_materials","children":[]}]}]}]}]}]}]}]}]';
 
         $stageList["design"] = $design;
         $stageList["approvement"] = $approvement;
-        $stageList["building"] = $building;
+        $stageList["building"] = json_decode($building, TRUE);
         return $stageList[$statusSet];
     }
 }
