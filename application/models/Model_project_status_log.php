@@ -38,7 +38,8 @@ class Model_project_status_log extends Model_project_status_log_base
         SELECT
             wfl_project_status_log.*,
             status_name_pst,
-            keyword_pst,
+            keyword_pst,            
+            order_pst,
             points_quantity_prp,
             distance_prp,
             GROUP_CONCAT(responsible.full_name) responsible_user,
@@ -86,7 +87,7 @@ class Model_project_status_log extends Model_project_status_log_base
                 project_id_psl = ".$ci->db->escape($projectId)."
                 and deleted_psl != 1
         GROUP BY id_psl
-        ORDER BY manual_entry_date_psl DESC
+        ORDER BY id_psl, order_pst DESC
         ";
         $query = $ci->db->query($sql);
         $result = $query->result_array();
@@ -134,4 +135,51 @@ class Model_project_status_log extends Model_project_status_log_base
         $result = $query->result_array();
         return $result;
     }
+
+    /**
+     * @param $projectId
+     * @return mixed
+     * @deprecated
+     */
+    public static function getStatusSetBreadCrumbByProjectId_deprecated($projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        SELECT
+                wfl_project_status.*
+        FROM
+        (
+            select 
+            psl.* 
+        from (
+            SELECT
+                max(id_psl) as id_psl,
+                status_id_psl
+            FROM
+                        wfl_project_status_log
+            WHERE
+                        project_id_psl = ".$ci->db->escape($projectId)."
+                        and deleted_psl != 1			
+            GROUP BY status_id_psl
+        ) maxStatusLog 
+        LEFT JOIN wfl_project_status_log psl on maxStatusLog.id_psl = psl.id_psl and maxStatusLog.status_id_psl = psl.status_id_psl
+        ) wfl_project_status_log
+        LEFT JOIN wfl_project_status ON status_id_psl = id_pst
+        WHERE
+                project_id_psl = ".$ci->db->escape($projectId)."
+                and deleted_psl != 1			
+        GROUP BY keyword_pst
+        ORDER BY order_pst asc, id_psl desc
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+//    public static function getStatusSetBreadCrumbByProjectId($projectId)
+//    {
+//        $log = static::getLogByProjectId($projectId);
+//        $log
+//    }
 }

@@ -45,6 +45,7 @@ var StatusManagementHandler = (function () {
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusSet = this.loadViewResponse.data.statusSet;
+        // let projectBreadCrumb = this.loadViewResponse.data.projectBreadCrumb;
         var stepTree = this.loadViewResponse.data.stepTree;
         var updateHistory = this.loadViewResponse.data.updateHistory;
         var responsibleList = this.loadViewResponse.data.responsibleList;
@@ -70,26 +71,29 @@ var StatusManagementHandler = (function () {
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
+        // this.viewData.projectBreadCrumb = projectBreadCrumb;
         this.viewData.stepList = this.stepList();
         this.viewData.stepTree = stepTree;
     };
     StatusManagementHandler.prototype.stepList = function () {
         var projectLog = this.loadViewResponse.data.projectLog;
+        projectLog.reverse();
         var viewData = this.viewData;
         var stepList = [];
         var previousStatusId = null;
+        var previousOrder = 1000;
         var statusSetList = this.statusSetList();
+        var memory = [];
+        //Only loop up to current project status
         $.each(projectLog, function (index, value) {
-            if (previousStatusId != value.status_id_psl && statusSetList.indexOf(value.keyword_pst) >= 0) {
-                // if(viewData.project.keyword_pst == "completed" && value.keyword_pst == "completed")
-                // {
-                //     return true;
-                // }
+            if (previousStatusId != value.status_id_psl && previousOrder >= value.order_pst && statusSetList.indexOf(value.keyword_pst) >= 0 && memory.indexOf(value.keyword_pst) == -1) {
                 previousStatusId = value.status_id_psl;
+                previousOrder = value.order_pst;
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
                 var step_1 = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
                 stepList.push(step_1);
+                memory.push(value.keyword_pst);
             }
         });
         stepList.reverse();
@@ -131,7 +135,7 @@ var StatusManagementHandler = (function () {
             if ($(value).prop("id") != "")
                 breadCrumb.push($(value).prop("id"));
         });
-        this.processTree2(this.viewData.stepTree, 0, breadCrumb);
+        this.processTree(this.viewData.stepTree, 0, breadCrumb);
         this.stopTreeLoop = false;
         var nextStep = this.nextStep;
         this.nextStep = []; //after assign this variable to a local variable let's set as empty
@@ -730,44 +734,20 @@ var StatusManagementHandler = (function () {
         };
         return data;
     };
-    // Given a root node, this function
-    // will recursively process the whole tree
-    StatusManagementHandler.prototype.processTree = function (tree) {
-        if (typeof tree === 'object') {
-            // We expect trees to be objects
-            // with left and right branches.
-            //
-            // These are *recursive* calls,
-            // we continue to process sub-trees
-            // in the same way we process the root tree.
-            this.processTree(tree.left);
-            this.processTree(tree.right);
-        }
-        else {
-            // This is a leaf.
-            // We're not processing a tree anymore.
-            // This is the end of recursion, no more
-            // recursive calls.
-            console.log(tree);
-        }
-    };
-    StatusManagementHandler.prototype.processTree2 = function (tree, index, breadCrumb) {
+    StatusManagementHandler.prototype.processTree = function (tree, index, breadCrumb) {
         for (var i = 0; i < tree.length; i++) {
             var step = tree[i];
             if (step.name == breadCrumb[index] && !this.stopTreeLoop) {
-                // console.log(step.name);
                 index++;
-                if (step.children.length > 0) {
+                if (step.next.length > 0) {
                     if (index == breadCrumb.length) {
                         this.stopTreeLoop = true;
                     }
-                    this.processTree2(step.children, index, breadCrumb);
+                    this.processTree(step.next, index, breadCrumb);
                     if (index == breadCrumb.length) {
-                        // this.nextStep = step.children;
-                        for (var j = 0; j < step.children.length; j++) {
-                            this.nextStep.push(step.children[j].name);
+                        for (var j = 0; j < step.next.length; j++) {
+                            this.nextStep.push(step.next[j].name);
                         }
-                        // console.log("nextSteps:", step.children);
                     }
                 }
             }
