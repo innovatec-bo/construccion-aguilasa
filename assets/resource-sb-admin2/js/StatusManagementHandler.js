@@ -10,6 +10,8 @@ var StatusManagementHandler = (function () {
         this.buttonRemoveStep = ".remove-step";
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
+        this.stopTreeLoop = false;
+        this.nextStep = [];
     }
     StatusManagementHandler.prototype.loadView = function () {
         var _this = this;
@@ -33,6 +35,7 @@ var StatusManagementHandler = (function () {
                     _this.projectLog();
                 }
                 else {
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -42,6 +45,7 @@ var StatusManagementHandler = (function () {
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusSet = this.loadViewResponse.data.statusSet;
+        var stepTree = this.loadViewResponse.data.stepTree;
         var updateHistory = this.loadViewResponse.data.updateHistory;
         var responsibleList = this.loadViewResponse.data.responsibleList;
         var responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
@@ -67,6 +71,7 @@ var StatusManagementHandler = (function () {
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.stepList = this.stepList();
+        this.viewData.stepTree = stepTree;
     };
     StatusManagementHandler.prototype.stepList = function () {
         var projectLog = this.loadViewResponse.data.projectLog;
@@ -121,10 +126,15 @@ var StatusManagementHandler = (function () {
         });
     };
     StatusManagementHandler.prototype.addStep = function (button) {
-        var currentStepsQuantity = $(".step-list").children().length;
-        var viewData = this.viewData;
-        var stepsIndex = viewData.project.keyword_pst == "completed" ? currentStepsQuantity : currentStepsQuantity - 1;
-        var nextStep = this.loadViewResponse.data.steps[stepsIndex];
+        var breadCrumb = [];
+        $.each($(".step-list li a"), function (index, value) {
+            if ($(value).prop("id") != "")
+                breadCrumb.push($(value).prop("id"));
+        });
+        this.processTree2(this.viewData.stepTree, 0, breadCrumb);
+        this.stopTreeLoop = false;
+        var nextStep = this.nextStep;
+        this.nextStep = []; //after assign this variable to a local variable let's set as empty
         var nextStepObjectArray = [];
         var statusList = this.loadViewResponse.data.statusList;
         $.each(statusList, function (index, value) {
@@ -353,12 +363,12 @@ var StatusManagementHandler = (function () {
             }
         });
     };
-    StatusManagementHandler.prototype.saveStatus = function () {
+    StatusManagementHandler.prototype.saveStatus = function (button) {
         var $form = $("form[name=status-management]");
         var $content = $("#status-form-content");
-        var $button = $(".save-status");
-        var statusKeyword = $button.data("status-keyword");
-        var statusId = $button.data("status-id");
+        // let $button = $(".save-status");
+        var statusKeyword = button.data("status-keyword");
+        var statusId = button.data("status-id");
         if ($form.parsley().isValid({ group: statusKeyword })) {
             blockArea($content);
             switch (statusKeyword) {
@@ -372,12 +382,12 @@ var StatusManagementHandler = (function () {
                 case "ri_digitization":
                 case "rd_digitization":
                 case "digitization":
-                    this.saveDigitization(statusId, statusKeyword, $button);
+                    this.saveDigitization(statusId, statusKeyword, button);
                     break;
                 case "ri_drawing":
                 case "rd_drawing":
                 case "drawing":
-                    this.saveDrawing(statusId, statusKeyword, $button);
+                    this.saveDrawing(statusId, statusKeyword, button);
                     break;
                 case "schedule":
                     this.saveSchedule(statusId, statusKeyword);
@@ -720,6 +730,49 @@ var StatusManagementHandler = (function () {
         };
         return data;
     };
+    // Given a root node, this function
+    // will recursively process the whole tree
+    StatusManagementHandler.prototype.processTree = function (tree) {
+        if (typeof tree === 'object') {
+            // We expect trees to be objects
+            // with left and right branches.
+            //
+            // These are *recursive* calls,
+            // we continue to process sub-trees
+            // in the same way we process the root tree.
+            this.processTree(tree.left);
+            this.processTree(tree.right);
+        }
+        else {
+            // This is a leaf.
+            // We're not processing a tree anymore.
+            // This is the end of recursion, no more
+            // recursive calls.
+            console.log(tree);
+        }
+    };
+    StatusManagementHandler.prototype.processTree2 = function (tree, index, breadCrumb) {
+        for (var i = 0; i < tree.length; i++) {
+            var step = tree[i];
+            if (step.name == breadCrumb[index] && !this.stopTreeLoop) {
+                // console.log(step.name);
+                index++;
+                if (step.children.length > 0) {
+                    if (index == breadCrumb.length) {
+                        this.stopTreeLoop = true;
+                    }
+                    this.processTree2(step.children, index, breadCrumb);
+                    if (index == breadCrumb.length) {
+                        // this.nextStep = step.children;
+                        for (var j = 0; j < step.children.length; j++) {
+                            this.nextStep.push(step.children[j].name);
+                        }
+                        // console.log("nextSteps:", step.children);
+                    }
+                }
+            }
+        }
+    };
     StatusManagementHandler.prototype.loadEventHandler = function () {
         var _this = this;
         $(document).on("click", this.buttonAddStep, function (e) {
@@ -758,7 +811,8 @@ var StatusManagementHandler = (function () {
         });
         $(document).on("click", this.buttonAdd, function (e) {
             e.preventDefault();
-            _this.saveStatus();
+            var $button = $(this);
+            _this.saveStatus($button);
         });
     };
     return StatusManagementHandler;

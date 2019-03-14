@@ -18,6 +18,8 @@ class StatusManagementHandler
     private loadViewResponse: any;
     private loadViewTemplate: any;
     private viewData: any;
+    private stopTreeLoop: boolean;
+    private nextStep: any;
     constructor(private projectStatusSet: string, private projectID: number)
     {
         this.statusSet = projectStatusSet;
@@ -28,6 +30,8 @@ class StatusManagementHandler
         this.buttonRemoveStep = ".remove-step";
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
+        this.stopTreeLoop = false;
+        this.nextStep = [];
     }
 
     loadView()
@@ -52,6 +56,7 @@ class StatusManagementHandler
                     $(_this.statusManagementContentSelector).html(html);
                     _this.loadStatusForm(_this.viewData.project.keyword_pst,0);
                     _this.projectLog();
+
                 }
                 else
                 {
@@ -67,6 +72,7 @@ class StatusManagementHandler
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusSet = this.loadViewResponse.data.statusSet;
+        let stepTree = this.loadViewResponse.data.stepTree;
         let updateHistory = this.loadViewResponse.data.updateHistory;
         let responsibleList = this.loadViewResponse.data.responsibleList;
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
@@ -97,6 +103,7 @@ class StatusManagementHandler
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.stepList = this.stepList();
+        this.viewData.stepTree = stepTree;
     }
 
     stepList()
@@ -160,10 +167,15 @@ class StatusManagementHandler
     
     addStep(button)
     {
-        let currentStepsQuantity = $(".step-list").children().length;
-        let viewData = this.viewData;
-        let stepsIndex = viewData.project.keyword_pst == "completed"?currentStepsQuantity:currentStepsQuantity - 1;
-        let nextStep = this.loadViewResponse.data.steps[stepsIndex];
+        let breadCrumb = [];
+        $.each($(".step-list li a"),function(index, value){
+            if($(value).prop("id") != "")
+                breadCrumb.push($(value).prop("id"));
+        });
+        this.processTree2(this.viewData.stepTree,0, breadCrumb);
+        this.stopTreeLoop = false;
+        let nextStep = this.nextStep;
+        this.nextStep = [];//after assign this variable to a local variable let's set as empty
         let nextStepObjectArray = [];
         let statusList = this.loadViewResponse.data.statusList;
         $.each(statusList, function(index, value){
@@ -434,13 +446,13 @@ class StatusManagementHandler
         });
     }
 
-    saveStatus()
+    saveStatus(button)
     {
         let $form = $("form[name=status-management]");
         let $content = $("#status-form-content");
-        let $button = $(".save-status");
-        let statusKeyword = $button.data("status-keyword");
-        let statusId = $button.data("status-id");
+        // let $button = $(".save-status");
+        let statusKeyword = button.data("status-keyword");
+        let statusId = button.data("status-id");
 
         if($form.parsley().isValid({group: statusKeyword}))
         {
@@ -457,12 +469,12 @@ class StatusManagementHandler
                 case "ri_digitization":
                 case "rd_digitization":
                 case "digitization":
-                    this.saveDigitization(statusId,statusKeyword, $button);
+                    this.saveDigitization(statusId,statusKeyword, button);
                     break;
                 case "ri_drawing":
                 case "rd_drawing":
                 case "drawing":
-                    this.saveDrawing(statusId,statusKeyword,$button);
+                    this.saveDrawing(statusId,statusKeyword,button);
                     break;
                 case "schedule":
                     this.saveSchedule(statusId,statusKeyword);
@@ -852,6 +864,61 @@ class StatusManagementHandler
         return data;
     }
 
+    // Given a root node, this function
+// will recursively process the whole tree
+    processTree(tree)
+    {
+        if (typeof tree === 'object')
+        {
+            // We expect trees to be objects
+            // with left and right branches.
+            //
+            // These are *recursive* calls,
+            // we continue to process sub-trees
+            // in the same way we process the root tree.
+            this.processTree(tree.left);
+            this.processTree(tree.right);
+
+        } else {
+
+            // This is a leaf.
+            // We're not processing a tree anymore.
+            // This is the end of recursion, no more
+            // recursive calls.
+            console.log(tree);
+        }
+    }
+
+    processTree2(tree, index, breadCrumb)
+    {
+        for(let i = 0; i<tree.length; i++)
+        {
+            let step = tree[i];
+            if(step.name == breadCrumb[index] && !this.stopTreeLoop)
+            {
+                // console.log(step.name);
+                index++;
+                if(step.children.length > 0)
+                {
+                    if(index == breadCrumb.length)
+                    {
+                        this.stopTreeLoop = true;
+                    }
+                    this.processTree2(step.children, index, breadCrumb);
+                    if(index == breadCrumb.length)
+                    {
+                        // this.nextStep = step.children;
+                        for(let j = 0; j < step.children.length; j++)
+                        {
+                            this.nextStep.push(step.children[j].name);
+                        }
+                        // console.log("nextSteps:", step.children);
+                    }
+                }
+            }
+        }
+    }
+
     loadEventHandler()
     {
         let _this = this;
@@ -898,7 +965,8 @@ class StatusManagementHandler
 
         $(document).on("click", this.buttonAdd, function(e){
            e.preventDefault();
-           _this.saveStatus();
+           let $button = $(this);
+           _this.saveStatus($button);
         });
     }
 }

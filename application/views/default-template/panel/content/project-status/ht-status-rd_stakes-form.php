@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     <label>Fecha de asignacion</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="{{statusKeyword}}-team-entry-date" readonly="" required="" class="form-control" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-team-entry-date">
+                                        <input name="{{statusKeyword}}-entry-date" readonly="" required="" class="form-control" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-team-entry-date">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -67,6 +67,6 @@
 <script id="ht-status-rd_stakes-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>Ya se definieron responsables de estaqueado(rectificacion de diseño) para este proyecto!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
     </div>
 </script>

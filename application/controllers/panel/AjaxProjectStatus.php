@@ -767,9 +767,10 @@ class AjaxProjectStatus extends PrivateController
             $statusListArray[$status->getId()] = $status->toArray();
         }
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
-
+        $statusSetHandler = new StatusSetHandler($statusSet);
+        $stepTree = $statusSetHandler->getStepTree();
         $data["project"] = $project;
-        $data["steps"] = Model_project_status::projectStages($statusSet);
+//        $data["steps"] = Model_project_status::projectStages($statusSet);
         $data["statusList"] = $statusListArray;
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
@@ -777,6 +778,7 @@ class AjaxProjectStatus extends PrivateController
         $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
         $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
         $data["statusSet"] = $statusSet;
+        $data["stepTree"] = $stepTree;
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         $data["projectLog"] = $projectLog;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
