@@ -77,7 +77,7 @@ var StatusManagementHandler = (function () {
     };
     StatusManagementHandler.prototype.stepList = function () {
         var projectLog = this.loadViewResponse.data.projectLog;
-        projectLog.reverse();
+        // projectLog.reverse();
         var viewData = this.viewData;
         var stepList = [];
         var previousStatusId = null;
@@ -86,9 +86,9 @@ var StatusManagementHandler = (function () {
         var memory = [];
         //Only loop up to current project status
         $.each(projectLog, function (index, value) {
-            if (previousStatusId != value.status_id_psl && previousOrder >= value.order_pst && statusSetList.indexOf(value.keyword_pst) >= 0 && memory.indexOf(value.keyword_pst) == -1) {
+            if (previousStatusId != value.status_id_psl && previousOrder >= parseInt(value.order_pst) && statusSetList.indexOf(value.keyword_pst) >= 0 && memory.indexOf(value.keyword_pst) == -1) {
                 previousStatusId = value.status_id_psl;
-                previousOrder = value.order_pst;
+                previousOrder = parseInt(value.order_pst);
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
                 var step_1 = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };

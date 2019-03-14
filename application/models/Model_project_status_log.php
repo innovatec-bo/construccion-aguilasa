@@ -87,7 +87,7 @@ class Model_project_status_log extends Model_project_status_log_base
                 project_id_psl = ".$ci->db->escape($projectId)."
                 and deleted_psl != 1
         GROUP BY id_psl
-        ORDER BY id_psl, order_pst DESC
+        ORDER BY manual_entry_date_psl DESC
         ";
         $query = $ci->db->query($sql);
         $result = $query->result_array();
@@ -180,6 +180,6 @@ class Model_project_status_log extends Model_project_status_log_base
 //    public static function getStatusSetBreadCrumbByProjectId($projectId)
 //    {
 //        $log = static::getLogByProjectId($projectId);
-//        $log
+//
 //    }
 }
