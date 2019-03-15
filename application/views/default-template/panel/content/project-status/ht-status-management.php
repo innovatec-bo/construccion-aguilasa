@@ -73,14 +73,13 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </ul>
         </div>
     </div>
-    <div class="col-md-1">
-        <div class="">
-            <a href="#next-step" id="next-step">Siguiente</a>
-        </div>
-    </div>
-    <div class="col-md-1">
-        <div class="">
-            <a href="#next-step" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus"></i> Incid.</a>
+    <div class="col-md-2">
+        <div class="tabbable">
+            <ul class="nav nav-tabs wizard">
+                <li>
+                    <a href="#next-step" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus fa-fw"></i>INCIDENTE</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="col-md-9">

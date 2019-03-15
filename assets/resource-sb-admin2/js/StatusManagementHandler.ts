@@ -19,6 +19,7 @@ class StatusManagementHandler
     private loadViewTemplate: any;
     private viewData: any;
     private stopTreeLoop: boolean;
+    private _breadCrumb : any;
     private nextStep: any;
     constructor(private projectStatusSet: string, private projectID: number)
     {
@@ -31,6 +32,7 @@ class StatusManagementHandler
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
         this.stopTreeLoop = false;
+        this._breadCrumb = [];
         this.nextStep = [];
     }
 
@@ -56,7 +58,7 @@ class StatusManagementHandler
                     $(_this.statusManagementContentSelector).html(html);
                     _this.loadStatusForm(_this.viewData.project.keyword_pst,0);
                     _this.projectLog();
-
+                    _this._defineNextStep();
                 }
                 else
                 {
@@ -72,7 +74,6 @@ class StatusManagementHandler
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusSet = this.loadViewResponse.data.statusSet;
-        // let projectBreadCrumb = this.loadViewResponse.data.projectBreadCrumb;
         let stepTree = this.loadViewResponse.data.stepTree;
         let updateHistory = this.loadViewResponse.data.updateHistory;
         let responsibleList = this.loadViewResponse.data.responsibleList;
@@ -103,16 +104,15 @@ class StatusManagementHandler
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
-        // this.viewData.projectBreadCrumb = projectBreadCrumb;
-        this.viewData.stepList = this.stepList();
+        this._defineBreadCrumb();
         this.viewData.stepTree = stepTree;
+        this._includeBtnAddStep();
+        this.viewData.stepList = this._breadCrumb;
     }
 
-    stepList()
+    private _defineBreadCrumb()
     {
         let projectLog = this.loadViewResponse.data.projectLog;
-        // projectLog.reverse();
-
         let viewData = this.viewData;
         let stepList = [];
         let previousStatusId = null;
@@ -132,11 +132,9 @@ class StatusManagementHandler
                 memory.push(value.keyword_pst);
             }
         });
+        //At this point we have the step list to drawing
         stepList.reverse();
-        //Button to add more steps
-        let step = {stepId:null, stepName:"", stepKeyword: null, stepStatus:"li-add-step"};
-        stepList.push(step);
-        return stepList;
+        this._breadCrumb = stepList;
     }
 
     statusSetList()
@@ -169,15 +167,31 @@ class StatusManagementHandler
             }
         });
     }
-    
-    addStep(button)
+
+    private _includeBtnAddStep()
+    {
+        this._defineNextStep();
+        if(this.nextStep.length > 0)
+        {
+            //Button to add more steps
+            let step = {stepId:null, stepName:"", stepKeyword: null, stepStatus:"li-add-step"};
+            this._breadCrumb.push(step);
+        }
+    }
+
+    private _defineNextStep()
     {
         let breadCrumb = [];
-        $.each($(".step-list li a"),function(index, value){
-            if($(value).prop("id") != "")
-                breadCrumb.push($(value).prop("id"));
+        $.each(this._breadCrumb,function(index, value){
+            // if(value.stepKeyword !== null)
+                breadCrumb.push(value.stepKeyword);
         });
         this.processTree(this.viewData.stepTree,0, breadCrumb);
+    }
+
+    addStep(button)
+    {
+        this._defineNextStep();
         this.stopTreeLoop = false;
         let nextStep = this.nextStep;
         this.nextStep = [];//after assign this variable to a local variable let's set as empty

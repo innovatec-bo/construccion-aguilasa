@@ -11,6 +11,7 @@ var StatusManagementHandler = (function () {
         this.viewData = {};
         this.statusManagementContentSelector = "div#status-management-content";
         this.stopTreeLoop = false;
+        this._breadCrumb = [];
         this.nextStep = [];
     }
     StatusManagementHandler.prototype.loadView = function () {
@@ -33,6 +34,7 @@ var StatusManagementHandler = (function () {
                     $(_this.statusManagementContentSelector).html(html);
                     _this.loadStatusForm(_this.viewData.project.keyword_pst, 0);
                     _this.projectLog();
+                    _this._defineNextStep();
                 }
                 else {
                     // console.log("error: "+response.message);
@@ -45,7 +47,6 @@ var StatusManagementHandler = (function () {
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusSet = this.loadViewResponse.data.statusSet;
-        // let projectBreadCrumb = this.loadViewResponse.data.projectBreadCrumb;
         var stepTree = this.loadViewResponse.data.stepTree;
         var updateHistory = this.loadViewResponse.data.updateHistory;
         var responsibleList = this.loadViewResponse.data.responsibleList;
@@ -71,13 +72,13 @@ var StatusManagementHandler = (function () {
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
-        // this.viewData.projectBreadCrumb = projectBreadCrumb;
-        this.viewData.stepList = this.stepList();
+        this._defineBreadCrumb();
         this.viewData.stepTree = stepTree;
+        this._includeBtnAddStep();
+        this.viewData.stepList = this._breadCrumb;
     };
-    StatusManagementHandler.prototype.stepList = function () {
+    StatusManagementHandler.prototype._defineBreadCrumb = function () {
         var projectLog = this.loadViewResponse.data.projectLog;
-        // projectLog.reverse();
         var viewData = this.viewData;
         var stepList = [];
         var previousStatusId = null;
@@ -91,16 +92,14 @@ var StatusManagementHandler = (function () {
                 previousOrder = parseInt(value.order_pst);
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
-                var step_1 = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
-                stepList.push(step_1);
+                var step = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
+                stepList.push(step);
                 memory.push(value.keyword_pst);
             }
         });
+        //At this point we have the step list to drawing
         stepList.reverse();
-        //Button to add more steps
-        var step = { stepId: null, stepName: "", stepKeyword: null, stepStatus: "li-add-step" };
-        stepList.push(step);
-        return stepList;
+        this._breadCrumb = stepList;
     };
     StatusManagementHandler.prototype.statusSetList = function () {
         var statusSet = [];
@@ -129,13 +128,24 @@ var StatusManagementHandler = (function () {
             }
         });
     };
-    StatusManagementHandler.prototype.addStep = function (button) {
+    StatusManagementHandler.prototype._includeBtnAddStep = function () {
+        this._defineNextStep();
+        if (this.nextStep.length > 0) {
+            //Button to add more steps
+            var step = { stepId: null, stepName: "", stepKeyword: null, stepStatus: "li-add-step" };
+            this._breadCrumb.push(step);
+        }
+    };
+    StatusManagementHandler.prototype._defineNextStep = function () {
         var breadCrumb = [];
-        $.each($(".step-list li a"), function (index, value) {
-            if ($(value).prop("id") != "")
-                breadCrumb.push($(value).prop("id"));
+        $.each(this._breadCrumb, function (index, value) {
+            // if(value.stepKeyword !== null)
+            breadCrumb.push(value.stepKeyword);
         });
         this.processTree(this.viewData.stepTree, 0, breadCrumb);
+    };
+    StatusManagementHandler.prototype.addStep = function (button) {
+        this._defineNextStep();
         this.stopTreeLoop = false;
         var nextStep = this.nextStep;
         this.nextStep = []; //after assign this variable to a local variable let's set as empty

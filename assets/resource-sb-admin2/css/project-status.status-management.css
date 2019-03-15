@@ -62,15 +62,15 @@ blockquote dl
 }
 #add-incident
 {
-    border-radius: 10px;
-    border-bottom-left-radius: 10px;
+    /*border-radius: 10px;*/
+    /*border-bottom-left-radius: 10px;*/
     color: #fff !important;
-    background-color: #96c03d !important;
-    border-color: #96c03d !important;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
     border-bottom: none !important;
-    padding: 1em .2em .8em .2em;
-    position: absolute;
-    margin-top: 17px;
+    padding: 1em 1.3em .8em 1em;
+    /*position: absolute;*/
+    font-size:11px;
 }
 .edit-construction-assignments
 {
