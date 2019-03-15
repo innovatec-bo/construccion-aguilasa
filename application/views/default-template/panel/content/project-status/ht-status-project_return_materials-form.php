@@ -78,6 +78,6 @@
 <script id="ht-status-project_return_materials-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>El fiscal ha confirmado que los materiales ya fueron devueltos a CRE!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
     </div>
 </script>

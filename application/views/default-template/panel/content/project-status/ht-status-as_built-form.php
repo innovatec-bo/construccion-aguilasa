@@ -90,6 +90,6 @@
 <script id="ht-status-as_built-form-completed" type="text/x-handlebars-template">
     <div class="well">
         <h4>Se esta realizando el As built!</h4>
-        <p>Para ingresar nueva informacion haga clic <a href="javascript:void(0)" onclick="loadStatusForm('{{statusKeyword}}',1)">aqui</a></p>
+        <p>Para ingresar nueva informacion haga clic <a href="#" class="load-status-form-new-info" data-keyword="{{statusKeyword}}">aqui</a></p>
     </div>
 </script>
