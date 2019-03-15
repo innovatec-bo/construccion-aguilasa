@@ -183,7 +183,7 @@ class StatusManagementHandler
     {
         let breadCrumb = [];
         $.each(this._breadCrumb,function(index, value){
-            // if(value.stepKeyword !== null)
+            if(value.stepKeyword !== null)
                 breadCrumb.push(value.stepKeyword);
         });
         this.processTree(this.viewData.stepTree,0, breadCrumb);

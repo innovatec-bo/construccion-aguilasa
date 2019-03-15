@@ -139,8 +139,8 @@ var StatusManagementHandler = (function () {
     StatusManagementHandler.prototype._defineNextStep = function () {
         var breadCrumb = [];
         $.each(this._breadCrumb, function (index, value) {
-            // if(value.stepKeyword !== null)
-            breadCrumb.push(value.stepKeyword);
+            if (value.stepKeyword !== null)
+                breadCrumb.push(value.stepKeyword);
         });
         this.processTree(this.viewData.stepTree, 0, breadCrumb);
     };
