@@ -23,7 +23,6 @@ class PublicController extends CI_Controller
         $this->load->library('form_validation');
         $this->_panelTmpl = "default-template";
         $this->complementHandler = new ComplementHandler();
-
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
         $this->complementHandler->addViewComplement("metisMenu");
@@ -131,6 +130,12 @@ class PrivateController extends PublicController
     {
         parent::__construct();
         //Add General Components
+        $this->complementHandler = new ComplementHandler();
+        $this->complementHandler->addViewComplement("jquery");
+        $this->complementHandler->addViewComplement("bootstrap");
+        $this->complementHandler->addViewComplement("metisMenu");
+        $this->complementHandler->addViewComplement("font-awesome");
+        $this->complementHandler->addViewComplement("sb-admin-2");
         $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
