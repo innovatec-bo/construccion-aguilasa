@@ -11,6 +11,7 @@ class Login extends PublicController
     public function index()
 	{
         $this->load->library('form_validation');
+        $this->complementHandler->addProjectCss('login.index', TRUE);
         /** server validations */
         $this->form_validation->set_rules('email', 'Email', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');

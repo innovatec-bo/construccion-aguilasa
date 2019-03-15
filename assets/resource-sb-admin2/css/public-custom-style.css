@@ -1,0 +1,12 @@
+body
+{
+    background-image:url("../../images/login-bg.jpg");
+    background-size: 220%;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    background-color: #0F263A;
+
+}
+.btn-primary {
+    background-color: #0F263A;
+}
