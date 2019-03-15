@@ -32,34 +32,84 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         ?>
     </div>
     <div class="col-md-2">
-        <dl class="header-description well well-sm">
-            <dt>SISTEMA</dt>
-            <dd>{{viewData.project.system}}</dd>
-        </dl>
+        <div class="panel panel-info status-management-card">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-cogs fa-2x"></i>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <div class="">{{viewData.project.system}}</div>
+
+                    </div>
+                </div>
+                <div class="status-management-card-title">SISTEMA</div>
+            </div>
+        </div>
     </div>
     <div class="col-md-2">
-        <dl class="header-description well well-sm">
-            <dt>FECHA DE INGRESO</dt>
-            <dd>{{formatDate viewData.project.entry_date_pro "short"}}</dd>
-        </dl>
+        <div class="panel panel-info status-management-card">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-calendar fa-2x"></i>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
+
+                    </div>
+                </div>
+                <div class="status-management-card-title">INGRESO</div>
+            </div>
+        </div>
     </div>
     <div class="col-md-2">
-        <dl class="header-description well well-sm">
-            <dt>FISCAL DE CRE</dt>
-            <dd>{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</dd>
-        </dl>
+        <div class="panel panel-info status-management-card">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-user fa-2x"></i>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <div class="">{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</div>
+
+                    </div>
+                </div>
+                <div class="status-management-card-title">FISCAL</div>
+            </div>
+        </div>
     </div>
     <div class="col-md-2">
-        <dl class="header-description well well-sm">
-            <dt>DIRECCION</dt>
-            <dd><dd>{{viewData.project.address_pro}}</dd></dd>
-        </dl>
+        <div class="panel panel-info status-management-card">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-map-marker fa-2x"></i>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <div class="">{{viewData.project.address_pro}}</div>
+
+                    </div>
+                </div>
+                <div class="status-management-card-title">DIRECCION</div>
+            </div>
+        </div>
     </div>
     <div class="col-md-2">
-        <dl class="header-description well well-sm">
-            <dt>AREA</dt>
-            <dd><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</dd>
-        </dl>
+        <div class="panel panel-info status-management-card">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-arrows-alt fa-2x"></i>
+                    </div>
+                    <div class="col-md-9 text-right">
+                        <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
+
+                    </div>
+                </div>
+                <div class="status-management-card-title">AREA</div>
+            </div>
+        </div>
     </div>
     {{#ifCond showBtnEditConstructionAssignments "==" 1}}
         <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>

@@ -76,3 +76,20 @@ blockquote dl
 {
     font-size:12px;
 }
+.status-management-card-title
+{
+    font-weight: 600;
+    font-style: italic;
+    font-size: 10px;
+    position: absolute;
+    bottom: 22px;
+    right: 22px;
+}
+.status-management-card
+{
+    font-size:11px;
+}
+.status-management-card .panel-heading
+{
+    min-height:65px;
+}
