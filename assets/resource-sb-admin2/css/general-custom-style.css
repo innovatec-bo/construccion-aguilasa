@@ -1,3 +1,6 @@
+body{
+    background: url('../../images/bg-body.jpg');
+}
 /****************************** begin - main logo settings*/
 .logo-link
 {
@@ -19,7 +22,8 @@
 /****************************** begin - menu settings*/
 #side-menu
 {
-    background-color: #0F263A;
+    /*background-color: #0F263A;*/
+    background: url('../../images/login-bg.jpg');
 }
 #side-menu a{
     color:#fff;
@@ -27,12 +31,15 @@
 #side-menu a.active{
     color:#0F263A;
     font-weight: bold;
+    background-color: #f7c12b;
 }
 #side-menu a:hover{
     color:#0F263A;
+    background-color: #f8d171;
 }
 #side-menu a:focus{
     color:#0F263A;
+    background-color: #f8d171;
 }
 .page-header
 {
@@ -40,7 +47,27 @@
 }
 .navbar-top-links a
 {
-    color:#0F263A;
+    color: #fff;
+}
+.navbar-top-links li a:hover
+{
+    background: #194265;
+}
+.navbar-top-links li a:focus
+{
+    background: #194265;
+}
+.navbar-top-links li.open a:focus
+{
+    background: #194265;
+}
+.nav .open>a
+{
+    background: #194265;
+}
+.navbar-static-top
+{
+    background: url('../../images/login-bg.jpg');
 }
 /****************************** end - menu settings*/
 
@@ -64,7 +91,7 @@
     background-color: #0F263A;
 }
 .page-header {
-    border-bottom: 1px solid #fab90a;
+    border-bottom: 2px solid #31708f;
 }
 /********************************** begin - bootstrap date time picker */
 .bootstrap-datetimepicker-widget table td span {
@@ -74,3 +101,24 @@
     color: #000;
 }
 /********************************** end - bootstrap date time picker */
+#page-wrapper
+{
+    background: url('../../images/bg-body.jpg');
+}
+.container-fluid
+{
+    margin-top: 25px;
+    background: #fff;
+}
+.dropdown-user
+{
+    background:#202336
+}
+.dropdown-user li a
+{
+    color:#fff;
+}
+.dropdown-user li a:hover
+{
+    color:#fff;
+}
