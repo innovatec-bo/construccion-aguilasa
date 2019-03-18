@@ -769,7 +769,7 @@ class AjaxProjectStatus extends PrivateController
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
-        $data["project"] = $project;
+//        $data["project"] = $project;
 //        $data["steps"] = Model_project_status::projectStages($statusSet);
         $data["statusList"] = $statusListArray;
 //        $data["projectBreadCrumb"] = Model_project_status_log::getStatusSetBreadCrumbByProjectId($projectId);
