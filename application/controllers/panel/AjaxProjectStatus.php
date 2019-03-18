@@ -232,6 +232,7 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
+        echo"<pre>";var_dump($formData);exit;
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         if($sendToApprovement == 1)
         {
@@ -769,10 +770,7 @@ class AjaxProjectStatus extends PrivateController
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
-//        $data["project"] = $project;
-//        $data["steps"] = Model_project_status::projectStages($statusSet);
         $data["statusList"] = $statusListArray;
-//        $data["projectBreadCrumb"] = Model_project_status_log::getStatusSetBreadCrumbByProjectId($projectId);
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);

@@ -71,6 +71,7 @@ class StatusManagementHandler
     prepareViewData()
     {
         let project = this.loadViewResponse.data.projectFullDetail;
+        let projectLog = this.loadViewResponse.data.projectLog;
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusSet = this.loadViewResponse.data.statusSet;
@@ -97,6 +98,7 @@ class StatusManagementHandler
 
         this.viewData.statusName = statusName;
         this.viewData.project = project;
+        this.viewData.projectLog = projectLog;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
         this.viewData.responsibleList = responsibleList;
@@ -327,7 +329,7 @@ class StatusManagementHandler
                     html = _this.getHandlebarHtml("#ht-status-"+statusKeyword+"-form-completed", data);
                 }
                 $statusFormContent.html(html);
-                StatusManagementHandler.statusFormStartSpecialComponents();
+                _this.statusFormStartSpecialComponents();
                 StatusManagementHandler.updateTotalOnApprovedForm();
                 _this.checkIncidents();
             }
@@ -363,16 +365,33 @@ class StatusManagementHandler
         }
     }
 
-    static statusFormStartSpecialComponents()
+    statusFormStartSpecialComponents()
     {
-        let date = new Date();
+        let _this = this;
         let $dateTimePickerComponent = $('.date-time-picker');
         if($dateTimePickerComponent.length > 0)
         {
-            $dateTimePickerComponent.datetimepicker({
-                ignoreReadonly: true,
-                defaultDate: date,
-                format: 'DD-MM-YYYY'
+            $.each($dateTimePickerComponent, function(index, value){
+                if(index === 0)
+                {
+                    let minDate = new Date(_this.viewData.projectLog[0].manual_entry_date_psl);
+                    $(value).datetimepicker({
+                        ignoreReadonly: true,
+                        defaultDate: minDate,
+                        minDate:minDate,
+                        locale:"es",
+                        format: 'DD-MM-YYYY'
+                    });
+                }
+                else
+                {
+                    let defaultDate = new Date();
+                    $(value).datetimepicker({
+                        ignoreReadonly: true,
+                        defaultDate: defaultDate,
+                        format: 'DD-MM-YYYY'
+                    });
+                }
             });
         }
         let $select2 = $(".select2");

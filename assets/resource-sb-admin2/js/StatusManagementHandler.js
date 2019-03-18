@@ -44,6 +44,7 @@ var StatusManagementHandler = (function () {
     };
     StatusManagementHandler.prototype.prepareViewData = function () {
         var project = this.loadViewResponse.data.projectFullDetail;
+        var projectLog = this.loadViewResponse.data.projectLog;
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusSet = this.loadViewResponse.data.statusSet;
@@ -65,6 +66,7 @@ var StatusManagementHandler = (function () {
         }
         this.viewData.statusName = statusName;
         this.viewData.project = project;
+        this.viewData.projectLog = projectLog;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
         this.viewData.responsibleList = responsibleList;
@@ -259,7 +261,7 @@ var StatusManagementHandler = (function () {
                     html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form-completed", data);
                 }
                 $statusFormContent.html(html);
-                StatusManagementHandler.statusFormStartSpecialComponents();
+                _this.statusFormStartSpecialComponents();
                 StatusManagementHandler.updateTotalOnApprovedForm();
                 _this.checkIncidents();
             }
@@ -289,14 +291,29 @@ var StatusManagementHandler = (function () {
             $totalAmountContent.text(total);
         }
     };
-    StatusManagementHandler.statusFormStartSpecialComponents = function () {
-        var date = new Date();
+    StatusManagementHandler.prototype.statusFormStartSpecialComponents = function () {
+        var _this = this;
         var $dateTimePickerComponent = $('.date-time-picker');
         if ($dateTimePickerComponent.length > 0) {
-            $dateTimePickerComponent.datetimepicker({
-                ignoreReadonly: true,
-                defaultDate: date,
-                format: 'DD-MM-YYYY'
+            $.each($dateTimePickerComponent, function (index, value) {
+                if (index === 0) {
+                    var minDate = new Date(_this.viewData.projectLog[0].manual_entry_date_psl);
+                    $(value).datetimepicker({
+                        ignoreReadonly: true,
+                        defaultDate: minDate,
+                        minDate: minDate,
+                        locale: "es",
+                        format: 'DD-MM-YYYY'
+                    });
+                }
+                else {
+                    var defaultDate = new Date();
+                    $(value).datetimepicker({
+                        ignoreReadonly: true,
+                        defaultDate: defaultDate,
+                        format: 'DD-MM-YYYY'
+                    });
+                }
             });
         }
         var $select2 = $(".select2");
