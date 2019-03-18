@@ -105,7 +105,7 @@ span.nmbr {
     text-align: center;
 }
 
-@media(min-width:992px) {
+/*@media(min-width:992px) {*/
     .nav-tabs.wizard li {
         position: relative;
         padding: 0;
@@ -163,4 +163,4 @@ span.nmbr {
     span.nmbr {
         display: block;
     }
-}
+/*}*/

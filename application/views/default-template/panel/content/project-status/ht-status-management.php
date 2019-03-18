@@ -24,7 +24,8 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
-        <h1 class="page-header">{{viewData.statusName}}<em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em></h1>
+        <h1 class="page-header">{{viewData.statusName}}
+            <em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em></h1>
     </div>
     <div class="col-md-12">
         <?php
@@ -112,7 +113,9 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         </div>
     </div>
     {{#ifCond showBtnEditConstructionAssignments "==" 1}}
-        <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
+        </div>
     {{/ifCond}}
     <div class="col-md-10">
         <div class="tabbable">
