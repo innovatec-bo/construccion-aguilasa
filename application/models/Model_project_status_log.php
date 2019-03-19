@@ -38,7 +38,8 @@ class Model_project_status_log extends Model_project_status_log_base
         SELECT
             wfl_project_status_log.*,
             status_name_pst,
-            keyword_pst,            
+            keyword_pst,
+            status_icon_pst,            
             order_pst,
             points_quantity_prp,
             distance_prp,

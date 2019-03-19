@@ -94,7 +94,7 @@ var StatusManagementHandler = (function () {
                 previousOrder = parseInt(value.order_pst);
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
                 var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
-                var step = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: stepStatus };
+                var step = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus: stepStatus };
                 stepList.push(step);
                 memory.push(value.keyword_pst);
             }
@@ -134,7 +134,7 @@ var StatusManagementHandler = (function () {
         this._defineNextStep();
         if (this.nextStep.length > 0) {
             //Button to add more steps
-            var step = { stepId: null, stepName: "", stepKeyword: null, stepStatus: "li-add-step" };
+            var step = { stepId: null, stepName: "", stepKeyword: null, stepIcon: "fa fa-plus", stepStatus: "li-add-step" };
             this._breadCrumb.push(step);
         }
     };
@@ -155,7 +155,7 @@ var StatusManagementHandler = (function () {
         var statusList = this.loadViewResponse.data.statusList;
         $.each(statusList, function (index, value) {
             if (nextStep.includes(value.keyword_pst)) {
-                var step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus: "" };
+                var step = { stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus: "" };
                 nextStepObjectArray.push(step);
             }
         });
@@ -793,7 +793,8 @@ var StatusManagementHandler = (function () {
             var stepId = $(this).data("step-id");
             var stepName = $(this).data("step-name");
             var keyword = $(this).data("keyword");
-            var step = { stepId: stepId, stepName: stepName, stepKeyword: keyword, stepStatus: "active" };
+            var icon = $(this).data("icon");
+            var step = { stepId: stepId, stepName: stepName, stepKeyword: keyword, stepIcon: icon, stepStatus: "active" };
             _this.addStepFromList(step);
         });
         $(document).on("click", this.buttonRemoveStep, function (e) {

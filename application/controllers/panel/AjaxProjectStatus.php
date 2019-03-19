@@ -232,7 +232,6 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        echo"<pre>";var_dump($formData);exit;
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
         if($sendToApprovement == 1)
         {

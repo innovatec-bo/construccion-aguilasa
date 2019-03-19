@@ -16,6 +16,7 @@ $config['complements']['jquery.ui']['js'] = assets_url('resource-sb-admin2/plugi
 
 $config['complements']['bootstrap']['css'] = assets_url('resource-sb-admin2/vendor/bootstrap/css/bootstrap.min.css');
 $config['complements']['bootstrap']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap/js/bootstrap.min.js');
+$config['complements']['bootstrap.social']['css'] = assets_url('resource-sb-admin2/vendor/bootstrap-social/bootstrap-social.css');
 
 $config['complements']['metisMenu']['css'] = assets_url('resource-sb-admin2/vendor/metisMenu/metisMenu.min.css');
 $config['complements']['metisMenu']['js'] = assets_url('resource-sb-admin2/vendor/metisMenu/metisMenu.min.js');

@@ -129,7 +129,7 @@ class StatusManagementHandler
                 previousOrder = parseInt(value.order_pst);
                 let completed = statusSetList.indexOf(value.keyword_pst) >= 0?" completed ":"";
                 let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":completed;
-                let step = {stepId:value.status_id_psl, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepStatus:stepStatus};
+                let step = {stepId:value.status_id_psl, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus:stepStatus};
                 stepList.push(step);
                 memory.push(value.keyword_pst);
             }
@@ -176,7 +176,7 @@ class StatusManagementHandler
         if(this.nextStep.length > 0)
         {
             //Button to add more steps
-            let step = {stepId:null, stepName:"", stepKeyword: null, stepStatus:"li-add-step"};
+            let step = {stepId:null, stepName:"", stepKeyword: null, stepIcon:"fa fa-plus", stepStatus:"li-add-step"};
             this._breadCrumb.push(step);
         }
     }
@@ -202,7 +202,7 @@ class StatusManagementHandler
         $.each(statusList, function(index, value){
             if(nextStep.includes(value.keyword_pst))
             {
-                let step = {stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword:  value.keyword_pst, stepStatus:""};
+                let step = {stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword:  value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus:""};
                 nextStepObjectArray.push(step);
             }
         });
@@ -945,7 +945,8 @@ class StatusManagementHandler
            let stepId = $(this).data("step-id");
            let stepName = $(this).data("step-name");
            let keyword = $(this).data("keyword");
-           let step = {stepId: stepId, stepName: stepName, stepKeyword:keyword, stepStatus:"active"};
+           let icon = $(this).data("icon");
+           let step = {stepId: stepId, stepName: stepName, stepKeyword:keyword, stepIcon: icon, stepStatus:"active"};
            _this.addStepFromList(step);
         });
 

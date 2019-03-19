@@ -32,91 +32,100 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
-    <div class="col-md-2">
-        <div class="panel panel-info status-management-card">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <i class="fa fa-cogs fa-2x"></i>
+<!--    <div class="row">-->
+        <div class="col-xs-6" id="btn-detail-content">
+            <a class="btn btn-block btn-social btn-bitbucket">
+                <i class="fa fa-tags"></i> Detalle
+            </a>
+        </div>
+        <div class="col-xs-6" id="btn-history-content">
+            <a class="btn btn-block btn-social btn-bitbucket">
+                <i class="fa fa-book"></i> Historial
+            </a>
+        </div>
+<!--    </div>-->
+    <div id="basic-data">
+        <div class="col-md-2 col-xs-8">
+            <div class="panel panel-info status-management-card">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <i class="fa fa-cogs fa-2x"></i>
+                        </div>
+                        <div class="col-md-9 text-right">
+                            <div class="">{{viewData.project.system}}</div>
+                        </div>
                     </div>
-                    <div class="col-md-9 text-right">
-                        <div class="">{{viewData.project.system}}</div>
-
-                    </div>
+                    <div class="status-management-card-title">SISTEMA</div>
                 </div>
-                <div class="status-management-card-title">SISTEMA</div>
             </div>
         </div>
-    </div>
-    <div class="col-md-2">
-        <div class="panel panel-info status-management-card">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <i class="fa fa-calendar fa-2x"></i>
+        <div class="col-md-2 col-xs-8">
+            <div class="panel panel-info status-management-card">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <i class="fa fa-calendar fa-2x"></i>
+                        </div>
+                        <div class="col-md-9 text-right">
+                            <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
+                        </div>
                     </div>
-                    <div class="col-md-9 text-right">
-                        <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
-
-                    </div>
+                    <div class="status-management-card-title">INGRESO</div>
                 </div>
-                <div class="status-management-card-title">INGRESO</div>
             </div>
         </div>
-    </div>
-    <div class="col-md-2">
-        <div class="panel panel-info status-management-card">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <i class="fa fa-user fa-2x"></i>
+        <div class="col-md-2 col-xs-8">
+            <div class="panel panel-info status-management-card">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <i class="fa fa-user fa-2x"></i>
+                        </div>
+                        <div class="col-md-9 text-right">
+                            <div class="">{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</div>
+                        </div>
                     </div>
-                    <div class="col-md-9 text-right">
-                        <div class="">{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</div>
-
-                    </div>
+                    <div class="status-management-card-title">FISCAL</div>
                 </div>
-                <div class="status-management-card-title">FISCAL</div>
             </div>
         </div>
-    </div>
-    <div class="col-md-2">
-        <div class="panel panel-info status-management-card">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <i class="fa fa-map-marker fa-2x"></i>
+        <div class="col-md-2 col-xs-8">
+            <div class="panel panel-info status-management-card">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <i class="fa fa-map-marker fa-2x"></i>
+                        </div>
+                        <div class="col-md-9 text-right">
+                            <div class="">{{viewData.project.address_pro}}</div>
+                        </div>
                     </div>
-                    <div class="col-md-9 text-right">
-                        <div class="">{{viewData.project.address_pro}}</div>
-
-                    </div>
+                    <div class="status-management-card-title">DIRECCION</div>
                 </div>
-                <div class="status-management-card-title">DIRECCION</div>
             </div>
         </div>
-    </div>
-    <div class="col-md-2">
-        <div class="panel panel-info status-management-card">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <i class="fa fa-arrows-alt fa-2x"></i>
+        <div class="col-md-2 col-xs-8">
+            <div class="panel panel-info status-management-card">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <i class="fa fa-arrows-alt fa-2x"></i>
+                        </div>
+                        <div class="col-md-9 text-right">
+                            <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
+                        </div>
                     </div>
-                    <div class="col-md-9 text-right">
-                        <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
-
-                    </div>
+                    <div class="status-management-card-title">AREA</div>
                 </div>
-                <div class="status-management-card-title">AREA</div>
             </div>
         </div>
-    </div>
-    {{#ifCond showBtnEditConstructionAssignments "==" 1}}
-        <div class="col-md-2">
+        {{#ifCond showBtnEditConstructionAssignments "==" 1}}
+        <div class="col-md-2 col-xs-8">
             <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
         </div>
-    {{/ifCond}}
+        {{/ifCond}}
+    </div>
     <div class="col-md-10">
         <div class="tabbable">
             <ul class="nav nav-tabs wizard step-list">
@@ -171,7 +180,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </div>
         </section>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" id="history-content">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Historial
@@ -190,16 +199,16 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 <script id="ht-wizard-step" type="text/x-handlebars-template">
     <li class="{{stepStatus}}">
         {{#ifCond stepId "==" null}}
-            <a href="#none" class="add-step" data-toggle="" aria-expanded="false"><i class="fa fa-plus fa-fw"></i></a>
+            <a href="#none" class="add-step" data-toggle="" aria-expanded="false"><span class="step-icon-add"><i class="fa fa-plus fa-fw"></i></span></a>
         {{/ifCond}}
         {{#ifCond stepId "!=" null}}
-            <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}">{{stepName}}</a>
+            <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}" data-icon="{{stepIcon}}"><span class="step-icon"><span class="{{stepIcon}}"></span> </span> <span class="step-name">{{stepName}}</span></a>
         {{/ifCond}}
     </li>
 </script>
 <script id="ht-select-next-step" type="text/x-handlebars-template">
     {{#each nextStepObjectArray}}
-        <a class="btn btn-block btn-social btn-primary btn-xs add-step-from-list" data-step-id="{{stepId}}" data-step-name="{{stepName}}" data-step-status="active" data-keyword="{{stepKeyword}}">
+        <a class="btn btn-block btn-social btn-primary btn-xs add-step-from-list" data-step-id="{{stepId}}" data-step-name="{{stepName}}" data-step-status="active" data-keyword="{{stepKeyword}}" data-icon="{{stepIcon}}">
             {{stepName}}
         </a>
     {{/each}}
