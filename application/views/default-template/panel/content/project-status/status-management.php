@@ -6,7 +6,7 @@
  * Time: 10:23 AM
  */
 ?>
-<div class="container-fluid">
+<div class="container-fluid box-shadow-2">
     <div class="row" id="status-management-content">
 
     </div>

@@ -32,20 +32,9 @@ $entryDate = date_format($entryDate, 'd-m-Y');
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
-<!--    <div class="row">-->
-        <div class="col-xs-6" id="btn-detail-content">
-            <a class="btn btn-block btn-social btn-bitbucket">
-                <i class="fa fa-tags"></i> Detalle
-            </a>
-        </div>
-        <div class="col-xs-6" id="btn-history-content">
-            <a class="btn btn-block btn-social btn-bitbucket">
-                <i class="fa fa-book"></i> Historial
-            </a>
-        </div>
-<!--    </div>-->
+
     <div id="basic-data">
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
@@ -60,7 +49,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
@@ -75,7 +64,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
@@ -90,7 +79,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
@@ -105,7 +94,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
@@ -121,12 +110,59 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </div>
         </div>
         {{#ifCond showBtnEditConstructionAssignments "==" 1}}
-        <div class="col-md-2 col-xs-8">
+        <div class="col-md-2 col-xs-12">
             <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
         </div>
         {{/ifCond}}
     </div>
-    <div class="col-md-10">
+    <div id="help-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped js-options-table js-options-table">
+                        <thead>
+                        <tr>
+                            <th>Icono</th>
+                            <th>Descripcion</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><i class="fa fa-building fa-3x"></i></td>
+                            <td>boolean</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-check-square-o fa-3x"></i></td>
+                            <td>boolean</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-flash fa-3x"></i></td>
+                            <td>boolean</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--    <div class="row">-->
+    <div class="col-xs-5" id="btn-detail-content">
+        <a class="btn btn-block btn-social btn-primary show-detail">
+            <i class="fa fa-tags"></i> Detalle
+        </a>
+    </div>
+    <div class="col-xs-5" id="btn-history-content">
+        <a class="btn btn-block btn-social btn-primary show-history">
+            <i class="fa fa-book"></i> Historial
+        </a>
+    </div>
+    <div class="col-xs-2" id="btn-help-content">
+        <a class="btn btn-social-icon btn-info show-help"><i class="fa fa-question"></i></a>
+    </div>
+    <!--    </div>-->
+    <div class="col-md-12">
         <div class="tabbable">
             <ul class="nav nav-tabs wizard step-list">
                 {{#each viewData.stepList}}
@@ -135,15 +171,15 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </ul>
         </div>
     </div>
-    <div class="col-md-2">
-        <div class="tabbable">
-            <ul class="nav nav-tabs wizard">
-                <li>
-                    <a href="#next-step" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus fa-fw"></i>INCIDENTE</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+<!--    <div class="col-md-2" style="display: none;">-->
+<!--        <div class="tabbable">-->
+<!--            <ul class="nav nav-tabs wizard">-->
+<!--                <li>-->
+<!--                    <a href="#" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus fa-fw"></i>INCIDENTE</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="col-md-9">
         <section>
             <div class="wizard">
@@ -212,6 +248,9 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             {{stepName}}
         </a>
     {{/each}}
+    <a class="btn btn-block btn-social btn-info btn-xs add-incident" data-status-id="{{project.status_pro}}" data-project-id="{{project.id_pro}}">
+        Incidente
+    </a>
     <a class="btn btn-block btn-social btn-danger btn-xs cancel-add-step">
         Cancelar
     </a>

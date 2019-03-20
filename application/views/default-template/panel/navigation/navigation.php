@@ -6,7 +6,7 @@
  * Time: 21:45
  */
 ?>
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-static-top box-shadow-2" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -211,7 +211,7 @@
             <!-- /.dropdown-alerts -->
         </li>
         <!-- /.dropdown -->
-        <li class="dropdown">
+        <li class="dropdown navigation-user-options">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i> <?=$sessionUser->firstName?> <i class="fa fa-caret-down"></i>
             </a>
@@ -230,7 +230,7 @@
     </ul>
     <!-- /.navbar-top-links -->
 
-    <div class="navbar-default sidebar" role="navigation">
+    <div class="navbar-default sidebar box-shadow-2" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
                 <li class="sidebar-search hide">

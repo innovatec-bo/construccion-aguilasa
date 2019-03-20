@@ -6,7 +6,7 @@
  * Time: 22:33
  */
 ?>
-<div class="container-fluid">
+<div class="container-fluid box-shadow-2">
     <?php
     $this->load->view("default-template/panel/content/dashboard/heading");
     ?>

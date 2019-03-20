@@ -144,6 +144,7 @@ function IncidentHandler() {
             let statusId = $(this).data("status-id");
             let projectId = $(this).data("project-id");
             _this.add(undefined, statusId, projectId);
+            $('.popover').popover('destroy');
         });
     };
 }

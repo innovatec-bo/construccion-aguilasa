@@ -261,13 +261,15 @@ class StatusManagementHandler
 
     launchStepSelector(button, nextStepObjectArray)
     {
-        let data = {nextStepObjectArray:nextStepObjectArray};
+        let project = this.viewData.project;
+        let data = {nextStepObjectArray:nextStepObjectArray, project:project };
         let html = this.getHandlebarHtml("#ht-select-next-step", data);
         button.parent().popover("destroy");
         button.parent().popover({
             title:'Elija el siguiente paso',
             html:true,
-            content:html
+            content:html,
+            placement:'auto'
         });
         button.parent().trigger("click");
     }

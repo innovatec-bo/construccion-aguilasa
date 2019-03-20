@@ -201,13 +201,15 @@ var StatusManagementHandler = (function () {
         }
     };
     StatusManagementHandler.prototype.launchStepSelector = function (button, nextStepObjectArray) {
-        var data = { nextStepObjectArray: nextStepObjectArray };
+        var project = this.viewData.project;
+        var data = { nextStepObjectArray: nextStepObjectArray, project: project };
         var html = this.getHandlebarHtml("#ht-select-next-step", data);
         button.parent().popover("destroy");
         button.parent().popover({
             title: 'Elija el siguiente paso',
             html: true,
-            content: html
+            content: html,
+            placement: 'auto'
         });
         button.parent().trigger("click");
     };

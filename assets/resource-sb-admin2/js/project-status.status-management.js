@@ -9,133 +9,24 @@ $(function() {
     statusManagementHandler.loadView();
     statusManagementHandler.loadEventHandler();
 
-    // var status = $("ul.wizard li.active a").prop("id");
-        // getProjectLog();
-        // loadStatusForm(status);
-    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    //     if(!$(this).parent().hasClass("disabled"))
-    //     {
-    //         status = $(e.target).attr("id");
-    //         loadStatusForm(status);
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // });
-    // $(document).on("click","#next-step",function(e){
-    //     e.preventDefault();
-    //     $("ul.wizard li.active").next().find("a").trigger("click");
-    // });
-    // $(document).on("click", ".check-stakes-team",function(e){
-    //     e.preventDefault();
-    //     getStakesLeaderProjects();
-    // });
-
-    $(document).on("click",".save-status_deprecated",function(e){
-        e.preventDefault();
-        let $form = $("form[name=status-management]");
-        let statusKeyword = $(this).data("status-keyword");
-        let statusId = $(this).data("status-id");
-        let $button = $(this);
-
-        if($form.parsley().isValid({group: statusKeyword}))
-        {
-            let $content = $("#status-form-content");
-            blockArea($content);
-            switch(statusKeyword)
-            {
-                case "rd_stakes":
-                case "stakes":
-                    saveStakesTeam(statusId,statusKeyword);
-                    break;
-                case "returned":
-                    saveReturned(statusId,statusKeyword);
-                    break;
-                case "ri_digitization":
-                case "rd_digitization":
-                case "digitization":
-                    saveDigitization(statusId,statusKeyword,$button);
-                    break;
-                case "ri_drawing":
-                case "rd_drawing":
-                case "drawing":
-                    saveDrawing(statusId,statusKeyword,$button);
-                    break;
-                case "schedule":
-                    saveSchedule(statusId,statusKeyword);
-                    break;
-                case "already_sent":
-                    saveAlreadySent(statusId,statusKeyword);
-                    break;
-                case "rectify_design":
-                    saveRectifyDesign(statusId,statusKeyword);
-                    break;
-                case "rectify_illustration":
-                    saveRectifyIllustration(statusId,statusKeyword);
-                    break;
-                case "approved":
-                    saveApproved(statusId,statusKeyword);
-                    break;
-                case "canceled":
-                    saveCanceled(statusId,statusKeyword);
-                    break;
-                case "in_progress":
-                    saveInProgress(statusId,statusKeyword);
-                    break;
-                case "paused":
-                case "stopped":
-                case "completed":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "project_energized":
-                    saveProjectEnergized(statusId, statusKeyword);
-                    break;
-                case "as_built":
-                    saveAsBuilt(statusId, statusKeyword);
-                    break;
-                case "conciliation_reception":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "conciliation_shipment":
-                    saveConciliationShipment(statusId, statusKeyword);
-                    break;
-                case "cre_return_order":
-                    saveCreReturnOrder(statusId,statusKeyword);
-                    break;
-                case "project_return_materials":
-                case "project_real_budget_confirmation":
-                    saveBasicLog(statusId, statusKeyword);
-                    break;
-                default:
-                    bootbox.alert("Disculpe las molestias, aun no se ha programado la logica para el guardado de los datos en esta etapa");
-                    break;
-            }
-        }
-        else
-        {
-            $form.parsley().validate({group: statusKeyword});
-        }
-
-    });
-
-    // $(document).on("click",".send-to-rectify",function(e){
-    //     e.preventDefault();
-    //     var statusKeyword = $(this).data("status-keyword");
-    //     loadStatusForm(statusKeyword,1);
-    // });
-
-    $(document).on("click",".check-incidents",function(e){
-        e.preventDefault();
-
-    });
-
     $(document).on("keyup","input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function(){
        updateTotalOnApprovedForm();
     });
 
+    $(document).on("click",".show-detail", function(e){
+       e.preventDefault();
+       $("#basic-data").slideToggle();
+       $("#history-content").slideUp();
+    });
+    $(document).on("click",".show-history", function(e){
+        e.preventDefault();
+        $("#history-content").slideToggle();
+        $("#basic-data").slideUp();
+    });
+
 });
 
-function getStakesLeaderProjects()
+function getStakesLeaderProjects_deprecated()
 {
     $.ajax({
         url : base_url + 'panel/AjaxProject/getStakesLeaderProjects',

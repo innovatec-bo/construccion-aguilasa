@@ -94,34 +94,37 @@ blockquote dl
     min-height:65px;
 }
 
-#btn-detail-content, #btn-history-content
+#btn-detail-content, #btn-history-content, #btn-help-content
 {
     display: none;
 }
-
+#help-content
+{
+    display: none;
+}
 .step-icon
 {
     display: none;
 }
-#btn-history-content a.btn-social>:first-child
-{
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 32px;
-    line-height: 34px;
-    font-size: 1.6em;
-    text-align: center;
-    border-left: 1px solid rgba(0,0,0,0.2);
-}
 @media (max-width: 375px)
 {
-    #btn-detail-content, #btn-history-content
+    #add-incident
+    {
+        /*display: none;*/
+    }
+    #btn-detail-content, #btn-history-content, #btn-help-content
     {
         display: block;
+        width: auto;
+        margin-left: 13px;
+        padding-right: 0;
+        padding-left: 0;
     }
 
+    #btn-detail-content a, #btn-history-content a, #btn-help-content a
+    {
+        z-index: 9;
+    }
     #basic-data
     {
         position:absolute;
@@ -141,6 +144,18 @@ blockquote dl
         background-color:rgba(15, 15, 27, 0.6);
         padding-top:20px;
         display:none;
+        top:190px;
+        right:0px;
+        margin-right:15px;
+    }
+    #help-content
+    {
+        position:absolute;
+        width:80%;
+        z-index:4;
+        background-color:rgba(15, 15, 27, 0.6);
+        padding-top:20px;
+        display:block;
         top:190px;
         right:0px;
         margin-right:15px;
