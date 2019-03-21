@@ -118,27 +118,24 @@ $entryDate = date_format($entryDate, 'd-m-Y');
     <div id="help-content">
         <div class="row">
             <div class="col-md-12">
+                <p>
+                    La descripcion de los iconos puede variar de acuerdo a la etapa(Diseño, aprobacion, construccion).
+                </p>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped js-options-table js-options-table">
                         <thead>
                         <tr>
-                            <th>Icono</th>
+                            <th style="width:5%;">Icono</th>
                             <th>Descripcion</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><i class="fa fa-building fa-3x"></i></td>
-                            <td>boolean</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa fa-check-square-o fa-3x"></i></td>
-                            <td>boolean</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fa fa-flash fa-3x"></i></td>
-                            <td>boolean</td>
-                        </tr>
+                        {{#each viewData.statusList}}
+                            <tr>
+                                <td><i class="{{status_icon_pst}} fa-3x"></i></td>
+                                <td>{{status_name_pst}}</td>
+                            </tr>
+                        {{/each}}
                         </tbody>
                     </table>
                 </div>

@@ -154,11 +154,25 @@ blockquote dl
         width:80%;
         z-index:4;
         background-color:rgba(15, 15, 27, 0.6);
-        padding-top:20px;
+        padding-top: 9px;
+        padding-left: 7px;
+        padding-right: 7px;
         display:block;
         top:190px;
         right:0px;
         margin-right:15px;
+        border: 1px solid;
+    }
+    #help-content p
+    {
+        color:#fff;
+        background-color:rgba(15, 15, 27, 0.6);
+        padding:3px;
+    }
+    #help-content .table
+    {
+        background-color:#fff;
+        text-align:center;
     }
     #status-form-content .well, #status-form-content h4
     {

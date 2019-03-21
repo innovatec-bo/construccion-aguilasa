@@ -74,6 +74,7 @@ var StatusManagementHandler = (function () {
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
+        this.viewData.statusList = statusList;
         this._defineBreadCrumb();
         this.viewData.stepTree = stepTree;
         this._includeBtnAddStep();
