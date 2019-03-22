@@ -21,14 +21,14 @@ $(function() {
     });
     $(document).on("click",".show-history", function(e){
         e.preventDefault();
-        $("#history-content").slideToggle();
         $("#basic-data").slideUp();
+        $("#history-content").animate({width:'toggle'},350);
         $("#help-content").slideUp();
     });
     $(document).on("click",".show-help", function(e){
         e.preventDefault();
-        $("#history-content").slideUp();
         $("#basic-data").slideUp();
+        $("#history-content").slideUp();
         $("#help-content").animate({width:'toggle'},350);
     });
 
