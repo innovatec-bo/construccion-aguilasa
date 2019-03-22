@@ -119,11 +119,25 @@ blockquote dl
         margin-left: 13px;
         padding-right: 0;
         padding-left: 0;
+        top: 6px;
+        position: absolute;
     }
 
     #btn-detail-content a, #btn-history-content a, #btn-help-content a
     {
         z-index: 9;
+    }
+    #btn-detail-content
+    {
+        left: 4px;
+    }
+    #btn-history-content
+    {
+        left: 46px;
+    }
+    #btn-help-content
+    {
+        left: 89px;
     }
     #basic-data
     {
@@ -134,8 +148,8 @@ blockquote dl
         padding-top:20px;
         margin-left:15px;
         display:none;
-        top:230px;
-        height: 35vh;
+        top: 78px;
+        height: 300px;
         overflow: auto;
     }
 
@@ -151,13 +165,13 @@ blockquote dl
         background-color:rgba(15, 15, 27, 0.6);
         padding-top:20px;
         display:none;
-        top:230px;
-        right:0px;
+        top: 78px;
+        /* right:0px; */
         margin-right:15px;
     }
     #history-content .panel-body
     {
-        height: 35vh!important;
+        height: 300px!important;
     }
     #history-content .quick-log-status-name
     {
@@ -177,8 +191,8 @@ blockquote dl
         padding-left: 7px;
         padding-right: 7px;
         /*display:block;*/
-        top:230px;
-        right:0px;
+        top: 78px;
+        left: 0px;
         margin-right:15px;
         border: 1px solid;
     }
@@ -197,7 +211,7 @@ blockquote dl
     #help-content .table-responsive
     {
         overflow-y: auto;
-        height: 35vh;
+        height: 300px;
     }
 
     #help-content .icon-description

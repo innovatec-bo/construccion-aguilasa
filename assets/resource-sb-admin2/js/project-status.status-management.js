@@ -21,7 +21,7 @@ $(function() {
     });
     $(document).on("click",".show-history", function(e){
         e.preventDefault();
-        $("#history-content").slideDown();
+        $("#history-content").slideToggle();
         $("#basic-data").slideUp();
         $("#help-content").slideUp();
     });

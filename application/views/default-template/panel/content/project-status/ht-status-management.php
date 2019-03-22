@@ -146,16 +146,21 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 
     <!--    <div class="row">-->
     <div class="col-xs-5" id="btn-detail-content">
-        <a class="btn btn-block btn-social btn-primary show-detail">
-            <i class="fa fa-tags"></i> Detalle
-        </a>
+<!--        <a class="btn btn-block btn-social btn-primary show-detail">-->
+<!--            <i class="fa fa-tags"></i> Detalle-->
+<!--        </a>-->
+        <a class="btn btn-social-icon btn-primary show-detail"><i class="fa fa-tags"></i></a>
     </div>
     <div class="col-xs-5" id="btn-history-content">
-        <a class="btn btn-block btn-social btn-primary show-history">
-            <i class="fa fa-book"></i> Historial
-        </a>
+<!--        <a class="btn btn-block btn-social btn-primary show-history">-->
+<!--            <i class="fa fa-book"></i> Historial-->
+<!--        </a>-->
+        <a class="btn btn-social-icon btn-primary show-history"><i class="fa fa-book"></i></a>
     </div>
     <div class="col-xs-2" id="btn-help-content">
+<!--        <a class="btn btn-block btn-social btn-info show-help">-->
+<!--            <i class="fa fa-question"></i> Ayuda-->
+<!--        </a>-->
         <a class="btn btn-social-icon btn-info show-help"><i class="fa fa-question"></i></a>
     </div>
     <!--    </div>-->
