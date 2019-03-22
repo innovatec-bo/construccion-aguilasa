@@ -231,7 +231,7 @@
     <!-- /.navbar-top-links -->
 
     <div class="navbar-default sidebar box-shadow-2" role="navigation">
-        <div class="sidebar-nav navbar-collapse">
+        <div class="sidebar-nav navbar-collapse collapse" aria-expanded="false" style="height: 1px">
             <ul class="nav in" id="side-menu">
                 <li class="sidebar-search hide">
                     <div class="input-group custom-search-form">
