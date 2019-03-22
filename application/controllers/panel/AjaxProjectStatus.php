@@ -770,6 +770,7 @@ class AjaxProjectStatus extends PrivateController
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
         $data["statusList"] = $statusListArray;
+        $data["statusArray"] = array_values($statusListArray);
         $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);

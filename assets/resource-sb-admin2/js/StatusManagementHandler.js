@@ -47,6 +47,7 @@ var StatusManagementHandler = (function () {
         var projectLog = this.loadViewResponse.data.projectLog;
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
+        var statusArray = this.loadViewResponse.data.statusArray;
         var statusSet = this.loadViewResponse.data.statusSet;
         var stepTree = this.loadViewResponse.data.stepTree;
         var updateHistory = this.loadViewResponse.data.updateHistory;
@@ -75,6 +76,7 @@ var StatusManagementHandler = (function () {
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;
+        this.viewData.statusArray = statusArray;
         this._defineBreadCrumb();
         this.viewData.stepTree = stepTree;
         this._includeBtnAddStep();

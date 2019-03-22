@@ -38,10 +38,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <i class="fa fa-cogs fa-2x"></i>
                         </div>
-                        <div class="col-md-9 text-right">
+                        <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.system}}</div>
                         </div>
                     </div>
@@ -53,10 +53,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <i class="fa fa-calendar fa-2x"></i>
                         </div>
-                        <div class="col-md-9 text-right">
+                        <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
                         </div>
                     </div>
@@ -68,10 +68,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <i class="fa fa-user fa-2x"></i>
                         </div>
-                        <div class="col-md-9 text-right">
+                        <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</div>
                         </div>
                     </div>
@@ -83,10 +83,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <i class="fa fa-map-marker fa-2x"></i>
                         </div>
-                        <div class="col-md-9 text-right">
+                        <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.address_pro}}</div>
                         </div>
                     </div>
@@ -98,10 +98,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             <div class="panel panel-info status-management-card">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <i class="fa fa-arrows-alt fa-2x"></i>
                         </div>
-                        <div class="col-md-9 text-right">
+                        <div class="col-md-9 col-xs-10 text-right">
                             <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
                         </div>
                     </div>
@@ -130,10 +130,10 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                         </tr>
                         </thead>
                         <tbody>
-                        {{#each viewData.statusList}}
+                        {{#each viewData.statusArray}}
                             <tr>
                                 <td><i class="{{status_icon_pst}} fa-3x"></i></td>
-                                <td>{{status_name_pst}}</td>
+                                <td class="icon-description">{{status_name_pst}}</td>
                             </tr>
                         {{/each}}
                         </tbody>

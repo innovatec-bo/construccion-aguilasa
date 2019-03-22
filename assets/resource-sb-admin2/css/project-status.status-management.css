@@ -134,7 +134,14 @@ blockquote dl
         padding-top:20px;
         margin-left:15px;
         display:none;
-        top:190px;
+        top:230px;
+        height: 35vh;
+        overflow: auto;
+    }
+
+    #basic-data .status-management-card
+    {
+        font-size:20px;
     }
     #history-content
     {
@@ -144,9 +151,21 @@ blockquote dl
         background-color:rgba(15, 15, 27, 0.6);
         padding-top:20px;
         display:none;
-        top:190px;
+        top:230px;
         right:0px;
         margin-right:15px;
+    }
+    #history-content .panel-body
+    {
+        height: 35vh!important;
+    }
+    #history-content .quick-log-status-name
+    {
+        font-size: 16px;
+    }
+    blockquote
+    {
+        font-size: 15px;
     }
     #help-content
     {
@@ -157,8 +176,8 @@ blockquote dl
         padding-top: 9px;
         padding-left: 7px;
         padding-right: 7px;
-        display:block;
-        top:190px;
+        /*display:block;*/
+        top:230px;
         right:0px;
         margin-right:15px;
         border: 1px solid;
@@ -174,10 +193,30 @@ blockquote dl
         background-color:#fff;
         text-align:center;
     }
+
+    #help-content .table-responsive
+    {
+        overflow-y: auto;
+        height: 35vh;
+    }
+
+    #help-content .icon-description
+    {
+        font-size: 20px;
+    }
+
+    #status-form-content, #status-form-content .form-control
+    {
+        font-size: 20px;
+    }
     #status-form-content .well, #status-form-content h4
     {
         font-size:25px;
         font-weight:600
+    }
+    #status-form-content button.save-status
+    {
+        width: 100%;
     }
     #status-management-content .step-name
     {

@@ -15,13 +15,21 @@ $(function() {
 
     $(document).on("click",".show-detail", function(e){
        e.preventDefault();
-       $("#basic-data").slideToggle();
+       $("#basic-data").animate({width:'toggle'},350);
        $("#history-content").slideUp();
+       $("#help-content").slideUp();
     });
     $(document).on("click",".show-history", function(e){
         e.preventDefault();
-        $("#history-content").slideToggle();
+        $("#history-content").slideDown();
         $("#basic-data").slideUp();
+        $("#help-content").slideUp();
+    });
+    $(document).on("click",".show-help", function(e){
+        e.preventDefault();
+        $("#history-content").slideUp();
+        $("#basic-data").slideUp();
+        $("#help-content").animate({width:'toggle'},350);
     });
 
 });

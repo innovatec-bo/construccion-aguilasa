@@ -74,6 +74,7 @@ class StatusManagementHandler
         let projectLog = this.loadViewResponse.data.projectLog;
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
+        let statusArray = this.loadViewResponse.data.statusArray;
         let statusSet = this.loadViewResponse.data.statusSet;
         let stepTree = this.loadViewResponse.data.stepTree;
         let updateHistory = this.loadViewResponse.data.updateHistory;
@@ -107,6 +108,7 @@ class StatusManagementHandler
         this.viewData.project.system = projectSystems[project.system_pro];
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;
+        this.viewData.statusArray = statusArray;
         this._defineBreadCrumb();
         this.viewData.stepTree = stepTree;
         this._includeBtnAddStep();
