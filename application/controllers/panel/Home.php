@@ -28,13 +28,12 @@ class Home extends PrivateController
         $this->_loadPanelView('home/index');
     }
 
-//    public function createWarehouse()
-//    {
-//        $projectList = Model_project::getApprovedProjectWithoutWarehouse();
-//        foreach ($projectList as $arrayItem)
-//        {
-//            $project = Model_project::getById($arrayItem["id_pro"]);
-//            $project->startWarehouseProcess("Y-m-d H:i:s");
-//        }
-//    }
+    public function jpgraphTest()
+    {
+//        $jpGraphHandler = new JPGraphHandler();
+//        $jpGraphHandler->printPieChart3D();
+
+        $TCPDFHandler = new TCPDFHandler();
+        $TCPDFHandler->test();
+    }
 }
