@@ -1649,7 +1649,7 @@ class Model_project extends Model_project_base
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON id_pst = status_id_psl
             WHERE
-                keyword_pst = 'approved'
+                keyword_pst in ('approved', 'schedule')
             AND deleted_psl != 1
             GROUP BY
                 project_id_psl
