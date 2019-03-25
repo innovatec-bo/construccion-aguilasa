@@ -516,7 +516,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 if (sendToApprovement == 1) {
                     window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/" + data.projectId;
                 }
@@ -539,7 +539,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 if (sendToApprovement == 1) {
                     window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/" + data.projectId;
                 }
@@ -566,7 +566,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -579,7 +579,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/" + _this.projectId;
             }
         });
@@ -592,7 +592,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/" + _this.projectId;
             }
         });
@@ -624,7 +624,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -644,7 +644,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -665,7 +665,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: data,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -685,7 +685,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -703,7 +703,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -729,7 +729,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -742,7 +742,7 @@ var StatusManagementHandler = (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function (response) {
+            success: function () {
                 _this.loadView();
             }
         });
@@ -756,7 +756,7 @@ var StatusManagementHandler = (function () {
         });
         var entryDate = $("input[name=" + statusKeyword + "-entry-date]").val();
         var statusDetail = $("textarea[name=" + statusKeyword + "-detail]").val();
-        var data = {
+        return {
             projectId: projectId,
             entryDate: entryDate,
             statusId: statusId,
@@ -764,7 +764,6 @@ var StatusManagementHandler = (function () {
             statusDetail: statusDetail,
             responsibleList: responsibleList
         };
-        return data;
     };
     StatusManagementHandler.prototype.processTree = function (tree, index, breadCrumb) {
         for (var i = 0; i < tree.length; i++) {
@@ -826,6 +825,9 @@ var StatusManagementHandler = (function () {
             e.preventDefault();
             var $button = $(this);
             _this.saveStatus($button);
+        });
+        $(document).on("keyup", "input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function () {
+            StatusManagementHandler.updateTotalOnApprovedForm();
         });
     };
     return StatusManagementHandler;

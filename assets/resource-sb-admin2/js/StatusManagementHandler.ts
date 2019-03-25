@@ -596,7 +596,6 @@ class StatusManagementHandler
     saveDigitization(statusId, statusKeyword, button)
     {
         let _this = this;
-
         let data = this.prepareDataToSave(statusId, statusKeyword);
         let projectPoints = $("input[name=project-points]").val();
         let projectDistance = $("input[name=project-meters-distance]").val();
@@ -617,7 +616,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 if(sendToApprovement == 1)
                 {
                     window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+data.projectId;
@@ -644,7 +643,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 if(sendToApprovement == 1)
                 {
                     window.location = base_url + "panel/ProjectStatus/statusManagement/approvement/"+data.projectId;
@@ -675,7 +674,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -691,13 +690,13 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_design/"+_this.projectId;
             }
         });
     }
 
-    saveRectifyIllustration(statusId,statusKeyword)
+    saveRectifyIllustration(statusId, statusKeyword)
     {
         let _this = this;
         let dataResult = this.prepareDataToSave(statusId, statusKeyword);
@@ -707,7 +706,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 window.location = base_url + "panel/ProjectStatus/statusManagement/rectify_illustration/"+_this.projectId;
             }
         });
@@ -742,7 +741,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -765,7 +764,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -790,7 +789,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : data,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -812,7 +811,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -833,7 +832,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -864,7 +863,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -880,7 +879,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(response){
+            success:function(){
                 _this.loadView();
             }
         });
@@ -896,7 +895,7 @@ class StatusManagementHandler
         });
         let entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
         let statusDetail = $("textarea[name="+statusKeyword+"-detail]").val();
-        let data = {
+        return  {
             projectId: projectId,
             entryDate:entryDate,
             statusId: statusId,
@@ -904,7 +903,6 @@ class StatusManagementHandler
             statusDetail: statusDetail,
             responsibleList:responsibleList
         };
-        return data;
     }
 
     processTree(tree, index, breadCrumb)
@@ -983,6 +981,10 @@ class StatusManagementHandler
            e.preventDefault();
            let $button = $(this);
            _this.saveStatus($button);
+        });
+
+        $(document).on("keyup","input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function(){
+            StatusManagementHandler.updateTotalOnApprovedForm();
         });
     }
 }
