@@ -246,29 +246,7 @@ class AjaxDashboard extends PrivateController
             $management = $formData["management"];
             $contract = $formData["contract"];
         }
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
-        $arrayData = array();
-        $totalApprovedBudget = 0;
-        $totalRealBudget = 0;
-        $totalProjects = 0;
-        foreach ($currentStatusSummary as $summary)
-        {
-            $totalApprovedBudget += $summary["keyword"] !="canceled"?$summary["approved_budgets"]:"0";
-            $totalRealBudget += $summary["keyword"] !="canceled"?$summary["real_budgets"]:"0";
-            $totalProjects += $summary["total_projects"];
-            $arrayData[] = array(
-                "keyword" => $summary["keyword"],
-                "statusName" => $summary["status_name"],
-                "totalProjects" => $summary["total_projects"],
-                "approvedBudgets" => number_format($summary["approved_budgets"],2),
-                "realBudgets" => number_format($summary["real_budgets"],2)
-            );
-        }
-        $response["success"] = 1;
-        $response["data"]["list"] = $arrayData;
-        $response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
-        $response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
-        $response["data"]["totalProjects"] = $totalProjects;
+        $response = Model_project::prepareCurrentStatusSummaryArray($system, $management, $contract);
 
         if($ajaxRequest)
         {
@@ -330,90 +308,8 @@ class AjaxDashboard extends PrivateController
             $management = $formData["management"];
             $contract = $formData["contract"];
         }
-        $contractAmount = 0;
-        $contractList = Model_contract::getAll(100, 0);
-        foreach ($contractList as $stdClass)
-        {
-            $contractAmount += $stdClass->amount_con;
-            if($stdClass->id_con == $contract)
-            {
-                $contractAmount = $stdClass->amount_con;
-                break;
-            }
-        }
-        $currentStatusSummary = Model_project::projectCurrentStatusSummary($system, $management, $contract);
-        $reportSections = array(
-//            "recentlyCreated" => array("title" => "Solo registro", "section" => "recentlyCreated", "keywords" => array("project_has_been_created")),
-            "readyToDesign" => array("title" => "Listo para diseño", "section" => "readyToDesign", "keywords" => array("design"), "keywordStringList" => "design"),
-            "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing"), "keywordStringList" => "stakes,digitization,drawing"),
-            "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent"), "keywordStringList" => "schedule,ready_to_send,already_sent"),
-            "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped"), "keywordStringList" => "assign_to,approved,in_progress,paused,stopped"),
-            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
-            "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"), "keywordStringList" => "project_return_materials,project_real_budget_confirmation,project_closed,payment_order_has_been_settled")
-        );
-        $groupList = array();
-        $totalProjects = 0;
-        $totalApprovedBudget = 0;
-        $totalApprovedBudgetBySection = 0;
-        $totalRealBudget = 0;
-        $totalProjectsBySection = 0;
-        foreach ($reportSections as $groupKey => $data)
-        {
-            $groupKeywords =  $data["keywords"];
-            for($i = 0; $i < count($groupKeywords); $i++)
-            {
-                for($j = 0; $j < count($currentStatusSummary); $j++)
-                {
-                    if($groupKeywords[$i] == $currentStatusSummary[$j]["keyword"])
-                    {
-                        $groupList[] = $currentStatusSummary[$j];
-                        $totalProjectsBySection += $currentStatusSummary[$j]["total_projects"];
-                        $totalProjects += $currentStatusSummary[$j]["total_projects"];
-                        $totalApprovedBudgetBySection += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalApprovedBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalRealBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["real_budgets"]:"0";
-                    }
-                }
-            }
 
-            $reportSections[$groupKey]["list"] = $groupList;
-            $reportSections[$groupKey]["totalProjectsBySection"] = $totalProjectsBySection;
-            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $totalApprovedBudgetBySection;
-            $reportSections[$groupKey]["totalRealBudget"] = $totalRealBudget;
-
-            $groupList = array();
-            $totalProjectsBySection = 0;
-            $totalApprovedBudgetBySection = 0;
-            $totalRealBudget = 0;
-        }
-
-        $totalPercentageProjects = 0;
-        $totalPercentageApprovedBudget = 0;
-        $totalContractAmountPercentage = 0;
-        foreach ($reportSections as $groupKey => $data)
-        {
-            $totalProjectsBySection = $reportSections[$groupKey]["totalProjectsBySection"];
-            $totalPercentageProjectsBySection = $totalProjectsBySection <= 0?0:($totalProjectsBySection*100) / $totalProjects;
-            $reportSections[$groupKey]["totalPercentageProjectsBySection"] = number_format($totalPercentageProjectsBySection,2);
-            $totalPercentageProjects += $totalPercentageProjectsBySection;
-
-            $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
-            $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
-            $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
-            $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
-
-            $contractAmountPercentageBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $contractAmount;
-            $totalContractAmountPercentage += $contractAmountPercentageBySection;
-            $reportSections[$groupKey]["contractAmountPercentageBySection"] = number_format($contractAmountPercentageBySection, 2);
-        }
-        $response["success"] = 1;
-        $response["totalProjects"] = $totalProjects;
-        $response["totalPercentageProjects"] = $totalPercentageProjects;
-        $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
-        $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
-        $response["totalContractAmountPercentage"] = number_format($totalContractAmountPercentage, 2);
-        $response["totalContractAmount"] = $contractAmount;
-        $response["list"] = array_values($reportSections);
+        $response = Model_project::prepareExecutiveSummaryArray($system, $management, $contract);
 
         if($ajaxRequest)
         {
