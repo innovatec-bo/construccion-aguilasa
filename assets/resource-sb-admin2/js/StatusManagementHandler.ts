@@ -72,6 +72,7 @@ class StatusManagementHandler
     {
         let project = this.loadViewResponse.data.projectFullDetail;
         let projectLog = this.loadViewResponse.data.projectLog;
+        let allowUpdateHistory = this.loadViewResponse.data.updateHistory;
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusArray = this.loadViewResponse.data.statusArray;
@@ -100,6 +101,7 @@ class StatusManagementHandler
         this.viewData.statusName = statusName;
         this.viewData.project = project;
         this.viewData.projectLog = projectLog;
+        this.viewData.allowUpdateHistory = allowUpdateHistory;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
         this.viewData.responsibleList = responsibleList;
