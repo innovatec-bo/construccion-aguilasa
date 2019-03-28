@@ -31,19 +31,19 @@
             {{#each projectTotalsList}}
                 <tr>
                     <th>{{criteria}}</th>
-                    <td class="text-center">{{numberFormat january}}</td>
-                    <td class="text-center">{{numberFormat february}}</td>
-                    <td class="text-center">{{numberFormat march}}</td>
-                    <td class="text-center">{{numberFormat april}}</td>
-                    <td class="text-center">{{numberFormat may}}</td>
-                    <td class="text-center">{{numberFormat june}}</td>
-                    <td class="text-center">{{numberFormat july}}</td>
-                    <td class="text-center">{{numberFormat august}}</td>
-                    <td class="text-center">{{numberFormat september}}</td>
-                    <td class="text-center">{{numberFormat october}}</td>
-                    <td class="text-center">{{numberFormat november}}</td>
-                    <td class="text-center">{{numberFormat december}}</td>
-                    <td class="text-center">{{numberFormat total}}</td>
+                    <td class="text-center">{{january}}</td>
+                    <td class="text-center">{{february}}</td>
+                    <td class="text-center">{{march}}</td>
+                    <td class="text-center">{{april}}</td>
+                    <td class="text-center">{{may}}</td>
+                    <td class="text-center">{{june}}</td>
+                    <td class="text-center">{{july}}</td>
+                    <td class="text-center">{{august}}</td>
+                    <td class="text-center">{{september}}</td>
+                    <td class="text-center">{{october}}</td>
+                    <td class="text-center">{{november}}</td>
+                    <td class="text-center">{{december}}</td>
+                    <td class="text-center">{{total}}</td>
                 </tr>
             {{/each}}
             </tbody>

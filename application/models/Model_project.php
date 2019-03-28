@@ -1846,6 +1846,7 @@ class Model_project extends Model_project_base
             $totalPercentageProjects += $totalPercentageProjectsBySection;
 
             $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
+            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = number_format($reportSections[$groupKey]["totalApprovedBudgetBySection"],2);
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
@@ -1860,9 +1861,102 @@ class Model_project extends Model_project_base
         $response["totalApprovedBudget"] = number_format($totalApprovedBudget, 2);
         $response["totalPercentageApprovedBudget"] = $totalPercentageApprovedBudget;
         $response["totalContractAmountPercentage"] = number_format($totalContractAmountPercentage, 2);
-        $response["totalContractAmount"] = $contractAmount;
+        $response["totalContractAmount"] = number_format($contractAmount);
         $response["list"] = array_values($reportSections);
 
         return $response;
+    }
+
+    public static function prepareProjectTotalsTableArray($year = "", $dataType = "", $contractId = "")
+    {
+        $response = array();
+        $statusList = array(
+            'project_has_been_created' => 'INGRESADOS',
+            'already_sent' => 'DISEÑADOS',
+            'approved' => 'APROBADOS',
+            'as_built' => 'CONSTRUIDOS',
+            'conciliation_shipment' => 'CONCILIADOS',
+            'project_real_budget_confirmation' => 'CON # ORDEN');
+        $projectTotalsList = array();
+        foreach ($statusList as $keyword => $criteria)
+        {
+            $keywordFilter = $dataType == "countId"?$keyword:"approved";
+            $data = Model_project::getStatusQuantityDetailByYear($keywordFilter, $year, $dataType, $keyword, $contractId);
+            //this method eval if the response has more than 1 result, if so then the result are stored in an unique array
+
+            $data = static::_sumData($data);
+            if(count($data) >= 1)
+            {
+                $data = PublicController::array_unshift_assoc($data[0], 'criteria', $criteria);
+                $data = PublicController::array_unshift_assoc($data, 'criteriaKeyword', $keyword);
+            }
+            else
+            {
+                $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
+                $data = PublicController::array_unshift_assoc($data[0], 'criteria', $criteria);
+                $data = PublicController::array_unshift_assoc($data, 'criteriaKeyword', $keyword);
+            }
+            $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
+            $projectTotalsList[] = static::_formatTotalTable($data, $dataType);
+        }
+        $response["success"] = 1;
+        $response["data"] = $projectTotalsList;
+        return $response;
+    }
+
+    private static function _sumData($data = array())
+    {
+
+        if(count($data) > 1)
+        {
+            $result = array();
+            $result["year"] = "";
+            $result['january'] = 0;
+            $result['february'] = 0;
+            $result['march'] = 0;
+            $result['april'] = 0;
+            $result['may'] = 0;
+            $result['june'] = 0;
+            $result['july'] = 0;
+            $result['august'] = 0;
+            $result['september'] = 0;
+            $result['october'] = 0;
+            $result['november'] = 0;
+            $result['december'] = 0;
+
+            foreach ($data as $key => $value)
+            {
+                $result['january'] += $value['january'];
+                $result['february'] += $value['february'];
+                $result['march'] += $value['march'];
+                $result['april']  += $value['april'];
+                $result['may'] += $value['may'];
+                $result['june'] += $value['june'];
+                $result['july'] += $value['july'];
+                $result['august'] += $value['august'];
+                $result['september'] += $value['september'];
+                $result['october'] += $value['october'];
+                $result['november'] += $value['november'];
+                $result['december'] += $value['december'];
+            }
+            $data = array($result);
+        }
+
+        return $data;
+    }
+
+    private static function _formatTotalTable($result = array(), $dataType)
+    {
+        if($dataType == "sumBudget")
+        {
+            foreach ($result as $key => $value)
+            {
+                if($key != "criteriaKeyword" && $key != "criteria" && $key != "year")
+                {
+                    $result[$key] = number_format($result[$key], 2);
+                }
+            }
+        }
+        return $result;
     }
 }

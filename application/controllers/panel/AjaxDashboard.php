@@ -25,81 +25,12 @@ class AjaxDashboard extends PrivateController
         $dataType = isset($formData["dataType"])?$formData["dataType"]:"countId";
         $contractId = isset($formData["contractId"])?$formData["contractId"]:"";
 
-        $response = array();
-        $statusList = array(
-            'project_has_been_created' => 'INGRESADOS',
-            'already_sent' => 'DISEÑADOS',
-            'approved' => 'APROBADOS',
-            'as_built' => 'CONSTRUIDOS',
-            'conciliation_shipment' => 'CONCILIADOS',
-            'project_real_budget_confirmation' => 'CON # ORDEN');
-        $projectTotalsList = array();
-        foreach ($statusList as $keyword => $criteria)
-        {
-            $keywordFilter = $dataType == "countId"?$keyword:"approved";
-            $data = Model_project::getStatusQuantityDetailByYear($keywordFilter, $year, $dataType, $keyword, $contractId);
-            //this method eval if the response has more than 1 result, if so then the result are stored in an unique array
-            $data = static::sumData($data);
-//            echo"<pre>";var_dump($keywordFilter, $year, $dataType, $keyword, $contractId, $data, $data1);exit;
-            if(count($data) >= 1)
-            {
-                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
-            }
-            else
-            {
-                $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
-                $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                $data = $this->_array_unshift_assoc($data, 'criteriaKeyword', $keyword);
-            }
-            $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
-                $projectTotalsList[] = $data;
-        }
-        $response["success"] = 1;
-        $response["data"] = $projectTotalsList;
+        $response = Model_project::prepareProjectTotalsTableArray($year, $dataType, $contractId);
+
         echo json_encode($response);exit;
     }
 
-    public static function sumData($data = array())
-    {
 
-        if(count($data) > 1)
-        {
-            $result = array();
-            $result["year"] = "";
-            $result['january'] = 0;
-            $result['february'] = 0;
-            $result['march'] = 0;
-            $result['april'] = 0;
-            $result['may'] = 0;
-            $result['june'] = 0;
-            $result['july'] = 0;
-            $result['august'] = 0;
-            $result['september'] = 0;
-            $result['october'] = 0;
-            $result['november'] = 0;
-            $result['december'] = 0;
-
-            foreach ($data as $key => $value)
-            {
-                $result['january'] += $value['january'];
-                $result['february'] += $value['february'];
-                $result['march'] += $value['march'];
-                $result['april']  += $value['april'];
-                $result['may'] += $value['may'];
-                $result['june'] += $value['june'];
-                $result['july'] += $value['july'];
-                $result['august'] += $value['august'];
-                $result['september'] += $value['september'];
-                $result['october'] += $value['october'];
-                $result['november'] += $value['november'];
-                $result['december'] += $value['december'];
-            }
-            $data = array($result);
-        }
-
-        return $data    ;
-    }
 
     public function getProjectNetBuilding()
     {
@@ -153,13 +84,13 @@ class AjaxDashboard extends PrivateController
         $data = Model_project::getStatusQuantityDetailByYear($mainList, $year,"countId", $mainList);
         if(count($data) >= 1)
         {
-            $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
-            $data = $this->_array_unshift_assoc($data, 'rowKey', "countId");
+            $data = PublicController::array_unshift_assoc($data[0], 'criteria', "TOTALES");
+            $data = PublicController::array_unshift_assoc($data, 'rowKey', "countId");
         }
         else
         {
             $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
-            $data = $this->_array_unshift_assoc($data[0], 'criteria', "TOTALES");
+            $data = PublicController::array_unshift_assoc($data[0], 'criteria', "TOTALES");
         }
         $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
         $projectTotalsList[] = $data;
@@ -181,14 +112,14 @@ class AjaxDashboard extends PrivateController
                     $data = Model_project::getStatusQuantityDetailByYear($keyword, $year, $rowKey, $mainList);
                     if(count($data) >= 1)
                     {
-                        $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                        $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
+                        $data = PublicController::array_unshift_assoc($data[0], 'criteria', $criteria);
+                        $data = PublicController::array_unshift_assoc($data, 'rowKey', $rowKey);
                     }
                     else
                     {
                         $data[0] = array('january' => 0, 'february' => 0, 'march' => 0, 'april' => 0, 'may' => 0, 'june' => 0, 'july' => 0, 'august' => 0, 'september' => 0, 'october' => 0, 'november' => 0, 'december' => 0);
-                        $data = $this->_array_unshift_assoc($data[0], 'criteria', $criteria);
-                        $data = $this->_array_unshift_assoc($data, 'rowKey', $rowKey);
+                        $data = PublicController::array_unshift_assoc($data[0], 'criteria', $criteria);
+                        $data = PublicController::array_unshift_assoc($data, 'rowKey', $rowKey);
                     }
                     $data['total'] = $data['january'] + $data['february'] + $data['march'] + $data['april'] + $data['may'] + $data['june'] + $data['july'] + $data['august'] + $data['september'] + $data['october'] + $data['november'] + $data['december'];
                     $subArray = $data;
@@ -203,13 +134,7 @@ class AjaxDashboard extends PrivateController
         echo json_encode($response);exit;
     }
 
-    private function _array_unshift_assoc(&$arr, $key, $val)
-    {
-        $arr = array_reverse($arr, true);
-        $arr[$key] = $val;
-        $arr = array_reverse($arr, true);
-        return $arr;
-    }
+
 
     private function _formatNumbers($data)
     {
@@ -232,8 +157,8 @@ class AjaxDashboard extends PrivateController
         {
             $diffArray[$month] = $rowTotal[$month] - $subArray[$month];
         }
-        $diffArray = $this->_array_unshift_assoc($diffArray, 'criteria', $criteria);
-        $diffArray = $this->_array_unshift_assoc($diffArray, 'rowKey', $rowKey);
+        $diffArray = PublicController::array_unshift_assoc($diffArray, 'criteria', $criteria);
+        $diffArray = PublicController::array_unshift_assoc($diffArray, 'rowKey', $rowKey);
         return $diffArray;
     }
 

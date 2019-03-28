@@ -26,7 +26,7 @@
 <!--                    <td class="text-center">{{totalProjectsBySection}}</td>-->
                     <td class="text-center"><a href="#" class="executive-summary-selective-download">{{totalProjectsBySection}}</a></td>
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>
-                    <td class="text-center">{{numberFormat totalApprovedBudgetBySection decimalLength="2"}}</td>
+                    <td class="text-center">{{totalApprovedBudgetBySection}}</td>
                     <td class="text-center">{{totalPercentageApprovedBudgetBySection}}</td>
                     <td class="text-center">{{contractAmountPercentageBySection}}</td>
                 </tr>

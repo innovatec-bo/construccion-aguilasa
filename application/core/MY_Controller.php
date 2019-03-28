@@ -116,6 +116,14 @@ class PublicController extends CI_Controller
 
         return $keywordList;
     }
+
+    public static function array_unshift_assoc(&$arr, $key, $val)
+    {
+        $arr = array_reverse($arr, true);
+        $arr[$key] = $val;
+        $arr = array_reverse($arr, true);
+        return $arr;
+    }
 }
 
 class PrivateController extends PublicController

@@ -120,12 +120,13 @@ class NetBuildingReport extends TCPDF
         $this->Ln();
     }
 
-    public function executiveSummary()
+    private function _currentStatusSummary($data)
     {
         $this->SetFont('', 'B',20);
         $this->Cell("",6,"Resumen Ejecutivo",0,1,"C");
         $this->Ln();
-
+        $w = array(40, 17, 30, 30);
+        $h = 8;
         // Colors, line width and bold font
         $this->SetFillColor(15, 38, 58);
         $this->SetTextColor(255);
@@ -133,17 +134,16 @@ class NetBuildingReport extends TCPDF
         $this->SetLineWidth(0.3);
         $this->SetFont('helvetica', 'B', 12);
         //Current Status summary
-        $response = Model_project::prepareCurrentStatusSummaryArray();
         $i = 0;
-        $data = $response["data"]["list"];
-        $this->MultiCell(40,8,"STATUS",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
-        $this->MultiCell(17,8,"TOTAL",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(30,8,"APROBADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(30,8,"CONCILIADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[0],$h,"STATUS",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
+        $this->MultiCell($w[1],$h,"TOTAL",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[2],$h,"APROBADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[3],$h,"CONCILIADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
         $this->Ln();
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('helvetica', '', 12);
+        $fill = 0;
         foreach($data as $row)
         {
             //write text first
@@ -152,56 +152,65 @@ class NetBuildingReport extends TCPDF
             $this->SetXY($startX, $startY);
             $marginBottom = ($i+1) == count($data);
             //now do borders and fill
-            $this->MultiCell(40,6,$row["statusName"],'LTR'.$marginBottom,'L',0,0);
-            $this->MultiCell(17,6,$row["totalProjects"],'LTR'.$marginBottom,'C',0,0);
-            $this->MultiCell(30,6,$row["approvedBudgets"],'LTR'.$marginBottom,'R',0,0);
-            $this->MultiCell(30,6,$row["realBudgets"],'LTR'.$marginBottom,'R',0,0);
+            $this->MultiCell($w[0],$h-1, $row["statusName"],'LR'.$marginBottom,'L',$fill,0);
+            $this->MultiCell($w[1],$h-1, $row["totalProjects"],'LR'.$marginBottom,'C',$fill,0);
+            $this->MultiCell($w[2],$h-1, $row["approvedBudgets"],'LR'.$marginBottom,'R',$fill,0);
+            $this->MultiCell($w[3],$h-1, $row["realBudgets"],'LR'.$marginBottom,'R',$fill,0);
             $this->Ln();
+            $fill=!$fill;
             $i++;
         }
+        $this->Cell(array_sum($w), 0, '', 'T');
+    }
 
+    private function _executiveSummary($data)
+    {
+        $w = array(40, 17, 15, 30, 17, 25);
+        $h = 8;
         // Colors, line width and bold font
         $this->SetFillColor(15, 38, 58);
         $this->SetTextColor(255);
         $this->SetDrawColor(128, 0, 0);
         $this->SetLineWidth(0.3);
         $this->SetFont('helvetica', 'B', 12);
-        $response = Model_project::prepareExecutiveSummaryArray();
+
         $j = 0;
-        $data = $response["list"];
         $this->SetXY(140, 45);
-        $this->MultiCell(40,8,"ETAPA",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
-        $this->MultiCell(17,8,"TOTAL",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(15,8,"%",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(30,8,"APROBADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(17,8,"%",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
-        $this->MultiCell(25,8,"% CONTR.",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[0],$h,"ETAPA",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
+        $this->MultiCell($w[1],$h,"TOTAL",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[2],$h,"%",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[3],$h,"APROBADO",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[4],$h,"%",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
+        $this->MultiCell($w[5],$h,"% CONTR.",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
         $this->Ln();
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('helvetica', '', 12);
+        $fill = 0;
+        $startX = 140;
         foreach($data as $row)
         {
-//            echo"<pre>";var_dump($row);exit;
             //write text first
-            $startX = 140;
             $startY = $j == 0?53:$this->GetY();
             $this->SetXY($startX, $startY);
             $marginBottom = ($j+1) == count($data);
             //now do borders and fill
             //cell height is 6 times the max number of cells
-            $this->MultiCell(40,6, $row["title"],'LTR'.$marginBottom,'L',0,0);
-            $this->MultiCell(17,6,$row["totalProjectsBySection"],'LTR'.$marginBottom,'C',0,0);
-            $this->MultiCell(15,6,$row["totalPercentageProjectsBySection"],'LTR'.$marginBottom,'R',0,0);
-            $this->MultiCell(30,6,$row["totalApprovedBudgetBySection"],'LTR'.$marginBottom,'R',0,0);
-            $this->MultiCell(17,6,$row["totalPercentageApprovedBudgetBySection"],'LTR'.$marginBottom,'R',0,0);
-            $this->MultiCell(25,6,$row["contractAmountPercentageBySection"],'LTR'.$marginBottom,'R',0,0);
+            $this->MultiCell($w[0], $h, $row["title"],'LR'.$marginBottom,'L', $fill,0);
+            $this->MultiCell($w[1], $h,$row["totalProjectsBySection"],'LR'.$marginBottom,'C', $fill,0);
+            $this->MultiCell($w[2], $h,$row["totalPercentageProjectsBySection"],'LR'.$marginBottom,'R', $fill,0);
+            $this->MultiCell($w[3], $h,$row["totalApprovedBudgetBySection"],'LR'.$marginBottom,'R', $fill,0);
+            $this->MultiCell($w[4], $h,$row["totalPercentageApprovedBudgetBySection"],'LR'.$marginBottom,'R', $fill,0);
+            $this->MultiCell($w[5], $h,$row["contractAmountPercentageBySection"],'LR'.$marginBottom,'R', $fill,0);
             $this->Ln();
+            $fill=!$fill;
             $j++;
         }
+        $this->SetX($startX);
+        $this->Cell(array_sum($w), 0, '', 'T');
     }
 
-    public function monthlyProjectsUnits($header,$data)
+    public function monthlyProjectsUnits($data, $header)
     {
         $this->SetFont('', 'B',20);
         $this->Cell("",6,"Proyectos Mensuales",0,1,"C");
@@ -212,10 +221,10 @@ class NetBuildingReport extends TCPDF
         $this->SetDrawColor(128, 0, 0);
         $this->SetLineWidth(0.3);
         $this->SetFont('', 'B',12);
-        $this->SetX(30);
+        $this->SetX(22);
         // Header
-        $w = array(19, 22, 19, 18, 18, 18, 18, 19, 19, 19, 19, 19);
-        $h = 5;
+        $w = array(35, 19, 22, 19, 18, 18, 18, 18, 19, 13, 13, 13, 13, 13);
+        $h = 7;
         $num_headers = count($header);
         for($i = 0; $i < $num_headers; ++$i) {
             $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
@@ -229,39 +238,43 @@ class NetBuildingReport extends TCPDF
         $fill = 0;
         foreach($data as $row)
         {
-            $this->SetX(30);
-            $this->Cell($w[0], $h, $row[0], 'LR', 0, 'C', $fill);
-            $this->Cell($w[1], $h, $row[1], 'LR', 0, 'C', $fill);
-            $this->Cell($w[2], $h, $row[2], 'LR', 0, 'C', $fill);
-            $this->Cell($w[3], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[4], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[5], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[6], $h, $row[0], 'LR', 0, 'C', $fill);
-            $this->Cell($w[7], $h, $row[1], 'LR', 0, 'C', $fill);
-            $this->Cell($w[8], $h, $row[2], 'LR', 0, 'C', $fill);
-            $this->Cell($w[9], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[10], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[11], $h, $row[3], 'LR', 0, 'C', $fill);
+            $this->SetX(22);
+            $this->Cell($w[0], $h, $row["criteria"], 'LR', 0, 'L', $fill);
+            $this->Cell($w[1], $h, $row["january"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[2], $h, $row["february"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[3], $h, $row["march"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[4], $h, $row["april"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[5], $h, $row["may"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[6], $h, $row["june"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[7], $h, $row["july"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[8], $h, $row["august"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[9], $h, $row["september"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[10], $h, $row["october"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[11], $h, $row["november"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[12], $h, $row["december"], 'LR', 0, 'C', $fill);
+            $this->Cell($w[13], $h, $row["total"], 'LR', 0, 'C', $fill);
             $this->Ln();
             $fill=!$fill;
         }
-        $this->SetX(30);
+        $this->SetX(22);
         $this->Cell(array_sum($w), 0, '', 'T');
+        $this->Ln();
+        $this->Ln();
         $this->Ln();
     }
 
-    public function monthlyProjectsAmounts($header,$data)
+    public function monthlyProjectsAmounts($data, $header)
     {
         // Colors, line width and bold font
         $this->SetFillColor(15, 38, 58);
         $this->SetTextColor(255);
         $this->SetDrawColor(128, 0, 0);
         $this->SetLineWidth(0.3);
-        $this->SetFont('', 'B',12);
-        $this->SetX(30);
+        $this->SetFont('', 'B',8);
+        $this->SetX(18);
         // Header
-        $w = array(19, 22, 19, 18, 18, 18, 18, 19, 19, 19, 19, 19);
-        $h = 5;
+        $w = array(24, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 20);
+        $h = 7;
         $num_headers = count($header);
         for($i = 0; $i < $num_headers; ++$i) {
             $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
@@ -270,29 +283,30 @@ class NetBuildingReport extends TCPDF
         // Color and font restoration
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
-        $this->SetFont('');
+        $this->SetFont('','',8);
         // Data
         $fill = 0;
-        $this->SetX(30);
         foreach($data as $row)
         {
-            $this->SetX(30);
-            $this->Cell($w[0], $h, $row[0], 'LR', 0, 'C', $fill);
-            $this->Cell($w[1], $h, $row[1], 'LR', 0, 'C', $fill);
-            $this->Cell($w[2], $h, $row[2], 'LR', 0, 'C', $fill);
-            $this->Cell($w[3], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[4], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[5], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[6], $h, $row[0], 'LR', 0, 'C', $fill);
-            $this->Cell($w[7], $h, $row[1], 'LR', 0, 'C', $fill);
-            $this->Cell($w[8], $h, $row[2], 'LR', 0, 'C', $fill);
-            $this->Cell($w[9], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[10], $h, $row[3], 'LR', 0, 'C', $fill);
-            $this->Cell($w[11], $h, $row[3], 'LR', 0, 'C', $fill);
+            $this->SetX(18);
+            $this->Cell($w[0], $h, $row["criteria"], 'LR', 0, 'L', $fill);
+            $this->Cell($w[1], $h, $row["january"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[2], $h, $row["february"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[3], $h, $row["march"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[4], $h, $row["april"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[5], $h, $row["may"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[6], $h, $row["june"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[7], $h, $row["july"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[8], $h, $row["august"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[9], $h, $row["september"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[10], $h, $row["october"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[11], $h, $row["november"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[12], $h, $row["december"], 'LR', 0, 'R', $fill);
+            $this->Cell($w[13], $h, $row["total"], 'LR', 0, 'R', $fill);
             $this->Ln();
             $fill=!$fill;
         }
-        $this->SetX(30);
+        $this->SetX(18);
         $this->Cell(array_sum($w), 0, '', 'T');
         $this->Ln();
     }
@@ -311,16 +325,24 @@ class NetBuildingReport extends TCPDF
 
     public function printReport()
     {
-        $data = $this->LoadData();
-        $header = array('ENERO', 'FEBRERO', 'MARZO','ABRIL','MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPT','OCT','NOV', 'DIC');
+        $header = array('CRITERIO', 'ENERO', 'FEBRERO', 'MARZO','ABRIL','MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPT','OCT','NOV', 'DIC', 'TOTAL');
         // add a page
         $this->AddPage();
         $this->cover();
         $this->AddPage();
-        $this->executiveSummary();
+        $response = Model_project::prepareCurrentStatusSummaryArray();
+        $data = $response["data"]["list"];
+        $this->_currentStatusSummary($data);
+        $response = Model_project::prepareExecutiveSummaryArray();
+        $data = $response["list"];
+        $this->_executiveSummary($data);
         $this->AddPage();
-        $this->monthlyProjectsUnits($header, $data);
-        $this->monthlyProjectsAmounts($header, $data);
+        $response = Model_project::prepareProjectTotalsTableArray(date("Y"), "countId", "");
+        $data = $response["data"];
+        $this->monthlyProjectsUnits($data, $header);
+        $response = Model_project::prepareProjectTotalsTableArray(date("Y"), "sumBudget", "");
+        $data = $response["data"];
+        $this->monthlyProjectsAmounts($data, $header);
         $this->AddPage();
         $this->charts();
 
