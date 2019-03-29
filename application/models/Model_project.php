@@ -1846,7 +1846,7 @@ class Model_project extends Model_project_base
             $totalPercentageProjects += $totalPercentageProjectsBySection;
 
             $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
-            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = number_format($reportSections[$groupKey]["totalApprovedBudgetBySection"],2);
+            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;

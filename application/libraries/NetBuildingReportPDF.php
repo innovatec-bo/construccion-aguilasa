@@ -269,14 +269,13 @@ class NetBuildingReportPDF extends TCPDF
 
     private function _charts($executiveSummary)
     {
-        // Example of Image from data stream ('PHP rules')
         $units = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary);
         $approvedBudgets = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary, "totalApprovedBudgetBySection");
         $contractPercentage = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary, "contractAmountPercentageBySection");
         // The '@' character is used to indicate that follows an image data stream and not an image file name
-        $this->Image('@'.$units,30,30,0,0,'jpeg','','',false);
-        $this->Image('@'.$approvedBudgets,150,30,0,0,'jpeg','','',false);
-        $this->Image('@'.$contractPercentage,95,105,0,0,'jpeg','','',false);
+        $this->Image('@'.$units,30,25,120,0,'jpeg','','',false);
+        $this->Image('@'.$approvedBudgets,160,25,120,0,'jpeg','','',false);
+        $this->Image('@'.$contractPercentage,95,105,120,0,'jpeg','','',false);
     }
 
     public function printReport()
