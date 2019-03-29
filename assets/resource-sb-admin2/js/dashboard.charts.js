@@ -69,7 +69,7 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 else if(dataType == "contractAmountPercentageBySection")
                 {
                     // totalRemainPercentage += value.contractAmountPercentageBySection;
-                    value.contractAmountPercentageBySection = (value.contractAmountPercentageBySection/100) * response.totalContractAmount;
+                    value.contractAmountPercentageBySection = (value.contractAmountPercentageBySection/100) * response.totalContractAmount.replace(/,/g, "");
                     if(value.contractAmountPercentageBySection <= 0)
                     {
                         value.hidden = true;
