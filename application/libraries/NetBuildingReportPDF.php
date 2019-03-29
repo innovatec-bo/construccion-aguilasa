@@ -1,68 +1,10 @@
 <?php
 //require_once('tcpdf/examples/tcpdf_include.php');
 require_once('tcpdf/tcpdf.php');
-//class NetBuildingReport extends TCPDF
-//{
-//    public function printReport()
-//    {
-//        require_once('tcpdf/tcpdf.php');
-//
-//        // create new PDF document
-//        $pdf = new TCPDF('L', PDF_UNIT, 'letter', true, 'UTF-8', false);
-//
-//        // set document information
-//        $pdf->SetCreator('PANEL SEREBO');
-//        $pdf->SetAuthor('Nicola Asuni');
-//        $pdf->SetTitle('REPORTE MENSUAL');
-//        $pdf->SetSubject('Resumen de totales y ejecutivo');
-//        $pdf->SetKeywords('PDF, resumen, totales, ejecutivo');
-//
-//        // set default header data
-////        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 009', PDF_HEADER_STRING);
-//
-//        // set header and footer fonts
-//        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-//        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-//
-//        // set default monospaced font
-//        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-//
-//        // set margins
-//        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-//        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-//        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-//
-//        // set auto page breaks
-//        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-//
-//        // set image scale factor
-//        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-//
-//        // -------------------------------------------------------------------
-//
-//        // add a page
-//        $pdf->AddPage();
-//
-//        // set JPEG quality
-//        $pdf->setJPEGQuality(100);
-//        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//        // Example of Image from data stream ('PHP rules')
-//        $imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVEUAAAD///+l2Z/dAAAASUlEQVR4XqWQUQoAIAxC2/0vXZDrEX4IJTRkb7lobNUStXsB0jIXIAMSsQnWlsV+wULF4Avk9fLq2r8a5HSE35Q3eO2XP1A1wQkZSgETvDtKdQAAAABJRU5ErkJggg==');
-//        ####################################################
-//        $jpGraphHandler = new JPGraphHandler();
-//        $jpGraphHandler->setShowInSource();
-//        $graphData = $jpGraphHandler->printPieChart3D();
-//        ####################################################
-//        // The '@' character is used to indicate that follows an image data stream and not an image file name
-//        $pdf->Image('@'.$graphData,30,50,0,0,'jpeg','','',false);
-//
-//        //Close and output PDF document
-//        $pdf->Output('example_009.pdf', 'I');
-//    }
-//}
-class NetBuildingReport extends TCPDF
+class NetBuildingReportPDF extends TCPDF
 {
+    private $_netBuildingReportChart;
+
     public function __construct($orientation='L', $unit='mm', $format='Letter', $unicode=true, $encoding='UTF-8', $diskcache=false, $pdfa=false)
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache, $pdfa);
@@ -97,20 +39,11 @@ class NetBuildingReport extends TCPDF
         // ---------------------------------------------------------
         // set font
         $this->SetFont('helvetica', '', 12);
+        $this->_netBuildingReportChart = new NetBuildingReportChart();
+        $this->_netBuildingReportChart->setShowInSource();
     }
 
-    // Load table data from file
-    public function LoadData()
-    {
-        $data = array();
-        for($i=0;$i<10;$i++)
-        {
-            $data[$i] = array(rand(1,99), rand(1,99), rand(1,99), rand(1,99), rand(1,99), rand(1,99));
-        }
-        return $data;
-    }
-
-    public function cover()
+    private function _cover()
     {
         $this->SetFont('', 'B',40);
         $this->SetY(90);
@@ -126,13 +59,13 @@ class NetBuildingReport extends TCPDF
         $this->Cell("",6,"Resumen Ejecutivo",0,1,"C");
         $this->Ln();
         $w = array(40, 17, 30, 30);
-        $h = 8;
+        $h = 7;
         // Colors, line width and bold font
         $this->SetFillColor(15, 38, 58);
         $this->SetTextColor(255);
         $this->SetDrawColor(128, 0, 0);
         $this->SetLineWidth(0.3);
-        $this->SetFont('helvetica', 'B', 12);
+        $this->SetFont('helvetica', 'B', 11);
         //Current Status summary
         $i = 0;
         $this->MultiCell($w[0],$h,"STATUS",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
@@ -142,9 +75,9 @@ class NetBuildingReport extends TCPDF
         $this->Ln();
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
-        $this->SetFont('helvetica', '', 12);
+        $this->SetFont('helvetica', '', 11);
         $fill = 0;
-        foreach($data as $row)
+        foreach($data["list"] as $row)
         {
             //write text first
             $startX = $this->GetX();
@@ -160,7 +93,19 @@ class NetBuildingReport extends TCPDF
             $fill=!$fill;
             $i++;
         }
+        $this->SetFillColor(255, 0, 0);
+        $this->SetTextColor(255, 255, 255);
+        $this->SetFont('helvetica', '', 11);
+        $startX = $this->GetX();
+        $startY = $this->GetY();
         $this->Cell(array_sum($w), 0, '', 'T');
+        $this->SetXY($startX, $startY);
+        $this->MultiCell($w[0],$h-1, "TOTAL",'LRB','C',1,0);
+        $this->MultiCell($w[1],$h-1, $data["totalProjects"],'LRB','C',1,0);
+        $this->MultiCell($w[2],$h-1, $data["totalApprovedBudgets"],'LRB','C',1,0);
+        $this->MultiCell($w[3],$h-1, $data["totalRealBudgets"],'LRB','R',1,0);
+        $this->Ln();
+
     }
 
     private function _executiveSummary($data)
@@ -188,7 +133,7 @@ class NetBuildingReport extends TCPDF
         $this->SetFont('helvetica', '', 12);
         $fill = 0;
         $startX = 140;
-        foreach($data as $row)
+        foreach($data["list"] as $row)
         {
             //write text first
             $startY = $j == 0?53:$this->GetY();
@@ -208,9 +153,20 @@ class NetBuildingReport extends TCPDF
         }
         $this->SetX($startX);
         $this->Cell(array_sum($w), 0, '', 'T');
+        $this->SetFillColor(255, 0, 0);
+        $this->SetTextColor(255, 255, 255);
+        $this->SetFont('helvetica', '', 11);
+        $this->SetX($startX);
+        $this->MultiCell($w[0],$h-1, "TOTAL",'LRB','C',1,0);
+        $this->MultiCell($w[1],$h-1, $data["totalProjects"],'LRB','C',1,0);
+        $this->MultiCell($w[2],$h-1, $data["totalPercentageProjects"],'LRB','C',1,0);
+        $this->MultiCell($w[3],$h-1, $data["totalApprovedBudget"],'LRB','R',1,0);
+        $this->MultiCell($w[4],$h-1, $data["totalPercentageApprovedBudget"],'LRB','R',1,0);
+        $this->MultiCell($w[5],$h-1, $data["totalContractAmountPercentage"],'LRB','R',1,0);
+        $this->Ln();
     }
 
-    public function monthlyProjectsUnits($data, $header)
+    private function _monthlyProjectsUnits($data, $header)
     {
         $this->SetFont('', 'B',20);
         $this->Cell("",6,"Proyectos Mensuales",0,1,"C");
@@ -263,7 +219,7 @@ class NetBuildingReport extends TCPDF
         $this->Ln();
     }
 
-    public function monthlyProjectsAmounts($data, $header)
+    private function _monthlyProjectsAmounts($data, $header)
     {
         // Colors, line width and bold font
         $this->SetFillColor(15, 38, 58);
@@ -311,16 +267,16 @@ class NetBuildingReport extends TCPDF
         $this->Ln();
     }
 
-    public function charts()
+    private function _charts($executiveSummary)
     {
         // Example of Image from data stream ('PHP rules')
-        $jpGraphHandler = new JPGraphHandler();
-        $jpGraphHandler->setShowInSource();
-        $graphData = $jpGraphHandler->printPieChart3D();
+        $units = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary);
+        $approvedBudgets = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary, "totalApprovedBudgetBySection");
+        $contractPercentage = $this->_netBuildingReportChart->printExecutiveSummary($executiveSummary, "contractAmountPercentageBySection");
         // The '@' character is used to indicate that follows an image data stream and not an image file name
-        $this->Image('@'.$graphData,30,40,0,0,'jpeg','','',false);
-        $this->Image('@'.$graphData,150,40,0,0,'jpeg','','',false);
-        $this->Image('@'.$graphData,95,105,0,0,'jpeg','','',false);
+        $this->Image('@'.$units,30,30,0,0,'jpeg','','',false);
+        $this->Image('@'.$approvedBudgets,150,30,0,0,'jpeg','','',false);
+        $this->Image('@'.$contractPercentage,95,105,0,0,'jpeg','','',false);
     }
 
     public function printReport()
@@ -328,32 +284,24 @@ class NetBuildingReport extends TCPDF
         $header = array('CRITERIO', 'ENERO', 'FEBRERO', 'MARZO','ABRIL','MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPT','OCT','NOV', 'DIC', 'TOTAL');
         // add a page
         $this->AddPage();
-        $this->cover();
+        $this->_cover();
         $this->AddPage();
-        $response = Model_project::prepareCurrentStatusSummaryArray();
-        $data = $response["data"]["list"];
+        $currentStatusSummaryData = Model_project::prepareCurrentStatusSummaryArray();
+        $data = $currentStatusSummaryData["data"];
         $this->_currentStatusSummary($data);
-        $response = Model_project::prepareExecutiveSummaryArray();
-        $data = $response["list"];
-        $this->_executiveSummary($data);
+        $executiveSummary = Model_project::prepareExecutiveSummaryArray();
+        $this->_executiveSummary($executiveSummary);
         $this->AddPage();
         $response = Model_project::prepareProjectTotalsTableArray(date("Y"), "countId", "");
         $data = $response["data"];
-        $this->monthlyProjectsUnits($data, $header);
+        $this->_monthlyProjectsUnits($data, $header);
         $response = Model_project::prepareProjectTotalsTableArray(date("Y"), "sumBudget", "");
         $data = $response["data"];
-        $this->monthlyProjectsAmounts($data, $header);
+        $this->_monthlyProjectsAmounts($data, $header);
         $this->AddPage();
-        $this->charts();
-
+        $this->_charts($executiveSummary);
         // ---------------------------------------------------------
-
         // close and output PDF document
-        $this->Output('example_011.pdf', 'I');
+        $this->Output('NetBuildingReport.pdf', 'I');
     }
 }
-
-// create new PDF document
-//$pdf = new NetBuildingReport();
-
-
