@@ -146,8 +146,13 @@ function updateLog(data)
         type : "POST",
         data : data,
         success:function(response){
-            getProjectLog();
-            // bootbox.alert(response.message);
+            // getProjectLog();
+            let url = $(location).attr('href').split("/");
+            let statusSet = url[url.length - 2];
+            let projectId = url[url.length - 1];
+            let statusManagementHandler2 = new StatusManagementHandler(statusSet, projectId);
+            statusManagementHandler2.loadView();
+            bootbox.alert(response.message);
         }
     });
 }
