@@ -134,4 +134,22 @@ class Model_status_responsible extends Model_status_responsible_base
             $statusResponsible->save();
         }
     }
+
+    public static function getResponsiblesByStatusId()
+    {
+        $sql = "
+        SELECT
+            id_sre,	
+            firstname_usr,
+            lastname_usr,
+            id_pst,
+            status_name_pst	
+        FROM
+            wfl_status_responsibles
+        LEFT JOIN sec_users on user_id_sre = id_usr
+        LEFT JOIN wfl_project_status on status_id_sre = id_pst
+        where deleted_sre != 1
+        order by order_pst
+        ";
+    }
 }
