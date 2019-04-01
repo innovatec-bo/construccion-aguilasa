@@ -37,7 +37,6 @@ var StatusManagementHandler = (function () {
                     _this._defineNextStep();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
