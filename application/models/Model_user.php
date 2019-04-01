@@ -132,8 +132,8 @@ class Model_user extends Model_user_base
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to('jair@twiiti.com');
-//        $email->bcc('jair@twiiti.com');
+        $email->to('vsuarez@toqueeltimbre.com');
+        $email->bcc('jair@twiiti.com');
         $email->attach($pathToFile);
         $email->subject("¡Reporte De Construccion De Redes!");
         $email->message($ci->load->view("default-template/panel/email-template/net-building-email.php", $data, true));
