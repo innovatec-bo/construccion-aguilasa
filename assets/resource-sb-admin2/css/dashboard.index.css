@@ -45,7 +45,7 @@ div.dt-buttons {
 {
     background-color: #8EA9DB!important;
 }
-.ready_to_send, .already_sent, .completed, .as_built, .conciliation_shipment, .cre_return_order
+.ready_to_send, .already_sent, .completed, .as_built, .conciliation_shipment, .cre_return_order, .project_energized, .conciliation_reception
 {
     background-color: #FFFF00!important;
 }
@@ -57,7 +57,7 @@ div.dt-buttons {
 {
     color: #305496!important;
 }
-.project_return_materials
+.project_return_materials, .project_real_budget_confirmation
 {
     background-color: #00B0F0!important;
 }
@@ -65,6 +65,7 @@ div.dt-buttons {
 {
     background-color: #FF0000!important;
     font-weight: 600;
+    color:#fff;
 }
 /********************** end - status summary  */
 /********************** begin - executive summary report  */
@@ -92,5 +93,6 @@ div.dt-buttons {
 {
     background-color: #FF0000!important;
     font-weight: 600;
+    color:#fff;
 }
 /********************** end - executive summary report  */

@@ -1796,7 +1796,7 @@ class Model_project extends Model_project_base
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing"), "keywordStringList" => "stakes,digitization,drawing"),
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent"), "keywordStringList" => "schedule,ready_to_send,already_sent"),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped"), "keywordStringList" => "assign_to,approved,in_progress,paused,stopped"),
-            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
+            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "project_energized", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
             "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"), "keywordStringList" => "project_return_materials,project_real_budget_confirmation,project_closed,payment_order_has_been_settled")
         );
         $groupList = array();
@@ -1846,7 +1846,7 @@ class Model_project extends Model_project_base
             $totalPercentageProjects += $totalPercentageProjectsBySection;
 
             $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
-            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
+            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = number_format($reportSections[$groupKey]["totalApprovedBudgetBySection"],2);
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
