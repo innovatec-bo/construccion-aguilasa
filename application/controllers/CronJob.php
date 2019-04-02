@@ -1,0 +1,17 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+class CronJob extends PublicController
+{
+	public function __construct()
+    {
+        parent::__construct();
+    }
+
+	public function netBuildingEmail($challenge = "nbreport2019")
+    {
+        if($challenge == "nbreport2019")
+        {
+            Model_user::netBuildingEmail();
+        }
+    }
+}

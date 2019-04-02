@@ -278,7 +278,7 @@ class NetBuildingReportPDF extends TCPDF
         $this->Image('@'.$contractPercentage,95,105,120,0,'jpeg','','',false);
     }
 
-    public function printReport()
+    public function printReport($dest = "I")
     {
         $header = array('CRITERIO', 'ENERO', 'FEBRERO', 'MARZO','ABRIL','MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPT','OCT','NOV', 'DIC', 'TOTAL');
         // add a page
@@ -301,6 +301,6 @@ class NetBuildingReportPDF extends TCPDF
         $this->_charts($executiveSummary);
         // ---------------------------------------------------------
         // close and output PDF document
-        $this->Output('NetBuildingReport.pdf', 'I');
+        $this->Output(FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").'.pdf', $dest);
     }
 }

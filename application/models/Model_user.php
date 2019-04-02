@@ -118,4 +118,44 @@ class Model_user extends Model_user_base
         //Delete user
         parent::delete($makePhysicalDelete);
     }
+
+    public static function netBuildingEmail()
+    {
+        $ci = &get_instance();
+        $data = array();
+        $pathToFile = FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").".pdf";
+
+        $TCPDFHandler = new NetBuildingReportPDF();
+        $TCPDFHandler->PrintReport("F");
+
+        $emailHandler = new EmailHandler();
+        $email = $emailHandler->initialize();
+        $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+        $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+        $email->to('vsuarez@toqueeltimbre.com');
+        $email->bcc('jair@twiiti.com');
+        $email->attach($pathToFile);
+        $email->subject("¡Reporte De Construccion De Redes!");
+        $email->message($ci->load->view("default-template/panel/email-template/net-building-email.php", $data, true));
+        try
+        {
+            if($email->Send())
+            {
+                $sendMessageResponse['success'] = 1;
+                $sendMessageResponse['message'] = "Notice sent successfully.";
+                unlink($pathToFile);
+            }
+            else
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Something went wrong!";
+            }
+        }
+        catch (Exception $e)
+        {
+            $sendMessageResponse['success'] = 0;
+            $sendMessageResponse['message'] = "Internal server error, please try again.";
+        }
+        return $sendMessageResponse;
+    }
 }
