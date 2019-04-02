@@ -34,7 +34,7 @@ class Home extends PrivateController
 //        $jpGraphHandler->printPieChart3D();
 
 //        $TCPDFHandler = new NetBuildingReportPDF();
-//        $TCPDFHandler->PrintReport("F");
+//        $TCPDFHandler->PrintReport("I");
     }
 
     public function notifyReport()
