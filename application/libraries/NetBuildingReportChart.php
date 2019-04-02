@@ -72,7 +72,8 @@ class NetBuildingReportChart
             $amount = $data[$i];
             if($dataType == "totalApprovedBudgetBySection")
             {
-                $amount = number_format($data[$i], 2);
+//                echo"<pre>";var_dump($data[$i]);exit;
+                $amount = $data[$i];
             }
             $labels[$i] = "%.1f%%(".$amount.")";
             //Let's check if any data is less than or equal to '0'
