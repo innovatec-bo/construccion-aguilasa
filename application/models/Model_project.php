@@ -1963,4 +1963,67 @@ class Model_project extends Model_project_base
         }
         return $result;
     }
+
+    /*
+     * select * from wfl_projects where code_pro in(
+"RD.18.0292",
+"RD.18.0301",
+"RD.18.0300",
+"RD.18.0309",
+"RD.18.0312",
+"RD.18.0311",
+"RD.18.0183",
+"RD.16.0863",
+"RD.16.0900",
+"RA.18.0030",
+"RA.18.0313",
+"RA.18.0314",
+"RA.18.0315",
+"RA.18.0316",
+"RD.18.0050",
+"RD.18.0061",
+"RD.19.0062",
+"RD.19.0061",
+"RD.19.0060",
+"RD.18.0060",
+"RA.18.2962",
+"RA.18.3055",
+"RA.18.3053",
+"RA.18.3054",
+"RA.18.3095",
+"RD.18.0504",
+"RD.18.0505",
+"RD.17.0433",
+"RD.17.0432",
+"RG.17.0169",
+"RD.17.0403",
+"RA.19.0283",
+"RA.19.0236",
+"RD.19.0113",
+"RD.19.0112",
+"RD.19.0050",
+"RD.18.0182",
+"RD.18.0180",
+"RD.19.0031",
+"RD.18.0188",
+"RD.18.0190",
+"RD.19.0043",
+"RD.19.0046",
+"RD.19.0049"
+)
+and deleted_pro != 1
+;
+SELECT
+	code_pro
+FROM
+	wfl_project_budgets
+LEFT JOIN wfl_project_status_log on status_log_id_prb = id_psl
+LEFT JOIN wfl_projects on id_pro = project_id_psl
+WHERE
+status_id_psl = 6
+and status_pro = 10
+and deleted_pro != 1
+and deleted_prb != 1
+and deleted_psl != 1
+     */
 }
