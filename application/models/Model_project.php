@@ -1756,8 +1756,8 @@ class Model_project extends Model_project_base
         $totalProjects = 0;
         foreach ($currentStatusSummary as $summary)
         {
-            $totalApprovedBudget += $summary["keyword"] !="canceled"?$summary["approved_budgets"]:"0";
-            $totalRealBudget += $summary["keyword"] !="canceled"?$summary["real_budgets"]:"0";
+            $totalApprovedBudget += $summary["keyword"] !="canceled" && $summary["keyword"] !="already_sent"?$summary["approved_budgets"]:"0";
+            $totalRealBudget += $summary["keyword"] !="canceled" && $summary["keyword"] !="already_sent"?$summary["real_budgets"]:"0";
             $totalProjects += $summary["total_projects"];
             $arrayData[] = array(
                 "keyword" => $summary["keyword"],
@@ -1796,7 +1796,7 @@ class Model_project extends Model_project_base
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing"), "keywordStringList" => "stakes,digitization,drawing"),
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent"), "keywordStringList" => "schedule,ready_to_send,already_sent"),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped"), "keywordStringList" => "assign_to,approved,in_progress,paused,stopped"),
-            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
+            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "project_energized", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
             "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"), "keywordStringList" => "project_return_materials,project_real_budget_confirmation,project_closed,payment_order_has_been_settled")
         );
         $groupList = array();
@@ -1818,8 +1818,8 @@ class Model_project extends Model_project_base
                         $totalProjectsBySection += $currentStatusSummary[$j]["total_projects"];
                         $totalProjects += $currentStatusSummary[$j]["total_projects"];
                         $totalApprovedBudgetBySection += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalApprovedBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalRealBudget += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["real_budgets"]:"0";
+                        $totalApprovedBudget += $currentStatusSummary[$j]["keyword"] !="canceled" && $currentStatusSummary[$j]["keyword"] !="already_sent"?$currentStatusSummary[$j]["approved_budgets"]:"0";
+                        $totalRealBudget += $currentStatusSummary[$j]["keyword"] !="canceled" && $currentStatusSummary[$j]["keyword"] !="already_sent"?$currentStatusSummary[$j]["real_budgets"]:"0";
                     }
                 }
             }
@@ -1846,12 +1846,16 @@ class Model_project extends Model_project_base
             $totalPercentageProjects += $totalPercentageProjectsBySection;
 
             $totalApprovedBudgetBySection = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
-            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = $reportSections[$groupKey]["totalApprovedBudgetBySection"];
+            $reportSections[$groupKey]["totalApprovedBudgetBySection"] = number_format($reportSections[$groupKey]["totalApprovedBudgetBySection"],2);
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
+            //No sum alreadySent section
+            $totalPercentageApprovedBudgetBySection = $reportSections[$groupKey]["section"] != "alreadySent"?$totalPercentageApprovedBudgetBySection:0;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
 
             $contractAmountPercentageBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $contractAmount;
+            //No sum alreadySent section
+            $contractAmountPercentageBySection = $reportSections[$groupKey]["section"] != "alreadySent"?$contractAmountPercentageBySection:0;
             $totalContractAmountPercentage += $contractAmountPercentageBySection;
             $reportSections[$groupKey]["contractAmountPercentageBySection"] = number_format($contractAmountPercentageBySection, 2);
         }

@@ -63,6 +63,8 @@ class NetBuildingReportChart
                 break;
             case "contractAmountPercentageBySection":
                 $data = array_column($executiveSummary["list"],"contractAmountPercentageBySection");
+                $legend[] = "Total Restante";
+                $data[] = 100 - array_sum($data);
                 break;
         }
         //Check data before return
@@ -72,7 +74,7 @@ class NetBuildingReportChart
             $amount = $data[$i];
             if($dataType == "totalApprovedBudgetBySection")
             {
-                $amount = number_format($data[$i], 2);
+                $data[$i] = str_replace(",", "", $data[$i]);
             }
             $labels[$i] = "%.1f%%(".$amount.")";
             //Let's check if any data is less than or equal to '0'
