@@ -1754,10 +1754,11 @@ class Model_project extends Model_project_base
         $totalApprovedBudget = 0;
         $totalRealBudget = 0;
         $totalProjects = 0;
+        $ignoredKeywordsBudgets = array("canceled", "ready_to_send", "already_sent");
         foreach ($currentStatusSummary as $summary)
         {
-            $totalApprovedBudget += $summary["keyword"] !="canceled" && $summary["keyword"] !="already_sent"?$summary["approved_budgets"]:"0";
-            $totalRealBudget += $summary["keyword"] !="canceled" && $summary["keyword"] !="already_sent"?$summary["real_budgets"]:"0";
+            $totalApprovedBudget += array_search($summary["keyword"], $ignoredKeywordsBudgets) === FALSE?$summary["approved_budgets"]:"0";
+            $totalRealBudget += array_search($summary["keyword"], $ignoredKeywordsBudgets) === FALSE?$summary["real_budgets"]:"0";
             $totalProjects += $summary["total_projects"];
             $arrayData[] = array(
                 "keyword" => $summary["keyword"],
@@ -1805,6 +1806,7 @@ class Model_project extends Model_project_base
         $totalApprovedBudgetBySection = 0;
         $totalRealBudget = 0;
         $totalProjectsBySection = 0;
+        $ignoredKeywordsBudgets = array("canceled", "ready_to_send", "already_sent");
         foreach ($reportSections as $groupKey => $data)
         {
             $groupKeywords =  $data["keywords"];
@@ -1818,8 +1820,8 @@ class Model_project extends Model_project_base
                         $totalProjectsBySection += $currentStatusSummary[$j]["total_projects"];
                         $totalProjects += $currentStatusSummary[$j]["total_projects"];
                         $totalApprovedBudgetBySection += $currentStatusSummary[$j]["keyword"] !="canceled"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalApprovedBudget += $currentStatusSummary[$j]["keyword"] !="canceled" && $currentStatusSummary[$j]["keyword"] !="already_sent"?$currentStatusSummary[$j]["approved_budgets"]:"0";
-                        $totalRealBudget += $currentStatusSummary[$j]["keyword"] !="canceled" && $currentStatusSummary[$j]["keyword"] !="already_sent"?$currentStatusSummary[$j]["real_budgets"]:"0";
+                        $totalApprovedBudget += array_search($currentStatusSummary[$j]["keyword"],$ignoredKeywordsBudgets) === FALSE?$currentStatusSummary[$j]["approved_budgets"]:"0";
+                        $totalRealBudget += array_search($currentStatusSummary[$j]["keyword"],$ignoredKeywordsBudgets) === FALSE?$currentStatusSummary[$j]["real_budgets"]:"0";
                     }
                 }
             }
@@ -1838,6 +1840,7 @@ class Model_project extends Model_project_base
         $totalPercentageProjects = 0;
         $totalPercentageApprovedBudget = 0;
         $totalContractAmountPercentage = 0;
+        $ignoredSectionBudgets = array("alreadySent");
         foreach ($reportSections as $groupKey => $data)
         {
             $totalProjectsBySection = $reportSections[$groupKey]["totalProjectsBySection"];
@@ -1849,13 +1852,13 @@ class Model_project extends Model_project_base
             $reportSections[$groupKey]["totalApprovedBudgetBySection"] = number_format($reportSections[$groupKey]["totalApprovedBudgetBySection"],2);
             $totalPercentageApprovedBudgetBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $totalApprovedBudget;
             //No sum alreadySent section
-            $totalPercentageApprovedBudgetBySection = $reportSections[$groupKey]["section"] != "alreadySent"?$totalPercentageApprovedBudgetBySection:0;
+            $totalPercentageApprovedBudgetBySection = array_search($reportSections[$groupKey]["section"],$ignoredSectionBudgets) === FALSE?$totalPercentageApprovedBudgetBySection:0;
             $reportSections[$groupKey]["totalPercentageApprovedBudgetBySection"] = number_format($totalPercentageApprovedBudgetBySection,2);
             $totalPercentageApprovedBudget += $totalPercentageApprovedBudgetBySection;
 
             $contractAmountPercentageBySection = $totalApprovedBudgetBySection <= 0?0:($totalApprovedBudgetBySection*100) / $contractAmount;
             //No sum alreadySent section
-            $contractAmountPercentageBySection = $reportSections[$groupKey]["section"] != "alreadySent"?$contractAmountPercentageBySection:0;
+            $contractAmountPercentageBySection = array_search($reportSections[$groupKey]["section"],$ignoredSectionBudgets) === FALSE?$contractAmountPercentageBySection:0;
             $totalContractAmountPercentage += $contractAmountPercentageBySection;
             $reportSections[$groupKey]["contractAmountPercentageBySection"] = number_format($contractAmountPercentageBySection, 2);
         }
