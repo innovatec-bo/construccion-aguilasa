@@ -26,7 +26,12 @@
 <!--                    <td class="text-center">{{totalProjectsBySection}}</td>-->
                     <td class="text-center"><a href="#" class="executive-summary-selective-download">{{totalProjectsBySection}}</a></td>
                     <td class="text-center">{{totalPercentageProjectsBySection}}</td>
-                    <td class="text-center">{{totalApprovedBudgetBySection}}</td>
+                    <td class="text-right">
+                        {{#ifCond section "==" "alreadySent"}}
+                            <i class="fa fa-exclamation fa-fw" title="Monto no incluido en la suma"></i>
+                        {{/ifCond}}
+                        {{totalApprovedBudgetBySection}}
+                    </td>
                     <td class="text-center">{{totalPercentageApprovedBudgetBySection}}</td>
                     <td class="text-center">{{contractAmountPercentageBySection}}</td>
                 </tr>
@@ -37,7 +42,7 @@
                     <td>TOTAL</td>
                     <td class="text-center">{{executiveSummary.totalProjects}}</td>
                     <td class="text-center">{{executiveSummary.totalPercentageProjects}}</td>
-                    <td class="text-center">{{executiveSummary.totalApprovedBudget}}</td>
+                    <td class="text-right">{{executiveSummary.totalApprovedBudget}}</td>
                     <td class="text-center">{{executiveSummary.totalPercentageApprovedBudget}}</td>
                     <td class="text-center">{{executiveSummary.totalContractAmountPercentage}}</td>
                 </tr>
