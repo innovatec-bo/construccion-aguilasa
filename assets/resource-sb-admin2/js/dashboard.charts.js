@@ -63,8 +63,12 @@ function getExecutiveSummary(content, dataType, system, management, contract)
                 else if(dataType === "totalApprovedBudgetBySection")
                 {
                     totalRemain = response.totalContractAmount - response.totalApprovedBudget.replace(/,/g, "");
-                    if(value.totalApprovedBudgetBySection <= 0)
+                    if(value.totalApprovedBudgetBySection <= 0 || value.section == "alreadySent")
                         value.hidden = true;
+                    // if(value.section == "alreadySent")
+                    // {
+                    //     value.totalApprovedBudgetBySection = 0;
+                    // }
                 }
                 else if(dataType == "contractAmountPercentageBySection")
                 {

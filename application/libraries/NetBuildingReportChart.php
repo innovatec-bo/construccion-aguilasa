@@ -60,6 +60,9 @@ class NetBuildingReportChart
                 break;
             case "totalApprovedBudgetBySection":
                 $data = array_column($executiveSummary["list"],"totalApprovedBudgetBySection");
+//                echo"<pre>";var_dump($executiveSummary["list"], $data);exit;
+                //Not include approvement budget
+                $data[1] = 0;
                 break;
             case "contractAmountPercentageBySection":
                 $data = array_column($executiveSummary["list"],"contractAmountPercentageBySection");
