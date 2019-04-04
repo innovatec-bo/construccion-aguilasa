@@ -106,8 +106,8 @@ class Home extends PrivateController
 
         }
 //        echo"<pre>";var_dump($toInsert);
-        Model_project_budget::updateBatch($toUpdate);
-        Model_project_budget::insertBatch($toInsert);
+//        Model_project_budget::updateBatch($toUpdate);
+//        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
 }
