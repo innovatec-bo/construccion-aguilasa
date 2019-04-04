@@ -28,6 +28,7 @@ class PublicController extends CI_Controller
         $this->complementHandler->addViewComplement("metisMenu");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addViewComplement("sb-admin-2");
+        $this->complementHandler->addViewComplement("jquery.blockui");
         $this->complementHandler->addProjectCss('public-custom-style', TRUE);
     }
 

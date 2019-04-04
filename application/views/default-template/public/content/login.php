@@ -23,7 +23,7 @@
                     <h3 class="panel-title">Iniciar sesion</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post">
+                    <form method="post" name="login-form">
                         <fieldset>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
