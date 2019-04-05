@@ -65,9 +65,13 @@ class NetBuildingReportChart
                 $data[1] = 0;
                 break;
             case "contractAmountPercentageBySection":
-                $data = array_column($executiveSummary["list"],"contractAmountPercentageBySection");
+                $data = array_column($executiveSummary["list"],"totalApprovedBudgetBySection");
+                $data[1] = 0;
+//                echo"<pre>";var_dump($executiveSummary, str_replace(",","",$executiveSummary["totalApprovedBudget"]), $data, array_sum($data));exit;
+                $totalContractAmountPercentage = str_replace(",","",$executiveSummary["totalContractAmountPercentage"]);
+                $totalApprovedBudget = str_replace(",","",$executiveSummary["totalApprovedBudget"]);
                 $legend[] = "Total Restante";
-                $data[] = 100 - array_sum($data);
+                $data[] = number_format(((100 - $totalContractAmountPercentage)*$totalApprovedBudget)/$totalContractAmountPercentage,2);
                 break;
         }
         //Check data before return
@@ -75,7 +79,7 @@ class NetBuildingReportChart
         for($i = 0; $i<count($aux); $i++)
         {
             $amount = $data[$i];
-            if($dataType == "totalApprovedBudgetBySection")
+            if($dataType == "totalApprovedBudgetBySection" || $dataType == "contractAmountPercentageBySection")
             {
                 $data[$i] = str_replace(",", "", $data[$i]);
             }
