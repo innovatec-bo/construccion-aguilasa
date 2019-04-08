@@ -14,4 +14,10 @@ class CronJob extends PublicController
             Model_user::netBuildingEmail();
         }
     }
+
+    public function registerExecutiveSummaryLog()
+    {
+        $executiveSummary = Model_project::prepareExecutiveSummaryArray();
+        Model_executive_summary_log::saveLog($executiveSummary);
+    }
 }

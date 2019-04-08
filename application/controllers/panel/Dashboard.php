@@ -16,17 +16,19 @@ class Dashboard extends PrivateController
     public function index($view = "charts")
     {
         $this->_validateFeature("dashboard_index");
-        $this->complementHandler->addViewComplement("jquery.sticky");
+
         switch($view)
         {
             case "tables":
+                $this->complementHandler->addViewComplement("jquery.sticky");
                 $this->_tables();
                 break;
             case "charts":
+                $this->complementHandler->addViewComplement("jquery.sticky");
                 $this->_charts();
                 break;
-            default:
-                $this->_charts();
+            case "executiveSummaryDifferential":
+                $this->_executiveSummaryDifferential();
         }
 
     }
@@ -82,5 +84,16 @@ class Dashboard extends PrivateController
         $data["contractList"] = $contractList;
         $data["view"] = "charts";
         $this->_loadPanelView('dashboard/charts', $data);
+    }
+
+    private function _executiveSummaryDifferential()
+    {
+//        $this->_validateFeature("differential");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addProjectCss('dashboard.executive-summary-differential', TRUE);
+        $this->complementHandler->addProjectJs('dashboard.executive-summary-differential', TRUE);
+
+        $this->_loadPanelView('dashboard/executive-summary-differential');
     }
 }

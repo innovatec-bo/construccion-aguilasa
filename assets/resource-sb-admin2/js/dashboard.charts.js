@@ -168,7 +168,6 @@ function getProjectsEvolutionChart(year, dataType, contractId)
                 {
                     list.push(value);
                 }
-
             });
 
             var projectTotalsTable = new ChartHandler("projects-evolution-chart-content");

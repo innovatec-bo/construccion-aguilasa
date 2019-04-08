@@ -343,4 +343,26 @@ class AjaxDashboard extends PrivateController
         $response["data"]["currentStatusSummary"] = $currentStatusSummary;
         echo json_encode($response);exit;
     }
+
+    public function getExecutiveSummaryLog($date = NULL)
+    {
+        $logs = Model_executive_summary_log::getExecutiveSummaryLog($date);
+        $arrayLog = array();
+        foreach ($logs as $log)
+        {
+            $log = $log->toArray();
+            $arrayLog[] = array(
+                "stage" => $log["stage_esl"],
+                "projectsQuantity" => $log["projects_quantity_esl"],
+                "projectPercentage" => $log["project_percentage_esl"],
+                "approvedBudget" => $log["approved_budget_esl"],
+                "approvedBudgetPercentage" => $log["approved_budget_percentage_esl"],
+                "contractPercentage" => $log["contract_percentage_esl"]
+            );
+        }
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["log"] = $arrayLog;
+        echo json_encode($response);exit;
+    }
 }

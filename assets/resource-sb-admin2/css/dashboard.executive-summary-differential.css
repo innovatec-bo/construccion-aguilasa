@@ -1,0 +1,15 @@
+.executive-summary-differential
+{
+    margin-bottom: 0px;
+}
+.panel-body
+{
+    padding:0px;
+}
+.date-time
+{
+    width: 75px;
+    display: inline-block;
+    padding: 5px 5px;
+    height: 20px;
+}

@@ -147,7 +147,8 @@
                         <i class="fa fa-table fa-fw"></i> Executive summary report
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>
+                                <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i></button>
+                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-info fa-fw"></i></button>
                             </div>
                         </div>
                     </form>
