@@ -365,4 +365,32 @@ class AjaxDashboard extends PrivateController
         $response["log"] = $arrayLog;
         echo json_encode($response);exit;
     }
+
+    public function getExecutiveSummaryDifferential($initialDate, $finalDate)
+    {
+        $logs = Model_executive_summary_log::getExecutiveSummaryDifferential($initialDate, $finalDate);
+        $arrayLog = array();
+        foreach ($logs as $log)
+        {
+//            $log = $log->toArray();
+            $arrayLog[] = array(
+                "stage" => $log["stage_esl"],
+                "projectsQuantity" => $log["projects_quantity_esl"],
+                "projectPercentage" => $log["project_percentage_esl"],
+                "approvedBudget" => $log["approved_budget_esl"],
+                "approvedBudgetPercentage" => $log["approved_budget_percentage_esl"],
+                "contractPercentage" => $log["contract_percentage_esl"],
+                "projectsQuantityDiff" => $log["diff_projects_quantity_esl"],
+                "projectPercentageDiff" => $log["diff_project_percentage_esl"],
+                "approvedBudgetDiff" => $log["diff_approved_budget_esl"],
+                "approvedBudgetPercentageDiff" => $log["diff_approved_budget_percentage_esl"],
+                "contractPercentageDiff" => $log["diff_contract_percentage_esl"]
+
+            );
+        }
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["log"] = $arrayLog;
+        echo json_encode($response);exit;
+    }
 }

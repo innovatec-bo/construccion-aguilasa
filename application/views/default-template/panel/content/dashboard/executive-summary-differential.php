@@ -55,10 +55,10 @@
     </div>
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        Diferencial
+                        Diferencial de <span id="differential-quantity-days"></span>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body" id="differential-table">

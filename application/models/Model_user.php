@@ -124,7 +124,15 @@ class Model_user extends Model_user_base
         $ci = &get_instance();
         $data = array();
         $pathToFile = FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").".pdf";
-
+        $sendTo = array(
+            "vhsuarez@serebo.com",
+            "maguilera@serebo.com",
+            "eddysonca@serebo.com",
+            "genaromj@serebo.com",
+            "walvarez@serebo.com",
+            "pmendoza@serebo.com",
+            "rubenaf@serebo.com"
+        );
         $TCPDFHandler = new NetBuildingReportPDF();
         $TCPDFHandler->PrintReport("F");
 
@@ -132,7 +140,7 @@ class Model_user extends Model_user_base
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to('vsuarez@toqueeltimbre.com');
+        $email->to($sendTo);
         $email->bcc('jair@twiiti.com');
         $email->attach($pathToFile);
         $email->subject("¡Reporte De Construccion De Redes!");

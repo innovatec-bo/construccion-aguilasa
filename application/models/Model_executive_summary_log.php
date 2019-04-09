@@ -68,12 +68,12 @@ class Model_executive_summary_log extends Model_executive_summary_log_base
 
         $sql = "
         SELECT
-            final.stage_esl,
-            final.projects_quantity_esl - initial.projects_quantity_esl projects_quantity_esl,
-            final.project_percentage_esl - initial.project_percentage_esl project_percentage_esl,
-            final.approved_budget_esl - initial.approved_budget_esl approved_budget_esl,
-            final.approved_budget_percentage_esl - initial.approved_budget_percentage_esl approved_budget_percentage_esl,
-            final.contract_percentage_esl - initial.contract_percentage_esl contract_percentage_esl
+            final.*,
+            final.projects_quantity_esl - initial.projects_quantity_esl diff_projects_quantity_esl,
+            final.project_percentage_esl - initial.project_percentage_esl diff_project_percentage_esl,
+            final.approved_budget_esl - initial.approved_budget_esl diff_approved_budget_esl,
+            final.approved_budget_percentage_esl - initial.approved_budget_percentage_esl diff_approved_budget_percentage_esl,
+            final.contract_percentage_esl - initial.contract_percentage_esl diff_contract_percentage_esl
         FROM
         sec_executive_summary_log initial
         LEFT JOIN sec_executive_summary_log final on initial.stage_esl = final.stage_esl and DATE_FORMAT(final.date_esl, '%Y-%m-%d') = ".$ci->db->escape($finalDate)." and final.deleted_esl != 1
