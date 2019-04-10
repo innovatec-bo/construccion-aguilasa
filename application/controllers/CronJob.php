@@ -15,9 +15,12 @@ class CronJob extends PublicController
         }
     }
 
-    public function registerExecutiveSummaryLog()
+    public function registerExecutiveSummaryLog($challenge = "eslog")
     {
-        $executiveSummary = Model_project::prepareExecutiveSummaryArray();
-        Model_executive_summary_log::saveLog($executiveSummary);
+        if($challenge == "eslog")
+        {
+            $executiveSummary = Model_project::prepareExecutiveSummaryArray();
+            Model_executive_summary_log::saveLog($executiveSummary);
+        }
     }
 }
