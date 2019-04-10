@@ -57,6 +57,7 @@
                                         <option value="6">Materiales incompletos</option>
                                         <option value="7">Climatológico</option>
                                         <option value="8">Otros</option>
+                                        <option value="10">CRE</option>
                                         <option value="9">Ninguno</option>
                                     </select>
                                 </div>
