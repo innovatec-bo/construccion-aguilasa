@@ -25,7 +25,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
         <h1 class="page-header">{{viewData.statusName}}
-            <em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em></h1>
+            <em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em> <a class="btn btn-warning pull-right add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-flag-o"></i></a></h1>
     </div>
     <div class="col-md-12">
         <?php
@@ -144,26 +144,15 @@ $entryDate = date_format($entryDate, 'd-m-Y');
 
     </div>
 
-    <!--    <div class="row">-->
     <div class="col-xs-5" id="btn-detail-content">
-<!--        <a class="btn btn-block btn-social btn-primary show-detail">-->
-<!--            <i class="fa fa-tags"></i> Detalle-->
-<!--        </a>-->
         <a class="btn btn-social-icon btn-primary show-detail"><i class="fa fa-tags"></i></a>
     </div>
     <div class="col-xs-5" id="btn-history-content">
-<!--        <a class="btn btn-block btn-social btn-primary show-history">-->
-<!--            <i class="fa fa-book"></i> Historial-->
-<!--        </a>-->
         <a class="btn btn-social-icon btn-primary show-history"><i class="fa fa-book"></i></a>
     </div>
     <div class="col-xs-2" id="btn-help-content">
-<!--        <a class="btn btn-block btn-social btn-info show-help">-->
-<!--            <i class="fa fa-question"></i> Ayuda-->
-<!--        </a>-->
         <a class="btn btn-social-icon btn-info show-help"><i class="fa fa-question"></i></a>
     </div>
-    <!--    </div>-->
     <div class="col-md-12">
         <div class="tabbable">
             <ul class="nav nav-tabs wizard step-list">
@@ -173,15 +162,6 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </ul>
         </div>
     </div>
-<!--    <div class="col-md-2" style="display: none;">-->
-<!--        <div class="tabbable">-->
-<!--            <ul class="nav nav-tabs wizard">-->
-<!--                <li>-->
-<!--                    <a href="#" class="add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}" id="add-incident"><i class="fa fa-plus fa-fw"></i>INCIDENTE</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
     <div class="col-md-9">
         <section>
             <div class="wizard">
@@ -192,28 +172,6 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                     <input type="hidden" value='{{viewData.responsibleListBuilder}}' name="responsible-list-builder">
                     <input type="hidden" value="{{viewData.statusSet}}" name="status-set">
                     <div class="tab-content" id="status-form-content"></div>
-                    <?php
-//                    $html = '
-//                            <div class="tab-content">
-//                             <div class="well">
-//                                <h4>Esta etapa ha finalizado!</h4>
-//                            </div>
-//                            </div>
-//                        ';
-//                    if($projectOnCurrentStage)
-//                    {
-//                        $html = '
-//                            <div class="tab-content" id="status-form-content">
-//                            </div>
-//                        ';
-//                    }
-//                    $html = '
-//                            <div class="tab-content" id="status-form-content">
-//                            </div>
-//                        ';
-//                    echo $html;
-                    ?>
-
                 </form>
             </div>
         </section>
