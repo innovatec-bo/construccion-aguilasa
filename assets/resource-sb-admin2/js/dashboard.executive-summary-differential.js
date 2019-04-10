@@ -3,7 +3,7 @@
  */
 
 $(function() {
-    let minDate = new Date("2019-04-06 00:00:00");
+    let minDate = new Date("2019-04-08 00:00:00");
     let maxDate = moment().subtract(1, "days");
     $('input[name=initial-log]').datetimepicker({
         defaultDate:minDate,

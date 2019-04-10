@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     <label>Fecha del incidente</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="incident-manual-entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-incident-manual-entry-date" data-parsley-group="none-incident">
+                                        <input name="incident-manual-entry-date" readonly="" class="form-control input-sm" required="" data-parsley-errors-container="#error-incident-manual-entry-date" data-parsley-group="none-incident">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <label>% fisico</label>
                                     <div class="input-group date date-time-picker">
-                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage" data-parsley-group="none-incident">
+                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control input-sm" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage" data-parsley-group="none-incident">
                                         <span class="input-group-addon">
                                             %
                                         </span>
@@ -57,6 +57,7 @@
                                         <option value="6">Materiales incompletos</option>
                                         <option value="7">Climatológico</option>
                                         <option value="8">Otros</option>
+                                        <option value="10">CRE</option>
                                         <option value="9">Ninguno</option>
                                     </select>
                                 </div>

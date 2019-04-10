@@ -35,7 +35,7 @@ function IncidentHandler() {
                         }
                         else
                         {
-                            checkIncidents();
+                            // checkIncidents();
                         }
                     }
                     console.log("success: "+response.message);
@@ -76,7 +76,7 @@ function IncidentHandler() {
             confirmButtonText: 'Guardar incidencia &rarr;',
             showCancelButton: false,
             focusConfirm: true,
-            width:"50%",
+            customClass:"incident-modal-form",
             progressSteps: queue.steps,
             preConfirm: () => {
                 let $form = $("form[name=incident-form]");

@@ -348,14 +348,16 @@ class AjaxDashboard extends PrivateController
     {
         $logs = Model_executive_summary_log::getExecutiveSummaryLog($date);
         $arrayLog = array();
+        $labelList = array(1 => "Diseño", 2 => "Aprobacion", 3 => "Construccion", 4 => "Cierre", 5 => "Cerrado");
         foreach ($logs as $log)
         {
             $log = $log->toArray();
             $arrayLog[] = array(
                 "stage" => $log["stage_esl"],
+                "stageLabel" => $labelList[$log["stage_esl"]],
                 "projectsQuantity" => $log["projects_quantity_esl"],
                 "projectPercentage" => $log["project_percentage_esl"],
-                "approvedBudget" => $log["approved_budget_esl"],
+                "approvedBudget" => number_format($log["approved_budget_esl"], 2),
                 "approvedBudgetPercentage" => $log["approved_budget_percentage_esl"],
                 "contractPercentage" => $log["contract_percentage_esl"]
             );
@@ -370,14 +372,16 @@ class AjaxDashboard extends PrivateController
     {
         $logs = Model_executive_summary_log::getExecutiveSummaryDifferential($initialDate, $finalDate);
         $arrayLog = array();
+        $labelList = array(1 => "Diseño", 2 => "Aprobacion", 3 => "Construccion", 4 => "Cierre", 5 => "Cerrado");
         foreach ($logs as $log)
         {
 //            $log = $log->toArray();
             $arrayLog[] = array(
                 "stage" => $log["stage_esl"],
+                "stageLabel" => $labelList[$log["stage_esl"]],
                 "projectsQuantity" => $log["projects_quantity_esl"],
                 "projectPercentage" => $log["project_percentage_esl"],
-                "approvedBudget" => $log["approved_budget_esl"],
+                "approvedBudget" => number_format($log["approved_budget_esl"], 2),
                 "approvedBudgetPercentage" => $log["approved_budget_percentage_esl"],
                 "contractPercentage" => $log["contract_percentage_esl"],
                 "projectsQuantityDiff" => $log["diff_projects_quantity_esl"],

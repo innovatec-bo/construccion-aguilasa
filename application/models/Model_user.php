@@ -126,6 +126,7 @@ class Model_user extends Model_user_base
         $pathToFile = FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").".pdf";
         $sendTo = array(
             "vhsuarez@serebo.com",
+            "vh.suarez@me.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
             "genaromj@serebo.com",

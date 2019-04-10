@@ -148,7 +148,7 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i></button>
-                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-info fa-fw"></i></button>
+                                <a href="<?=base_url("panel/Dashboard/executiveSummaryDifferential")?>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-info fa-fw"></i></a>
                             </div>
                         </div>
                     </form>

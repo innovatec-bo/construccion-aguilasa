@@ -22,12 +22,12 @@
             <tbody>
             {{#each log}}
                 <tr>
-                    <td>{{stage}}</td>
+                    <td>{{stageLabel}}</td>
                     <td>{{projectsQuantity}}</td>
-                    <td>{{projectPercentage}}</td>
-                    <td>{{approvedBudget}}</td>
-                    <td>{{approvedBudgetPercentage}}</td>
-                    <td>{{contractPercentage}}</td>
+                    <td class="text-right">{{projectPercentage}}</td>
+                    <td class="text-right">{{approvedBudget}}</td>
+                    <td class="text-right">{{approvedBudgetPercentage}}</td>
+                    <td class="text-right">{{contractPercentage}}</td>
                 </tr>
             {{/each}}
             </tbody>
@@ -50,7 +50,7 @@
             <tbody>
             {{#each log}}
             <tr>
-                <td>{{stage}}</td>
+                <td>{{stageLabel}}</td>
                 <td>
                     {{#ifCond projectsQuantityDiff "<" 0}}
                         <i class="fa fa-arrow-down text-info"></i>
@@ -82,11 +82,11 @@
                 <td class="text-right">
                     {{#ifCond approvedBudgetDiff "<" 0}}
                         <i class="fa fa-arrow-down text-info"></i>
-                    ({{approvedBudgetDiff}})
+                    ({{numberFormat approvedBudgetDiff decimalLength="2"}})
                     {{/ifCond}}
                     {{#ifCond approvedBudgetDiff ">" 0}}
                         <i class="fa fa-arrow-up text-info"></i>
-                    ({{approvedBudgetDiff}})
+                    ({{numberFormat approvedBudgetDiff decimalLength="2"}})
                     {{/ifCond}}
                     {{#ifCond approvedBudgetDiff "==" 0}}
                         <i class="fa fa-arrow-right"></i>
