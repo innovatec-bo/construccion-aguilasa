@@ -502,7 +502,7 @@ class AjaxProjectStatus extends PrivateController
         //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
         if($statusKeyword == "completed")
         {
-            $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId);
+            $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId,0,0,9);
             $incident->save();
         }
 
