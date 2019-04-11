@@ -96,7 +96,8 @@
                                         $html = "";
                                         foreach ($creFiscalList as $fiscal)
                                         {
-                                            $html .= '<option value="'.$fiscal->id_cfi.'" >'.$fiscal->firstname_cfi.' '.$fiscal->lastname_cfi.'</option>';
+                                            $fiscal = $fiscal->toArray();
+                                            $html .= '<option value="'.$fiscal["id_usr"].'" >'.$fiscal["firstname_usr"].' '.$fiscal["lastname_usr"].'</option>';
                                         }
                                         echo $html;
                                         ?>

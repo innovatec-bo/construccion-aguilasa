@@ -122,8 +122,9 @@
                                         $html = "";
                                         foreach ($creFiscalList as $fiscal)
                                         {
-                                            $selected = $project["cre_fiscal_pro"] == $fiscal->id_cfi?" selected ":"";
-                                            $html .= '<option '.$selected.' value="'.$fiscal->id_cfi.'" >'.$fiscal->firstname_cfi.' '.$fiscal->lastname_cfi.'</option>';
+                                            $fiscal = $fiscal->toArray();
+                                            $selected = $project["cre_fiscal_pro"] == $fiscal["id_usr"]?" selected ":"";
+                                            $html .= '<option '.$selected.' value="'.$fiscal["id_usr"].'" >'.$fiscal["firstname_usr"].' '.$fiscal["lastname_usr"].'</option>';
                                         }
                                         echo $html;
                                         ?>

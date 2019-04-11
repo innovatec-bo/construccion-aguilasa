@@ -167,4 +167,35 @@ class Model_user extends Model_user_base
         }
         return $sendMessageResponse;
     }
+
+    public static function getByRoleKeyword($roleKeyword)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        select 
+        usr.* 
+        from (
+            SELECT
+                id_usr,
+                firstname_usr,
+                lastname_usr,
+                GROUP_CONCAT(rolename_rol) role,
+                GROUP_CONCAT(keyword_rol) keyword
+            FROM
+                sec_users
+            LEFT JOIN sec_userroles on userid_uro = id_usr and deleted_uro != 1
+            LEFT JOIN sec_roles on roleid_uro = id_rol and deleted_rol != 1
+            GROUP BY id_usr
+        ) users
+        LEFT JOIN sec_users usr on users.id_usr = usr.id_usr
+        where
+        users.keyword like ".$ci->db->escape('%'.$roleKeyword.'%')."
+        ";
+//        echo"<pre>";var_dump($sql);exit;
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
 }

@@ -72,7 +72,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                             <i class="fa fa-user fa-2x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
-                            <div class="">{{viewData.project.firstname_cfi}} {{viewData.project.lastname_cfi}}</div>
+                            <div class="">{{viewData.project.firstname_usr}} {{viewData.project.lastname_usr}}</div>
                         </div>
                     </div>
                     <div class="status-management-card-title">FISCAL</div>

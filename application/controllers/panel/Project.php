@@ -81,7 +81,8 @@ class Project extends PrivateController
 
         $projectStatusList = Model_project_status::getAll(100,0);
         $contractList = Model_contract::getAll(100, 0);
-        $creFiscalList = Model_cre_fiscal::getAll(100,0);
+//        $creFiscalList = Model_cre_fiscal::getAll(100,0);
+        $creFiscalList = Model_user::getByRoleKeyword("cre_fiscal");
         $data["projectStatusList"] = $projectStatusList;
         $data["projectSystems"] = $this->_projectSystems;
         $data["contractList"] = $contractList;
@@ -200,7 +201,8 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
-        $creFiscalList = Model_cre_fiscal::getAll(100,0);
+//        $creFiscalList = Model_cre_fiscal::getAll(100,0);
+        $creFiscalList = Model_user::getByRoleKeyword("cre_fiscal");
         $contractList = Model_contract::getAll(100, 0);
         $data["lastProjectStatus"] = $getLastProjectStatus;
         $projectStatusList = Model_project_status::getAll(100,0);
