@@ -315,7 +315,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <button type="button" class="btn btn-primary save-project hide" data-send-to-design="0">Guardar</button>
-                                <button type="button" class="btn btn-info save-project" data-send-to-design="1">Guardar y enviar a diseño</button>
+                                <button type="button" class="btn btn-info save-project" data-send-to-design="1">Guardar</button>
                                 <input type="hidden" name="send-to-design" value="">
                             </div>
                         </div>
