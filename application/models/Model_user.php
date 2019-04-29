@@ -129,10 +129,10 @@ class Model_user extends Model_user_base
             "vh.suarez@me.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
-            "genaromj@serebo.com",
-            "walvarez@serebo.com",
+//            "genaromj@serebo.com",
+//            "walvarez@serebo.com",
             "pmendoza@serebo.com",
-            "rubenaf@serebo.com"
+//            "rubenaf@serebo.com"
         );
         $TCPDFHandler = new NetBuildingReportPDF();
         $TCPDFHandler->PrintReport("F");
