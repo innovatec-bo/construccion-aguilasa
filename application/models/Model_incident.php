@@ -115,8 +115,7 @@ class Model_incident extends Model_incident_base
                 WHEN 7 then 'Climatológico'
                 WHEN 8 then 'Otros'
                 WHEN 9 then 'Ninguno'
-                WHEN 10 then 'CRE'
-                WHEN null then 'UNDEFINED'
+                WHEN 10 then 'CRE'                
                 end incident_type,
                 manual_entry_date_inc manual_entry_date
             FROM
