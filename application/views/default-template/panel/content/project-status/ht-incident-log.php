@@ -12,7 +12,7 @@
             <a href="javascript:void(0)" class="list-group-item" data-project-percentage="0"  data-incident-date="{{manual_entry_date}}">
                 {{var "incidentType" "Sin Definir"}}
                 {{#ifCond incident_type "!=" ""}}
-                    {{var "incidentType" incidentType}}
+                    {{var "incidentType" incident_type}}
                 {{/ifCond}}
                 <strong>Projecto: </strong>{{project_code}}<br>
                 <strong>Detalle: </strong>{{incident_detail}}<br>
