@@ -91,4 +91,47 @@ class Model_incident extends Model_incident_base
             $project->addStatusToLog($statusId, $this->_detail, $this->_manualEntryDate, $responsibleList);
         }
     }
+
+    public static function incidentLog()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            SELECT
+                firstname_usr first_name,
+                lastname_usr last_name,
+                code_pro project_code,	
+                detail_inc incident_detail,
+                incident_status.status_name_pst status_on_incident,
+                project_status.status_name_pst current_status,		
+                case incident_type_inc
+                WHEN 1 then 'Permisos'
+                WHEN 2 then 'Fiscales'
+                WHEN 3 then 'Vecinos'
+                WHEN 4 then 'Linea Viva'
+                WHEN 5 then 'Mecanico'
+                WHEN 6 then 'Materiales incompletos'
+                WHEN 7 then 'Climatológico'
+                WHEN 8 then 'Otros'
+                WHEN 9 then 'Ninguno'
+                WHEN 10 then 'CRE'
+                WHEN null then 'UNDEFINED'
+                end incident_type,
+                manual_entry_date_inc manual_entry_date
+            FROM
+                wfl_incidents
+            LEFT JOIN sec_users on id_usr = createdby_inc
+            LEFT JOIN wfl_project_status incident_status on status_id_inc = incident_status.id_pst
+            LEFT JOIN wfl_projects on id_pro = project_id_inc
+            LEFT JOIN wfl_project_status project_status on status_pro = project_status.id_pst
+            WHERE
+                detail_inc not in('Construccion completada','En construccion','','En Contruccion')
+            ORDER BY manual_entry_date_inc desc
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
 }

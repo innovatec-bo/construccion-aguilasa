@@ -104,4 +104,22 @@ class AjaxIncident extends PrivateController
         $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }
+
+    public function getIncidentLog()
+    {
+        $incidentList = Model_incident::incidentLog();
+        $i = 0;
+        foreach ($incidentList as $incident)
+        {
+            $incidentList[$i]["index"] = $i+1;
+            $i++;
+        }
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"]["template"] = $this->load->view('default-template/panel/content/project-status/ht-incident-log', array(), TRUE);
+        $response["data"]["templateName"] = "#ht-incident-log";
+        $response["data"]["incidentList"] = $incidentList;
+
+        echo json_encode($response);exit;
+    }
 }

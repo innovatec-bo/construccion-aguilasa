@@ -19,7 +19,14 @@
         ?>
     </div>
     <!-- /.row -->
-
+    <h3>Todos los incidentes
+        <small><span id="days-without-incidents">23 dias</span> sin incidentes</small>
+    </h3>
+    <div class="col-md-12" id="incident-content">
+        <div class="list-group">
+            Cargando incidentes...
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 <?php

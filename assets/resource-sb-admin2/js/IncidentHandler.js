@@ -8,6 +8,7 @@ function IncidentHandler() {
     let buttonAdd = ".add-incident";
     let serverResponse = "";
     let htmlTemplate = "";
+    this.daysWithoutIncidents = 0;
 
     this.add = function(formData, statusId, projectId)
     {
@@ -134,6 +135,40 @@ function IncidentHandler() {
                 // });
             }
         });
+    };
+
+    this.getAllIncidents = function()
+    {
+        let $content = $("#incident-content");
+        let _this = this;
+        blockArea($content);
+        $.ajax({
+            url : base_url + 'panel/AjaxIncident/getIncidentLog',
+            dataType  :"json",
+            method : "GET",
+            data:{},
+            success:function(response)
+            {
+                let $template = $("<div>"+response.data.template+"</div>");
+                let htmlSource   = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                let data = {incidentList:response.data.incidentList};
+                let html = template(data);
+                $content.html(html);
+                // console.log(response);
+                _this.setDaysWithoutIncidents(response.data.incidentList);
+            }
+        });
+    };
+
+    this.setDaysWithoutIncidents = function(incidentList)
+    {
+        let lastIncident = incidentList[0];
+        let momentLastDate = moment(lastIncident.manual_entry_date);
+        let momentCurrentDate = moment();
+        this.daysWithoutIncidents = momentCurrentDate.diff(momentLastDate, 'days');
+        let text = this.daysWithoutIncidents > 1? this.daysWithoutIncidents+" dias ": this.daysWithoutIncidents+" dia ";
+        $("#days-without-incidents").text(text);
     };
 
     this.loadEventHandlers = function()
