@@ -113,16 +113,19 @@ class Home extends PrivateController
 
     public function stakeReport()
     {
-        $workflow = Model_project::getWorkflowDetail();
+
+        $excel = new ExcelStakesReport($this->sessionUser);
+        $excel->getReport();
+//        $workflow = Model_project::getWorkflowDetail();
 //        echo '<pre>';var_dump($workflow);exit;
-        foreach ($workflow as $row)
-        {
-            //Dandy Coca, Rider Cortez, Miguel Flores
-            if($row['stake_responsible'] == 'Miguel Flores' && $row['stake_date'] >= "2019-04-01 00:00:00" && $row['stake_date'] <= "2019-04-30 23:59:59")
-            {
-                echo '<pre>';var_dump($row);
-            }
-        }
-        exit;
+//        foreach ($workflow as $row)
+//        {
+//            //Dandy Coca, Rider Cortez, Miguel Flores, Wilson Choque
+//            if(strpos($row['stake_responsible'], 'Rider Cortez') !== FALSE && $row['stake_date'] >= "2019-04-01 00:00:00" && $row['stake_date'] <= "2019-04-30 23:59:59")
+//            {
+//                echo '<pre>';var_dump($row);
+//            }
+//        }
+//        exit;
     }
 }
