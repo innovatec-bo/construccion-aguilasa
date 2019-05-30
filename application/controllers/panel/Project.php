@@ -387,7 +387,7 @@ class Project extends PrivateController
 
     public function getProjectWorkFlowReport()
     {
-//        set_time_limit(300);
+        set_time_limit(300);
         $formData = $this->input->post();
         $codeList = $formData["code-list"];
         $specialColumns = isset($formData["columns-to-download"])?$formData["columns-to-download"]:array();
@@ -476,7 +476,6 @@ class Project extends PrivateController
         $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
         $endDate = date_format($endDate, 'Y-m-d');
         $endDate = $endDate." 23:59:59";
-        var_dump($startDate, $endDate);exit;
         $excel = new ExcelStakesReport($this->sessionUser, $startDate, $endDate);
         $excel->getReport();
     }

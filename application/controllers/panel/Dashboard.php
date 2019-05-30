@@ -96,4 +96,6 @@ class Dashboard extends PrivateController
 
         $this->_loadPanelView('dashboard/executive-summary-differential');
     }
+
+
 }

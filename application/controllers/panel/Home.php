@@ -110,22 +110,4 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
-
-    public function stakeReport()
-    {
-
-        $excel = new ExcelStakesReport($this->sessionUser);
-        $excel->getReport();
-//        $workflow = Model_project::getWorkflowDetail();
-//        echo '<pre>';var_dump($workflow);exit;
-//        foreach ($workflow as $row)
-//        {
-//            //Dandy Coca, Rider Cortez, Miguel Flores, Wilson Choque
-//            if(strpos($row['stake_responsible'], 'Rider Cortez') !== FALSE && $row['stake_date'] >= "2019-04-01 00:00:00" && $row['stake_date'] <= "2019-04-30 23:59:59")
-//            {
-//                echo '<pre>';var_dump($row);
-//            }
-//        }
-//        exit;
-    }
 }
