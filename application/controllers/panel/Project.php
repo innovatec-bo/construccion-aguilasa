@@ -463,4 +463,21 @@ class Project extends PrivateController
         $excel = new ExcelExecutiveSummary($this->sessionUser);
         $excel->getReport();
     }
+
+    public function getStakeReport()
+    {
+        $formData = $this->input->post();
+        $startDate = $formData["stake-report-from"];
+        $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+        $startDate = date_format($startDate, 'Y-m-d');
+        $startDate = $startDate." 00:00:00";
+
+        $endDate = $formData["stake-report-to"];
+        $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        $endDate = date_format($endDate, 'Y-m-d');
+        $endDate = $endDate." 23:59:59";
+        var_dump($startDate, $endDate);exit;
+        $excel = new ExcelStakesReport($this->sessionUser, $startDate, $endDate);
+        $excel->getReport();
+    }
 }

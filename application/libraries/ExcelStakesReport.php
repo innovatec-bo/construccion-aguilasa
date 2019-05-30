@@ -4,9 +4,13 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ExcelStakesReport
 {
     private $_sessionUser;
-	public function __construct($sessionUser)
+    private $_startDate;
+    private $_endDate;
+	public function __construct($sessionUser, $startDate, $endDate)
 	{
         $this->_sessionUser = $sessionUser;
+        $this->_startDate = $startDate;
+        $this->_endDate = $endDate;
 	}
 
 	function getReport()
@@ -128,7 +132,7 @@ class ExcelStakesReport
         $totalAmount = 0;
         foreach ($workflowDetail as $row)
         {
-            $isBetweenDates = $this->isDateBetweenDates($row["stake_date"], "2019-04-01 00:00:00","2019-04-30 23:59:59");
+            $isBetweenDates = $this->isInGivenRange($row["stake_date"]);
             if($isBetweenDates)
             {
                 $borderCoordinate1 = 'B2';
@@ -176,11 +180,11 @@ class ExcelStakesReport
     }
 
     // Function to get all the dates in given range
-    public function isDateBetweenDates($date, $startDate, $endDate)
+    public function isInGivenRange($date)
     {
         $date = new DateTime($date);
-        $startDate = new DateTime($startDate);
-        $endDate = new DateTime($endDate);
+        $startDate = new DateTime($this->_startDate);
+        $endDate = new DateTime($this->_endDate);
         return $date > $startDate && $date < $endDate;
     }
 
@@ -190,7 +194,7 @@ class ExcelStakesReport
         $arrayPerformanceList = array();
         foreach ($workFlowDetail as $row)
         {
-            $isBetweenDates = $this->isDateBetweenDates($row["stake_date"], "2019-04-01 00:00:00","2019-04-30 23:59:59");
+            $isBetweenDates = $this->isInGivenRange($row["stake_date"]);
             if($isBetweenDates)
             {
                 $userCounter = 0;

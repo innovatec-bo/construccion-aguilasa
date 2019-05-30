@@ -124,6 +124,21 @@ $(document).ready(function() {
         $form.find("input[name=rowKey]").val(rowKey);
         $form.submit();
     });
+
+    $('input[name=stake-report-from]').datetimepicker({
+        defaultDate: moment().startOf('month').format('YYYY-MM-DD'),
+        ignoreReadonly: true,
+        format: 'DD-MM-YYYY',
+        locale:'es'
+    });
+
+    $('input[name=stake-report-to]').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate:moment().endOf('month').format('YYYY-MM-DD'),
+        format: 'DD-MM-YYYY',
+        locale:'es',
+        useCurrent: false
+    });
 });
 
 function getUsersQuantity()
