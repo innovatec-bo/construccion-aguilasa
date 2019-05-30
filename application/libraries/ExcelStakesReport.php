@@ -142,7 +142,7 @@ class ExcelStakesReport
         foreach ($workflowDetail as $row)
         {
             $isBetweenDates = $this->isInGivenRange($row["stake_date"]);
-            if($isBetweenDates)
+            if($isBetweenDates && $row["approved_date"] != "")
             {
                 $borderCoordinate1 = 'B2';
                 $spreadsheet->setActiveSheetIndex(1)
