@@ -28,20 +28,6 @@ class Home extends PrivateController
         $this->_loadPanelView('home/index');
     }
 
-    public function jpgraphTest()
-    {
-//        $jpGraphHandler = new JPGraphHandler();
-//        $jpGraphHandler->printPieChart3D();
-
-        $TCPDFHandler = new NetBuildingReportPDF();
-        $TCPDFHandler->PrintReport("I");
-    }
-
-    public function notifyReport()
-    {
-//        Model_user::netBuildingEmail();
-    }
-
     public function updateAmounts()
     {
         $arrayRounds = array("","A","B", "C");
@@ -109,5 +95,25 @@ class Home extends PrivateController
 //        Model_project_budget::updateBatch($toUpdate);
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
+    }
+
+    public function testCreReport()
+    {
+        $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
+        foreach ($fiscalListToNotify as $fiscalData)
+        {
+            if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
+            {
+                $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
+//            echo'<pre>';var_dump($response);exit;
+            }
+
+
+        }
+    }
+
+    public function clarification()
+    {
+        Model_user::emailClarification();
     }
 }

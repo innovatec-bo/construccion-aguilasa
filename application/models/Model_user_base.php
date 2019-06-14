@@ -122,6 +122,11 @@ class Model_user_base extends MY_Model
     {
         return ucwords($this->_firstName." ".$this->_lastName);
     }
+
+    public function getEmail()
+    {
+        return $this->_email;
+    }
     ################################################################################### end getters
 
     ################################################################################### begin setters

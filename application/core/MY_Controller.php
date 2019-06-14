@@ -125,6 +125,44 @@ class PublicController extends CI_Controller
         $arr = array_reverse($arr, true);
         return $arr;
     }
+
+    public static function creFiscalSupervisingList($creFiscalEmail)
+    {
+        $list = array(
+//            SISTEMA INTEGRADO
+            'luisdf@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'salviocm@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'rolandodc@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'juancmg@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'erlinac@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'mariodgr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'josers@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'javiervm@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'miltonmr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+//            SISTEMA INTEGRADO
+            'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+            'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+            'miltonro@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+            'rclaure@cruztel.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+            'pablopdvm@gmail.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+//            SISTEMA INTEGRADO
+            'carlosagad@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
+            'diegoasr@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
+            'dariojfm@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
+//            SISTEMA MISIONES
+            'santosbcg@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
+            'walterag@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
+            'hermanvf@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
+            'santiagojse@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
+//            SISTEMA GERMAN BUSH
+            'joselrs@cre.com.bo' => array('rolandsh@cre.com.bo','juanjal@cre.com.bo'),
+//            SISTEMA  ROBORE
+            'darwindm@cre.com.bo' => array('rolandsh@cre.com.bo','wilsongg@cre.com.bo'),
+//            SISTEMA  VALLES
+            'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo')
+        );
+        return $list[$creFiscalEmail];
+    }
 }
 
 class PrivateController extends PublicController
@@ -356,5 +394,7 @@ class PrivateController extends PublicController
 
         return $columnList;
     }
+
+
 }
 

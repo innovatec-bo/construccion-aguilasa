@@ -198,4 +198,110 @@ class Model_user extends Model_user_base
         $result = static::recastArray(get_called_class(), $query->result());
         return $result;
     }
+
+    public static function notifyProjectStatusToCreFiscal($dataToSend = array())
+    {
+        $ci = &get_instance();
+        $data = array();
+        $creFiscalEmail = $dataToSend['creFiscalEmail'];
+        $supervisionList = PublicController::creFiscalSupervisingList($creFiscalEmail);
+        $sendToCC = array(
+            "vhsuarez@serebo.com",
+            "vh.suarez@me.com",
+            "maguilera@serebo.com",
+            "eddysonca@serebo.com",
+
+        );
+        $sendToCC = array_merge($sendToCC, $supervisionList);
+
+        $subjectList = array(
+            "already_sent" => "PROYECTOS PENDIENTES DE APROBACION",
+            "as_built" => "PROYECTOS POR CONCILIAR" ,
+            "conciliation_shipment" => "PROYECTOS PENDIENTES DE ORDEN DE DEVOLUCION"
+        );
+        $shipmentDateList = array(
+            "already_sent" => "already_sent_date",
+            "as_built" => "as_built_date" ,
+            "conciliation_shipment" => "conciliation_shipment_date"
+        );
+        $creFiscalFullName = $dataToSend['creFiscalFullName'];
+        $statusListToNotify = $dataToSend['statusListToNotify'];
+        $responseList = array();
+        foreach($statusListToNotify as $status => $projectList)
+        {
+            $data['creFiscalFullName'] = $creFiscalFullName;
+            $data['subject'] = $subjectList[$status];
+            $data['shipmentDate'] = $shipmentDateList[$status];
+            $data['projectList'] = $projectList;
+            $emailHandler = new EmailHandler();
+            $email = $emailHandler->initialize();
+            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->to($creFiscalEmail);
+            $email->cc($sendToCC);
+            $email->bcc('jcussy@toqueeltimbre.com');
+            $email->subject($subjectList[$status]);
+            $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+            echo "<pre>";var_dump("TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+//            try
+//            {
+//                if($email->Send())
+//                {
+//                    $sendMessageResponse['success'] = 1;
+//                    $sendMessageResponse['message'] = "Notice sent successfully.";
+//                }
+//                else
+//                {
+//                    $sendMessageResponse['success'] = 0;
+//                    $sendMessageResponse['message'] = "Something went wrong!";
+//                }
+//            }
+//            catch (Exception $e)
+//            {
+//                $sendMessageResponse['success'] = 0;
+//                $sendMessageResponse['message'] = "Internal server error, please try again.";
+//            }
+//            $responseList[] = $sendMessageResponse;
+        }
+        return $responseList;
+    }
+
+    public static function emailClarification()
+    {
+        $ci = &get_instance();
+        $data = array();
+        $sendTo = array(
+            "vh.suarez@me.com",
+            "jcussy@toqueeltimbre.com"
+        );
+
+        $emailHandler = new EmailHandler();
+        $email = $emailHandler->initialize();
+        $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+        $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+        $email->to($sendTo);
+//        $email->bcc('jcussy@toqueeltimbre.ccom');
+        $email->subject("Aclaracion de reportes automaticos");
+        $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
+        $ci->load->view("default-template/panel/email-template/clarification.php", $data);
+//        try
+//        {
+//            if($email->Send())
+//            {
+//                $sendMessageResponse['success'] = 1;
+//                $sendMessageResponse['message'] = "Notice sent successfully.";
+//            }
+//            else
+//            {
+//                $sendMessageResponse['success'] = 0;
+//                $sendMessageResponse['message'] = "Something went wrong!";
+//            }
+//        }
+//        catch (Exception $e)
+//        {
+//            $sendMessageResponse['success'] = 0;
+//            $sendMessageResponse['message'] = "Internal server error, please try again.";
+//        }
+//        return $sendMessageResponse;
+    }
 }
