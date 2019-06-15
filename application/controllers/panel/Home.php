@@ -112,8 +112,8 @@ class Home extends PrivateController
         }
     }
 
-    public function clarification()
-    {
-        Model_user::emailClarification();
-    }
+//    public function clarification()
+//    {
+//        Model_user::emailClarification();
+//    }
 }

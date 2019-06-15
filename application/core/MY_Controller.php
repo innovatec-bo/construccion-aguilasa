@@ -161,7 +161,7 @@ class PublicController extends CI_Controller
 //            SISTEMA  VALLES
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo')
         );
-        return $list[$creFiscalEmail];
+        return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
     }
 }
 

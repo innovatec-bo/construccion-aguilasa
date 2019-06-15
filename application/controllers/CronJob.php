@@ -23,4 +23,12 @@ class CronJob extends PublicController
             Model_executive_summary_log::saveLog($executiveSummary);
         }
     }
+
+    public function clarificationEmail($currentDate)
+    {
+        if($currentDate == date("Y-m-d"))
+        {
+            Model_user::emailClarification();
+        }
+    }
 }

@@ -192,6 +192,7 @@ class Model_user extends Model_user_base
         LEFT JOIN sec_users usr on users.id_usr = usr.id_usr
         where
         users.keyword like ".$ci->db->escape('%'.$roleKeyword.'%')."
+        and usr.deleted_usr != 1
         ";
 //        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
@@ -210,7 +211,7 @@ class Model_user extends Model_user_base
             "vh.suarez@me.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
-
+            "pmendoza@serebo.com"
         );
         $sendToCC = array_merge($sendToCC, $supervisionList);
 
@@ -268,40 +269,57 @@ class Model_user extends Model_user_base
 
     public static function emailClarification()
     {
+        $creFiscalList = Model_user::getByRoleKeyword('cre_fiscal');
+        $creFiscalEmails = array();
+        $supervisingEmails = array();
+        foreach($creFiscalList as $fiscal)
+        {
+            if(strpos($fiscal->getEmail(), 'mailinator.com') === FALSE)
+            {
+                $creFiscalEmails[] = $fiscal->getEmail();
+                $list = PublicController::creFiscalSupervisingList($fiscal->getEmail());
+                $supervisingEmails = array_merge($supervisingEmails, $list);
+            }
+        }
+        $supervisingEmails = array_unique($supervisingEmails);
+
         $ci = &get_instance();
         $data = array();
         $sendTo = array(
+            "vhsuarez@serebo.com",
             "vh.suarez@me.com",
-            "jcussy@toqueeltimbre.com"
+            "maguilera@serebo.com",
+            "eddysonca@serebo.com",
+            "pmendoza@serebo.com"
         );
-
+        $sendTo = array_merge($sendTo, $creFiscalEmails, $supervisingEmails);
         $emailHandler = new EmailHandler();
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to($sendTo);
+        $email->to('jcussy@toqueeltimbre.com');
 //        $email->bcc('jcussy@toqueeltimbre.ccom');
         $email->subject("Aclaracion de reportes automaticos");
         $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
-        $ci->load->view("default-template/panel/email-template/clarification.php", $data);
-//        try
-//        {
-//            if($email->Send())
-//            {
-//                $sendMessageResponse['success'] = 1;
-//                $sendMessageResponse['message'] = "Notice sent successfully.";
-//            }
-//            else
-//            {
-//                $sendMessageResponse['success'] = 0;
-//                $sendMessageResponse['message'] = "Something went wrong!";
-//            }
-//        }
-//        catch (Exception $e)
-//        {
-//            $sendMessageResponse['success'] = 0;
-//            $sendMessageResponse['message'] = "Internal server error, please try again.";
-//        }
-//        return $sendMessageResponse;
+//        $ci->load->view("default-template/panel/email-template/clarification.php", $data);
+        try
+        {
+            if($email->Send())
+            {
+                $sendMessageResponse['success'] = 1;
+                $sendMessageResponse['message'] = "Notice sent successfully.";
+            }
+            else
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Something went wrong!";
+            }
+        }
+        catch (Exception $e)
+        {
+            $sendMessageResponse['success'] = 0;
+            $sendMessageResponse['message'] = "Internal server error, please try again.";
+        }
+        return $sendMessageResponse;
     }
 }
