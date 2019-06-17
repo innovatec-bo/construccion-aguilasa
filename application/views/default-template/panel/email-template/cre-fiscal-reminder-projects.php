@@ -123,10 +123,10 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS ESTATICO</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE CRE</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO POR</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>

@@ -243,26 +243,26 @@ class Model_user extends Model_user_base
             $email->bcc('jcussy@toqueeltimbre.com');
             $email->subject($subjectList[$status]);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
-            echo "<pre>";var_dump("TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
-//            try
-//            {
-//                if($email->Send())
-//                {
-//                    $sendMessageResponse['success'] = 1;
-//                    $sendMessageResponse['message'] = "Notice sent successfully.";
-//                }
-//                else
-//                {
-//                    $sendMessageResponse['success'] = 0;
-//                    $sendMessageResponse['message'] = "Something went wrong!";
-//                }
-//            }
-//            catch (Exception $e)
-//            {
-//                $sendMessageResponse['success'] = 0;
-//                $sendMessageResponse['message'] = "Internal server error, please try again.";
-//            }
-//            $responseList[] = $sendMessageResponse;
+//            echo "<pre>";var_dump("TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+            try
+            {
+                if($email->Send())
+                {
+                    $sendMessageResponse['success'] = 1;
+                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                }
+                else
+                {
+                    $sendMessageResponse['success'] = 0;
+                    $sendMessageResponse['message'] = "Something went wrong!";
+                }
+            }
+            catch (Exception $e)
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Internal server error, please try again.";
+            }
+            $responseList[] = $sendMessageResponse;
         }
         return $responseList;
     }
@@ -297,8 +297,8 @@ class Model_user extends Model_user_base
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to('jcussy@toqueeltimbre.com');
-//        $email->bcc('jcussy@toqueeltimbre.ccom');
+        $email->to($sendTo);
+        $email->bcc('jcussy@toqueeltimbre.com');
         $email->subject("Aclaracion de reportes automaticos");
         $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
 //        $ci->load->view("default-template/panel/email-template/clarification.php", $data);

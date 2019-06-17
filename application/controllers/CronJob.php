@@ -24,11 +24,27 @@ class CronJob extends PublicController
         }
     }
 
-    public function clarificationEmail($currentDate)
+    public function clarificationEmail($challenge)
     {
-        if($currentDate == date("Y-m-d"))
+        if($challenge == 'clarificationEmail2019')
         {
             Model_user::emailClarification();
+        }
+    }
+
+    public function notifyProjectStatusToCreFiscal($challenge)
+    {
+        if($challenge == 'notifyProjectStatusToCreFiscal2019')
+        {
+            $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
+            foreach ($fiscalListToNotify as $fiscalData)
+            {
+                if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
+                {
+                    $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
+//            echo'<pre>';var_dump($response);exit;
+                }
+            }
         }
     }
 }
