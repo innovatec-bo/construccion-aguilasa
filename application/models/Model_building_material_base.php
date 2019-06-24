@@ -15,13 +15,15 @@ class Model_building_material_base extends MY_Model
     protected $_structure;
     protected $_description;
     protected $_unit;
+    protected $_budgetType;
 
-    public function __construct($structure = "", $description = "", $unit = "")
+    public function __construct($structure = "", $description = "", $unit = "", $budgetType = NULL)
     {
         parent::__construct();
         $this->_structure = $structure;
         $this->_description = $description;
         $this->_unit = $unit;
+        $this->_budgetType = $budgetType;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_building_material_base extends MY_Model
             "structure_bum" => $this->_structure,
             "description_bum" => $this->_description,
             "unit_bum" => $this->_unit,
+            "budget_type_bum" => $this->_budgetType,
             "deleted_bum" => $this->_deleted,
             "createdon_bum" => $this->_createdOn,
             "createdby_bum" => $this->_createdBy,
@@ -61,7 +64,8 @@ class Model_building_material_base extends MY_Model
             $instance = new $className(
                 $object->structure_bum,
                 $object->description_bum,
-                $object->unit_bum
+                $object->unit_bum,
+                $object->budget_type_bum
             );
             $instance->_id = $object->id_bum;
 

@@ -6,7 +6,7 @@
  * Time: 12:04 PM
 */
 
-class Model_building_material extends Model_building_material_base
+class Model_labor_cost extends Model_labor_cost_base
 {
     public function __construct($structure = "", $description = "", $unit = "")
     {

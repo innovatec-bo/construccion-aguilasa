@@ -97,23 +97,19 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testCreReport()
+    public function testLibrary()
     {
-        $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
-        foreach ($fiscalListToNotify as $fiscalData)
-        {
-            if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
-            {
-                $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
-//            echo'<pre>';var_dump($response);exit;
-            }
-
-
-        }
+        $file = Model_file::getById(1);
+        $manpowerFileReader = new ManpowerFileReader($file);
+        $manpowerFileReader->setBudgetsFromExcelFile();
+        echo"<pre>";
+        var_dump(
+            $manpowerFileReader->getDesignBudget(),
+            $manpowerFileReader->getBuildingBudget(),
+            $manpowerFileReader->getTransportationBudget(),
+            $manpowerFileReader->getLiveLineBudget(),
+            $manpowerFileReader->getRightOfWayBudget(),
+            $manpowerFileReader->getGraphNumber()
+        );
     }
-
-//    public function clarification()
-//    {
-//        Model_user::emailClarification();
-//    }
 }

@@ -37,7 +37,6 @@ var StatusManagementHandler = (function () {
                     _this._defineNextStep();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -610,6 +609,7 @@ var StatusManagementHandler = (function () {
         var liveLine = $("input[name=live-line-budget]").val();
         var rightOfWay = $("input[name=right-of-way-budget]").val();
         var secondaryCode = $("input[name=secondary-code]").val();
+        var workforceFileId = $("input[name=workforce-file-id]").val();
         var approved = {
             design: design,
             building: building,
@@ -618,7 +618,8 @@ var StatusManagementHandler = (function () {
             transportation: transportation,
             liveLine: liveLine,
             rightOfWay: rightOfWay,
-            secondaryCode: secondaryCode
+            secondaryCode: secondaryCode,
+            workforceFileId: workforceFileId
         };
         var dataResult = Object.assign(data, approved);
         $.ajax({
@@ -830,6 +831,28 @@ var StatusManagementHandler = (function () {
         });
         $(document).on("keyup", "input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function () {
             StatusManagementHandler.updateTotalOnApprovedForm();
+        });
+        $(document).on("click", ".extract-approved-budgets", function () {
+            var form = $('form[name=status-management]')[0];
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readManpowerFile",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (response) {
+                    if (response.success == 1) {
+                        console.log(response.data);
+                    }
+                    else {
+                        console.log(response.message);
+                    }
+                }
+            });
         });
     };
     return StatusManagementHandler;

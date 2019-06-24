@@ -5,7 +5,8 @@
  * Date: 10/1/2018
  * Time: 2:01 PM
  */
-
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class AjaxProjectStatus extends PrivateController
 {
@@ -790,5 +791,47 @@ class AjaxProjectStatus extends PrivateController
 
     }
 
+    public function getExcelFile()
+    {
+//        echo"<pre>";var_dump($formData, $_FILES['workforce-file']['tmp_name']);exit;
+        set_time_limit(240);
+        ini_set('memory_limit','256M');
+        require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+        $reader = new Xlsx();
+        $spreadsheet = $reader->load($_FILES['workforce-file']['tmp_name']);
+        $sheetList = $spreadsheet->getAllSheets();
+        $dataSheet = $sheetList[0];
+        echo'<pre>';var_dump($_FILES, $_FILES['workforce-file']['tmp_name'],$dataSheet->toArray());exit;
+
+    }
+
+    public function readManpowerFile()
+    {
+        if (!empty($_FILES['workforce-file']['name']))
+        {
+            try
+            {
+                $fileHandler = new FileHandler();
+                $document = $fileHandler->fileUpload($_FILES['workforce-file'], "manpower_doc", "documents", "document");
+                $document->save();
+                $response['success'] = 1;
+                $response['message'] = '';
+                $response['data']['file']['id'] = $document->getId();
+            }
+            catch (Exception $e)
+            {
+                $response['success'] = 0;
+                $response['message'] = $e->getMessage();
+                $response['data']['file'] = array();
+            }
+        }
+        else
+        {
+            $response['success'] = 0;
+            $response['message'] = 'No se selecciono ningun archivo para revisar.';
+            $response['data']['file'] = array();
+        }
+        echo json_encode($response);exit;
+    }
 
 }

@@ -39,6 +39,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default extract-approved-budgets" type="button">Extraer importes
+                                        </button>
+                                    </span>
+                                    <input type="file" name="workforce-file">
+                                </div>
+                                <input type="hidden" name="workforce-file-id" value="">
                                 <div class="row form-inline">
                                     <div class="col-md-6">
                                         <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>

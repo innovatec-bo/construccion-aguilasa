@@ -75,7 +75,7 @@
         <div class="col-md-9">
             <section>
                 <div class="wizard">
-                    <form role="form" name="status-management" data-parsley-validate>
+                    <form role="form" name="status-management" enctype="multipart/form-data" data-parsley-validate>
                         <input type="hidden" value="<?=$paymentOrder["id_pao"]?>" name="payment-order-id">
                         <input type="hidden" value='<?=$responsibleList?>' name="responsible-list">
                         <input type="hidden" value="" name="status-set">

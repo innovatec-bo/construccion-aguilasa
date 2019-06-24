@@ -727,6 +727,7 @@ class StatusManagementHandler
         let liveLine = $("input[name=live-line-budget]").val();
         let rightOfWay = $("input[name=right-of-way-budget]").val();
         let secondaryCode = $("input[name=secondary-code]").val();
+        let workforceFileId = $("input[name=workforce-file-id]").val();
         let approved = {
             design: design,
             building: building,
@@ -735,7 +736,8 @@ class StatusManagementHandler
             transportation:transportation,
             liveLine:liveLine,
             rightOfWay:rightOfWay,
-            secondaryCode:secondaryCode
+            secondaryCode:secondaryCode,
+            workforceFileId:workforceFileId
         };
         let dataResult = Object.assign(data, approved);
         $.ajax({
@@ -934,6 +936,8 @@ class StatusManagementHandler
         }
     }
 
+    public uploadApprovement
+
     loadEventHandler()
     {
         let _this = this;
@@ -987,6 +991,31 @@ class StatusManagementHandler
 
         $(document).on("keyup","input[name=design-budget], input[name=building-budget], input[name=transportation-budget], input[name=live-line-budget], input[name=right-of-way-budget]", function(){
             StatusManagementHandler.updateTotalOnApprovedForm();
+        });
+
+        $(document).on("click",".extract-approved-budgets",function(){
+            let form = $('form[name=status-management]')[0];
+            let data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readManpowerFile",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (response) {
+                    if(response.success == 1)
+                    {
+                        console.log(response.data);
+                    }
+                    else
+                    {
+                        console.log(response.message);
+                    }
+                }
+            });
         });
     }
 }

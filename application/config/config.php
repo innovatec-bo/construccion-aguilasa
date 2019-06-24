@@ -529,3 +529,18 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/* FileUpload */
+$config['fileHandler']['uploadMode'] = 'normal';
+$config['fileHandler']['basePath'] = FCPATH;
+$config['fileHandler']['mainPath'] = "assets/uploads/";
+$config['fileHandler']['dbTable'] = "sys_files";
+$config['fileHandler']['allowedExtensions'] = array("jpg","jpeg","png","gif","JPG","JPEG","PNG","GIF");
+$config['fileHandler']['allowedDocuments'] = array("pdf","doc","docx","xlsx","xls","ppt","pptx","pps","ppsx","odt","ods","odp","txt","csv","PDF","DOC","DOCX","XLSX","XLS","PPT","PPTX","PPS","PPSX","ODT","ODS","ODP","TXT","CSV");
+$config['fileHandler']['allowedVideos'] = array("avi","mpeg","mov","wmv","rm","flv","mp4","AVI","MPEG","MOV","WMV","RM","FLV","MP4");
+$config['fileHandler']['allowedAudios'] = array("mp3","mid","wav","wma","cda","ogg","aac","ac3","flac","mp4","MP3","MID","WAV","WMA","CDA","OGG","AAC","AC3","FLAC","MP4");
+$config['fileHandler']['allowedCompressed'] = array("7z","zip","rar","tar","gz","7Z","ZIP","RAR","TAR","GZ");
+$config['fileHandler']['maxFileSize'] = 1024000; //bytes
+$config['fileHandler']['maxFileHeight'] = 1200; //pixels
+$config['fileHandler']['maxFileWidth'] = 1200; //pixels
+$config['fileHandler']['maxDocFileSize'] = 9024000; //bytes
