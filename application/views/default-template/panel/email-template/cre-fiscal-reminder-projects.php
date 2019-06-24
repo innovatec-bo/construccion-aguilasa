@@ -76,6 +76,9 @@
                                                                                 '.$project["code_pro"].'
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                                '.$project["secondary_code_pro"].'
+                                                                            </td>
+                                                                            <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                 '.$project["status_name_pst"].'
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
@@ -121,6 +124,7 @@
                                                 <tr style="background: #f6f6f6;font-size: 12px;">
                                                     <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO<br>SECUNDARIO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
