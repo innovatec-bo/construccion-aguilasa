@@ -24,7 +24,7 @@ class ManpowerFileReader
         $this->_designBudgetIdentifiers = array('ERU', 'ERU_B');
         $this->_buildingBudgetIdentifiers = array();
         $this->_transportationBudgetIdentifiers = array('CTPH-M');
-        $this->_liveLineBudgetIdentifiers = array();
+        $this->_liveLineBudgetIdentifiers = array('lv');
         $this->_rightOfWayBudgetIdentifiers = array();
         $this->_designBudget = 0;
         $this->_buildingBudget = 0;
@@ -81,6 +81,7 @@ class ManpowerFileReader
             if($startReadingData)
             {
                 $structure = trim($data[2]);
+                $execution = trim($data[3]);
                 $quantity = floatval(trim($data[6]));
                 $unitPrice = floatval(trim($data[7]));
                 $amount = round($quantity*$unitPrice, 2);
@@ -97,7 +98,7 @@ class ManpowerFileReader
                 {
                     $this->_transportationBudget += $amount;
                 }
-                if(in_array($structure, $this->_liveLineBudgetIdentifiers))
+                if(in_array(strtolower($execution), $this->_liveLineBudgetIdentifiers))
                 {
                     $this->_liveLineBudget += $amount;
                 }

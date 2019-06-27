@@ -395,11 +395,13 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
         $secondaryCode = $formData["secondaryCode"];
+        $manpowerFileId = $formData["manpowerFileId"];
+        /** @var $project Model_project*/
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->setSecondaryCode($secondaryCode);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
@@ -807,22 +809,30 @@ class AjaxProjectStatus extends PrivateController
 
     public function readManpowerFile()
     {
-        if (!empty($_FILES['workforce-file']['name']))
+        if (!empty($_FILES['manpower-file']['name']))
         {
             try
             {
                 $fileHandler = new FileHandler();
-                $document = $fileHandler->fileUpload($_FILES['workforce-file'], "manpower_doc", "documents", "document");
+                $document = $fileHandler->fileUpload($_FILES['manpower-file'], "manpower_doc", "documents", "document");
                 $document->save();
+                $manpowerFileReader = new ManpowerFileReader($document);
+                $manpowerFileReader->setBudgetsFromExcelFile();
                 $response['success'] = 1;
                 $response['message'] = '';
                 $response['data']['file']['id'] = $document->getId();
+                $response['data']['budget']['design'] = $manpowerFileReader->getDesignBudget();
+                $response['data']['budget']['building'] = $manpowerFileReader->getBuildingBudget();
+                $response['data']['budget']['transportation'] = $manpowerFileReader->getTransportationBudget();
+                $response['data']['budget']['liveLine'] = $manpowerFileReader->getLiveLineBudget();
+                $response['data']['budget']['rightOfWay'] = $manpowerFileReader->getRightOfWayBudget();
+                $response['data']['extraInfo']['graphNumber'] = $manpowerFileReader->getGraphNumber();
             }
             catch (Exception $e)
             {
                 $response['success'] = 0;
                 $response['message'] = $e->getMessage();
-                $response['data']['file'] = array();
+                $response['data'] = array();
             }
         }
         else

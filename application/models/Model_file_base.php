@@ -133,4 +133,19 @@ class Model_file_base extends MY_Model
     {
         return $this->_originalFileName;
     }
+
+    public function getFilename()
+    {
+        return $this->_fileName;
+    }
+
+    public function getMimetype()
+    {
+        return $this->_mimeType;
+    }
+
+    public function getFilepath()
+    {
+        return $this->_filePath;
+    }
 }

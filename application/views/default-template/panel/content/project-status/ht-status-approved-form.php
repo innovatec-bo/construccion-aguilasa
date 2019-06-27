@@ -17,6 +17,15 @@
                     <div class="col-md-12 status-content">
                         <div class="row">
                             <div class="col-md-12">
+                                {{#ifCond previousEntry.manpower_file_id_prb "!=" null}}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group input-group pull-right">
+                                            <a class="btn btn-info" href="<?=base_url('panel/Project/downloadManPowerFile/')?>{{previousEntry.file_hash}}"><i class="fa fa-download fa-fw"></i> Descargar mano de obra</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/ifCond}}
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -39,14 +48,15 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group input-group">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default extract-approved-budgets" type="button">Extraer importes
+                                        <button class="btn btn-primary extract-approved-budgets btn-xs" type="button">Extraer importes
                                         </button>
                                     </span>
-                                    <input type="file" name="workforce-file">
+                                    <input type="file" name="manpower-file">
                                 </div>
-                                <input type="hidden" name="workforce-file-id" value="">
+                                <input type="hidden" name="manpower-file-id" value="">
                                 <div class="row form-inline">
                                     <div class="col-md-6">
                                         <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>

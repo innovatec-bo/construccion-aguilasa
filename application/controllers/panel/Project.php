@@ -138,23 +138,8 @@ class Project extends PrivateController
             $responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created");
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
-//            $project->addStatusToLog($statusHasBeenCreated, "El proyecto ha sido creado.", $projectEntryDate, $responsibleList);
             $project->savePoints($projectPoints, $projectMetersDistance, $statusHasBeenCreated,"El proyecto ha sido creado.", $projectEntryDate,$responsibleList);
-            //Now let's verify if create or not a new status
-//            if($formData["send-to-design"] == 1)
-//            {
-                //Newly we get the responsible from design status
-//                $responsibleList = Model_status_responsible::getUsersResponsible("design");
-//                $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
-//                $responsibleList = array($responsibleList['id_sre']);
-//
-//                $seconds = 1;
-//                $designStatus = 1;
-//                $projectEntryDate = date("Y-m-d H:i:s", (strtotime(date($projectEntryDate)) + $seconds));
-//                $project->addStatusToLog($designStatus, "Proyecto enviado a diseño", $projectEntryDate, $responsibleList);
-//                $project->setStatus($designStatus);//Design
-//                $project->save();
-//            }
+
 
             if(isset($formData["instant-approvement"]))
             {
@@ -168,7 +153,8 @@ class Project extends PrivateController
                 $liveLine = $formData["live-line-budget"];
                 $rightOfWay = $formData["right-of-way-budget"];
                 $secondaryCode = $formData["secondary-code"];
-                $project->approveThisProject($entryDate, $statusDetail, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $secondaryCode);
+                $manpowerFileId = !isset($formData["manpower-file-id"]) || $formData["manpower-file-id"] == ''?NULL:$formData["manpower-file-id"];
+                $project->approveThisProject($entryDate, $statusDetail, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $secondaryCode, $manpowerFileId);
             }
 
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
@@ -478,5 +464,15 @@ class Project extends PrivateController
         $endDate = $endDate." 23:59:59";
         $excel = new ExcelStakesReport($this->sessionUser, $startDate, $endDate);
         $excel->getReport();
+    }
+
+    public function downloadManPowerFile($fileHash)
+    {
+        /** @var Model_file $file */
+        $file = Model_file::getByHash($fileHash);
+        $fileHandler = new FileHandler();
+        $fileName = str_replace('.xlsx','', $file->getOriginalFileName());
+        $fileName = str_replace('.xls','', $fileName);
+        $fileHandler->download($file, $fileName);
     }
 }

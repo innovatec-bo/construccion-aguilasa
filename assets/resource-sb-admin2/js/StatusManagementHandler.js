@@ -609,7 +609,7 @@ var StatusManagementHandler = (function () {
         var liveLine = $("input[name=live-line-budget]").val();
         var rightOfWay = $("input[name=right-of-way-budget]").val();
         var secondaryCode = $("input[name=secondary-code]").val();
-        var workforceFileId = $("input[name=workforce-file-id]").val();
+        var manpowerFileId = $("input[name=manpower-file-id]").val();
         var approved = {
             design: design,
             building: building,
@@ -619,7 +619,7 @@ var StatusManagementHandler = (function () {
             liveLine: liveLine,
             rightOfWay: rightOfWay,
             secondaryCode: secondaryCode,
-            workforceFileId: workforceFileId
+            manpowerFileId: manpowerFileId
         };
         var dataResult = Object.assign(data, approved);
         $.ajax({
@@ -840,12 +840,29 @@ var StatusManagementHandler = (function () {
                 enctype: 'multipart/form-data',
                 url: base_url + "panel/AjaxProjectStatus/readManpowerFile",
                 data: data,
+                dataType: 'json',
                 processData: false,
                 contentType: false,
                 cache: false,
                 timeout: 600000,
+                beforeSend: function () {
+                    blockArea($(form));
+                },
                 success: function (response) {
+                    $(form).unblock();
                     if (response.success == 1) {
+                        var file = response.data.file;
+                        var budget = response.data.budget;
+                        var extraInfo = response.data.extraInfo;
+                        var $form = $("#status-form-content");
+                        $form.find("input[name=manpower-file-id]").val(file.id);
+                        $form.find("input[name=design-budget]").val(budget.design);
+                        $form.find("input[name=building-budget]").val(budget.building);
+                        $form.find("input[name=transportation-budget]").val(budget.transportation);
+                        $form.find("input[name=live-line-budget]").val(budget.liveLine);
+                        $form.find("input[name=right-of-way-budget]").val(budget.rightOfWay);
+                        $form.find("input[name=graph-number-budget]").val(extraInfo.graphNumber);
+                        StatusManagementHandler.updateTotalOnApprovedForm();
                         console.log(response.data);
                     }
                     else {

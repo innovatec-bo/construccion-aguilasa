@@ -68,7 +68,7 @@ class FileHandler
      * @param string $hash Model_File hash
      * @param string $newFileName (Optional) the filename shown in download
      */
-    public function donwloadByHash($hash, $newFileName = '')
+    public function downloadByHash($hash, $newFileName = '')
     {
         $file = Model_File::getByHash($hash);
         $this->download($file, $newFileName);
@@ -145,7 +145,8 @@ class FileHandler
         $fileName=time()."_".$fileName;
         $url = $filePath . $fileName;
         $fullFilePath = $this->config["basePath"] . $url;
-        $hash = sha1_file($file['tmp_name']);        
+//        $hash = sha1_file($file['tmp_name']);
+        $hash = hash("sha256", $fileName);
         $imageInfo = getimagesize($file['tmp_name']);
 
         $width = "";

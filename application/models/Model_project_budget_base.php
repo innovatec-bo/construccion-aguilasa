@@ -20,8 +20,9 @@ class Model_project_budget_base extends MY_Model
     protected $_transportation;
     protected $_liveLine;
     protected $_rightOfWay;
+    protected $_manpowerFileId;
 
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay)
+    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $manpowerFileId = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -32,6 +33,7 @@ class Model_project_budget_base extends MY_Model
         $this->_transportation = $transportation;
         $this->_liveLine = $liveLine;
         $this->_rightOfWay = $rightOfWay;
+        $this->_manpowerFileId = $manpowerFileId;
     }
 
     /**
@@ -50,6 +52,7 @@ class Model_project_budget_base extends MY_Model
             "transportation_prb" => $this->_transportation,
             "live_line_prb" => $this->_liveLine,
             "right_of_way_prb" => $this->_rightOfWay,
+            "manpower_file_id_prb" => $this->_manpowerFileId,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -81,7 +84,8 @@ class Model_project_budget_base extends MY_Model
                 $object->reservation_number_prb,
                 $object->transportation_prb,
                 $object->live_line_prb,
-                $object->right_of_way_prb
+                $object->right_of_way_prb,
+                $object->manpower_file_id_prb
             );
             $instance->_id = $object->id_prb;
 
