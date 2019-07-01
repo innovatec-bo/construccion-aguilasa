@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 {{#ifCond previousEntry.manpower_file_id_prb "!=" null}}
-                                <div class="row">
+                                <div class="row hidden">
                                     <div class="col-md-12">
                                         <div class="form-group input-group pull-right">
                                             <a class="btn btn-info" href="<?=base_url('panel/Project/downloadManPowerFile/')?>{{previousEntry.file_hash}}"><i class="fa fa-download fa-fw"></i> Descargar mano de obra</a>
@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group input-group">
+                                <div class="form-group input-group hidden">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary extract-approved-budgets btn-xs" type="button">Extraer importes
                                         </button>
