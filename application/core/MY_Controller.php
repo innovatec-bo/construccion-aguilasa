@@ -159,7 +159,10 @@ class PublicController extends CI_Controller
 //            SISTEMA  ROBORE
             'darwindm@cre.com.bo' => array('rolandsh@cre.com.bo','wilsongg@cre.com.bo'),
 //            SISTEMA  VALLES
-            'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo')
+            'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
+            //NUEVOS
+            'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
     }

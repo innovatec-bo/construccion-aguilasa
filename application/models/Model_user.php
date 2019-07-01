@@ -234,6 +234,9 @@ class Model_user extends Model_user_base
             $data['subject'] = $subjectList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
+            $listManagementBy = array_column($projectList, 'management_by_pro');
+            $listManagementBy = array_unique($listManagementBy);
+            $listManagementBy = implode(',',$listManagementBy);
             $emailHandler = new EmailHandler();
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
@@ -241,9 +244,10 @@ class Model_user extends Model_user_base
             $email->to($creFiscalEmail);
             $email->cc($sendToCC);
             $email->bcc('jcussy@toqueeltimbre.com');
-            $email->subject($subjectList[$status]);
+            $subject = $subjectList[$status].'('.$listManagementBy.')';
+            $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
-//            echo "<pre>";var_dump("TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
