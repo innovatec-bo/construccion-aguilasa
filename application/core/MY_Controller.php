@@ -139,12 +139,14 @@ class PublicController extends CI_Controller
             'josers@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
             'javiervm@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
             'miltonmr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
+            'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'miltonro@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'rclaure@cruztel.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'pablopdvm@gmail.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
+            'layonelrlm@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             'carlosagad@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
             'diegoasr@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
@@ -161,8 +163,7 @@ class PublicController extends CI_Controller
 //            SISTEMA  VALLES
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
             //NUEVOS
-            'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
-            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
+            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')//Not in excel list
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
     }
