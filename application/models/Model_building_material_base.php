@@ -6,21 +6,21 @@
  * Time: 12:04 PM
  */
 
-class Model_building_material_base extends MY_Model
+class Model_building_structure_base extends MY_Model
 {
-    const TABLE_NAME = "bui_building_materials";
-    const TABLE_ID = "id_bum";
-    const ATTRIB_SUFIX = "_bum";
+    const TABLE_NAME = "bui_building_structures";
+    const TABLE_ID = "id_bus";
+    const ATTRIB_SUFIX = "_bus";
 
-    protected $_structure;
+    protected $_structureCode;
     protected $_description;
     protected $_unit;
     protected $_budgetType;
 
-    public function __construct($structure = "", $description = "", $unit = "", $budgetType = NULL)
+    public function __construct($structureCode = "", $description = "", $unit = "", $budgetType = NULL)
     {
         parent::__construct();
-        $this->_structure = $structure;
+        $this->_structureCode = $structureCode;
         $this->_description = $description;
         $this->_unit = $unit;
         $this->_budgetType = $budgetType;
@@ -33,16 +33,16 @@ class Model_building_material_base extends MY_Model
     public function toArray()
     {
         $tableAttributes = array(
-            "id_bum" => $this->_id,
-            "structure_bum" => $this->_structure,
-            "description_bum" => $this->_description,
-            "unit_bum" => $this->_unit,
-            "budget_type_bum" => $this->_budgetType,
-            "deleted_bum" => $this->_deleted,
-            "createdon_bum" => $this->_createdOn,
-            "createdby_bum" => $this->_createdBy,
-            "editedon_bum" => $this->_editedOn,
-            "editedby_bum" => $this->_editedBy
+            "id_bus" => $this->_id,
+            "structure_code_bus" => $this->_structureCode,
+            "description_bus" => $this->_description,
+            "unit_bus" => $this->_unit,
+            "budget_type_bus" => $this->_budgetType,
+            "deleted_bus" => $this->_deleted,
+            "createdon_bus" => $this->_createdOn,
+            "createdby_bus" => $this->_createdBy,
+            "editedon_bus" => $this->_editedOn,
+            "editedby_bus" => $this->_editedBy
         );
         return $tableAttributes;
     }
@@ -62,18 +62,18 @@ class Model_building_material_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
-                $object->structure_bum,
-                $object->description_bum,
-                $object->unit_bum,
-                $object->budget_type_bum
+                $object->structure_code_bus,
+                $object->description_bus,
+                $object->unit_bus,
+                $object->budget_type_bus
             );
-            $instance->_id = $object->id_bum;
+            $instance->_id = $object->id_bus;
 
-            $instance->_deleted = $object->deleted_bum;
-            $instance->_createdOn = $object->createdon_bum;
-            $instance->_createdBy = $object->createdby_bum;
-            $instance->_editedOn = $object->editedon_bum;
-            $instance->_editedBy = $object->editedby_bum;
+            $instance->_deleted = $object->deleted_bus;
+            $instance->_createdOn = $object->createdon_bus;
+            $instance->_createdBy = $object->createdby_bus;
+            $instance->_editedOn = $object->editedon_bus;
+            $instance->_editedBy = $object->editedby_bus;
             $response = $instance;
         }
         return $response;

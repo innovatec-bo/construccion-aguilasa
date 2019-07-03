@@ -101,15 +101,16 @@ class Home extends PrivateController
     {
         $file = Model_file::getById(1);
         $manpowerFileReader = new ManpowerFileReader($file);
-        $manpowerFileReader->setBudgetsFromExcelFile();
-        echo"<pre>";
-        var_dump(
-            $manpowerFileReader->getDesignBudget(),
-            $manpowerFileReader->getBuildingBudget(),
-            $manpowerFileReader->getTransportationBudget(),
-            $manpowerFileReader->getLiveLineBudget(),
-            $manpowerFileReader->getRightOfWayBudget(),
-            $manpowerFileReader->getGraphNumber()
-        );
+        $manpowerFileReader->saveStaticData();
+//        $manpowerFileReader->setBudgetsFromExcelFile();
+//        echo"<pre>";
+//        var_dump(
+//            $manpowerFileReader->getDesignBudget(),
+//            $manpowerFileReader->getBuildingBudget(),
+//            $manpowerFileReader->getTransportationBudget(),
+//            $manpowerFileReader->getLiveLineBudget(),
+//            $manpowerFileReader->getRightOfWayBudget(),
+//            $manpowerFileReader->getGraphNumber()
+//        );
     }
 }

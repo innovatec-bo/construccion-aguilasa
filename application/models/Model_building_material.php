@@ -6,11 +6,11 @@
  * Time: 12:04 PM
 */
 
-class Model_building_material extends Model_building_material_base
+class Model_building_structure extends Model_building_structure_base
 {
-    public function __construct($structure = "", $description = "", $unit = "", $budgetType = NULL)
+    public function __construct($structureCode = "", $description = "", $unit = "", $budgetType = NULL)
     {
-        parent::__construct($structure, $description, $unit, $budgetType);
+        parent::__construct($structureCode, $description, $unit, $budgetType);
     }
 
     public static function getByStructureList($structureList = array())
@@ -19,7 +19,7 @@ class Model_building_material extends Model_building_material_base
         $ci->load->database();
 
         $sql = "
-        select * from ".static::TABLE_NAME." where structure_bum in (".implode(',',$structureList).") and deleted_bum != 1
+        select * from ".static::TABLE_NAME." where structure_bus in (".implode(',',$structureList).") and deleted_bus != 1
         ";
         $query = $ci->db->query($sql);
         $result = static::recastArray(get_called_class(), $query->result());

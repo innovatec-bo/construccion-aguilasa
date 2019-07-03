@@ -36,11 +36,37 @@ class ManpowerFileReader
 
 	public function saveStaticData()
     {
-
         $reader = new Xlsx();
-        $spreadsheet = $reader->load($_FILES['workforce-file']['tmp_name']);
+        if(strtolower($this->_file->getExtension()) == "xls")
+        {
+            $reader = new Xls();
+        }
+        $fileLocation = FCPATH.$this->_file->getUrl();
+        $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();
-        $dataSheet = $sheetList[0];
+        $sheetData = $sheetList[0];
+        $arrayData = $sheetData->toArray();
+        $startReadingData = FALSE;
+        $structureList = array();
+
+        $i = 0;
+        foreach($arrayData as $index => $data)
+        {
+            //Setting approved budgets
+            if($data[0] == 'ITEM')
+            {
+                $startReadingData = TRUE;
+                continue;
+            }
+            $structureList[trim($data[2])]['count'] = 0;
+            if($startReadingData)
+            {
+                $structureList[trim($data[2])]['count'] ++;
+                $structureList[trim($data[2])]['list'][] = array(trim($data[2]), trim($data[1]));
+            }
+            $i++;
+        }
+        echo"<pre>";var_dump($structureList);exit;
     }
 
     public function setBudgetsFromExcelFile()
