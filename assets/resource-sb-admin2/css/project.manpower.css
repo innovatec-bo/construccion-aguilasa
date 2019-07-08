@@ -1,0 +1,18 @@
+.subtext
+{
+    color: #cdcdcd;
+    font-size: 23px;
+}
+.quick-log-status-name
+{
+    /*color: #96c03d;*/
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid #fab90a;
+}
+blockquote {
+    padding: 0px 10px;
+    margin: 0 0 10px;
+    font-size: 11px;
+    border-left: 5px solid #96c03d;
+}

@@ -128,5 +128,74 @@ class AjaxProject extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function getManpower($projectId)
+    {
 
+        $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
+        $i = 0;
+        foreach($laborCostMasterDetail as &$laborCost)
+        {
+            $i++;
+            $laborCost['index'] = $i;
+            $laborCost['quantity'] = number_format($laborCost['quantity'], 2);
+            $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
+            $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
+        }
+        if(count($laborCostMasterDetail) > 0)
+        {
+            $data['isSuperAdmin'] = $this->_is('super_admin');
+            $result['success'] = 1;
+            $result['message'] = '';
+            $result['data']['template'] = $this->loadView('panel/content/project/ManpowerHandler', $data, TRUE);
+            $result['data']['templateName'] = "#ht-manpower-table";
+            $result['data']['laborCostMasterDetail'] = $laborCostMasterDetail;
+        }
+        else
+        {
+            $result['success'] = 0;
+            $result['message'] = 'No se encontraron datos';
+            $result['data']['laborCostMasterDetail'] = array();
+        }
+        echo json_encode($result);exit;
+    }
+
+    public function addManpowerProgress($projectId = NULL)
+    {
+        //        $this->_validateFeature('qb_create_invoice');
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Home");
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('question', $this->lang->line("il_title"), 'trim|required');
+        $this->form_validation->set_rules('answer-type', $this->lang->line("il_due_date"), 'trim|required|in_list[1,2,3]');
+
+        if($this->form_validation->run() === FALSE)
+        {
+            $validationErrors = validation_errors();
+            $validationErrors = str_replace("<p>","",$validationErrors);
+            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $response = array("success" => 0, "message" => $validationErrors);
+            $success = $validationErrors != ""?0:1;
+            $response["success"] = $success;
+            $response["message"] = $validationErrors;
+            $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
+            $response["data"]["template"] = $template;
+            $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
+        }
+        else
+        {
+            $formData = $this->input->post();
+
+            $query = $formData["question"];
+            $answerType = $formData["answer-type"];
+            $question = New Model_question($query, $answerType);
+            $question->save();
+            Model_survey_question::addQuestionToSurvey($surveyId, $question->getId());
+            $question = $question->toArray();
+            $response["success"] = 1;
+            $response["data"]["question"]["id"] = $question["id_que"];
+            $response["data"]["question"]["query"] = $question["query_que"];
+            $response["data"]["question"]["answerType"] = $question["answer_type_que"];
+            $response["message"] = "Query created successfully";
+        }
+        echo json_encode($response);exit;
+    }
 }

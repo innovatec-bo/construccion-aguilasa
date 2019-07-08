@@ -99,10 +99,10 @@ class Home extends PrivateController
 
     public function testLibrary()
     {
+        /** @var  $file Model_file*/
         $file = Model_file::getById(1);
         $manpowerFileReader = new ManpowerFileReader($file);
-        $manpowerFileReader->saveStaticData();
-//        $manpowerFileReader->setBudgetsFromExcelFile();
+        $manpowerFileReader->registerManpowerInSystem(533);
 //        echo"<pre>";
 //        var_dump(
 //            $manpowerFileReader->getDesignBudget(),

@@ -14,15 +14,15 @@ class Model_building_structure_base extends MY_Model
 
     protected $_structureCode;
     protected $_description;
-    protected $_unit;
+    protected $_unitOfMeasurement;
     protected $_budgetType;
 
-    public function __construct($structureCode = "", $description = "", $unit = "", $budgetType = NULL)
+    public function __construct($structureCode = "", $description = "", $unitOfMeasurement = "", $budgetType = NULL)
     {
         parent::__construct();
         $this->_structureCode = $structureCode;
         $this->_description = $description;
-        $this->_unit = $unit;
+        $this->_unitOfMeasurement = $unitOfMeasurement;
         $this->_budgetType = $budgetType;
     }
 
@@ -36,7 +36,7 @@ class Model_building_structure_base extends MY_Model
             "id_bus" => $this->_id,
             "structure_code_bus" => $this->_structureCode,
             "description_bus" => $this->_description,
-            "unit_bus" => $this->_unit,
+            "unit_of_measurement_bus" => $this->_unitOfMeasurement,
             "budget_type_bus" => $this->_budgetType,
             "deleted_bus" => $this->_deleted,
             "createdon_bus" => $this->_createdOn,
@@ -64,7 +64,7 @@ class Model_building_structure_base extends MY_Model
             $instance = new $className(
                 $object->structure_code_bus,
                 $object->description_bus,
-                $object->unit_bus,
+                $object->unit_of_measurement_bus,
                 $object->budget_type_bus
             );
             $instance->_id = $object->id_bus;

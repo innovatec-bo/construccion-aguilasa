@@ -98,4 +98,9 @@ class Model_project_budget_base extends MY_Model
         }
         return $response;
     }
+
+    public function setManpowerFileId($fileId)
+    {
+        $this->_manpowerFileId = $fileId;
+    }
 }

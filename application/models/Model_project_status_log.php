@@ -42,6 +42,7 @@ class Model_project_status_log extends Model_project_status_log_base
             status_icon_pst,            
             order_pst,
             points_quantity_prp,
+            id_prb project_budget_id,
             distance_prp,
             GROUP_CONCAT(responsible.full_name) responsible_user,
             points_pro,
@@ -53,6 +54,8 @@ class Model_project_status_log extends Model_project_status_log_base
             transportation_prb,
             live_line_prb,
             right_of_way_prb,
+            manpower_file_id_prb,
+            hash_fil file_hash,
             start_date_cas,
             end_date_cas,
             estimated_time_cas,
@@ -72,6 +75,7 @@ class Model_project_status_log extends Model_project_status_log_base
         LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
         LEFT JOIN wfl_project_real_budgets on id_psl = status_log_id_reb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
+        LEFT JOIN sys_files on manpower_file_id_prb = id_fil
         LEFT JOIN (
             SELECT
                 status_log_id_slr,

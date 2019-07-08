@@ -475,4 +475,21 @@ class Project extends PrivateController
         $fileName = str_replace('.xls','', $fileName);
         $fileHandler->download($file, $fileName);
     }
+
+    public function manpower($projectId)
+    {
+        $this->_validateFeature('project_manpower');
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $this->complementHandler->addProjectCss('project.manpower');
+        $this->complementHandler->addProjectJs('project.manpower');
+        $this->complementHandler->addProjectJs('ManpowerHandler');
+        $data['project'] = $project->toArray();
+        $this->_loadPanelView('project/manpower', $data);
+    }
+
+    public function getFiscal()
+    {
+        $users = Model_user::getByRoleKeyword('fiscal');
+        echo"<pre>";var_dump($users);exit;
+    }
 }

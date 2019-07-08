@@ -13,17 +13,17 @@ class Model_labor_cost_base extends MY_Model
     const ATTRIB_SUFIX = "_lac";
 
     protected $_laborDetailId;
-    protected $_buildingMaterialId;
+    protected $_buildingStructureId;
     protected $_activity;
     protected $_execution;
     protected $_quantity;
     protected $_unitPrice;
 
-    public function __construct($laborDetailId = NULL, $buildingMaterialId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0)
+    public function __construct($laborDetailId = NULL, $buildingStructureId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0)
     {
         parent::__construct();
         $this->_laborDetailId = $laborDetailId;
-        $this->_buildingMaterialId = $buildingMaterialId;
+        $this->_buildingStructureId = $buildingStructureId;
         $this->_activity = $activity;
         $this->_execution = $execution;
         $this->_quantity = $quantity;
@@ -39,7 +39,7 @@ class Model_labor_cost_base extends MY_Model
         $tableAttributes = array(
             "id_lac" => $this->_id,
             "labor_detail_id_lac" => $this->_laborDetailId,
-            "building_material_id_lac" => $this->_buildingMaterialId,
+            "building_structure_id_lac" => $this->_buildingStructureId,
             "activity_lac" => $this->_activity,
             "execution_lac" => $this->_execution,
             "quantity_lac" => $this->_quantity,
@@ -69,7 +69,7 @@ class Model_labor_cost_base extends MY_Model
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
                 $object->labor_detail_id_lac,
-                $object->building_material_id_lac,
+                $object->building_structure_id_lac,
                 $object->activity_lac,
                 $object->execution_lac,
                 $object->quantity_lac,

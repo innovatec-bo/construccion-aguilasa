@@ -395,7 +395,7 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
         $secondaryCode = $formData["secondaryCode"];
-        $manpowerFileId = $formData["manpowerFileId"];
+        $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
         /** @var $project Model_project*/
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
@@ -406,6 +406,16 @@ class AjaxProjectStatus extends PrivateController
         if(!$wareHouse instanceof Model_warehouse)
         {
             $project->startWarehouseProcess($entryDate);
+        }
+        if(is_numeric($manpowerFileId))
+        {
+            $file = Model_file::getById($manpowerFileId);
+            if($file instanceof Model_file)
+            {
+                $manpowerFileReader = new ManpowerFileReader($file);
+                $manpowerFileReader->saveStructuresInDataBase();
+                $manpowerFileReader->registerManpowerInSystem($project->getId());
+            }
         }
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -809,15 +819,19 @@ class AjaxProjectStatus extends PrivateController
 
     public function readManpowerFile()
     {
+        $this->_validateFeature('project_upload_manpower');
         if (!empty($_FILES['manpower-file']['name']))
         {
             try
             {
+                $formData = $this->input->post();
+                $projectId = $formData['project-id'];
                 $fileHandler = new FileHandler();
                 $document = $fileHandler->fileUpload($_FILES['manpower-file'], "manpower_doc", "documents", "document");
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($document);
-                $manpowerFileReader->setBudgetsFromExcelFile();
+                $manpowerFileReader->saveStructuresInDataBase();
+                $manpowerFileReader->registerManpowerInSystem($projectId);
                 $response['success'] = 1;
                 $response['message'] = '';
                 $response['data']['file']['id'] = $document->getId();
@@ -827,6 +841,11 @@ class AjaxProjectStatus extends PrivateController
                 $response['data']['budget']['liveLine'] = $manpowerFileReader->getLiveLineBudget();
                 $response['data']['budget']['rightOfWay'] = $manpowerFileReader->getRightOfWayBudget();
                 $response['data']['extraInfo']['graphNumber'] = $manpowerFileReader->getGraphNumber();
+                $projectBudgetId = $formData['project-budget-id'];
+                $projectBudget = Model_project_budget::getById($projectBudgetId);
+                $projectBudget->setManpowerFileId($document->getId());
+                $projectBudget->save();
+
             }
             catch (Exception $e)
             {

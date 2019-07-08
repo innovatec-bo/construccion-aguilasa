@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 class ManpowerFileReader
 {
     private $_file;
+    private $_excelArrayData;
     private $_designBudgetIdentifiers;
     private $_buildingBudgetIdentifiers;
     private $_transportationBudgetIdentifiers;
@@ -17,10 +18,14 @@ class ManpowerFileReader
     private $_liveLineBudget;
     private $_rightOfWayBudget;
     private $_graphNumber;
+    private $_levelOfTension;
+    private $_destiny;
+    private $_structureListFromExcelFile;
 
     public function __construct(Model_file $file)
 	{
-	    $this->_file = $file;
+        $this->_file = $file;
+        $this->_setExcelArrayData();
         $this->_designBudgetIdentifiers = array('ERU', 'ERU_B');
         $this->_buildingBudgetIdentifiers = array();
         $this->_transportationBudgetIdentifiers = array('CTPH-M');
@@ -32,25 +37,33 @@ class ManpowerFileReader
         $this->_liveLineBudget = 0;
         $this->_rightOfWayBudget = 0;
         $this->_graphNumber = '';
+        $this->_levelOfTension = '';
+        $this->_destiny = '';
+
+        $this->_setStructureListFromExcelFile();
+        $this->_setDataFromExcelFile();
 	}
 
-	public function saveStaticData()
+	private function _setExcelArrayData()
     {
         $reader = new Xlsx();
         if(strtolower($this->_file->getExtension()) == "xls")
         {
             $reader = new Xls();
         }
+
         $fileLocation = FCPATH.$this->_file->getUrl();
         $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();
         $sheetData = $sheetList[0];
-        $arrayData = $sheetData->toArray();
-        $startReadingData = FALSE;
-        $structureList = array();
+        $this->_excelArrayData = $sheetData->toArray();
+    }
 
-        $i = 0;
-        foreach($arrayData as $index => $data)
+	private function _setStructureListFromExcelFile()
+    {
+        $startReadingData = FALSE;
+        //Prepare data to save from excel file
+        foreach($this->_excelArrayData as $index => $data)
         {
             //Setting approved budgets
             if($data[0] == 'ITEM')
@@ -58,34 +71,52 @@ class ManpowerFileReader
                 $startReadingData = TRUE;
                 continue;
             }
-            $structureList[trim($data[2])]['count'] = 0;
             if($startReadingData)
             {
-                $structureList[trim($data[2])]['count'] ++;
-                $structureList[trim($data[2])]['list'][] = array(trim($data[2]), trim($data[1]));
+                $structureCode = trim($data[2]);
+                $description = trim($data[4]);
+                $unit = trim($data[5]);
+                $currentUser = PrivateController::getSessionUser();
+                $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+                if($structureCode != "")
+                {
+                    $this->_structureListFromExcelFile[$structureCode] = array(
+                        'structure_code_bus' => $structureCode,
+                        'description_bus' => $description,
+                        'unit_of_measurement_bus' => $unit,
+                        'createdon_bus' => date('Y-m-d H:i:s'),
+                        'createdby_bus' => $currentUserId
+                    );
+                }
             }
-            $i++;
         }
-        echo"<pre>";var_dump($structureList);exit;
     }
 
-    public function setBudgetsFromExcelFile()
+	public function saveStructuresInDataBase()
     {
-        $reader = new Xlsx();
-        if(strtolower($this->_file->getExtension()) == "xls")
+        $structureListFromExcelFile = $this->_structureListFromExcelFile;
+        $structureCodeList = array_keys($structureListFromExcelFile);
+        $existingStructures = Model_building_structure::getByStructureList($structureCodeList);
+        foreach($existingStructures as $structure)
         {
-            $reader = new Xls();
+            $structure = $structure->toArray();
+            $existingStructureCode = $structure['structure_code_bus'];
+            if(isset($structureListFromExcelFile[$existingStructureCode]))
+            {
+                unset($structureListFromExcelFile[$existingStructureCode]);
+            }
         }
-        $fileLocation = FCPATH.$this->_file->getUrl();
-        $spreadsheet = $reader->load($fileLocation);
-        $sheetList = $spreadsheet->getAllSheets();
-        $sheetData = $sheetList[0];
-        $arrayData = $sheetData->toArray();
-        $startReadingData = FALSE;
+        $structureListFromExcelFile = array_values($structureListFromExcelFile);
+        if(count($structureListFromExcelFile) > 0)
+            Model_building_structure::insertBatch($structureListFromExcelFile);
+    }
 
-        foreach($arrayData as $index => $data)
+    private function _setDataFromExcelFile()
+    {
+        $startReadingData = FALSE;
+        foreach($this->_excelArrayData as $index => $data)
         {
-            //Setting Graph number
+            //Setting Graph number and level of tension
             if(strpos(strtolower($data[0]),'grafo') !== FALSE)
             {
                 $haystack = array_values(array_filter(explode(" ",$data[0])));
@@ -94,6 +125,22 @@ class ManpowerFileReader
                     if (preg_match('/.*grafo.*/i', strtolower($value)))
                     {
                         $this->_graphNumber = trim($haystack[$index+1]);
+                    }
+
+                    if (preg_match('/.*tension.*/i', strtolower($value)))
+                    {
+                        $this->_levelOfTension = trim($haystack[$index+1]);
+                    }
+                }
+            }
+            if(strpos(strtolower($data[0]),'destino') !== FALSE)
+            {
+                $haystack = array_values(array_filter(explode(":",$data[0])));
+                foreach ($haystack as $index => $value)
+                {
+                    if(preg_match('/.*destino.*/i', strtolower($value)))
+                    {
+                        $this->_destiny = trim($haystack[$index+1]);
                         break;
                     }
                 }
@@ -165,4 +212,76 @@ class ManpowerFileReader
     {
         return $this->_graphNumber;
     }
+
+    public function getLevelOfTension()
+    {
+        return $this->_levelOfTension;
+    }
+
+    public function getDestiny()
+    {
+        return $this->_destiny;
+    }
+
+    public function registerManpowerInSystem($projectId)
+    {
+        $laborCostToSave = array();
+        $laborDetail = Model_labor_detail::getByProjectId($projectId);
+
+        //If the labor detail does not exist for the project then let's create it and add its labor cost list
+        if(!$laborDetail instanceof Model_labor_detail)
+        {
+            $laborDetail = new Model_labor_detail($projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny);
+            $laborDetail->save();
+            $structureCodeList = array_keys($this->_structureListFromExcelFile);
+            $existingStructures = Model_building_structure::getMasterDetailByStructureCodeList($structureCodeList);
+            $startReadingData = FALSE;
+            foreach($this->_excelArrayData as $index => $data)
+            {
+                //Structure
+                $structure = trim($data[2]);
+                $key = array_search($structure, array_column($existingStructures, 'structure_code_bus'));
+                $structureId = $existingStructures[$key];
+                $structureId = $structureId['id_bus'];
+                //Activity
+                $activity = trim($data[1]);
+                //Execution
+                $execution = trim($data[3]);
+                //Quantity
+                $quantity = floatval(trim($data[6]));
+                //Unite price
+                $unitPrice = floatval(trim($data[7]));
+                //Current user Id
+                $currentUser = PrivateController::getSessionUser();
+                $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+
+                if($data[0] == 'ITEM')
+                {
+                    $startReadingData = TRUE;
+                    continue;
+                }
+
+                if($startReadingData && $structure != '')
+                {
+                    $laborCostToSave[] = array(
+                        "labor_detail_id_lac" => $laborDetail->getId(),
+                        "building_structure_id_lac" => $structureId,
+                        "activity_lac" => $activity,
+                        "execution_lac" => $execution,
+                        "quantity_lac" => $quantity,
+                        "unit_price_lac" => $unitPrice,
+                        "deleted_lac" => 0,
+                        "createdon_lac" => date('Y-m-d H:i:s'),
+                        "createdby_lac" => $currentUserId
+                    );
+                }
+            }
+            if(count($laborCostToSave))
+                Model_labor_cost::insertBatch($laborCostToSave);
+
+        }
+
+
+    }
+
 }

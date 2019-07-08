@@ -833,7 +833,8 @@ var StatusManagementHandler = (function () {
             StatusManagementHandler.updateTotalOnApprovedForm();
         });
         $(document).on("click", ".extract-approved-budgets", function () {
-            var form = $('form[name=status-management]')[0];
+            var formName = $(this).data('form-name');
+            var form = $('form[name=' + formName + ']')[0];
             var data = new FormData(form);
             $.ajax({
                 type: "POST",
@@ -851,21 +852,15 @@ var StatusManagementHandler = (function () {
                 success: function (response) {
                     $(form).unblock();
                     if (response.success == 1) {
-                        var file = response.data.file;
-                        var budget = response.data.budget;
-                        var extraInfo = response.data.extraInfo;
-                        var $form = $("#status-form-content");
-                        $form.find("input[name=manpower-file-id]").val(file.id);
-                        $form.find("input[name=design-budget]").val(budget.design);
-                        $form.find("input[name=building-budget]").val(budget.building);
-                        $form.find("input[name=transportation-budget]").val(budget.transportation);
-                        $form.find("input[name=live-line-budget]").val(budget.liveLine);
-                        $form.find("input[name=right-of-way-budget]").val(budget.rightOfWay);
-                        $form.find("input[name=graph-number-budget]").val(extraInfo.graphNumber);
-                        StatusManagementHandler.updateTotalOnApprovedForm();
-                        console.log(response.data);
+                        _this.projectLog();
+                        _this.loadStatusForm('approved', 0);
                     }
                     else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
                         console.log(response.message);
                     }
                 }

@@ -38,6 +38,29 @@
                             <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
                         {{#ifCond keyword_pst "==" "approved"}}
+                            {{#ifCond manpower_file_id_prb "!=" null}}
+                                <dt>Revisar Mano de obra</dt>
+                                <dd>
+                                    <a href="<?=base_url('panel/Project/downloadManPowerFile/')?>{{file_hash}}"><i class="fa fa-download fa-fw"></i></a>
+                                    <a href="<?=base_url('panel/Project/manpower/')?>{{project_id_psl}}" target="_blank"><i class="fa fa-table fa-fw"></i></a>
+                                </dd>
+                            {{/ifCond}}
+                            {{#ifCond manpower_file_id_prb "==" null}}
+                                <dt>Cargar Mano de obra</dt>
+                                <dd>
+                                    <form name="manpower-upload-file" enctype="multipart/form-data">
+                                        <input type="hidden" value="{{project_id_psl}}" name="project-id">
+                                        <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">
+                                        <div class="form-group input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
+                                                    </button>
+                                                </span>
+                                            <input type="file" name="manpower-file">
+                                        </div>
+                                    </form>
+                                </dd>
+                            {{/ifCond}}
                             <dt>Importe de diseño</dt>
                             <dd>{{design_prb}}</dd>
                             <dt>Importe de construccion</dt>
