@@ -480,16 +480,17 @@ class Project extends PrivateController
     {
         $this->_validateFeature('project_manpower');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('project.manpower');
         $this->complementHandler->addProjectJs('project.manpower');
+        $this->complementHandler->addProjectCss('ManpowerHandler');
         $this->complementHandler->addProjectJs('ManpowerHandler');
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/manpower', $data);
-    }
-
-    public function getFiscal()
-    {
-        $users = Model_user::getByRoleKeyword('fiscal');
-        echo"<pre>";var_dump($users);exit;
     }
 }

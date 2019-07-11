@@ -162,10 +162,10 @@ class AjaxProject extends PrivateController
     public function addManpowerProgress($projectId = NULL)
     {
         //        $this->_validateFeature('qb_create_invoice');
-        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Home");
+        $this->_validateObjectToEdit($projectId,"Model_project","panel/Home");
         /** Server Side Validations **/
-        $this->form_validation->set_rules('question', $this->lang->line("il_title"), 'trim|required');
-        $this->form_validation->set_rules('answer-type', $this->lang->line("il_due_date"), 'trim|required|in_list[1,2,3]');
+        $this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
+        $this->form_validation->set_rules('detail', 'Detalle', 'trim');
 
         if($this->form_validation->run() === FALSE)
         {
@@ -177,24 +177,32 @@ class AjaxProject extends PrivateController
             $response["success"] = $success;
             $response["message"] = $validationErrors;
             $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
+            $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
+            $i = 0;
+            foreach($laborCostMasterDetail as &$laborCost)
+            {
+                $i++;
+                $laborCost['index'] = $i;
+                $laborCost['quantity'] = number_format($laborCost['quantity'], 2);
+                $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
+                $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
+            }
+            $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+            $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
         }
         else
         {
             $formData = $this->input->post();
-
-            $query = $formData["question"];
-            $answerType = $formData["answer-type"];
-            $question = New Model_question($query, $answerType);
-            $question->save();
-            Model_survey_question::addQuestionToSurvey($surveyId, $question->getId());
-            $question = $question->toArray();
+            $manualEntryDate = $formData["entry-date"];
+            $detail = $formData["detail"];
+            $workedUp = $formData["worked-up"];
+            $laborCostLog = New Model_labor_cost_log($this->sessionUser->id, $detail, $manualEntryDate);
+            $laborCostLog->save();
+            $laborCostLog->addWorkedUpStructures($workedUp);
             $response["success"] = 1;
-            $response["data"]["question"]["id"] = $question["id_que"];
-            $response["data"]["question"]["query"] = $question["query_que"];
-            $response["data"]["question"]["answerType"] = $question["answer_type_que"];
-            $response["message"] = "Query created successfully";
+            $response["message"] = "Avance registrado correctamente.";
         }
         echo json_encode($response);exit;
     }

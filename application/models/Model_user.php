@@ -326,4 +326,17 @@ class Model_user extends Model_user_base
         }
         return $sendMessageResponse;
     }
+
+    public static function getBySupervisingUserId($supervisingUserId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            select * from ".static::TABLE_NAME." where supervising_usr = ".$ci->db->escape($supervisingUserId)." and ".static::notDeleted()."
+        ";
+
+        $query = $ci->db->query($sql);
+        $response = static::recastArray(get_called_class(), $query->result());
+        return $response;
+    }
 }

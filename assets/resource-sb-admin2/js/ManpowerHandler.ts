@@ -11,11 +11,11 @@ class ManpowerHandler
 {
     private _projectId: number;
     private loadViewResponse: any;
-    private loadViewTemplate: any;
+    private _loadViewTemplate: any;
     private viewData: any;
     private stopTreeLoop: boolean;
     private _breadCrumb : any;
-    private nextStep: any;
+    private _laborCostMasterDetail: any;
 
     public constructor(private projectID: number)
     {
@@ -28,16 +28,16 @@ class ManpowerHandler
         let _this = this;
         let method = !formData?"GET":"POST";
         $.ajax({
-            url : base_url + 'panel/AjaxQuestion/add/'+_this._surveyId,
+            url : base_url + 'panel/AjaxProject/addManpowerProgress/'+_this._projectId,
             dataType  :"json",
             method : method,
             data:formData,
             beforeSend:function()
             {
-                let message = "Opening form..";
+                let message = "Cargando formulario..";
                 if(formData)
                 {
-                    message = "Processing.."
+                    message = "Procesando.."
                 }
                 swal({
                     html: "<h3>"+message+"</h3>",
@@ -50,16 +50,16 @@ class ManpowerHandler
             success:function(response){
                 if(response.success === 1 && !formData)
                 {
-                    _this.launchForm(response, "New Question");
+                    _this.launchForm(response, "Registrar avance");
                 }
                 else if(response.success === 1 && formData)
                 {
-                    swal({ title:'', html:response.message, type:"success"});
+                    Swal({ title:'', html:response.message, type:"success"});
                     _this.loadQuestions();
                 }
                 else
                 {
-                    swal({ title:'', html:response.message, type:"error"});
+                    Swal({ title:'', html:response.message, type:"error"});
                 }
             }
         });
@@ -70,7 +70,7 @@ class ManpowerHandler
         let _this = this;
         let method = !formData?"GET":"POST";
         $.ajax({
-            url : base_url + 'panel/AjaxQuestion/edit/'+_this._questionId,
+            url : base_url + 'panel/AjaxProject/edit/'+_this._questionId,
             dataType  :"json",
             method : method,
             data:formData,
@@ -81,11 +81,11 @@ class ManpowerHandler
                 {
                     message = "Processing.."
                 }
-                swal({
+                Swal({
                     html: "<h3>"+message+"</h3>",
                     allowOutsideClick:false,
                     onBeforeOpen: () => {
-                        swal.showLoading();
+                        Swal.showLoading();
                     }
                 });
             },
@@ -110,46 +110,66 @@ class ManpowerHandler
 
     private launchForm (response, formTitle)
     {
-        let htmlTemplate = response.template;
-        let $template = $("<div>"+htmlTemplate+"</div>");
-        let htmlSource = $template.find(response.templateName).html();
+        this._loadViewTemplate = response.data.template;
+        this._laborCostMasterDetail = response.data.laborCostMasterDetail;
+        let $template = $("<div>"+this._loadViewTemplate+"</div>");
+        let structureItemList = $template.find("#ht-structure-item-list").html();
+        Handlebars.registerPartial("ht-structure-item-list", structureItemList);
+        let structureItem = $template.find("#ht-structure-item").html();
+        Handlebars.registerPartial("ht-structure-item", structureItem);
+        let htmlSource = $template.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
-        let data = {question:response.data.question};
+        let item = {
+            index:1,
+            laborCostList:this._laborCostMasterDetail
+        };
+        let structureList = [item];
+        let data = {structureList:structureList};
         let html = template(data);
         let _this = this;
-        swal({
+        Swal({
             title: formTitle,
             html: html,
             showCancelButton: true,
             confirmButtonColor: '#E41C5E',
             cancelButtonColor: '#DDDDDD',
-            confirmButtonText: language.btn_save,
+            confirmButtonText: 'Guardar',
             allowOutsideClick:false,
             showLoaderOnConfirm: true,
-            customClass:"question-form",
+            customClass:"modal-manpower-form",
+            width:'100%',
             preConfirm: () => {
-                let $form = $("form[name=question-form]");
-                if(!$form.parsley().isValid())
-                {
-                    $form.parsley().validate();
-                    swal.showValidationMessage('Corrija los errores e intente nuevamente');
-                }
+                // let $form = $("form[name=question-form]");
+                // if(!$form.parsley().isValid())
+                // {
+                //     $form.parsley().validate();
+                //     Swal.showValidationMessage('Corrija los errores e intente nuevamente');
+                // }
             },
         }).then((result) => {
             if (result.value)
             {
-                let $form = $("form[name=question-form]");
-                let questionId = parseInt($form.find("input[name=question-id]").val());
-                if(isNaN(questionId))
-                {
-                    _this.add($form.serialize());
-                }
-                else
-                {
-                    _this.edit($form.serialize());
-                }
+                let $form = $("form[name=manpower-progress-form]");
+                _this.add($form.serialize());
+                // let questionId = parseInt($form.find("input[name=question-id]").val());
+                // if(isNaN(questionId))
+                // {
+                //     _this.add($form.serialize());
+                // }
+                // else
+                // {
+                //     _this.edit($form.serialize());
+                // }
             }
         });
+        let date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: date,
+            format: 'DD-MM-YYYY'
+        });
+        this._startSelect2();
+        $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     }
 
     public loadManpower()
@@ -180,12 +200,137 @@ class ManpowerHandler
         });
     }
 
+    private _addRow()
+    {
+        let $listContent = $("#structure-item-list-content");
+        let $template = $("<div>"+this._loadViewTemplate+"</div>");
+        let htmlSource   = $template.find('#ht-structure-item').html();
+        let template = Handlebars.compile(htmlSource);
+        let index = $listContent.children().length + 1;
+        let data = {
+            index:index,
+            laborCostList:this._laborCostMasterDetail
+        };
+        let html = template(data);
+
+        $listContent.append(html);
+        // evaluateVisibilityBtnRemove();
+        let selectorSelect2 = "[data-row-index='"+index+"'] select";
+        this._startSelect2(selectorSelect2);
+        $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
+    }
+
+    private _removeRow()
+    {
+
+    }
+
+    private _startSelect2(selector?)
+    {
+        let _this = this;
+        selector = selector || '.select2-structure-code';
+        $(selector).select2({
+            containerCssClass: "select-xs",
+            width:'100%',
+            // escapeMarkup: function (markup) { return markup; },
+            templateResult: function(state){
+                if(!state.id)
+                {
+                    return state.text;
+                }
+                let $originalOption = $(state.element);
+                let data = {
+                  structureCode: state.text,
+                  activity: $originalOption.data('activity'),
+                  execution: $originalOption.data('execution'),
+                  quantity: $originalOption.data('quantity'),
+                  unitOfMeasurement: $originalOption.data('unit-of-measurement'),
+                  description: $originalOption.data('description')
+                };
+                let $template = $("<div>"+_this._loadViewTemplate+"</div>");
+                let htmlSource = $template.find('#ht-select2-template-result').html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template(data);
+                let $state = $(html);
+                return $state;
+            }
+        });
+    }
+
+    private _startSelect2Multiple(selector?)
+    {
+        let _this = this;
+        selector = selector || '.select2-builders';
+        $(selector).select2({
+            containerCssClass: "select-xs",
+            width:'100%',
+            // escapeMarkup: function (markup) { return markup; },
+            templateResult: function(state){
+                if(!state.id)
+                {
+                    return state.text;
+                }
+                let $originalOption = $(state.element);
+                let data = {
+                    structureCode: state.text,
+                    activity: $originalOption.data('activity'),
+                    execution: $originalOption.data('execution'),
+                    quantity: $originalOption.data('quantity'),
+                    unitOfMeasurement: $originalOption.data('unit-of-measurement'),
+                    description: $originalOption.data('description')
+                };
+                let $template = $("<div>"+_this._loadViewTemplate+"</div>");
+                let htmlSource = $template.find('#ht-select2-template-result').html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template(data);
+                let $state = $(html);
+                return $state;
+            }
+        });
+    }
+
+    private _formatState(state)
+    {
+        if(!state.id)
+        {
+            return state.text;
+        }
+        let $template = $("<div>"+this._loadViewTemplate+"</div>");
+        let htmlSource = $template.find('#ht-select2-template-result').html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({});
+        let $state = $(html);
+        return $state;
+    }
+
     loadEventHandler()
     {
         let _this = this;
         $(document).on("click", ".add-manpower-progress", function(e){
             e.preventDefault();
+            _this.add();
             console.log(_this._projectId);
+        });
+
+        $(document).on('click','.add-row', function(e){
+            e.preventDefault();
+            _this._addRow();
+        });
+
+        $(document).on('select2:select','.select2-structure-code', function(e){
+            let $optionElement = $(e.params.data.element);
+            let structureCode = e.params.data.text;
+            let unitOfMeasurement = $optionElement.data('unit-of-measurement');
+            let activity = $optionElement.data('activity');
+            let execution = $optionElement.data('execution');
+            let description = $optionElement.data('description');
+            let quantity = $optionElement.data('quantity');
+            $optionElement.closest('tr').find('.activity').text(activity);
+            $optionElement.closest('tr').find('.execution').text(execution);
+            $optionElement.closest('tr').find('.description').text(description);
+            $optionElement.closest('tr').find('.unit-of-measurement').text(unitOfMeasurement);
+            $optionElement.closest('tr').find('.quantity').text(quantity);
+            console.log(structureCode, unitOfMeasurement, activity, execution, description);
         });
     }
 }

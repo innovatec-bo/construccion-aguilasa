@@ -20,10 +20,11 @@ class Model_labor_cost extends Model_labor_cost_base
 
         $sql = "
         SELECT
+            id_lac labor_cost_id,
             labor_detail_id_lac labor_detail,
             building_structure_id_lac building_structure_id,
             activity_lac activity,
-            execution_lac	execution,
+            execution_lac execution,
             quantity_lac quantity,
             unit_price_lac unit_price,
             id_bus structure_id,
