@@ -188,7 +188,18 @@ class AjaxProject extends PrivateController
                 $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
             }
             $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+            $arrayBuilder = array();
+            foreach($builders as $builder)
+            {
+                $builder = $builder->toArray();
+                $arrayBuilder[] = array(
+                    'id' => $builder['id_usr'],
+                    'firstName' => $builder['firstname_usr'],
+                    'lastName' => $builder['lastname_usr']
+                );
+            }
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
+            $response["data"]["builders"] = $arrayBuilder;
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
         }

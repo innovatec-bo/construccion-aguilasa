@@ -56,6 +56,12 @@
                     </div>
                     <div id="error-entry-date"></div>
                 </div>
+                <div class="form-group">
+                    <label for="disabledSelect">Disabled select menu</label>
+                    <select id="disabledSelect" class="form-control">
+                        <option>Disabled select</option>
+                    </select>
+                </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
