@@ -43,7 +43,7 @@
     </table>
 </script>
 <script id="ht-modal-form-add-manpower-progress" type="text/x-handlebars-template">
-    <form name="manpower-progress-form">
+    <form name="manpower-progress-form" data-parsley-validate>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
@@ -56,13 +56,21 @@
                     </div>
                     <div id="error-entry-date"></div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="disabledSelect">Disabled select menu</label>
-                    <select id="disabledSelect" class="form-control">
-                        <option>Disabled select</option>
+                    <label>Constructores</label><br>
+                    <select class="form-control select2-builders" multiple="multiple" data-parsley-required="" parsley-trigger="change" name="builders[]">
+                        {{#each builders}}
+                        <option value="{{id}}">{{firstName}} {{lastName}}</option>
+                        {{/each}}
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Detalles</label>
@@ -70,6 +78,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -79,10 +88,11 @@
                 </div>
                 <div class="form-group">
                     <div class="table-responsive">
+                        <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
                         <table class="table table-striped table-bordered table-hover">
                             <thead class="thead-inverse">
                                 <tr>
-                                    <th>#</th>
+                                    <th class="hide">#</th>
                                     <th>ESTRUCTURA</th>
                                     <th>ACTIV.</th>
                                     <th>EJEC.</th>
@@ -113,9 +123,10 @@
 
 <script id="ht-structure-item" type="text/x-handlebars-template">
     <tr data-row-index="{{index}}">
-        <td class="text-center">{{index}}</td>
+        <td class="text-center hide">{{index}}</td>
         <td>
-            <select class="form-control input-sm select2-structure-code" name="worked-up[{{index}}][labor-cost-id]">
+            <select class="form-control input-sm select2-structure-code" name="worked-up[{{index}}][labor-cost-id]" data-parsley-required="">
+                <option value=""></option>
                 {{#each laborCostList}}
                     <option value="{{labor_cost_id}}" data-activity="{{activity}}" data-execution="{{execution}}" data-description="{{description}}" data-quantity="{{quantity}}" data-unit-of-measurement="{{unit_of_measurement}}">{{structure_code}}</option>
                 {{/each}}
@@ -127,10 +138,10 @@
         <td class="text-center"><span class="unit-of-measurement"></span></td>
         <td class="text-right"><span class="quantity"></span></td>
         <td class="text-center" style="padding:1px">
-            <input class="input-masked" name="worked-up[{{index}}][quantity]" size="7">
+            <input class="input-masked" name="worked-up[{{index}}][quantity]" size="7" data-parsley-required="">
         </td>
         <td class="text-center">
-            <a href="#"><i class="fa fa-times"></i></a>
+            <a href="#" class="remove-row"><i class="fa fa-times"></i></a>
         </td>
     </tr>
 </script>
