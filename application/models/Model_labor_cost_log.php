@@ -36,4 +36,27 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             Model_worked_up_structure::insertBatch($dataToSave);
         }
     }
+
+    public function addBuildersToManpower($list = array())
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $dataToSave = array();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+        foreach($list as $id)
+        {
+            $dataToSave[] = array(
+                'labor_cost_log_id_bim' => $this->_id,
+                'user_id_bim' => $id,
+                'deleted_bim' => 0,
+                'createdon_bim' => date('Y-m-d H:i:s'),
+                'createdby_bim' => $currentUserId
+            );
+        }
+        if(count($dataToSave) > 0)
+        {
+            Model_builder_in_manpower::insertBatch($dataToSave);
+        }
+    }
 }

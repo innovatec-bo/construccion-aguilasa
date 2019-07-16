@@ -206,12 +206,18 @@ class AjaxProject extends PrivateController
         else
         {
             $formData = $this->input->post();
+//            echo"<pre>";var_dump($formData);exit;
             $manualEntryDate = $formData["entry-date"];
+            $manualEntryDate = DateTime::createFromFormat('d-m-Y', $manualEntryDate);
+            $manualEntryDate = date_format($manualEntryDate, 'Y-m-d');
+            $manualEntryDate = $manualEntryDate." ".date("H:i:s");
             $detail = $formData["detail"];
             $workedUp = $formData["worked-up"];
+            $builders = $formData["builders"];
             $laborCostLog = New Model_labor_cost_log($this->sessionUser->id, $detail, $manualEntryDate);
             $laborCostLog->save();
             $laborCostLog->addWorkedUpStructures($workedUp);
+            $laborCostLog->addBuildersToManpower($builders);
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
         }

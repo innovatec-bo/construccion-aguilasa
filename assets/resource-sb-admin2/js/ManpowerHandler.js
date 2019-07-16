@@ -17,11 +17,11 @@ var ManpowerHandler = (function () {
                 if (formData) {
                     message = "Procesando..";
                 }
-                swal({
+                Swal({
                     html: "<h3>" + message + "</h3>",
                     allowOutsideClick: false,
                     onBeforeOpen: function () {
-                        swal.showLoading();
+                        Swal.showLoading();
                     }
                 });
             },
@@ -31,7 +31,6 @@ var ManpowerHandler = (function () {
                 }
                 else if (response.success === 1 && formData) {
                     Swal({ title: '', html: response.message, type: "success" });
-                    _this.loadQuestions();
                 }
                 else {
                     Swal({ title: '', html: response.message, type: "error" });
@@ -89,7 +88,7 @@ var ManpowerHandler = (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
-        var data = { structureList: structureList };
+        var data = { structureList: structureList, builders: response.data.builders };
         var html = template(data);
         var _this = this;
         Swal({
@@ -104,12 +103,16 @@ var ManpowerHandler = (function () {
             customClass: "modal-manpower-form",
             width: '100%',
             preConfirm: function () {
-                // let $form = $("form[name=question-form]");
-                // if(!$form.parsley().isValid())
-                // {
-                //     $form.parsley().validate();
-                //     Swal.showValidationMessage('Corrija los errores e intente nuevamente');
-                // }
+                var $listContent = $("#structure-item-list-content");
+                var $form = $("form[name=manpower-progress-form]");
+                if (!$form.parsley().isValid()) {
+                    $form.parsley().validate();
+                    return false;
+                }
+                else if ($listContent.children().length <= 0) {
+                    $(".table-error-message").removeClass("hide");
+                    return false;
+                }
             },
         }).then(function (result) {
             if (result.value) {
@@ -123,6 +126,7 @@ var ManpowerHandler = (function () {
             defaultDate: date,
             format: 'DD-MM-YYYY'
         });
+        $(".select2-builders").select2();
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
     };
@@ -152,6 +156,7 @@ var ManpowerHandler = (function () {
         });
     };
     ManpowerHandler.prototype._addRow = function () {
+        $(".table-error-message").addClass("hide");
         var $listContent = $("#structure-item-list-content");
         var $template = $("<div>" + this._loadViewTemplate + "</div>");
         var htmlSource = $template.find('#ht-structure-item').html();
@@ -178,81 +183,50 @@ var ManpowerHandler = (function () {
             width: '100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function (state) {
+                var alreadySelected = [];
+                $.each($(".select2-structure-code"), function (index, value) {
+                    alreadySelected.push($(value).val());
+                    // console.log($(value).val());
+                });
                 if (!state.id) {
                     return state.text;
                 }
-                var $originalOption = $(state.element);
-                var data = {
-                    structureCode: state.text,
-                    activity: $originalOption.data('activity'),
-                    execution: $originalOption.data('execution'),
-                    quantity: $originalOption.data('quantity'),
-                    unitOfMeasurement: $originalOption.data('unit-of-measurement'),
-                    description: $originalOption.data('description')
-                };
-                var $template = $("<div>" + _this._loadViewTemplate + "</div>");
-                var htmlSource = $template.find('#ht-select2-template-result').html();
-                var template = Handlebars.compile(htmlSource);
-                var html = template(data);
-                var $state = $(html);
-                return $state;
-            }
-        });
-    };
-    ManpowerHandler.prototype._startSelect2Multiple = function (selector) {
-        var _this = this;
-        selector = selector || '.select2-builders';
-        $(selector).select2({
-            containerCssClass: "select-xs",
-            width: '100%',
-            // escapeMarkup: function (markup) { return markup; },
-            templateResult: function (state) {
-                if (!state.id) {
-                    return state.text;
+                else {
+                    if (alreadySelected.indexOf(state.id) < 0) {
+                        var $originalOption = $(state.element);
+                        var data = {
+                            structureCode: state.text,
+                            activity: $originalOption.data('activity'),
+                            execution: $originalOption.data('execution'),
+                            quantity: $originalOption.data('quantity'),
+                            unitOfMeasurement: $originalOption.data('unit-of-measurement'),
+                            description: $originalOption.data('description')
+                        };
+                        var $template = $("<div>" + _this._loadViewTemplate + "</div>");
+                        var htmlSource = $template.find('#ht-select2-template-result').html();
+                        var template = Handlebars.compile(htmlSource);
+                        var html = template(data);
+                        var $state = $(html);
+                        return $state;
+                    }
                 }
-                var $originalOption = $(state.element);
-                var data = {
-                    structureCode: state.text,
-                    activity: $originalOption.data('activity'),
-                    execution: $originalOption.data('execution'),
-                    quantity: $originalOption.data('quantity'),
-                    unitOfMeasurement: $originalOption.data('unit-of-measurement'),
-                    description: $originalOption.data('description')
-                };
-                var $template = $("<div>" + _this._loadViewTemplate + "</div>");
-                var htmlSource = $template.find('#ht-select2-template-result').html();
-                var template = Handlebars.compile(htmlSource);
-                var html = template(data);
-                var $state = $(html);
-                return $state;
             }
         });
-    };
-    ManpowerHandler.prototype._formatState = function (state) {
-        if (!state.id) {
-            return state.text;
-        }
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var htmlSource = $template.find('#ht-select2-template-result').html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({});
-        var $state = $(html);
-        return $state;
     };
     ManpowerHandler.prototype.loadEventHandler = function () {
         var _this = this;
         $(document).on("click", ".add-manpower-progress", function (e) {
             e.preventDefault();
             _this.add();
-            console.log(_this._projectId);
         });
         $(document).on('click', '.add-row', function (e) {
             e.preventDefault();
             _this._addRow();
         });
         $(document).on('select2:select', '.select2-structure-code', function (e) {
+            $(this).parsley().validate();
+            $(".table-error-message").addClass("hide");
             var $optionElement = $(e.params.data.element);
-            var structureCode = e.params.data.text;
             var unitOfMeasurement = $optionElement.data('unit-of-measurement');
             var activity = $optionElement.data('activity');
             var execution = $optionElement.data('execution');
@@ -263,7 +237,12 @@ var ManpowerHandler = (function () {
             $optionElement.closest('tr').find('.description').text(description);
             $optionElement.closest('tr').find('.unit-of-measurement').text(unitOfMeasurement);
             $optionElement.closest('tr').find('.quantity').text(quantity);
-            console.log(structureCode, unitOfMeasurement, activity, execution, description);
+        });
+        $(document).on("change", "select[name='builders[]']", function () {
+            $("select[name='builders[]']").parsley().validate();
+        });
+        $(document).on("click", ".remove-row", function () {
+            $(this).closest("tr").remove();
         });
     };
     return ManpowerHandler;
