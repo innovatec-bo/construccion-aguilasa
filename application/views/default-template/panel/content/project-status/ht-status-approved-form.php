@@ -49,19 +49,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{#ifCond previousEntry.id_prb "!=" null}}
-                                    {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
-                                        <div class="form-group input-group">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" type="button">Cargar mano de obra
-                                                    </button>
-                                                </span>
-                                            <input type="file" name="manpower-file">
-                                        </div>
+                                {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
+                                    {{var "buttonText" "Cargar mano de obra"}}
+                                    {{#ifCond previousEntry.id_prb "==" null}}
+                                        {{var "buttonText" "Revisar mano de obra"}}
                                     {{/ifCond}}
+                                    <div class="form-group input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" type="button">{{buttonText}}
+                                                </button>
+                                            </span>
+                                        <input type="file" name="manpower-file">
+                                    </div>
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">
                                 <input type="hidden" name="manpower-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                {{var "readonly" "Cargar mano de obra"}}
+                                {{#ifCond previousEntry.id_prb "==" null}}
+                                    {{var "buttonText" "Revisar mano de obra"}}
+                                {{/ifCond}}
                                 <div class="row form-inline">
                                     <div class="col-md-6">
                                         <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>

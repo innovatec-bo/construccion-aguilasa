@@ -38,7 +38,8 @@ class Model_project extends Model_project_base
      * @param $statusId
      * @param $statusDetail
      * @param $manualEntryDate
-     * @param array $responsibleList array id list referenced to status responsible table
+     * @param array $responsibleList
+     * @param null $manpowerFileId
      */
     public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL)
     {
