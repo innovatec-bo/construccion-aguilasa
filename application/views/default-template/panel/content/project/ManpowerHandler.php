@@ -157,3 +157,29 @@
         </p>
     </div>
 </script>
+
+<script id="ht-manpower-quick-log" type="text/x-handlebars-template">
+    {{#ifCond log '==' ''}}
+        Sin historial de avance.
+    {{/ifCond}}
+    {{#each log}}
+        <h6 class="quick-log-status-name">{{fiscal}}
+            {{#ifCond detail '!=' ''}}
+                <a href="#" data-original-title="{{detail}}" data-toggle="tooltip" data-placement="top"><span class="fa fa-comment fa-fw"></span></a>
+            {{/ifCond}}
+            <span class="pull-right edit-date" data-log-id="{{logId}}">{{formatDate manualEntryDate "short"}}</span>
+        </h6>
+        <blockquote>
+            <dl>
+                <dt>Constructores</dt>
+                <dd>{{builders}}</dd>
+                <dt>Structuras</dt>
+                <dd>
+                    {{#each itemList}}
+                    {{activity}} {{execution}} <a href="#" data-original-title="{{description}}" data-toggle="tooltip" data-placement="top">{{structure_code}}</a> {{worked_up}} {{unit_of_measurement}}<br>
+                    {{/each}}
+                </dd>
+            </dl>
+        </blockquote>
+    {{/each}}
+</script>

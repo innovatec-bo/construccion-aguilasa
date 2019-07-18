@@ -7,5 +7,6 @@ $(document).ready(function() {
     let projectId = parseInt(url[url.length - 1]);
     let manpowerHandler = new ManpowerHandler(projectId);
     manpowerHandler.loadManpower();
+    manpowerHandler.loadManpowerLog();
     manpowerHandler.loadEventHandler();
 });

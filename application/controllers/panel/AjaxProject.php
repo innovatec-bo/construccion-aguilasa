@@ -130,7 +130,6 @@ class AjaxProject extends PrivateController
 
     public function getManpower($projectId)
     {
-
         $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
         $i = 0;
         foreach($laborCostMasterDetail as &$laborCost)
@@ -206,7 +205,6 @@ class AjaxProject extends PrivateController
         else
         {
             $formData = $this->input->post();
-//            echo"<pre>";var_dump($formData);exit;
             $manualEntryDate = $formData["entry-date"];
             $manualEntryDate = DateTime::createFromFormat('d-m-Y', $manualEntryDate);
             $manualEntryDate = date_format($manualEntryDate, 'Y-m-d');
@@ -221,6 +219,17 @@ class AjaxProject extends PrivateController
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
         }
+        echo json_encode($response);exit;
+    }
+
+    public function getManpowerLog($projectId)
+    {
+        $arrayLog = Model_labor_cost_log::prepareArrayLog($projectId);
+        $response['success'] = 1;
+        $response['message'] = '';
+        $response['data']['log'] = array_values($arrayLog);
+        $response['data']['template'] = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
+        $response['data']['templateName'] = "#ht-manpower-quick-log";
         echo json_encode($response);exit;
     }
 }

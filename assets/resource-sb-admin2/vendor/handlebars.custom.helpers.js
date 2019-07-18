@@ -112,7 +112,7 @@
     });
     Handlebars.registerHelper('formatDate', function (datetime, format) {
         var DateFormats = {
-            short: "DD-MM-YYYY",
+            short: "DD-MM-YY",
             long: "dddd DD.MM.YYYY HH:mm"
         };
         if (moment) {

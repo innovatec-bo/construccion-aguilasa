@@ -55,6 +55,7 @@ class ManpowerHandler
                 else if(response.success === 1 && formData)
                 {
                     Swal({ title:'', html:response.message, type:"success"});
+                    _this.loadManpowerLog();
                 }
                 else
                 {
@@ -276,9 +277,38 @@ class ManpowerHandler
         });
     }
 
+    public loadManpowerLog()
+    {
+        let _this = this;
+        $.ajax({
+            url : base_url + 'panel/AjaxProject/getManpowerLog/'+_this._projectId,
+            dataType  :"json",
+            method : 'GET',
+            beforeSend:function()
+            {
+                // swal({
+                //     html: "<h3>Loading</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // });
+            },
+            success:function(response){
+                let $template = $("<div>"+response.data.template+"</div>");
+                let htmlSource   = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template({log:response.data.log});
+                $("#status-project-log-content").html(html);
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    }
+
     loadEventHandler()
     {
         let _this = this;
+
         $(document).on("click", ".add-manpower-progress", function(e){
             e.preventDefault();
             _this.add();
@@ -312,6 +342,9 @@ class ManpowerHandler
         $(document).on("click",".remove-row", function(){
            $(this).closest("tr").remove();
 
+        });
+        $(document).on("click",'[data-toggle="tooltip"]', function(index, value){
+          e.preventDefault();
         });
     }
 }

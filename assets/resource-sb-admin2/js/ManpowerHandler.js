@@ -31,6 +31,7 @@ var ManpowerHandler = (function () {
                 }
                 else if (response.success === 1 && formData) {
                     Swal({ title: '', html: response.message, type: "success" });
+                    _this.loadManpowerLog();
                 }
                 else {
                     Swal({ title: '', html: response.message, type: "error" });
@@ -213,6 +214,31 @@ var ManpowerHandler = (function () {
             }
         });
     };
+    ManpowerHandler.prototype.loadManpowerLog = function () {
+        var _this = this;
+        $.ajax({
+            url: base_url + 'panel/AjaxProject/getManpowerLog/' + _this._projectId,
+            dataType: "json",
+            method: 'GET',
+            beforeSend: function () {
+                // swal({
+                //     html: "<h3>Loading</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // });
+            },
+            success: function (response) {
+                var $template = $("<div>" + response.data.template + "</div>");
+                var htmlSource = $template.find(response.data.templateName).html();
+                var template = Handlebars.compile(htmlSource);
+                var html = template({ log: response.data.log });
+                $("#status-project-log-content").html(html);
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    };
     ManpowerHandler.prototype.loadEventHandler = function () {
         var _this = this;
         $(document).on("click", ".add-manpower-progress", function (e) {
@@ -243,6 +269,9 @@ var ManpowerHandler = (function () {
         });
         $(document).on("click", ".remove-row", function () {
             $(this).closest("tr").remove();
+        });
+        $(document).on("click", '[data-toggle="tooltip"]', function (index, value) {
+            e.preventDefault();
         });
     };
     return ManpowerHandler;
