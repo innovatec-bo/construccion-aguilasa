@@ -31,11 +31,24 @@ class Model_labor_cost extends Model_labor_cost_base
             structure_code_bus structure_code,
             description_bus description,
             unit_of_measurement_bus unit_of_measurement,
-            round(unit_price_lac * quantity_lac,2) total_price_by_structure
+            round(unit_price_lac * quantity_lac,2) total_price_by_structure,
+            IFNULL(bui_worked_up_structures.worked_up_wus,0) worked_up,
+            (quantity_lac - IFNULL(bui_worked_up_structures.worked_up_wus,0)) diff
         FROM
             bui_labor_cost
         LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+				LEFT JOIN (
+								SELECT
+									labor_cost_id_wus,
+									SUM(worked_up_wus) worked_up_wus
+								FROM
+									bui_labor_cost_log
+									LEFT JOIN bui_worked_up_structures on labor_cost_log_id_wus = id_lal
+								where 
+									deleted_lal != 1
+									and deleted_wus != 1
+									GROUP BY labor_cost_id_wus) bui_worked_up_structures on id_lac = labor_cost_id_wus
         where
         project_id_lad = ".$ci->db->escape($projectId)."
         and deleted_lac != 1

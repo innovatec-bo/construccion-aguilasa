@@ -139,6 +139,8 @@ class AjaxProject extends PrivateController
             $laborCost['quantity'] = number_format($laborCost['quantity'], 2);
             $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
             $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
+            $laborCost['worked_up'] = number_format($laborCost['worked_up'], 2);
+            $laborCost['diff'] = number_format($laborCost['diff'], 2);
         }
         if(count($laborCostMasterDetail) > 0)
         {

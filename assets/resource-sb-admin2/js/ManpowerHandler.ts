@@ -55,6 +55,7 @@ class ManpowerHandler
                 else if(response.success === 1 && formData)
                 {
                     Swal({ title:'', html:response.message, type:"success"});
+                    _this.loadManpower();
                     _this.loadManpowerLog();
                 }
                 else

@@ -20,6 +20,8 @@
             <?php if($isSuperAdmin == 1){?>
             <th>P/UNITARIO</th>
             <th>P/TOTAL</th>
+            <th>TRABAJADO</th>
+            <th>DIFERENCIA</th>
             <?php }?>
         </tr>
         </thead>
@@ -36,6 +38,8 @@
                 <?php if($isSuperAdmin == 1){?>
                 <td class="text-right">{{unit_price}}</td>
                 <td class="text-right">{{total_price_by_structure}}</td>
+                <td class="text-right">{{worked_up}}</td>
+                <td class="text-right">{{diff}}</td>
                 <?php }?>
             </tr>
         {{/each}}
