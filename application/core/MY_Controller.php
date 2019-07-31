@@ -312,6 +312,7 @@ class PrivateController extends PublicController
         $columnList = array(
             "code_pro" => "CODIGO",
             "contract_number_con" => "CONTRATO",
+            "detail_pro" => "DETALLE DEL PROYECTO",
             "percentage_inc" => "CONSTRUCCION - % FISICO",
             "detail_inc" => "DETALLE - INCIDENCIA",
             "status_name_pst" => "ESTADO",
@@ -329,8 +330,7 @@ class PrivateController extends PublicController
             "quality_level_pro" => "NIVEL DE CALIDAD",
             "budgetary_position_pro" => "POSICION PRESUPUESTARIA",
             "cre_design_completion_date_pro" => "FECHA COMPLETADO DE DISEÑO",
-            "cre_building_completion_date_pro" => "FECHA COMPLETADO DE CONSTRUCCION",
-            "detail_pro" => "DETALLE DEL PROYECTO",
+            "cre_building_completion_date_pro" => "FECHA COMPLETADO DE CONSTRUCCION",            
             "stake_date" => "FECHA DE ESTAQUEADO",
             "stake_responsible" => "RESPONSABLES DE ESTAQUEADO",
             "digitization_points_quantity" => "PUNTOS DIGITALIZADOS",
