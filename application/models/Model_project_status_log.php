@@ -92,8 +92,9 @@ class Model_project_status_log extends Model_project_status_log_base
                 project_id_psl = ".$ci->db->escape($projectId)."
                 and deleted_psl != 1
         GROUP BY id_psl
-        ORDER BY manual_entry_date_psl DESC
-        ";
+        -- ORDER BY manual_entry_date_psl DESC
+        ORDER BY DATE_FORMAT(manual_entry_date_psl, '%Y-%m-%d') DESC, id_psl DESC
+        ";//echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;

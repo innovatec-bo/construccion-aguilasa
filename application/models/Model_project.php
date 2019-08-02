@@ -361,7 +361,7 @@ class Model_project extends Model_project_base
             materials_reception.entry_date materials_reception_date,
             assign_to.entry_date assign_to_date,
             assign_to.responsible assign_to_responsible,
-            assign_to.builder_responsible builder_responsible,
+            in_progress.builder_responsible builder_responsible,
             assign_to.fiscal_responsible fiscal_responsible,
             -- if(assign_to.live_line_cas,'Si','No') live_line_assigned,
             if(status_pro >= 35,if(conciliation_shipment.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned,
