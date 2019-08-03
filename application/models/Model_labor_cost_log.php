@@ -13,6 +13,14 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         parent::__construct($userId, $detail, $manualEntryDate);
     }
 
+    public static function addLog($userId, $detail, $manualEntryDate, $workedUp, $builders)
+    {
+        $laborCostLog = New Model_labor_cost_log($userId, $detail, $manualEntryDate);
+        $laborCostLog->save();
+        $laborCostLog->addWorkedUpStructures($workedUp);
+        $laborCostLog->addBuildersToManpower($builders);
+    }
+
     public function addWorkedUpStructures($list = array())
     {
         $ci = &get_instance();

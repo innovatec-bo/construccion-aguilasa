@@ -214,10 +214,8 @@ class AjaxProject extends PrivateController
             $detail = $formData["detail"];
             $workedUp = $formData["worked-up"];
             $builders = $formData["builders"];
-            $laborCostLog = New Model_labor_cost_log($this->sessionUser->id, $detail, $manualEntryDate);
-            $laborCostLog->save();
-            $laborCostLog->addWorkedUpStructures($workedUp);
-            $laborCostLog->addBuildersToManpower($builders);
+            $userId = $this->sessionUser->id;            
+            Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
         }

@@ -344,7 +344,7 @@ class ManpowerHandler
            $(this).closest("tr").remove();
 
         });
-        $(document).on("click",'[data-toggle="tooltip"]', function(index, value){
+        $(document).on("click",'[data-toggle="tooltip"]', function(e){
           e.preventDefault();
         });
     }
