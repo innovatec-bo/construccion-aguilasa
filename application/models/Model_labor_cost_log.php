@@ -109,7 +109,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             where deleted_lac !=1 and deleted_bus != 1
         ) bui_labor_cost on id_lac = labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
-        where deleted_lal != 1 and deleted_bim != 1 and deleted_wus != 1 and project_id_lad = ".$ci->db->escape($projectId)."
+        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 and project_id_lad = ".$ci->db->escape($projectId)."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
         ";

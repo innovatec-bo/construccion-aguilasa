@@ -493,4 +493,20 @@ class Project extends PrivateController
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/manpower', $data);
     }
+
+    public function check()
+    {
+        // $list = array('ERU_B','50-50CE');
+        // $list = Model_labor_cost::getByProjectIdAndStructureCodeList(562, $list);
+        // echo"<pre>";var_dump($list);exit;
+
+        $file = Model_file::getById(34);
+        if($file instanceof Model_file)
+        {
+            $manpowerFileReader = new ManpowerFileReader($file);
+            // $manpowerFileReader->saveStructuresInDataBase();
+            // $manpowerFileReader->registerManpowerInSystem($project->getId());
+            $manpowerFileReader->registerDesignBudgetOnLog(596);
+        }
+    }
 }

@@ -278,10 +278,21 @@ class ManpowerFileReader
             }
             if(count($laborCostToSave))
                 Model_labor_cost::insertBatch($laborCostToSave);
-
         }
-
-
     }
 
+    public function registerDesignBudgetOnLog($projectId)
+    {
+        $userId = NULL;
+        $detail = "Ingresado automaticamente por el sistema";
+        $manualEntryDate = date("Y-m-d H:i:s");        
+        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($projectId, $this->_designBudgetIdentifiers);
+        foreach($laborCostList as $laborCost)
+        {
+            $workedUp[] = array('labor-cost-id' => $laborCost['id_lac'], 'quantity' => $laborCost['quantity_lac']);
+        }
+        $builders = array();
+        // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders);exit;
+        Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
+    }
 }

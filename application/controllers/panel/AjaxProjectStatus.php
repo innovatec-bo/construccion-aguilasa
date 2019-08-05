@@ -415,6 +415,7 @@ class AjaxProjectStatus extends PrivateController
                 $manpowerFileReader = new ManpowerFileReader($file);
                 $manpowerFileReader->saveStructuresInDataBase();
                 $manpowerFileReader->registerManpowerInSystem($project->getId());
+                $manpowerFileReader->registerDesignBudgetOnLog($project->getId());
             }
         }
         $response["success"] = 1;

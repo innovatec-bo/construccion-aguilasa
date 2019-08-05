@@ -175,8 +175,10 @@
         </h6>
         <blockquote>
             <dl>
-                <dt>Constructores</dt>
-                <dd>{{builders}}</dd>
+                {{#ifCond builders '!=' null}}
+                    <dt>Constructores</dt>
+                    <dd>{{builders}}</dd>
+                {{/ifCond}}
                 <dt>Structuras</dt>
                 <dd>
                     {{#each itemList}}
