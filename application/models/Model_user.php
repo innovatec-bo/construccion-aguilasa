@@ -213,6 +213,7 @@ class Model_user extends Model_user_base
             "eddysonca@serebo.com",
             "pmendoza@serebo.com"
         );
+
         $sendToCC = array_merge($sendToCC, $supervisionList);
 
         $subjectList = array(
@@ -230,6 +231,25 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
+            //special validation => when the fiscal is Sergio Medina and the status is as built then dario as supervising user
+            if($creFiscalEmail == 'sergiommp@cre.com.bo')
+            {
+                if($status == 'as_built')
+                {
+                    if((array_search('dariojfm@cre.com.bo', $sendToCC)) === FALSE) 
+                    {
+                        $sendToCC[] = 'dariojfm@cre.com.bo';
+                    }
+                }
+                else
+                {
+                    if (($key = array_search('dariojfm@cre.com.bo', $sendToCC)) !== FALSE) 
+                    {
+                        unset($sendToCC[$key]);
+                    }
+                }                
+            }
+
             $data['creFiscalFullName'] = $creFiscalFullName;
             $data['subject'] = $subjectList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];

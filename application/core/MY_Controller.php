@@ -162,8 +162,9 @@ class PublicController extends CI_Controller
             'darwindm@cre.com.bo' => array('rolandsh@cre.com.bo','wilsongg@cre.com.bo'),
 //            SISTEMA  VALLES
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
-            //NUEVOS
-            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')//Not in excel list
+            //NUEVOS(Not in excel list//Not in excel list)
+            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
+            //'sergiommp@cre.com.bo' => array('dariojfm@cre.com.bo')//solo proyectos por conciliar
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
     }

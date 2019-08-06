@@ -39,6 +39,7 @@ class CronJob extends PublicController
             $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
             foreach ($fiscalListToNotify as $fiscalData)
             {
+                //Let's make sure that the fiscal have not mailinator.com email
                 if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
                 {
                     $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
