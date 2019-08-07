@@ -33,6 +33,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Detalle del proyecto</label>
+                                    <input class="form-control" name="project-detail" required placeholder="Puede ingresar un detalle acerca del proyecto">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row hide">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -219,14 +227,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Detalle del proyecto</label>
-                                    <input class="form-control" name="project-detail" placeholder="Puede ingresar un detalle acerca del proyecto">
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">

@@ -78,6 +78,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
         $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
         $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
+        $this->form_validation->set_rules('project-detail', 'Detalle', 'trim|required');
 
         $projectStatusList = Model_project_status::getAll(100,0);
         $contractList = Model_contract::getAll(100, 0);
@@ -185,6 +186,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
         $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
         $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
+        $this->form_validation->set_rules('project-detail', 'Detalle', 'trim|required');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
 //        $creFiscalList = Model_cre_fiscal::getAll(100,0);
