@@ -7,7 +7,7 @@
  */
 ?>
 <script id="ht-incident-log" type="text/x-handlebars-template">
-    <div class="list-group">
+    <div class="list-group" id='incident-list' style="height: 300px !important;position: relative;border: 1px solid #dddddd;">
         {{#each incidentList}}
             <a href="javascript:void(0)" class="list-group-item" data-project-percentage="0"  data-incident-date="{{manual_entry_date}}">
                 {{var "incidentType" "Sin Definir"}}

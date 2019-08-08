@@ -23,7 +23,7 @@
         <small><span id="days-without-incidents">23 dias</span> sin incidentes</small>
     </h3>
     <div class="col-md-12" id="incident-content">
-        <div class="list-group">
+        <div class="list-group" id="incident-list">
             Cargando incidentes...
         </div>
     </div>

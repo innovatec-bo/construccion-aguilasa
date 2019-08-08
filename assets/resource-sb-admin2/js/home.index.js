@@ -6,7 +6,11 @@ $(function() {
     let incidentHandler = new IncidentHandler();
     incidentHandler.getAllIncidents();
     $("#days-without-incidents").text(incidentHandler.daysWithoutIncidents);
+    // $("#incident-content").perfectScrollbar({
+    //     wheelPropagation: true
+    // });
     // daysWithoutIncidents();
+    
 });
 
 // function daysWithoutIncidents()

@@ -157,6 +157,11 @@ function IncidentHandler() {
                 $content.html(html);
                 // console.log(response);
                 _this.setDaysWithoutIncidents(response.data.incidentList);
+                new PerfectScrollbar('#incident-list', {
+                wheelSpeed: 2,
+                wheelPropagation: true,
+                minScrollbarLength: 50
+                });
             }
         });
     };

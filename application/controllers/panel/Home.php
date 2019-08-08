@@ -23,6 +23,8 @@ class Home extends PrivateController
         $this->complementHandler->addViewComplement("core");
         $this->complementHandler->addViewComplement("charts");
         $this->complementHandler->addViewComplement("themes.animated");
+        $this->complementHandler->addViewComplement("perfect-scrollbar");
+        $this->complementHandler->addProjectCss('home.index', TRUE);
         $this->complementHandler->addProjectJs('home.index', TRUE);
 
         $this->_loadPanelView('home/index');

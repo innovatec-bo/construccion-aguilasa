@@ -87,3 +87,6 @@ $config['complements']['themes.kelly']['js'] = assets_url('resource-sb-admin2/pl
 $config['complements']['themes.animated']['js'] = assets_url('resource-sb-admin2/plugins/amcharts4/themes/animated.js');
 
 $config['complements']['jquery.sticky']['js'] = assets_url('resource-sb-admin2/plugins/jquery.sticky.js');
+
+$config['complements']['perfect-scrollbar']['css'] = assets_url('resource-sb-admin2/plugins/perfect-scrollbar-1.4.0/css/perfect-scrollbar.css');
+$config['complements']['perfect-scrollbar']['js'] = assets_url('resource-sb-admin2/plugins/perfect-scrollbar-1.4.0/dist/perfect-scrollbar.js');
