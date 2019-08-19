@@ -231,7 +231,7 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
-            //special validation => when the fiscal is Sergio Medina and the status is as built then dario as supervising user
+            //special validation => when the fiscal is Sergio Medina and the status is as built then Dario will be included in supervising users
             if($creFiscalEmail == 'sergiommp@cre.com.bo')
             {
                 if($status == 'as_built')
@@ -248,6 +248,21 @@ class Model_user extends Model_user_base
                         unset($sendToCC[$key]);
                     }
                 }                
+            }
+            //special validation => If Sergio appears in supervising list, then lets add to Dario in same list but just on as built and conciliation
+            if (($key = array_search('sergiommp@cre.com.bo', $sendToCC)) !== FALSE)
+            {
+                if($status == 'as_built' || $status == 'conciliation_shipment')
+                {
+                    $sendToCC[] = 'dariojfm@cre.com.bo';
+                }
+                else
+                {
+                    if (($key = array_search('dariojfm@cre.com.bo', $sendToCC)) !== FALSE)
+                    {
+                        unset($sendToCC[$key]);
+                    }
+                }
             }
 
             $data['creFiscalFullName'] = $creFiscalFullName;
