@@ -254,7 +254,10 @@ class Model_user extends Model_user_base
             {
                 if($status == 'as_built' || $status == 'conciliation_shipment')
                 {
-                    $sendToCC[] = 'dariojfm@cre.com.bo';
+                    if((array_search('dariojfm@cre.com.bo', $sendToCC)) === FALSE)
+                    {
+                        $sendToCC[] = 'dariojfm@cre.com.bo';
+                    }
                 }
                 else
                 {
