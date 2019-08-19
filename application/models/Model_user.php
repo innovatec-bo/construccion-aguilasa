@@ -187,12 +187,13 @@ class Model_user extends Model_user_base
                 sec_users
             LEFT JOIN sec_userroles on userid_uro = id_usr and deleted_uro != 1
             LEFT JOIN sec_roles on roleid_uro = id_rol and deleted_rol != 1
+            where
+            keyword_rol in (".$ci->db->escape($roleKeyword).")
             GROUP BY id_usr
         ) users
         LEFT JOIN sec_users usr on users.id_usr = usr.id_usr
-        where
-        users.keyword like ".$ci->db->escape('%'.$roleKeyword.'%')."
-        and usr.deleted_usr != 1
+        where       
+        usr.deleted_usr != 1
         ";
 //        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
@@ -305,6 +306,82 @@ class Model_user extends Model_user_base
                 $sendMessageResponse['message'] = "Internal server error, please try again.";
             }
             $responseList[] = $sendMessageResponse;
+        }
+        return $responseList;
+    }
+
+    public static function notifyProjectStatusToSereboMembers($dataToSend = array())
+    {
+        $ci = &get_instance();
+        $data = array();
+        $sereboFiscalEmail = $dataToSend['sereboFiscalEmail'];
+
+        $sendToCC = array(
+            "vhsuarez@serebo.com",
+            "vh.suarez@me.com"
+        );
+
+
+
+        $subjectList = array(
+            "completed" => "PROYECTOS COMPLETADOS",
+            "project_energized" => "PROYECTOS ENERGIZADOS",
+            "cre_return_order" => "PROYECTOS CON RECEPCION DE ORDEN DE DEVOLUCION",
+            "project_return_materials" => "PROYECTOS QUE HAN DEVUELTO MATERIAL A CRE",
+            "conciliation_reception" => "PROYECTOS CON RECEPCION DE CONCILIACION"
+        );
+        $shipmentDateList = array(
+            "completed" => "completed_date",
+            "project_energized" => "project_energized_entry_date",
+            "cre_return_order" => "cre_return_order_date",
+            "project_return_materials" => "project_return_materials_date",
+            "conciliation_reception" => "conciliation_reception_date"
+        );
+        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
+        $statusListToNotify = $dataToSend['statusListToNotify'];
+        $responseList = array();
+        foreach($statusListToNotify as $status => $projectList)
+        {
+            $supervisionList = PublicController::internalNoticeByStatus($status);
+            $sendTo = $supervisionList["to"];
+            array_unshift($sendTo,$sereboFiscalEmail);
+            $data['sereboFiscalFullName'] = $sereboFiscalFullName;
+            $data['subject'] = $subjectList[$status];
+            $data['shipmentDate'] = $shipmentDateList[$status];
+            $data['projectList'] = $projectList;
+            $listManagementBy = array_column($projectList, 'management_by_pro');
+            $listManagementBy = array_unique($listManagementBy);
+            $listManagementBy = implode(',',$listManagementBy);
+            $emailHandler = new EmailHandler();
+            $email = $emailHandler->initialize();
+            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->to($sendTo);
+            $email->cc($sendToCC);
+            $email->bcc('jcussy@toqueeltimbre.com');
+            $subject = $subjectList[$status].'('.$listManagementBy.')';
+            $email->subject($subject);
+            $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+//            try
+//            {
+//                if($email->Send())
+//                {
+//                    $sendMessageResponse['success'] = 1;
+//                    $sendMessageResponse['message'] = "Notice sent successfully.";
+//                }
+//                else
+//                {
+//                    $sendMessageResponse['success'] = 0;
+//                    $sendMessageResponse['message'] = "Something went wrong!";
+//                }
+//            }
+//            catch (Exception $e)
+//            {
+//                $sendMessageResponse['success'] = 0;
+//                $sendMessageResponse['message'] = "Internal server error, please try again.";
+//            }
+//            $responseList[] = $sendMessageResponse;
         }
         return $responseList;
     }

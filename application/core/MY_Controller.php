@@ -169,6 +169,18 @@ class PublicController extends CI_Controller
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
     }
+
+    public static function internalNoticeByStatus($status)
+    {
+        $statusList = array(
+            "completed" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "project_energized" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "cre_return_order" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "project_return_materials" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "conciliation_reception" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => "")
+        );
+        return $statusList[$status];
+    }
 }
 
 class PrivateController extends PublicController

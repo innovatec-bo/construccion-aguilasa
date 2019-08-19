@@ -362,6 +362,7 @@ class Model_project extends Model_project_base
             assign_to.entry_date assign_to_date,
             assign_to.responsible assign_to_responsible,
             in_progress.builder_responsible builder_responsible,
+            assign_to.fiscal_responsible_id fiscal_responsible_id,
             assign_to.fiscal_responsible fiscal_responsible,
             -- if(assign_to.live_line_cas,'Si','No') live_line_assigned,
             if(status_pro >= 35,if(conciliation_shipment.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned,
@@ -475,7 +476,7 @@ class Model_project extends Model_project_base
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
         ";
-//        echo"<pre>";var_dump($sql);exit;
+        //echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -499,6 +500,8 @@ class Model_project extends Model_project_base
 			GROUP_CONCAT(CONCAT(responsible.id_usr)) responsible_user_id,
 			GROUP_CONCAT(CONCAT(responsible.firstname_usr,' ',responsible.lastname_usr)) responsible,
 			GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible,
+			-- fiscal.fiscal_id fiscal_responsible_id,
+			GROUP_CONCAT(CONCAT(fiscal.fiscal_id)) fiscal_responsible_id,
 			GROUP_CONCAT(CONCAT(fiscal.fiscal_firstname,' ',fiscal.fiscal_lastname)) fiscal_responsible,
 			design_prb,
 			building_prb,			
@@ -1995,6 +1998,36 @@ class Model_project extends Model_project_base
                     {
                         $reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
                         $reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
+                        $reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
+                    }
+                }
+            }
+        }
+        return $reminderList;
+    }
+
+    public static function sereboFiscalProjectStatusReminder()
+    {
+        $statusList = array("completed", "project_energized","cre_return_order","project_return_materials","conciliation_reception");
+        $workFlowDetail = Model_project::getWorkflowDetail();
+        $sereboFiscalList = Model_user::getByRoleKeyword('fiscal');
+
+        $reminderList = array();
+        foreach ($workFlowDetail as $row)
+        {
+            $isInArray = array_search($row["keyword_pst"], $statusList);
+
+            if($isInArray !== FALSE)
+            {
+
+                foreach ($sereboFiscalList as $user)
+                {
+//                    echo"<pre>";var_dump($isInArray,$row);exit;
+                    /** @var  $user Model_user */
+                    if ($user->getId() == $row["fiscal_responsible_id"])
+                    {
+                        $reminderList[$user->getId()]['sereboFiscalFullName'] = $user->getFullName();
+                        $reminderList[$user->getId()]['sereboFiscalEmail'] = $user->getEmail();
                         $reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
                     }
                 }

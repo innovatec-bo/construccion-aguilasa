@@ -48,4 +48,22 @@ class CronJob extends PublicController
             }
         }
     }
+
+    public function notifyProjectStatusToSereboFiscal($challenge)
+    {
+        if($challenge == 'notifyProjectStatusToSereboFiscal2019')
+        {
+            $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
+//            echo"<pre>";var_dump($fiscalListToNotify);exit;
+            foreach ($fiscalListToNotify as $fiscalData)
+            {
+                //Let's make sure that the fiscal have not mailinator.com email
+                if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
+                {
+                    $response = Model_user::notifyProjectStatusToSereboMembers($fiscalData);
+//            echo'<pre>';var_dump($response);exit;
+                }
+            }
+        }
+    }
 }
