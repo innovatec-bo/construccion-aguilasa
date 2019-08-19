@@ -596,7 +596,7 @@ class AjaxProjectStatus extends PrivateController
             //Now the building progress has the complete team at "in_progress" step.
             $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "in_progress");
             //if the "In_progress" step doesn't have data, then let's use the assign to previous entry
-            if(count($assignmentEntry) <= 0)
+            if(count($assignmentEntry) <= 0 || $projectId == 532)
             {
                 $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
             }

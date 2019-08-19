@@ -76,23 +76,24 @@ class ExcelStakesReport
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue($data['cols'][0].'3', "Nro. de Proyecto")
                     ->setCellValue($data['cols'][1].'3', "Recepcion")
-                    ->setCellValue($data['cols'][2].'3', "Envio")
-                    ->setCellValue($data['cols'][3].'3', "Aprobado")
-                    ->setCellValue($data['cols'][4].'3', "Cooperador(es)")
-                    ->setCellValue($data['cols'][5].'3', "Costo")
-                    ->setCellValue($data['cols'][6].'3', "Costo de Aprobacion");
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][6].'3')->applyFromArray($titleStyleArray);
-
+                    ->setCellValue($data['cols'][2].'3', "Por enviar")
+                    ->setCellValue($data['cols'][3].'3', "Envio")
+                    ->setCellValue($data['cols'][4].'3', "Aprobado")
+                    ->setCellValue($data['cols'][5].'3', "Cooperador(es)")
+                    ->setCellValue($data['cols'][6].'3', "Costo")
+                    ->setCellValue($data['cols'][7].'3', "Costo de Aprobacion");
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][7].'3')->applyFromArray($titleStyleArray);
 
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue($data['cols'][0].($i+1), $row["code_pro"])
                     ->setCellValue($data['cols'][1].($i+1), $row["entry_date_pro"])
                     ->setCellValue($data['cols'][2].($i+1), $row["already_sent_date"])
-                    ->setCellValue($data['cols'][3].($i+1), $row["approved_date"])
-                    ->setCellValue($data['cols'][4].($i+1), $this->findPartners($data['stakerFullName'],$row["stake_responsible"]))
+                    ->setCellValue($data['cols'][3].($i+1), $row["already_sent_date"])
+                    ->setCellValue($data['cols'][4].($i+1), $row["approved_date"])
+                    ->setCellValue($data['cols'][5].($i+1), $this->findPartners($data['stakerFullName'],$row["stake_responsible"]))
 //                    ->setCellValue($data['cols'][4].($i+1), "")
-                    ->setCellValue($data['cols'][5].($i+1), $row["schedule_design_budget"])
-                    ->setCellValue($data['cols'][6].($i+1), $row["design_budget"]);
+                    ->setCellValue($data['cols'][6].($i+1), $row["schedule_design_budget"])
+                    ->setCellValue($data['cols'][7].($i+1), $row["design_budget"]);
                 $totalAmount += $row["schedule_design_budget"];
                 $totalApprovedAmount += $row["design_budget"];
                 $i++;
@@ -100,23 +101,22 @@ class ExcelStakesReport
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][1].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][2].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][3].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][4].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 //Currency format
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][5].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
             }
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($data['cols'][0].($i+1), 'TOTAL')
-                ->setCellValue($data['cols'][5].($i+1), $totalAmount)
-                ->setCellValue($data['cols'][6].($i+1), $totalApprovedAmount);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][6].($i+1))->applyFromArray($titleStyleArray);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][5].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                ->setCellValue($data['cols'][6].($i+1), $totalAmount)
+                ->setCellValue($data['cols'][7].($i+1), $totalApprovedAmount);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][7].($i+1))->applyFromArray($titleStyleArray);
             $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
-            $borderCoordinate2 = $data['cols'][6].($i+1);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3:'.$data['cols'][6].'3')->getAlignment()->setWrapText(true);
+            $borderCoordinate2 = $data['cols'][7].($i+1);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3:'.$data['cols'][7].'3')->getAlignment()->setWrapText(true);
             $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
         }
         return $spreadsheet;
     }
@@ -141,7 +141,7 @@ class ExcelStakesReport
         $totalApprovedAmount = 0;
         foreach ($workflowDetail as $row)
         {
-            $isBetweenDates = $this->isInGivenRange($row["stake_date"]);
+            $isBetweenDates = $this->isInGivenRange($row["schedule_date"]);
             if($isBetweenDates && $row["approved_date"] != "")
             {
                 $borderCoordinate1 = 'B2';
@@ -223,7 +223,7 @@ class ExcelStakesReport
         $arrayPerformanceList = array();
         foreach ($workFlowDetail as $row)
         {
-            $isBetweenDates = $this->isInGivenRange($row["stake_date"]);
+            $isBetweenDates = $this->isInGivenRange($row["schedule_date"]);
             if($isBetweenDates)
             {
                 $userCounter = 0;
@@ -233,7 +233,7 @@ class ExcelStakesReport
                     $responsibleListIds = explode(",", $row["stake_responsible_user_id"]);
                     if(array_search($user->getId(), $responsibleListIds) !== FALSE)
                     {
-                        $cols = array_chunk(range("A", "Z"),8);
+                        $cols = array_chunk(range("A", "Z"),9);
                         $arrayPerformanceList[$user->getId()]['workflow'][] = $row;
                         $arrayPerformanceList[$user->getId()]['cols'] = $cols[$userCounter];
                         $arrayPerformanceList[$user->getId()]['stakerFullName'] = $user->getFullName();
