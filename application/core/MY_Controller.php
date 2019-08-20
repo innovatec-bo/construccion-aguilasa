@@ -173,11 +173,11 @@ class PublicController extends CI_Controller
     public static function internalNoticeByStatus($status)
     {
         $statusList = array(
-            "completed" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
-            "project_energized" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
-            "cre_return_order" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
-            "project_return_materials" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
-            "conciliation_reception" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => "")
+            "completed" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "project_energized" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "cre_return_order" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "project_return_materials" => array("to" => array("maguilera@serebo.com"), "cc" => ""),
+            "conciliation_reception" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => "")
         );
         return $statusList[$status];
     }
@@ -264,9 +264,7 @@ class PrivateController extends PublicController
                 $this->session->set_flashdata("errorMessage", "Permission denied!");
                 redirect(base_url("panel/Home"));
             }
-
         }
-
     }
 
     protected function _validateFeature($securityString, $binaryResponse = FALSE)
@@ -288,7 +286,6 @@ class PrivateController extends PublicController
                     $this->session->set_flashdata("errorMessage", "Access denied!");
                     redirect(base_url("panel/Home"));
                 }
-
             }
         }
         else
@@ -296,7 +293,6 @@ class PrivateController extends PublicController
             $response = $key === FALSE?$key:TRUE;
             return +$response;
         }
-
     }
 
     protected function _is($roleKeyWord)
@@ -409,10 +405,7 @@ class PrivateController extends PublicController
             "payment_order_invoice_sent_date" => "FECHA DE ENVIO DE FACTURA",
             "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION"
         );
-
         return $columnList;
     }
-
-
 }
 

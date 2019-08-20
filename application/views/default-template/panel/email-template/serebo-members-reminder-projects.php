@@ -76,7 +76,7 @@
                                                                                         '.$project["code_pro"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["secondary_code_pro"].'
+                                                                                        '.$project["contract_number_con"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                         '.$project["status_name_pst"].'
@@ -96,12 +96,15 @@
                                                                                     <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                         '.$project['management_by_pro'].'
                                                                                     </td>
+                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                                        '.number_format($project['total_approved'],2,",",".").'
+                                                                                    </td>
                                                                                 </tr>
                                                                             ';
                                                 $i++;
                                             }
                                             ?>
-                                            <tr>
+                                            <tr style="display: none">
                                                 <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                                     <multiline label="ab5">
                                                         Estimado <?=$sereboFiscalFullName?>,<br>
@@ -124,13 +127,14 @@
                                                         <tr style="background: #f6f6f6;font-size: 12px;">
                                                             <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO<br>SECUNDARIO</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">Nro<br>CONTRATO</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
