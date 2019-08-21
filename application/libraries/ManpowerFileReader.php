@@ -26,11 +26,11 @@ class ManpowerFileReader
 	{
         $this->_file = $file;
         $this->_setExcelArrayData();
-        $this->_designBudgetIdentifiers = array('ERU', 'ERU_B');
+        $this->_designBudgetIdentifiers = array('ERU', 'ERU_B', 'ERR');
         $this->_buildingBudgetIdentifiers = array();
         $this->_transportationBudgetIdentifiers = array('CTPH-M');
         $this->_liveLineBudgetIdentifiers = array('lv');
-        $this->_rightOfWayBudgetIdentifiers = array();
+        $this->_rightOfWayBudgetIdentifiers = array('R1');
         $this->_designBudget = 0;
         $this->_buildingBudget = 0;
         $this->_transportationBudget = 0;
