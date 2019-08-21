@@ -342,7 +342,6 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
-            if($status == "project_return_materials")continue;
             $supervisionList = PublicController::internalNoticeByStatus($status);
             $sendTo = $supervisionList["to"];
             $fiscalKey = array_search("fiscal", $sendTo);
