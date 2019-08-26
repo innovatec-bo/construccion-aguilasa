@@ -173,7 +173,9 @@ class PublicController extends CI_Controller
     public static function internalNoticeByStatus($status)
     {
         $statusList = array(
-            "approved" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "assign_to" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "in_progress" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "paused" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "completed" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "project_energized" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
             "cre_return_order" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),

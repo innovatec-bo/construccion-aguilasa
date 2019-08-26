@@ -54,14 +54,12 @@ class CronJob extends PublicController
         if($challenge == 'notifyProjectStatusToSereboFiscal2019')
         {
             $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
-//            echo"<pre>";var_dump($fiscalListToNotify);exit;
             foreach ($fiscalListToNotify as $fiscalData)
             {
                 //Let's make sure that the fiscal have not mailinator.com email
                 if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
                 {
                     Model_user::notifyProjectStatusToSereboMembers($fiscalData);
-//            echo'<pre>';var_dump($response);exit;
                 }
             }
         }
@@ -74,7 +72,6 @@ class CronJob extends PublicController
             $statusToNotify = array("approved");
             $projectListFiltered = array();
             $projectList = Model_project::getWorkflowDetail();
-//            echo"<pre>";var_dump($fiscalListToNotify);exit;
             foreach ($projectList as $project)
             {
                 $keyword = $project["keyword_pst"];
@@ -84,7 +81,6 @@ class CronJob extends PublicController
                 }
             }
             Model_user::notifyProjectByStatusToSereboMembers($projectListFiltered);
-//            echo"<pre>";var_dump($projectListFiltered);exit;
         }
     }
 }

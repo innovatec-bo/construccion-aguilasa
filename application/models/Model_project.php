@@ -2008,7 +2008,7 @@ class Model_project extends Model_project_base
 
     public static function sereboFiscalProjectStatusReminder()
     {
-        $statusList = array("completed", "project_energized","cre_return_order","project_return_materials","conciliation_reception");
+        $statusList = array("assign_to","in_progress","paused","completed", "project_energized","cre_return_order","project_return_materials","conciliation_reception");
         $workFlowDetail = Model_project::getWorkflowDetail();
         $sereboFiscalList = Model_user::getByRoleKeyword('fiscal');
 

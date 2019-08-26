@@ -322,6 +322,9 @@ class Model_user extends Model_user_base
         );
 
         $subjectList = array(
+            "assign_to" => "ASIGNADOS A UN FISCAL",
+            "in_progress" => "EN PROGRESO",
+            "paused" => "PAUSADO",
             "completed" => "ENERGIZAR Y ENVIAR AS BUILT",
             "project_energized" => "PROYECTOS ENERGIZADOS",
             "cre_return_order" => "DEVOLVER MATERIALES A CRE",
@@ -329,6 +332,9 @@ class Model_user extends Model_user_base
             "conciliation_reception" => "CONCILIAR CON CRE"
         );
         $shipmentDateList = array(
+            "assign_to" => "assign_to_date",
+            "in_progress" => "in_progress_date",
+            "paused" => "paused_date",
             "completed" => "completed_date",
             "project_energized" => "project_energized_entry_date",
             "cre_return_order" => "cre_return_order_date",
@@ -364,26 +370,26 @@ class Model_user extends Model_user_base
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
-            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
-//            try
-//            {
-//                if($email->Send())
-//                {
-//                    $sendMessageResponse['success'] = 1;
-//                    $sendMessageResponse['message'] = "Notice sent successfully.";
-//                }
-//                else
-//                {
-//                    $sendMessageResponse['success'] = 0;
-//                    $sendMessageResponse['message'] = "Something went wrong!";
-//                }
-//            }
-//            catch (Exception $e)
-//            {
-//                $sendMessageResponse['success'] = 0;
-//                $sendMessageResponse['message'] = "Internal server error, please try again.";
-//            }
-//            $responseList[] = $sendMessageResponse;
+//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+            try
+            {
+                if($email->Send())
+                {
+                    $sendMessageResponse['success'] = 1;
+                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                }
+                else
+                {
+                    $sendMessageResponse['success'] = 0;
+                    $sendMessageResponse['message'] = "Something went wrong!";
+                }
+            }
+            catch (Exception $e)
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Internal server error, please try again.";
+            }
+            $responseList[] = $sendMessageResponse;
         }
         return $responseList;
     }
