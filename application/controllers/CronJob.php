@@ -60,10 +60,31 @@ class CronJob extends PublicController
                 //Let's make sure that the fiscal have not mailinator.com email
                 if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
                 {
-                    $response = Model_user::notifyProjectStatusToSereboMembers($fiscalData);
+                    Model_user::notifyProjectStatusToSereboMembers($fiscalData);
 //            echo'<pre>';var_dump($response);exit;
                 }
             }
+        }
+    }
+
+    public function notifyProjectsByStatusToInternalMembers($challenge)
+    {
+        if($challenge == 'notifyProjectsByStatusToInternalMembers2019')
+        {
+            $statusToNotify = array("approved");
+            $projectListFiltered = array();
+            $projectList = Model_project::getWorkflowDetail();
+//            echo"<pre>";var_dump($fiscalListToNotify);exit;
+            foreach ($projectList as $project)
+            {
+                $keyword = $project["keyword_pst"];
+                if(array_search($keyword,$statusToNotify) !== FALSE)
+                {
+                    $projectListFiltered[$keyword][] = $project;
+                }
+            }
+            Model_user::notifyProjectByStatusToSereboMembers($projectListFiltered);
+//            echo"<pre>";var_dump($projectListFiltered);exit;
         }
     }
 }

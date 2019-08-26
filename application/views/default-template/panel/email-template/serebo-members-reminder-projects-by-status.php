@@ -59,6 +59,7 @@
                                                 //#ff0000 danger
                                                 //#FFA87D warning
                                                 //#404E67 default
+//                                                echo"<pre>";var_dump($project);exit;
                                                 $staticDays = $project["static_days"];
                                                 if($staticDays < 7)
                                                     $color = "#404E67";
@@ -73,29 +74,17 @@
                                                                                     <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
                                                                                         '.$i.'
                                                                                     </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["code_pro"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["contract_number_con"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["status_name_pst"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$date.'
-                                                                                    </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
                                                                                         '.$project["static_days"].'
                                                                                     </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["cre_fiscal_pro"].'
+                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                                        '.$project["end_date_assigned"].'
                                                                                     </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['system_pro'].'
+                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                                        '.$project["quality_level_pro"].'
                                                                                     </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['management_by_pro'].'
+                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                                        '.$project['project_percentage_pro'].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
                                                                                         '.number_format($project['total_approved'],2,",",".").'
@@ -116,10 +105,10 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:44px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
-                                                    <span style="color: #404E67;font-weight: bold;text-decoration: underline;">Prioridad</span><br>
-                                                    <span style="color:#ff0000;font-weight: bold">Alta: </span>Dias estatico mayor a 14<br>
-                                                    <span style="color:#FFA87D;font-weight: bold">Media: </span>Dias estaticos mayor a 7 y menor a 14 <br>
+                                                <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-left:44px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
+                                                        <span style="color: #404E67;font-weight: bold;text-decoration: underline;">Prioridad</span><br>
+                                                        <span style="color:#ff0000;font-weight: bold">Alta: </span>Dias estatico mayor a 14<br>
+                                                        <span style="color:#FFA87D;font-weight: bold">Media: </span>Dias estaticos mayor a 7 y menor a 14 <br>
                                                     <span style="color:#404E67;font-weight: bold">Baja: </span>Dias estaticos menor a 7
                                                 </td>
                                                 <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
@@ -133,14 +122,10 @@
                                                         <thead>
                                                         <tr style="background: #f6f6f6;font-size: 12px;">
                                                             <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">Nro<br>CONTRATO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA FIN<br>ESTIMADA</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">NIVEL DE CALIDAD</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">AVANCE %</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
                                                         </tr>
                                                         </thead>
