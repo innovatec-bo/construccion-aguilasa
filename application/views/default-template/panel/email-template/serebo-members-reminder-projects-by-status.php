@@ -75,16 +75,22 @@
                                                                                         '.$i.'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["static_days"].'
+                                                                                        '.$project["code_pro"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["end_date_assigned"].'
+                                                                                        '.$project["contract_number_con"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["quality_level_pro"].'
+                                                                                        '.$date.'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project['project_percentage_pro'].'
+                                                                                        '.$project['static_days'].'
+                                                                                    </td>
+                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                                        '.$project['cre_fiscal_pro'].'
+                                                                                    </td>
+                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                                        '.$project['address_pro'].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
                                                                                         '.number_format($project['total_approved'],2,",",".").'
@@ -122,10 +128,12 @@
                                                         <thead>
                                                         <tr style="background: #f6f6f6;font-size: 12px;">
                                                             <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA FIN<br>ESTIMADA</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">NIVEL DE CALIDAD</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">AVANCE %</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">COD</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">NRO. CONTRATO</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS ESTATICO</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br> DE CRE</th>
+                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCION</th>
                                                             <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
                                                         </tr>
                                                         </thead>

@@ -430,26 +430,26 @@ class Model_user extends Model_user_base
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
-            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
-//            try
-//            {
-//                if($email->Send())
-//                {
-//                    $sendMessageResponse['success'] = 1;
-//                    $sendMessageResponse['message'] = "Notice sent successfully.";
-//                }
-//                else
-//                {
-//                    $sendMessageResponse['success'] = 0;
-//                    $sendMessageResponse['message'] = "Something went wrong!";
-//                }
-//            }
-//            catch (Exception $e)
-//            {
-//                $sendMessageResponse['success'] = 0;
-//                $sendMessageResponse['message'] = "Internal server error, please try again.";
-//            }
-//            $responseList[] = $sendMessageResponse;
+//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
+            try
+            {
+                if($email->Send())
+                {
+                    $sendMessageResponse['success'] = 1;
+                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                }
+                else
+                {
+                    $sendMessageResponse['success'] = 0;
+                    $sendMessageResponse['message'] = "Something went wrong!";
+                }
+            }
+            catch (Exception $e)
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Internal server error, please try again.";
+            }
+            $responseList[] = $sendMessageResponse;
         }
         return $responseList;
     }
