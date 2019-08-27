@@ -48,7 +48,9 @@
                                             <!-- End Image -->
                                             <!-- Content -->
                                             <?php
+                                            $specialTable = array("assign_to","in_progress","paused");
                                             $row = "";
+                                            $inProgressAndAssignedRow = "";
                                             $i = 1;
                                             $totalAmount = 0;
                                             usort($projectList, function($a, $b) {
@@ -68,40 +70,80 @@
                                                     $color = "#ff0000";
                                                 $date = new DateTime($project[$shipmentDate]);
                                                 $date = $date->format("d-m-Y");
+
                                                 $row .= '
-                                                                                <tr style="font-size: 12px; color:'.$color.'">
-                                                                                    <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
-                                                                                        '.$i.'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["code_pro"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["contract_number_con"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["status_name_pst"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$date.'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["static_days"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project["cre_fiscal_pro"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['system_pro'].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['management_by_pro'].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.number_format($project['total_approved'],2,",",".").'
-                                                                                    </td>
-                                                                                </tr>
-                                                                            ';
+                                                    <tr style="font-size: 12px; color:'.$color.'">
+                                                        <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
+                                                            '.$i.'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["code_pro"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["contract_number_con"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["status_name_pst"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$date.'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                            '.$project["static_days"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["cre_fiscal_pro"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project['system_pro'].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project['management_by_pro'].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                            '.number_format($project['total_approved'],2,",",".").'
+                                                        </td>
+                                                    </tr>
+                                                ';
+                                                $endDateAssigned = new DateTime($project["end_date_assigned"]);
+                                                $endDateAssigned = $endDateAssigned->format("d-m-Y");
+                                                $inProgressAndAssignedRow .= '
+                                                    <tr style="font-size: 12px; color:'.$color.'">
+                                                        <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
+                                                            '.$i.'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["code_pro"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["contract_number_con"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["static_days"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                            '.$project["estimated_time_assigned"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["builder_responsible"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project["cre_fiscal_pro"].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                            '.number_format($project['total_approved'],2,",",".").'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project['percentage_inc'].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$project['detail_inc'].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                            '.$endDateAssigned.'
+                                                        </td>
+                                                    </tr>
+                                                ';
                                                 $totalAmount += $project['total_approved'];
                                                 $i++;
                                             }
@@ -129,27 +171,61 @@
                                             </tr>
                                             <tr>
                                                 <td align="center" data-color="module1_text4" data-size="module1_text4" mc:edit="ab6" style="color: #000; font-family: 'Open Sans', sans-serif;  font-weight: 500; line-height: 26px; padding-top: 10px;" colspan="2">
-                                                    <table style="width:90%;border:1px solid #b5babf;color:#000;border-collapse: collapse;" cellpadding="5px" cellspacing="0">
-                                                        <thead>
-                                                        <tr style="background: #f6f6f6;font-size: 12px;">
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">Nro<br>CONTRATO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
-                                                            <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?=$row;?>
-                                                        </tbody>
-                                                        <tfoot>
-                                                        </tfoot>
-                                                    </table>
+                                                    <?php
+                                                    if(array_search($projectList[0]["keyword_pst"],$specialTable) === FALSE)
+                                                    {
+                                                        ?>
+                                                        <table style="width:90%;border:1px solid #b5babf;color:#000;border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+                                                            <thead>
+                                                            <tr style="background: #f6f6f6;font-size: 12px;">
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">Nro<br>CONTRATO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ESTADO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <?=$row;?>
+                                                            </tbody>
+                                                            <tfoot>
+                                                            </tfoot>
+                                                        </table>
+                                                    <?php
+                                                    }
+                                                    elseif(array_search($projectList[0]["keyword_pst"],$specialTable) !== FALSE)
+                                                    {
+                                                        ?>
+                                                        <table style="width:90%;border:1px solid #b5babf;color:#000;border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+                                                            <thead>
+                                                            <tr style="background: #f6f6f6;font-size: 12px;">
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;">#</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CODIGO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">Nro<br>CONTRATO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTIMADO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">CONSTRUCTOR</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">AVANCE<br>FISICO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ULTIMA<br>INCIDENCIA</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ASIGNACION<br>FECHA FIN</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <?=$inProgressAndAssignedRow;?>
+                                                            </tbody>
+                                                            <tfoot>
+                                                            </tfoot>
+                                                        </table>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
                                             <!-- End Content -->
