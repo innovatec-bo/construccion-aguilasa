@@ -2028,6 +2028,13 @@ class Model_project extends Model_project_base
                     {
                         $reminderList[$user->getId()]['sereboFiscalFullName'] = $user->getFullName();
                         $reminderList[$user->getId()]['sereboFiscalEmail'] = $user->getEmail();
+                        //If the project is on status energized then let's put it in completed group.
+                        if($row['keyword_pst'] == "project_energized")
+                        {
+                            if(!isset($reminderList[$user->getId()]['statusListToNotify']['completed']))
+                                $reminderList[$user->getId()]['statusListToNotify']['completed'] = array();
+                            $reminderList[$user->getId()]['statusListToNotify']['completed'][] = $row;
+                        }
                         $reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
                     }
                 }
