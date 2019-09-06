@@ -21,8 +21,9 @@ class Model_project_budget_base extends MY_Model
     protected $_liveLine;
     protected $_rightOfWay;
     protected $_manpowerFileId;
+    protected $_buildingStructureFileId;
 
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $manpowerFileId = NULL)
+    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -34,6 +35,7 @@ class Model_project_budget_base extends MY_Model
         $this->_liveLine = $liveLine;
         $this->_rightOfWay = $rightOfWay;
         $this->_manpowerFileId = $manpowerFileId;
+        $this->_buildingStructureFileId = $buildingStructureFileId;
     }
 
     /**
@@ -53,6 +55,7 @@ class Model_project_budget_base extends MY_Model
             "live_line_prb" => $this->_liveLine,
             "right_of_way_prb" => $this->_rightOfWay,
             "manpower_file_id_prb" => $this->_manpowerFileId,
+            "building_structure_file_id_prb" => $this->_buildingStructureFileId,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -85,7 +88,8 @@ class Model_project_budget_base extends MY_Model
                 $object->transportation_prb,
                 $object->live_line_prb,
                 $object->right_of_way_prb,
-                $object->manpower_file_id_prb
+                $object->manpower_file_id_prb,
+                $object->building_structure_file_id_prb
             );
             $instance->_id = $object->id_prb;
 
@@ -102,5 +106,10 @@ class Model_project_budget_base extends MY_Model
     public function setManpowerFileId($fileId)
     {
         $this->_manpowerFileId = $fileId;
+    }
+
+    public function setBuildingStructureFileId($buildingStructureFileId)
+    {
+        $this->_buildingStructureFileId = $buildingStructureFileId;
     }
 }
