@@ -322,15 +322,27 @@ class Model_user extends Model_user_base
         );
 
         $subjectList = array(
-            "assign_to" => "ASIGNADOS A UN FISCAL",
-            "in_progress" => "EN PROGRESO",
+            "assign_to" => "ASIGNADOS A fiscal_name",
+            "in_progress" => "EN CONSTRUCCION",
             "paused" => "PAUSADO",
-            "completed" => "ENERGIZAR Y ENVIAR AS BUILT",
+            "completed" => "ENERGIZAR Y/O ENVIAR AS BUILT",
             "project_energized" => "PROYECTOS ENERGIZADOS",
             "cre_return_order" => "DEVOLVER MATERIALES A CRE",
             "project_return_materials" => "COBRAR A CRE",
             "conciliation_reception" => "CONCILIAR CON CRE"
         );
+
+        $shortText = array(
+            "assign_to" => "Estimado fiscal_name,<br>por favor tomar nota de los siguientes proyectos que le fueron asignados.",
+            "in_progress" => "Estimado fiscal_name,<br>por favor tomar nota de los siguientes proyectos en contruccion",
+            "paused" => "Estimado Eddyson Copa,<br>por favor verificar si estos proyectos seran reasignados o continuaran con fiscal_name.",
+            "completed" => "Estimado fiscal_name,<br>por favor continuar con la gestion de los siguientes proyectos para que sean energizados y se envien sus As built.",
+            "project_energized" => "PROYECTOS ENERGIZADOS",
+            "cre_return_order" => "Estimado fiscal_name,<br>por favor gestionar la devolucion de materiales de los siguientes proyectos.",
+            "project_return_materials" => "Estimado Mario Aguilera,<br>por favor continuar con la gestion de cobro de los siguientes proyectos.",
+            "conciliation_reception" => "Estimado fiscal_name,<br>por favor gestionar la conciliacion de los siguientes proyectos.",
+        );
+
         $shipmentDateList = array(
             "assign_to" => "assign_to_date",
             "in_progress" => "in_progress_date",
@@ -354,9 +366,12 @@ class Model_user extends Model_user_base
                 $sendTo[$fiscalKey] = $sereboFiscalEmail;
             }
             $data['sereboFiscalFullName'] = $sereboFiscalFullName;
+            $subjectList[$status] = strtoupper(str_replace("fiscal_name",$sereboFiscalFullName,$subjectList[$status]));
             $data['subject'] = $subjectList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
+            $shortText[$status] = ucfirst(str_replace("fiscal_name",$sereboFiscalFullName,$shortText[$status]));
+            $data['shortText'] = $shortText[$status];
             $listManagementBy = array_column($projectList, 'management_by_pro');
             $listManagementBy = array_unique($listManagementBy);
             $listManagementBy = implode(',',$listManagementBy);

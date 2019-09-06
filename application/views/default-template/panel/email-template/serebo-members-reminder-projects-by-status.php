@@ -102,7 +102,7 @@
                                             }
                                             $totalAmount = number_format($totalAmount,2,",",".");
                                             ?>
-                                            <tr style="display: none">
+                                            <tr style="display: block">
                                                 <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                                     <multiline label="ab5">
                                                         Estimado <?=$sereboFiscalFullName?>,<br>
@@ -113,8 +113,8 @@
                                             <tr>
                                                 <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-left:44px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                                         <span style="color: #404E67;font-weight: bold;text-decoration: underline;">Prioridad</span><br>
-                                                        <span style="color:#ff0000;font-weight: bold">Alta: </span>Dias estatico mayor a 14<br>
-                                                        <span style="color:#FFA87D;font-weight: bold">Media: </span>Dias estaticos mayor a 7 y menor a 14 <br>
+                                                        <span style="color:#ff0000;font-weight: bold">Alta: </span>Dias estatico mayor o igual a 14<br>
+                                                        <span style="color:#FFA87D;font-weight: bold">Media: </span>Dias estaticos mayor o igual a 7 y menor a 14 <br>
                                                     <span style="color:#404E67;font-weight: bold">Baja: </span>Dias estaticos menor a 7
                                                 </td>
                                                 <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
