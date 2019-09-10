@@ -61,9 +61,17 @@
                                             </span>
                                         <input type="file" name="manpower-file">
                                     </div>
+                                    <div class="form-group input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" type="button">Revisar Punto a punto
+                                                </button>
+                                            </span>
+                                        <input type="file" name="point-to-point-file">
+                                    </div>
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">
                                 <input type="hidden" name="manpower-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                <input type="hidden" name="point-to-point-file-id" value="{{previousEntry.manpower_file_id_prb}}">
                                 {{var "readonly" "Cargar mano de obra"}}
                                 {{#ifCond previousEntry.id_prb "==" null}}
                                     {{var "buttonText" "Revisar mano de obra"}}

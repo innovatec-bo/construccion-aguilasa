@@ -2,6 +2,7 @@
 require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class ManpowerFileReader
 {
@@ -301,5 +302,43 @@ class ManpowerFileReader
         $builders = array();
         // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders);exit;
         Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
+    }
+
+    public function setBuildingBudgetIdentifiers(Model_file $pointToPointFile)
+    {
+        $reader = new Xlsx();
+        if(strtolower($pointToPointFile->getExtension()) == "csv")
+        {
+            $reader = new Csv();
+        }
+
+        $fileLocation = FCPATH.$pointToPointFile->getUrl();
+        $spreadsheet = $reader->load($fileLocation);
+        $sheetList = $spreadsheet->getAllSheets();
+        $sheetData = $sheetList[0];
+        foreach ($sheetData->toArray() as $key => $value) 
+        {
+            echo"<pre>";var_dump($key, $value);exit;
+        }
+    }
+
+    public function savePointToPointInDataBase()
+    {
+
+    }
+
+    private function _setExcelArrayData()
+    {
+        $reader = new Xlsx();
+        if(strtolower($this->_file->getExtension()) == "xls")
+        {
+            $reader = new Xls();
+        }
+
+        $fileLocation = FCPATH.$this->_file->getUrl();
+        $spreadsheet = $reader->load($fileLocation);
+        $sheetList = $spreadsheet->getAllSheets();
+        $sheetData = $sheetList[0];
+        $this->_excelArrayData = $sheetData->toArray();
     }
 }

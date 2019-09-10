@@ -1,4 +1,4 @@
-var StatusManagementHandler = (function () {
+var StatusManagementHandler = /** @class */ (function () {
     function StatusManagementHandler(projectStatusSet, projectID) {
         this.projectStatusSet = projectStatusSet;
         this.projectID = projectID;
@@ -37,6 +37,7 @@ var StatusManagementHandler = (function () {
                     _this._defineNextStep();
                 }
                 else {
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -167,6 +168,7 @@ var StatusManagementHandler = (function () {
         if (nextStepObjectArray.length > 1) {
             this.launchStepSelector(button, nextStepObjectArray);
         }
+        //if there is just one step then let's insert it in step list
         else {
             var step = nextStepObjectArray[0];
             this.insertStep(step);
@@ -698,7 +700,7 @@ var StatusManagementHandler = (function () {
         var data = this.prepareDataToSave(statusId, statusKeyword);
         var projectEnergized = $("input[name=project-energized]").is(":checked") ? 1 : 0;
         var energized = {
-            projectEnergized: projectEnergized,
+            projectEnergized: projectEnergized
         };
         var dataResult = Object.assign(data, energized);
         $.ajax({
@@ -724,7 +726,7 @@ var StatusManagementHandler = (function () {
             building: building,
             transportation: transportation,
             liveLine: liveLine,
-            rightOfWay: rightOfWay,
+            rightOfWay: rightOfWay
         };
         var dataResult = Object.assign(data, conciliationShipment);
         $.ajax({
@@ -869,6 +871,52 @@ var StatusManagementHandler = (function () {
                             $form.find("input[name=live-line-budget]").val(budget.liveLine);
                             $form.find("input[name=right-of-way-budget]").val(budget.rightOfWay);
                             $form.find("input[name=graph-number-budget]").val(extraInfo.graphNumber);
+                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            console.log(response.data);
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+                        console.log(response.message);
+                    }
+                }
+            });
+        });
+        $(document).on("click", ".extract-building-budgets", function () {
+            var formName = $(this).data('form-name');
+            var form = $('form[name=' + formName + ']')[0];
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile",
+                data: data,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function () {
+                    blockArea($(form));
+                },
+                success: function (response) {
+                    $(form).unblock();
+                    if (response.success == 1) {
+                        var projectBudgetId = $("input[name=project-budget-id]").val();
+                        if (projectBudgetId != "") {
+                            _this.projectLog();
+                            _this.loadStatusForm('approved', 0);
+                        }
+                        else {
+                            var file = response.data.file;
+                            var budget = response.data.budget;
+                            var $form = $("#status-form-content");
+                            $form.find("input[name=point-to-point-file-id]").val(file.id);
+                            $form.find("input[name=building-budget]").val(budget.building);
                             StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
                         }
