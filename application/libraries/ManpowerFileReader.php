@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class ManpowerFileReader
 {
+    private $_projectId;
     private $_file;
     private $_excelArrayData;
     private $_designBudgetIdentifiers;
@@ -22,13 +23,15 @@ class ManpowerFileReader
     private $_levelOfTension;
     private $_destiny;
     private $_structureListFromExcelFile;
+    private $_pointList;
 
-    public function __construct(Model_file $file)
+    public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
 	{
+	    $this->_projectId = $projectId;
         $this->_file = $file;
         $this->_setExcelArrayData();
         $this->_designBudgetIdentifiers = array('ERU', 'ERU_B', 'ERR');
-        $this->_buildingBudgetIdentifiers = array();
+        $this->_setBuildingBudgetIdentifiers($pointToPointFile);
         $this->_transportationBudgetIdentifiers = array('CTPH-M', 'CTPH-B');
         $this->_liveLineBudgetIdentifiers = array('lv');
         $this->_rightOfWayBudgetIdentifiers = array('R1');
@@ -40,6 +43,7 @@ class ManpowerFileReader
         $this->_graphNumber = '';
         $this->_levelOfTension = '';
         $this->_destiny = '';
+        $this->_pointList = array();
 
         $this->_setStructureListFromExcelFile();
         $this->_setDataFromExcelFile();
@@ -182,10 +186,24 @@ class ManpowerFileReader
                     $this->_rightOfWayBudget += $amount;
                     $addToBuildingBudget = FALSE;
                 }
-                //If the line isn't in the others budgets then add to building budget
-                if($addToBuildingBudget)
+                //If the point to point file is playing then out building budget identifier array is filled
+                if(count($this->_buildingBudgetIdentifiers) > 0)
                 {
-                    $this->_buildingBudget += $amount;
+
+                    if(in_array($structure, $this->_buildingBudgetIdentifiers))
+                    {
+//                        echo "<pre>";var_dump($this->_buildingBudgetIdentifiers, $structure, $amount, $this->_buildingBudget);exit;
+                        $this->_buildingBudget += $amount;
+                    }
+                }
+                else
+                {
+//                    echo"<pre>";var_dump('there is not data in building budget identifiers');exit;
+                    //If the line isn't in the others budgets then add to building budget
+                    if($addToBuildingBudget)
+                    {
+                        $this->_buildingBudget += $amount;
+                    }
                 }
             }
         }
@@ -231,15 +249,15 @@ class ManpowerFileReader
         return $this->_destiny;
     }
 
-    public function registerManpowerInSystem($projectId)
+    public function registerManpowerInSystem()
     {
         $laborCostToSave = array();
-        $laborDetail = Model_labor_detail::getByProjectId($projectId);
+        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId);
 
         //If the labor detail does not exist for the project then let's create it and add its labor cost list
         if(!$laborDetail instanceof Model_labor_detail)
         {
-            $laborDetail = new Model_labor_detail($projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny);
+            $laborDetail = new Model_labor_detail($this->_projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny);
             $laborDetail->save();
             $structureCodeList = array_keys($this->_structureListFromExcelFile);
             $existingStructures = Model_building_structure::getMasterDetailByStructureCodeList($structureCodeList);
@@ -289,12 +307,16 @@ class ManpowerFileReader
         }
     }
 
-    public function registerDesignBudgetOnLog($projectId)
+    /**
+     * After upload the manpower file let's create a log about the design advance
+     * @param $projectId
+     */
+    public function registerDesignBudgetOnLog()
     {
         $userId = NULL;
         $detail = "Ingresado automaticamente por el sistema";
         $manualEntryDate = date("Y-m-d H:i:s");        
-        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($projectId, $this->_designBudgetIdentifiers);
+        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_designBudgetIdentifiers);
         foreach($laborCostList as $laborCost)
         {
             $workedUp[] = array('labor-cost-id' => $laborCost['id_lac'], 'quantity' => $laborCost['quantity_lac']);
@@ -304,30 +326,49 @@ class ManpowerFileReader
         Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
     }
 
-    public function setBuildingBudgetIdentifiers(Model_file $pointToPointFile)
+    private function _setBuildingBudgetIdentifiers(Model_file $pointToPointFile = NULL)
     {
-        $reader = new Xlsx();
-        if(strtolower($pointToPointFile->getExtension()) == "csv")
+        $this->_buildingBudgetIdentifiers = array();
+        if($pointToPointFile instanceof Model_file)
         {
-            $reader = new Csv();
-        }
+            $reader = new Xlsx();
+            if(strtolower($pointToPointFile->getExtension()) == "csv")
+            {
+                $reader = new Csv();
+                $reader->setDelimiter(';');
+            }
 
-        $fileLocation = FCPATH.$pointToPointFile->getUrl();
-        $spreadsheet = $reader->load($fileLocation);
-        $sheetList = $spreadsheet->getAllSheets();
-        $sheetData = $sheetList[0];
-        foreach ($sheetData->toArray() as $key => $value) 
-        {
-            echo"<pre>";var_dump($key, $value);exit;
+            $fileLocation = FCPATH.$pointToPointFile->getUrl();
+            $spreadsheet = $reader->load($fileLocation);
+            $sheetList = $spreadsheet->getAllSheets();
+            $sheetData = $sheetList[0];
+            $data = $sheetData->toArray();
+            unset($data[0]);
+            unset($data[1]);
+            $data = array_values($data);
+
+            foreach ($data as $key => $value)
+            {
+                $structure = $value[14];
+                $pointLabel = $value[1];
+                $this->_buildingBudgetIdentifiers[] = $structure;
+                $this->_pointList[$pointLabel] = $value;
+//                echo"<pre>";var_dump($key, $value);
+            }
+            //Let's remove the duplicated values
+            $this->_buildingBudgetIdentifiers = array_unique($this->_buildingBudgetIdentifiers);
+//            echo"<pre>";var_dump(array_unique($this->_buildingBudgetIdentifiers, $this->_buildingBudget));
+//            exit;
         }
     }
 
-    public function savePointToPointInDataBase()
+    public function registerPointToPointInSystem()
     {
-
+        echo "<pre>";var_dump($pointsList);exit;
+        Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId);
     }
 
-    private function _setExcelArrayData()
+    private function _setExcelArrayDataa()
     {
         $reader = new Xlsx();
         if(strtolower($this->_file->getExtension()) == "xls")

@@ -108,7 +108,7 @@ class Model_project_budget_base extends MY_Model
         $this->_manpowerFileId = $fileId;
     }
 
-    public function setBuildingStructureFileId($buildingStructureFileId)
+    public function setPointToPointFileId($buildingStructureFileId)
     {
         $this->_buildingStructureFileId = $buildingStructureFileId;
     }

@@ -1052,10 +1052,12 @@ class StatusManagementHandler
             let formName = $(this).data('form-name');
             let form = $('form[name='+formName+']')[0];
             let data = new FormData(form);
+            let $form = $("#status-form-content");
+            let manpowerFileId = $form.find("input[name=manpower-file-id]").val();
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile",
+                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile/"+manpowerFileId,
                 data: data,
                 dataType:'json',
                 processData: false,

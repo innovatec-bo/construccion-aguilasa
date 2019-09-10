@@ -1,4 +1,4 @@
-var StatusManagementHandler = /** @class */ (function () {
+var StatusManagementHandler = (function () {
     function StatusManagementHandler(projectStatusSet, projectID) {
         this.projectStatusSet = projectStatusSet;
         this.projectID = projectID;
@@ -37,7 +37,6 @@ var StatusManagementHandler = /** @class */ (function () {
                     _this._defineNextStep();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -168,7 +167,6 @@ var StatusManagementHandler = /** @class */ (function () {
         if (nextStepObjectArray.length > 1) {
             this.launchStepSelector(button, nextStepObjectArray);
         }
-        //if there is just one step then let's insert it in step list
         else {
             var step = nextStepObjectArray[0];
             this.insertStep(step);
@@ -700,7 +698,7 @@ var StatusManagementHandler = /** @class */ (function () {
         var data = this.prepareDataToSave(statusId, statusKeyword);
         var projectEnergized = $("input[name=project-energized]").is(":checked") ? 1 : 0;
         var energized = {
-            projectEnergized: projectEnergized
+            projectEnergized: projectEnergized,
         };
         var dataResult = Object.assign(data, energized);
         $.ajax({
@@ -726,7 +724,7 @@ var StatusManagementHandler = /** @class */ (function () {
             building: building,
             transportation: transportation,
             liveLine: liveLine,
-            rightOfWay: rightOfWay
+            rightOfWay: rightOfWay,
         };
         var dataResult = Object.assign(data, conciliationShipment);
         $.ajax({
@@ -890,10 +888,12 @@ var StatusManagementHandler = /** @class */ (function () {
             var formName = $(this).data('form-name');
             var form = $('form[name=' + formName + ']')[0];
             var data = new FormData(form);
+            var $form = $("#status-form-content");
+            var manpowerFileId = $form.find("input[name=manpower-file-id]").val();
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile",
+                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile/" + manpowerFileId,
                 data: data,
                 dataType: 'json',
                 processData: false,
@@ -914,9 +914,9 @@ var StatusManagementHandler = /** @class */ (function () {
                         else {
                             var file = response.data.file;
                             var budget = response.data.budget;
-                            var $form = $("#status-form-content");
-                            $form.find("input[name=point-to-point-file-id]").val(file.id);
-                            $form.find("input[name=building-budget]").val(budget.building);
+                            var $form_1 = $("#status-form-content");
+                            $form_1.find("input[name=point-to-point-file-id]").val(file.id);
+                            $form_1.find("input[name=building-budget]").val(budget.building);
                             StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
                         }

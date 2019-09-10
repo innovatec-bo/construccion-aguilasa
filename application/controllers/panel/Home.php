@@ -98,21 +98,4 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
-
-    public function testLibrary()
-    {
-        /** @var  $file Model_file*/
-        $file = Model_file::getById(1);
-        $manpowerFileReader = new ManpowerFileReader($file);
-        $manpowerFileReader->registerManpowerInSystem(533);
-//        echo"<pre>";
-//        var_dump(
-//            $manpowerFileReader->getDesignBudget(),
-//            $manpowerFileReader->getBuildingBudget(),
-//            $manpowerFileReader->getTransportationBudget(),
-//            $manpowerFileReader->getLiveLineBudget(),
-//            $manpowerFileReader->getRightOfWayBudget(),
-//            $manpowerFileReader->getGraphNumber()
-//        );
-    }
 }
