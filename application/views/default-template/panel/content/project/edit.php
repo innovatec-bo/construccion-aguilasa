@@ -195,6 +195,7 @@
                                         <option value="0"<?=$project["quality_level_pro"] == 0?"selected":""?>>Ninguno</option>
                                         <option value="1"<?=$project["quality_level_pro"] == 1?"selected":""?>>1</option>
                                         <option value="2"<?=$project["quality_level_pro"] == 2?"selected":""?>>2</option>
+                                        <option value="3"<?=$project["quality_level_pro"] == 3?"selected":""?>>3</option>
                                     </select>
                                 </div>
                             </div>

@@ -187,12 +187,13 @@ class Model_user extends Model_user_base
                 sec_users
             LEFT JOIN sec_userroles on userid_uro = id_usr and deleted_uro != 1
             LEFT JOIN sec_roles on roleid_uro = id_rol and deleted_rol != 1
+            where
+            keyword_rol in (".$ci->db->escape($roleKeyword).")
             GROUP BY id_usr
         ) users
         LEFT JOIN sec_users usr on users.id_usr = usr.id_usr
-        where
-        users.keyword like ".$ci->db->escape('%'.$roleKeyword.'%')."
-        and usr.deleted_usr != 1
+        where       
+        usr.deleted_usr != 1
         ";
 //        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
@@ -231,7 +232,7 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
-            //special validation => when the fiscal is Sergio Medina and the status is as built then dario as supervising user
+            //special validation => when the fiscal is Sergio Medina and the status is as built then Dario will be included in supervising users
             if($creFiscalEmail == 'sergiommp@cre.com.bo')
             {
                 if($status == 'as_built')
@@ -248,6 +249,24 @@ class Model_user extends Model_user_base
                         unset($sendToCC[$key]);
                     }
                 }                
+            }
+            //special validation => If Sergio appears in supervising list, then lets add to Dario in same list but just on as built and conciliation
+            if (($key = array_search('sergiommp@cre.com.bo', $sendToCC)) !== FALSE)
+            {
+                if($status == 'as_built' || $status == 'conciliation_shipment')
+                {
+                    if((array_search('dariojfm@cre.com.bo', $sendToCC)) === FALSE)
+                    {
+                        $sendToCC[] = 'dariojfm@cre.com.bo';
+                    }
+                }
+                else
+                {
+                    if (($key = array_search('dariojfm@cre.com.bo', $sendToCC)) !== FALSE)
+                    {
+                        unset($sendToCC[$key]);
+                    }
+                }
             }
 
             $data['creFiscalFullName'] = $creFiscalFullName;
@@ -268,6 +287,165 @@ class Model_user extends Model_user_base
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
 //            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+            try
+            {
+                if($email->Send())
+                {
+                    $sendMessageResponse['success'] = 1;
+                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                }
+                else
+                {
+                    $sendMessageResponse['success'] = 0;
+                    $sendMessageResponse['message'] = "Something went wrong!";
+                }
+            }
+            catch (Exception $e)
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Internal server error, please try again.";
+            }
+            $responseList[] = $sendMessageResponse;
+        }
+        return $responseList;
+    }
+
+    public static function notifyProjectStatusToSereboMembers($dataToSend = array())
+    {
+        $ci = &get_instance();
+        $data = array();
+        $sereboFiscalEmail = $dataToSend['sereboFiscalEmail'];
+
+        $sendToCC = array(
+            "vhsuarez@serebo.com",
+            "vh.suarez@me.com"
+        );
+
+        $subjectList = array(
+            "assign_to" => "ASIGNADOS A fiscal_name",
+            "in_progress" => "EN CONSTRUCCION",
+            "paused" => "PAUSADO",
+            "completed" => "ENERGIZAR Y/O ENVIAR AS BUILT",
+            "project_energized" => "PROYECTOS ENERGIZADOS",
+            "cre_return_order" => "DEVOLVER MATERIALES A CRE",
+            "project_return_materials" => "COBRAR A CRE",
+            "conciliation_reception" => "CONCILIAR CON CRE"
+        );
+
+        $shortText = array(
+            "assign_to" => "Estimado fiscal_name,<br>por favor tomar nota de los siguientes proyectos que le fueron asignados.",
+            "in_progress" => "Estimado fiscal_name,<br>por favor tomar nota de los siguientes proyectos en contruccion",
+            "paused" => "Estimado Eddyson Copa,<br>por favor verificar si estos proyectos seran reasignados o continuaran con fiscal_name.",
+            "completed" => "Estimado fiscal_name,<br>por favor continuar con la gestion de los siguientes proyectos para que sean energizados y se envien sus As built.",
+            "project_energized" => "PROYECTOS ENERGIZADOS",
+            "cre_return_order" => "Estimado fiscal_name,<br>por favor gestionar la devolucion de materiales de los siguientes proyectos.",
+            "project_return_materials" => "Estimado Mario Aguilera,<br>por favor continuar con la gestion de cobro de los siguientes proyectos.",
+            "conciliation_reception" => "Estimado fiscal_name,<br>por favor gestionar la conciliacion de los siguientes proyectos.",
+        );
+
+        $shipmentDateList = array(
+            "assign_to" => "assign_to_date",
+            "in_progress" => "in_progress_date",
+            "paused" => "paused_date",
+            "completed" => "completed_date",
+            "project_energized" => "project_energized_entry_date",
+            "cre_return_order" => "cre_return_order_date",
+            "project_return_materials" => "project_return_materials_date",
+            "conciliation_reception" => "conciliation_reception_date"
+        );
+        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
+        $statusListToNotify = $dataToSend['statusListToNotify'];
+        $responseList = array();
+        foreach($statusListToNotify as $status => $projectList)
+        {
+            $supervisionList = PublicController::internalNoticeByStatus($status);
+            $sendTo = $supervisionList["to"];
+            $fiscalKey = array_search("fiscal", $sendTo);
+            if($fiscalKey !== FALSE)
+            {
+                $sendTo[$fiscalKey] = $sereboFiscalEmail;
+            }
+            $data['sereboFiscalFullName'] = $sereboFiscalFullName;
+            $subjectList[$status] = strtoupper(str_replace("fiscal_name",$sereboFiscalFullName,$subjectList[$status]));
+            $data['subject'] = $subjectList[$status];
+            $data['shipmentDate'] = $shipmentDateList[$status];
+            $data['projectList'] = $projectList;
+            $shortText[$status] = ucfirst(str_replace("fiscal_name",$sereboFiscalFullName,$shortText[$status]));
+            $data['shortText'] = $shortText[$status];
+            $listManagementBy = array_column($projectList, 'management_by_pro');
+            $listManagementBy = array_unique($listManagementBy);
+            $listManagementBy = implode(',',$listManagementBy);
+            $emailHandler = new EmailHandler();
+            $email = $emailHandler->initialize();
+            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->to($sendTo);
+            $email->cc($sendToCC);
+            $email->bcc('jcussy@toqueeltimbre.com');
+            $subject = $subjectList[$status].'('.$listManagementBy.')';
+            $email->subject($subject);
+            $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+            try
+            {
+                if($email->Send())
+                {
+                    $sendMessageResponse['success'] = 1;
+                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                }
+                else
+                {
+                    $sendMessageResponse['success'] = 0;
+                    $sendMessageResponse['message'] = "Something went wrong!";
+                }
+            }
+            catch (Exception $e)
+            {
+                $sendMessageResponse['success'] = 0;
+                $sendMessageResponse['message'] = "Internal server error, please try again.";
+            }
+            $responseList[] = $sendMessageResponse;
+        }
+        return $responseList;
+    }
+
+    public static function notifyProjectByStatusToSereboMembers($statusList = array())
+    {
+        $ci = &get_instance();
+        $data = array();
+        $sendToCC = array(
+            "vhsuarez@serebo.com",
+            "vh.suarez@me.com"
+        );
+
+        $subjectList = array(
+            "approved" => "PROYECTOS APROBADOS"
+        );
+        $shipmentDateList = array(
+            "approved" => "approved_date"
+        );
+        $responseList = array();
+        foreach($statusList as $status => $projectList)
+        {
+            $supervisionList = PublicController::internalNoticeByStatus($status);
+            $sendTo = $supervisionList["to"];
+            $data['subject'] = $subjectList[$status];
+            $data['shipmentDate'] = $shipmentDateList[$status];
+            $data['projectList'] = $projectList;
+            $listManagementBy = array_column($projectList, 'management_by_pro');
+            $listManagementBy = array_unique($listManagementBy);
+            $listManagementBy = implode(',',$listManagementBy);
+            $emailHandler = new EmailHandler();
+            $email = $emailHandler->initialize();
+            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
+            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->to($sendTo);
+            $email->cc($sendToCC);
+            $email->bcc('jcussy@toqueeltimbre.com');
+            $subject = $subjectList[$status].'('.$listManagementBy.')';
+            $email->subject($subject);
+            $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
+//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
             try
             {
                 if($email->Send())

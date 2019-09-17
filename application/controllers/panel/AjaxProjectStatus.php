@@ -587,16 +587,27 @@ class AjaxProjectStatus extends PrivateController
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
         $scheduleEntry = array();
         $assignmentEntry = array();
+
         if($statusSet == "design")
         {
             $scheduleEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "schedule");
         }
         if($statusSet == "warehouse" || $statusSet == "building")
         {
+
+            $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+
+            $key = array_search('paused', array_column($projectLog, 'keyword_pst'));
+            //If the project has been paused in the past
+            $buildingFromAssigned = $projectLog;
+            if($key !== FALSE)
+            {
+                $buildingFromAssigned = array_slice($projectLog, 0, $key);
+            }
             //Now the building progress has the complete team at "in_progress" step.
             $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "in_progress");
             //if the "In_progress" step doesn't have data, then let's use the assign to previous entry
-            if(count($assignmentEntry) <= 0)
+            if(array_search('in_progress', array_column($buildingFromAssigned, 'keyword_pst')) === FALSE)
             {
                 $assignmentEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
             }

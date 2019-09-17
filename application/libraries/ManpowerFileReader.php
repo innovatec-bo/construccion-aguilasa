@@ -26,11 +26,11 @@ class ManpowerFileReader
 	{
         $this->_file = $file;
         $this->_setExcelArrayData();
-        $this->_designBudgetIdentifiers = array('ERU', 'ERU_B');
+        $this->_designBudgetIdentifiers = array('ERU', 'ERU_B', 'ERR');
         $this->_buildingBudgetIdentifiers = array();
-        $this->_transportationBudgetIdentifiers = array('CTPH-M');
+        $this->_transportationBudgetIdentifiers = array('CTPH-M', 'CTPH-B');
         $this->_liveLineBudgetIdentifiers = array('lv');
-        $this->_rightOfWayBudgetIdentifiers = array();
+        $this->_rightOfWayBudgetIdentifiers = array('R1');
         $this->_designBudget = 0;
         $this->_buildingBudget = 0;
         $this->_transportationBudget = 0;
@@ -151,6 +151,7 @@ class ManpowerFileReader
                 $startReadingData = TRUE;
                 continue;
             }
+            $addToBuildingBudget = TRUE;
             if($startReadingData)
             {
                 $structure = trim($data[2]);
@@ -162,22 +163,28 @@ class ManpowerFileReader
                 if(in_array($structure, $this->_designBudgetIdentifiers))
                 {
                     $this->_designBudget += $amount;
+                    $addToBuildingBudget = FALSE;
                 }
-                if(in_array($structure, $this->_buildingBudgetIdentifiers))
-                {
-                    $this->_buildingBudget += $amount;
-                }
+
                 if(in_array($structure, $this->_transportationBudgetIdentifiers))
                 {
                     $this->_transportationBudget += $amount;
+                    $addToBuildingBudget = FALSE;
                 }
                 if(in_array(strtolower($execution), $this->_liveLineBudgetIdentifiers))
                 {
                     $this->_liveLineBudget += $amount;
+                    $addToBuildingBudget = FALSE;
                 }
                 if(in_array($structure, $this->_rightOfWayBudgetIdentifiers))
                 {
                     $this->_rightOfWayBudget += $amount;
+                    $addToBuildingBudget = FALSE;
+                }
+                //If the line isn't in the others budgets then add to building budget
+                if($addToBuildingBudget)
+                {
+                    $this->_buildingBudget += $amount;
                 }
             }
         }

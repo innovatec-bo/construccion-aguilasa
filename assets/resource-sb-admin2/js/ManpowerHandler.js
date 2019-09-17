@@ -1,4 +1,4 @@
-var ManpowerHandler = /** @class */ (function () {
+var ManpowerHandler = (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -110,26 +110,16 @@ var ManpowerHandler = /** @class */ (function () {
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
-                    // Swal.showValidationMessage('Corrija los errores e intente nuevamente');
                 }
                 else if ($listContent.children().length <= 0) {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
                 _this.add($form.serialize());
-                // let questionId = parseInt($form.find("input[name=question-id]").val());
-                // if(isNaN(questionId))
-                // {
-                //     _this.add($form.serialize());
-                // }
-                // else
-                // {
-                //     _this.edit($form.serialize());
-                // }
             }
         });
         var date = new Date();

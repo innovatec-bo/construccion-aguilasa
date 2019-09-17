@@ -141,6 +141,7 @@ class PublicController extends CI_Controller
             'miltonmr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
             'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
+            //dariojfm@cre.com.bo also manage the same people that sergiommp@cre.com.bo but just on as built and conciliation
             'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
             'miltonro@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
@@ -162,11 +163,27 @@ class PublicController extends CI_Controller
             'darwindm@cre.com.bo' => array('rolandsh@cre.com.bo','wilsongg@cre.com.bo'),
 //            SISTEMA  VALLES
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
-            //NUEVOS(Not in excel list//Not in excel list)
+            //News(Not in excel list//Not in excel list)
             'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
             //'sergiommp@cre.com.bo' => array('dariojfm@cre.com.bo')//solo proyectos por conciliar
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
+    }
+
+    public static function internalNoticeByStatus($status)
+    {
+        $statusList = array(
+            "approved" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "assign_to" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "in_progress" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "paused" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "completed" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "project_energized" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "cre_return_order" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
+            "project_return_materials" => array("to" => array("maguilera@serebo.com"), "cc" => ""),
+            "conciliation_reception" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => "")
+        );
+        return $statusList[$status];
     }
 }
 
@@ -251,9 +268,7 @@ class PrivateController extends PublicController
                 $this->session->set_flashdata("errorMessage", "Permission denied!");
                 redirect(base_url("panel/Home"));
             }
-
         }
-
     }
 
     protected function _validateFeature($securityString, $binaryResponse = FALSE)
@@ -275,7 +290,6 @@ class PrivateController extends PublicController
                     $this->session->set_flashdata("errorMessage", "Access denied!");
                     redirect(base_url("panel/Home"));
                 }
-
             }
         }
         else
@@ -283,7 +297,6 @@ class PrivateController extends PublicController
             $response = $key === FALSE?$key:TRUE;
             return +$response;
         }
-
     }
 
     protected function _is($roleKeyWord)
@@ -396,10 +409,7 @@ class PrivateController extends PublicController
             "payment_order_invoice_sent_date" => "FECHA DE ENVIO DE FACTURA",
             "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION"
         );
-
         return $columnList;
     }
-
-
 }
 
