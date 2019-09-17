@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-09-08 01:56:59
+Date: 2019-09-16 21:07:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -101,7 +101,7 @@ CREATE TABLE `bui_building_structures` (
   `editedon_bus` datetime NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_bus` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_bus`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_building_structures
@@ -244,6 +244,7 @@ INSERT INTO `bui_building_structures` VALUES ('135', 'ZC8-A', 'PRIM 3F DOBLE TEN
 INSERT INTO `bui_building_structures` VALUES ('136', 'ZM5-10', 'ENSAMBLE PRIMARIO MISCELANEO', 'Pza', null, '0', '2019-07-05 19:12:07', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_building_structures` VALUES ('137', 'ZM5-5', 'ENSAMBLE PRIMARIO MISCELANEO', 'Pza', null, '0', '2019-07-05 19:12:07', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_building_structures` VALUES ('138', 'R1', 'DERECHO DE VIA (DESMONTE)', 'M', null, '0', '2019-07-05 19:12:07', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_building_structures` VALUES ('139', 'J26', 'ENSAMBLE SECUNDARIO 1F CRUCE AEREO BT', 'Pza', null, '0', '2019-09-10 00:59:26', '1', '2018-01-01 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_labor_cost
@@ -4227,7 +4228,7 @@ CREATE TABLE `sys_files` (
   `editedby_fil` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_fil`) USING BTREE,
   UNIQUE KEY `UQ_sys_files_id_fil` (`id_fil`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_files
@@ -4261,6 +4262,27 @@ INSERT INTO `sys_files` VALUES ('26', 'ra.19.0727.xlsx', '1562622795_manpower_do
 INSERT INTO `sys_files` VALUES ('27', 'ra.19.0727.xlsx', '1562626015_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10545', '0', '0', '0', 'f6079a6a3b660277cbe2f6f161a5483a4f073ac7d834bdeea948058890342e00', 'assets/uploads/documents/1562626015_manpower_doc.xlsx', '0', '2019-07-08 18:46:55', '1', '2019-07-08 18:46:55', null);
 INSERT INTO `sys_files` VALUES ('28', 'rd.20.0144.xlsx', '1566797806_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '17301', '0', '0', '0', 'c476b657e87e5f42a84c4fc7fa567dff5046e4b9fc28091cc1f769cb91a55fcd', 'assets/uploads/documents/1566797806_manpower_doc.xlsx', '0', '2019-08-26 01:36:46', '1', '2019-08-26 01:36:46', null);
 INSERT INTO `sys_files` VALUES ('29', 'ra.19.0727.xlsx', '1566797911_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10545', '0', '0', '0', '85b47720403705b4d5d9a740f8c3af67b7c9a28e12c3b6a71f9bdd471b21e287', 'assets/uploads/documents/1566797911_manpower_doc.xlsx', '0', '2019-08-26 01:38:31', '1', '2019-08-26 01:38:31', null);
+INSERT INTO `sys_files` VALUES ('30', 'ra.19.1018-mano-de-o.pdf', '1568091290_manpower_doc.pdf', 'assets/uploads/documents/', 'pdf', '22559', '0', '0', '0', '195dd3e11d9367ba4348fe2a32ece3d75e2b3212dfdab52b3178629ce1d1497b', 'assets/uploads/documents/1568091290_manpower_doc.pdf', '0', '2019-09-10 00:54:50', '1', '2019-09-10 00:54:50', null);
+INSERT INTO `sys_files` VALUES ('31', 'ra.19.1018-mano-de-o.pdf', '1568091413_manpower_doc.pdf', 'assets/uploads/documents/', 'pdf', '22559', '0', '0', '0', 'a75b7d27e0e8ae22728aa30b3427da332ed4b93f1c2ca03aa449302230d44cdd', 'assets/uploads/documents/1568091413_manpower_doc.pdf', '0', '2019-09-10 00:56:53', '1', '2019-09-10 00:56:53', null);
+INSERT INTO `sys_files` VALUES ('32', 'ra.19.1018.xlsx', '1568091566_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '3600302a4131c28859a6fba6e69f532ed443edf7c9b609a7b2c7a9ecf3454250', 'assets/uploads/documents/1568091566_manpower_doc.xlsx', '0', '2019-09-10 00:59:26', '1', '2019-09-10 00:59:26', null);
+INSERT INTO `sys_files` VALUES ('33', 'ra.19.1018punto-a-punto.csv', '1568091651_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '2b0879c6b3e53af469193c4d350c81ecc9287df97b521d66f197923446ee4655', 'assets/uploads/documents/1568091651_point_to_point_doc.csv', '0', '2019-09-10 01:00:52', '1', '2019-09-10 01:00:52', null);
+INSERT INTO `sys_files` VALUES ('34', 'ra.19.1018.xlsx', '1568092864_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'ccffc86777c556c22cae2dbdcae1b193aeea7434dfc1e7425727b9819bc2d210', 'assets/uploads/documents/1568092864_manpower_doc.xlsx', '0', '2019-09-10 01:21:04', '1', '2019-09-10 01:21:04', null);
+INSERT INTO `sys_files` VALUES ('35', 'ra.19.1018punto-a-punto.csv', '1568092885_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '14f696b74af98434680600683cf643b916319db3b3e06dc3444dd8a85ba58448', 'assets/uploads/documents/1568092885_point_to_point_doc.csv', '0', '2019-09-10 01:21:25', '1', '2019-09-10 01:21:25', null);
+INSERT INTO `sys_files` VALUES ('36', 'ra.19.1018punto-a-punto.csv', '1568093166_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'e0120b7a287a41b5c4c2246fed9bb66386525686218c28319beff61ff0e4bbdd', 'assets/uploads/documents/1568093166_point_to_point_doc.csv', '0', '2019-09-10 01:26:06', '1', '2019-09-10 01:26:06', null);
+INSERT INTO `sys_files` VALUES ('37', 'ra.19.1018punto-a-punto.csv', '1568093317_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'a32191a01714e8c0eaf2d494e303928915cff5513dbc3ccabaed32cb0ad2d17c', 'assets/uploads/documents/1568093317_point_to_point_doc.csv', '0', '2019-09-10 01:28:37', '1', '2019-09-10 01:28:37', null);
+INSERT INTO `sys_files` VALUES ('38', 'ra.19.1018punto-a-punto.csv', '1568093481_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'c735ad5a002f57a5e2222ef43d9e6b20a878394aa83ac9d5565c997ce9b95ce7', 'assets/uploads/documents/1568093481_point_to_point_doc.csv', '0', '2019-09-10 01:31:21', '1', '2019-09-10 01:31:21', null);
+INSERT INTO `sys_files` VALUES ('39', 'ra.19.1018punto-a-punto.csv', '1568093544_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'd809780bcd3ac1dc0b8df13c244f656affe6252ee14a9241ffee2b19d854f009', 'assets/uploads/documents/1568093544_point_to_point_doc.csv', '0', '2019-09-10 01:32:24', '1', '2019-09-10 01:32:24', null);
+INSERT INTO `sys_files` VALUES ('40', 'ra.19.1018punto-a-punto.csv', '1568093565_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '09e80229a0c04017c0f06d6762d059349febaa47bd8ef5d400d6782e7da5574c', 'assets/uploads/documents/1568093565_point_to_point_doc.csv', '0', '2019-09-10 01:32:45', '1', '2019-09-10 01:32:45', null);
+INSERT INTO `sys_files` VALUES ('41', 'ra.19.1018punto-a-punto.csv', '1568093777_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'ff267d7285b8c87d39942763302ed87cdfc36b7757cabe24679bfcb15fe00675', 'assets/uploads/documents/1568093777_point_to_point_doc.csv', '0', '2019-09-10 01:36:17', '1', '2019-09-10 01:36:17', null);
+INSERT INTO `sys_files` VALUES ('42', 'ra.19.1018punto-a-punto.csv', '1568093803_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '4822a7436bbe5365a54a0f5292590a15268facef8b94b147bb20608b6084d0cb', 'assets/uploads/documents/1568093803_point_to_point_doc.csv', '0', '2019-09-10 01:36:43', '1', '2019-09-10 01:36:43', null);
+INSERT INTO `sys_files` VALUES ('43', 'ra.19.1018punto-a-punto.csv', '1568095715_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '793daf9ed60b7dd34bd9d3a8175605a4714282830ed695daf51c1ec71f62eae0', 'assets/uploads/documents/1568095715_point_to_point_doc.csv', '0', '2019-09-10 02:08:35', '1', '2019-09-10 02:08:35', null);
+INSERT INTO `sys_files` VALUES ('44', 'ra.19.1018punto-a-punto.csv', '1568095738_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '72aebd8ad29dfb1b46bdcf836906e41527a78641b64a90031fdc1905e325064f', 'assets/uploads/documents/1568095738_point_to_point_doc.csv', '0', '2019-09-10 02:08:58', '1', '2019-09-10 02:08:58', null);
+INSERT INTO `sys_files` VALUES ('45', 'ra.19.1018punto-a-punto.csv', '1568095799_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '4026d93ecd0253784f9ddf5464f4b3f7dd87547c76210274d818e04296390b1c', 'assets/uploads/documents/1568095799_point_to_point_doc.csv', '0', '2019-09-10 02:09:59', '1', '2019-09-10 02:09:59', null);
+INSERT INTO `sys_files` VALUES ('46', 'ra.19.1018punto-a-punto.csv', '1568096086_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'a45d000ffc88376a2295b9198090b09f1f6c335ece16b9ea7ee2dfc183b9bbcd', 'assets/uploads/documents/1568096086_point_to_point_doc.csv', '0', '2019-09-10 02:14:46', '1', '2019-09-10 02:14:46', null);
+INSERT INTO `sys_files` VALUES ('47', 'ra.19.1018punto-a-punto.csv', '1568096736_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '533089969f8788735b72375c89b14f0cddbf14d1bb6dd1e6b4346b1a1531c785', 'assets/uploads/documents/1568096736_point_to_point_doc.csv', '0', '2019-09-10 02:25:36', '1', '2019-09-10 02:25:36', null);
+INSERT INTO `sys_files` VALUES ('48', 'ra.19.1018punto-a-punto.csv', '1568096765_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '0e98e42f1346e7e03f74ac8f01bff5385f12478db4b0163edaf4114d34c64c17', 'assets/uploads/documents/1568096765_point_to_point_doc.csv', '0', '2019-09-10 02:26:05', '1', '2019-09-10 02:26:05', null);
+INSERT INTO `sys_files` VALUES ('49', 'ra.19.1018punto-a-punto.csv', '1568096880_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '07c72d4770f36cb239387ea34307035b27b0be6048d9b73a7395fef5ec42c644', 'assets/uploads/documents/1568096880_point_to_point_doc.csv', '0', '2019-09-10 02:28:00', '1', '2019-09-10 02:28:00', null);
+INSERT INTO `sys_files` VALUES ('50', 'ra.19.1018punto-a-punto.csv', '1568097003_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '7ae598492aa68d81e98476991a5aacb726ac53ecaaebc73425ea20c6ab7da2f0', 'assets/uploads/documents/1568097003_point_to_point_doc.csv', '0', '2019-09-10 02:30:03', '1', '2019-09-10 02:30:03', null);
 
 -- ----------------------------
 -- Table structure for wfl_construction_assignments
