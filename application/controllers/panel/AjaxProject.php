@@ -189,6 +189,7 @@ class AjaxProject extends PrivateController
                 $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
             }
             $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+            $builders = Model_user::getByRoleKeyword('builder');
             $arrayBuilder = array();
             foreach($builders as $builder)
             {
