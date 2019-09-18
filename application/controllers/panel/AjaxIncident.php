@@ -45,7 +45,7 @@ class AjaxIncident extends PrivateController
         $this->form_validation->set_rules('pauseProject', 'Pausado', 'trim');
         $this->form_validation->set_rules('stopProject', 'Detenido', 'trim');
         $this->form_validation->set_rules('percentage', 'Porcentage', 'trim');
-        $this->form_validation->set_rules('detail', 'Detalle', 'trim|required');
+        $this->form_validation->set_rules('detail', 'Detalle', 'trim');
         $this->form_validation->set_rules('incidentType', 'Tipo incidente', 'trim|required');
 
         if($this->form_validation->run() === FALSE)
@@ -88,6 +88,18 @@ class AjaxIncident extends PrivateController
             $entryDate = date_format($entryDate, 'Y-m-d');
             $entryDate = $entryDate." ".date("H:i:s");
             $percentage = isset($formData["percentage"])?$formData["percentage"]:NULL;
+            //If the UI does not send the percentage then let's search the las incident percentage
+            if(is_null($percentage))
+            {
+                $percentage = 0;
+                $incidentList = Model_incident::getAllByProjectId($projectId);
+                //if there are not previous incidents then lets assign 0
+                if(count($incidentList) > 0)
+                {
+                    $percentage = $incidentList[0]["percentage_inc"];
+                }
+            }
+
             $detail = $formData["detail"];
             $incidentType = $formData["incidentType"];
             $incident = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId, $pauseProject, $stopProject, $incidentType);
