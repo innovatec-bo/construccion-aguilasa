@@ -135,9 +135,15 @@ class User extends PrivateController
                 $user->setPassword($passwordEncrypted);
             }
             $user->save();
-            Model_user_role::saveUserRoleList($user->getId(), $roleListToSave, $this->sessionUser);
+            if(count($roleListToSave) > 0)
+            {
+                Model_user_role::saveUserRoleList($user->getId(), $roleListToSave, $this->sessionUser);
+            }
             $this->session->set_flashdata("successMessage", "User was updated successfully.");
-            redirect(base_url("panel/User/edit/".$user->getId()));
+            if($userId === NULL)
+                redirect(base_url("panel/User/edit/".$user->getId()));
+            else
+                redirect(base_url("panel/User/myProfile"));
         }
     }
 
