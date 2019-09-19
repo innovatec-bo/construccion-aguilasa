@@ -71,6 +71,10 @@
                                                 $date = new DateTime($project[$shipmentDate]);
                                                 $date = $date->format("d-m-Y");
 
+                                                $amountColumn = number_format($project["total_approved"],2,",",".");
+                                                if($project["keyword_pst"] == "project_return_materials")
+                                                    $amountColumn = number_format($project["payment_order_registered_total_real_budget"]);
+
                                                 $row .= '
                                                     <tr style="font-size: 12px; color:'.$color.'">
                                                         <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
@@ -101,7 +105,7 @@
                                                             '.$project['management_by_pro'].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                            '.number_format($project['total_approved'],2,",",".").'
+                                                            '.$amountColumn.'
                                                         </td>
                                                     </tr>
                                                 ';
@@ -145,7 +149,14 @@
                                                         </td>
                                                     </tr>
                                                 ';
-                                                $totalAmount += $project['total_approved'];
+                                                if($project["keyword_pst"] == "project_return_materials")
+                                                {
+                                                    $totalAmount += $project['payment_order_registered_total_real_budget'];
+                                                }
+                                                else
+                                                {
+                                                    $totalAmount += $project['total_approved'];
+                                                }
                                                 $i++;
                                             }
                                             $totalAmount = number_format($totalAmount,2,",",".");
@@ -166,12 +177,32 @@
                                                 </td>
                                                 <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
                                                     <span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
-                                                    <span style="color: #404E67;">Monto aprobado</span>
+                                                    <?php
+                                                    $amountTitle = "Monto Aprobado";
+                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
+                                                    {
+                                                        $amountTitle = "Monto Conciliado";
+                                                    }
+                                                    ?>
+                                                    <span style="color: #404E67;"><?=$amountTitle?></span>
+                                                </td>
+                                            </tr>
+                                            <tr style="">
+                                                <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:44px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;"  colspan="2">
+                                                    <multiline label="ab5">
+                                                        <p style="text-align: left"><span style="color: #404E67;font-weight: bold;">Total: </span><?=$i-1?> proyecto(s)</p>
+                                                    </multiline>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td align="center" data-color="module1_text4" data-size="module1_text4" mc:edit="ab6" style="color: #000; font-family: 'Open Sans', sans-serif;  font-weight: 500; line-height: 26px; padding-top: 10px;" colspan="2">
+
                                                     <?php
+                                                    $columnName = "Monto<br>Aprobado";
+                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
+                                                    {
+                                                        $columnName = "Monto<br>Conciliado";
+                                                    }
                                                     if(array_search($projectList[0]["keyword_pst"],$specialTable) === FALSE)
                                                     {
                                                         ?>
@@ -187,7 +218,7 @@
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
-                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left"><?=$columnName?></th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>

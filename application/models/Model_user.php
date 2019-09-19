@@ -353,7 +353,8 @@ class Model_user extends Model_user_base
             "project_return_materials" => "project_return_materials_date",
             "conciliation_reception" => "conciliation_reception_date"
         );
-        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
+//        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
+        $sereboFiscalFullName = is_array($dataToSend['sereboFiscalFullName'])?implode(",",$dataToSend['sereboFiscalFullName']):$dataToSend['sereboFiscalFullName'];
         $statusListToNotify = $dataToSend['statusListToNotify'];
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
@@ -372,7 +373,7 @@ class Model_user extends Model_user_base
             $data['projectList'] = $projectList;
             $shortText[$status] = ucfirst(str_replace("fiscal_name",$sereboFiscalFullName,$shortText[$status]));
             $data['shortText'] = $shortText[$status];
-            $listManagementBy = array_column($projectList, 'management_by_pro');
+            $listManagementBy = array_column($projectList, 'fiscal_responsible');
             $listManagementBy = array_unique($listManagementBy);
             $listManagementBy = implode(',',$listManagementBy);
             $emailHandler = new EmailHandler();
