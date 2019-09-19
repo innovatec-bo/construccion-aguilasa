@@ -63,7 +63,7 @@
                                             </span>
                                         <input type="file" name="manpower-file">
                                     </div>
-                                    <div class="form-group input-group">
+                                    <div class="form-group input-group hidden">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" type="button">{{buttonTextPointToPoint}}
                                                 </button>
