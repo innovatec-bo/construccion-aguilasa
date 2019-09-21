@@ -39,9 +39,15 @@ select.form-control:not([size]):not([multiple]).input-sm, input.form-control.inp
     padding: 0.5rem 1.25rem;
 }
 /* prevent css error style on sweet alert */
-.select2-dropdown {
+.dd-select2-structure-code 
+{
     border: 0;
     z-index: 1061;
+}
+.dd-select2-labor-cost 
+{
+    border: 0;
+    z-index: 1071;
 }
 /********************************************** end - select2 special class */
 .select2-template-result h4

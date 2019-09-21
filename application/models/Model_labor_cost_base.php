@@ -86,4 +86,112 @@ class Model_labor_cost_base extends MY_Model
         }
         return $response;
     }
+
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+    /**
+     * @return mixed
+     */
+    public static function countAll()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = '
+                select count(' . static::TABLE_ID. ') as total
+                from ' . static::TABLE_NAME .' 
+                LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+                LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+                LEFT JOIN wfl_projects on id_pro = project_id_lad
+                where '.static::notDeleted();
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    /**
+     * @param $limit
+     * @param $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     */
+    public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc')
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' 
+                LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+                LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+                LEFT JOIN wfl_projects on id_pro = project_id_lad
+                where '.static::notDeleted().'             
+                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
+
+    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME.' 
+                LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+                LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+                LEFT JOIN wfl_projects on id_pro = project_id_lad
+        ';
+        $sql .= ' where '.static::notDeleted().' and (';
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+
+        $query = $ci->db->query($sql);
+        return $query->result();
+    }
+
+    public static function searchTotalCount($text, $colsArray = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+        $sql .= '
+        LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+        LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+        LEFT JOIN wfl_projects on id_pro = project_id_lad
+         where '.static::notDeleted().' and (';
+
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ')';
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    private static function _dataTableColumns()
+    {
+        $columns = static::TABLE_NAME.".*,structure_code_bus";
+        return $columns;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
 }

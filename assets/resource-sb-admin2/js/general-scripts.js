@@ -151,3 +151,58 @@ function savingIncidents(formData)
 {
     console.log(formData);
 }
+
+function startSelect2LaborCost(containerCssClass, size)
+{
+    containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
+    size = size === undefined?"":size;
+    $(containerCssClass).select2({
+        placeholder: "Buscar producto",
+        containerCssClass: size,
+        dropdownCssClass: "dd-select2-labor-cost",
+        dropdownParent: $('.modal-content'),
+        // allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxLaborCost/select2',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                return {
+                    term : params.term || "",//search term
+                    limit : 5,// page size
+                    page: params.page || 1
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        "language": {
+            "noResults": function(){
+                // return '<button type="button" class="btn btn-primary btn-block add-new">Registrar nuevo</button>';
+                return 'No se encontraron resultados';
+            },
+            "searching": function(){
+                return 'Buscando..';
+            }
+        },
+        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        templateResult: formatRepo,
+        width : "100%"
+    });
+}
+
+function formatRepo (response) 
+{
+    if (response.loading)
+        return response.text;
+
+    let htmlSource   = $("#ht-select2-product-response").html();
+    let template = Handlebars.compile(htmlSource);
+    let data = {product:response};
+    return template(data);
+}

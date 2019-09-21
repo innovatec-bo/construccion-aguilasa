@@ -6,6 +6,7 @@ declare let $: any;
 declare let Object: any;
 declare let window: any;
 declare let Swal: any;
+declare let bootbox: any;
 
 class ManpowerHandler
 {
@@ -146,7 +147,6 @@ class ManpowerHandler
                 {
                     $form.parsley().validate();
                     return false;
-                    // Swal.showValidationMessage('Corrija los errores e intente nuevamente');
                 }
                 else if($listContent.children().length <= 0)
                 {
@@ -159,15 +159,6 @@ class ManpowerHandler
             {
                 let $form = $("form[name=manpower-progress-form]");
                 _this.add($form.serialize());
-                // let questionId = parseInt($form.find("input[name=question-id]").val());
-                // if(isNaN(questionId))
-                // {
-                //     _this.add($form.serialize());
-                // }
-                // else
-                // {
-                //     _this.edit($form.serialize());
-                // }
             }
         });
         let date = new Date();
@@ -241,6 +232,7 @@ class ManpowerHandler
         selector = selector || '.select2-structure-code';
         $(selector).select2({
             containerCssClass: "select-xs",
+            dropdownCssClass: "dd-select2-structure-code"
             width:'100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function(state){
@@ -274,9 +266,18 @@ class ManpowerHandler
                         return $state;
                     }
                 }
-            }
+            },
+            language: {
+              noResults: function() {
+                return '<a href="#" class="btn btn-default btn-block add-building-structure">Importar estructura</a>';
+              },
+            },
+            escapeMarkup: function(markup) {
+              return markup;
+            },
         });
     }
+
 
     public loadManpowerLog()
     {
@@ -304,6 +305,109 @@ class ManpowerHandler
                 $('[data-toggle="tooltip"]').tooltip();
             }
         });
+    }
+
+    public addBuildingStructure(formData?)
+    {
+        let _this = this;
+        let method = !formData?"GET":"POST";
+        $.ajax({
+            url : base_url + 'panel/AjaxLaborCost/add',
+            dataType  :"json",
+            method : method,
+            data:formData,
+            beforeSend:function()
+            {
+                // let message = "Cargando formulario..";
+                // if(formData)
+                // {
+                //     message = "Procesando.."
+                // }
+                // Swal({
+                //     html: "<h3>"+message+"</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         Swal.showLoading();
+                //     }
+                // });
+            },
+            success:function(response){
+                if(response.success === 1 && !formData)
+                {
+                    _this.launchFormBuildingStructureForm(response, "Agregar Estructura");
+                }
+                else if(response.success === 1 && formData)
+                {
+                    Swal({ title:'', html:response.message, type:"success"});
+                }
+                else
+                {
+                    Swal({ title:'', html:response.message, type:"error"});
+                }
+            }
+        });
+         
+    }
+
+    private launchFormBuildingStructureForm (response, formTitle)
+    {
+        this._loadViewTemplate = response.data.template;
+        this._laborCostMasterDetail = response.data.laborCostMasterDetail;
+        let $template = $("<div>"+this._loadViewTemplate+"</div>");
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let data = {};
+        let html = template(data);
+        let _this = this;
+        bootbox.confirm({ 
+                            title: formTitle,
+                            message: html,
+                            callback: function(result){ 
+
+                            }
+                        });
+        // Swal({
+        //     title: formTitle,
+        //     html: html,
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#E41C5E',
+        //     cancelButtonColor: '#DDDDDD',
+        //     confirmButtonText: 'Guardar',
+        //     allowOutsideClick:false,
+        //     showLoaderOnConfirm: true,
+        //     customClass:"modal-manpower-form",
+        //     width:'100%',
+        //     preConfirm: () => {
+        //         let $listContent = $("#structure-item-list-content");
+        //         let $form = $("form[name=manpower-progress-form]");
+        //         if(!$form.parsley().isValid())
+        //         {
+        //             $form.parsley().validate();
+        //             return false;
+        //         }
+        //         else if($listContent.children().length <= 0)
+        //         {
+        //             $(".table-error-message").removeClass("hide");
+        //             return false;
+        //         }
+        //     },
+        // }).then((result) => {
+        //     if (result.value)
+        //     {
+        //         let $form = $("form[name=manpower-progress-form]");
+        //         _this.add($form.serialize());
+        //     }
+        // });
+        // let date = new Date();
+        // $('.date-time-picker').datetimepicker({
+        //     ignoreReadonly: true,
+        //     defaultDate: date,
+        //     format: 'DD-MM-YYYY'
+        // });
+        // $(".select2-builders").select2();
+        // this._startSelect2();
+        startSelect2LaborCost()
+        // $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     }
 
     loadEventHandler()
@@ -346,6 +450,11 @@ class ManpowerHandler
         });
         $(document).on("click",'[data-toggle="tooltip"]', function(e){
           e.preventDefault();
+        });
+
+        $(document).on("click", ".add-building-structure",function(e){
+            e.preventDefault();
+            _this.addBuildingStructure();
         });
     }
 }

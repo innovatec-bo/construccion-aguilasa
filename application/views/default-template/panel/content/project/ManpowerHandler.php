@@ -189,3 +189,6 @@
         </blockquote>
     {{/each}}
 </script>
+<script id="ht-modal-form-add-labor-cost" type="text/x-handlebars-template">
+    <select class='select2-labor-cost'></select>
+</script>

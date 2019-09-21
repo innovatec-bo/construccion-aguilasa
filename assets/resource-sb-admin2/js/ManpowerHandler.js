@@ -1,4 +1,4 @@
-var ManpowerHandler = (function () {
+var ManpowerHandler = /** @class */ (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -115,7 +115,7 @@ var ManpowerHandler = (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            },
+            }
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
@@ -182,6 +182,7 @@ var ManpowerHandler = (function () {
         selector = selector || '.select2-structure-code';
         $(selector).select2({
             containerCssClass: "select-xs",
+            dropdownCssClass: "dd-select2-structure-code",
             width: '100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function (state) {
@@ -212,6 +213,14 @@ var ManpowerHandler = (function () {
                         return $state;
                     }
                 }
+            },
+            language: {
+                noResults: function () {
+                    return '<a href="#" class="btn btn-default btn-block add-building-structure">Importar estructura</a>';
+                }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
             }
         });
     };
@@ -239,6 +248,99 @@ var ManpowerHandler = (function () {
                 $('[data-toggle="tooltip"]').tooltip();
             }
         });
+    };
+    ManpowerHandler.prototype.addBuildingStructure = function (formData) {
+        var _this = this;
+        var method = !formData ? "GET" : "POST";
+        $.ajax({
+            url: base_url + 'panel/AjaxLaborCost/add',
+            dataType: "json",
+            method: method,
+            data: formData,
+            beforeSend: function () {
+                // let message = "Cargando formulario..";
+                // if(formData)
+                // {
+                //     message = "Procesando.."
+                // }
+                // Swal({
+                //     html: "<h3>"+message+"</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         Swal.showLoading();
+                //     }
+                // });
+            },
+            success: function (response) {
+                if (response.success === 1 && !formData) {
+                    _this.launchFormBuildingStructureForm(response, "Agregar Estructura");
+                }
+                else if (response.success === 1 && formData) {
+                    Swal({ title: '', html: response.message, type: "success" });
+                }
+                else {
+                    Swal({ title: '', html: response.message, type: "error" });
+                }
+            }
+        });
+    };
+    ManpowerHandler.prototype.launchFormBuildingStructureForm = function (response, formTitle) {
+        this._loadViewTemplate = response.data.template;
+        this._laborCostMasterDetail = response.data.laborCostMasterDetail;
+        var $template = $("<div>" + this._loadViewTemplate + "</div>");
+        var htmlSource = $template.find(response.data.templateName).html();
+        var template = Handlebars.compile(htmlSource);
+        var data = {};
+        var html = template(data);
+        var _this = this;
+        bootbox.confirm({
+            title: formTitle,
+            message: html,
+            callback: function (result) {
+            }
+        });
+        // Swal({
+        //     title: formTitle,
+        //     html: html,
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#E41C5E',
+        //     cancelButtonColor: '#DDDDDD',
+        //     confirmButtonText: 'Guardar',
+        //     allowOutsideClick:false,
+        //     showLoaderOnConfirm: true,
+        //     customClass:"modal-manpower-form",
+        //     width:'100%',
+        //     preConfirm: () => {
+        //         let $listContent = $("#structure-item-list-content");
+        //         let $form = $("form[name=manpower-progress-form]");
+        //         if(!$form.parsley().isValid())
+        //         {
+        //             $form.parsley().validate();
+        //             return false;
+        //         }
+        //         else if($listContent.children().length <= 0)
+        //         {
+        //             $(".table-error-message").removeClass("hide");
+        //             return false;
+        //         }
+        //     },
+        // }).then((result) => {
+        //     if (result.value)
+        //     {
+        //         let $form = $("form[name=manpower-progress-form]");
+        //         _this.add($form.serialize());
+        //     }
+        // });
+        // let date = new Date();
+        // $('.date-time-picker').datetimepicker({
+        //     ignoreReadonly: true,
+        //     defaultDate: date,
+        //     format: 'DD-MM-YYYY'
+        // });
+        // $(".select2-builders").select2();
+        // this._startSelect2();
+        startSelect2LaborCost();
+        // $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     };
     ManpowerHandler.prototype.loadEventHandler = function () {
         var _this = this;
@@ -273,6 +375,10 @@ var ManpowerHandler = (function () {
         });
         $(document).on("click", '[data-toggle="tooltip"]', function (e) {
             e.preventDefault();
+        });
+        $(document).on("click", ".add-building-structure", function (e) {
+            e.preventDefault();
+            _this.addBuildingStructure();
         });
     };
     return ManpowerHandler;

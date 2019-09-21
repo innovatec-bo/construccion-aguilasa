@@ -43,7 +43,8 @@ $config['complements']['parsley']['css'] = assets_url('resource-sb-admin2/vendor
 $config['complements']['jstree']['css'] = assets_url('resource-sb-admin2/vendor/jstree/dist/themes/default/style.min.css');
 $config['complements']['jstree']['js'] = assets_url('resource-sb-admin2/vendor/jstree/dist/jstree.min.js');
 
-$config['complements']['bootbox']['js'] = assets_url('resource-sb-admin2/vendor/bootbox.min.js');
+//$config['complements']['bootbox']['js'] = assets_url('resource-sb-admin2/vendor/bootbox.min.js');
+$config['complements']['bootbox']['js'] = assets_url('resource-sb-admin2/vendor/bootbox.all.min.js');
 
 $config['complements']['jquery.datatables']['js'] = assets_url('resource-sb-admin2/vendor/datatables/DataTables-1.10.16/js/jquery.dataTables.js');
 

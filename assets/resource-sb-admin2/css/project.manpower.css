@@ -16,3 +16,11 @@ blockquote {
     font-size: 11px;
     border-left: 5px solid #96c03d;
 }
+.bootbox.modal 
+{
+    z-index: 1062;
+}
+.modal-backdrop 
+{
+    z-index: 1061;
+}

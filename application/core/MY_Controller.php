@@ -205,6 +205,7 @@ class PrivateController extends PublicController
         $this->complementHandler->addViewComplement("metisMenu");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addViewComplement("sb-admin-2");
+        $this->complementHandler->addViewComplement('bootbox');
         $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
