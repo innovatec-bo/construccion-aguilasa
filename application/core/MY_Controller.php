@@ -165,6 +165,7 @@ class PublicController extends CI_Controller
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
             //News(Not in excel list//Not in excel list)
             'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
+            'paulrs@cre.com.bo' => array('dariojfm@cre.com.bo'),
             //'sergiommp@cre.com.bo' => array('dariojfm@cre.com.bo')//solo proyectos por conciliar
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
