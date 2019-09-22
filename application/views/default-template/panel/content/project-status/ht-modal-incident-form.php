@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label>Detalle</label>
-                                        <textarea class="form-control" rows="2" name="incident-detail" required></textarea>
+                                        <textarea class="form-control" rows="2" name="incident-detail"></textarea>
                                     </div>
                                 </div>
                             </div>

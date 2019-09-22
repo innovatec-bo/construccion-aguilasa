@@ -1047,5 +1047,58 @@ class StatusManagementHandler
                 }
             });
         });
+
+        $(document).on("click",".extract-building-budgets",function(){
+            let formName = $(this).data('form-name');
+            let form = $('form[name='+formName+']')[0];
+            let data = new FormData(form);
+            let $form = $("#status-form-content");
+            let manpowerFileId = $form.find("input[name=manpower-file-id]").val();
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile/"+manpowerFileId,
+                data: data,
+                dataType:'json',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend:function(){
+                    blockArea($(form));
+                },
+                success: function (response) {
+                    $(form).unblock();
+                    if(response.success == 1)
+                    {
+                        let projectBudgetId = $("input[name=project-budget-id]").val();
+                        if(projectBudgetId != "")
+                        {
+                            _this.projectLog();
+                            _this.loadStatusForm('approved', 0);
+                        }
+                        else
+                        {
+                            let file = response.data.file;
+                            let budget = response.data.budget;
+                            let $form = $("#status-form-content");
+                            $form.find("input[name=point-to-point-file-id]").val(file.id);
+                            $form.find("input[name=building-budget]").val(budget.building);
+                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            console.log(response.data);
+                        }
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+                        console.log(response.message);
+                    }
+                }
+            });
+        });
     }
 }

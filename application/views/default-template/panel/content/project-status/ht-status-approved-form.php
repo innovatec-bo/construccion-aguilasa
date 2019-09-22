@@ -51,8 +51,10 @@
                                 </div>
                                 {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
                                     {{var "buttonText" "Cargar mano de obra"}}
+                                    {{var "buttonTextPointToPoint" "Cargar punto a punto"}}
                                     {{#ifCond previousEntry.id_prb "==" null}}
                                         {{var "buttonText" "Revisar mano de obra"}}
+                                        {{var "buttonTextPointToPoint" "Revisar punto a punto"}}
                                     {{/ifCond}}
                                     <div class="form-group input-group">
                                             <span class="input-group-btn">
@@ -61,9 +63,17 @@
                                             </span>
                                         <input type="file" name="manpower-file">
                                     </div>
+                                    <div class="form-group input-group hidden">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" type="button">{{buttonTextPointToPoint}}
+                                                </button>
+                                            </span>
+                                        <input type="file" name="point-to-point-file">
+                                    </div>
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">
                                 <input type="hidden" name="manpower-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                <input type="hidden" name="point-to-point-file-id" value="{{previousEntry.manpower_file_id_prb}}">
                                 {{var "readonly" "Cargar mano de obra"}}
                                 {{#ifCond previousEntry.id_prb "==" null}}
                                     {{var "buttonText" "Revisar mano de obra"}}

@@ -57,6 +57,7 @@ class CronJob extends PublicController
             foreach ($fiscalListToNotify as $fiscalData)
             {
                 //Let's make sure that the fiscal have not mailinator.com email
+                $fiscalData['sereboFiscalEmail'] = is_array($fiscalData['sereboFiscalEmail'])?implode(",",$fiscalData['sereboFiscalEmail']):$fiscalData['sereboFiscalEmail'];
                 if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
                 {
                     Model_user::notifyProjectStatusToSereboMembers($fiscalData);

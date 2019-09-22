@@ -412,10 +412,10 @@ class AjaxProjectStatus extends PrivateController
             $file = Model_file::getById($manpowerFileId);
             if($file instanceof Model_file)
             {
-                $manpowerFileReader = new ManpowerFileReader($file);
+                $manpowerFileReader = new ManpowerFileReader($projectId, $file);
                 $manpowerFileReader->saveStructuresInDataBase();
-                $manpowerFileReader->registerManpowerInSystem($project->getId());
-                $manpowerFileReader->registerDesignBudgetOnLog($project->getId());
+                $manpowerFileReader->registerManpowerInSystem();
+                $manpowerFileReader->registerDesignBudgetOnLog();
             }
         }
         $response["success"] = 1;
@@ -841,9 +841,9 @@ class AjaxProjectStatus extends PrivateController
                 $fileHandler = new FileHandler();
                 $document = $fileHandler->fileUpload($_FILES['manpower-file'], "manpower_doc", "documents", "document");
                 $document->save();
-                $manpowerFileReader = new ManpowerFileReader($document);
+                $manpowerFileReader = new ManpowerFileReader($projectId, $document);
                 $manpowerFileReader->saveStructuresInDataBase();
-                $manpowerFileReader->registerManpowerInSystem($projectId);
+                $manpowerFileReader->registerManpowerInSystem();
                 $response['success'] = 1;
                 $response['message'] = '';
                 $response['data']['file']['id'] = $document->getId();
@@ -859,6 +859,52 @@ class AjaxProjectStatus extends PrivateController
                 {
                     $projectBudget = Model_project_budget::getById($projectBudgetId);
                     $projectBudget->setManpowerFileId($document->getId());
+                    $projectBudget->save();
+                }
+            }
+            catch (Exception $e)
+            {
+                $response['success'] = 0;
+                $response['message'] = $e->getMessage();
+                $response['data'] = array();
+            }
+        }
+        else
+        {
+            $response['success'] = 0;
+            $response['message'] = 'No se selecciono ningun archivo para revisar.';
+            $response['data']['file'] = array();
+        }
+        echo json_encode($response);exit;
+    }
+
+    public function readPointToPointFile($manpowerFileId)
+    {
+        $this->_validateFeature('project_upload_manpower');
+        if (!empty($_FILES['point-to-point-file']['name']))
+        {
+            try
+            {
+                $formData = $this->input->post();
+                $projectId = $formData['project-id'];
+                $fileHandler = new FileHandler();
+                $document = $fileHandler->fileUpload($_FILES['point-to-point-file'], "point_to_point_doc", "documents", "document");
+                $document->save();
+                /** @var  $manpowerFile Model_file*/
+                $manpowerFile = Model_file::getById($manpowerFileId);
+                $manpowerFileReader = new ManpowerFileReader($projectId, $manpowerFile);
+                $manpowerFileReader->registerPointToPointInSystem();
+                $response['success'] = 1;
+                $response['message'] = '';
+                $response['data']['file']['id'] = $document->getId();
+                $response['data']['budget']['building'] = $manpowerFileReader->getBuildingBudget();
+                $projectBudgetId = $formData['project-budget-id'];
+                //If already exist a project budget id then lets assign the manpower file id
+                if($projectBudgetId != "")
+                {
+                    /** @var Model_project_budget $projectBudget */
+                    $projectBudget = Model_project_budget::getById($projectBudgetId);
+                    $projectBudget->setPointToPointFileId($document->getId());
                     $projectBudget->save();
                 }
             }
