@@ -201,7 +201,7 @@ function formatRepo (response)
     if (response.loading)
         return response.text;
 
-    let htmlSource   = $("#ht-select2-product-response").html();
+    let htmlSource   = $("#ht-select2-labor-cost-response").html();
     let template = Handlebars.compile(htmlSource);
     let data = {product:response};
     return template(data);
