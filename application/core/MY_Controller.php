@@ -142,16 +142,16 @@ class PublicController extends CI_Controller
             'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             //dariojfm@cre.com.bo also manage the same people that sergiommp@cre.com.bo but just on as built and conciliation
-            'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
-            'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
-            'miltonro@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
-            'rclaure@cruztel.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
-            'pablopdvm@gmail.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),
-            'layonelrlm@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo'),//Not in excel list
+            'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
+            'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
+            'miltonro@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
+            'rclaure@cruztel.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
+            'pablopdvm@gmail.com' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
+            'layonelrlm@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
-            'carlosagad@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
-            'diegoasr@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
-            'dariojfm@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo'),
+            'carlosagad@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo','percygg@cre.com.bo'),
+            'diegoasr@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo','percygg@cre.com.bo'),
+            'dariojfm@cre.com.bo' => array('rudypb@cre.com.bo','carlosmc@cre.com.bo','percygg@cre.com.bo'),
 //            SISTEMA MISIONES
             'santosbcg@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
             'walterag@cre.com.bo' => array('oscarbr@cre.com.bo','anibalga@cre.com.bo', 'jhonnyrc@cre.com.bo'),
@@ -164,8 +164,8 @@ class PublicController extends CI_Controller
 //            SISTEMA  VALLES
             'oresterb@cre.com.bo' => array('rolandoecp@cre.com.bo','rogerwrc@cre.com.bo'),
             //News(Not in excel list//Not in excel list)
-            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo')
-            'paulrs@cre.com.bo' => array('dariojfm@cre.com.bo'),
+            'sergiommp@cre.com.bo' => array('rudypb@cre.com.bo'),
+            'paulrs@cre.com.bo' => array('dariojfm@cre.com.bo')
             //'sergiommp@cre.com.bo' => array('dariojfm@cre.com.bo')//solo proyectos por conciliar
         );
         return isset($list[$creFiscalEmail])?$list[$creFiscalEmail]:array();
