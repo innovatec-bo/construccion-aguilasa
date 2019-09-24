@@ -5,6 +5,15 @@
  * Date: 6/5/2018
  * Time: 21:06
  */
+$projectSystems = array(
+            1 => "Sistema Santa Cruz",
+            2 => "Sistema Velasco",
+            3 => "Sistema Misiones",
+            4 => "Sistema Camiri",
+            5 => "Sistema German bush",
+            6 => "Sistema Robore",
+            7 => "Sistema Valles"
+        );
 ?>
 <script id="ht-manpower-table" type="text/x-handlebars-template">
     <table class="table table-striped table-bordered table-hover">
@@ -190,5 +199,186 @@
     {{/each}}
 </script>
 <script id="ht-modal-form-add-labor-cost" type="text/x-handlebars-template">
-    <select class='select2-labor-cost'></select>
+    <div class='row'>
+        <div class='col-md-6'>
+            <dl>
+                <dt>Proyecto</dt>
+                <dd>{{project.code_pro}}</dd>
+                <dt>Posicion presupuestaria</dt>
+                <dd>{{project.budgetary_position_pro}}</dd>
+            </dl>
+        </div>
+        <div class='col-md-6'>
+            <dl>
+                <dt>Administracion</dt>
+                <dd>{{project.managementBy}}</dd>
+                <dt>Detalle</dt>
+                <dd>{{project.detail_pro}}</dd>
+            </dl>
+        </div>
+    </div>
+    
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#home" data-toggle="tab" aria-expanded="true">Aniadir desde estructura existente</a>
+        </li>
+        <li class=""><a href="#profile" data-toggle="tab" aria-expanded="false">Aniadir una nueva estructura</a>
+        </li>                                
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="home">
+            <div class='row'>
+                <div class="col-lg-12">
+                    <form role="form" name='add-existing-structure'>
+                        <h5 class="modal-form-header">Seleccion de estructura</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Posicion presupuestaria</label>
+                                    <select  class="form-control" name="project-budgetary-position">
+                                        <option value="">Cualquiera</option>
+                                        <?php
+                                        $html = "";
+                                        for ($i = 0; $i<11; $i++)
+                                        {
+                                            $position = ($i+1) * 10;
+                                            $html .= '<option value="'.$position.'" >'.$position.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class='col-md-6'>            
+                                <div class="form-group">
+                                    <label>Administrado por</label>
+                                    <select  class="form-control" name="management-by" required>
+                                        <option value="">Cualquiera</option>
+                                        <?php
+                                        $html = "";
+                                        foreach ($projectSystems as $key => $name)
+                                        {
+                                            $html .= '<option value="'.$key.'" >'.$name.'</option>';
+                                        }
+                                        echo $html;
+                                        ?>
+                                    </select>
+                                </div>            
+                            </div>
+                            <div class='col-md-12'>
+                                <div class="form-group">
+                                    <label>Estructuras y costos existentes</label>
+                                    <select class='select2-labor-cost'></select>
+                                    <p class="help-block">Puede ingresar el codigo de estructura, descripcion de estructura o el codigo del proyecto</p>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="modal-form-header">Detalle de Mano de obra</h5>                    
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Actividad</label>
+                                    <select class="form-control" name='activity'>
+                                        <option value='I'>Instalacion</option>
+                                        <option value='R'>Retiro</option>
+                                        <option value='M'>Movimiento</option>
+                                    </select>
+                                </div>        
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Ejecucion</label>
+                                    <select class="form-control" name='execution'>
+                                        <option value='LV'>Linea viva</option>
+                                        <option value='LM'>Linea muerta</option>
+                                    </select>
+                                </div>        
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Cantidad</label>
+                                    <input class="form-control" name='quantity'>
+                                </div>
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Precio unitario</label>
+                                    <input class="form-control" name='price'>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+        <div class="tab-pane fade" id="profile">
+            <div class='row'>
+                <div class="col-lg-12">
+                    <form role="form" name='add-new-structure'>
+                        <h5 class="modal-form-header">Datos de la estructura</h5>
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Codigo</label>
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Unidad de medida</label>
+                                    <select class="form-control">
+                                        <option value='KM'>KM</option>
+                                        <option value='M'>M</option>
+                                        <option value='Pza'>Pza</option>
+                                    </select>
+                                </div>        
+                            </div>
+                            <div class='col-md-12'>
+                                <div class="form-group">
+                                    <label>Detalle</label>
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="modal-form-header">Detalle de Mano de obra</h5>                    
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Actividad</label>
+                                    <select class="form-control" name='activity'>
+                                        <option value='I'>Instalacion</option>
+                                        <option value='R'>Retiro</option>
+                                        <option value='M'>Movimiento</option>
+                                    </select>
+                                </div>        
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Ejecucion</label>
+                                    <select class="form-control" name='execution'>
+                                        <option value='LV'>Linea viva</option>
+                                        <option value=LM'>Linea muerta</option>
+                                    </select>
+                                </div>        
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Cantidad</label>
+                                    <input class="form-control" name='quantity'>
+                                </div>
+                            </div>
+                            <div class='col-md-6'>
+                                <div class="form-group">
+                                    <label>Precio unitario</label>
+                                    <input class="form-control" name='price'>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>

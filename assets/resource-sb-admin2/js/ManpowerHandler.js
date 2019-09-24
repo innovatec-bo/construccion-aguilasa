@@ -128,7 +128,7 @@ var ManpowerHandler = /** @class */ (function () {
             defaultDate: date,
             format: 'DD-MM-YYYY'
         });
-        $(".select2-builders").select2();
+        $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
     };
@@ -216,7 +216,7 @@ var ManpowerHandler = /** @class */ (function () {
             },
             language: {
                 noResults: function () {
-                    return '<a href="#" class="btn btn-default btn-block add-building-structure">Importar estructura</a>';
+                    return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
                 }
             },
             escapeMarkup: function (markup) {
@@ -253,7 +253,7 @@ var ManpowerHandler = /** @class */ (function () {
         var _this = this;
         var method = !formData ? "GET" : "POST";
         $.ajax({
-            url: base_url + 'panel/AjaxLaborCost/add',
+            url: base_url + 'panel/AjaxLaborCost/add/' + _this._projectId,
             dataType: "json",
             method: method,
             data: formData,
@@ -290,12 +290,22 @@ var ManpowerHandler = /** @class */ (function () {
         var $template = $("<div>" + this._loadViewTemplate + "</div>");
         var htmlSource = $template.find(response.data.templateName).html();
         var template = Handlebars.compile(htmlSource);
-        var data = {};
+        var data = { project: response.data.project };
         var html = template(data);
         var _this = this;
         bootbox.confirm({
             title: formTitle,
             message: html,
+            buttons: {
+                confirm: {
+                    label: 'Guardar',
+                    className: 'btn btn-primary'
+                },
+                cancel: {
+                    label: 'Cancelar',
+                    className: 'btn btn-danger'
+                }
+            },
             callback: function (result) {
             }
         });
@@ -378,7 +388,18 @@ var ManpowerHandler = /** @class */ (function () {
         });
         $(document).on("click", ".add-building-structure", function (e) {
             e.preventDefault();
+            _this._projectId = parseInt($(this).data('project-id'));
             _this.addBuildingStructure();
+        });
+        $(document).on("select2:select", 'select.select2-labor-cost', function (e) {
+            console.log(e);
+            var data = e.params.data;
+            var $form = $("form[name=add-existing-structure]");
+            $form.find("select[name=activity]").val(data.structure_activity);
+            $form.find("select[name=execution]").val(data.structure_execution);
+            $form.find("input[name=quantity]").val(data.structure_quantity);
+            $form.find("input[name=price]").val(data.structure_unit_price);
+            console.log(data);
         });
     };
     return ManpowerHandler;

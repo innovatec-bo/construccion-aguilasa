@@ -44,13 +44,36 @@ select.form-control:not([size]):not([multiple]).input-sm, input.form-control.inp
     border: 0;
     z-index: 1061;
 }
+.dd-select2-builders
+{
+    border: 0;
+    z-index: 1060;
+}
 .dd-select2-labor-cost 
 {
     border: 0;
     z-index: 1071;
 }
+.dd-select2-labor-cost .select2-results__option {
+    padding: 1px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.dd-select2-labor-cost .select2-results__option.select2-results__option--highlighted {
+    background-color: #0F263A;
+    color: #1e1e1e;
+}
 /********************************************** end - select2 special class */
 .select2-template-result h4
 {
     margin-bottom: 0px;
+}
+
+.modal-form-header
+{
+    border-bottom: 1px solid #31708f;
+    padding-bottom: 0px;
+    margin: 10px 0 10px;
+    text-transform: uppercase;
+    font-weight: 600;
 }

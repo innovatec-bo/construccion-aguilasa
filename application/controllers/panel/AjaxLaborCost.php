@@ -37,7 +37,7 @@ class AjaxLaborCost extends PrivateController
         exit;
     }
     
-    public function add()
+    public function add($projectId)
     {
         //$this->_validateFeature('qb_create_invoice');
         /** Server Side Validations **/
@@ -53,8 +53,12 @@ class AjaxLaborCost extends PrivateController
             $response["success"] = $success;
             $response["message"] = $validationErrors;
             $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
+            $project = Model_project::getById($projectId);
+            $projectArray = $project->toArray();
+            $projectArray['managementBy'] = $this->_projectSystems[$projectArray['management_by_pro']];
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-labor-cost";
+            $response["data"]["project"] = $projectArray;
         } 
         else
         {
@@ -90,9 +94,11 @@ class AjaxLaborCost extends PrivateController
         $term = $this->input->post("term");
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");
+        $budgetaryPosition = $this->input->post("budgetaryPosition");
+        $managementBy = $this->input->post("management");
         $offset = ($page-1)*$limit;
-        $records = Model_labor_cost::search($term, $limit, $offset, NULL, 'desc', array('structure_code_bus'));
-        $recordsFiltered = Model_labor_cost::searchTotalCount($term, array('structure_code_bus'));
+        $records = Model_labor_cost::searchLaborCost($budgetaryPosition, $managementBy, $term, $limit, $offset, NULL, 'desc', array('structure_code_bus','description_bus', 'code_pro'));
+        $recordsFiltered = Model_labor_cost::searchTotalCountLaborCost($budgetaryPosition, $managementBy, $term, array('structure_code_bus','description_bus', 'code_pro'));
 
         $resultArray = array();
         $list = array();
@@ -101,7 +107,17 @@ class AjaxLaborCost extends PrivateController
         {
                 $list[] = array(
                     "id" => $row->id_lac,
-                    "text" => $row->structure_code_bus
+                    "text" => $row->structure_code_bus,
+                    "structure_code" => $row->structure_code_bus,
+                    "structure_detail" => $row->description_bus,
+                    "structure_unit_price" => $row->unit_price_lac,
+                    "structure_activity" => $row->activity_lac,
+                    "structure_execution" => $row->execution_lac,
+                    "structure_quantity" => $row->quantity_lac,
+                    "management_by" => $row->management_by_pro,
+                    "budgetary_position" => $row->budgetary_position_pro,
+                    "project_code" => $row->code_pro
+
                 );
         }
         $moreResults = ($page * $limit) < $recordsFiltered;

@@ -136,7 +136,7 @@ class Model_labor_cost_base extends MY_Model
         return $result;
     }
 
-    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchLaborCost($budgetaryPosition = "", $managementBy = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
     {
         if ($orderBy === null)
         {
@@ -144,6 +144,9 @@ class Model_labor_cost_base extends MY_Model
         }
         $ci = &get_instance();
         $ci->load->database();
+
+        $budgetaryPositionFilter = $budgetaryPosition == ""?"":" and budgetary_position_pro = ".$ci->db->escape($budgetaryPosition)." ";
+        $managementBy = $managementBy == ""? "": " and management_by_pro = ".$ci->db->escape($managementBy)." ";
 
         $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME.' 
                 LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
@@ -157,16 +160,19 @@ class Model_labor_cost_base extends MY_Model
         }
 
         $sql = substr($sql, 0, -3);
-        $sql .= ') group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $sql .= ') '.$budgetaryPositionFilter.' '.$managementBy.' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
 
-        $query = $ci->db->query($sql);
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
         return $query->result();
     }
 
-    public static function searchTotalCount($text, $colsArray = null)
+    public static function searchTotalCountLaborCost($budgetaryPosition = "", $managementBy = "", $text, $colsArray = null)
     {
         $ci = &get_instance();
         $ci->load->database();
+
+        $budgetaryPositionFilter = $budgetaryPosition == ""?"":" and budgetary_position_pro = ".$ci->db->escape($budgetaryPosition)." ";
+        $managementBy = $managementBy == ""? "": " and management_by_pro = ".$ci->db->escape($managementBy)." ";
 
         $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
         $sql .= '
@@ -181,7 +187,7 @@ class Model_labor_cost_base extends MY_Model
         }
 
         $sql = substr($sql, 0, -3);
-        $sql .= ')';
+        $sql .= ') '.$budgetaryPositionFilter.' '.$managementBy.' ';
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -190,7 +196,15 @@ class Model_labor_cost_base extends MY_Model
 
     private static function _dataTableColumns()
     {
-        $columns = static::TABLE_NAME.".*,structure_code_bus";
+        $columns = static::TABLE_NAME.".*,structure_code_bus, description_bus, budgetary_position_pro,CASE
+                WHEN management_by_pro = 1 then 'Sistema Santa Cruz'
+                WHEN management_by_pro = 2 then 'Sistema Velasco'
+                WHEN management_by_pro = 3 then 'Sistema Misiones'
+                WHEN management_by_pro = 4 then 'Sistema Camiri'
+                WHEN management_by_pro = 5 then 'Sistema German bush'
+                WHEN management_by_pro = 6 then 'Sistema Robore'
+                WHEN management_by_pro = 7 then 'Sistema Valles'
+            END management_by_pro, code_pro";
         return $columns;
     }
     ################################################################################################# END - DATATABLE AJAX METHODS

@@ -20,24 +20,6 @@
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-            <ul class="event-list">
-                <li>
-                    <div class="info">
-                        <h2 class="title">CAM2/02/0M</h2>
-                        <p class="desc">ENSAMBLE SECUNDARIO 1F Ó 3F PREEN. DOBLE TENSION BT</p>
-                        <ul>
-                            <li style="width:25%;"><span class="fa fa-globe"></span> Santa cruz</li>
-                            <li style="width:25%;"><span class="fa fa-money"></span> $39.99</li>
-                            <li style="width:25%;"><span class="fa fa-signal"></span> 18</li>
-                            <li style="width:25%;"><span class="fa fa-folder"></span> RD.19.0245</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="col-md-9">
         <div class="table-responsive" id="manpower-table">
 

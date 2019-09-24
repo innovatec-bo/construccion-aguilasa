@@ -157,7 +157,7 @@ function startSelect2LaborCost(containerCssClass, size)
     containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
     size = size === undefined?"":size;
     $(containerCssClass).select2({
-        placeholder: "Buscar producto",
+        placeholder: "Buscar estructura",
         containerCssClass: size,
         dropdownCssClass: "dd-select2-labor-cost",
         dropdownParent: $('.modal-content'),
@@ -168,10 +168,21 @@ function startSelect2LaborCost(containerCssClass, size)
             type : "post",
             delay : 600,
             data : function(params) {
+                let $selectBudgetaryPosition = $("select[name=project-budgetary-position]");
+                let budgetaryPosition = "";
+                if($selectBudgetaryPosition.length > 0)
+                    budgetaryPosition = $selectBudgetaryPosition.val();
+
+                let $selectManagement = $("select[name=management-by]");
+                let management = "";
+                if($selectManagement.length > 0)
+                    management = $selectManagement.val();                
                 return {
                     term : params.term || "",//search term
                     limit : 5,// page size
-                    page: params.page || 1
+                    page: params.page || 1,
+                    budgetaryPosition:budgetaryPosition,
+                    management:management
                 };
             },
             processResults: function (data) {
@@ -203,6 +214,6 @@ function formatRepo (response)
 
     let htmlSource   = $("#ht-select2-labor-cost-response").html();
     let template = Handlebars.compile(htmlSource);
-    let data = {product:response};
+    let data = {laborCost:response};
     return template(data);
 }
