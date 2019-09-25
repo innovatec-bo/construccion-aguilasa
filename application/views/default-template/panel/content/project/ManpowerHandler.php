@@ -299,13 +299,13 @@ $projectSystems = array(
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input class="form-control" name='quantity'>
+                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                 </div>
                             </div>
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Precio unitario</label>
-                                    <input class="form-control" name='price'>
+                                    <input class="form-control input-masked" name='price' data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                 </div>
                             </div>
                         </div>

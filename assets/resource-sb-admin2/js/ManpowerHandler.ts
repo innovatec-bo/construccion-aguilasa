@@ -416,7 +416,12 @@ class ManpowerHandler
         // });
         // $(".select2-builders").select2();
         // this._startSelect2();
-        startSelect2LaborCost()
+        startSelect2LaborCost();
+        let $inputMasked = $(".input-masked");
+        if($inputMasked.length > 0)
+        {
+            $inputMasked.inputmask();
+        }
         // $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     }
 
