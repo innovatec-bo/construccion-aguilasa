@@ -270,7 +270,7 @@ $projectSystems = array(
                             <div class='col-md-12'>
                                 <div class="form-group">
                                     <label>Estructuras y costos existentes</label>
-                                    <select class='select2-labor-cost'></select>
+                                    <select class='select2-labor-cost' name="structure-id"></select>
                                     <p class="help-block">Puede ingresar el codigo de estructura, descripcion de estructura o el codigo del proyecto</p>
                                 </div>
                             </div>
@@ -299,13 +299,14 @@ $projectSystems = array(
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0" readonly>
+                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>
                                 </div>
                             </div>
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Precio unitario</label>
-                                    <input class="form-control input-masked" name='price' data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                    <input class="form-control input-masked" name='price' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true">
                                 </div>
                             </div>
                         </div>
@@ -318,17 +319,20 @@ $projectSystems = array(
                 <div class="col-lg-12">
                     <form role="form" name='add-new-structure'>
                         <h5 class="modal-form-header">Datos de la estructura</h5>
+                        <div class="alert alert-info">
+                            Si el codigo de la estructura ya existe en el sistema, entonces se utilizara la estructura existente.
+                        </div>
                         <div class='row'>
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Codigo</label>
-                                    <input class="form-control">
+                                    <input class="form-control" name="structure-code">
                                 </div>
                             </div>
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Unidad de medida</label>
-                                    <select class="form-control">
+                                    <select class="form-control" name="structure-unit-of-measurement">
                                         <option value='KM'>KM</option>
                                         <option value='M'>M</option>
                                         <option value='Pza'>Pza</option>
@@ -338,7 +342,7 @@ $projectSystems = array(
                             <div class='col-md-12'>
                                 <div class="form-group">
                                     <label>Detalle</label>
-                                    <input class="form-control">
+                                    <input class="form-control" name="structure-detail">
                                 </div>
                             </div>
                         </div>
@@ -366,13 +370,14 @@ $projectSystems = array(
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input class="form-control" name='quantity'>
+                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0" readonly>
+                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>
                                 </div>
                             </div>
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Precio unitario</label>
-                                    <input class="form-control" name='price'>
+                                    <input class="form-control input-masked" name='price' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true">
                                 </div>
                             </div>
                         </div>

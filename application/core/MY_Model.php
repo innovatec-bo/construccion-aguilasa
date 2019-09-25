@@ -24,14 +24,18 @@ class MY_Model
     {
         $this->_id = NULL;
         $this->_deleted = 0;
+        $this->_createdOn = "";
+        $this->_createdBy = NULL;
+        $this->_editedOn = "";
+        $this->_editedBy = NULL;
     }
 
     public function __clone()
     {
         $this->_id = NULL;
-        $this->_createdOn = NULL;
+        $this->_createdOn = "";
         $this->_createdBy = NULL;
-        $this->_editedOn = NULL;
+        $this->_editedOn = "";
         $this->_editedBy = NULL;
     }
 

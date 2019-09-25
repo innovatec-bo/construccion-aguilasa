@@ -1,4 +1,4 @@
-var ManpowerHandler = /** @class */ (function () {
+var ManpowerHandler = (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -115,7 +115,7 @@ var ManpowerHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
@@ -217,11 +217,11 @@ var ManpowerHandler = /** @class */ (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                }
+                },
             },
             escapeMarkup: function (markup) {
                 return markup;
-            }
+            },
         });
     };
     ManpowerHandler.prototype.loadManpowerLog = function () {
@@ -249,7 +249,7 @@ var ManpowerHandler = /** @class */ (function () {
             }
         });
     };
-    ManpowerHandler.prototype.addBuildingStructure = function (formData) {
+    ManpowerHandler.prototype._addBuildingStructure = function (formData) {
         var _this = this;
         var method = !formData ? "GET" : "POST";
         $.ajax({
@@ -276,10 +276,21 @@ var ManpowerHandler = /** @class */ (function () {
                     _this.launchFormBuildingStructureForm(response, "Agregar Estructura");
                 }
                 else if (response.success === 1 && formData) {
-                    Swal({ title: '', html: response.message, type: "success" });
-                }
-                else {
-                    Swal({ title: '', html: response.message, type: "error" });
+                    // let laborCost = response.data.laborCost;
+                    // let structure = response.data.structure;
+                    // let data = {
+                    //     id: laborCost.id_lac,
+                    //     text: structure.structure_code_bus
+                    // };
+                    //
+                    // let newOption = new Option(data.text, data.id, false, true);
+                    // $(newOption).attr("data-activity",laborCost.activity_lac);
+                    // $(newOption).attr("data-execution",laborCost.execution_lac);
+                    // $(newOption).attr("data-description",structure.description_bus);
+                    // $(newOption).attr("data-unit-of-measurement",structure.unit_of_measurement_bus);
+                    // $(newOption).attr("data-quantity",laborCost.quantity_lac);
+                    // $('.select2-structure-code').append(newOption).trigger('select2:select');
+                    console.log(response);
                 }
             }
         });
@@ -307,6 +318,18 @@ var ManpowerHandler = /** @class */ (function () {
                 }
             },
             callback: function (result) {
+                if (result) {
+                    var $formExisting = $("form[name=add-existing-structure]");
+                    var $formNew = $("form[name=add-new-structure]");
+                    var formSerialized = "";
+                    if ($formExisting.is(":visible")) {
+                        formSerialized = $formExisting.serialize();
+                    }
+                    else {
+                        formSerialized = $formNew.serialize();
+                    }
+                    _this._addBuildingStructure(formSerialized);
+                }
             }
         });
         // Swal({
@@ -393,7 +416,7 @@ var ManpowerHandler = /** @class */ (function () {
         $(document).on("click", ".add-building-structure", function (e) {
             e.preventDefault();
             _this._projectId = parseInt($(this).data('project-id'));
-            _this.addBuildingStructure();
+            _this._addBuildingStructure();
         });
         $(document).on("select2:select", 'select.select2-labor-cost', function (e) {
             console.log(e);
@@ -401,7 +424,7 @@ var ManpowerHandler = /** @class */ (function () {
             var $form = $("form[name=add-existing-structure]");
             $form.find("select[name=activity]").val(data.structure_activity);
             $form.find("select[name=execution]").val(data.structure_execution);
-            $form.find("input[name=quantity]").val(data.structure_quantity);
+            // $form.find("input[name=quantity]").val(data.structure_quantity);
             $form.find("input[name=price]").val(data.structure_unit_price);
             console.log(data);
         });

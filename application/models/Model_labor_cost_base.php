@@ -196,7 +196,7 @@ class Model_labor_cost_base extends MY_Model
 
     private static function _dataTableColumns()
     {
-        $columns = static::TABLE_NAME.".*,structure_code_bus, description_bus, budgetary_position_pro,CASE
+        $columns = static::TABLE_NAME.".*,id_bus, structure_code_bus, description_bus, budgetary_position_pro,CASE
                 WHEN management_by_pro = 1 then 'Sistema Santa Cruz'
                 WHEN management_by_pro = 2 then 'Sistema Velasco'
                 WHEN management_by_pro = 3 then 'Sistema Misiones'

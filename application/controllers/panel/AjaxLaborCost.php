@@ -63,27 +63,40 @@ class AjaxLaborCost extends PrivateController
         else
         {
             $formData = $this->input->post();
-            echo"<pre>";var_dump($formData);exit;
-            // $manualEntryDate = $formData["entry-date"];
-            // $manualEntryDate = DateTime::createFromFormat('d-m-Y H:i:s', $manualEntryDate);
-            // $manualEntryDate = date_format($manualEntryDate, 'Y-m-d H:i:s');
-            // $client = isset($formData["client"])?$formData["client"]:0;
-            // $destination = $formData["destination"];
-            // $discount = str_replace(",","",$formData["discount"]);
-            // $amount = str_replace(",","",$formData["amount"]);
-            // $cash = str_replace(",","",$formData["cash"]);
-            // $cashRemaining = str_replace(",","",$formData["cash-remaining"]);
-            // $additionalRate = str_replace(",","",$formData["additional-rate"]);
-            // $toSell = $formData["to-sell"];
-            // $customerFistName = $formData["customer-first-name"];
-            // $customerLastName = $formData["customer-last-name"];
-            // $customerNit = $formData["customer-nit"];
-            // $customerEmail = $formData["customer-email"];
+//            echo"<pre>";var_dump($formData);exit;
+//            $currentLaborCost = Model_labor_cost::getMasterDetailByProjectId($projectId);
+            /** @var Model_labor_detail $laborDetail */
+            $laborDetail = Model_labor_detail::getByProjectId($projectId);
+            $activity = $formData["activity"];
+            $execution = $formData["execution"];
+            $quantity = 0;
+            $unitPrice = str_replace(",","", $formData["price"]);
+            //If the data to create a new structure is settled then this code block will be executed
+            if(isset($formData["structure-code"]) && $formData["structure-code"] != "")
+            {
+                $structureCode = $formData["structure-code"];
+                $detail = $formData["structure-detail"];
+                $unitOfMeasurement = $formData["structure-unit-of-measurement"];
+                //Firstly let's make sure that the structure code passed does not exist
+                $structure = Model_building_structure::getByCode($structureCode);
+                if(!$structure instanceof Model_building_structure)
+                {
+                    $structure = new Model_building_structure($structureCode, $detail, $unitOfMeasurement);
+                    $structure->save();
+                }
+            }
+            else
+            {
+                $structureId = $formData["structure-id"];
+                $structure = Model_building_structure::getById($structureId);
+            }
+            $laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice);
+            $laborCost->save();
 
-            // $client = Model_user::manageSellRequest($client,$customerFistName, $customerLastName, $customerNit, $customerEmail);
-            // Model_sale::sell($client, $manualEntryDate, $amount, $discount, $cash, $cashRemaining, $additionalRate, $destination, $toSell);
-            // $response["success"] = 1;
-            // $response["message"] = "Venta registrada correctamente.";
+            $response["success"] = 1;
+            $response["message"] = "Estructura registrada correctamente.";
+            $response["data"]["laborCost"] = $laborCost->toArray();
+            $response["data"]["structure"] = $structure->toArray();
         }
         echo json_encode($response);
         exit;
@@ -106,7 +119,7 @@ class AjaxLaborCost extends PrivateController
         foreach ($records as $row)
         {
                 $list[] = array(
-                    "id" => $row->id_lac,
+                    "id" => $row->id_bus,
                     "text" => $row->structure_code_bus,
                     "structure_code" => $row->structure_code_bus,
                     "structure_detail" => $row->description_bus,

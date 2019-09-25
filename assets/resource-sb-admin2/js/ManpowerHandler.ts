@@ -232,7 +232,7 @@ class ManpowerHandler
         selector = selector || '.select2-structure-code';
         $(selector).select2({
             containerCssClass: "select-xs",
-            dropdownCssClass: "dd-select2-structure-code"
+            dropdownCssClass: "dd-select2-structure-code",
             width:'100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function(state){
@@ -307,7 +307,7 @@ class ManpowerHandler
         });
     }
 
-    public addBuildingStructure(formData?)
+    public _addBuildingStructure(formData?)
     {
         let _this = this;
         let method = !formData?"GET":"POST";
@@ -338,11 +338,21 @@ class ManpowerHandler
                 }
                 else if(response.success === 1 && formData)
                 {
-                    Swal({ title:'', html:response.message, type:"success"});
-                }
-                else
-                {
-                    Swal({ title:'', html:response.message, type:"error"});
+                    // let laborCost = response.data.laborCost;
+                    // let structure = response.data.structure;
+                    // let data = {
+                    //     id: laborCost.id_lac,
+                    //     text: structure.structure_code_bus
+                    // };
+                    //
+                    // let newOption = new Option(data.text, data.id, false, true);
+                    // $(newOption).attr("data-activity",laborCost.activity_lac);
+                    // $(newOption).attr("data-execution",laborCost.execution_lac);
+                    // $(newOption).attr("data-description",structure.description_bus);
+                    // $(newOption).attr("data-unit-of-measurement",structure.unit_of_measurement_bus);
+                    // $(newOption).attr("data-quantity",laborCost.quantity_lac);
+                    // $('.select2-structure-code').append(newOption).trigger('select2:select');
+                    console.log(response);
                 }
             }
         });
@@ -373,7 +383,21 @@ class ManpowerHandler
                                 }
                             },
                             callback: function(result){ 
-
+                                if(result)
+                                {
+                                    let $formExisting = $("form[name=add-existing-structure]");
+                                    let $formNew = $("form[name=add-new-structure]");
+                                    let formSerialized = "";
+                                    if($formExisting.is(":visible"))
+                                    {
+                                        formSerialized = $formExisting.serialize();
+                                    }
+                                    else
+                                    {
+                                        formSerialized = $formNew.serialize();
+                                    }
+                                    _this._addBuildingStructure(formSerialized);
+                                }
                             }
                         });
         // Swal({
@@ -470,7 +494,7 @@ class ManpowerHandler
         $(document).on("click", ".add-building-structure",function(e){
             e.preventDefault();
             _this._projectId = parseInt($(this).data('project-id'));
-            _this.addBuildingStructure();
+            _this._addBuildingStructure();
         });
 
         $(document).on("select2:select",'select.select2-labor-cost',function(e){
@@ -480,7 +504,7 @@ class ManpowerHandler
 
                $form.find("select[name=activity]").val(data.structure_activity);
                $form.find("select[name=execution]").val(data.structure_execution);
-               $form.find("input[name=quantity]").val(data.structure_quantity);
+               // $form.find("input[name=quantity]").val(data.structure_quantity);
                $form.find("input[name=price]").val(data.structure_unit_price);
                console.log(data);
         });

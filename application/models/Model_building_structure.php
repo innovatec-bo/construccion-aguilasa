@@ -50,4 +50,18 @@ class Model_building_structure extends Model_building_structure_base
         $result = $query->result_array();
         return $result;
     }
+
+    public static function getByCode($code)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            select * from ".static::TABLE_NAME." where structure_code_bus = ".$ci->db->escape($code)." and ".static::notDeleted()."
+        ";
+
+        $query = $ci->db->query($sql);
+        $response = static::recast(get_called_class(), $query->row());
+        return $response;
+    }
 }
