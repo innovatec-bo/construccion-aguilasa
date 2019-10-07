@@ -396,12 +396,13 @@ class AjaxProjectStatus extends PrivateController
         $responsibleList = $formData["responsibleList"];
         $secondaryCode = $formData["secondaryCode"];
         $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
+        $pointToPointFileId = $formData["pointToPointFileId"] == ''?NULL:$formData["pointToPointFileId"];
         /** @var $project Model_project*/
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->setSecondaryCode($secondaryCode);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId);
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
@@ -409,13 +410,25 @@ class AjaxProjectStatus extends PrivateController
         }
         if(is_numeric($manpowerFileId))
         {
-            $file = Model_file::getById($manpowerFileId);
-            if($file instanceof Model_file)
+            //Validating point to point file
+            $pointToPointFile = NULL;
+            if(is_numeric($pointToPointFileId))
             {
-                $manpowerFileReader = new ManpowerFileReader($projectId, $file);
+                $file = Model_file::getById($pointToPointFileId);
+                if($file instanceof Model_file)
+                {
+                    $pointToPointFile = $file;
+                }
+            }
+            $manpowerFile = Model_file::getById($manpowerFileId);
+            if($manpowerFile instanceof Model_file)
+            {
+                $manpowerFileReader = new ManpowerFileReader($projectId, $manpowerFile, $pointToPointFile);
                 $manpowerFileReader->saveStructuresInDataBase();
                 $manpowerFileReader->registerManpowerInSystem();
                 $manpowerFileReader->registerDesignBudgetOnLog();
+                if($pointToPointFile instanceof Model_file)
+                    $manpowerFileReader->registerPointToPointInSystem();
             }
         }
         $response["success"] = 1;
@@ -829,7 +842,7 @@ class AjaxProjectStatus extends PrivateController
 
     }
 
-    public function readManpowerFile()
+    public function readManpowerFile($registerManpowerInSystem = 0)
     {
         $this->_validateFeature('project_upload_manpower');
         if (!empty($_FILES['manpower-file']['name']))
@@ -843,7 +856,8 @@ class AjaxProjectStatus extends PrivateController
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($projectId, $document);
                 $manpowerFileReader->saveStructuresInDataBase();
-                $manpowerFileReader->registerManpowerInSystem();
+                if($registerManpowerInSystem == 1)
+                    $manpowerFileReader->registerManpowerInSystem();
                 $response['success'] = 1;
                 $response['message'] = '';
                 $response['data']['file']['id'] = $document->getId();
@@ -878,33 +892,42 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function readPointToPointFile($manpowerFileId)
+    public function readPointToPointFile($registerPointToPointInSystem = 0, $manpowerFileId = NULL)
     {
         $this->_validateFeature('project_upload_manpower');
-        if (!empty($_FILES['point-to-point-file']['name']))
+        if(is_null($manpowerFileId))
+        {
+            $response['success'] = 0;
+            $response['message'] = 'Primero ejecute la revision de un archivo de <strong>Mano De Obra</strong> antes de revisar un archivo de <strong>Punto a Punto</strong>.';
+            $response['data']['file'] = array();
+        }
+        else if (!empty($_FILES['point-to-point-file']['name']))
         {
             try
             {
                 $formData = $this->input->post();
                 $projectId = $formData['project-id'];
                 $fileHandler = new FileHandler();
-                $document = $fileHandler->fileUpload($_FILES['point-to-point-file'], "point_to_point_doc", "documents", "document");
-                $document->save();
+                $pointToPointFile = $fileHandler->fileUpload($_FILES['point-to-point-file'], "point_to_point_doc", "documents", "document");
+                $pointToPointFile->save();
                 /** @var  $manpowerFile Model_file*/
                 $manpowerFile = Model_file::getById($manpowerFileId);
-                $manpowerFileReader = new ManpowerFileReader($projectId, $manpowerFile);
-                $manpowerFileReader->registerPointToPointInSystem();
+                $manpowerFileReader = new ManpowerFileReader($projectId, $manpowerFile, $pointToPointFile);
+                $pointList = "";
+                if($registerPointToPointInSystem == 1)
+                    $pointList = $manpowerFileReader->registerPointToPointInSystem();
                 $response['success'] = 1;
                 $response['message'] = '';
-                $response['data']['file']['id'] = $document->getId();
+                $response['data']['file']['id'] = $pointToPointFile->getId();
                 $response['data']['budget']['building'] = $manpowerFileReader->getBuildingBudget();
+                $response['data']['pointList'] = $pointList;
                 $projectBudgetId = $formData['project-budget-id'];
                 //If already exist a project budget id then lets assign the manpower file id
                 if($projectBudgetId != "")
                 {
                     /** @var Model_project_budget $projectBudget */
                     $projectBudget = Model_project_budget::getById($projectBudgetId);
-                    $projectBudget->setPointToPointFileId($document->getId());
+                    $projectBudget->setPointToPointFileId($pointToPointFile->getId());
                     $projectBudget->save();
                 }
             }

@@ -258,7 +258,8 @@ var StatusManagementHandler = (function () {
                         previousEntry: response.previousEntry[0],
                         assignmentResponsible: assignmentResponsible,
                         assignmentResponsibleFiscal: assignmentResponsibleFiscal,
-                        assignmentResponsibleBuilder: assignmentResponsibleBuilder
+                        assignmentResponsibleBuilder: assignmentResponsibleBuilder,
+                        viewData: _this.viewData
                     };
                     html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form", data);
                 }
@@ -610,6 +611,7 @@ var StatusManagementHandler = (function () {
         var rightOfWay = $("input[name=right-of-way-budget]").val();
         var secondaryCode = $("input[name=secondary-code]").val();
         var manpowerFileId = $("input[name=manpower-file-id]").val();
+        var pointToPointFileId = $("input[name=point-to-point-file-id]").val();
         var approved = {
             design: design,
             building: building,
@@ -619,7 +621,8 @@ var StatusManagementHandler = (function () {
             liveLine: liveLine,
             rightOfWay: rightOfWay,
             secondaryCode: secondaryCode,
-            manpowerFileId: manpowerFileId
+            manpowerFileId: manpowerFileId,
+            pointToPointFileId: pointToPointFileId
         };
         var dataResult = Object.assign(data, approved);
         $.ajax({
@@ -834,12 +837,13 @@ var StatusManagementHandler = (function () {
         });
         $(document).on("click", ".extract-approved-budgets", function () {
             var formName = $(this).data('form-name');
+            var saveInSystem = $(this).data('save-in-system');
             var form = $('form[name=' + formName + ']')[0];
             var data = new FormData(form);
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: base_url + "panel/AjaxProjectStatus/readManpowerFile",
+                url: base_url + "panel/AjaxProjectStatus/readManpowerFile/" + saveInSystem,
                 data: data,
                 dataType: 'json',
                 processData: false,
@@ -877,7 +881,7 @@ var StatusManagementHandler = (function () {
                         Swal.fire({
                             type: 'error',
                             title: 'Error',
-                            text: response.message
+                            html: response.message
                         });
                         console.log(response.message);
                     }
@@ -886,6 +890,7 @@ var StatusManagementHandler = (function () {
         });
         $(document).on("click", ".extract-building-budgets", function () {
             var formName = $(this).data('form-name');
+            var saveInSystem = $(this).data('save-in-system');
             var form = $('form[name=' + formName + ']')[0];
             var data = new FormData(form);
             var $form = $("#status-form-content");
@@ -893,7 +898,7 @@ var StatusManagementHandler = (function () {
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile/" + manpowerFileId,
+                url: base_url + "panel/AjaxProjectStatus/readPointToPointFile/" + saveInSystem + "/" + manpowerFileId,
                 data: data,
                 dataType: 'json',
                 processData: false,
@@ -925,7 +930,7 @@ var StatusManagementHandler = (function () {
                         Swal.fire({
                             type: 'error',
                             title: 'Error',
-                            text: response.message
+                            html: response.message
                         });
                         console.log(response.message);
                     }

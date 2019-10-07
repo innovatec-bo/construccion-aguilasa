@@ -15,6 +15,183 @@ $projectSystems = array(
             7 => "Sistema Valles"
         );
 ?>
+
+<script id="ht-building-points" type="text/x-handlebars-template">
+    <div class="col-md-9">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <span class="fa fa-map-marker"></span> Punto 1
+                        </a>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-default btn-xs"><span class="fa fa-plus"></span></button>
+                                <button type="submit" class="btn btn-default btn-xs"><span class="fa fa-save"></span></button>
+                            </div>
+                        </div>
+                    </h4>
+
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="table-responsive" id="manpower-table">
+                            <table class="table table-striped table-bordered table-hover table-minimum-padding">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ACTIV.</th>
+                                        <th>CANTIDAD A USAR</th>
+                                        <th>ESTRUCTURA</th>
+                                        <th>EJEC.</th>
+                                        <th>UNIDAD</th>
+                                        <th>DESCRIPCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="text-center">I</td>
+                                        <td class="text-right">77.25</td>
+                                        <td>50-50DE</td>
+                                        <td class="text-center">LM</td>
+                                        <td class="text-center">M</td>
+                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="text-center">I</td>
+                                        <td class="text-right">77.25</td>
+                                        <td>50-50DE</td>
+                                        <td class="text-center">LM</td>
+                                        <td class="text-center">M</td>
+                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="text-center">I</td>
+                                        <td class="text-right">77.25</td>
+                                        <td>50-50DE</td>
+                                        <td class="text-center">LM</td>
+                                        <td class="text-center">M</td>
+                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <span class="fa fa-map-marker"></span> Punto 2
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Orders</a> <span class="label label-success">$ 320</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Invoices</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Shipments</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Tex</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            <span class="fa fa-map-marker"></span> Punto 3
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Change Password</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Notifications</a> <span class="label label-info">5</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="http://www.jquery2dotnet.com">Import/Export</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
+                                        Delete Account</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                            <span class="fa fa-map-marker"></span> Punto 4
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 <script id="ht-manpower-table" type="text/x-handlebars-template">
     <table class="table table-striped table-bordered table-hover">
         <thead>

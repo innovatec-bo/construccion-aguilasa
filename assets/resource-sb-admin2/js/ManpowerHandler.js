@@ -157,6 +157,32 @@ var ManpowerHandler = (function () {
             }
         });
     };
+    ManpowerHandler.prototype.loadBuildingPoints = function () {
+        var _this = this;
+        $.ajax({
+            url: base_url + 'panel/AjaxProject/getBuildingPoints/' + _this._projectId,
+            dataType: "json",
+            method: 'GET',
+            beforeSend: function () {
+                // swal({
+                //     html: "<h3>Loading</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // });
+            },
+            success: function (response) {
+                // console.log(response);
+                var $template = $("<div>" + response.data.template + "</div>");
+                var htmlSource = $template.find(response.data.templateName).html();
+                var template = Handlebars.compile(htmlSource);
+                // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
+                var html = template();
+                $("#building-points").html(html);
+            }
+        });
+    };
     ManpowerHandler.prototype._addRow = function () {
         $(".table-error-message").addClass("hide");
         var $listContent = $("#structure-item-list-content");

@@ -495,4 +495,22 @@ class Project extends PrivateController
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/manpower', $data);
     }
+
+    public function buildingPoints($projectId)
+    {
+        $this->_validateFeature('project_manpower');
+        $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addProjectCss('project.building-points');
+        $this->complementHandler->addProjectJs('project.building-points');
+        $this->complementHandler->addProjectCss('ManpowerHandler');
+        $this->complementHandler->addProjectJs('ManpowerHandler');
+        $data['project'] = $project->toArray();
+        $this->_loadPanelView('project/building-points', $data);
+    }
 }

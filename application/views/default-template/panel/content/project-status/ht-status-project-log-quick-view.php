@@ -53,7 +53,7 @@
                                         <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">
                                         <div class="form-group input-group">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
+                                                    <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" data-save-in-system="1" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
                                                     </button>
                                                 </span>
                                             <input type="file" name="manpower-file">

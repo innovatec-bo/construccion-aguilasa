@@ -45,7 +45,11 @@
                                     <div class="col-md-3">
                                         <label>Codigo secundario</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="{{previousEntry.secondary_code_pro}}" name="secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="{{statusKeyword}}">
+                                            {{var "secondaryCode" viewData.project.code_pro}}
+                                            {{#ifCond previousEntry.secondary_code_pro "!=" undefined}}
+                                                {{var "secondaryCode" previousEntry.secondary_code_pro}}
+                                            {{/ifCond}}
+                                            <input class="form-control" value="{{secondaryCode}}" name="secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
@@ -58,17 +62,17 @@
                                     {{/ifCond}}
                                     <div class="form-group input-group">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" type="button">{{buttonText}}
+                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
                                                 </button>
                                             </span>
-                                        <input type="file" name="manpower-file">
+                                        <input type="file" name="manpower-file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                     </div>
-                                    <div class="form-group input-group hidden">
+                                    <div class="form-group input-group">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" type="button">{{buttonTextPointToPoint}}
+                                                <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonTextPointToPoint}}
                                                 </button>
                                             </span>
-                                        <input type="file" name="point-to-point-file">
+                                        <input type="file" name="point-to-point-file" accept=".csv">
                                     </div>
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">

@@ -40,15 +40,16 @@ class Model_project extends Model_project_base
      * @param $manualEntryDate
      * @param array $responsibleList
      * @param null $manpowerFileId
+     * @param null $buildingStructureFileId
      */
-    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL)
+    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL)
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $manpowerFileId);
+        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $manpowerFileId, $buildingStructureFileId);
         $projectBudget->save();
 
         //Each statusLog needs to have a o more responsible by log
@@ -247,7 +248,7 @@ class Model_project extends Model_project_base
     }
 
 
-    function approveThisProject($entryDate = "", $statusDetail = "", $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0,$rightOfWay = 0, $secondaryCode = "", $manpowerFileId = NULL)
+    function approveThisProject($entryDate = "", $statusDetail = "", $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0,$rightOfWay = 0, $secondaryCode = "", $manpowerFileId = NULL, $buildingStructureFileId = NULL)
     {
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
@@ -270,7 +271,7 @@ class Model_project extends Model_project_base
         $this->setStatus($statusId);
         $this->_secondaryCode = $secondaryCode;
         $this->save();
-        $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId);
+        $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $buildingStructureFileId);
         $wareHouse = Model_warehouse::getByProjectId($this->_id);
         if(!$wareHouse instanceof Model_warehouse)
         {

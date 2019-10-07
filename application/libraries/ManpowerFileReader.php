@@ -31,6 +31,7 @@ class ManpowerFileReader
         $this->_file = $file;
         $this->_setExcelArrayData();
         $this->_designBudgetIdentifiers = array('ERU', 'ERU_B', 'ERR');
+        $this->_pointList = array();
         $this->_setBuildingBudgetIdentifiers($pointToPointFile);
         $this->_transportationBudgetIdentifiers = array('CTPH-M', 'CTPH-B');
         $this->_liveLineBudgetIdentifiers = array('lv');
@@ -43,8 +44,6 @@ class ManpowerFileReader
         $this->_graphNumber = '';
         $this->_levelOfTension = '';
         $this->_destiny = '';
-        $this->_pointList = array();
-
         $this->_setStructureListFromExcelFile();
         $this->_setDataFromExcelFile();
 	}
@@ -309,7 +308,6 @@ class ManpowerFileReader
 
     /**
      * After upload the manpower file let's create a log about the design advance
-     * @param $projectId
      */
     public function registerDesignBudgetOnLog()
     {
@@ -317,13 +315,15 @@ class ManpowerFileReader
         $detail = "Ingresado automaticamente por el sistema";
         $manualEntryDate = date("Y-m-d H:i:s");        
         $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_designBudgetIdentifiers);
+        $workedUp = array();
         foreach($laborCostList as $laborCost)
         {
             $workedUp[] = array('labor-cost-id' => $laborCost['id_lac'], 'quantity' => $laborCost['quantity_lac']);
         }
         $builders = array();
         // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders);exit;
-        Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
+        if(count($workedUp) > 0)
+            Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
     }
 
     private function _setBuildingBudgetIdentifiers(Model_file $pointToPointFile = NULL)
@@ -349,11 +349,25 @@ class ManpowerFileReader
 
             foreach ($data as $key => $value)
             {
-                $structure = $value[14];
+                $structureCode = $value[14];
+                $quantityToUse = $value[13];
                 $pointLabel = $value[1];
-                $this->_buildingBudgetIdentifiers[] = $structure;
-                $this->_pointList[$pointLabel] = $value;
-//                echo"<pre>";var_dump($key, $value);
+                $latitude = $value[2];
+                $longitude = $value[3];
+                $previousPoint = $value[5];
+                $this->_buildingBudgetIdentifiers[] = $structureCode;
+                $pointData = array(
+                    "label" => $pointLabel,
+                    "latitude" => $latitude,
+                    "longitude" => $longitude,
+                    "previous_point" => $previousPoint
+                );
+                $this->_pointList[$pointLabel]["pointData"] = $pointData;
+                $structureToUse =  array(
+                    "structure_code" => $structureCode,
+                    "quantity_to_use" => $quantityToUse
+                );
+                $this->_pointList[$pointLabel]["structureList"][] = $structureToUse;
             }
             //Let's remove the duplicated values
             $this->_buildingBudgetIdentifiers = array_unique($this->_buildingBudgetIdentifiers);
@@ -362,24 +376,35 @@ class ManpowerFileReader
         }
     }
 
+    /**
+     * Use this method before registerManpowerInSystem method has been executed
+     * @return mixed
+     */
     public function registerPointToPointInSystem()
     {
-        echo "<pre>";var_dump($pointsList);exit;
-        Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId);
-    }
-
-    private function _setExcelArrayDataa()
-    {
-        $reader = new Xlsx();
-        if(strtolower($this->_file->getExtension()) == "xls")
+        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_buildingBudgetIdentifiers);
+        $i = 0;
+        foreach ($this->_pointList as $value)
         {
-            $reader = new Xls();
-        }
+            $i++;
+            $pointData = $value["pointData"];
+            $structureList = $value["structureList"];
+            $point = new Model_building_point($pointData["label"], $pointData["latitude"], $pointData["longitude"], $pointData["previous_point"]);
+            $point->save();
+            foreach ($structureList as &$structure)
+            {
+                $structureCode = $structure["structure_code"];
+                $key = array_search($structureCode,array_column($laborCostList, "structure_code_bus"));
+                $structure["labor_cost_id"] = $laborCostList[$key]["id_lac"];
 
-        $fileLocation = FCPATH.$this->_file->getUrl();
-        $spreadsheet = $reader->load($fileLocation);
-        $sheetList = $spreadsheet->getAllSheets();
-        $sheetData = $sheetList[0];
-        $this->_excelArrayData = $sheetData->toArray();
+            }
+            $point->addStructuresToUse($structureList);
+        }
+        $response = "Se establecio ".$i." punto de construccion.";
+        if($i>1)
+        {
+            $response = "Se establecieron ".$i." puntos de construccion.";
+        }
+        return $response;
     }
 }

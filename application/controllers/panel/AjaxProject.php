@@ -233,4 +233,36 @@ class AjaxProject extends PrivateController
         $response['data']['templateName'] = "#ht-manpower-quick-log";
         echo json_encode($response);exit;
     }
+
+    public function getBuildingPoints($projectId)
+    {
+        $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
+        $i = 0;
+        foreach($laborCostMasterDetail as &$laborCost)
+        {
+            $i++;
+            $laborCost['index'] = $i;
+            $laborCost['quantity'] = number_format($laborCost['quantity'], 2);
+            $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
+            $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
+            $laborCost['worked_up'] = number_format($laborCost['worked_up'], 2);
+            $laborCost['diff'] = number_format($laborCost['diff'], 2);
+        }
+        if(count($laborCostMasterDetail) > 0)
+        {
+            $data['isSuperAdmin'] = $this->_is('super_admin');
+            $result['success'] = 1;
+            $result['message'] = '';
+            $result['data']['template'] = $this->loadView('panel/content/project/ManpowerHandler', $data, TRUE);
+            $result['data']['templateName'] = "#ht-building-points";
+            $result['data']['laborCostMasterDetail'] = $laborCostMasterDetail;
+        }
+        else
+        {
+            $result['success'] = 0;
+            $result['message'] = 'No se encontraron datos';
+            $result['data']['laborCostMasterDetail'] = array();
+        }
+        echo json_encode($result);exit;
+    }
 }

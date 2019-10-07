@@ -200,6 +200,35 @@ class ManpowerHandler
         });
     }
 
+    public loadBuildingPoints()
+    {
+        let _this = this;
+        $.ajax({
+            url : base_url + 'panel/AjaxProject/getBuildingPoints/'+_this._projectId,
+            dataType  :"json",
+            method : 'GET',
+            beforeSend:function()
+            {
+                // swal({
+                //     html: "<h3>Loading</h3>",
+                //     allowOutsideClick:false,
+                //     onBeforeOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // });
+            },
+            success:function(response){
+                // console.log(response);
+                let $template = $("<div>"+response.data.template+"</div>");
+                let htmlSource   = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
+                let html = template();
+                $("#building-points").html(html);
+            }
+        });
+    }
+
     private _addRow()
     {
         $(".table-error-message").addClass("hide");
