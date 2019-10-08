@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2019-09-16 21:07:49
+Date: 2019-10-08 15:20:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,7 +47,7 @@ CREATE TABLE `bui_builders_in_manpower` (
   `editedon_bim` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_bim` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_bim`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_builders_in_manpower
@@ -60,6 +60,8 @@ INSERT INTO `bui_builders_in_manpower` VALUES ('5', '6', '12', '0', '2019-07-11 
 INSERT INTO `bui_builders_in_manpower` VALUES ('6', '7', '12', '0', '2019-07-11 11:37:08', '11', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_builders_in_manpower` VALUES ('7', '7', '13', '0', '2019-07-11 11:37:08', '11', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_builders_in_manpower` VALUES ('8', '8', '12', '0', '2019-07-11 14:13:58', '11', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_builders_in_manpower` VALUES ('9', '11', '13', '0', '2019-09-25 11:43:37', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_builders_in_manpower` VALUES ('10', '12', '16', '0', '2019-09-25 11:47:54', '1', '2018-01-01 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_building_points
@@ -79,11 +81,14 @@ CREATE TABLE `bui_building_points` (
   `editedon_bpo` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_bpo` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_bpo`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_building_points
 -- ----------------------------
+INSERT INTO `bui_building_points` VALUES ('20', '1', '-63056760', '-17861946', '1', '0.00', '0.00', '0', '2019-10-03 18:40:30', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_building_points` VALUES ('21', '2', '-63056437', '-17861871', '1', '0.00', '0.00', '0', '2019-10-03 18:40:30', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_building_points` VALUES ('22', '3', '-63056058', '-17861806', '2', '0.00', '0.00', '0', '2019-10-03 18:40:30', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_building_structures
@@ -98,10 +103,10 @@ CREATE TABLE `bui_building_structures` (
   `deleted_bus` smallint(6) DEFAULT '0',
   `createdon_bus` datetime DEFAULT NULL,
   `createdby_bus` bigint(20) DEFAULT NULL,
-  `editedon_bus` datetime NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `editedon_bus` datetime NOT NULL DEFAULT '2018-01-01 00:00:00',
   `editedby_bus` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_bus`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_building_structures
@@ -245,6 +250,10 @@ INSERT INTO `bui_building_structures` VALUES ('136', 'ZM5-10', 'ENSAMBLE PRIMARI
 INSERT INTO `bui_building_structures` VALUES ('137', 'ZM5-5', 'ENSAMBLE PRIMARIO MISCELANEO', 'Pza', null, '0', '2019-07-05 19:12:07', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_building_structures` VALUES ('138', 'R1', 'DERECHO DE VIA (DESMONTE)', 'M', null, '0', '2019-07-05 19:12:07', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_building_structures` VALUES ('139', 'J26', 'ENSAMBLE SECUNDARIO 1F CRUCE AEREO BT', 'Pza', null, '0', '2019-09-10 00:59:26', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_building_structures` VALUES ('140', 'new', 'asdfasdfas asd fasd fd', 'KM', null, '0', '2019-09-25 11:37:41', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_building_structures` VALUES ('141', 'new2', 'adfasdf', 'KM', null, '0', '2019-09-25 11:39:24', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_building_structures` VALUES ('142', 'new4', 'fdfdfdf', 'KM', null, '0', '2019-09-25 12:01:21', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_building_structures` VALUES ('143', 'new5', 'dfdfdf', 'KM', null, '0', '2019-09-25 12:07:23', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_labor_cost
@@ -264,7 +273,7 @@ CREATE TABLE `bui_labor_cost` (
   `editedon_lac` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_lac` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_lac`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1123 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1167 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_labor_cost
@@ -1147,6 +1156,50 @@ INSERT INTO `bui_labor_cost` VALUES ('1119', '19', '34', 'M', 'LM', '2.00', '114
 INSERT INTO `bui_labor_cost` VALUES ('1120', '19', '97', 'M', 'LM', '32.00', '113.25', '0', '2019-08-26 01:36:47', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_labor_cost` VALUES ('1121', '19', '98', 'M', 'LM', '15.00', '190.91', '0', '2019-08-26 01:36:47', '1', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_labor_cost` VALUES ('1122', '19', '99', 'M', 'LM', '267.00', '1.59', '0', '2019-08-26 01:36:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1123', '20', '6', 'I', 'LM', '77.25', '3.16', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1124', '20', '16', 'I', 'LM', '3.00', '211.99', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1125', '20', '17', 'I', 'LM', '2.00', '381.59', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1126', '20', '26', 'I', 'LM', '1.00', '76.32', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1127', '20', '30', 'I', 'LM', '2.00', '76.32', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1128', '20', '139', 'I', 'LM', '1.00', '93.28', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1129', '20', '94', 'I', 'LM', '3.00', '989.90', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1130', '20', '72', 'I', 'LM', '2.00', '113.06', '0', '2019-09-18 18:48:13', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1131', '19', '141', 'I', 'LV', '0.00', '8.00', '0', '2019-09-25 11:39:24', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1132', '20', '4', 'I', 'LM', '0.00', '2.27', '0', '2019-09-25 11:47:17', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1133', '20', '142', 'I', 'LV', '0.00', '5.00', '0', '2019-09-25 12:01:21', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1134', '20', '143', 'I', 'LV', '0.00', '20.00', '0', '2019-09-25 12:07:23', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1135', '21', '6', 'I', 'LM', '77.25', '3.16', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1136', '21', '16', 'I', 'LM', '3.00', '211.99', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1137', '21', '17', 'I', 'LM', '2.00', '381.59', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1138', '21', '26', 'I', 'LM', '1.00', '76.32', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1139', '21', '30', 'I', 'LM', '2.00', '76.32', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1140', '21', '139', 'I', 'LM', '1.00', '93.28', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1141', '21', '94', 'I', 'LM', '3.00', '989.90', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1142', '21', '72', 'I', 'LM', '2.00', '113.06', '0', '2019-10-02 17:31:06', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1143', '22', '6', 'I', 'LM', '77.25', '3.16', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1144', '22', '16', 'I', 'LM', '3.00', '211.99', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1145', '22', '17', 'I', 'LM', '2.00', '381.59', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1146', '22', '26', 'I', 'LM', '1.00', '76.32', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1147', '22', '30', 'I', 'LM', '2.00', '76.32', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1148', '22', '139', 'I', 'LM', '1.00', '93.28', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1149', '22', '94', 'I', 'LM', '3.00', '989.90', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1150', '22', '72', 'I', 'LM', '2.00', '113.06', '0', '2019-10-03 05:33:10', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1151', '23', '6', 'I', 'LM', '77.25', '3.16', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1152', '23', '16', 'I', 'LM', '3.00', '211.99', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1153', '23', '17', 'I', 'LM', '2.00', '381.59', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1154', '23', '26', 'I', 'LM', '1.00', '76.32', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1155', '23', '30', 'I', 'LM', '2.00', '76.32', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1156', '23', '139', 'I', 'LM', '1.00', '93.28', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1157', '23', '94', 'I', 'LM', '3.00', '989.90', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1158', '23', '72', 'I', 'LM', '2.00', '113.06', '0', '2019-10-03 17:39:47', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1159', '24', '6', 'I', 'LM', '77.25', '3.16', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1160', '24', '16', 'I', 'LM', '3.00', '211.99', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1161', '24', '17', 'I', 'LM', '2.00', '381.59', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1162', '24', '26', 'I', 'LM', '1.00', '76.32', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1163', '24', '30', 'I', 'LM', '2.00', '76.32', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1164', '24', '139', 'I', 'LM', '1.00', '93.28', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1165', '24', '94', 'I', 'LM', '3.00', '989.90', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_labor_cost` VALUES ('1166', '24', '72', 'I', 'LM', '2.00', '113.06', '0', '2019-10-03 18:40:29', '1', '2018-01-01 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_labor_cost_log
@@ -1163,7 +1216,7 @@ CREATE TABLE `bui_labor_cost_log` (
   `editedon_lal` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_lal` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_lal`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_labor_cost_log
@@ -1176,6 +1229,12 @@ INSERT INTO `bui_labor_cost_log` VALUES ('5', '11', 'Nuevos detalles', '0000-00-
 INSERT INTO `bui_labor_cost_log` VALUES ('6', '11', 'nuevo detalle', '2019-07-11 10:59:08', '0', '2019-07-11 10:59:08', '11', '2019-07-11 10:59:08', null);
 INSERT INTO `bui_labor_cost_log` VALUES ('7', '11', 'constructores validados', '2019-07-11 11:37:08', '0', '2019-07-11 11:37:08', '11', '2019-07-11 11:37:08', null);
 INSERT INTO `bui_labor_cost_log` VALUES ('8', '11', '', '2019-07-11 14:13:58', '0', '2019-07-11 14:13:58', '11', '2019-07-11 14:13:58', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('9', null, 'Ingresado automaticamente por el sistema', '2019-09-18 18:42:48', '0', '2019-09-18 18:42:48', '1', '2019-09-18 18:42:48', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('10', null, 'Ingresado automaticamente por el sistema', '2019-09-18 18:49:09', '0', '2019-09-18 18:49:09', '1', '2019-09-18 18:49:09', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('11', '1', '', '2019-09-25 11:43:37', '0', '2019-09-25 11:43:37', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('12', '1', '', '2019-09-25 11:47:54', '0', '2019-09-25 11:47:54', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('13', null, 'Ingresado automaticamente por el sistema', '2019-10-03 17:39:47', '0', '2019-10-03 17:39:47', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_cost_log` VALUES ('14', null, 'Ingresado automaticamente por el sistema', '2019-10-03 18:40:29', '0', '2019-10-03 18:40:30', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_labor_details
@@ -1193,7 +1252,7 @@ CREATE TABLE `bui_labor_details` (
   `editedon_lad` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_lad` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_lad`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_labor_details
@@ -1217,6 +1276,10 @@ INSERT INTO `bui_labor_details` VALUES ('16', '447', '6057491', 'TODOS', 'GIEP-0
 INSERT INTO `bui_labor_details` VALUES ('17', '538', '6058227', 'TODOS', 'JIGENA ANTELO FRANCO ANTONIO - Urb.MonteCristo,Franco,DIM-176278', '0', '2019-07-08 17:53:16', '1', '2019-07-08 17:53:16', null);
 INSERT INTO `bui_labor_details` VALUES ('18', '502', '6058227', 'TODOS', 'JIGENA ANTELO FRANCO ANTONIO - Urb.MonteCristo,Franco,DIM-176278', '0', '2019-07-08 18:46:56', '1', '2019-07-08 18:46:56', null);
 INSERT INTO `bui_labor_details` VALUES ('19', '540', '6057494', 'TODOS', 'GIEP-005/2020 - GIE04-20.3 Const 3.3 km línea aer A26-23', '0', '2019-08-26 01:36:47', '1', '2019-08-26 01:36:47', null);
+INSERT INTO `bui_labor_details` VALUES ('20', '539', '6058648', 'TODOS', 'IBAÑEZ URACOTENA PEDRO - B/Juancho,DIM-177259', '0', '2019-09-18 18:48:13', '1', '2019-09-18 18:48:13', null);
+INSERT INTO `bui_labor_details` VALUES ('21', '512', '6058648', 'TODOS', 'IBAÑEZ URACOTENA PEDRO - B/Juancho,DIM-177259', '0', '2019-10-02 17:31:06', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_details` VALUES ('23', '524', '6058648', 'TODOS', 'IBAÑEZ URACOTENA PEDRO - B/Juancho,DIM-177259', '0', '2019-10-03 17:39:47', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `bui_labor_details` VALUES ('24', '536', '6058648', 'TODOS', 'IBAÑEZ URACOTENA PEDRO - B/Juancho,DIM-177259', '0', '2019-10-03 18:40:29', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_structure_by_points
@@ -1233,11 +1296,25 @@ CREATE TABLE `bui_structure_by_points` (
   `editedon_sbp` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_sbp` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_sbp`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_structure_by_points
 -- ----------------------------
+INSERT INTO `bui_structure_by_points` VALUES ('1', '17', '1.00', '1145', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('14', '20', '1.00', '1161', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('15', '20', '1.00', '1163', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('16', '20', '1.00', '1165', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('17', '20', '1.00', '1166', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('18', '21', '38.11', '1159', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('19', '21', '1.00', '1162', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('20', '21', '1.00', '1164', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('21', '21', '1.00', '1165', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('22', '22', '39.14', '1159', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('23', '22', '1.00', '1161', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('24', '22', '1.00', '1163', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('25', '22', '1.00', '1165', '0', null, null, '2018-01-01 00:00:00', null);
+INSERT INTO `bui_structure_by_points` VALUES ('26', '22', '1.00', '1166', '0', null, null, '2018-01-01 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for bui_worked_up_structures
@@ -1254,7 +1331,7 @@ CREATE TABLE `bui_worked_up_structures` (
   `editedon_wus` timestamp NOT NULL DEFAULT '2018-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `editedby_wus` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_wus`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of bui_worked_up_structures
@@ -1270,6 +1347,13 @@ INSERT INTO `bui_worked_up_structures` VALUES ('8', '5', '999', '3.00', '0', '20
 INSERT INTO `bui_worked_up_structures` VALUES ('9', '6', '992', '123.00', '0', '2019-07-11 10:59:08', '11', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_worked_up_structures` VALUES ('10', '7', '0', '0.00', '0', '2019-07-11 11:37:08', '11', '2018-01-01 00:00:00', null);
 INSERT INTO `bui_worked_up_structures` VALUES ('11', '8', '992', '10.00', '0', '2019-07-11 14:13:58', '11', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('12', '9', '1015', '93.00', '0', '2019-09-18 18:42:48', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('13', '9', '1016', '4.00', '0', '2019-09-18 18:42:48', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('14', '10', '1124', '3.00', '0', '2019-09-18 18:49:09', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('15', '11', '1131', '2.00', '0', '2019-09-25 11:43:37', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('16', '12', '1132', '5.00', '0', '2019-09-25 11:47:54', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('17', '13', '1152', '3.00', '0', '2019-10-03 17:39:48', '1', '2018-01-01 00:00:00', null);
+INSERT INTO `bui_worked_up_structures` VALUES ('18', '14', '1160', '3.00', '0', '2019-10-03 18:40:30', '1', '2018-01-01 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for sec_executive_summary_log
@@ -4228,7 +4312,7 @@ CREATE TABLE `sys_files` (
   `editedby_fil` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_fil`) USING BTREE,
   UNIQUE KEY `UQ_sys_files_id_fil` (`id_fil`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_files
@@ -4283,6 +4367,64 @@ INSERT INTO `sys_files` VALUES ('47', 'ra.19.1018punto-a-punto.csv', '1568096736
 INSERT INTO `sys_files` VALUES ('48', 'ra.19.1018punto-a-punto.csv', '1568096765_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '0e98e42f1346e7e03f74ac8f01bff5385f12478db4b0163edaf4114d34c64c17', 'assets/uploads/documents/1568096765_point_to_point_doc.csv', '0', '2019-09-10 02:26:05', '1', '2019-09-10 02:26:05', null);
 INSERT INTO `sys_files` VALUES ('49', 'ra.19.1018punto-a-punto.csv', '1568096880_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '07c72d4770f36cb239387ea34307035b27b0be6048d9b73a7395fef5ec42c644', 'assets/uploads/documents/1568096880_point_to_point_doc.csv', '0', '2019-09-10 02:28:00', '1', '2019-09-10 02:28:00', null);
 INSERT INTO `sys_files` VALUES ('50', 'ra.19.1018punto-a-punto.csv', '1568097003_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '7ae598492aa68d81e98476991a5aacb726ac53ecaaebc73425ea20c6ab7da2f0', 'assets/uploads/documents/1568097003_point_to_point_doc.csv', '0', '2019-09-10 02:30:03', '1', '2019-09-10 02:30:03', null);
+INSERT INTO `sys_files` VALUES ('51', 'ra.19.1018.xlsx', '1568846314_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '93acf29cf9cb4bd8e888e61f4e4902915116bfc777dd8132ba6a420f071ae64e', 'assets/uploads/documents/1568846314_manpower_doc.xlsx', '0', '2019-09-18 18:38:34', '1', '2019-09-18 18:38:34', null);
+INSERT INTO `sys_files` VALUES ('52', 'ra.19.1018punto-a-punto.csv', '1568846330_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '9bd7655345444483cee7fd46479ba7adc61b758f714c9fa0eb3a742546973502', 'assets/uploads/documents/1568846330_point_to_point_doc.csv', '0', '2019-09-18 18:38:50', '1', '2019-09-18 18:38:50', null);
+INSERT INTO `sys_files` VALUES ('53', 'ra.19.1018.xlsx', '1568846539_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '44af8cfe77bc6bf6dd3f14c5d3d0aa80c0c8d2708a5a9a0d7dacd0e00e262c29', 'assets/uploads/documents/1568846539_manpower_doc.xlsx', '0', '2019-09-18 18:42:19', '1', '2019-09-18 18:42:19', null);
+INSERT INTO `sys_files` VALUES ('54', 'ra.19.1018.xlsx', '1568846893_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '0e01f0abd49265ece3e1d29468b90346490b9082329661b969f52bd4ba6dc50d', 'assets/uploads/documents/1568846893_manpower_doc.xlsx', '0', '2019-09-18 18:48:13', '1', '2019-09-18 18:48:13', null);
+INSERT INTO `sys_files` VALUES ('55', 'ra.19.1018---mano-de-obra.xlsx', '1570051864_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'bd86c4456305b09edfb92f16a73dca3367f5732063159e90775c936d58f3a9c0', 'assets/uploads/documents/1570051864_manpower_doc.xlsx', '0', '2019-10-02 17:31:04', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('56', 'ra.19.1018.xlsx', '1570052513_point_to_point_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'be8213578b9b9391cc61bd284a6e546dcd786c75bbf22ec65c1e1193613ccfce', 'assets/uploads/documents/1570052513_point_to_point_doc.xlsx', '0', '2019-10-02 17:41:53', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('57', 'ra.19.1018---mano-de-obra.xlsx', '1570052617_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'a70ad234a9c850ce0635e8019fb621390efb5fbb954ebf9ba3e29323fb81e877', 'assets/uploads/documents/1570052617_manpower_doc.xlsx', '0', '2019-10-02 17:43:37', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('58', 'ra.19.1018punto-a-punto.csv', '1570052662_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'ab6ecb9e0d2e70248f64f8cdb50492392e4d83a14a62b2ddd90c859ad3fe180a', 'assets/uploads/documents/1570052662_point_to_point_doc.csv', '0', '2019-10-02 17:44:22', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('59', 'ra.19.1018---mano-de-obra.xlsx', '1570052737_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '026be175172353de3f440529f907c488861adf9953c33dc04120f0cd89446b24', 'assets/uploads/documents/1570052737_manpower_doc.xlsx', '0', '2019-10-02 17:45:37', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('60', 'ra.19.1018punto-a-punto.csv', '1570052767_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '487b092c952e0fea849e99ebf725e54e75bedb4b180634f6018938289f314d58', 'assets/uploads/documents/1570052767_point_to_point_doc.csv', '0', '2019-10-02 17:46:07', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('61', 'ra.19.1018punto-a-punto.csv', '1570052894_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '769256869ccbcd06045dfdcd6f3dbb404fe895dda255dbc1c5314bd69fb2d10a', 'assets/uploads/documents/1570052894_point_to_point_doc.csv', '0', '2019-10-02 17:48:14', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('62', 'ra.19.1018punto-a-punto.csv', '1570052972_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '7e019a310b01684aedb9c4e121f47e846dcda5a1b75dd0b7ca9af12d4e0561fd', 'assets/uploads/documents/1570052972_point_to_point_doc.csv', '0', '2019-10-02 17:49:32', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('63', 'ra.19.1018punto-a-punto.csv', '1570057122_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '3ae366ad1296f4eab85298b7249739239f926394a9a5807ec05475514ee32dbd', 'assets/uploads/documents/1570057122_point_to_point_doc.csv', '0', '2019-10-02 18:58:42', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('64', 'ra.19.1018punto-a-punto.csv', '1570057170_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'c28820a42aac3087f1da156de677ee5247e5fc138c4c9a75effe43c9388a0b37', 'assets/uploads/documents/1570057170_point_to_point_doc.csv', '0', '2019-10-02 18:59:30', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('65', 'ra.19.1018punto-a-punto.csv', '1570057344_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '020e27ca1eff103890eb04569bf87bbd85e3a2b016a3e7e92e54017235086949', 'assets/uploads/documents/1570057344_point_to_point_doc.csv', '0', '2019-10-02 19:02:24', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('66', 'ra.19.1018punto-a-punto.csv', '1570057373_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '69689202b3cbd1ef729a6af1ad10eccb49f620826b907f6b202cbe0c34eef307', 'assets/uploads/documents/1570057373_point_to_point_doc.csv', '0', '2019-10-02 19:02:53', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('67', 'ra.19.1018punto-a-punto.csv', '1570073152_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'b1d67c48c83419330ba93bf5700528f7e49b69e8e5684efacd0d0ce8166cc2ac', 'assets/uploads/documents/1570073152_point_to_point_doc.csv', '0', '2019-10-02 23:25:52', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('68', 'ra.19.1018punto-a-punto.csv', '1570073195_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '0c538b767a8796b02c833e185a879f94eceaf3975b7a5ec5a898620ed443b11e', 'assets/uploads/documents/1570073195_point_to_point_doc.csv', '0', '2019-10-02 23:26:35', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('69', 'ra.19.1018punto-a-punto.csv', '1570073855_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '7b111f3ca83caaef20865832a89238b8a3e06437b84323fc4bcce31d17ab0d2c', 'assets/uploads/documents/1570073855_point_to_point_doc.csv', '0', '2019-10-02 23:37:35', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('70', 'ra.19.1018punto-a-punto.csv', '1570073898_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '97d14d178a5e8c99350ea2a22767527c38201171adf14d4d67cf0925baf3c412', 'assets/uploads/documents/1570073898_point_to_point_doc.csv', '0', '2019-10-02 23:38:18', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('71', 'ra.19.1018punto-a-punto.csv', '1570074517_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'd868bc3750fab75434cf3081fb34ac058d53ea0538cabf60bc1181f116af4190', 'assets/uploads/documents/1570074517_point_to_point_doc.csv', '0', '2019-10-02 23:48:37', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('72', 'ra.19.1018---mano-de-obra.xlsx', '1570074783_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '20caef7ff3f95bb3276d47a9b7e506704f1f3cde880aa029145b027a8589f6b5', 'assets/uploads/documents/1570074783_manpower_doc.xlsx', '0', '2019-10-02 23:53:03', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('73', 'ra.19.1018punto-a-punto.csv', '1570074802_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '976e850f4d709f03505b141ade48f20469a8b524a2028352191065db0d90526e', 'assets/uploads/documents/1570074802_point_to_point_doc.csv', '0', '2019-10-02 23:53:22', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('74', 'ra.19.1018---mano-de-obra.xlsx', '1570093618_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '0a65adfc2319c33745ac5c01f25c779f6f1f562595a6e1d59b9a8e1b93863d17', 'assets/uploads/documents/1570093618_manpower_doc.xlsx', '0', '2019-10-03 05:06:58', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('75', 'ra.19.1018punto-a-punto.csv', '1570094446_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '4303c8b1c1f449837150a2ff4559b9199a692a66575aa6b0bf81aba688e36db9', 'assets/uploads/documents/1570094446_point_to_point_doc.csv', '0', '2019-10-03 05:20:46', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('76', 'ra.19.1018punto-a-punto.csv', '1570094500_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '474a19d3f07a94486bd1976d7619058b019fb70e14c7c80e3e898a0491949acd', 'assets/uploads/documents/1570094500_point_to_point_doc.csv', '0', '2019-10-03 05:21:40', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('77', 'ra.19.1018---mano-de-obra.xlsx', '1570094858_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'e37c306f6293cb0395269b5288c4c233628ffeb0a46d72cda658459418d13b08', 'assets/uploads/documents/1570094858_manpower_doc.xlsx', '0', '2019-10-03 05:27:38', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('78', 'ra.19.1018punto-a-punto.csv', '1570094867_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '91b63d9b82e25a6373e12c8d6eeb46f2ee3b52b8bc114d998f0d9b0f6db083e3', 'assets/uploads/documents/1570094867_point_to_point_doc.csv', '0', '2019-10-03 05:27:47', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('79', 'ra.19.1018punto-a-punto.csv', '1570094969_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '74a234b1fbf73b877684b750177257ab23be89f1831e5f0086185b8ae0a0a6db', 'assets/uploads/documents/1570094969_point_to_point_doc.csv', '0', '2019-10-03 05:29:29', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('80', 'ra.19.1018---mano-de-obra.xlsx', '1570095190_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'b607e46e44d4a8b118902ad23e1a361257b1c1b277e5a16c7d27d547412b2567', 'assets/uploads/documents/1570095190_manpower_doc.xlsx', '0', '2019-10-03 05:33:10', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('81', 'ra.19.1018punto-a-punto.csv', '1570095203_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '469ff0753ce3fafc2f863adc24240077b4a85fcde05f6eaa8ed7716234c17b1e', 'assets/uploads/documents/1570095203_point_to_point_doc.csv', '0', '2019-10-03 05:33:23', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('82', 'ra.19.1018punto-a-punto.csv', '1570110121_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'bf3e271d2b323f6a5afad0fb62a6fd96efbf799233449163dcf4288075a003dd', 'assets/uploads/documents/1570110121_point_to_point_doc.csv', '0', '2019-10-03 09:42:01', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('83', 'ra.19.1018punto-a-punto.csv', '1570134018_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'baa87e8840fb9caddc922b0646fe4db85f5fc5dc924060c02195cb77f4dd2fa5', 'assets/uploads/documents/1570134018_point_to_point_doc.csv', '0', '2019-10-03 16:20:18', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('84', 'ra.19.1018---mano-de-obra.xlsx', '1570134229_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'ed2941e43e1bac2bd3ed874071474fb162bb5e206fa59fe09f90dd166f1b835f', 'assets/uploads/documents/1570134229_manpower_doc.xlsx', '0', '2019-10-03 16:23:49', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('85', 'ra.19.1018punto-a-punto.csv', '1570134246_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'ca8495171ff9fd77ebff5fb4f551baf7e175d8f95b7da2ff76874b209d09e721', 'assets/uploads/documents/1570134246_point_to_point_doc.csv', '0', '2019-10-03 16:24:06', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('86', 'ra.19.1018punto-a-punto.csv', '1570134328_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'b444f31637b33d74f1f3bed93f70877a1f5342b36c0d00ef698d4f03bc971839', 'assets/uploads/documents/1570134328_point_to_point_doc.csv', '0', '2019-10-03 16:25:28', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('87', 'ra.19.1018punto-a-punto.csv', '1570135891_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '8d2b6ade27fdd61a8fe39467288cc484d551ad8940aee5faa4b3fe4a4631324d', 'assets/uploads/documents/1570135891_point_to_point_doc.csv', '0', '2019-10-03 16:51:31', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('88', 'ra.19.1018punto-a-punto.csv', '1570136268_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '9d7c1456946fbafa5981152d6dce442b03a5912e1e6cb47a3383c8167e3a7196', 'assets/uploads/documents/1570136268_point_to_point_doc.csv', '0', '2019-10-03 16:57:48', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('89', 'ra.19.1018punto-a-punto.csv', '1570136287_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'b2eaa0a0565ed43abfb6e7e9a65ab7e278187f2d429e5b63f3e2b35dd2056d3f', 'assets/uploads/documents/1570136287_point_to_point_doc.csv', '0', '2019-10-03 16:58:07', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('90', 'ra.19.1018punto-a-punto.csv', '1570136491_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '3d5e16eec4c8c3a081896ab3108f62fc386bc04274a163efb091b5af9d9de55d', 'assets/uploads/documents/1570136491_point_to_point_doc.csv', '0', '2019-10-03 17:01:32', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('91', 'ra.19.1018punto-a-punto.csv', '1570136807_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '89064f7344fad7e1d3df518e50f9a6edfb1a4bcba3afa1c678cda6cf69a836ee', 'assets/uploads/documents/1570136807_point_to_point_doc.csv', '0', '2019-10-03 17:06:47', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('92', 'ra.19.1018punto-a-punto.csv', '1570136822_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '2a0a5f2109ecfd0a06c00bc2da983407190e53be64c8100ac15ae3269872fc18', 'assets/uploads/documents/1570136822_point_to_point_doc.csv', '0', '2019-10-03 17:07:02', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('93', 'ra.19.1018punto-a-punto.csv', '1570137168_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '9258bb724b10abf8a3e35749bc92da7112fd6d5f1d24dab88a0906c256e8f9c2', 'assets/uploads/documents/1570137168_point_to_point_doc.csv', '0', '2019-10-03 17:12:48', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('94', 'ra.19.1018punto-a-punto.csv', '1570137388_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '65cf5fd76df666d07b2c5f7d7bfe308e55fd6b657d9515031a6fce6f48b37010', 'assets/uploads/documents/1570137388_point_to_point_doc.csv', '0', '2019-10-03 17:16:28', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('95', 'ra.19.1018punto-a-punto.csv', '1570137671_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '0b126872f3cf9c6d98969bd656696a04977d359bc5697766d66aead4275a1668', 'assets/uploads/documents/1570137671_point_to_point_doc.csv', '0', '2019-10-03 17:21:11', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('96', 'ra.19.1018punto-a-punto.csv', '1570137889_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'c34e6db39bfc68cc77e6bcfef2cfeeae07964cde6cbe428305f7dca55a3c9e28', 'assets/uploads/documents/1570137889_point_to_point_doc.csv', '0', '2019-10-03 17:24:49', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('97', 'ra.19.1018punto-a-punto.csv', '1570138308_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '6f3aeaac7e0fa25b098856e68b88916d8dde3b5956062c40ba39a046f22b1838', 'assets/uploads/documents/1570138308_point_to_point_doc.csv', '0', '2019-10-03 17:31:48', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('98', 'ra.19.1018---mano-de-obra.xlsx', '1570138379_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'a1d83c5fc62cd4f99a24bd4663740f2491d6d3fb2941118ca2f16558d21afef9', 'assets/uploads/documents/1570138379_manpower_doc.xlsx', '0', '2019-10-03 17:32:59', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('99', 'ra.19.1018punto-a-punto.csv', '1570138422_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'c386bdfb4876c4372aeca09e3aebe11366cf4e08d6ae20bf9ef2078edce456c0', 'assets/uploads/documents/1570138422_point_to_point_doc.csv', '0', '2019-10-03 17:33:42', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('100', 'ra.19.1018---mano-de-obra.xlsx', '1570138687_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', 'd942ce417281f822633a819db8184e071874dfd7682c915f9ba4dc8aecf4639c', 'assets/uploads/documents/1570138687_manpower_doc.xlsx', '0', '2019-10-03 17:38:07', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('101', 'ra.19.1018punto-a-punto.csv', '1570138719_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'a54dd56b054e6d16e61b751e5b36314f4f7571c5d473520a67b9fc304b5e1bb9', 'assets/uploads/documents/1570138719_point_to_point_doc.csv', '0', '2019-10-03 17:38:39', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('102', 'ra.19.1018punto-a-punto.csv', '1570138743_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'c2f0aad8d5917436bbc03ca14a6a3ad710f8959f41246c6f74e76d3c50e8b4f6', 'assets/uploads/documents/1570138743_point_to_point_doc.csv', '0', '2019-10-03 17:39:03', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('103', 'ra.19.1018---mano-de-obra.xlsx', '1570140505_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '9dee84eaef0c375c8e4b088f5ec34b9dfa5874f942092a7b1687f3cbf2f27724', 'assets/uploads/documents/1570140505_manpower_doc.xlsx', '0', '2019-10-03 18:08:25', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('104', 'ra.19.1018-punto-a-punto.pdf', '1570140516_point_to_point_doc.pdf', 'assets/uploads/documents/', 'pdf', '24909', '0', '0', '0', 'ab89f3ec8ba1809f357bb2a5d550e4d954e2e770e2d3ec6b24ad6a84ada0a22c', 'assets/uploads/documents/1570140516_point_to_point_doc.pdf', '0', '2019-10-03 18:08:36', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('105', 'ra.19.1018---mano-de-obra.xlsx', '1570140735_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '2a0ae6a618c35cd70d6897d623cc40715be7f0e53c2c5b669ccf145bbd8a5837', 'assets/uploads/documents/1570140735_manpower_doc.xlsx', '0', '2019-10-03 18:12:15', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('106', 'ra.19.1018punto-a-punto.csv', '1570140747_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', 'ede88465377133f5d0d5b840a43e7c0d9a36a58e2f40e97e56a2e4c3f4014d8a', 'assets/uploads/documents/1570140747_point_to_point_doc.csv', '0', '2019-10-03 18:12:27', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('107', 'ra.19.1018---mano-de-obra.xlsx', '1570142405_manpower_doc.xlsx', 'assets/uploads/documents/', 'xlsx', '10359', '0', '0', '0', '1be288ebb7d7df6cf44ee709f182d9e823fa4ec509b31cc30a72013d67c1b318', 'assets/uploads/documents/1570142405_manpower_doc.xlsx', '0', '2019-10-03 18:40:05', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `sys_files` VALUES ('108', 'ra.19.1018punto-a-punto.csv', '1570142411_point_to_point_doc.csv', 'assets/uploads/documents/', 'CSV', '1517', '0', '0', '0', '0158fe221197dbba80576cd4b9ebce35251f0ff49da2ba9ed03f44ebf1019b22', 'assets/uploads/documents/1570142411_point_to_point_doc.csv', '0', '2019-10-03 18:40:12', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_construction_assignments
@@ -4305,7 +4447,7 @@ CREATE TABLE `wfl_construction_assignments` (
   PRIMARY KEY (`id_cas`) USING BTREE,
   KEY `fk_status_log_id_cas` (`status_log_id_cas`) USING BTREE,
   CONSTRAINT `fk_status_log_id_cas` FOREIGN KEY (`status_log_id_cas`) REFERENCES `wfl_project_status_log` (`id_psl`)
-) ENGINE=InnoDB AUTO_INCREMENT=348 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=349 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_construction_assignments
@@ -4657,6 +4799,7 @@ INSERT INTO `wfl_construction_assignments` VALUES ('344', '7609', '2019-06-24 12
 INSERT INTO `wfl_construction_assignments` VALUES ('345', '7619', '2019-06-27 14:31:50', '2019-07-20 14:31:50', '23', '0', '0', '0', '0', '2019-06-25 14:31:50', '22', '2019-06-25 14:31:50', null);
 INSERT INTO `wfl_construction_assignments` VALUES ('346', '7622', '2019-06-11 14:53:04', '2019-08-30 14:53:04', '80', '0', '1', '1', '0', '2019-06-25 14:53:04', '22', '2019-06-25 14:53:04', null);
 INSERT INTO `wfl_construction_assignments` VALUES ('347', '7648', '2019-06-17 10:54:24', '2019-06-26 10:54:24', '9', '1', '0', '0', '0', '2019-08-20 10:54:24', '1', '2019-08-20 10:54:24', null);
+INSERT INTO `wfl_construction_assignments` VALUES ('348', '7652', '2019-09-18 18:13:25', '2019-09-25 18:13:25', '7', '1', '1', '1', '0', '2019-09-18 18:13:25', '1', '2019-09-18 18:13:25', null);
 
 -- ----------------------------
 -- Table structure for wfl_contracts
@@ -4758,7 +4901,7 @@ CREATE TABLE `wfl_incidents` (
   KEY `fk_project_id_inc` (`project_id_inc`) USING BTREE,
   CONSTRAINT `fk_project_id_inc` FOREIGN KEY (`project_id_inc`) REFERENCES `wfl_projects` (`id_pro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_status_id_inc` FOREIGN KEY (`status_id_inc`) REFERENCES `wfl_project_status` (`id_pst`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_incidents
@@ -4896,7 +5039,7 @@ INSERT INTO `wfl_incidents` VALUES ('130', '29', '100', 'Construccion completada
 INSERT INTO `wfl_incidents` VALUES ('131', '29', '100', 'Construccion completada', '2019-06-15 14:18:10', '537', '0', '0', '9', '0', '2019-06-24 14:18:10', '15', '2019-06-24 14:18:10', null);
 INSERT INTO `wfl_incidents` VALUES ('132', '29', '100', 'Construccion completada', '2019-06-14 15:04:59', '525', '0', '0', '9', '0', '2019-06-24 15:04:59', '15', '2019-06-24 15:04:59', null);
 INSERT INTO `wfl_incidents` VALUES ('133', '29', '100', 'Construccion completada', '2019-06-14 15:11:45', '515', '0', '0', '9', '0', '2019-06-24 15:11:45', '15', '2019-06-24 15:11:45', null);
-INSERT INTO `wfl_incidents` VALUES ('134', '21', null, 'Falta de accesos al lugar de trabajo, inspeccion previa construccion hecha y documrntada en fecha 31/05/19', '2019-06-24 15:29:00', '466', '0', '0', '8', '0', '2019-06-24 15:29:00', '15', '2019-06-24 15:29:00', null);
+INSERT INTO `wfl_incidents` VALUES ('134', '21', '0', 'Falta de accesos al lugar de trabajo, inspeccion previa construccion hecha y documrntada en fecha 31/05/19', '2019-06-24 15:29:00', '466', '0', '0', '8', '0', '2019-06-24 15:29:00', '15', '2019-09-18 18:28:05', null);
 INSERT INTO `wfl_incidents` VALUES ('135', '29', '100', 'Construccion completada', '2019-06-24 12:02:25', '464', '0', '0', '9', '0', '2019-06-25 12:02:25', '22', '2019-06-25 12:02:25', null);
 INSERT INTO `wfl_incidents` VALUES ('136', '29', '100', 'Construccion completada', '2019-06-13 13:52:10', '34', '0', '0', '9', '0', '2019-06-25 13:52:10', '22', '2019-06-25 13:52:10', null);
 INSERT INTO `wfl_incidents` VALUES ('137', '29', '100', 'Construccion completada', '2019-06-15 13:59:15', '40', '0', '0', '9', '0', '2019-06-25 13:59:15', '22', '2019-06-25 13:59:15', null);
@@ -4905,6 +5048,12 @@ INSERT INTO `wfl_incidents` VALUES ('139', '29', '40', 'PAUSADO POR ORDEN DE SER
 INSERT INTO `wfl_incidents` VALUES ('140', '29', '0', 'Este proyecto sera reasignado', '2019-08-20 10:53:28', '532', '1', '0', '1', '0', '2019-08-20 10:53:28', '1', '2019-08-20 10:53:28', null);
 INSERT INTO `wfl_incidents` VALUES ('141', '29', '100', 'Construccion completada', '2019-08-20 10:56:29', '532', '0', '0', '9', '0', '2019-08-20 10:56:29', '1', '2019-08-20 10:56:29', null);
 INSERT INTO `wfl_incidents` VALUES ('142', '29', '30', 'pausado deberia ingresar el % incidente', '2019-08-29 16:58:17', '385', '1', '0', '4', '0', '2019-08-29 16:58:17', '1', '2019-08-29 16:58:17', null);
+INSERT INTO `wfl_incidents` VALUES ('143', '21', '0', 'iniciando', '2019-09-18 18:14:20', '542', '0', '0', '10', '0', '2019-09-18 18:14:20', '1', '2019-09-18 18:27:58', null);
+INSERT INTO `wfl_incidents` VALUES ('144', '31', '30', 'permisos', '2019-09-18 18:22:47', '385', '0', '0', '1', '0', '2019-09-18 18:22:47', '1', '2019-09-18 18:22:47', null);
+INSERT INTO `wfl_incidents` VALUES ('145', '29', '30', 'fiscales', '2019-09-18 18:24:41', '286', '0', '0', '1', '0', '2019-09-18 18:24:41', '1', '2019-09-18 18:24:41', null);
+INSERT INTO `wfl_incidents` VALUES ('146', '29', '40', 'dfdfdf', '2019-09-18 18:25:03', '286', '0', '0', '1', '0', '2019-09-18 18:25:03', '1', '2019-09-18 18:25:03', null);
+INSERT INTO `wfl_incidents` VALUES ('147', '29', '45', '', '2019-09-18 18:27:49', '286', '0', '0', '1', '0', '2019-09-18 18:27:49', '1', '2019-09-18 18:27:49', null);
+INSERT INTO `wfl_incidents` VALUES ('148', '31', '40', '', '2019-09-18 18:28:55', '452', '0', '0', '1', '0', '2019-09-18 18:28:55', '1', '2019-09-18 18:28:55', null);
 
 -- ----------------------------
 -- Table structure for wfl_payment_orders
@@ -5898,7 +6047,7 @@ INSERT INTO `wfl_projects` VALUES ('520', 'RD.20.0121', '', '1', 'Aguai -Mineros
 INSERT INTO `wfl_projects` VALUES ('521', 'RD.20.0127', '', '1', 'Aguai -Mineros', '2019-05-27 17:18:19', '60', '46', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '1', '1', '2019-09-27 17:18:19', '2020-06-30 17:18:19', '0', 'RD.20.0127', '2019-05-27 17:18:19', '1', '', '0', '0', '0', '2019-05-29 17:18:19', '2', '2019-05-29 17:18:19', null);
 INSERT INTO `wfl_projects` VALUES ('522', 'RD.20.0129', '', '1', 'Aguai -Mineros', '2019-05-27 17:19:58', '60', '46', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '1', '1', '2019-09-30 17:19:58', '2020-06-30 17:19:58', '40', 'RD.20.0129', '2019-05-27 17:19:58', '1', '', '0', '0', '0', '2019-05-29 17:19:58', '2', '2019-05-29 17:19:58', null);
 INSERT INTO `wfl_projects` VALUES ('523', 'RA.19.0608', '', '1', 'Villa Flor', '2019-05-29 17:21:30', '49', '29', '2019-06-12 12:10:13', '2019-06-14 12:10:13', '2', '0.31', '1', '1', '2019-06-03 17:21:30', '2019-06-17 17:21:30', '20', 'RA.19.0608', '2019-05-29 17:21:30', '1', '', '0', '40', '0', '2019-05-29 17:21:30', '2', '2019-06-25 12:05:43', '22');
-INSERT INTO `wfl_projects` VALUES ('524', 'RA.19.0885', '', '1', 'Urb. Primavera Norte', '2019-05-29 17:23:56', '35', '10', '2019-06-12 11:59:02', '2019-06-13 11:59:02', '2', '0.14', '1', '1', '2019-06-03 17:23:56', '2019-06-17 17:23:56', '20', 'RA.19.0885', '2019-05-29 17:23:56', '1', '', '0', '20', '0', '2019-05-29 17:23:56', '2', '2019-06-04 11:45:29', '2');
+INSERT INTO `wfl_projects` VALUES ('524', 'RA.19.0885', '', '1', 'Urb. Primavera Norte', '2019-05-29 17:23:56', '35', '11', '2019-06-12 11:59:02', '2019-06-13 11:59:02', '2', '0.14', '1', '1', '2019-06-03 17:23:56', '2019-06-17 17:23:56', '20', 'RA.19.0885', '2019-05-29 17:23:56', '1', '', '0', '25', '0', '2019-05-29 17:23:56', '2', '2019-10-03 18:39:31', '1');
 INSERT INTO `wfl_projects` VALUES ('525', 'RA.19.0911', '', '1', 'Barrio Primavera Norte', '2019-05-29 17:25:49', '35', '33', '2019-06-13 11:48:02', '2019-06-14 11:48:02', '2', '0.14', '1', '1', '2019-06-03 17:25:49', '2019-06-17 17:25:49', '10', 'RA.19.0911', '2019-05-29 17:25:49', '1', '', '1', '85', '0', '2019-05-29 17:25:49', '2', '2019-06-25 13:16:05', '2');
 INSERT INTO `wfl_projects` VALUES ('526', 'RA.19.0735', '', '1', 'Barrio Libertad', '2019-05-29 07:57:19', '44', '11', '2019-06-18 11:50:16', '2019-06-19 11:50:16', '3', '0.70', '1', '1', '2019-06-03 07:57:19', '2019-06-24 07:57:19', '10', 'RA.19.0735', '2019-05-29 07:57:19', '1', '', '0', '25', '0', '2019-05-30 07:57:19', '2', '2019-07-05 19:03:14', '1');
 INSERT INTO `wfl_projects` VALUES ('527', 'RA.19.0727', '', '1', 'Urb. Monte Cristo', '2019-05-29 07:59:25', '44', '11', '2019-06-17 11:54:54', '2019-06-19 11:54:54', '3', '0.22', '1', '1', '2019-06-05 07:59:25', '2019-06-24 07:59:25', '20', 'RA.19.0727', '2019-05-29 07:59:25', '1', '', '0', '25', '0', '2019-05-30 07:59:25', '2', '2019-06-06 14:39:07', '2');
@@ -5910,13 +6059,13 @@ INSERT INTO `wfl_projects` VALUES ('532', 'RA.19.0695', '', '1', 'Barrio El Rosa
 INSERT INTO `wfl_projects` VALUES ('533', 'RA.19.0628', '', '1', 'Montero', '2019-05-29 08:14:25', '44', '11', '2019-07-01 13:52:46', '2019-07-02 13:52:46', '2', '0.12', '1', '1', '2019-06-07 08:14:25', '2019-07-03 08:14:25', '40', 'RA.19.0628', '2019-05-29 08:14:25', '1', '', '0', '25', '0', '2019-05-30 08:14:25', '2', '2019-07-01 09:57:43', '1');
 INSERT INTO `wfl_projects` VALUES ('534', 'RA.19.0636', '', '1', 'Urb. La Colina', '2019-05-29 08:15:54', '54', '10', '2019-07-02 09:31:08', '2019-07-05 09:31:08', '0', '9.00', '1', '1', '2019-06-07 08:15:54', '2019-07-03 08:15:54', '20', 'RA.19.0636', '2019-05-29 08:15:54', '1', '', '0', '20', '0', '2019-05-30 08:15:54', '2', '2019-06-06 11:41:36', '2');
 INSERT INTO `wfl_projects` VALUES ('535', 'RA.19.0680', '', '1', 'Guapilo', '2019-05-29 08:21:55', '54', '10', '2019-06-18 08:15:32', '2019-06-19 08:15:32', '3', '0.07', '1', '1', '2019-06-05 08:21:55', '2019-06-22 08:21:55', '10', 'RA.19.0680', '2019-05-29 08:21:55', '1', '', '0', '20', '0', '2019-05-30 08:21:55', '2', '2019-06-05 09:07:52', '2');
-INSERT INTO `wfl_projects` VALUES ('536', 'RA.19.0693', '', '1', 'Barrio Jardines del Sur', '2019-05-29 08:23:10', '54', '10', '2019-06-18 08:16:22', '2019-06-21 08:16:22', '15', '0.24', '1', '1', '2019-06-07 08:23:10', '2019-06-28 08:23:10', '20', 'RA.19.0693', '2019-05-29 08:23:10', '1', '', '0', '20', '0', '2019-05-30 08:23:10', '2', '2019-06-05 09:07:39', '2');
+INSERT INTO `wfl_projects` VALUES ('536', 'RA.19.0693', '', '1', 'Barrio Jardines del Sur', '2019-05-29 08:23:10', '54', '11', '2019-06-18 08:16:22', '2019-06-21 08:16:22', '15', '0.24', '1', '1', '2019-06-07 08:23:10', '2019-06-28 08:23:10', '20', 'RA.19.0693', '2019-05-29 08:23:10', '1', '', '0', '25', '0', '2019-05-30 08:23:10', '2', '2019-10-03 18:40:29', '1');
 INSERT INTO `wfl_projects` VALUES ('537', 'RY.19.0013', '', '1', 'Comunidad la Abra - Cotoca', '2019-05-30 08:14:30', '54', '47', '2019-06-12 09:52:59', '2019-06-19 09:52:59', '11', '0.80', '1', '0', '2019-06-07 08:14:30', '2019-06-20 08:14:30', '20', 'RY.19.0013', '2019-05-30 08:14:30', '1', '', '1', '80', '0', '2019-05-31 08:14:30', '2', '2019-06-24 14:19:21', '15');
 INSERT INTO `wfl_projects` VALUES ('538', 'RG.19.0026', '', '1', 'B7LIBERTAD-G77', '2019-06-06 14:32:58', '40', '29', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '6', '0.30', '1', '0', '2019-06-06 14:32:58', '2019-06-06 14:32:58', '20', 'RG.19.0026', '2019-06-06 14:32:58', '1', 'MOV.DEPOSTEB.-LIBERTADUV507', '0', '40', '0', '2019-06-06 14:32:58', '2', '2019-06-25 14:18:10', '22');
-INSERT INTO `wfl_projects` VALUES ('539', 'RO.18.0342', '', '1', 'Km9  001-12', '2019-06-06 08:26:07', '62', '10', '2019-07-01 15:06:07', '2019-07-01 15:06:07', '1', '0.00', '1', '0', '2019-06-12 08:26:07', '2019-07-03 08:26:07', '20', 'RO.18.0342', '2019-06-06 08:26:07', '1', '', '0', '20', '0', '2019-06-07 08:26:07', '2', '2019-06-17 15:09:29', '2');
-INSERT INTO `wfl_projects` VALUES ('540', 'RO.18.0343', '', '1', 'Km9  001-47', '2019-06-06 08:27:28', '62', '10', '2019-07-01 15:07:23', '2019-07-02 15:07:23', '1', '0.00', '1', '0', '2019-06-13 08:27:28', '2019-07-05 08:27:28', '20', 'RO.18.0343', '2019-06-06 08:27:28', '1', '', '0', '20', '0', '2019-06-07 08:27:28', '2', '2019-06-17 15:09:13', '2');
+INSERT INTO `wfl_projects` VALUES ('539', 'RO.18.0342', '', '1', 'Km9  001-12', '2019-06-06 08:26:07', '62', '11', '2019-07-01 15:06:07', '2019-07-01 15:06:07', '1', '0.00', '1', '0', '2019-06-12 08:26:07', '2019-07-03 08:26:07', '20', 'RO.18.0342', '2019-06-06 08:26:07', '1', '', '0', '25', '0', '2019-06-07 08:26:07', '2', '2019-09-18 18:49:08', '1');
+INSERT INTO `wfl_projects` VALUES ('540', 'RO.18.0343', '', '1', 'Km9  001-47', '2019-06-06 08:27:28', '62', '11', '2019-07-01 15:07:23', '2019-07-02 15:07:23', '1', '0.00', '1', '0', '2019-06-13 08:27:28', '2019-07-05 08:27:28', '20', 'RO.18.0343', '2019-06-06 08:27:28', '1', '', '0', '25', '0', '2019-06-07 08:27:28', '2', '2019-09-18 18:42:47', '1');
 INSERT INTO `wfl_projects` VALUES ('541', 'RO.18.0350', '', '1', 'T-SCZ-141-2 UV:141', '2019-06-06 08:28:53', '50', '11', '2019-06-26 09:10:24', '2019-06-28 09:10:24', '1', '0.00', '1', '0', '2019-06-11 08:28:53', '2019-07-03 08:28:53', '20', 'RO.18.0350', '2019-06-06 08:28:53', '1', '', '0', '25', '0', '2019-06-07 08:28:53', '2', '2019-06-19 17:34:19', '2');
-INSERT INTO `wfl_projects` VALUES ('542', 'RO.18.0387', '', '1', 'T-SCZ-300-3 UV:300', '2019-06-06 08:30:19', '49', '11', '2019-06-27 08:33:44', '2019-06-28 08:33:44', '1', '0.00', '1', '0', '2019-06-13 08:30:19', '2019-07-05 08:30:19', '20', 'RO.18.0387', '2019-06-06 08:30:19', '1', '', '0', '25', '0', '2019-06-07 08:30:19', '2', '2019-07-08 17:37:08', '1');
+INSERT INTO `wfl_projects` VALUES ('542', 'RO.18.0387', '', '1', 'T-SCZ-300-3 UV:300', '2019-06-06 08:30:19', '49', '21', '2019-06-27 08:33:44', '2019-06-28 08:33:44', '1', '0.00', '1', '0', '2019-06-13 08:30:19', '2019-07-05 08:30:19', '20', 'RO.18.0387', '2019-06-06 08:30:19', '1', '', '0', '30', '0', '2019-06-07 08:30:19', '2', '2019-09-18 18:13:25', '1');
 INSERT INTO `wfl_projects` VALUES ('543', 'RO.18.0328', '', '1', 'T-SCZ-298-1 UV:298', '2019-06-06 08:31:40', '49', '5', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '1', '0', '2019-06-13 08:31:40', '2019-07-06 08:31:40', '20', 'RO.18.0328', '2019-06-06 08:31:40', '1', '', '0', '10', '0', '2019-06-07 08:31:40', '2', '2019-06-18 10:02:21', '7');
 INSERT INTO `wfl_projects` VALUES ('544', 'RO.18.0332', '', '1', 'T-SCZ-137-2 UV:137', '2019-06-06 08:32:49', '49', '3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', '0.00', '1', '0', '2019-06-13 08:32:49', '2019-07-06 08:32:49', '20', 'RO.18.0332', '2019-06-06 08:32:49', '1', '', '0', '10', '0', '2019-06-07 08:32:49', '2', '2019-06-17 17:14:37', '7');
 INSERT INTO `wfl_projects` VALUES ('545', 'RA.19.1319', '', '1', 'Valle Sanches', '2019-06-17 08:40:07', '35', '5', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '3', '0.10', '1', '2', '2019-06-22 08:40:07', '2019-07-08 08:40:07', '10', 'RA.19.1319', '2019-06-17 08:40:07', '1', '', '0', '10', '0', '2019-06-18 08:40:07', '2', '2019-06-24 09:03:30', '7');
@@ -5965,7 +6114,7 @@ CREATE TABLE `wfl_project_budgets` (
   PRIMARY KEY (`id_prb`) USING BTREE,
   KEY `fk_status_log_id_prb` (`status_log_id_prb`) USING BTREE,
   CONSTRAINT `fk_status_log_id_prb` FOREIGN KEY (`status_log_id_prb`) REFERENCES `wfl_project_status_log` (`id_psl`)
-) ENGINE=InnoDB AUTO_INCREMENT=590 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=594 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_project_budgets
@@ -6559,6 +6708,10 @@ INSERT INTO `wfl_project_budgets` VALUES ('586', '7642', '11154.36', '0.00', '60
 INSERT INTO `wfl_project_budgets` VALUES ('587', '7643', '11154.36', '0.00', '6057491', '517454', '5130.00', '1062.77', '0.00', '11', null, '0', '2019-07-05 19:03:14', '1', '2019-07-05 19:03:14', null);
 INSERT INTO `wfl_project_budgets` VALUES ('588', '7644', '0.00', '0.00', '6052743', '515485', '15295.00', '0.00', '0.00', '12', null, '0', '2019-07-05 19:12:06', '1', '2019-07-05 19:12:06', null);
 INSERT INTO `wfl_project_budgets` VALUES ('589', '7645', '100.00', '200.00', '56789', '1919191', '300.00', '400.00', '500.00', '23', null, '0', '2019-07-08 17:37:08', '1', '2019-07-08 17:40:44', '1');
+INSERT INTO `wfl_project_budgets` VALUES ('590', '7653', '635.97', '4525.35', '6058648', '03030303', '0.00', '0.00', '0.00', '53', null, '0', '2019-09-18 18:42:47', '1', '2019-09-18 18:42:47', null);
+INSERT INTO `wfl_project_budgets` VALUES ('591', '7654', '635.97', '4525.35', '6058648', '0202020', '0.00', '0.00', '0.00', '54', null, '0', '2019-09-18 18:49:08', '1', '2019-09-18 18:49:08', null);
+INSERT INTO `wfl_project_budgets` VALUES ('592', '7655', '635.97', '4525.35', '6058648', '121212', '0.00', '0.00', '0.00', '100', null, '0', '2019-10-03 17:39:46', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_budgets` VALUES ('593', '7656', '635.97', '4525.35', '6058648', '12121212', '0.00', '0.00', '0.00', '107', '108', '0', '2019-10-03 18:40:29', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_project_points
@@ -8565,7 +8718,7 @@ CREATE TABLE `wfl_project_status_log` (
   KEY `fk_status_id_psl` (`status_id_psl`) USING BTREE,
   CONSTRAINT `fk_project_id_psl` FOREIGN KEY (`project_id_psl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `fk_status_id_psl` FOREIGN KEY (`status_id_psl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=7652 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=7657 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_project_status_log
@@ -16221,6 +16374,11 @@ INSERT INTO `wfl_project_status_log` VALUES ('7648', '532', '21', '', '2019-08-2
 INSERT INTO `wfl_project_status_log` VALUES ('7649', '532', '29', 'Iniciando construccion', '2019-08-20 10:56:00', '0', '2019-08-20 10:56:00', '1', '2019-08-20 10:56:00', null);
 INSERT INTO `wfl_project_status_log` VALUES ('7650', '532', '32', 'proyecto completado', '2019-08-20 10:56:29', '0', '2019-08-20 10:56:29', '1', '2019-08-20 10:56:29', null);
 INSERT INTO `wfl_project_status_log` VALUES ('7651', '385', '31', 'pausado deberia ingresar el % incidente', '2019-08-29 16:58:17', '0', '2019-08-29 16:58:17', '1', '2019-08-29 16:58:17', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7652', '542', '21', '', '2019-09-18 18:13:25', '0', '2019-09-18 18:13:25', '1', '2019-09-18 18:13:25', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7653', '540', '11', '', '2019-06-12 18:42:47', '0', '2019-09-18 18:42:47', '1', '2019-09-18 18:42:47', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7654', '539', '11', '', '2019-06-12 18:49:08', '0', '2019-09-18 18:49:08', '1', '2019-09-18 18:49:08', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7655', '524', '11', '12121212 asf as', '2019-06-04 17:39:46', '0', '2019-10-03 17:39:46', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_project_status_log` VALUES ('7656', '536', '11', 'asfa s fas', '2019-06-05 18:40:29', '0', '2019-10-03 18:40:29', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_stakes_team_leader
@@ -16259,7 +16417,7 @@ CREATE TABLE `wfl_status_log_responsibles` (
   KEY `fk_responsible_id_slr` (`responsible_id_slr`) USING BTREE,
   CONSTRAINT `fk_responsible_id_slr` FOREIGN KEY (`responsible_id_slr`) REFERENCES `wfl_status_responsibles` (`id_sre`),
   CONSTRAINT `fk_status_log_id_slr` FOREIGN KEY (`status_log_id_slr`) REFERENCES `wfl_project_status_log` (`id_psl`)
-) ENGINE=InnoDB AUTO_INCREMENT=10257 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=10262 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_status_log_responsibles
@@ -26496,6 +26654,11 @@ INSERT INTO `wfl_status_log_responsibles` VALUES ('10253', '7650', '39', '0', '2
 INSERT INTO `wfl_status_log_responsibles` VALUES ('10254', '7650', '38', '0', '2019-08-20 00:00:00', null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_log_responsibles` VALUES ('10255', '7651', '35', '0', '2019-08-29 00:00:00', null, '0000-00-00 00:00:00', null);
 INSERT INTO `wfl_status_log_responsibles` VALUES ('10256', '7651', '38', '0', '2019-08-29 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10257', '7652', '29', '0', '2019-09-18 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10258', '7653', '13', '0', '2019-09-18 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10259', '7654', '13', '0', '2019-09-18 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10260', '7655', '13', '0', '2019-10-03 00:00:00', null, '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_status_log_responsibles` VALUES ('10261', '7656', '13', '0', '2019-10-03 00:00:00', null, '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_status_responsibles
@@ -26798,7 +26961,7 @@ CREATE TABLE `wfl_warehouses` (
   KEY `fk_status_id_war` (`status_id_war`) USING BTREE,
   CONSTRAINT `fk_project_id_war` FOREIGN KEY (`project_id_war`) REFERENCES `wfl_projects` (`id_pro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_status_id_war` FOREIGN KEY (`status_id_war`) REFERENCES `wfl_project_status` (`id_pst`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=403 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_warehouses
@@ -27205,6 +27368,10 @@ INSERT INTO `wfl_warehouses` VALUES ('399', '523', '22', '0', '2019-06-19 17:30:
 INSERT INTO `wfl_warehouses` VALUES ('400', '464', '22', '0', '2019-06-19 17:31:38', '2', '2019-06-19 17:31:38', '2');
 INSERT INTO `wfl_warehouses` VALUES ('401', '541', '22', '0', '2019-06-19 17:34:19', '2', '2019-06-19 17:34:19', '2');
 INSERT INTO `wfl_warehouses` VALUES ('402', '542', '22', '0', '2019-07-08 17:37:08', '1', '2019-07-08 17:37:09', '1');
+INSERT INTO `wfl_warehouses` VALUES ('403', '540', '22', '0', '2019-09-18 18:42:47', '1', '2019-09-18 18:42:47', '1');
+INSERT INTO `wfl_warehouses` VALUES ('404', '539', '22', '0', '2019-09-18 18:49:08', '1', '2019-09-18 18:49:08', '1');
+INSERT INTO `wfl_warehouses` VALUES ('405', '524', '22', '0', '2019-10-03 17:39:47', '1', '2019-10-03 17:39:47', '1');
+INSERT INTO `wfl_warehouses` VALUES ('406', '536', '22', '0', '2019-10-03 18:40:29', '1', '2019-10-03 18:40:29', '1');
 
 -- ----------------------------
 -- Table structure for wfl_warehouse_status_log
@@ -27226,7 +27393,7 @@ CREATE TABLE `wfl_warehouse_status_log` (
   KEY `fk_status_id_wsl` (`status_id_wsl`) USING BTREE,
   CONSTRAINT `wfl_warehouse_status_log_ibfk_1` FOREIGN KEY (`warehouse_id_wsl`) REFERENCES `wfl_projects` (`id_pro`),
   CONSTRAINT `wfl_warehouse_status_log_ibfk_2` FOREIGN KEY (`status_id_wsl`) REFERENCES `wfl_project_status` (`id_pst`)
-) ENGINE=InnoDB AUTO_INCREMENT=685 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=689 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of wfl_warehouse_status_log
@@ -27915,6 +28082,10 @@ INSERT INTO `wfl_warehouse_status_log` VALUES ('681', '399', '22', 'Inicio de ge
 INSERT INTO `wfl_warehouse_status_log` VALUES ('682', '400', '22', 'Inicio de gestion de materiales de construccion', '2019-06-19 17:31:38', '0', '2019-06-19 17:31:38', '2', '2019-06-19 17:31:38', null);
 INSERT INTO `wfl_warehouse_status_log` VALUES ('683', '401', '22', 'Inicio de gestion de materiales de construccion', '2019-06-19 17:34:19', '0', '2019-06-19 17:34:19', '2', '2019-06-19 17:34:19', null);
 INSERT INTO `wfl_warehouse_status_log` VALUES ('684', '402', '22', 'Inicio de gestion de materiales de construccion', '2019-06-15 17:37:08', '0', '2019-07-08 17:37:09', '1', '2019-07-08 17:37:09', null);
+INSERT INTO `wfl_warehouse_status_log` VALUES ('685', '403', '22', 'Inicio de gestion de materiales de construccion', '2019-06-12 18:42:47', '0', '2019-09-18 18:42:47', '1', '2019-09-18 18:42:47', null);
+INSERT INTO `wfl_warehouse_status_log` VALUES ('686', '404', '22', 'Inicio de gestion de materiales de construccion', '2019-06-12 18:49:08', '0', '2019-09-18 18:49:08', '1', '2019-09-18 18:49:08', null);
+INSERT INTO `wfl_warehouse_status_log` VALUES ('687', '405', '22', 'Inicio de gestion de materiales de construccion', '2019-06-04 17:39:46', '0', '2019-10-03 17:39:47', '1', '0000-00-00 00:00:00', null);
+INSERT INTO `wfl_warehouse_status_log` VALUES ('688', '406', '22', 'Inicio de gestion de materiales de construccion', '2019-06-05 18:40:29', '0', '2019-10-03 18:40:29', '1', '0000-00-00 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for wfl_workflow_column_groups
