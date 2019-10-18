@@ -71,6 +71,8 @@
                             <dd>{{numberFormat live_line_prb}}</dd>
                             <dt>Importe Derecho de via</dt>
                             <dd>{{numberFormat right_of_way_prb}}</dd>
+                            <dt>Total Importe</dt>
+                            <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_budget}}</span></dd>
                             <dt>Numero de grafo</dt>
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>

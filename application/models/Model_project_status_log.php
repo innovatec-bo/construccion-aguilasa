@@ -66,7 +66,8 @@ class Model_project_status_log extends Model_project_status_log_base
             building_reb,
             transportation_reb,
             live_line_reb,
-            right_of_way_reb
+            right_of_way_reb,
+            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) total_budget
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
