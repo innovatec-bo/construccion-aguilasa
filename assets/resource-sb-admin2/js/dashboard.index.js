@@ -85,12 +85,14 @@ $(document).ready(function() {
         e.preventDefault();
         let $td = $(this).closest("td");
         let keyword = $td.closest("tr").data("keyword-list");
+        let contractId = $("#panel-current-status-summary-report").find("select[name=contract-number]").val();
         let $form = $("form[name=workflow-with-parameters]");
         $form.find("input[name=status-keyword]").val(keyword);
         $form.find("input[name=keyword]").val("");
         $form.find("input[name=year]").val("");
         $form.find("input[name=month]").val("");
         $form.find("input[name=rowKey]").val("");
+        $form.find("input[name=contract-id]").val(contractId);
         $form.submit();
     });
 
@@ -98,12 +100,14 @@ $(document).ready(function() {
         e.preventDefault();
         let $td = $(this).closest("td");
         let keyword = $td.closest("tr").attr("class");
+        let contractId = $td.closest(".panel").find("select[name=contract-number]").val();
         let $form = $("form[name=workflow-with-parameters]");
         $form.find("input[name=status-keyword]").val(keyword);
         $form.find("input[name=keyword]").val("");
         $form.find("input[name=year]").val("");
         $form.find("input[name=month]").val("");
         $form.find("input[name=rowKey]").val("");
+        $form.find("input[name=contract-id]").val(contractId);
         $form.submit();
     });
 

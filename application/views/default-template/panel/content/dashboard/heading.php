@@ -255,4 +255,5 @@
     <input type="hidden" name="year" value="">
     <input type="hidden" name="month" value="">
     <input type="hidden" name="rowKey" value="">
+    <input type="hidden" name="contract-id" value="">
 </form>

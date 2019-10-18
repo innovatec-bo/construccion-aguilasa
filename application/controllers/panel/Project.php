@@ -438,8 +438,9 @@ class Project extends PrivateController
 
     public function downloadWorkflowWithParameters()
     {
-//        set_time_limit(300);
+       set_time_limit(300);
         $additionalParameters = $this->input->post();
+        // echo"<pre>";var_dump($additionalParameters);exit;
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->setAdditionalParameters($additionalParameters);
         $excel->getReport();

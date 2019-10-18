@@ -477,7 +477,7 @@ class Model_project extends Model_project_base
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
         ";
-        //echo"<pre>";var_dump($sql);exit;
+        // echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;
@@ -705,6 +705,7 @@ class Model_project extends Model_project_base
         $ci->load->database();
 //        echo "<pre>";var_dump($filters);exit;
         $keyword = isset($filters["keyword"]) && $filters["keyword"] != ""?$filters["keyword"]:"";
+        $contractId = isset($filters["contract-id"]) && $filters["contract-id"] != ""?$filters["contract-id"]:"";
         $year = isset($filters["year"]) && $filters["year"] != ""?$filters["year"]:"";
         $rowKey = isset($filters["rowKey"]) && $filters["rowKey"] != ""?$filters["rowKey"]:"";
         $month = isset($filters["month"]) && $filters["month"] != ""?$filters["month"]:"";
@@ -738,6 +739,7 @@ class Model_project extends Model_project_base
                 break;
             case "countWithoutDigitizationPoints":
                 $sql .= " and digitization.points_quantity_prp is null and digitization.distance_prp is null ";
+                // echo"<pre>";var_dump($sql);exit;
                 break;
             case "countAsBuiltPoints":
                 $sql .= " and as_built.points_quantity_prp is not null and as_built.distance_prp is not null ";
@@ -777,7 +779,7 @@ class Model_project extends Model_project_base
                 $sql .= " and code_pro in (".$codeListFilter.") ";
             }
         }
-        if(isset($filters["status-keyword"]))
+        if(isset($filters["status-keyword"]) && $filters["status-keyword"] != "")
         {
             $statusKeyword = $filters["status-keyword"];
             if(strpos($statusKeyword,",") !== FALSE)
@@ -796,7 +798,12 @@ class Model_project extends Model_project_base
             }
             $sql .= " and keyword_pst in( ".$statusKeyword." )";
         }
-//        echo"<pre>";var_dump($sql);exit;
+        if(isset($filters["contract-id"]) && $filters["contract-id"] != "")
+        {
+            $contractId = $filters["contract-id"];
+            $sql .= " and id_con = ".$ci->db->escape($contractId)." ";
+        }
+       // echo"<pre>";var_dump($sql);exit;
         return $sql;
     }
 
@@ -1807,7 +1814,7 @@ class Model_project extends Model_project_base
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing"), "keywordStringList" => "stakes,digitization,drawing"),
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent"), "keywordStringList" => "schedule,ready_to_send,already_sent"),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped"), "keywordStringList" => "assign_to,approved,in_progress,paused,stopped"),
-            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "project_energized", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
+            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "project_energized", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,project_energized,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
             "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"), "keywordStringList" => "project_return_materials,project_real_budget_confirmation,project_closed,payment_order_has_been_settled")
         );
         $groupList = array();
