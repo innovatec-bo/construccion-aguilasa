@@ -67,7 +67,7 @@
                                             </span>
                                         <input type="file" name="manpower-file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                     </div>
-                                    <div class="form-group input-group">
+                                    <div class="form-group input-group hidden">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonTextPointToPoint}}
                                                 </button>
