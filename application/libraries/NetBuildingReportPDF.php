@@ -301,7 +301,7 @@ class NetBuildingReportPDF extends TCPDF
             $currentStatusSummaryData = Model_project::prepareCurrentStatusSummaryArray("","",$contract->id_con);
             $data = $currentStatusSummaryData["data"];
             $this->_currentStatusSummary($data, "Resumen Ejecutivo - Contrato ".$contract->contract_number_con);
-            $executiveSummary = Model_project::prepareExecutiveSummaryArray("","",1);
+            $executiveSummary = Model_project::prepareExecutiveSummaryArray("","",$contract->id_con);
             $this->_executiveSummary($executiveSummary);
             $this->AddPage();    
         }
