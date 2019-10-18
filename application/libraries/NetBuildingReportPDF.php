@@ -53,10 +53,11 @@ class NetBuildingReportPDF extends TCPDF
         $this->Ln();
     }
 
-    private function _currentStatusSummary($data)
+    private function _currentStatusSummary($data, $title = "Resumen Ejecutivo")
     {
+        $this->SetTextColor(0);
         $this->SetFont('', 'B',20);
-        $this->Cell("",6,"Resumen Ejecutivo",0,1,"C");
+        $this->Cell("",6, $title,0,1,"C");
         $this->Ln();
         $w = array(40, 17, 30, 30);
         $h = 7;
@@ -75,7 +76,7 @@ class NetBuildingReportPDF extends TCPDF
         $this->Ln();
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
-        $this->SetFont('helvetica', '', 11);
+        $this->SetFont('helvetica', '', 9);
         $fill = 0;
         foreach($data["list"] as $row)
         {
@@ -85,10 +86,10 @@ class NetBuildingReportPDF extends TCPDF
             $this->SetXY($startX, $startY);
             $marginBottom = ($i+1) == count($data);
             //now do borders and fill
-            $this->MultiCell($w[0],$h-1, $row["statusName"],'LR'.$marginBottom,'L',$fill,0);
-            $this->MultiCell($w[1],$h-1, $row["totalProjects"],'LR'.$marginBottom,'C',$fill,0);
-            $this->MultiCell($w[2],$h-1, $row["approvedBudgets"],'LR'.$marginBottom,'R',$fill,0);
-            $this->MultiCell($w[3],$h-1, $row["realBudgets"],'LR'.$marginBottom,'R',$fill,0);
+            $this->MultiCell($w[0],$h-2, $row["statusName"],'LR'.$marginBottom,'L',$fill,0);
+            $this->MultiCell($w[1],$h-2, $row["totalProjects"],'LR'.$marginBottom,'C',$fill,0);
+            $this->MultiCell($w[2],$h-2, $row["approvedBudgets"],'LR'.$marginBottom,'R',$fill,0);
+            $this->MultiCell($w[3],$h-2, $row["realBudgets"],'LR'.$marginBottom,'R',$fill,0);
             $this->Ln();
             $fill=!$fill;
             $i++;
@@ -285,12 +286,26 @@ class NetBuildingReportPDF extends TCPDF
         $this->AddPage();
         $this->_cover();
         $this->AddPage();
+        
         $currentStatusSummaryData = Model_project::prepareCurrentStatusSummaryArray();
         $data = $currentStatusSummaryData["data"];
         $this->_currentStatusSummary($data);
         $executiveSummary = Model_project::prepareExecutiveSummaryArray();
         $this->_executiveSummary($executiveSummary);
         $this->AddPage();
+        
+        $contractList = Model_contract::getAll(100,0);
+
+        foreach($contractList as $contract)
+        {
+            $currentStatusSummaryData = Model_project::prepareCurrentStatusSummaryArray("","",$contract->id_con);
+            $data = $currentStatusSummaryData["data"];
+            $this->_currentStatusSummary($data, "Resumen Ejecutivo - Contrato ".$contract->contract_number_con);
+            $executiveSummary = Model_project::prepareExecutiveSummaryArray("","",1);
+            $this->_executiveSummary($executiveSummary);
+            $this->AddPage();    
+        }
+        
         $response = Model_project::prepareProjectTotalsTableArray(date("Y"), "countId", "");
         $data = $response["data"];
         $this->_monthlyProjectsUnits($data, $header);
@@ -298,6 +313,7 @@ class NetBuildingReportPDF extends TCPDF
         $data = $response["data"];
         $this->_monthlyProjectsAmounts($data, $header);
         $this->AddPage();
+        
         $this->_charts($executiveSummary);
         // ---------------------------------------------------------
         // close and output PDF document

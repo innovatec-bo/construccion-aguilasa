@@ -30,21 +30,6 @@ class Home extends PrivateController
         $this->_loadPanelView('home/index');
     }
 
-    public function updateAmounts()
-    {
-        $arrayRounds = array("","A","B", "C");
-        $arrayAlphabet = range("A","Z");
-        $result = [];
-        foreach($arrayRounds as $round)
-        {
-            foreach ($arrayAlphabet as $alphabet)
-            {
-                $result[] = $round.$alphabet;
-            }
-        }
-        echo"<pre>";var_dump($result);exit;
-    }
-
     public function updateAmounts2()
     {
         set_time_limit(300);
@@ -98,4 +83,10 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
+
+    // public function testNBR()
+    // {
+    //     $TCPDFHandler = new NetBuildingReportPDF();
+    //     $TCPDFHandler->PrintReport();   
+    // }
 }
