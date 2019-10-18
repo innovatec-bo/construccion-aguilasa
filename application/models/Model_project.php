@@ -788,7 +788,7 @@ class Model_project extends Model_project_base
                 $statusKeyword = "";
                 foreach ($statusList as $status)
                 {
-                    $statusKeyword .= $ci->db->escape($status).", ";
+                    $statusKeyword .= $ci->db->escape(trim($status)).", ";
                 }
                 $statusKeyword = substr($statusKeyword,0, -2);
             }
@@ -1814,7 +1814,7 @@ class Model_project extends Model_project_base
             "design" => array("title" => "Diseño", "section" => "design", "keywords" => array("stakes", "digitization", "drawing"), "keywordStringList" => "stakes,digitization,drawing"),
             "alreadySent" => array("title" => "Aprobacion", "section" => "alreadySent",  "keywords" => array("schedule", "ready_to_send", "already_sent"), "keywordStringList" => "schedule,ready_to_send,already_sent"),
             "inProgress" => array("title" => "Construccion", "section" => "inProgress", "keywords" => array("assign_to", "approved", "in_progress", "paused","stopped"), "keywordStringList" => "assign_to,approved,in_progress,paused,stopped"),
-            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("cre_return_order"), "keywordStringList" => "cre_return_order"),
+            "closure" => array("title" =>"Cierre", "section" => "closure", "keywords" => array("completed", "project_energized", "as_built","conciliation_reception", "conciliation_shipment","cre_return_order"), "keywordStringList" => "completed,project_energized,as_built,conciliation_reception,conciliation_shipment, cre_return_order"),
             "closed" => array("title" => "Cerrado", "section" => "closed", "keywords" => array("project_return_materials","project_real_budget_confirmation", "project_closed", "payment_order_has_been_settled"), "keywordStringList" => "project_return_materials,project_real_budget_confirmation,project_closed,payment_order_has_been_settled")
         );
         $groupList = array();
