@@ -139,6 +139,9 @@
                                                             '.number_format($project['total_approved'],2,",",".").'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px'.$hiddenIfAssign.'">
+                                                            '.$project['last_week_percentage'].'
+                                                        </td>
+                                                        <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px'.$hiddenIfAssign.'">
                                                             '.$project['percentage_inc'].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
@@ -243,6 +246,7 @@
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left<?=$hiddenIfAssign?>">CONSTRUCTOR</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">MONTO<br>APROBADO</th>
+                                                                <th style="border: 1px solid #b5babf;color: #404E67;text-align: left<?=$hiddenIfAssign?>">AVANCE FISICO<br>SEMANA PASADA</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left<?=$hiddenIfAssign?>">AVANCE<br>FISICO</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ULTIMA<br>INCIDENCIA</th>
                                                                 <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ASIGNACION<br>FECHA FIN</th>

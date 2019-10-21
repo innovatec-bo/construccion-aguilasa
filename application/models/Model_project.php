@@ -290,6 +290,7 @@ class Model_project extends Model_project_base
             id_pro,
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
             project_energized.entry_date project_energized_entry_date,
+            last_week_percentage,
             percentage_inc,
             detail_inc,
             status_name_pst,
@@ -473,6 +474,21 @@ class Model_project extends Model_project_base
                     GROUP BY project_id_inc
             ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
         ) wfl_incidents on project_id_inc = id_pro
+        LEFT JOIN ( 
+            select           
+            percentage_inc last_week_percentage,
+            project_id_inc last_week_project_id
+            from (
+               select 
+                    project_id_inc last_week_project_id,
+                    max(manual_entry_date_inc) last_week_manual_entry_date
+                    from wfl_incidents
+                    where status_id_inc in (29) -- in_progress 
+                    and manual_entry_date_inc >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+                    AND manual_entry_date_inc < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY     
+                    GROUP BY project_id_inc
+            ) as filtered_last_week inner join wfl_incidents as inc on inc.project_id_inc = filtered_last_week.last_week_project_id and inc.manual_entry_date_inc = filtered_last_week.last_week_manual_entry_date
+        ) wfl_incidents_last_week on last_week_project_id = id_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
