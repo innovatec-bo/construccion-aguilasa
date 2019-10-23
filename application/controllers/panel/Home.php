@@ -84,9 +84,19 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    // public function testNBR()
-    // {
-    //     $TCPDFHandler = new NetBuildingReportPDF();
-    //     $TCPDFHandler->PrintReport();   
-    // }
+    public function testBuilderReport()
+    {
+        // $alphabeth = "";
+        // for ($i = 'A'; $i !== 'ZZ'; $i++)
+        // {
+        //     $alphabeth .= $i.',';
+        // }
+        // $allCols = explode(",", $alphabeth);
+        // $cols = range("A", "Z");
+        // echo"<pre>";var_dump($cols);exit;
+        $startDate = "2019-01-01";
+        $endDate = "2019-01-30";
+        $report = new ExcelBuilderReport($this->sessionUser, $startDate, $endDate);
+        $report->getReport();   
+    }
 }

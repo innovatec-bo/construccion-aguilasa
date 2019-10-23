@@ -364,6 +364,7 @@ class Model_project extends Model_project_base
             assign_to.entry_date assign_to_date,
             assign_to.responsible assign_to_responsible,
             in_progress.builder_responsible builder_responsible,
+            in_progress.responsible_user_id builder_responsible_user_id,
             assign_to.fiscal_responsible_id fiscal_responsible_id,
             assign_to.fiscal_responsible fiscal_responsible,
             -- if(assign_to.live_line_cas,'Si','No') live_line_assigned,
