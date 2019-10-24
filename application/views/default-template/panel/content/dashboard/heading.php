@@ -191,7 +191,7 @@
             <div class="panel-heading">
                 <form class="form-inline stake-report-inline-form" action="<?=base_url("panel/Project/getStakeReport")?>" method="post">
                     <i class="fa fa-file-excel-o fa-fw"></i> Reporte de estaqueado
-                    <div class="form-group"
+                    <div class="form-group">
                         <label class="sr-only input-sm" for="exampleInputEmail3">Desde</label>
                         <input type="text" class="form-control input-sm date-time-stake-report" name="stake-report-from">
                     </div>
@@ -202,7 +202,24 @@
                 </form>
             </div>
         </div>
-
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary" id="">
+            <div class="panel-heading">
+                <form class="form-inline builder-report-inline-form" action="<?=base_url("panel/Project/getBuilderReport")?>" method="post">
+                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de constructores
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm date-time-builder-report" name="builder-report-from">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm date-time-builder-report" name="builder-report-to">
+                    </div>
+                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">

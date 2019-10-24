@@ -136,7 +136,7 @@ class ExcelBuilderReport
         foreach ($workflowDetail as $row)
         {
             $isBetweenDates = $this->isInGivenRange($row["in_progress_date"]);
-            if($isBetweenDates && $row["approved_date"] != "")
+            if($isBetweenDates && $row["in_progress_date"] != "")
             {
                 $borderCoordinate1 = 'B2';
                 $spreadsheet->setActiveSheetIndex(1)
@@ -181,6 +181,7 @@ class ExcelBuilderReport
         $borderCoordinate2 = 'G'.($i+1);
         $spreadsheet->getActiveSheet()->getStyle('B3:G3')->getAlignment()->setWrapText(true);
         $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->setActiveSheetIndex(0);
         return $spreadsheet;
     }
 

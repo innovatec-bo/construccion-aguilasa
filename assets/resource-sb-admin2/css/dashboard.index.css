@@ -1,7 +1,7 @@
 div.dt-buttons {
     margin-bottom: 5px;
 }
-.date-time-stake-report
+.date-time-stake-report, .date-time-builder-report
 {
     width: 75px;
     display: inline-block;

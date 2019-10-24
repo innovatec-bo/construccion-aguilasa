@@ -469,6 +469,22 @@ class Project extends PrivateController
         $excel->getReport();
     }
 
+    public function getBuilderReport()
+    {
+        $formData = $this->input->post();
+        $startDate = $formData["builder-report-from"];
+        $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+        $startDate = date_format($startDate, 'Y-m-d');
+        $startDate = $startDate." 00:00:00";
+
+        $endDate = $formData["builder-report-to"];
+        $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        $endDate = date_format($endDate, 'Y-m-d');
+        $endDate = $endDate." 23:59:59";
+        $excel = new ExcelBuilderReport($this->sessionUser, $startDate, $endDate);
+        $excel->getReport();
+    }
+
     public function downloadManPowerFile($fileHash)
     {
         /** @var Model_file $file */

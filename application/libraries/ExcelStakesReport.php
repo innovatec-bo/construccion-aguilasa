@@ -191,6 +191,7 @@ class ExcelStakesReport
         $borderCoordinate2 = 'H'.($i+1);
         $spreadsheet->getActiveSheet()->getStyle('B3:H3')->getAlignment()->setWrapText(true);
         $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->setActiveSheetIndex(0);
         return $spreadsheet;
     }
 
