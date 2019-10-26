@@ -84,7 +84,7 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testBuilderReport()
+    public function testFiscalReport()
     {
         // $alphabeth = "";
         // for ($i = 'A'; $i !== 'ZZ'; $i++)
@@ -96,7 +96,7 @@ class Home extends PrivateController
         // echo"<pre>";var_dump($cols);exit;
         $startDate = "2019-01-01";
         $endDate = "2019-01-30";
-        $report = new ExcelBuilderReport($this->sessionUser, $startDate, $endDate);
+        $report = new ExcelFiscalReport($this->sessionUser, $startDate, $endDate);
         $report->getReport();   
     }
 }

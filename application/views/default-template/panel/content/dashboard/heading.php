@@ -209,7 +209,7 @@
         <div class="panel panel-primary" id="">
             <div class="panel-heading">
                 <form class="form-inline builder-report-inline-form" action="<?=base_url("panel/Project/getBuilderReport")?>" method="post">
-                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de constructores
+                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de fiscales y constructores
                     <div class="form-group">
                         <input type="text" class="form-control input-sm date-time-builder-report" name="builder-report-from">
                     </div>
