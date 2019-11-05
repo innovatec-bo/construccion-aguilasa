@@ -291,7 +291,10 @@ class Model_project extends Model_project_base
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
             project_energized.entry_date project_energized_entry_date,
             last_week_percentage,
+            previous_percentage,
+            previous_manual_entry_date,
             percentage_inc,
+            last_three_incidents,
             detail_inc,
             status_name_pst,
             keyword_pst,
@@ -477,7 +480,7 @@ class Model_project extends Model_project_base
         ) wfl_incidents on project_id_inc = id_pro
         LEFT JOIN ( 
             select           
-            percentage_inc last_week_percentage,
+            IFNULL(percentage_inc,0) last_week_percentage,
             project_id_inc last_week_project_id
             from (
                select 
@@ -490,6 +493,36 @@ class Model_project extends Model_project_base
                     GROUP BY project_id_inc
             ) as filtered_last_week inner join wfl_incidents as inc on inc.project_id_inc = filtered_last_week.last_week_project_id and inc.manual_entry_date_inc = filtered_last_week.last_week_manual_entry_date
         ) wfl_incidents_last_week on last_week_project_id = id_pro
+        LEFT JOIN (
+            select
+            current.project_id_inc project_id,
+            current.percentage_inc current_percentage,
+            current.manual_entry_date_inc current_manual_entry_date,
+            IFNULL(previous.percentage_inc,0) previous_percentage,
+            previous.manual_entry_date_inc previous_manual_entry_date
+            from (
+                SELECT
+                    t1.project_id_inc project_id,   
+                    max( t1.manual_entry_date_inc ) current_update, 
+                    max( t2.manual_entry_date_inc ) previous_update
+                FROM
+                    wfl_incidents t1
+                    LEFT JOIN wfl_incidents t2 ON t1.project_id_inc = t2.project_id_inc AND t2.manual_entry_date_inc < t1.manual_entry_date_inc 
+                GROUP BY
+                    t1.project_id_inc
+            ) current_and_previous
+            LEFT JOIN wfl_incidents previous on previous.project_id_inc = current_and_previous.project_id and previous.manual_entry_date_inc = current_and_previous.previous_update
+            LEFT JOIN wfl_incidents current on current.project_id_inc = current_and_previous.project_id and current.manual_entry_date_inc = current_and_previous.current_update
+        ) previous_incident on previous_incident.project_id = id_pro
+        LEFT JOIN ( 
+            SELECT
+                project_id_inc,
+                SUBSTRING_INDEX(GROUP_CONCAT(CONCAT(percentage_inc,' (',DATE_FORMAT(manual_entry_date_inc,'%d-%m-%Y'),')') ORDER BY manual_entry_date_inc desc SEPARATOR '\n'), '\n', 3) last_three_incidents
+            FROM
+                wfl_incidents
+            where deleted_inc != 1
+            GROUP BY project_id_inc
+        ) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."

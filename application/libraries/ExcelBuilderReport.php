@@ -74,7 +74,7 @@ class ExcelBuilderReport
                 $borderCoordinate1 = $data['cols'][0].'2';
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue($data['cols'][0].'2', 'PRODUCCION '.strtoupper($data['fiscalFullName']));
-                $spreadsheet->getActiveSheet()->mergeCells($data['cols'][0].'2:'.$data['cols'][6].'2');
+                $spreadsheet->getActiveSheet()->mergeCells($data['cols'][0].'2:'.$data['cols'][7].'2');
 
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue($data['cols'][0].'3', "Nro. de Proyecto")
@@ -83,8 +83,9 @@ class ExcelBuilderReport
                     ->setCellValue($data['cols'][3].'3', "Asignacion")
                     ->setCellValue($data['cols'][4].'3', "En construccion")
                     ->setCellValue($data['cols'][5].'3', "Constructores")
-                    ->setCellValue($data['cols'][6].'3', "Costo de Aprobacion");
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][6].'3')->applyFromArray($titleStyleArray);
+                    ->setCellValue($data['cols'][6].'3', "% / Fecha")
+                    ->setCellValue($data['cols'][7].'3', "Costo de Aprobacion");
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][7].'3')->applyFromArray($titleStyleArray);
 
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue($data['cols'][0].($i+1), $row["code_pro"])
@@ -93,7 +94,8 @@ class ExcelBuilderReport
                     ->setCellValue($data['cols'][3].($i+1), $row["assign_to_date"])
                     ->setCellValue($data['cols'][4].($i+1), $row["in_progress_date"])
                     ->setCellValue($data['cols'][5].($i+1), $row["builder_responsible"])
-                    ->setCellValue($data['cols'][6].($i+1), $row["building_budget"]);
+                    ->setCellValue($data['cols'][6].($i+1), $row["last_three_incidents"])
+                    ->setCellValue($data['cols'][7].($i+1), $row["building_budget"]);
                 $totalAmount += 0;
                 $totalApprovedAmount += $row["building_budget"];
                 $i++;
@@ -103,17 +105,29 @@ class ExcelBuilderReport
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][3].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][4].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 //Currency format
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                //align right
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
             }
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($data['cols'][0].($i+1), 'TOTAL')
-                ->setCellValue($data['cols'][6].($i+1), $totalApprovedAmount);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][6].($i+1))->applyFromArray($titleStyleArray);
+                ->setCellValue($data['cols'][7].($i+1), $totalApprovedAmount);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][7].($i+1))->applyFromArray($titleStyleArray);
             // $spreadsheet->getActiveSheet()->getStyle($data['cols'][4].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
-            $borderCoordinate2 = $data['cols'][6].($i+1);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3:'.$data['cols'][6].'3')->getAlignment()->setWrapText(true);
+            $borderCoordinate2 = $data['cols'][7].($i+1);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][0])->setWidth(11);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][1].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][2].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][3].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][4].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][5])->setAutoSize(true);
+
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][6])->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][7])->setWidth(13);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].'3')->getAlignment()->setWrapText(true);
             $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
         return $spreadsheet;
@@ -145,7 +159,7 @@ class ExcelBuilderReport
                 $borderCoordinate1 = $data['cols'][0].'2';
                 $spreadsheet->setActiveSheetIndex(1)
                     ->setCellValue($data['cols'][0].'2', 'PRODUCCION '.strtoupper($data['builderFullName']));
-                $spreadsheet->getActiveSheet()->mergeCells($data['cols'][0].'2:'.$data['cols'][6].'2');
+                $spreadsheet->getActiveSheet()->mergeCells($data['cols'][0].'2:'.$data['cols'][7].'2');
 
                 $spreadsheet->setActiveSheetIndex(1)
                     ->setCellValue($data['cols'][0].'3', "Nro. de Proyecto")
@@ -154,8 +168,9 @@ class ExcelBuilderReport
                     ->setCellValue($data['cols'][3].'3', "En construccion")
                     ->setCellValue($data['cols'][4].'3', "Fiscal")
                     ->setCellValue($data['cols'][5].'3', "Cooperador(es)")
-                    ->setCellValue($data['cols'][6].'3', "Costo de Aprobacion");
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][6].'3')->applyFromArray($titleStyleArray);
+                    ->setCellValue($data['cols'][6].'3', "% / Fecha")
+                    ->setCellValue($data['cols'][7].'3', "Costo de Aprobacion");
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'2:'.$data['cols'][7].'3')->applyFromArray($titleStyleArray);
 
                 $spreadsheet->setActiveSheetIndex(1)
                     ->setCellValue($data['cols'][0].($i+1), $row["code_pro"])
@@ -164,7 +179,8 @@ class ExcelBuilderReport
                     ->setCellValue($data['cols'][3].($i+1), $row["in_progress_date"])
                     ->setCellValue($data['cols'][4].($i+1), $row["fiscal_responsible"])
                     ->setCellValue($data['cols'][5].($i+1), $this->findPartners($data['builderFullName'],$row["builder_responsible"]))
-                    ->setCellValue($data['cols'][6].($i+1), $row["building_budget"]);
+                    ->setCellValue($data['cols'][6].($i+1), $row["last_three_incidents"])
+                    ->setCellValue($data['cols'][7].($i+1), $row["building_budget"]);
                 $totalAmount += 0;
                 $totalApprovedAmount += $row["building_budget"];
                 $i++;
@@ -173,16 +189,27 @@ class ExcelBuilderReport
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][2].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 $spreadsheet->getActiveSheet()->getStyle($data['cols'][3].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 //Currency format
-                $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                //align right
+                $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
             }
             $spreadsheet->setActiveSheetIndex(1)
                 ->setCellValue($data['cols'][0].($i+1), 'TOTAL')
-                ->setCellValue($data['cols'][6].($i+1), $totalApprovedAmount);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][6].($i+1))->applyFromArray($titleStyleArray);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][6].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                ->setCellValue($data['cols'][7].($i+1), $totalApprovedAmount);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].($i+1).':'.$data['cols'][7].($i+1))->applyFromArray($titleStyleArray);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
-            $borderCoordinate2 = $data['cols'][6].($i+1);
-            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3:'.$data['cols'][6].'3')->getAlignment()->setWrapText(true);
+            $borderCoordinate2 = $data['cols'][7].($i+1);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][0])->setWidth(11);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][1].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][2].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][3].'3')->getAlignment()->setWrapText(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][4])->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][5])->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][6])->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension($data['cols'][7])->setWidth(13);
+            $spreadsheet->getActiveSheet()->getStyle($data['cols'][7].'3')->getAlignment()->setWrapText(true);
             $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
         return $spreadsheet;
@@ -203,7 +230,8 @@ class ExcelBuilderReport
         ];
 
         $i = 3;
-        $borderCoordinate1 = $borderCoordinate2 = '';
+        $borderCoordinate1 = 'B2';
+        $borderCoordinate2 = '';
         $totalAmount = 0;
         $totalApprovedAmount = 0;
         foreach ($workflowDetail as $row)
@@ -211,10 +239,10 @@ class ExcelBuilderReport
             $isBetweenDates = $this->isInGivenRange($row["in_progress_date"]);
             if($isBetweenDates && $row["in_progress_date"] != "")
             {
-                $borderCoordinate1 = 'B2';
+                // $borderCoordinate1 = 'B2';
                 $spreadsheet->setActiveSheetIndex(2)
                     ->setCellValue('B2', 'PROYECTOS EN PROGRESO');
-                $spreadsheet->getActiveSheet()->mergeCells('B2:H2');
+                $spreadsheet->getActiveSheet()->mergeCells('B2:I2');
 
                 $spreadsheet->setActiveSheetIndex(2)
                     ->setCellValue('B3', "Nro. de Proyecto")
@@ -223,9 +251,9 @@ class ExcelBuilderReport
                     ->setCellValue('E3', "En Construccion")
                     ->setCellValue('F3', "Fiscal")
                     ->setCellValue('G3', "Constructor(es)")
-                    ->setCellValue('H3', "Costo de Aprobacion");
-                $spreadsheet->getActiveSheet()->getStyle('B2:H3')->applyFromArray($titleStyleArray);
-
+                    ->setCellValue('H3', "% / Fecha")
+                    ->setCellValue('I3', "Costo de Aprobacion");
+                $spreadsheet->getActiveSheet()->getStyle('B2:I3')->applyFromArray($titleStyleArray);
 
                 $spreadsheet->setActiveSheetIndex(2)
                     ->setCellValue('B'.($i+1), $row["code_pro"])
@@ -234,7 +262,8 @@ class ExcelBuilderReport
                     ->setCellValue('E'.($i+1), $row["in_progress_date"])
                     ->setCellValue('F'.($i+1), $row["fiscal_responsible"])
                     ->setCellValue('G'.($i+1), $row["builder_responsible"])
-                    ->setCellValue('H'.($i+1), $row["building_budget"]);
+                    ->setCellValue('H'.($i+1), $row["last_three_incidents"])
+                    ->setCellValue('I'.($i+1), $row["building_budget"]);
                 $totalAmount += 0;
                 $totalApprovedAmount += $row["building_budget"];
                 $i++;
@@ -243,17 +272,29 @@ class ExcelBuilderReport
                 $spreadsheet->getActiveSheet()->getStyle('D'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 $spreadsheet->getActiveSheet()->getStyle('E'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
                 //Currency format
-                $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                $spreadsheet->getActiveSheet()->getStyle('I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                //align right
+                $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
             }
         }
         $spreadsheet->setActiveSheetIndex(2)
             ->setCellValue('B'.($i+1), 'TOTAL')
-            ->setCellValue('H'.($i+1), $totalApprovedAmount);
-        $spreadsheet->getActiveSheet()->getStyle('B'.($i+1).':'.'H'.($i+1))->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            ->setCellValue('I'.($i+1), $totalApprovedAmount);
+        $spreadsheet->getActiveSheet()->getStyle('B'.($i+1).':'.'I'.($i+1))->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->getStyle('I'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
-        $borderCoordinate2 = 'H'.($i+1);
-        $spreadsheet->getActiveSheet()->getStyle('B3:H3')->getAlignment()->setWrapText(true);
+        $borderCoordinate2 = 'I'.($i+1);
+        $spreadsheet->getActiveSheet()->getStyle('B3:I3')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(11);
+        $spreadsheet->getActiveSheet()->getStyle('B3')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getStyle('C3')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getStyle('D3')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getStyle('E3')->getAlignment()->setWrapText(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension("G")->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(13);
+        $spreadsheet->getActiveSheet()->getStyle('I3')->getAlignment()->setWrapText(true);//var_dump($borderCoordinate1.':'.$borderCoordinate2);exit;
         $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->setActiveSheetIndex(0);
         return $spreadsheet;
@@ -306,7 +347,7 @@ class ExcelBuilderReport
                             $alphabeth .= $i.',';
                         }
                         $allCols = explode(",", $alphabeth);
-                        $columnsToUseByBuilder = 8;
+                        $columnsToUseByBuilder = 9;
                         $cols = array_chunk($allCols, $columnsToUseByBuilder);
                         $arrayPerformanceList[$user->getId()]['workflow'][] = $row;
                         if(!isset($arrayPerformanceList[$user->getId()]['cols']))
@@ -348,7 +389,7 @@ class ExcelBuilderReport
                             $alphabeth .= $i.',';
                         }
                         $allCols = explode(",", $alphabeth);
-                        $columnsToUseByBuilder = 8;
+                        $columnsToUseByBuilder = 9;
                         $cols = array_chunk($allCols, $columnsToUseByBuilder);
                         $arrayPerformanceList[$user->getId()]['workflow'][] = $row;
                         if(!isset($arrayPerformanceList[$user->getId()]['cols']))

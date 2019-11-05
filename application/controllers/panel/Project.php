@@ -471,6 +471,8 @@ class Project extends PrivateController
 
     public function getBuilderReport()
     {
+        set_time_limit(240);
+        ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $startDate = $formData["builder-report-from"];
         $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
