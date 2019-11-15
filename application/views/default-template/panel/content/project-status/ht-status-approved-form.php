@@ -61,23 +61,29 @@
                                         {{var "buttonTextPointToPoint" "Revisar punto a punto"}}
                                     {{/ifCond}}
                                     <div class="form-group input-group">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
-                                                </button>
-                                            </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
+                                            </button>
+                                        </span>
                                         <input type="file" name="manpower-file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                     </div>
-                                    <div class="form-group input-group hidden">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonTextPointToPoint}}
-                                                </button>
-                                            </span>
+                                {{/ifCond}}
+                                {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
+                                    {{var "buttonTextPointToPoint" "Cargar punto a punto"}}
+                                    {{#ifCond previousEntry.building_structure_file_id_prb "==" null}}
+                                        {{var "buttonTextPointToPoint" "Revisar punto a punto"}}
+                                    {{/ifCond}}
+                                    <div class="form-group input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary extract-building-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonTextPointToPoint}}
+                                            </button>
+                                        </span>
                                         <input type="file" name="point-to-point-file" accept=".csv">
                                     </div>
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">
                                 <input type="hidden" name="manpower-file-id" value="{{previousEntry.manpower_file_id_prb}}">
-                                <input type="hidden" name="point-to-point-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                <input type="hidden" name="point-to-point-file-id" value="{{previousEntry.building_structure_file_id_prb}}">
                                 {{var "readonly" "Cargar mano de obra"}}
                                 {{#ifCond previousEntry.id_prb "==" null}}
                                     {{var "buttonText" "Revisar mano de obra"}}

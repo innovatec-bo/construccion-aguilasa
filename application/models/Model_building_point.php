@@ -8,9 +8,9 @@
 
 class Model_building_point extends Model_building_point_base
 {
-    public function __construct($label = "", $latitude = "", $longitude = "", $previousPoint = "", $distance = "", $angle = "")
+    public function __construct($projectId = NULL, $label = "", $latitude = "", $longitude = "", $previousPoint = "", $distance = "", $angle = "")
     {
-        parent::__construct($label, $latitude, $longitude, $previousPoint, $distance, $angle);
+        parent::__construct($projectId, $label, $latitude, $longitude, $previousPoint, $distance, $angle);
     }
 
     /**

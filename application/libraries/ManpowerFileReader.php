@@ -311,21 +311,28 @@ class ManpowerFileReader
      */
     public function registerDesignBudgetOnLog()
     {
-        $userId = NULL;
-        $detail = "Ingresado automaticamente por el sistema";
-        $manualEntryDate = date("Y-m-d H:i:s");        
-        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_designBudgetIdentifiers);
-        $workedUp = array();
-        foreach($laborCostList as $laborCost)
+        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId);
+        if(!$laborDetail instanceof Model_labor_detail)
         {
-            $workedUp[] = array('labor-cost-id' => $laborCost['id_lac'], 'quantity' => $laborCost['quantity_lac']);
+            $userId = NULL;
+            $detail = "Ingresado automaticamente por el sistema";
+            $manualEntryDate = date("Y-m-d H:i:s");        
+            $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_designBudgetIdentifiers);
+            $workedUp = array();
+            foreach($laborCostList as $laborCost)
+            {
+                $workedUp[] = array('labor-cost-id' => $laborCost['id_lac'], 'quantity' => $laborCost['quantity_lac']);
+            }
+            $builders = array();
+            // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders);exit;
+            if(count($workedUp) > 0)
+                Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);    
         }
-        $builders = array();
-        // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders);exit;
-        if(count($workedUp) > 0)
-            Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
     }
 
+    /**
+    * This method allow set the building budgets
+    **/
     private function _setBuildingBudgetIdentifiers(Model_file $pointToPointFile = NULL)
     {
         $this->_buildingBudgetIdentifiers = array();
@@ -381,6 +388,38 @@ class ManpowerFileReader
      * @return mixed
      */
     public function registerPointToPointInSystem()
+    {
+        $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_buildingBudgetIdentifiers);
+        $i = 0;
+        foreach ($this->_pointList as $value)
+        {
+            $i++;
+            $pointData = $value["pointData"];
+            $structureList = $value["structureList"];
+            $point = new Model_building_point($pointData["label"], $pointData["latitude"], $pointData["longitude"], $pointData["previous_point"]);
+            $point->save();
+            foreach ($structureList as &$structure)
+            {
+                $structureCode = $structure["structure_code"];
+                $key = array_search($structureCode,array_column($laborCostList, "structure_code_bus"));
+                $structure["labor_cost_id"] = $laborCostList[$key]["id_lac"];
+
+            }
+            $point->addStructuresToUse($structureList);
+        }
+        $response = "Se establecio ".$i." punto de construccion.";
+        if($i>1)
+        {
+            $response = "Se establecieron ".$i." puntos de construccion.";
+        }
+        return $response;
+    }
+
+    /**
+     * Use this method before registerManpowerInSystem method has been executed
+     * @return mixed
+     */
+    public function registerPointToPointInSystem_deprecated()
     {
         $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_buildingBudgetIdentifiers);
         $i = 0;

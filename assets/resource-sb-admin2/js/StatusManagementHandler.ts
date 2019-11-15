@@ -1077,7 +1077,8 @@ class StatusManagementHandler
                     if(response.success == 1)
                     {
                         let projectBudgetId = $("input[name=project-budget-id]").val();
-                        if(projectBudgetId != "")
+                        let manpowerFileId = $("input[name=manpower-file-id]").val();
+                        if(projectBudgetId != "" && saveInSystem == 1)
                         {
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);

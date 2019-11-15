@@ -922,8 +922,8 @@ class AjaxProjectStatus extends PrivateController
                 $response['data']['budget']['building'] = $manpowerFileReader->getBuildingBudget();
                 $response['data']['pointList'] = $pointList;
                 $projectBudgetId = $formData['project-budget-id'];
-                //If already exist a project budget id then lets assign the manpower file id
-                if($projectBudgetId != "")
+                //If already exist a project budget id and the registerPointToPointInSystem is true then lets assign the manpower file id
+                if($projectBudgetId != "" && $registerPointToPointInSystem == 1)
                 {
                     /** @var Model_project_budget $projectBudget */
                     $projectBudget = Model_project_budget::getById($projectBudgetId);

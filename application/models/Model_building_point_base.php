@@ -12,6 +12,7 @@ class Model_building_point_base extends MY_Model
     const TABLE_ID = "id_bpo";
     const ATTRIB_SUFIX = "_bpo";
 
+    protected $_projectId;
     protected $_label;
     protected $_latitude;
     protected $_longitude;
@@ -19,9 +20,10 @@ class Model_building_point_base extends MY_Model
     protected $_distance;
     protected $_angle;
 
-    public function __construct($label = "", $latitude = "", $longitude = "", $previousPoint = "", $distance = "", $angle = "")
+    public function __construct($projectId = NULL, $label = "", $latitude = "", $longitude = "", $previousPoint = "", $distance = "", $angle = "")
     {
         parent::__construct();
+        $this->_projectId = $projectId;
         $this->_label = $label;
         $this->_latitude = $latitude;
         $this->_longitude = $longitude;
@@ -38,6 +40,7 @@ class Model_building_point_base extends MY_Model
     {
         $tableAttributes = array(
             "id_bpo" => $this->_id,
+            "project_id_bpo" => $this->_projectId,
             "label_bpo" => $this->_label,
             "latitude_bpo" => $this->_latitude,
             "longitude_bpo" => $this->_longitude,
@@ -68,6 +71,7 @@ class Model_building_point_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
+                $object->project_id_bpo,
                 $object->label_bpo,
                 $object->latitude_bpo,
                 $object->longitude_bpo,

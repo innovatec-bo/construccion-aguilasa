@@ -914,7 +914,8 @@ var StatusManagementHandler = /** @class */ (function () {
                     $(form).unblock();
                     if (response.success == 1) {
                         var projectBudgetId = $("input[name=project-budget-id]").val();
-                        if (projectBudgetId != "") {
+                        var manpowerFileId_1 = $("input[name=manpower-file-id]").val();
+                        if (projectBudgetId != "" && saveInSystem == 1) {
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);
                         }
