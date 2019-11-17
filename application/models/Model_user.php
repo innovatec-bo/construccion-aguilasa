@@ -354,6 +354,7 @@ class Model_user extends Model_user_base
             "conciliation_reception" => "conciliation_reception_date"
         );
 //        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
+        // echo"<pre>";var_dump($dataToSend['sereboFiscalFullName']);exit;
         $sereboFiscalFullName = is_array($dataToSend['sereboFiscalFullName'])?implode(",",$dataToSend['sereboFiscalFullName']):$dataToSend['sereboFiscalFullName'];
         $statusListToNotify = $dataToSend['statusListToNotify'];
         $responseList = array();
@@ -371,6 +372,7 @@ class Model_user extends Model_user_base
             $data['subject'] = $subjectList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
+
             $shortText[$status] = ucfirst(str_replace("fiscal_name",$sereboFiscalFullName,$shortText[$status]));
             $data['shortText'] = $shortText[$status];
             $listManagementBy = array_column($projectList, 'fiscal_responsible');

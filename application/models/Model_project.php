@@ -2095,15 +2095,15 @@ class Model_project extends Model_project_base
                                 $reminderList[$user->getId()]['statusListToNotify']['completed'][] = $row;
                                 break;
                             case "project_return_materials":
-                                $reminderList["allReturnedMaterials"]['sereboFiscalFullName'][] = $user->getFullName().", ";
-                                $reminderList["allReturnedMaterials"]['sereboFiscalEmail'][] = $user->getEmail().", ";
+                                $reminderList["allReturnedMaterials"]['sereboFiscalFullName'][$user->getId()] = $user->getFullName();
+                                $reminderList["allReturnedMaterials"]['sereboFiscalEmail'][$user->getId()] = $user->getEmail();
                                 if(!isset($reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials']))
                                     $reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials'] = array();
                                 $reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials'][] = $row;
                                 break;
                             case "paused":
-                                $reminderList["allPaused"]['sereboFiscalFullName'][] = $user->getFullName().", ";
-                                $reminderList["allPaused"]['sereboFiscalEmail'][] = $user->getEmail().", ";
+                                $reminderList["allPaused"]['sereboFiscalFullName'][$user->getId()] = $user->getFullName();
+                                $reminderList["allPaused"]['sereboFiscalEmail'][$user->getId()] = $user->getEmail();
                                 if(!isset($reminderList["allPaused"]['statusListToNotify']['paused']))
                                     $reminderList["allPaused"]['statusListToNotify']['paused'] = array();
                                 $reminderList["allPaused"]['statusListToNotify']['paused'][] = $row;
