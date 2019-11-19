@@ -141,7 +141,7 @@ class ExcelStakesReport
         $totalApprovedAmount = 0;
         foreach ($workflowDetail as $row)
         {
-            $isBetweenDates = $this->isInGivenRange($row["schedule_date"]);
+            $isBetweenDates = $this->isInGivenRange($row["approved_date"]);
             if($isBetweenDates && $row["approved_date"] != "")
             {
                 $borderCoordinate1 = 'B2';
