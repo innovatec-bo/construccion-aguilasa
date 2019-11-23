@@ -61,6 +61,8 @@
                                     </form>
                                 </dd>
                             {{/ifCond}}
+                            <dt>Total Importe</dt>
+                            <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_budget}}</span></dd>
                             <dt>Importe de diseño</dt>
                             <dd>{{numberFormat design_prb}}</dd>
                             <dt>Importe de construccion</dt>
@@ -70,9 +72,7 @@
                             <dt>Importe de linea viva</dt>
                             <dd>{{numberFormat live_line_prb}}</dd>
                             <dt>Importe Derecho de via</dt>
-                            <dd>{{numberFormat right_of_way_prb}}</dd>
-                            <dt>Total Importe</dt>
-                            <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_budget}}</span></dd>
+                            <dd>{{numberFormat right_of_way_prb}}</dd>                            
                             <dt>Numero de grafo</dt>
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
