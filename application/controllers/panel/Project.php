@@ -499,8 +499,14 @@ class Project extends PrivateController
 
     public function manpower($projectId)
     {
+
         $this->_validateFeature('project_manpower');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+        $result = Model_structure_by_point::getByProjectId($projectId);
+        if(count($result) > 0)
+        {
+            redirect(base_url('panel/Project/buildingPoints/'.$projectId));
+        }
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");

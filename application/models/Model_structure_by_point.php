@@ -12,4 +12,17 @@ class Model_structure_by_point extends Model_structure_by_point_base
     {
         parent::__construct($pointId, $quantityToUse, $laborCostId);
     }
+
+    public static function getByProjectId($projectId)
+    {
+    	$ci = &get_instance();
+    	$ci->load->database();
+    	$sql = "
+			select * from ".static::TABLE_NAME." where project_id_sbp = ".$ci->db->escape($projectId)." and deleted_sbp != 1
+    	";
+
+    	$query = $ci->db->query($sql);
+    	$response = static::recastArray(get_called_class(), $query->result());
+    	return $response;
+    }
 }
