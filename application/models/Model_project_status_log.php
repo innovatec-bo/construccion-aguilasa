@@ -123,7 +123,7 @@ class Model_project_status_log extends Model_project_status_log_base
         FROM
             wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
-        LEFT JOIN wfl_project_budgets on id_psl  = status_log_id_prb
+        LEFT JOIN wfl_project_budgets on id_psl  = status_log_id_prb and deleted_prb != 1
         LEFT JOIN wfl_project_real_budgets on id_psl  = status_log_id_reb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
         LEFT JOIN wfl_status_log_responsibles on id_psl = status_log_id_slr
@@ -136,7 +136,8 @@ class Model_project_status_log extends Model_project_status_log_base
         WHERE
             project_id_psl = " . $ci->db->escape($projectId) . "
             and keyword_pst = ".$ci->db->escape($statusKeyword)."
-            and deleted_slr != 1
+            and deleted_slr != 1            
+            and deleted_psl != 1
         GROUP BY id_psl
         ORDER BY manual_entry_date_psl DESC
         ";

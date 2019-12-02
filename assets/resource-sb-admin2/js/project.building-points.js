@@ -5,7 +5,7 @@
 $(document).ready(function() {
     let url = $(location).attr('href').split("/");
     let projectId = parseInt(url[url.length - 1]);
-    let manpowerHandler = new ManpowerHandler(projectId);
+    let manpowerHandler = new PointToPointHandler(projectId);
     manpowerHandler.loadBuildingPoints();
     manpowerHandler.loadManpowerLog();
     manpowerHandler.loadEventHandler();

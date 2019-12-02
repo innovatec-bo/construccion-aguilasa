@@ -373,6 +373,8 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveApproved()
     {
+        set_time_limit(240);
+       ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $entryDate = $formData["entryDate"];
@@ -428,7 +430,9 @@ class AjaxProjectStatus extends PrivateController
                 $manpowerFileReader->registerManpowerInSystem();
                 $manpowerFileReader->registerDesignBudgetOnLog();
                 if($pointToPointFile instanceof Model_file)
+                {
                     $manpowerFileReader->registerPointToPointInSystem();
+                }
             }
         }
         $response["success"] = 1;

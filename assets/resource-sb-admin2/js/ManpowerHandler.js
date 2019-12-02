@@ -1,4 +1,4 @@
-var ManpowerHandler = (function () {
+var ManpowerHandler = /** @class */ (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -115,7 +115,7 @@ var ManpowerHandler = (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            },
+            }
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
@@ -178,7 +178,7 @@ var ManpowerHandler = (function () {
                 var htmlSource = $template.find(response.data.templateName).html();
                 var template = Handlebars.compile(htmlSource);
                 // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
-                var html = template();
+                var html = template({ buildingPoints: response.data.buildingPoints });
                 $("#building-points").html(html);
             }
         });
@@ -243,11 +243,11 @@ var ManpowerHandler = (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                },
+                }
             },
             escapeMarkup: function (markup) {
                 return markup;
-            },
+            }
         });
     };
     ManpowerHandler.prototype.loadManpowerLog = function () {

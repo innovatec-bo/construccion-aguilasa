@@ -19,22 +19,23 @@ $projectSystems = array(
 <script id="ht-building-points" type="text/x-handlebars-template">
     <div class="col-md-9">
         <div class="panel-group" id="accordion">
+            {{#each buildingPoints}}
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <span class="fa fa-map-marker"></span> Punto 1
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{point_id}}">
+                            <span class="fa fa-map-marker"></span> Punto {{point_label}}
                         </a>
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-default btn-xs"><span class="fa fa-plus"></span></button>
-                                <button type="submit" class="btn btn-default btn-xs"><span class="fa fa-save"></span></button>
+                                <button type="submit" class="btn btn-default btn-xs add-point-to-point-progress" data-point-id="{{point_id}}"><span class="fa fa-plus"></span></button>
+                                <button type="submit" class="btn btn-default btn-xs hide"><span class="fa fa-save"></span></button>
                             </div>
                         </div>
                     </h4>
 
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in">
+                <div id="collapse{{point_id}}" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="table-responsive" id="manpower-table">
                             <table class="table table-striped table-bordered table-hover table-minimum-padding">
@@ -42,155 +43,39 @@ $projectSystems = array(
                                     <tr>
                                         <th>#</th>
                                         <th>ACTIV.</th>
-                                        <th>CANTIDAD A USAR</th>
+                                        <th>CANTIDAD<br>A USAR</th>
                                         <th>ESTRUCTURA</th>
                                         <th>EJEC.</th>
                                         <th>UNIDAD</th>
                                         <th>DESCRIPCION</th>
+                                        <th>CANTIDAD<br>UTILIZADA</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{#each structures}}
                                     <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">I</td>
-                                        <td class="text-right">77.25</td>
-                                        <td>50-50DE</td>
-                                        <td class="text-center">LM</td>
-                                        <td class="text-center">M</td>
-                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
+                                        <td class="text-center">{{index}}</td>
+                                        <td class="text-center">{{labor_activity}}</td>
+                                        <td class="text-right">{{quantity_to_use}}</td>
+                                        <td>{{structure_code}}</td>
+                                        <td class="text-center">{{execution}}</td>
+                                        <td class="text-center">{{unit_of_measurement}}</td>
+                                        <td>{{description}}</td>
+                                        <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">I</td>
-                                        <td class="text-right">77.25</td>
-                                        <td>50-50DE</td>
-                                        <td class="text-center">LM</td>
-                                        <td class="text-center">M</td>
-                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">I</td>
-                                        <td class="text-right">77.25</td>
-                                        <td>50-50DE</td>
-                                        <td class="text-center">LM</td>
-                                        <td class="text-center">M</td>
-                                        <td>CABLE PREENSAMBLADO AIS. XLPE 1.1 KV 1X50/50MM</td>
-                                    </tr>
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                            <span class="fa fa-map-marker"></span> Punto 2
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Orders</a> <span class="label label-success">$ 320</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Invoices</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Shipments</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Tex</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                            <span class="fa fa-map-marker"></span> Punto 3
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Change Password</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Notifications</a> <span class="label label-info">5</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="http://www.jquery2dotnet.com">Import/Export</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
-                                        Delete Account</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                            <span class="fa fa-map-marker"></span> Punto 4
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseFour" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            {{/each}}
         </div>
     </div>
+</script>
+<script id="ht-table-structures-to-use" type="text/x-handlebars-template">
+    
 </script>
 <script id="ht-manpower-table" type="text/x-handlebars-template">
     <table class="table table-striped table-bordered table-hover">
@@ -305,6 +190,7 @@ $projectSystems = array(
         </div>
     </form>
 </script>
+
 <script id="ht-structure-item-list" type="text/x-handlebars-template">
     {{#each structureList}}
         {{> ht-structure-item structure = this}}
@@ -361,6 +247,9 @@ $projectSystems = array(
         </h6>
         <blockquote>
             <dl>
+                {{#ifCond pointLabel '!=' null}}
+                <dt class="text-center">Punto {{pointLabel}}</dt>
+                {{/ifCond}}
                 {{#ifCond builders '!=' null}}
                     <dt>Constructores</dt>
                     <dd>{{builders}}</dd>
@@ -563,4 +452,88 @@ $projectSystems = array(
             </div>
         </div>
     </div>
+</script>
+<script id="ht-modal-form-add-point-to-point-progress" type="text/x-handlebars-template">
+    <form name="point-to-point-progress-form" data-parsley-validate>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <div class="input-group date date-time-picker">
+                        <input name="entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <div id="error-entry-date"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Constructores</label><br>
+                    <select class="form-control select2-builders" multiple="multiple" data-parsley-required="" parsley-trigger="change" name="builders[]">
+                        {{#each builders}}
+                        <option value="{{id}}">{{firstName}} {{lastName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Detalles</label>
+                    <textarea class="form-control" name="detail" rows="2" placeholder=""></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-sm add-row hide">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <div class="table-responsive">
+                        <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
+                        <table class="table table-striped table-bordered table-hover table-minimum-padding">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ACTIV.</th>
+                                    <th>CANTIDAD<br>A USAR</th>
+                                    <th>ESTRUCTURA</th>
+                                    <th>EJEC.</th>
+                                    <th>UNIDAD</th>
+                                    <th>DESCRIPCION</th>
+                                    <th>CANTIDAD<br>UTILIZADA</th>
+                                    <th>NUEVO<br>REGISTRO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structure-item-list-content">
+                                {{#each point.structures}}
+                                <tr>
+                                    <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
+                                    <td class="text-center">{{index}}</td>
+                                    <td class="text-center">{{labor_activity}}</td>
+                                    <td class="text-right">{{quantity_to_use}}</td>
+                                    <td>{{structure_code}}</td>
+                                    <td class="text-center">{{execution}}</td>
+                                    <td class="text-center">{{unit_of_measurement}}</td>
+                                    <td>{{description}}</td>
+                                    <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
+                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][quantity]" size="7" style="text-align: right;"></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </script>

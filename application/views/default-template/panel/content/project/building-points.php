@@ -29,8 +29,8 @@
                 Historial de avance
                 <div class="pull-right">
                     <div class="btn-group">
-                        <a href="<?=base_url()?>" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>
-                        <button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>
+                        <a href="<?=base_url()?>" class="btn btn-default btn-xs download-manpower-progress hide"><i class="fa fa-download fa-fw"></i></a>
+                        <button type="button" class="btn btn-default btn-xs add-manpower-progress hide"><i class="fa fa-plus fa-fw"></i></button>
                     </div>
                 </div>
             </div>

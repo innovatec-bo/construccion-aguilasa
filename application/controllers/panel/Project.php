@@ -527,8 +527,8 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('project.building-points');
         $this->complementHandler->addProjectJs('project.building-points');
-        $this->complementHandler->addProjectCss('ManpowerHandler');
-        $this->complementHandler->addProjectJs('ManpowerHandler');
+        $this->complementHandler->addProjectCss('PointToPointHandler');
+        $this->complementHandler->addProjectJs('PointToPointHandler');
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);
     }

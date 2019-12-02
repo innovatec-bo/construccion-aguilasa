@@ -15,13 +15,15 @@ class Model_labor_cost_log_base extends MY_Model
     protected $_userId;
     protected $_detail;
     protected $_manualEntryDate;
+    protected $_pointId;
 
-    public function __construct($userId = NULL, $detail = "", $manualEntryDate = "")
+    public function __construct($userId = NULL, $detail = "", $manualEntryDate = "", $pointId = NULL)
     {
         parent::__construct();
         $this->_userId = $userId;
         $this->_detail = $detail;
         $this->_manualEntryDate = $manualEntryDate;
+        $this->_pointId = $pointId;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_labor_cost_log_base extends MY_Model
             "user_id_lal" => $this->_userId,
             "detail_lal" => $this->_detail,
             "manual_entry_date_lal" => $this->_manualEntryDate,
+            "point_id_lal" => $this->_pointId,
             "deleted_lal" => $this->_deleted,
             "createdon_lal" => $this->_createdOn,
             "createdby_lal" => $this->_createdBy,
@@ -61,7 +64,8 @@ class Model_labor_cost_log_base extends MY_Model
             $instance = new $className(
                 $object->user_id_lal,
                 $object->detail_lal,
-                $object->manual_entry_date
+                $object->manual_entry_date_lal,
+                $object->point_id_lal
             );
             $instance->_id = $object->id_lal;
 

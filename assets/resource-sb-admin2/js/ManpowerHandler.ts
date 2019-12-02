@@ -223,7 +223,7 @@ class ManpowerHandler
                 let htmlSource   = $template.find(response.data.templateName).html();
                 let template = Handlebars.compile(htmlSource);
                 // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
-                let html = template();
+                let html = template({buildingPoints:response.data.buildingPoints});
                 $("#building-points").html(html);
             }
         });

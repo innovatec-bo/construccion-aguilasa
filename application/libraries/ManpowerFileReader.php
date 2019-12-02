@@ -24,6 +24,7 @@ class ManpowerFileReader
     private $_destiny;
     private $_structureListFromExcelFile;
     private $_pointList;
+    private $_pointToPointToSave;
 
     public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
 	{
@@ -356,12 +357,24 @@ class ManpowerFileReader
 
             foreach ($data as $key => $value)
             {
+                $projectCode = $value[0];
                 $structureCode = $value[14];
                 $quantityToUse = $value[13];
                 $pointLabel = $value[1];
                 $latitude = $value[2];
                 $longitude = $value[3];
                 $previousPoint = $value[5];
+                $reg = $value[4];
+                $distanceAT = $value[6];
+                $angleAT = $value[7];
+                $distanceMT = $value[8];
+                $angleMT = $value[9];
+                $distanceBT = $value[10];
+                $angleBT = $value[11];
+                $activity = $value[12];
+                $execution = $value[15];
+                $unitOfMeasurement = $value[16];
+                $structureDetail = $value[17];
                 $this->_buildingBudgetIdentifiers[] = $structureCode;
                 $pointData = array(
                     "label" => $pointLabel,
@@ -375,6 +388,28 @@ class ManpowerFileReader
                     "quantity_to_use" => $quantityToUse
                 );
                 $this->_pointList[$pointLabel]["structureList"][] = $structureToUse;
+
+                $pointToPointRow = array(
+                    "project_code_ptp" => $projectCode,
+                    "point_ptp" => $pointLabel,
+                    "latitude_ptp" => $latitude,
+                    "longitude_ptp" => $longitude,
+                    "reg_ptp" => $reg,
+                    "previous_point_ptp" => $previousPoint,
+                    "distance_at_ptp" => $distanceAT,
+                    "angle_at_ptp" => $angleAT,
+                    "distance_mt_ptp" => $distanceMT,
+                    "angle_mt_ptp" => $angleMT,
+                    "distance_bt_ptp" => $distanceBT,
+                    "angle_bt_ptp" => $angleBT,
+                    "activity_ptp" => $activity,
+                    "quantity_ptp" => $quantityToUse,
+                    "building_structure_code_ptp" => $structureCode,
+                    "execution_ptp" => $execution,
+                    "unit_of_measurement_ptp" => $unitOfMeasurement,
+                    "building_structure_detail_ptp" => $structureDetail
+                );
+                $this->_pointToPointToSave[] = $pointToPointRow;
             }
             //Let's remove the duplicated values
             $this->_buildingBudgetIdentifiers = array_unique($this->_buildingBudgetIdentifiers);
@@ -383,11 +418,39 @@ class ManpowerFileReader
         }
     }
 
+
+    public function registerPointToPointInSystem()
+    {
+        $this->_insertPointToPointFileInTable();
+        $this->_insertBuildingPoints();
+        $this->_insertStructuresToUse();
+        $this->_linkStructuresToPoints();
+    }
+
+    private function _insertPointToPointFileInTable()
+    {
+        Model_point_to_point_master::insertBatch($this->_pointToPointToSave);
+    }
+
+    private function _insertBuildingPoints()
+    {
+        Model_point_to_point_master::exportBuildingPoints($this->_projectId);
+    }
+
+    private function _insertStructuresToUse()
+    {
+        Model_point_to_point_master::exportStructuresToUse($this->_projectId);
+    }
+
+    private function _linkStructuresToPoints()
+    {
+        Model_point_to_point_master::linkStructuresToPoints($this->_projectId);   
+    }
     /**
      * Use this method before registerManpowerInSystem method has been executed
      * @return mixed
      */
-    public function registerPointToPointInSystem()
+    public function registerPointToPointInSystem_deprecated_2()
     {
         $laborCostList = Model_labor_cost::getByProjectIdAndStructureCodeList($this->_projectId, $this->_buildingBudgetIdentifiers);
         $i = 0;

@@ -8,14 +8,14 @@
 
 class Model_labor_cost_log extends Model_labor_cost_log_base
 {
-    public function __construct($userId = NULL, $detail = "", $manualEntryDate = "")
+    public function __construct($userId = NULL, $detail = "", $manualEntryDate = "", $pointId = NULL)
     {
-        parent::__construct($userId, $detail, $manualEntryDate);
+        parent::__construct($userId, $detail, $manualEntryDate, $pointId);
     }
 
-    public static function addLog($userId, $detail, $manualEntryDate, $workedUp, $builders)
+    public static function addLog($userId, $detail, $manualEntryDate, $workedUp, $builders, $pointId = NULL)
     {
-        $laborCostLog = New Model_labor_cost_log($userId, $detail, $manualEntryDate);
+        $laborCostLog = New Model_labor_cost_log($userId, $detail, $manualEntryDate, $pointId);
         $laborCostLog->save();
         $laborCostLog->addWorkedUpStructures($workedUp);
         $laborCostLog->addBuildersToManpower($builders);
@@ -30,14 +30,19 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         foreach($list as $row)
         {
-            $dataToSave[] = array(
-                'labor_cost_log_id_wus' => $this->_id,
-                'labor_cost_id_wus' => $row['labor-cost-id'],
-                'worked_up_wus' => str_replace(",","",$row['quantity']),
-                'deleted_wus' => 0,
-                'createdon_wus' => date('Y-m-d H:i:s'),
-                'createdby_wus' => $currentUserId
-            );
+            $quantity = str_replace(",","",$row['quantity']);
+            if($quantity > 0)
+            {
+                $dataToSave[] = array(
+                    'labor_cost_log_id_wus' => $this->_id,
+                    'labor_cost_id_wus' => $row['labor-cost-id'],
+                    'worked_up_wus' => $quantity,
+                    'deleted_wus' => 0,
+                    'createdon_wus' => date('Y-m-d H:i:s'),
+                    'createdby_wus' => $currentUserId
+                );
+            }
+            
         }
         if(count($dataToSave) > 0)
         {
@@ -88,7 +93,9 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             structure_code_bus structure_code,
             description_bus description,
             worked_up_wus worked_up,
-            unit_of_measurement_bus unit_of_measurement	
+            unit_of_measurement_bus unit_of_measurement,
+            id_bpo point_id,
+            label_bpo point_label
         FROM
             bui_labor_cost_log
         LEFT JOIN bui_builders_in_manpower on id_lal = labor_cost_log_id_bim
@@ -109,6 +116,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             where deleted_lac !=1 and deleted_bus != 1
         ) bui_labor_cost on id_lac = labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
+        LEFT JOIN bui_building_points on id_bpo = point_id_lal
         where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 and project_id_lad = ".$ci->db->escape($projectId)."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
@@ -132,6 +140,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             {
                 if($laborCostLog[$i]["log_id"] != $laborCostLog[$i+1]["log_id"])
                 {
+                    $arrayLog[$partnerId]['pointId'] = $laborCostLog[$i]["point_id"];
+                    $arrayLog[$partnerId]['pointLabel'] = $laborCostLog[$i]["point_label"];
                     $arrayLog[$partnerId]['logId'] = $laborCostLog[$i]["log_id"];
                     $arrayLog[$partnerId]['fiscal'] = $laborCostLog[$i]["fiscal_full_name"];
                     $arrayLog[$partnerId]['detail'] = $laborCostLog[$i]["detail"];
@@ -143,6 +153,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             }
             else
             {
+                $arrayLog[$partnerId]['pointId'] = $laborCostLog[$i]["point_id"];
+                $arrayLog[$partnerId]['pointLabel'] = $laborCostLog[$i]["point_label"];
                 $arrayLog[$partnerId]['logId'] = $laborCostLog[$i]["log_id"];
                 $arrayLog[$partnerId]['fiscal'] = $laborCostLog[$i]["fiscal_full_name"];
                 $arrayLog[$partnerId]['detail'] = $laborCostLog[$i]["detail"];
