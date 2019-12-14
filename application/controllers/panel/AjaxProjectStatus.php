@@ -785,6 +785,7 @@ class AjaxProjectStatus extends PrivateController
         $incidentList = Model_incident::getAllByProjectIdAndStatusId($projectId, $statusId);
         $response["allIncidents"] = $allIncidents;
         $response["incidentList"] = $incidentList;
+        $response["template"] = $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list",array(), true);
         echo json_encode($response);exit;
     }
 

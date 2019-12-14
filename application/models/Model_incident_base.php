@@ -20,8 +20,10 @@ class Model_incident_base extends MY_Model
     protected $_paused;
     protected $_stopped;
     protected $_incidentType;
+    protected $_needToBeSolved;
+    protected $_solvedOnDate;
 
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '')
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -32,6 +34,8 @@ class Model_incident_base extends MY_Model
         $this->_paused = $paused;
         $this->_stopped = $stopped;
         $this->_incidentType = $incidentType;
+        $this->_needToBeSolved = $needToBeSolved;
+        $this->_solvedOnDate = $solvedOnDate;
     }
 
     /**
@@ -50,6 +54,8 @@ class Model_incident_base extends MY_Model
             "paused_inc" => $this->_paused,
             "stopped_inc" => $this->_stopped,
             "incident_type_inc" => $this->_incidentType,
+            "need_to_be_solved_inc" => $this->_needToBeSolved,
+            "solved_on_date_inc" => $this->_solvedOnDate,
             "deleted_inc" => $this->_deleted,
             "createdon_inc" => $this->_createdOn,
             "createdby_inc" => $this->_createdBy,
@@ -81,7 +87,9 @@ class Model_incident_base extends MY_Model
                 $object->project_id_inc,
                 $object->paused_inc,
                 $object->stopped_inc,
-                $object->incident_type_inc
+                $object->incident_type_inc,
+                $object->need_to_be_solved_inc,
+                $object->date_on_solved_inc
             );
             $instance->_id = $object->id_inc;
 
@@ -103,5 +111,15 @@ class Model_incident_base extends MY_Model
     public function setStopped($stopped)
     {
         $this->_stopped = $stopped;
+    }
+
+    public function setNeedToBeSolved($needToBeSolved)
+    {
+        $this->_needToBeSolved = $needToBeSolved;
+    }
+
+    public function setSolvedOnDate($solvedOnDate)
+    {
+        $this->_solvedOnDate = $solvedOnDate;
     }
 }

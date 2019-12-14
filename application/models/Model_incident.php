@@ -8,9 +8,9 @@
 
 class Model_incident extends Model_incident_base
 {
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '')
     {
-        parent::__construct($statusLogId, $percentage, $detail, $manualEntryDate, $projectId, $paused, $stopped, $incidentType);
+        parent::__construct($statusLogId, $percentage, $detail, $manualEntryDate, $projectId, $paused, $stopped, $incidentType, $needToBeSolved, $solvedOnDate);
     }
 
     public static function getAllByProjectIdAndStatusId($projectId, $statusId)

@@ -1,11 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Yossy
- * Date: 10/4/2018
- * Time: 22:40
- */
-?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
