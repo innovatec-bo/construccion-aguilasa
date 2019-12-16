@@ -1,0 +1,74 @@
+.ps > .ps__rail-x, .ps > .ps__rail-y {
+    opacity: 0.4;
+}
+.ps__thumb-y
+{
+	width:8px
+}
+.panel
+{
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: transparent;
+}
+
+.panel-heading
+{
+    color: #fff!important;
+    background-color: transparent!important;
+    border-color: #ddd!important;
+}
+
+.login-panel {
+    margin-top: 10%;
+}
+
+.login-title
+{
+    text-align: center;
+    color: #fff;
+    margin-top: 10%;
+}
+
+.title-system-panel
+{
+    text-align: center;
+    color: #fff;
+    margin-top: 4%;
+}
+
+.form-group label
+{
+	color:#ffffff;
+}
+a.list-group-item, button.list-group-item {
+    color: #fff;
+}
+.list-group-item 
+{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #ffffff47;
+    border: 1px solid #ddd;
+}
+a.list-group-item:hover 
+{
+    color: #fff;
+    text-decoration: none;
+    background-color: #f5f5f561;
+}
+.text-muted
+{
+    color: #fff;
+}
+.help-block {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+.parsley-errors-list.filled
+{
+	color:#ffffff;
+}

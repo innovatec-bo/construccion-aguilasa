@@ -99,6 +99,8 @@ class Model_incident extends Model_incident_base
 
         $sql = "
             SELECT
+                id_usr user_id,
+                email_usr user_email,
                 firstname_usr first_name,
                 lastname_usr last_name,
                 code_pro project_code,	
@@ -117,7 +119,10 @@ class Model_incident extends Model_incident_base
                 WHEN 9 then 'Ninguno'
                 WHEN 10 then 'CRE'                
                 end incident_type,
-                manual_entry_date_inc manual_entry_date
+                manual_entry_date_inc manual_entry_date,
+                need_to_be_solved_inc need_to_be_solved,
+                solved_on_date_inc solved_on_date,
+                solved_by_inc solved_by
             FROM
                 wfl_incidents
             LEFT JOIN sec_users on id_usr = createdby_inc

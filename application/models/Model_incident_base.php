@@ -22,8 +22,9 @@ class Model_incident_base extends MY_Model
     protected $_incidentType;
     protected $_needToBeSolved;
     protected $_solvedOnDate;
+    protected $_solvedBy;
 
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '')
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '', $solvedby = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -36,6 +37,7 @@ class Model_incident_base extends MY_Model
         $this->_incidentType = $incidentType;
         $this->_needToBeSolved = $needToBeSolved;
         $this->_solvedOnDate = $solvedOnDate;
+        $this->_solvedBy = $solvedby;
     }
 
     /**
@@ -56,6 +58,7 @@ class Model_incident_base extends MY_Model
             "incident_type_inc" => $this->_incidentType,
             "need_to_be_solved_inc" => $this->_needToBeSolved,
             "solved_on_date_inc" => $this->_solvedOnDate,
+            "solved_by_inc" => $this->_solvedBy,
             "deleted_inc" => $this->_deleted,
             "createdon_inc" => $this->_createdOn,
             "createdby_inc" => $this->_createdBy,
@@ -89,7 +92,8 @@ class Model_incident_base extends MY_Model
                 $object->stopped_inc,
                 $object->incident_type_inc,
                 $object->need_to_be_solved_inc,
-                $object->date_on_solved_inc
+                $object->solved_on_date_inc,
+                $object->solved_by_inc
             );
             $instance->_id = $object->id_inc;
 
