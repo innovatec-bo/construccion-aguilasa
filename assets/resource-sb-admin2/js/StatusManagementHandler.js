@@ -310,7 +310,7 @@ var StatusManagementHandler = /** @class */ (function () {
                     $(value).datetimepicker({
                         ignoreReadonly: true,
                         // defaultDate: minDate,
-                        minDate: minDate,
+                        // minDate:minDate,
                         locale: "es",
                         format: 'DD-MM-YYYY'
                     });
@@ -320,6 +320,7 @@ var StatusManagementHandler = /** @class */ (function () {
                     $(value).datetimepicker({
                         ignoreReadonly: true,
                         defaultDate: defaultDate,
+                        locale: "es",
                         format: 'DD-MM-YYYY'
                     });
                 }
