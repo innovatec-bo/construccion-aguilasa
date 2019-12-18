@@ -1,26 +1,5 @@
 $(document).ready(function() {
-    new PerfectScrollbar('#incident-list', {
-    wheelSpeed: 2,
-    wheelPropagation: true,
-    minScrollbarLength: 50
-    });
-    let date = new Date();
-    $('.date-time-picker').datetimepicker({
-        ignoreReadonly: true,
-        defaultDate: date,
-        format: 'DD-MM-YYYY',
-        locale:"es"
-    });
-    var totalCharacters = 300;
-    $(document).on("keyup","textarea[name=incident-detail]",function(e){
-        let currentCharacters = $(this).val().length;
-        $("#textarea-counter").text(totalCharacters-currentCharacters);
-    });
-
-    $(document).on("submit","form[name=incident-form]",function(){
-        let $element = $('.panel-form-incident');
-        blockArea($element);
-    });
+    $("#project-list").DataTable();
 });
 
 function blockArea(content)

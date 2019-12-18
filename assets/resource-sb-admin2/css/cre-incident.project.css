@@ -3,7 +3,7 @@
 }
 .ps__thumb-y
 {
-    width:8px
+	width:8px
 }
 .panel
 {
@@ -38,7 +38,7 @@
 
 .form-group label
 {
-    color:#ffffff;
+	color:#ffffff;
 }
 a.list-group-item, button.list-group-item {
     color: #fff;
@@ -70,28 +70,5 @@ a.list-group-item:hover
 }
 .parsley-errors-list.filled
 {
-    color:#ffffff;
-}
-.table.table-xs th, .table.table-xs td 
-{
-  padding : 0.4rem 2rem;
-}
-#project-list
-{
-    color:#fff;
-}
-tbody tr.even
-{
-    background-color: #ffffff1a;
-}
-.table-striped>tbody>tr:nth-of-type(odd) {
-    background-color: #f9f9f952;
-}
-.dataTables_length, .dataTables_filter, .dataTables_info
-{
-    color:#fff;
-}
-.table-hover>tbody>tr:hover 
-{
-    background-color: #20213394;
+	color:#ffffff;
 }

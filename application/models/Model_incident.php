@@ -103,6 +103,7 @@ class Model_incident extends Model_incident_base
                 email_usr user_email,
                 firstname_usr first_name,
                 lastname_usr last_name,
+                id_pro project_id,
                 code_pro project_code,	
                 detail_inc incident_detail,
                 incident_status.status_name_pst status_on_incident,

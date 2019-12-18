@@ -54,3 +54,5 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['panel/Dashboard/(:any)'] = 'panel/Dashboard/index/$1';
+$route['Incident/testingHash'] = "Incident/testingHash";
+$route['Incident/(:any)'] = "Incident/index/$1";
