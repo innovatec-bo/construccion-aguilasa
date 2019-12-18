@@ -11,6 +11,7 @@ class PublicController extends CI_Controller
      * @var string
      */
     protected $_panelTmpl;
+    protected $_tabTitle;
 
     public function __construct()
     {
@@ -22,6 +23,7 @@ class PublicController extends CI_Controller
         $this->load->driver('session');
         $this->load->library('form_validation');
         $this->_panelTmpl = "default-template";
+        $this->_tabTitle = "Login";
         $this->complementHandler = new ComplementHandler();
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
@@ -35,6 +37,7 @@ class PublicController extends CI_Controller
     protected function _loadPublicView($contentView, $contentData = array())
     {
         $contentData["complementHandler"] = $this->complementHandler;
+        $contentData["tabTitle"] = $this->_tabTitle;
         $contentData["contentView"] = $contentView;
         $this->load->view($this->_panelTmpl."/public/master/master", array("contentData" => $contentData));
     }

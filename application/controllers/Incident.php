@@ -26,6 +26,7 @@ class Incident extends PublicController
         $user = Model_user::getById($userId);
         $data['projectList'] = $projectList;
         $data['userId'] = $userId;
+        $this->_tabTitle = "Incidencias";
         $this->_loadPublicView('incident/index', $data);
 	}
 
@@ -49,7 +50,7 @@ class Incident extends PublicController
 
         $user = Model_user::getById($userId);
         $project = Model_project::getById($projectId);
-
+        $this->_tabTitle = "Nueva Incidencia";
         // $projectIncidents = Model_incident::getAllByProjectId(674);
         $incidentList = Model_incident::incidentLog();
         $projectIncidents = array();
