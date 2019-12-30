@@ -215,6 +215,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement('bootstrap.social');
+        $this->complementHandler->addViewComplement('dropzone');
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('StatusManagementHandler',TRUE);
@@ -353,5 +354,34 @@ class ProjectStatus extends PrivateController
             redirect(base_url("panel/ProjectStatus/readyToAssign"));
             echo json_encode($response);exit;
         }
+    }
+
+    public function saveStatusFiles()
+    {
+        $imageId = NULL;
+        $fileHandler = new FileHandler();
+        if (!empty($_FILES['file']['name']))
+        {
+            try
+            {
+                $image = $fileHandler->fileUpload($_FILES['file'], "project_status_file", "images");
+                $image->save();
+                $imageId = $image->getId();
+            }
+            catch(Exception $e)
+            {
+                echo json_encode($e->getMessage());exit;
+            }
+        }
+        $imageSource = $fileHandler->getThumbnail($image, 160, 90);
+
+        // $mainSlider = $mainSlider->toArray();
+        // $item = array(
+        //     "id" => $mainSlider["id_msl"],
+        //     "title1" => $mainSlider["title1_msl"],
+        //     "title2" => $mainSlider["title2_msl"],
+        //     "imageSrc" => $imageSource
+        // );
+        echo json_encode($imageSource);exit;
     }
 }

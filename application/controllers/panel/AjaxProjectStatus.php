@@ -951,5 +951,4 @@ class AjaxProjectStatus extends PrivateController
         }
         echo json_encode($response);exit;
     }
-
 }

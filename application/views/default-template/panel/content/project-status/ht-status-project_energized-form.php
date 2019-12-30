@@ -16,9 +16,9 @@
                 <div class="row">
                     <div class="col-md-12 status-content">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-5">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Fecha</label>
                                             <div class="input-group date date-time-picker">
@@ -72,6 +72,11 @@
                                     <label>Observaciones</label>
                                     <textarea class="form-control" data-parsley-required="" data-parsley-group="{{statusKeyword}}" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                 </div>
+                            </div>
+                            <div class='col-md-7'>
+                                <div class="well dropzone" id='dropzone'>
+                                    <!-- <h4 class='text-center'>Arrastre archivos aqui<br>o<br>haga clic para cargarlos</h4> -->
+                                </div>    
                             </div>
                         </div>
                     </div>

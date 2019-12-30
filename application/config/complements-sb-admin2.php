@@ -91,3 +91,6 @@ $config['complements']['jquery.sticky']['js'] = assets_url('resource-sb-admin2/p
 
 $config['complements']['perfect-scrollbar']['css'] = assets_url('resource-sb-admin2/plugins/perfect-scrollbar-1.4.0/css/perfect-scrollbar.css');
 $config['complements']['perfect-scrollbar']['js'] = assets_url('resource-sb-admin2/plugins/perfect-scrollbar-1.4.0/dist/perfect-scrollbar.js');
+
+$config['complements']['dropzone']['css'] = assets_url('resource-sb-admin2/plugins/dropzone/dropzone.css');
+$config['complements']['dropzone']['js'] = assets_url('resource-sb-admin2/plugins/dropzone/dropzone.js');

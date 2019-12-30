@@ -6,6 +6,7 @@ declare let $: any;
 declare let Object: any;
 declare let window: any;
 declare let Swal: any;
+declare let Dropzone: any;
 class StatusManagementHandler
 {
     private statusSet: string;
@@ -377,6 +378,7 @@ class StatusManagementHandler
     {
         let _this = this;
         let $dateTimePickerComponent = $('.date-time-picker');
+
         if($dateTimePickerComponent.length > 0)
         {
             $.each($dateTimePickerComponent, function(index, value){
@@ -419,10 +421,25 @@ class StatusManagementHandler
                 allowClear: true
             });
         }
+
         let $inputMasked = $(".input-masked");
         if($inputMasked.length > 0)
         {
             $inputMasked.inputmask();
+        }
+    
+        let $dropzone = $('#dropzone');
+        if($dropzone.length > 0)
+        {
+            // Dropzone
+            let myDropzone = new Dropzone("#dropzone",{
+            url: base_url + "panel/projectStatus/saveStatusFiles",
+            paramName: "file",
+            maxFilesize: 30,
+            // acceptedFiles: "image/*",
+            autoProcessQueue:true,
+            addRemoveLinks:true
+            });    
         }
     }
 

@@ -344,6 +344,18 @@ var StatusManagementHandler = /** @class */ (function () {
         if ($inputMasked.length > 0) {
             $inputMasked.inputmask();
         }
+        var $dropzone = $('#dropzone');
+        if ($dropzone.length > 0) {
+            // Dropzone
+            var myDropzone = new Dropzone("#dropzone", {
+                url: base_url + "panel/projectStatus/saveStatusFiles",
+                paramName: "file",
+                maxFilesize: 30,
+                // acceptedFiles: "image/*",
+                autoProcessQueue: true,
+                addRemoveLinks: true
+            });
+        }
     };
     StatusManagementHandler.getResponsibleGroup = function (statusKeyword) {
         //all responsible by status keyword
