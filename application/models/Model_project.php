@@ -90,7 +90,7 @@ class Model_project extends Model_project_base
      * @param string $manualEntryDate
      * @param array $responsibleList array list ids
      */
-    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array())
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array(), $fileIds = array())
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
         $currentResponsibleList = Model_status_log_responsible::getByStatusLogId($statusId);
@@ -104,6 +104,8 @@ class Model_project extends Model_project_base
             $this->save();
             //Each statusLog needs to have a o more responsible by log
             Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
+            //If there is file ids added to status log, then let's save these
+            Model_project_status_file::addFiles($projectStatus->getId(), $fileIds, $this->_id, $statusId);
         }
     }
 

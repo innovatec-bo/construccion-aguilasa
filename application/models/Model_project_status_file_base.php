@@ -8,17 +8,19 @@
 
 class Model_project_status_file_base extends MY_Model
 {
-    const TABLE_NAME = "wfl_project_status_file";
+    const TABLE_NAME = "wfl_project_status_files";
     const TABLE_ID = "id_psf";
     const ATTRIB_SUFIX = "_psf";
 
+    protected $_statusLogId;
     protected $_projectId;
     protected $_statusId;
     protected $_fileId;
 
-    public function __construct($projectId = NULL, $statusId = NULL, $fileId = NULL)
+    public function __construct($statusLogId = NULL, $projectId = NULL, $statusId = NULL, $fileId = NULL)
     {
         parent::__construct();
+        $this->_statusLogId = $statusLogId;
         $this->_projectId = $projectId;
         $this->_statusId = $statusId;
         $this->_fileId = $fileId;
@@ -32,6 +34,7 @@ class Model_project_status_file_base extends MY_Model
     {
         $tableAttributes = array(
             "id_psf" => $this->_id,
+            "status_log_id_psf" => $this->_statusLogId,
             "project_id_psf" => $this->_projectId,
             "status_id_psf" => $this->_statusId,
             "file_id_psf" => $this->_fileId,
@@ -59,6 +62,7 @@ class Model_project_status_file_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
+                $object->status_log_id_psf,
                 $object->project_id_psf,
                 $object->status_id_psf,
                 $object->file_id_psf

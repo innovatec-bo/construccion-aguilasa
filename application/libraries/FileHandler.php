@@ -5,6 +5,7 @@
 class FileHandler
 {
     private $config;
+    private $_createBackup;
 
     public function __construct()
     {
@@ -12,6 +13,7 @@ class FileHandler
         $this->config = $ci->config->item('fileHandler');
         
         $ci->load->library('image_lib');
+        $this->_createBackup = FALSE;
     }
 
     /**
@@ -34,6 +36,69 @@ class FileHandler
         else
         {
             throw new Exception("The updload mode is not configurated properly");
+        }
+    }
+
+    public function enableCreateBackup($createBackup = FALSE)
+    {
+        $this->_createBackup = $createBackup;
+    }
+
+    public function compressImage($path, $filename)
+    {
+        //original path
+        $extension = substr(strrchr($filename, '.'), 1);
+        $extension = strtolower($extension);
+        $dir = $path ."/". $filename;
+        $rtOriginal = $dir;
+        switch($extension)
+        {
+            case 'jpg' :
+                $original = imagecreatefromjpeg($rtOriginal);
+                break;
+            case 'jpeg' :
+                $original = imagecreatefromjpeg($rtOriginal);
+                break;
+            case 'png' :
+                $original = imagecreatefrompng($rtOriginal);
+                break;
+        }
+        //Create variable image from original image
+        //Get the original with and original height
+        list($originalWidth, $originalHeight) = getimagesize($rtOriginal);
+        //Define the max dimensions
+        $height = (($originalHeight*100)/$originalWidth)/100;
+        $finalWidth = 1024;
+        $finalHeight = 1024*$height;
+        //Copy the original image over the recently creted images
+        $canvas = imagecreatetruecolor($finalWidth, $finalHeight);
+        imagecopyresampled($canvas, $original, 0, 0, 0, 0, $finalWidth, $finalHeight, $originalWidth, $originalHeight);
+        //Clear memory
+        imagedestroy($original);
+        //Define the final quality of image
+        $cal = 75;
+        $this->_createBackup($rtOriginal);
+        //Crete the image at the defined path
+        switch($extension)
+        {
+            case 'jpg' :
+                imagejpeg($canvas, $path.'/'. $filename, $cal);
+                break;
+            case 'jpeg' :
+                imagejpeg($canvas, $path.'/'. $filename, $cal);
+                break;
+            default :
+                imagepng($canvas, $path.'/'. $filename, 9);
+        }
+    }
+
+    private function _createBackup($rtOriginal)
+    {
+        if($this->_createBackup)
+        {
+            $oldName = $rtOriginal;
+            $newName = $oldName."_bkp";
+            rename($oldName, $newName);
         }
     }
 
@@ -176,7 +241,17 @@ class FileHandler
                     unlink($thumbnail);
                 }
             }        
-        }          
+        }
+        if($subDirectory == 'images')
+        {
+            try{
+                $this->compressImage($filePath,$fileName);
+            }
+            catch (Exception $e)
+            {
+                throw new Exception($e->getMessage());
+            }    
+        }
         return $dbFile;
     }
 
@@ -195,7 +270,7 @@ class FileHandler
 
             if ($file->getSize() > $this->config['maxDocFileSize'])
             {
-                throw new Exception("The file size exceeds the max permitted");
+                throw new Exception("The file size exceeds the max permitted(".($this->getMaxSizeInKb()/1024)."MB)");
             }
 
         }else{
@@ -207,12 +282,12 @@ class FileHandler
 
             if ($file->getSize() > $this->config['maxFileSize'])
             {
-                throw new Exception("The file size exceeds the max permitted");
+                throw new Exception("The file size exceeds the max permitted(".($this->getMaxSizeInKb()/1024)."MB)");
             }
 
             if ($file->getWidth() > $this->config["maxFileWidth"] || $file->getHeight() > $this->config["maxFileHeight"])
             {
-                throw new Exception("The file dimmension exceeds the max permitted");
+                throw new Exception("The file dimmension exceeds the max permitted(".$this->config["maxFileWidth"]."px X ".$this->config["maxFileHeight"]."px)");
             }
         }        
     }

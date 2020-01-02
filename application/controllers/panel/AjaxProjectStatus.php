@@ -554,11 +554,12 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setEnergized($projectEnergized);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

@@ -74,6 +74,10 @@
                                 </div>
                             </div>
                             <div class='col-md-7'>
+                                <div class="alert alert-info">                                    
+                                    <strong>Imagenes:</strong> Dimensiones maximas 5000X5000 pixeles y peso maximo 5MB.<br>
+                                    <strong>Documentos:</strong> Peso maximo 5MB.
+                                </div>
                                 <div class="well dropzone" id='dropzone'>
                                     <!-- <h4 class='text-center'>Arrastre archivos aqui<br>o<br>haga clic para cargarlos</h4> -->
                                 </div>    

@@ -13,6 +13,7 @@ var StatusManagementHandler = /** @class */ (function () {
         this.stopTreeLoop = false;
         this._breadCrumb = [];
         this.nextStep = [];
+        this._statusFilesIdsToSave = [];
     }
     StatusManagementHandler.prototype.loadView = function () {
         var _this = this;
@@ -235,6 +236,7 @@ var StatusManagementHandler = /** @class */ (function () {
             type: "POST",
             data: { projectId: _this.projectId, statusKeyword: statusKeyword, statusSet: _this.statusSet },
             success: function (response) {
+                _this._statusFilesIdsToSave = [];
                 var html = "something went wrong";
                 if (response.previousEntry[0] === undefined || addMoreInfo == 1) {
                     var points = $("#points").text();
@@ -351,9 +353,47 @@ var StatusManagementHandler = /** @class */ (function () {
                 url: base_url + "panel/projectStatus/saveStatusFiles",
                 paramName: "file",
                 maxFilesize: 30,
-                // acceptedFiles: "image/*",
-                autoProcessQueue: true,
-                addRemoveLinks: true
+                acceptedFiles: ".pdf, .jpg, .jpeg, .png",
+                autoProcessQueue: false
+            });
+            myDropzone.on('addedfile', function (file) {
+                var ext = file.name.split('.').pop();
+                ext = ext.toLowerCase();
+                var imageUrl = base_url + "assets/images/file-default-icon.png";
+                if (ext == "pdf") {
+                    imageUrl = base_url + "assets/images/pdf-icon.png";
+                }
+                else if (ext.indexOf("doc") != -1 || ext.indexOf("docx") != -1) {
+                    imageUrl = base_url + "assets/images/docx-icon.png";
+                }
+                else if (ext.indexOf("xls") != -1 || ext.indexOf("xlsx") != -1) {
+                    imageUrl = base_url + "assets/images/excel-icon.png";
+                }
+                else if (ext.indexOf("csv") != -1) {
+                    imageUrl = base_url + "assets/images/csv-icon.png";
+                }
+                var timthumbImage = base_url + "timthumb/timthumb.php?src=" + imageUrl + "&w=90";
+                $(file.previewElement).find(".dz-image img").attr("src", timthumbImage);
+                var removeButton = Dropzone.createElement('<a class="btn btn-danger btn-xs dropzone-remove btn-block" href="#" title="" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>');
+                var _this = this;
+                removeButton.addEventListener("click", function (e) {
+                    // Make sure the button click doesn't submit the form:
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Remove the file preview.
+                    _this.removeFile(file);
+                });
+                // Now attach this new element some where in your page
+                $("#dropzone").append(file.previewElement);
+                // Add the button to the file preview element.
+                file.previewElement.appendChild(removeButton);
+            });
+            // myDropzone.on('queuecomplete', function() {
+            //     console.log(_this._statusFilesIdsToSave);
+            // });
+            myDropzone.on("success", function (file, responseText) {
+                var fileId = responseText;
+                _this._statusFilesIdsToSave.push(fileId);
             });
         }
     };
@@ -422,81 +462,93 @@ var StatusManagementHandler = /** @class */ (function () {
         // let $button = $(".save-status");
         var statusKeyword = button.data("status-keyword");
         var statusId = button.data("status-id");
+        var _this = this;
         if ($form.parsley().isValid({ group: statusKeyword })) {
             blockArea($content);
-            switch (statusKeyword) {
-                case "rd_stakes":
-                case "stakes":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "returned":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "ri_digitization":
-                case "rd_digitization":
-                case "digitization":
-                    this.saveDigitization(statusId, statusKeyword, button);
-                    break;
-                case "ri_drawing":
-                case "rd_drawing":
-                case "drawing":
-                    this.saveDrawing(statusId, statusKeyword, button);
-                    break;
-                case "schedule":
-                    this.saveSchedule(statusId, statusKeyword);
-                    break;
-                case "already_sent":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "rectify_design":
-                    this.saveRectifyDesign(statusId, statusKeyword);
-                    break;
-                case "rectify_illustration":
-                    this.saveRectifyIllustration(statusId, statusKeyword);
-                    break;
-                case "approved":
-                    this.saveApproved(statusId, statusKeyword);
-                    break;
-                case "canceled":
-                    this.saveCanceled(statusId, statusKeyword);
-                    break;
-                case "in_progress":
-                    this.saveInProgress(statusId, statusKeyword);
-                    break;
-                case "paused":
-                case "stopped":
-                case "completed":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "project_energized":
-                    this.saveProjectEnergized(statusId, statusKeyword);
-                    break;
-                case "as_built":
-                    this.saveAsBuilt(statusId, statusKeyword);
-                    break;
-                case "conciliation_reception":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                case "conciliation_shipment":
-                    this.saveConciliationShipment(statusId, statusKeyword);
-                    break;
-                case "cre_return_order":
-                    this.saveCreReturnOrder(statusId, statusKeyword);
-                    break;
-                case "project_return_materials":
-                case "project_real_budget_confirmation":
-                    this.saveBasicLog(statusId, statusKeyword);
-                    break;
-                default:
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'Disculpe las molestias, aun no se ha establecido la logica para el guardado de los datos en esta etapa.'
-                    });
+            if (Dropzone.instances.length > 0) {
+                Dropzone.instances[0].processQueue();
+                Dropzone.instances[0].on('queuecomplete', function () {
+                    _this.chooseMethod(statusKeyword, statusId, button);
+                });
+            }
+            else {
+                _this.chooseMethod(statusKeyword, statusId, button);
             }
         }
         else {
             $form.parsley().validate({ group: statusKeyword });
+        }
+    };
+    StatusManagementHandler.prototype.chooseMethod = function (statusKeyword, statusId, button) {
+        switch (statusKeyword) {
+            case "rd_stakes":
+            case "stakes":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            case "returned":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            case "ri_digitization":
+            case "rd_digitization":
+            case "digitization":
+                this.saveDigitization(statusId, statusKeyword, button);
+                break;
+            case "ri_drawing":
+            case "rd_drawing":
+            case "drawing":
+                this.saveDrawing(statusId, statusKeyword, button);
+                break;
+            case "schedule":
+                this.saveSchedule(statusId, statusKeyword);
+                break;
+            case "already_sent":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            case "rectify_design":
+                this.saveRectifyDesign(statusId, statusKeyword);
+                break;
+            case "rectify_illustration":
+                this.saveRectifyIllustration(statusId, statusKeyword);
+                break;
+            case "approved":
+                this.saveApproved(statusId, statusKeyword);
+                break;
+            case "canceled":
+                this.saveCanceled(statusId, statusKeyword);
+                break;
+            case "in_progress":
+                this.saveInProgress(statusId, statusKeyword);
+                break;
+            case "paused":
+            case "stopped":
+            case "completed":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            case "project_energized":
+                this.saveProjectEnergized(statusId, statusKeyword);
+                break;
+            case "as_built":
+                this.saveAsBuilt(statusId, statusKeyword);
+                break;
+            case "conciliation_reception":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            case "conciliation_shipment":
+                this.saveConciliationShipment(statusId, statusKeyword);
+                break;
+            case "cre_return_order":
+                this.saveCreReturnOrder(statusId, statusKeyword);
+                break;
+            case "project_return_materials":
+            case "project_real_budget_confirmation":
+                this.saveBasicLog(statusId, statusKeyword);
+                break;
+            default:
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Disculpe las molestias, aun no se ha establecido la logica para el guardado de los datos en esta etapa.'
+                });
         }
     };
     StatusManagementHandler.prototype.saveBasicLog = function (statusId, statusKeyword) {
@@ -783,7 +835,8 @@ var StatusManagementHandler = /** @class */ (function () {
             statusId: statusId,
             statusKeyword: statusKeyword,
             statusDetail: statusDetail,
-            responsibleList: responsibleList
+            responsibleList: responsibleList,
+            statusFilesIdsToSave: this._statusFilesIdsToSave
         };
     };
     StatusManagementHandler.prototype.processTree = function (tree, index, breadCrumb) {

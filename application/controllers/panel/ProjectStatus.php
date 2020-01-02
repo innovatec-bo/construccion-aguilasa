@@ -358,30 +358,35 @@ class ProjectStatus extends PrivateController
 
     public function saveStatusFiles()
     {
-        $imageId = NULL;
         $fileHandler = new FileHandler();
         if (!empty($_FILES['file']['name']))
         {
             try
             {
-                $image = $fileHandler->fileUpload($_FILES['file'], "project_status_file", "images");
+                if($_FILES['file']['type'] == 'application/pdf')
+                    $image = $fileHandler->fileUpload($_FILES['file'], "project_status_file", "documents", "document");
+                else
+                    $image = $fileHandler->fileUpload($_FILES['file'], "project_status_file", 'images');
                 $image->save();
+
+                // if($_FILES['file']['type'] == 'application/pdf')
+                // {
+                //     echo json_encode(assets_url('images/pdf-icon.png'));
+                // }
+                // else
+                // {
+                    
+                // }
+                $imageSource = $fileHandler->getThumbnail($image, 160, 90);
                 $imageId = $image->getId();
+                echo json_encode($imageId);
+                exit;
             }
             catch(Exception $e)
             {
+                header("HTTP/1.0 400 Bad Request");
                 echo json_encode($e->getMessage());exit;
             }
         }
-        $imageSource = $fileHandler->getThumbnail($image, 160, 90);
-
-        // $mainSlider = $mainSlider->toArray();
-        // $item = array(
-        //     "id" => $mainSlider["id_msl"],
-        //     "title1" => $mainSlider["title1_msl"],
-        //     "title2" => $mainSlider["title2_msl"],
-        //     "imageSrc" => $imageSource
-        // );
-        echo json_encode($imageSource);exit;
     }
 }
