@@ -354,6 +354,8 @@ var StatusManagementHandler = /** @class */ (function () {
                 url: base_url + "panel/projectStatus/saveStatusFiles",
                 paramName: "file",
                 maxFilesize: 30,
+                parallelUploads: 15,
+                maxFiles: 15,
                 acceptedFiles: ".pdf, .jpg, .jpeg, .png",
                 autoProcessQueue: false
             });
