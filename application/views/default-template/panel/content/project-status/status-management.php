@@ -14,7 +14,7 @@
 </div>
 <script id="ht-image-slide" type="text/x-handlebars-template">    
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-        <a href="{{base_url}}{{fileUrl}}" itemprop="contentUrl" data-size="700x500">
+        <a href="{{base_url}}{{fileUrl}}" itemprop="contentUrl" data-size="1000x1000"  title="{{fileName}}">
             <img src="{{base_url}}{{fileUrl}}" itemprop="thumbnail" alt="{{fileName}}" />
         </a>
         <figcaption itemprop="caption description">{{fileName}}</figcaption>
@@ -22,7 +22,7 @@
 </script>
 <script id="ht-document-slide" type="text/x-handlebars-template">    
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-        <a href="{{base_url}}{{fileUrl}}" itemprop="contentUrl" data-size="700x500">
+        <a href="{{base_url}}{{fileUrl}}" target="_blank" title="{{fileName}}">
             <img src="{{base_url}}assets/images/pdf-icon.png" itemprop="thumbnail" alt="{{fileName}}" />
         </a>
         <figcaption itemprop="caption description">{{fileName}}</figcaption>

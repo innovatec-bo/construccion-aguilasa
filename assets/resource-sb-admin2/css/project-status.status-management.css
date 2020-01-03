@@ -259,3 +259,20 @@ blockquote dl
 .my-gallery figcaption {
   display: none;
 }
+.my-document-list {
+  width: 100%;
+  float: left;
+}
+.my-document-list img {
+  width: 100%;
+  height: auto;
+}
+.my-document-list figure {
+  display: block;
+  float: left;
+  margin: 0 5px 5px 0;
+  width: 30px;
+}
+.my-document-list figcaption {
+  display: none;
+}

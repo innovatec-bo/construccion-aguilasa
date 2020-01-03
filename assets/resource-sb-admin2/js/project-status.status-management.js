@@ -342,3 +342,18 @@ Handlebars.registerHelper("slides", function( input ){
     
     return html;
 });
+Handlebars.registerHelper("document_list", function( input ){
+    // var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+    //     commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+    
+    let $template = $("#ht-document-slide");
+    let htmlSource   = $template.html();
+    let template = Handlebars.compile(htmlSource);    
+    let imageList = JSON.parse(input);
+    let html = "";
+    $.each(imageList, function(index, value){        
+        html += template(value);
+    });
+    
+    return html;
+});

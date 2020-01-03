@@ -121,6 +121,14 @@
                                 </div>
                             </dd>
                         {{/ifCond}}
+                        {{#ifCond documents_list "!=" null}}
+                            <dt>Documentos</dt>
+                            <dd>
+                                <div class="my-document-list" itemscope itemtype="http://schema.org/ImageGallery">
+                                    {{{document_list documents_list}}}
+                                </div>
+                            </dd>
+                        {{/ifCond}}
                     </dl>
                 </blockquote>
             {{/ifCond}}

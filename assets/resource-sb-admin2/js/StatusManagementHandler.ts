@@ -439,7 +439,7 @@ class StatusManagementHandler
             let myDropzone = new Dropzone("#dropzone",{
             url: base_url + "panel/projectStatus/saveStatusFiles",
             paramName: "file",
-            maxFilesize: 30,
+            maxFilesize: 5,
             parallelUploads: 15,
             maxFiles: 15,
             acceptedFiles: ".pdf, .jpg, .jpeg, .png",
