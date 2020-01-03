@@ -216,6 +216,9 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement('bootstrap.social');
         $this->complementHandler->addViewComplement('dropzone');
+        $this->complementHandler->addViewComplement('photoswipe');
+        $this->complementHandler->addViewComplement('photoswipe-default-skin');
+        $this->complementHandler->addViewComplement('photoswipe-ui-default');
         $this->complementHandler->addProjectCss('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('project.status-management.wizardv2');
         $this->complementHandler->addProjectJs('StatusManagementHandler',TRUE);

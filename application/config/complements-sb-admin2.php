@@ -94,3 +94,8 @@ $config['complements']['perfect-scrollbar']['js'] = assets_url('resource-sb-admi
 
 $config['complements']['dropzone']['css'] = assets_url('resource-sb-admin2/plugins/dropzone/dropzone.css');
 $config['complements']['dropzone']['js'] = assets_url('resource-sb-admin2/plugins/dropzone/dropzone.js');
+
+$config['complements']['photoswipe']['css'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/photoswipe.css');
+$config['complements']['photoswipe-default-skin']['css'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/default-skin/default-skin.css');
+$config['complements']['photoswipe']['js'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/photoswipe.js');
+$config['complements']['photoswipe-ui-default']['js'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/photoswipe-ui-default.min.js');

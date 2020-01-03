@@ -7,6 +7,7 @@ declare let Object: any;
 declare let window: any;
 declare let Swal: any;
 declare let Dropzone: any;
+declare let initPhotoSwipeFromDOM : any;
 class StatusManagementHandler
 {
     private statusSet: string;
@@ -174,6 +175,7 @@ class StatusManagementHandler
                 let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory};
                 let html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
+                initPhotoSwipeFromDOM('.my-gallery');
             }
         });
     }

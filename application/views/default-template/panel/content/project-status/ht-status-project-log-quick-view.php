@@ -113,9 +113,18 @@
                             <dt>Observaciones</dt>
                             <dd>{{log_detail_psl}}</dd>
                         {{/ifCond}}
+                        {{#ifCond images_list "!=" null}}
+                            <dt>Imagenes</dt>
+                            <dd>
+                                <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+                                    {{{slides images_list}}}
+                                </div>
+                            </dd>
+                        {{/ifCond}}
                     </dl>
                 </blockquote>
             {{/ifCond}}
         {{/ifCond}}
     {{/each}}
 </script>
+

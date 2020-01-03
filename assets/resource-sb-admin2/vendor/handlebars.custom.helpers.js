@@ -213,3 +213,6 @@
 
         return response;
     });
+    Handlebars.registerHelper('base_url',function(value, context){
+        return base_url;
+    });

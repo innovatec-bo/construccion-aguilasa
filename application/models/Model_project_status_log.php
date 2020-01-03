@@ -55,7 +55,7 @@ class Model_project_status_log extends Model_project_status_log_base
             live_line_prb,
             right_of_way_prb,
             manpower_file_id_prb,
-            hash_fil file_hash,
+            mpf.hash_fil file_hash,
             start_date_cas,
             end_date_cas,
             estimated_time_cas,
@@ -67,7 +67,10 @@ class Model_project_status_log extends Model_project_status_log_base
             transportation_reb,
             live_line_reb,
             right_of_way_reb,
-            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) total_budget
+            (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) total_budget,
+            images.images_list,
+            documents.documents_list
+            
         FROM
                 wfl_project_status_log
         LEFT JOIN wfl_project_status ON status_id_psl = id_pst
@@ -76,7 +79,37 @@ class Model_project_status_log extends Model_project_status_log_base
         LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
         LEFT JOIN wfl_project_real_budgets on id_psl = status_log_id_reb
         LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
-        LEFT JOIN sys_files on manpower_file_id_prb = id_fil
+        LEFT JOIN sys_files mpf on manpower_file_id_prb = mpf.id_fil
+        LEFT JOIN (
+            SELECT
+                status_log_id_psf,
+                CONCAT('[',
+                        GROUP_CONCAT(
+                            CONCAT('{','\"fileName\":\"',uploadfilename_fil,'\",\"fileUrl\":\"',url_fil,'\",\"extension\":\"',extension_fil,'\"}')
+                        )
+                ,']')
+                 images_list
+            FROM
+                wfl_project_status_files
+            LEFT JOIN sys_files on id_fil = file_id_psf
+            where extension_fil != 'PDF'
+            GROUP BY status_log_id_psf
+            ) images on id_psl = images.status_log_id_psf
+        LEFT JOIN (
+            SELECT
+                status_log_id_psf,
+                CONCAT('[',
+                        GROUP_CONCAT(
+                            CONCAT('{','\"fileName\":\"',uploadfilename_fil,'\",\"fileUrl\":\"',url_fil,'\",\"extension\":\"',extension_fil,'\"}')
+                        )
+                ,']')
+                 documents_list
+            FROM
+                wfl_project_status_files
+            LEFT JOIN sys_files on id_fil = file_id_psf
+            where extension_fil = 'PDF'
+            GROUP BY status_log_id_psf
+            ) documents on id_psl = documents.status_log_id_psf
         LEFT JOIN (
             SELECT
                 status_log_id_slr,

@@ -133,6 +133,7 @@ var StatusManagementHandler = /** @class */ (function () {
                 var data = { projectLog: response, allowUpdateHistory: allowUpdateHistory };
                 var html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
+                initPhotoSwipeFromDOM('.my-gallery');
             }
         });
     };
