@@ -572,7 +572,7 @@ class StatusManagementHandler
         if($form.parsley().isValid({group: statusKeyword}))
         {
             blockArea($content);
-            if(Dropzone.instances.length > 0)
+            if(Dropzone.instances.length > 0 && Dropzone.instances[0].getQueuedFiles().length > 0)
             {
                 Dropzone.instances[0].processQueue();
                 Dropzone.instances[0].on('queuecomplete', function() {

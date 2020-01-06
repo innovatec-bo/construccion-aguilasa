@@ -353,7 +353,7 @@ var StatusManagementHandler = /** @class */ (function () {
             var myDropzone = new Dropzone("#dropzone", {
                 url: base_url + "panel/projectStatus/saveStatusFiles",
                 paramName: "file",
-                maxFilesize: 1,
+                maxFilesize: 5,
                 parallelUploads: 15,
                 maxFiles: 15,
                 acceptedFiles: ".pdf, .jpg, .jpeg, .png",
@@ -468,7 +468,7 @@ var StatusManagementHandler = /** @class */ (function () {
         var _this = this;
         if ($form.parsley().isValid({ group: statusKeyword })) {
             blockArea($content);
-            if (Dropzone.instances.length > 0) {
+            if (Dropzone.instances.length > 0 && Dropzone.instances[0].getQueuedFiles().length > 0) {
                 Dropzone.instances[0].processQueue();
                 Dropzone.instances[0].on('queuecomplete', function () {
                     _this.chooseMethod(statusKeyword, statusId, button);
