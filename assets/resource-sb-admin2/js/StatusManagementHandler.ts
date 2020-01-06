@@ -435,6 +435,10 @@ class StatusManagementHandler
         let $dropzone = $('#dropzone');
         if($dropzone.length > 0)
         {
+            if(Dropzone.instances.length > 0)
+            {
+                Dropzone.instances[0].destroy()
+            }
             // Dropzone
             let myDropzone = new Dropzone("#dropzone",{
             url: base_url + "panel/projectStatus/saveStatusFiles",
