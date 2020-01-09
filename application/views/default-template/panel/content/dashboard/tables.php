@@ -25,6 +25,7 @@
                                 <input type="hidden" name="columns-to-download" value=''>
                                 <div class="form-group input-group">
                                     <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
+                                        <option value="" selected></option>
                                     </select>
                                     <span class="input-group-btn">
 <!--                                        <button class="btn btn-primary btn-sm" type="button"><i class="fa fa-plus"></i>-->

@@ -18,6 +18,31 @@ class AjaxTrackingList extends PrivateController
         }
     }
 
+    // public function select2()
+    // {
+    //     $term = $this->input->post("term");
+    //     $limit = $this->input->post("limit");
+    //     $page = $this->input->post("page");
+    //     $offset = ($page-1)*$limit;
+    //     $users = Model_role::search($term, $limit, $offset, 'rolename_rol', 'asc', array('rolename_rol'));
+    //     $recordsFiltered = Model_role::searchTotalCount($term, array('rolename_rol'));
+
+    //     $resultArray = array();
+    //     $list = array();
+
+    //     foreach ($users as $user)
+    //     {
+    //         $list[] = array(
+    //             "id" => $user->id_rol,
+    //             "text" => $user->rolename_rol
+    //         );
+    //     }
+    //     $moreResults = ($page * $limit) < $recordsFiltered;
+    //     $resultArray['list'] = $list;
+    //     $resultArray['pagination'] = array("more" => $moreResults);
+    //     echo json_encode($resultArray);exit ;
+    // }
+
     public function select2()
     {
         $term = $this->input->post("term");
@@ -41,7 +66,7 @@ class AjaxTrackingList extends PrivateController
         $moreResults = ($page * $limit) < $recordsFiltered;
         $resultArray['list'] = $list;
         $resultArray['pagination'] = array("more" => $moreResults);
-        echo json_encode($resultArray);exit;
+        echo json_encode($resultArray);exit ;
     }
     public function saveTrackingList()
     {
