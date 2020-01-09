@@ -49,7 +49,7 @@ class AjaxTrackingList extends PrivateController
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");
         $offset = ($page-1)*$limit;
-        $trackingList = Model_tracking_list::search($term, $limit, $offset, 'list_name_trl', 'asc', array('list_name_trl'));
+        $trackingList = Model_tracking_list::search($term, $limit, $offset, 'createdon_trl', 'desc', array('list_name_trl'));
         $recordsFiltered = Model_tracking_list::searchTotalCount($term, array('list_name_trl'));
 
         $resultArray = array();
