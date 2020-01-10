@@ -241,13 +241,50 @@ function saveTrackingList()
             $formData.unblock();
             var messageType = "error";
             if(response.success == 1)
+            {
                 messageType = "success";
-
-            swal({ title:'', text:response.message, type:messageType});
-            $("#workflow-additional-actions3").prop("checked", true);
-            $("input[name=tracking-list-name]").closest("div").slideUp();
-            $('.select2.tracking-list').select2('destroy');
-            startSelect2TrackingList()
+                swal({ title:'', text:response.message, type:messageType});
+                $("#workflow-additional-actions3").prop("checked", true);
+                $("input[name=override-list]").val("0");
+                $("input[name=tracking-list-name]").closest("div").slideUp();
+                $('.select2.tracking-list').select2('destroy');
+                startSelect2TrackingList();
+            }
+            else
+            {
+                if(response.overrideExisting !== undefined)
+                {
+                    swal({
+                        title:'La lista ya existe',
+                        html:response.message,
+                        showCancelButton: true,
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Sobre escribir!',
+                        allowOutsideClick:false
+                    }).then((result) => {
+                        if (result.value)
+                        {
+                            $("input[name=override-list]").val("1");
+                            saveTrackingList();
+                        }
+                        else
+                        {
+                            $("#workflow-additional-actions3").prop("checked", true);
+                            $("input[name=override-list]").val("0");
+                            $("input[name=tracking-list-name]").closest("div").slideUp();
+                            $('.select2.tracking-list').select2('destroy');
+                            startSelect2TrackingList();
+                        }
+                    });
+                }
+                else
+                {
+                    messageType = "error";
+                    swal({ title:'', text:response.message, type:messageType});
+                }
+            }
+           
+            
 
         }
     });

@@ -23,6 +23,7 @@
                             <form name="workflow-report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
                                 <input type="hidden" name="workflow-column-list" value='<?=json_encode($workflowColumnList)?>'>
                                 <input type="hidden" name="columns-to-download" value=''>
+                                <input type="hidden" name="override-list" value="0">
                                 <div class="form-group input-group">
                                     <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
                                         <option value="" selected></option>

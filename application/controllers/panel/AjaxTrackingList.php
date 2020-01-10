@@ -74,22 +74,42 @@ class AjaxTrackingList extends PrivateController
         $trackingListId = isset($formData["tracking-list-id"])?$formData["tracking-list-id"]:"";
         $additionalAction = $formData["workflow-additional-actions"];
         $trackingListName = $formData["tracking-list-name"];
+        $overrideList = $formData["override-list"];
         $codeList = $formData["code-list"];
         $response = array("success" => 0, "message" => "Algo salio mal, por favor intente de nuevo");
         switch ($additionalAction)
         {
             case "1":
-                if($trackingListName != "" && $codeList != "")
+                $trackingList = Model_tracking_list::getByName($trackingListName);
+                if($trackingList instanceof Model_tracking_list)
                 {
-                    $trackingList = new Model_tracking_list($trackingListName, $codeList);
-                    $trackingList->save();
-                    $response = array("success" => 1, "message" => "Se creó una nueva lista de seguimiento");
+                    if($overrideList == 1)
+                    {
+                        //Delete the current tracking list and create another   
+                        $newTrackingList = clone $trackingList;
+                        $newTrackingList->setCodeList($codeList);
+                        $newTrackingList->save();
+                        $trackingList->delete();
+                        $response = array("success" => 1, "message" => "Se sobre escribio una lista de seguimiento");
+                    }
+                    else
+                    {
+                        $response = array("success" => 0, "message" => "La lista de seguimiento '<strong>".$trackingListName."</strong>' ya existe, desea sobre escribirla?", "overrideExisting" => 1);
+                    }
                 }
                 else
                 {
-                    $response = array("success" => 0, "message" => "El nombre de la lista y/o la lista de códigos estan vacios");
+                    if($trackingListName != "" && $codeList != "")
+                    {
+                        $trackingList = new Model_tracking_list($trackingListName, $codeList);
+                        $trackingList->save();
+                        $response = array("success" => 1, "message" => "Se creó una nueva lista de seguimiento");
+                    }
+                    else
+                    {
+                        $response = array("success" => 0, "message" => "El nombre de la lista y/o la lista de códigos estan vacios");
+                    }    
                 }
-
                 break;
             case "2":
                 if($trackingListId != "")
