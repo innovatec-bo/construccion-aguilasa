@@ -5,22 +5,22 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
-$statusName = "Este proyecto no esta etapa";
-$projectOnCurrentStage = FALSE;
-$disableStatus = FALSE;
-if($project["status_pro"] == 20)
-{
-    $statusName = "Este proyecto ha sido devuelto a CRE";
-    $disableStatus = TRUE;
-}
-elseif(isset($statusList[$project["status_pro"]]))
-{
-    $projectOnCurrentStage = TRUE;
-    $statusName = $statusList[$project["status_pro"]]->getName();
-}
-$projectSystem = $projectSystems[$project["system_pro"]];
-$entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
-$entryDate = date_format($entryDate, 'd-m-Y');
+// $statusName = "Este proyecto no esta etapa";
+// $projectOnCurrentStage = FALSE;
+// $disableStatus = FALSE;
+// if($project["status_pro"] == 20)
+// {
+//     $statusName = "Este proyecto ha sido devuelto a CRE";
+//     $disableStatus = TRUE;
+// }
+// elseif(isset($statusList[$project["status_pro"]]))
+// {
+//     $projectOnCurrentStage = TRUE;
+//     $statusName = $statusList[$project["status_pro"]]->getName();
+// }
+// $projectSystem = $projectSystems[$project["system_pro"]];
+// $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
+// $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
@@ -95,7 +95,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
             </div>
         </div>
         <div class="col-md-2 col-xs-12">
-            <div class="panel panel-info status-management-card">
+            <div class="panel panel-info status-management-card {{viewData.showBtnEditConstructionAssignments}} asd">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
@@ -109,7 +109,7 @@ $entryDate = date_format($entryDate, 'd-m-Y');
                 </div>
             </div>
         </div>
-        {{#ifCond showBtnEditConstructionAssignments "==" 1}}
+        {{#ifCond viewData.showBtnEditConstructionAssignments "==" 1}}
         <div class="col-md-2 col-xs-12">
             <button type="button" class="btn btn-danger edit-construction-assignments">REASIGNAR<br>CONSTRUCCION</button>
         </div>

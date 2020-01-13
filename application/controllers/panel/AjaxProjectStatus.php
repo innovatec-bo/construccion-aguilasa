@@ -678,7 +678,7 @@ class AjaxProjectStatus extends PrivateController
             $response["success"] = 1;
             $response["message"] = "Se actualizaron los puntos y distancia.";
         }
-
+        // echo"<pre>";var_dump($formData['responsibleIds']);exit;
         if(isset($formData["responsibleIds"]))
         {
             $projectId = $formData["projectId"];
@@ -692,6 +692,7 @@ class AjaxProjectStatus extends PrivateController
                             "stopped",
                             "completed",
                             "as_built",
+                            "project_energized",
                             "conciliation_reception",
                             "conciliation_shipment",
                             "cre_return_order",

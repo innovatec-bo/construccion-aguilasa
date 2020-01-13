@@ -96,10 +96,10 @@ class StatusManagementHandler
             statusName = statusList[project.status_pro].status_name_pst
         }
 
-        let showBtnEditConstructionAssignments = false;
+        let showBtnEditConstructionAssignments = 0;
         if(this.statusSet == "building" && this.loadViewResponse.data.updateHistory == 1)
         {
-            showBtnEditConstructionAssignments = true;
+            showBtnEditConstructionAssignments = 1;
         }
 
         this.viewData.statusName = statusName;

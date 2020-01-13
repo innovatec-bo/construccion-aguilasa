@@ -63,9 +63,9 @@ var StatusManagementHandler = /** @class */ (function () {
         else if (statusList.hasOwnProperty(project.status_pro)) {
             statusName = statusList[project.status_pro].status_name_pst;
         }
-        var showBtnEditConstructionAssignments = false;
+        var showBtnEditConstructionAssignments = 0;
         if (this.statusSet == "building" && this.loadViewResponse.data.updateHistory == 1) {
-            showBtnEditConstructionAssignments = true;
+            showBtnEditConstructionAssignments = 1;
         }
         this.viewData.statusName = statusName;
         this.viewData.project = project;
