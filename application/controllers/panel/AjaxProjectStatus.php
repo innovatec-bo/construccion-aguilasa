@@ -707,7 +707,7 @@ class AjaxProjectStatus extends PrivateController
                     //let's remove the current responsible
                     Model_status_log_responsible::removeResponsibleByStatusLogId($statusLogId);
                     //If the step is "assign_to" then let's remove the builder form responsible list. On assign_to only is defined the fiscal.
-                    if($record["keyword_pst"] == "assign_to")
+                    if($record["keyword_pst"] == "assign_to" || $record['keyword_pst'] == 'project_return_materials' || $record['keyword_pst'] == 'cre_return_order' || $record['keyword_pst'] == 'conciliation_reception' || $record['keyword_pst'] == 'conciliation_shipment')
                     {
                         $responsibleIdsForAssignToStep = $responsibleIds;
                         unset($responsibleIdsForAssignToStep[1]);
