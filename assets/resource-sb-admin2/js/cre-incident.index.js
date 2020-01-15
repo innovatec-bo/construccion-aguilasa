@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $("#project-list").DataTable();
+    $("[data-toggle=tooltip]").tooltip();
 });
 
 function blockArea(content)

@@ -26,6 +26,7 @@ class Incident extends PublicController
         $user = Model_user::getById($userId);
         $data['projectList'] = $projectList;
         $data['userId'] = $userId;
+        $data['user'] = $user->toArray();
         $this->_tabTitle = "Incidencias";
         $this->_loadPublicView('incident/index', $data);
 	}

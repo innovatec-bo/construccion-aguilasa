@@ -4,6 +4,7 @@
             <div class="title-system-panel panel panel-default">
                 <div class="panel-heading">
                     <h1 class="system-title text-center">Mis Proyectos</h1>
+                    <span class="label label-info"><?=$user['firstname_usr'].' '.$user['lastname_usr']?> <i class="fa fa-user"></i></span>
                 </div>
             </div>
         </div>
@@ -50,7 +51,7 @@
                                                         <td>".$row['detail_pro']."</td>
                                                         <td>".$row['status_name_pst']."</td>
                                                         <td>".$row['address_pro']."</td>
-                                                        <td><a target='_self' href='".base_url('Incident/project/'.$dataEncrypted)."' class='btn btn-social-icon btn-info btn-xs'><i class='fa fa-flag'></i></a></td>
+                                                        <td><a target='_self' href='".base_url('Incident/project/'.$dataEncrypted)."' class='btn btn-social-icon btn-info btn-xs'data-original-title='Ir al formulario de incidencias' data-toggle='tooltip' data-placement='top'><i class='fa fa-flag'></i></a></td>
                                                     </tr>
                                                 ";
                                             }

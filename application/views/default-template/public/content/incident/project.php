@@ -11,6 +11,7 @@
                         $dataEncrypted = $myEncrypt->encode($dataToEncrypt);
                         $url = base_url('Incident/'.$dataEncrypted);
                     ?>
+                    <span class="label label-info"><?=$user['firstname_usr'].' '.$user['lastname_usr']?> <i class="fa fa-user"></i></span>
                     <a href="<?=$url?>" class="btn btn-outline btn-default btn-xs">Ir al Inicio <i class="fa fa-home"></i></a>
                 </div>
             </div>
@@ -27,7 +28,7 @@
         <div class="col-md-offset-1 col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Mi registro de incidencias
+                    Incidencias registradas previamente en este proyecto
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -57,6 +58,8 @@
                                         '; 
                                     }
                                     echo $html;
+                                    if(count($incidentList) <= 0)
+                                        echo "<span style='color:#ffffff'>No has registrado incidencias en este proyecto.</span>";
                                 ?>                    
                             </div>        
                         </div>
