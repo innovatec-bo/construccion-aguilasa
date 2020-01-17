@@ -2,28 +2,28 @@
  * Created by Jair on 10/01/2018.
  */
 
-var statusSet = [];
-statusSet["46"] = "design";
-statusSet["1"] = "design";
-statusSet["2"] = "design";
-statusSet["20"] = "design";
-statusSet["3"] = "design";
-statusSet["5"] = "design";
-statusSet["6"] = "design";
+// var statusSet = [];
+// statusSet["46"] = "design";
+// statusSet["1"] = "design";
+// statusSet["2"] = "design";
+// statusSet["20"] = "design";
+// statusSet["3"] = "design";
+// statusSet["5"] = "design";
+// statusSet["6"] = "design";
 
-statusSet["9"] = "approvement";
-statusSet["10"] = "approvement";
-statusSet["11"] = "approvement";
-statusSet["12"] = "approvement";
+// statusSet["9"] = "approvement";
+// statusSet["10"] = "approvement";
+// statusSet["11"] = "approvement";
+// statusSet["12"] = "approvement";
 
-statusSet["13"] = "rectify_design";
-statusSet["15"] = "rectify_design";
-statusSet["16"] = "rectify_design";
-statusSet["17"] = "rectify_design";
+// statusSet["13"] = "rectify_design";
+// statusSet["15"] = "rectify_design";
+// statusSet["16"] = "rectify_design";
+// statusSet["17"] = "rectify_design";
 
-statusSet["14"] = "rectify_illustration";
-statusSet["18"] = "rectify_illustration";
-statusSet["19"] = "rectify_illustration";
+// statusSet["14"] = "rectify_illustration";
+// statusSet["18"] = "rectify_illustration";
+// statusSet["19"] = "rectify_illustration";
 
 // el proyecto en estado 21(asignacion no va a ninguno de los procesos)
 // statusSet["21"] = "warehouse";
@@ -32,20 +32,20 @@ statusSet["19"] = "rectify_illustration";
 // statusSet["24"] = "warehouse";
 // statusSet["25"] = "warehouse";
 
-statusSet["21"] = "building";
-statusSet["27"] = "building";
-statusSet["28"] = "building";
-statusSet["29"] = "building";
-statusSet["30"] = "building";
-statusSet["31"] = "building";
-statusSet["32"] = "building";
-statusSet["33"] = "building";
-statusSet["34"] = "building";
-statusSet["35"] = "building";
-statusSet["38"] = "building";
-statusSet["39"] = "building";
-statusSet["47"] = "building";
-statusSet["45"] = "building";
+// statusSet["21"] = "building";
+// statusSet["27"] = "building";
+// statusSet["28"] = "building";
+// statusSet["29"] = "building";
+// statusSet["30"] = "building";
+// statusSet["31"] = "building";
+// statusSet["32"] = "building";
+// statusSet["33"] = "building";
+// statusSet["34"] = "building";
+// statusSet["35"] = "building";
+// statusSet["38"] = "building";
+// statusSet["39"] = "building";
+// statusSet["47"] = "building";
+// statusSet["45"] = "building";
 
 $(document).ready(function() {
 

@@ -214,10 +214,11 @@ class PrivateController extends PublicController
         $this->complementHandler->addViewComplement("handlebars");
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("font-awesome");
+        $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('general-custom-style');
         $this->complementHandler->addViewComplement("jquery.blockui");
         $this->complementHandler->addProjectJs('IncidentHandler');
-        $this->complementHandler->addProjectJs('general-scripts');
+        $this->complementHandler->addProjectJs('general-scripts', TRUE);
         $this->_projectSystems = array(
             1 => "Sistema Santa Cruz",
             2 => "Sistema Velasco",
@@ -236,6 +237,7 @@ class PrivateController extends PublicController
         $contentData["contentView"] = $contentView;
         $contentData["sessionUser"] = $this->sessionUser;
         $contentData["isSuperAdmin"] = $this->_is("super_admin");
+        $contentData["showProjectQuickSearch"] = $this->_validateFeature('project_quick_search', TRUE);
         $featureList = unserialize($this->sessionUser->featureList);
         $treeFeatureHtml = Model_feature::drawTreeHtml(NULL,$featureList,array());
         $contentData["treeFeatureHtml"] = $treeFeatureHtml;

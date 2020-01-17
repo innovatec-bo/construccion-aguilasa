@@ -330,4 +330,27 @@ class AjaxProject extends PrivateController
         }
         echo json_encode($result);exit;
     }
+
+    public function getByCodeList()
+    {
+        $this->_validateFeature('project_quick_search');
+        $formData = $this->input->post();
+        $codeList = $formData['codeList'];
+        $codeList = explode(" ", $codeList);
+        $projectList = Model_project::getByCodeList($codeList);
+        $projectIds = array_keys($projectList);
+        $projectData = array();
+        foreach ($projectList as $row) 
+        {
+            $row = $row->toArray();
+            $projectData[] = array(
+                "id" => $row["id_pro"],
+                "status" => $row["status_pro"]
+            );
+        }
+        $result['success'] = 1;
+        $result['message'] = '';
+        $result['data']['projectList'] = $projectData;
+        echo json_encode($result);exit;
+    }
 }

@@ -187,6 +187,26 @@ class Model_project extends Model_project_base
         return $result;
     }
 
+    public static function getByCodeList($codeList)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $escapedList = "";
+        foreach ($codeList as $code) 
+        {
+            $escapedList .= $ci->db->escape($code).", ";
+        }
+        $escapedList = substr($escapedList, 0, -2);
+        $sql = "
+            select * from ".static::TABLE_NAME." where ".static::notDeleted()." and code_pro in(".$escapedList.")
+        ";
+
+        $query = $ci->db->query($sql);
+        $result = static::recastArray(get_called_class(), $query->result());
+        return $result;
+    }
+
     public static function getBySecondaryCode($secondaryCode)
     {
         $ci = &get_instance();

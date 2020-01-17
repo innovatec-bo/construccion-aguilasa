@@ -210,6 +210,21 @@
             </ul>
             <!-- /.dropdown-alerts -->
         </li>
+        <li>
+            <?php
+            if($showProjectQuickSearch == 1)
+            {
+            ?>
+            <form class="navbar-form navbar-left" id="quick-project-search-form">
+                <div class="form-group"> 
+                    <input class="form-control" id="quick-project-search-input" placeholder="Buscar proyecto">
+                </div> 
+                <button type="submit" class="btn btn-primary btn-sm" data-original-title="ABRIR ADMINISTRACION DE ESTADOS" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-eye"></i></button>
+            </form>
+            <?php
+            }
+            ?>
+        </li>
         <!-- /.dropdown -->
         <li class="dropdown navigation-user-options">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
