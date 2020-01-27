@@ -62,6 +62,9 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("google.maps.api");
+        $this->complementHandler->addViewComplement("gmaps");
+        $this->complementHandler->addProjectJs('gmaps-script-handler');
         $this->complementHandler->addProjectCss('project.add', TRUE);
         $this->complementHandler->addProjectJs('project.add', TRUE);
 
@@ -130,10 +133,12 @@ class Project extends PrivateController
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
             $detail = $formData["project-detail"];
+            $latitude = $formData["latitude"];
+            $longitude = $formData["longitude"];
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude);
             $project->save();
             //Let's search the status responsible
             $responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created");
@@ -173,6 +178,9 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("google.maps.api");
+        $this->complementHandler->addViewComplement("gmaps");
+        $this->complementHandler->addProjectJs('gmaps-script-handler');
         $this->complementHandler->addProjectCss('project.edit',TRUE);
         $this->complementHandler->addProjectJs('project.edit', TRUE);
 
@@ -248,9 +256,11 @@ class Project extends PrivateController
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
             $detail = $formData["project-detail"];
+            $latitude = $formData["latitude"];
+            $longitude = $formData["longitude"];
 
-            $project->setProjectName($projectName);
-            $project->setCode($projectCode);
+            $project->setLatitude($latitude);
+            $project->setLongitude($longitude);
             if($projectStatus != "")
             {
                 $project->setStatus($projectStatus);

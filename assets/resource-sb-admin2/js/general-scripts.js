@@ -287,3 +287,11 @@ function openProyect()
 {
 
 }
+
+function timbthumbImage(url, width, height)
+{
+    width = width == "" || width == undefined?"":"&w="+width;
+    height = height == "" || height == undefined ?"":"&w="+height;
+    let response = base_url+"/timthumb/timthumb.php?src="+url+width+height;
+    return response;
+}

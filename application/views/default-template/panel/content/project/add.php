@@ -25,6 +25,10 @@
                 <div class="panel-body">
                     <form role="form" method="post" name="project-add-form" data-parsley-validate data-parsley-excluded="input[disabled]">
                         <input type="hidden" name="project-id" value="">
+                        <div class="hide">
+                            <input name="latitude" value="<?=set_value('latitude')?>" type="text" required>
+                            <input name="longitude" value="<?=set_value('longitude')?>" type="text" required data-parsley-errors-container="#map-location-error-message-parsley" data-parsley-error-message="Debe marcar un punto en el mapa">
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -136,6 +140,25 @@
                                 <div class="form-group">
                                     <label>Dirección</label>
                                     <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="col-md-12">
+                                <label class="required" data-field="name">
+                                    <label>Ubicacion del proyecto</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-address-data" placeholder="Ingrese ubicacion">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary search-address-button" type="button">Buscar</button>
+                                        </span>
+                                    </div>
+                                </label><!-- /input-group -->
+                                <div class="map-fancy-framework">
+                                    <div id="maps" style="height: 300px;width: auto">
+                                    </div>
+                                    <em class="map-search-message"></em>
+                                    <div id="map-location-error-message-parsley"></div>
                                 </div>
                             </div>
                         </div>

@@ -23,6 +23,10 @@
                 </div>
                 <div class="panel-body">
                     <form role="form" method="post" name="proyect-edit-form" data-parsley-validate>
+                        <div class="hide">
+                            <input name="latitude" value="<?=set_value('latitude',$project["latitude_pro"])?>" type="text" required>
+                            <input name="longitude" value="<?=set_value('longitude',$project["longitude_pro"])?>" type="text" required data-parsley-errors-container="#map-location-error-message-parsley" data-parsley-error-message="Debe marcar un punto en el mapa">
+                        </div>
                         <input type="hidden" name="project-id" value="<?=$project["id_pro"]?>">
                         <div class="row">
                             <div class="col-md-3">
@@ -40,6 +44,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -165,6 +170,25 @@
                                 <div class="form-group">
                                     <label>Direccion</label>
                                     <input class="form-control" value="<?=set_value('project-address', $project["address_pro"])?>" required name="project-address" placeholder="Ubicación/dirección del proyecto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="col-md-12">
+                                <label class="required" data-field="name">
+                                    <label>Ubicacion del proyecto</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-address-data" placeholder="Ingrese ubicacion">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary search-address-button" type="button">Buscar</button>
+                                        </span>
+                                    </div>
+                                </label><!-- /input-group -->
+                                <div class="map-fancy-framework">
+                                    <div id="maps" style="height: 300px;width: auto">
+                                    </div>
+                                    <em class="map-search-message"></em>
+                                    <div id="map-location-error-message-parsley"></div>
                                 </div>
                             </div>
                         </div>
