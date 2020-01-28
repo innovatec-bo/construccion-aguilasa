@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     $('.input-group.year').datetimepicker({
         ignoreReadonly: true,
-        defaultDate: date,
+        // defaultDate: date,
         format: 'YYYY'
     });
 
