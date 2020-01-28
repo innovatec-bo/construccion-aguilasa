@@ -14,6 +14,12 @@ $(document).ready(function() {
         format: 'DD-MM-YYYY'
     });
 
+    $('.input-group.year').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'YYYY'
+    });
+
     $(document).on("click", ".save-project",function(e){
         e.preventDefault();
         var projectStatus = $(this).data("project-status");

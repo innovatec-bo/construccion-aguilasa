@@ -135,10 +135,12 @@ class Project extends PrivateController
             $detail = $formData["project-detail"];
             $latitude = $formData["latitude"];
             $longitude = $formData["longitude"];
+            $workArea = $formData['work-area'];
+            $projectYear = $formData['project-year'];
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
-                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude);
+                $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude, $workArea, $projectYear);
             $project->save();
             //Let's search the status responsible
             $responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created");
@@ -258,6 +260,8 @@ class Project extends PrivateController
             $detail = $formData["project-detail"];
             $latitude = $formData["latitude"];
             $longitude = $formData["longitude"];
+            $workArea = $formData['work-area'];
+            $projectYear = $formData['project-year'];
 
             $project->setLatitude($latitude);
             $project->setLongitude($longitude);
@@ -277,6 +281,8 @@ class Project extends PrivateController
             $project->setBudgetaryPosition($budgetaryPosition);
             $project->setContractId($contractId);
             $project->setDetail($detail);
+            $project->setWorkArea($workArea);
+            $project->setProjectYear($projectYear);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")

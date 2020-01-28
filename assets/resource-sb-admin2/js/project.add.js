@@ -11,6 +11,11 @@ $(document).ready(function() {
         defaultDate: date,
         format: 'DD-MM-YYYY'
     });
+    $('.input-group.year').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate: date,
+        format: 'YYYY'
+    });
     $(".input-masked").inputmask();
     $(document).on("click", ".save-project",function(e){
         e.preventDefault();

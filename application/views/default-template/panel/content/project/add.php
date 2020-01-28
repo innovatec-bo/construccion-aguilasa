@@ -36,6 +36,27 @@
                                     <input class="form-control" value="<?=set_value("project-code")?>" required name="project-code" placeholder="Ingrese el código del proyecto">
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Area de trabajo</label>
+                                    <select  class="form-control" name="work-area">
+                                        <option value="">Elija una area</option>
+                                        <option value="gis">GIS</option>
+                                        <option value="gir">GIR</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Año del proyecto</label>
+                                    <div class='input-group year'>
+                                        <input name="project-year" readonly class="form-control"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -57,20 +78,18 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fecha de ingreso</label>
-                                    <div class='input-group date' id='datetimepicker1'>
+                                    <div class='input-group date'>
                                         <input name="project-entry-date" readonly class="form-control" />
                                         <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fecha de folder</label>
-                                    <div class='input-group date' id='datetimepicker1'>
+                                    <div class='input-group date'>
                                         <input name="project-folder-date" readonly class="form-control" />
                                         <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -78,9 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Contrato</label>
                                     <select  class="form-control" name="project-contract-id" required>
@@ -96,9 +113,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fiscal de CRE</label>
 <!--                                    <input class="form-control" required value="--><?//=set_value("project-cre-fiscal")?><!--" name="project-cre-fiscal" placeholder="Fiscal de CRE">-->
@@ -118,7 +133,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Sistema</label>
                                     <select  class="form-control" name="project-system" required>
@@ -134,9 +149,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <div class="form-group">
                                     <label>Dirección</label>
                                     <input class="form-control" required name="project-address" placeholder="Ubicación/dirección del proyecto">
@@ -160,6 +173,7 @@
                                     <em class="map-search-message"></em>
                                     <div id="map-location-error-message-parsley"></div>
                                 </div>
+                                <br>
                             </div>
                         </div>
                         <div class="row form-inline">
@@ -176,7 +190,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Administrado por</label>
                                     <select  class="form-control" name="management-by" required>
@@ -192,9 +206,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Nivel de calidad</label>
                                     <select  class="form-control" name="quality-level" required>
@@ -209,7 +221,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Finalizacion de diseño (CRE)</label>
+                                    <label>Fin de diseño (CRE)</label>
                                     <div class='input-group date' id='datetimepicker2'>
                                         <input name="cre-design-completion-date" readonly class="form-control" />
                                         <span class="input-group-addon">
@@ -218,11 +230,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Finalizacion de construccion (CRE)</label>
+                                    <label>Fin de construccion (CRE)</label>
                                     <div class='input-group date' id='datetimepicker3'>
                                         <input name="cre-building-completion-date" readonly class="form-control" />
                                         <span class="input-group-addon">
