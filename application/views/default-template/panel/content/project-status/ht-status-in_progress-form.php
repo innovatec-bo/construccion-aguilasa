@@ -15,69 +15,82 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12 status-content">
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class='row'>
+                            <div class='col-md-5'>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Fecha de ingreso</label>
-                                            <div class="input-group date date-time-picker">
-                                                <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
-                                                <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Fecha de ingreso</label>
+                                                    <div class="input-group date date-time-picker">
+                                                        <input name="{{statusKeyword}}-entry-date" readonly="" class="form-control" required="" data-parsley-group="{{statusKeyword}}" data-parsley-errors-container="#error-{{statusKeyword}}-entry-date">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <div id="error-{{statusKeyword}}-entry-date"></div>
+                                                </div>
                                             </div>
-                                            <div id="error-{{statusKeyword}}-entry-date"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <fieldset>
+                                                    <!-- select by default the fiscal assigned by copa-->
+                                                    <label>Fiscal</label>
+                                                    <div class="form-group">
+                                                        <select disabled class="form-control select2 fiscal" multiple="multiple" data-parsley-required="" parsley-trigger="change">
+                                                            {{#each assignmentResponsibleFiscal}}
+                                                                <option value="{{id}}" selected > {{name}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <fieldset>
+                                                    <label>Constructor</label>
+                                                    <div class="form-group">
+                                                        <select class="form-control select2 builders" data-parsley-required="" parsley-trigger="change">
+                                                            {{#each responsibleGroup.responsibleListBuilder}}
+                                                                {{var "selected" ""}}
+                                                                {{#ifCond ../assignmentResponsibleBuilder.id '==' id_sre}}
+                                                                    {{var "selected" "selected"}}
+                                                                {{/ifCond}}
+                                                                <option {{selected}} value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="row hide">
+                                            <div class="col-md-6">
+                                                <fieldset>
+                                                    <label>Responsables de construccion</label><br>
+                                                    {{#each assignmentResponsible}}
+                                                    {{name}}<br>
+                                                    {{/each}}
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Observaciones</label>
+                                            <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <fieldset>
-                                            <!-- select by default the fiscal assigned by copa-->
-                                            <label>Fiscal</label>
-                                            <div class="form-group">
-                                                <select disabled class="form-control select2 fiscal" multiple="multiple" data-parsley-required="" parsley-trigger="change">
-                                                    {{#each assignmentResponsibleFiscal}}
-                                                        <option value="{{id}}" selected > {{name}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </fieldset>
-                                    </div>
+                            </div>
+                            <div class='col-md-7'>
+                                <div class="alert alert-info">                                    
+                                    <strong>Imagenes:</strong> Dimensiones maximas 5000X5000 pixeles y peso maximo 5MB.<br>
+                                    <strong>Documentos:</strong> Peso maximo 5MB.
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <fieldset>
-                                            <label>Constructor</label>
-                                            <div class="form-group">
-                                                <select class="form-control select2 builders" data-parsley-required="" parsley-trigger="change">
-                                                    {{#each responsibleGroup.responsibleListBuilder}}
-                                                        {{var "selected" ""}}
-                                                        {{#ifCond ../assignmentResponsibleBuilder.id '==' id_sre}}
-                                                            {{var "selected" "selected"}}
-                                                        {{/ifCond}}
-                                                        <option {{selected}} value="{{id_sre}}">{{firstname_usr}} {{lastname_usr}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div class="row hide">
-                                    <div class="col-md-6">
-                                        <fieldset>
-                                            <label>Responsables de construccion</label><br>
-                                            {{#each assignmentResponsible}}
-                                            {{name}}<br>
-                                            {{/each}}
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Observaciones</label>
-                                    <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>
-                                </div>
+                                <div class="well dropzone" id='dropzone'>
+                                    <!-- <h4 class='text-center'>Arrastre archivos aqui<br>o<br>haga clic para cargarlos</h4> -->
+                                </div>    
                             </div>
                         </div>
                     </div>

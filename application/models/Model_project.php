@@ -14,11 +14,12 @@ class Model_project extends Model_project_base
         parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode, $folderDate, $contractId, $detail, $energized, $projectPercentage, $latitude, $longitude, $workArea, $projectYear);
     }
 
-    public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
+    public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array())
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
+
 
         //Create the record about the points and distance and associate it to project status log
         $projectPoints = new Model_project_points($projectStatus->getId(), $points, $metersDistance);
@@ -26,6 +27,9 @@ class Model_project extends Model_project_base
 
         //Each statusLog needs to have a o more responsible by log
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
+
+        //If there is file ids added to status log, then let's save these        
+        Model_project_status_file::addFiles($projectStatus->getId(), $fileIds, $this->_id, $statusId);
     }
 
     /**
@@ -57,7 +61,7 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
-    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())
+    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array())
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
@@ -69,6 +73,9 @@ class Model_project extends Model_project_base
 
         //Each statusLog needs to have a o more responsible by log
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
+
+        //If there is file ids added to status log, then let's save these        
+        Model_project_status_file::addFiles($projectStatus->getId(), $fileIds, $this->_id, $statusId);
     }
 
     public function saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array())

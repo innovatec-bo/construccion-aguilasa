@@ -461,10 +461,11 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = $formData["rightOfWay"];
         $rightOfWay = str_replace(",","", $rightOfWay);
         $responsibleList = $formData["responsibleList"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -502,10 +503,11 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $formData["statusId"];
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         $warehouse = Model_warehouse::getByProjectId($project->getId());
         $warehouse->addStatusToLog(37, "El fiscal ha recibido la orden de devolucion a CRE", $entryDate);
         $response["success"] = 1;
@@ -526,10 +528,11 @@ class AjaxProjectStatus extends PrivateController
         $statusId = $status->getId();
         $statusDetail = $formData["statusDetail"];
         $responsibleList = $formData["responsibleList"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
         if($statusKeyword == "completed")
         {
@@ -579,11 +582,12 @@ class AjaxProjectStatus extends PrivateController
 
         $projectPoints = $formData["projectPoints"];
         $projectDistance = $formData["projectDistance"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
 //        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
