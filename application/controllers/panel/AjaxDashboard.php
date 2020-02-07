@@ -294,10 +294,20 @@ class AjaxDashboard extends PrivateController
     {
         $formData = $this->input->post();
         $contractId = $formData["contract"];
-        $contractList = Model_contract::getAll(100,0);
-
+        $contracts = Model_contract::getNotExpiredContracts();
+        foreach ($contracts as $data) 
+        {
+            $contractList[] = $data->toArray();
+        }
+        $i = 0;
         foreach ($contractList as $contract)
         {
+            $contract = (object)$contract;
+            if(date('Y-m-d H:i:s') > $contract->expiration_date_con)
+            {
+                continue;
+            }
+            
             if($contract->id_con == $contractId)
             {
                 $startDate = $contract->start_date_con;
@@ -314,8 +324,8 @@ class AjaxDashboard extends PrivateController
                 $startDate = $startDateArray[0];
                 $endDate = $endDateArray[0];
             }
+            $i++;
         }
-
         $totalDays = round(abs(strtotime($startDate) - strtotime($endDate))/86400);
         $daysProgress = round(abs(strtotime($startDate) - strtotime(date("Y-m-d")))/86400);
         $percentage =  ($daysProgress * 100) / $totalDays;
