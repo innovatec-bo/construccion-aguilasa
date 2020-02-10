@@ -102,3 +102,14 @@ $config['complements']['photoswipe-ui-default']['js'] = assets_url('resource-sb-
 
 $config['complements']['google.maps.api']['js'] = "https://maps.google.com/maps/api/js?key=AIzaSyAmvQYUvBW9AV2vdrNQzwRjXlojUClF-Zg";
 $config['complements']['gmaps']['js'] = assets_url('resource-sb-admin2/plugins/gmaps/gmaps.js');
+
+$config['complements']['fullcalendar.core.main']['css'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/core/main.css');
+$config['complements']['fullcalendar.daygrid.main']['css'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/daygrid/main.css');
+$config['complements']['fullcalendar.timegrid.main']['css'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/timegrid/main.css');
+$config['complements']['fullcalendar.core.main']['js'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/core/main.js');
+$config['complements']['fullcalendar.interaction.main']['js'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/interaction/main.js');
+$config['complements']['fullcalendar.daygrid.main']['js'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/daygrid/main.js');
+$config['complements']['fullcalendar.timegrid.main']['js'] = assets_url('resource-sb-admin2/plugins/fullcalendar-431/packages/timegrid/main.js');
+
+$config['complements']['momentsjs']['js'] = assets_url('resource-sb-admin2/plugins/moment.min.js');
+$config['complements']['moment-range']['js'] = assets_url('resource-sb-admin2/plugins/moment-range.js');

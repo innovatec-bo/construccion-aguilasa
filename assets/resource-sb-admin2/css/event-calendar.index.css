@@ -1,0 +1,102 @@
+.ps > .ps__rail-x, .ps > .ps__rail-y {
+    opacity: 0.4;
+}
+.ps__thumb-y
+{
+	width:8px
+}
+
+/*####################################################################*/
+.work-plan-table
+{
+  margin-bottom: 0px;
+}
+.work-plan-table thead {
+    color: #fff;
+    background-color: #0F263A;
+    text-transform: uppercase;
+}
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #ffffff;
+}
+.table-striped>thead>tr{
+    background-color: #0F263A;
+}
+div.table-content{
+  overflow:auto;
+  width:100%;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  /*height:200px;*/
+}
+td,
+th {
+  /*border: 1px solid #000;*/
+  width: 100px;
+}
+/*th {background-color:inherit;}*/
+
+table {
+  table-layout: fixed;
+  width:100%;
+}
+td:first-child, th:first-child {
+  position:sticky;
+  left:0;
+  z-index:1;
+  background-color:inherit;
+}
+td:last-child, th:last-child {
+  position:sticky;
+  right:0;
+  z-index:1;
+  background-color:inherit;
+}
+thead tr th {
+  position:sticky;
+  top:0;
+}
+th:first-child, th:last-child {z-index:2;}
+
+.days-width
+{
+  width: 60px;
+}
+
+.cell-date
+{
+  cursor: pointer;
+}
+
+#tblPlan {
+    table-layout: fixed;
+    width:100%;
+    border-collapse: collapse;
+    border:solid 1px lightgrey; 
+}
+
+.shadow-right {
+    position: relative;
+}
+.shadow-right:after {
+    box-shadow: 15px 0 15px -15px inset;
+    content: " ";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -15px;
+    width: 15px;
+} 
+.shadow-left {
+    position: relative;
+}
+.shadow-left:before {
+    box-shadow: -15px 0 15px -15px inset;
+    content: " ";
+    height: 100%;
+    top: 0;
+    left: -15px;
+    position: absolute;
+    width: 15px;
+}
+

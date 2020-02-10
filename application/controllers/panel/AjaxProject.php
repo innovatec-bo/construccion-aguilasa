@@ -353,4 +353,34 @@ class AjaxProject extends PrivateController
         $result['data']['projectList'] = $projectData;
         echo json_encode($result);exit;
     }
+
+    public function getProjectsAndWorkPlan()
+    {
+        // $this->_validateFeature('project_quick_search');
+        $formData = $this->input->post();
+        $response = $this->_is("fiscal");
+        $userId = "";
+        if($response == 1)
+        {
+            $userId = $this->sessionUser->id;
+        }
+        $resultArray = Model_project::getAllProjects("29", $userId, 1000, 0);
+        $projectIds = array();
+        foreach ($resultArray as $row) 
+        {
+            $projectIds[] = $row->id_pro;
+        }
+        $projectList = Model_work_plan::getByProjectIdsAndDateRange($projectIds,"","");
+        $success = 0;
+        $message = "No se encontraron registros para mostrar.";
+        if(count($projectList)>0)
+        {
+            $success = 1;
+            $message = "";
+        }
+        $result['success'] = $success;
+        $result['message'] = '';
+        $result['data']['projectList'] = $projectList;
+        echo json_encode($result);exit;   
+    }
 }
