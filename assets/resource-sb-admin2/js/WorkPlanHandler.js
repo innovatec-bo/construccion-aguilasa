@@ -57,6 +57,7 @@ var WorkPlanHandler = /** @class */ (function () {
                     var template = Handlebars.compile(htmlSource);
                     var html = template({ days: _this._headerDays, projects: _this._projectList });
                     $(".table-content").html(html);
+                    $(".table-content table").DataTable();
                 }
                 else {
                     // toastr.error(response.message, '', {"progressBar": true});

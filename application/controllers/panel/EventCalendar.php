@@ -9,6 +9,8 @@ class EventCalendar extends PrivateController
     public function index()
     {
         // $this->_validateFeature("home");
+        $this->complementHandler->addViewComplement("jquery.datatables");
+        $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");

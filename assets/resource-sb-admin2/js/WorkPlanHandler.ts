@@ -89,6 +89,7 @@ class WorkPlanHandler
                     let template = Handlebars.compile(htmlSource);
                     let html = template({days:_this._headerDays, projects:_this._projectList});
                     $(".table-content").html(html);
+                    $(".table-content table").DataTable();
                 }
                 else
                 {

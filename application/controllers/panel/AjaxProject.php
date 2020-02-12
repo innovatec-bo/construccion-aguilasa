@@ -364,7 +364,7 @@ class AjaxProject extends PrivateController
         {
             $userId = $this->sessionUser->id;
         }
-        $resultArray = Model_project::getAllProjects("29", $userId, 1000, 0);
+        $resultArray = Model_project::getAllProjects("", $userId, 1000, 0);
         $projectIds = array();
         foreach ($resultArray as $row) 
         {
