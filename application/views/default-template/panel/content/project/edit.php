@@ -24,8 +24,8 @@
                 <div class="panel-body">
                     <form role="form" method="post" name="proyect-edit-form" data-parsley-validate>
                         <div class="hide">
-                            <input name="latitude" value="<?=set_value('latitude',$project["latitude_pro"])?>" type="text" required>
-                            <input name="longitude" value="<?=set_value('longitude',$project["longitude_pro"])?>" type="text" required data-parsley-errors-container="#map-location-error-message-parsley" data-parsley-error-message="Debe marcar un punto en el mapa">
+                            <!-- <input name="latitude" value="<?=set_value('latitude',$project["latitude_pro"])?>" type="text" required>
+                            <input name="longitude" value="<?=set_value('longitude',$project["longitude_pro"])?>" type="text" required data-parsley-errors-container="#map-location-error-message-parsley" data-parsley-error-message="Debe marcar un punto en el mapa"> -->
                         </div>
                         <input type="hidden" name="project-id" value="<?=$project["id_pro"]?>">
                         <div class="row">
@@ -183,9 +183,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row form-inline">
+                            <div class="col-md-6">
+                                <label>Coordenadas del proyecto</label><br>
+                                <div class="form-group">
+                                    <!-- <em>Latitud</em><br> -->
+                                    <input class="form-control" value="<?=set_value('latitude',$project["latitude_pro"])?>" required name="latitude" placeholder="-17.778556">
+                                </div>
+                                <div class="form-group">
+                                    <!-- <em>Longitud</em><br> -->
+                                    <input class="form-control" value="<?=set_value('longitude',$project["longitude_pro"])?>" required name="longitude" placeholder="-63.180389">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary search-coordinate-button" type="button">Buscar</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <em>En google earth ir al menu Herramientas -> opciones -> escoger tipo de coordenadas Grados decimales. Con esto obtendra el formato indicado de coordenadas para este mapa. NOTA: no copiar el simbolo de grados (°)</em>
+                            </div>
+                        </div>
                         <div class='row'>
                             <div class="col-md-12">
-                                <label class="required" data-field="name">
+                                <label class="required hide" data-field="name">
                                     <label>Ubicacion del proyecto</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control search-address-data" placeholder="Ingrese ubicacion">

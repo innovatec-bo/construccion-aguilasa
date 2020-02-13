@@ -19,14 +19,18 @@
                 lat: latitude,
                 lng: longitude,
                 icon: markerImage,
-                title: 'Hello map'
+                draggable: true,
+                dragend: function(event) {
+                    let latitude = event.latLng.lat();
+                    let longitude = event.latLng.lng();
+                    updateFormInput(latitude, longitude);
+                }
             });
         }
         else
         {
             map.markers[0].setPosition(new google.maps.LatLng(latitude, longitude));
-            $("input[name=latitude]").val(latitude);
-            $("input[name=longitude]").val(longitude);
+            updateFormInput(latitude, longitude);
         }
     });
     //Add marker by search result
@@ -43,8 +47,7 @@
     });
     //When a marker is added performance this
     GMaps.on('marker_added', map, function(marker) {
-        $("input[name=latitude]").val(marker.getPosition().lat());
-        $("input[name=longitude]").val(marker.getPosition().lng());
+        updateFormInput(marker.getPosition().lat(), marker.getPosition().lng());
     });
     $(".search-address-data").on("keypress",function(e){
         $(".map-search-message").text("");
@@ -61,6 +64,13 @@
             }
             return false;
         }
+    });
+
+    $(document).on('click','.search-coordinate-button',function(e){
+        e.preventDefault();
+        let latitude = $("input[name=latitude]").val();
+        let longitude = $("input[name=longitude]").val();
+        addMarker(latitude, longitude);
     });
     function addMarkerBySearchResult(data)
     {
@@ -83,14 +93,18 @@
                             lat: latitude,
                             lng: longitude,
                             icon: markerImage,
-                            title: 'Hello map'
+                            draggable: true,
+                            dragend: function(event) {
+                                let latitude = event.latLng.lat();
+                                let longitude = event.latLng.lng();
+                                updateFormInput(latitude, longitude);
+                            }
                         });
                     }
                     else
                     {
                         map.markers[0].setPosition(new google.maps.LatLng(latitude, longitude));
-                        $("input[name=latitude]").val(latitude);
-                        $("input[name=longitude]").val(longitude);
+                        updateFormInput(latitude, longitude);
                     }
                 }
                 else
@@ -101,10 +115,39 @@
         });
     }
 
+    function addMarker(latitude, longitude)
+    {
+        if(latitude!="")
+        {
+            var index = map.markers.length;
+            if(index == 0)
+            {
+                let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
+                map.addMarker({
+                    lat: latitude,
+                    lng: longitude,
+                    icon: markerImage,
+                    draggable: true,
+                    dragend: function(event) {
+                        let latitude = event.latLng.lat();
+                        let longitude = event.latLng.lng();
+                        updateFormInput(latitude, longitude);
+                    }
+                });
+            }
+            else
+            {
+                map.markers[0].setPosition(new google.maps.LatLng(latitude, longitude));
+                updateFormInput(latitude, longitude);
+            }
+            map.setCenter(latitude, longitude);
+        }
+    }
+
     function addInitialMarker()
     {
-        var latitude = $("input[name=latitude]").val();
-        var longitude = $("input[name=longitude]").val();
+        let latitude = $("input[name=latitude]").val();
+        let longitude = $("input[name=longitude]").val();
         if(latitude!="")
         {
             let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
@@ -112,8 +155,20 @@
             map.addMarker({
                 lat: latitude,
                 lng: longitude,
-                icon: markerImage
+                icon: markerImage,
+                draggable: true,
+                dragend: function(event) {
+                    let latitude = event.latLng.lat();
+                    let longitude = event.latLng.lng();
+                    updateFormInput(latitude, longitude);
+                }
             });
         }
+    }
+
+    function updateFormInput(latitude, longitude)
+    {
+        $("input[name=latitude]").val(latitude);
+        $("input[name=longitude]").val(longitude);
     }
     /*############################################## END - GOOGLE MAPS */
