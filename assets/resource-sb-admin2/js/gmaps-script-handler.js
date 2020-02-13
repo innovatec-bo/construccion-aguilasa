@@ -150,7 +150,7 @@
         let longitude = $("input[name=longitude]").val();
         if(latitude!="")
         {
-            let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
+            let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',45);
             map.setCenter(latitude, longitude);
             map.addMarker({
                 lat: latitude,
