@@ -29,3 +29,6 @@
         </tbody>
   	</table>  
 </script>
+<script id="form-add" type="text/x-handlebars-template">
+  
+</script>

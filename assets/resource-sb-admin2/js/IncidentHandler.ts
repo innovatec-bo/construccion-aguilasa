@@ -26,10 +26,9 @@ class IncidentHandler
         this._daysWithoutIncident = 0;
     }
 
-    public add(formData?, statusId?, projectId?)
+    public add(formData?)
     {
         let _this = this;
-        projectId = projectId === undefined?null:projectId;
         let method = !formData?"GET":"POST";
         $.ajax({
             url : base_url + 'panel/AjaxIncident/add/' + statusId + '/' + projectId,

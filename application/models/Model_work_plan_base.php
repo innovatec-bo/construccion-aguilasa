@@ -12,13 +12,15 @@ class Model_work_plan_base extends MY_Model
     const TABLE_ID = "id_wpl";
     const ATTRIB_SUFIX = "_wpl";
 
+    protected $_title;
     protected $_workDate;
     protected $_projectId;
     protected $_detail;
 
-    public function __construct($workDate = NULL, $projectId = NULL, $detail = "")
+    public function __construct($title = "", $workDate = NULL, $projectId = NULL, $detail = "")
     {
         parent::__construct();
+        $this->_title = $title;
         $this->_workDate = $workDate;
         $this->_endTime = $endTime;
         $this->_projectId = $projectId;
@@ -33,6 +35,7 @@ class Model_work_plan_base extends MY_Model
     {
         $tableAttributes = array(
             "id_wpl" => $this->_id,
+            "title_wpl" => $this->_title,
             "work_date_wpl" => $this->_workDate,
             "project_id_wpl" => $this->_projectId,
             "detail_wpl" => $this->_detail,
@@ -78,6 +81,10 @@ class Model_work_plan_base extends MY_Model
     }
 
     //    setters - begin
+    public function setTitle($title)
+    {
+        $this->_title = $title;
+    }
 
     public function setWorkDate($workDate)
     {

@@ -3,10 +3,44 @@
 }
 .ps__thumb-y
 {
-	width:8px
+  width:8px
 }
 
 /*####################################################################*/
+.table-input-work-plan
+{
+  padding: 0px;
+  border: 0px;
+  width: 100%;
+  background-color: inherit;
+}
+.vertical-align
+{
+  vertical-align: middle!important;
+}
+.table-month, .table-days, .table-dates
+{
+  text-align:center;
+  padding-bottom: 1px!important;
+  padding-top: 1px!important;
+}
+.cell-selected
+{
+  background: #F7C12B;
+  text-align: center;
+  color: #fff;
+}
+.next-week, .previous-week
+{
+  text-align:center;
+  padding-bottom: 1px!important;
+  padding-top: 1px!important;  
+  cursor: pointer;
+}
+.width-30
+{
+  width: 30px!important;
+}
 .work-plan-table
 {
   margin-bottom: 0px;
@@ -29,34 +63,34 @@ div.table-content{
   /*border: 1px solid #ddd;*/
   /*height:200px;*/
 }
-td,
-th {
+.work-plan-table td,
+.work-plan-table th {
   /*border: 1px solid #000;*/
   width: 100px;
 }
 /*th {background-color:inherit;}*/
 
-table {
+.work-plan-table table {
   table-layout: fixed;
   width:100%;
 }
-td:first-child, th:first-child {
+.work-plan-table td:first-child, th:first-child {
   position:sticky!important;
   left:0;
   z-index:1;
   background-color:inherit!important;
 }
-td:last-child, th:last-child {
+.work-plan-table td:last-child, .work-plan-table th:last-child {
   position:sticky!important;
   right:0;
   z-index:1;
   background-color:inherit!important;
 }
-thead tr th {
+.work-plan-table thead tr th {
   position:sticky;
   top:0;
 }
-th:first-child, th:last-child {z-index:2;}
+.work-plan-table th:first-child, .work-plan-table th:last-child {z-index:2;}
 
 .days-width
 {
@@ -100,3 +134,26 @@ th:first-child, th:last-child {z-index:2;}
     width: 15px;
 }
 
+.date-to-work
+{
+  cursor:pointer
+}
+.date-to-work:hover
+{
+  background-color: #f7c02b99;
+}
+.change-week:hover
+{
+  background: #f7c12b7a;
+}
+.delete-row
+{
+  background: #d9534f;
+  color: #ffffff;
+  cursor: pointer;
+}
+.delete-row:hover
+{
+  background: #c9302c;
+  color: #ffffff;
+}

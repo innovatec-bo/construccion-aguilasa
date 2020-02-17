@@ -7,6 +7,7 @@ $(function() {
         format: 'YYYY-MM'
     });
 	let workPlanHandler = new WorkPlanHandler();
-	workPlanHandler.printTable();
+	// workPlanHandler.printTable();
 	workPlanHandler.loadEventHandlers();
+	$('[data-toogle=tooltip]').tooltip();
 });
