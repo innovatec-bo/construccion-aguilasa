@@ -23,13 +23,35 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label>Fiscal</label>
-                <input class="form-control">
+                <select class="form-control">
+                    <option></option>
+                    <?php 
+                    $html = "";
+                    foreach ($fiscalList as $row) 
+                    {
+                        // $row = $row->toArray();
+                        $html .= "<option value=".$row->getId().">".$row->getFullName()."</option>";
+                    }
+                    echo $html;
+                    ?>
+                </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label>Constructor</label>
-                <input class="form-control">
+                <select class="form-control">
+                    <option></option>
+                    <?php 
+                    $html = "";
+                    foreach ($builderList as $row) 
+                    {
+                        // $row = $row->toArray();
+                        $html .= "<option value=".$row->getId().">".$row->getFullName()."</option>";
+                    }
+                    echo $html;
+                    ?>
+                </select>
             </div>
         </div>
         <div class="col-md-11"> 

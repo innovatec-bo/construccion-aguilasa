@@ -24,6 +24,8 @@ class EventCalendar extends PrivateController
         $this->complementHandler->addProjectJS('WorkPlanHandler', TRUE);
         $this->complementHandler->addProjectCss('event-calendar.index', TRUE);
         $this->complementHandler->addProjectJs('event-calendar.index', TRUE);
-        $this->_loadPanelView('event-calendar/index');
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
+        $this->_loadPanelView('event-calendar/index', $data);
     }
 }
