@@ -333,6 +333,7 @@ class PrivateController extends PublicController
         $columnList = array(
             "code_pro" => "CODIGO",
             "contract_number_con" => "CONTRATO",
+            "work_area_pro" => "AREA DE TRABAJO",
             "detail_pro" => "DETALLE DEL PROYECTO",
             "percentage_inc" => "CONSTRUCCION - % FISICO",
             "detail_inc" => "DETALLE - INCIDENCIA",

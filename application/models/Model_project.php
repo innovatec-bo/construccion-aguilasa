@@ -321,6 +321,7 @@ class Model_project extends Model_project_base
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
             project_energized.entry_date project_energized_entry_date,
             last_week_percentage,
+            work_area_pro,
             previous_percentage,
             previous_manual_entry_date,
             percentage_inc,
