@@ -1,5 +1,5 @@
 <?php
-class EventCalendar extends PrivateController
+class WorkPlan extends PrivateController
 {
     public function __construct()
     {
@@ -14,7 +14,6 @@ class EventCalendar extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");
-        // $this->complementHandler->addViewComplement("momentsjs");
         $this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("core");
@@ -22,11 +21,30 @@ class EventCalendar extends PrivateController
         $this->complementHandler->addViewComplement("themes.animated");
         $this->complementHandler->addViewComplement("perfect-scrollbar");
         $this->complementHandler->addProjectJS('WorkPlanHandler', TRUE);
-        $this->complementHandler->addProjectCss('event-calendar.index', TRUE);
-        $this->complementHandler->addProjectJs('event-calendar.index', TRUE);
+        $this->complementHandler->addProjectCss('work-plan.index', TRUE);
+        $this->complementHandler->addProjectJs('work-plan.index', TRUE);
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
-        $this->_loadPanelView('event-calendar/index', $data);
+        $this->_loadPanelView('work-plan/index', $data);
+    }
+
+    public function add()
+    {
+
+    }
+
+    public function edit()
+    {
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("moment-range");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("perfect-scrollbar");
+        $this->complementHandler->addProjectJS('WorkPlanHandler', TRUE);
+        $this->complementHandler->addProjectCss('work-plan.index', TRUE);
+        $this->complementHandler->addProjectJs('work-plan.index', TRUE);
+        $this->_loadPanelView('work-plan/index', $data);
     }
 
     public function test()

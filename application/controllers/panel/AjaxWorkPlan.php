@@ -7,7 +7,7 @@
  */
 
 
-class AjaxRole extends PrivateController
+class AjaxWorkPlan extends PrivateController
 {
     public function __construct()
     {
@@ -29,7 +29,7 @@ class AjaxRole extends PrivateController
         {
             $response["success"] = 1;
             $response["message"] = "";
-            $response["template"] = $this->loadView("panel/content/event-calendar/WorkPlanHandler", array(), true);
+            $response["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(), true);
             $response["WorkPlan"] = array();
         }
         else
@@ -44,36 +44,54 @@ class AjaxRole extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function edit($roleId = NULL)
+    public function edit($workPlanId = NULL)
     {
-        $this->_validateFeature('role_edit');
+        // $this->_validateFeature('role_edit');
 
-        if(!is_numeric($roleId))
+        if(!is_numeric($workPlanId))
         {
             $response["success"] = 0;
             $response["message"] = "Invalid parameter.";
             echo json_encode($response);exit;
         }
-        $role = Model_role::getById($roleId);
-        if(!$role instanceof Model_role)
+        $workPlan = Model_work_plan::getById($workPlanId);
+        if(!$workPlan instanceof Model_work_plan)
         {
             $response["success"] = 0;
-            $response["message"] = "Role not found.";
+            $response["message"] = "No se encontro el plan de trabajo.";
             echo json_encode($response);exit;
         }
 
         /** Server Side Validations **/
-        $this->form_validation->set_rules('role-name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('role-name', 'Name', 'trim');
 
         if($this->form_validation->run() === FALSE)
         {
             $response["success"] = 1;
             $response["message"] = "";
-            $response["template"] = $this->loadView("panel/content/role/ht-modal-edit", array(),true);
-            $role = $role->toArray();
-            $response["role"]["roleId"] = $role["id_rol"];
-            $response["role"]["roleName"] = $role["rolename_rol"];
-            $response["role"]["keyword"] = $role["keyword_rol"];
+            $fiscalList = Model_user::getByRoleKeyword('fiscal');
+            $arrayFiscal = array();
+            foreach ($fiscalList as $fiscal)
+            {
+                $fiscal = $fiscal->toArray();
+                $arrayFiscal[] = array(
+                    "id" => $fiscal['id_usr'],
+                    "fullName" => $fiscal['firstname_usr']." ".$fiscal['lastname_usr'],
+                );
+            }
+            $builderList = Model_user::getByRoleKeyword('builder');
+            $arrayBuilder = array();
+            foreach ($builderList as $builder)
+            {
+                $builder = $builder->toArray();
+                $arrayBuilder[] = array(
+                    "id" => $builder['id_usr'],
+                    "fullName" => $builder['firstname_usr']." ".$builder['lastname_usr'],
+                );
+            }
+            $workPlanMasterDetail = Model_work_plan::getWorkPlanMasterDetail(1);
+            $response['data']["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(),true);
+            $response["data"]["workPlanMasterDetail"] = $workPlanMasterDetail;
         }
         else
         {
@@ -102,15 +120,26 @@ class AjaxRole extends PrivateController
         foreach ($fiscalList as $fiscal)
         {
             $fiscal = $fiscal->toArray();
-            $arrayFiscal[] = array();
+            $arrayFiscal[] = array(
+                "id" => $fiscal['id_usr'],
+                "fullName" => $fiscal['firstname_usr']." ".$fiscal['lastname_usr'],
+            );
         }
         $builderList = Model_user::getByRoleKeyword('builder');
         $arrayBuilder = array();
-        foreach ($fiscalList as $fiscal)
+        foreach ($builderList as $builder)
         {
-            $fiscal = $fiscal->toArray();
-            $fiscal = $fiscal->toArray();
-            $arrayBuilder[] = array();
+            $builder = $builder->toArray();
+            $arrayBuilder[] = array(
+                "id" => $builder['id_usr'],
+                "fullName" => $builder['firstname_usr']." ".$builder['lastname_usr'],
+            );
         }
+        $workPlanMasterDetail = Model_work_plan::getWorkPlanMasterDetail(1);
+
+        $result['data']['fiscalList'] = $fiscalList;
+        $result['data']['builderList'] = $builderList;
+        $result['data']['workPlanMasterDetail'] = $workPlanMasterDetail;
+
     }
 }

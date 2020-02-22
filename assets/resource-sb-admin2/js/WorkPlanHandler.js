@@ -1,4 +1,4 @@
-var WorkPlanHandler = (function () {
+var WorkPlanHandler = /** @class */ (function () {
     function WorkPlanHandler() {
         moment.locale('es');
         this._headerDays = [];
@@ -6,7 +6,40 @@ var WorkPlanHandler = (function () {
         this._projectList = [];
         this._testData = [{ "code": "ra.22.2221", "dateList": ["2020-01-01", "2020-01-02", "2020-01-03"] }, { "code": "ra.22.2222", "dateList": ["2020-01-04", "2020-01-05", "2020-01-06"] }];
         this._weekNumber = moment().week();
+        this._workPlanId = 1;
     }
+    WorkPlanHandler.prototype.edit = function (formData) {
+        var _this = this;
+        var method = !formData ? "GET" : "POST";
+        $.ajax({
+            url: base_url + 'panel/AjaxWorkPlan/edit/' + _this._workPlanId,
+            dataType: "json",
+            method: method,
+            data: formData,
+            beforeSend: function () {
+                // _this._beforeSend(method);
+            },
+            success: function (response) {
+                if (response.success === 1 && !formData) {
+                    _this._launchForm(response);
+                }
+                else if (response.success === 1 && formData) {
+                    // toastr.success(response.message, '', {"progressBar": true});
+                }
+                else {
+                    // toastr.error(response.message, '', {"progressBar": true});
+                }
+            }
+        });
+    };
+    WorkPlanHandler.prototype._launchForm = function (response) {
+        var _this = this;
+        var $template = $("<div>" + response.data.template + "</div>");
+        var htmlSource = $template.find(response.data.templateName).html();
+        var template = Handlebars.compile(htmlSource);
+        var html = template({ workplan: response.data.workplanMasterDetail });
+        $('#work-plan-form-content').html(html);
+    };
     WorkPlanHandler.prototype._setHeaderDates = function () {
         var _this = this;
         var startOfMonth = moment('2020-01-01').startOf('month').format('YYYY-MM-DD HH:mm');
@@ -61,6 +94,9 @@ var WorkPlanHandler = (function () {
                     $(".table-content table").DataTable();
                 }
                 else {
+                    // toastr.error(response.message, '', {"progressBar": true});
+                    // _this.refreshCalendar();
+                    // _this._dateStartDateSelected = null;
                 }
             }
         });
@@ -121,4 +157,4 @@ var WorkPlanHandler = (function () {
     return WorkPlanHandler;
 }());
 // var begin = moment().startOf('week').isoWeekday(1);
-// begin.week(1).format('YYYY-MM-DD'); 
+// begin.week(1).format('YYYY-MM-DD');
