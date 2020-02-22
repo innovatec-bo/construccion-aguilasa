@@ -1,4 +1,7 @@
 <script id="work-plan-table" type="text/x-handlebars-template">
+
+</script>
+<script id="work-plan-table" type="text/x-handlebars-template">
     <table class='table table-striped table-bordered work-plan-table'>
         <thead>
           <tr>

@@ -1,13 +1,12 @@
-var IncidentHandler = /** @class */ (function () {
+var IncidentHandler = (function () {
     function IncidentHandler() {
         this._buttonAdd = ".add-incident";
         this._serverResponse = {};
         this._htmlTemplate = "";
         this._daysWithoutIncident = 0;
     }
-    IncidentHandler.prototype.add = function (formData, statusId, projectId) {
+    IncidentHandler.prototype.add = function (formData) {
         var _this = this;
-        projectId = projectId === undefined ? null : projectId;
         var method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxIncident/add/' + statusId + '/' + projectId,
@@ -109,10 +108,6 @@ var IncidentHandler = /** @class */ (function () {
             }
         }).queue(queue.list).then(function (result) {
             if (result.value) {
-                // Swal.fire({
-                //     title: 'Guardando incidencias...',
-                //     showConfirmButton: TRUE,
-                // });
             }
         });
     };

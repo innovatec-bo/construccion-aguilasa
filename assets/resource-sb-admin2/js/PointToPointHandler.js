@@ -1,4 +1,4 @@
-var PointToPointHandler = /** @class */ (function () {
+var PointToPointHandler = (function () {
     function PointToPointHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -80,7 +80,7 @@ var PointToPointHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=point-to-point-progress-form]");
@@ -163,11 +163,11 @@ var PointToPointHandler = /** @class */ (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                }
+                },
             },
             escapeMarkup: function (markup) {
                 return markup;
-            }
+            },
         });
     };
     PointToPointHandler.prototype.loadManpowerLog = function () {

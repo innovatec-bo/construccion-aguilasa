@@ -28,4 +28,10 @@ class EventCalendar extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $this->_loadPanelView('event-calendar/index', $data);
     }
+
+    public function test()
+    {
+        $result = Model_work_plan::getWorkPlanMasterDetail(1);
+        echo"<pre>";var_dump($result);exit;
+    }
 }

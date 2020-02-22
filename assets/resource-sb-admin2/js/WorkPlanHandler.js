@@ -1,4 +1,4 @@
-var WorkPlanHandler = /** @class */ (function () {
+var WorkPlanHandler = (function () {
     function WorkPlanHandler() {
         moment.locale('es');
         this._headerDays = [];
@@ -61,9 +61,6 @@ var WorkPlanHandler = /** @class */ (function () {
                     $(".table-content table").DataTable();
                 }
                 else {
-                    // toastr.error(response.message, '', {"progressBar": true});
-                    // _this.refreshCalendar();
-                    // _this._dateStartDateSelected = null;
                 }
             }
         });
@@ -124,4 +121,4 @@ var WorkPlanHandler = /** @class */ (function () {
     return WorkPlanHandler;
 }());
 // var begin = moment().startOf('week').isoWeekday(1);
-// begin.week(1).format('YYYY-MM-DD');
+// begin.week(1).format('YYYY-MM-DD'); 

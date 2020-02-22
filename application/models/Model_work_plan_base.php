@@ -8,23 +8,20 @@
 
 class Model_work_plan_base extends MY_Model
 {
-    const TABLE_NAME = "wfl_work_plan";
+    const TABLE_NAME = "wfl_work_plans";
     const TABLE_ID = "id_wpl";
     const ATTRIB_SUFIX = "_wpl";
 
     protected $_title;
-    protected $_workDate;
-    protected $_projectId;
-    protected $_detail;
+    protected $_fiscalId;
+    protected $_builderId;
 
-    public function __construct($title = "", $workDate = NULL, $projectId = NULL, $detail = "")
+    public function __construct($title = "", $fiscalId = NULL, $builderId = NULL)
     {
         parent::__construct();
         $this->_title = $title;
-        $this->_workDate = $workDate;
-        $this->_endTime = $endTime;
-        $this->_projectId = $projectId;
-        $this->_detail = $detail;
+        $this->_fiscalId = $fiscalId;
+        $this->_builderId = $builderId;
     }
 
     /**
@@ -36,9 +33,8 @@ class Model_work_plan_base extends MY_Model
         $tableAttributes = array(
             "id_wpl" => $this->_id,
             "title_wpl" => $this->_title,
-            "work_date_wpl" => $this->_workDate,
-            "project_id_wpl" => $this->_projectId,
-            "detail_wpl" => $this->_detail,
+            "fiscal_id_wpl" => $this->_fiscalId,
+            "builder_id_wpl" => $this->_builderId,
             "deleted_wpl" => $this->_deleted,
             "createdon_wpl" => $this->_createdOn,
             "createdby_wpl" => $this->_createdBy,
@@ -64,9 +60,8 @@ class Model_work_plan_base extends MY_Model
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
                 $object->title_wpl,
-                $object->work_date_wpl,
-                $object->project_id_wpl,
-                $object->detail_wpl
+                $object->fiscal_id_wpl,
+                $object->builder_id_wpl
             );
             $instance->_id = $object->id_wpl;
 
@@ -86,19 +81,14 @@ class Model_work_plan_base extends MY_Model
         $this->_title = $title;
     }
 
-    public function setWorkDate($workDate)
+    public function setFiscalId($fiscalId)
     {
-        $this->_workDate = $workDate;
+        $this->_fiscalId = $fiscalId;
     }
 
-    public function setProjectId($projectId)
+    public function setBuilderId($builderId)
     {
-        $this->_projectId = $projectId;
-    }
-
-    public function setDetail($detail)
-    {
-        $this->_detail = $detail;
+        $this->_builderId = $builderId;
     }
     //    setters - end
 

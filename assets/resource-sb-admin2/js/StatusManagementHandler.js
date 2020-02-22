@@ -1,4 +1,4 @@
-var StatusManagementHandler = /** @class */ (function () {
+var StatusManagementHandler = (function () {
     function StatusManagementHandler(projectStatusSet, projectID) {
         this.projectStatusSet = projectStatusSet;
         this.projectID = projectID;
@@ -38,7 +38,6 @@ var StatusManagementHandler = /** @class */ (function () {
                     _this._defineNextStep();
                 }
                 else {
-                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -170,7 +169,6 @@ var StatusManagementHandler = /** @class */ (function () {
         if (nextStepObjectArray.length > 1) {
             this.launchStepSelector(button, nextStepObjectArray);
         }
-        //if there is just one step then let's insert it in step list
         else {
             var step = nextStepObjectArray[0];
             this.insertStep(step);
@@ -360,7 +358,7 @@ var StatusManagementHandler = /** @class */ (function () {
                 parallelUploads: 15,
                 maxFiles: 15,
                 acceptedFiles: ".pdf, .jpg, .jpeg, .png",
-                autoProcessQueue: false
+                autoProcessQueue: false,
             });
             myDropzone.on('addedfile', function (file) {
                 var ext = file.name.split('.').pop();
@@ -774,7 +772,7 @@ var StatusManagementHandler = /** @class */ (function () {
         var data = this.prepareDataToSave(statusId, statusKeyword);
         var projectEnergized = $("input[name=project-energized]").is(":checked") ? 1 : 0;
         var energized = {
-            projectEnergized: projectEnergized
+            projectEnergized: projectEnergized,
         };
         var dataResult = Object.assign(data, energized);
         $.ajax({
@@ -800,7 +798,7 @@ var StatusManagementHandler = /** @class */ (function () {
             building: building,
             transportation: transportation,
             liveLine: liveLine,
-            rightOfWay: rightOfWay
+            rightOfWay: rightOfWay,
         };
         var dataResult = Object.assign(data, conciliationShipment);
         $.ajax({

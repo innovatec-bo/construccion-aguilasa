@@ -94,4 +94,23 @@ class AjaxRole extends PrivateController
         $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }
+
+    public function getWorkPlan()
+    {
+        $fiscalList = Model_user::getByRoleKeyword('fiscal');
+        $arrayFiscal = array();
+        foreach ($fiscalList as $fiscal)
+        {
+            $fiscal = $fiscal->toArray();
+            $arrayFiscal[] = array();
+        }
+        $builderList = Model_user::getByRoleKeyword('builder');
+        $arrayBuilder = array();
+        foreach ($fiscalList as $fiscal)
+        {
+            $fiscal = $fiscal->toArray();
+            $fiscal = $fiscal->toArray();
+            $arrayBuilder[] = array();
+        }
+    }
 }
