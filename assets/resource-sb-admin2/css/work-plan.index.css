@@ -26,9 +26,11 @@
 }
 .cell-selected
 {
-  background: url('../../assets/images/truck.png');
-  text-align: center;
-  color: #fff;
+    background-image: url(../../images/maintenance.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: center;
+    color: #fff;
 }
 .next-week, .previous-week
 {
