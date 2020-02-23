@@ -1,10 +1,17 @@
-<script id="work-plan-add-form" type="text/x-handlebars-template">
+<script id="work-plan-edit-form" type="text/x-handlebars-template">
   <div class="row">
       <div class="col-md-3">
           <div class="form-group">
               <label>Fiscal</label>
               <select class="form-control">
                   <option></option>
+                  {{#each fiscalList}}
+                    {{var "optionSelected" ""}}
+                    {{#ifCond id "==" ../workPlan.fiscalId}}
+                      {{var "optionSelected" "selected"}}
+                    {{/ifCond}}
+                    <option value='{{id}}' {{optionSelected}}>{{fullName}}</option>
+                  {{/each}}
               </select>
           </div>
       </div>
@@ -13,6 +20,13 @@
               <label>Constructor</label>
               <select class="form-control">
                   <option></option>
+                  {{#each builderList}}
+                    {{var "optionSelected" ""}}
+                    {{#ifCond id "==" ../workPlan.builderId}}
+                      {{var "optionSelected" "selected"}}
+                    {{/ifCond}}
+                    <option value='{{id}}' {{optionSelected}}>{{fullName}}</option>
+                  {{/each}}
               </select>
           </div>
       </div>
@@ -45,19 +59,20 @@
                           <th class="width-30 text-center table-days">D</th>
                       </tr>
                       <tr>
-                          <th class="width-30 text-center table-dates">10</th>
-                          <th class="width-30 text-center table-dates">11</th>
-                          <th class="width-30 text-center table-dates">12</th>
-                          <th class="width-30 text-center table-dates">13</th>
-                          <th class="width-30 text-center table-dates">14</th>
-                          <th class="width-30 text-center table-dates">15</th>
-                          <th class="width-30 text-center table-dates">16</th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
+                          <th class="width-30 text-center table-dates"></th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                          <td>RD.02.2222</td>
-                          <td>VIADUCTO COTOCA</td>
+                      {{#each workPlan.projectList}}
+                        <tr data-project-id='{{projectId}}'>
+                          <td>{{projectCode}}</td>
+                          <td>{{projectAddress}}</td>
                           <td class="date-to-work"></td>
                           <td class="date-to-work"></td>
                           <td class="date-to-work"></td>
@@ -68,7 +83,8 @@
                           <td><input class="table-input-work-plan" placeholder="Especifique el trabajo" type="text" name="work"></td>
                           <td><input class="table-input-work-plan" placeholder="Observacion" type="text" name="observation"></td>
                           <td class="text-center delete-row"><i class="fa fa-times"></i></td>
-                      </tr>
+                        </tr>  
+                      {{/each}}
                       <tr>
                           <td>RD.02.2222</td>
                           <td>VIADUCTO COTOCA</td>

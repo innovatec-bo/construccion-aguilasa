@@ -37,8 +37,10 @@ var WorkPlanHandler = /** @class */ (function () {
         var $template = $("<div>" + response.data.template + "</div>");
         var htmlSource = $template.find(response.data.templateName).html();
         var template = Handlebars.compile(htmlSource);
-        var html = template({ workplan: response.data.workplanMasterDetail });
+        var html = template({ workPlan: response.data.workPlanMasterDetail, fiscalList: response.data.fiscalList, builderList: response.data.builderList });
         $('#work-plan-form-content').html(html);
+        _this._projectList = response.data.workPlanMasterDetail.projectList;
+        _this._printWeek();
     };
     WorkPlanHandler.prototype._setHeaderDates = function () {
         var _this = this;
@@ -102,9 +104,9 @@ var WorkPlanHandler = /** @class */ (function () {
         });
         // let $template = $("#work-plan-table");
     };
-    WorkPlanHandler.prototype.printWeek = function (weekNumber) {
+    WorkPlanHandler.prototype._printWeek = function () {
         var begin = moment().startOf('week').isoWeekday(1);
-        var startDate = begin.week(weekNumber).format('YYYY-MM-DD');
+        var startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');
         var endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format('YYYY-MM-DD');
         var range = moment.range(startDate, endDate);
         var arrayMoment = Array.from(range.by('day'));
@@ -119,31 +121,52 @@ var WorkPlanHandler = /** @class */ (function () {
         });
         monthNameList = monthNameList.filter(function (a, b) { return monthNameList.indexOf(a) === b; });
         $tableMonth.text(monthNameList.join('/'));
-        console.log(monthNameList, arrayDates);
+        this._printProjectWeek();
+    };
+    WorkPlanHandler.prototype._printProjectWeek = function () {
+        var begin = moment().startOf('week').isoWeekday(1);
+        var startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');
+        var endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format('YYYY-MM-DD');
+        var range = moment.range(startDate, endDate);
+        var arrayMoment = Array.from(range.by('day'));
+        var $tableDates = $('.table-dates');
+        var testArray = [];
+        $.each(this._projectList, function (i, project) {
+            var $cellList = $('tr[data-project-id=' + project.projectId + ']').find("td.date-to-work");
+            $.each(arrayMoment, function (j, moment) {
+                $.each(project.projectDateList, function (k, dateToWork) {
+                    //la primera vez que itera pinta la penultima fecha , la segunda vez que itera pinta la ultima fecha y despinta la penultima
+                    if (moment.format('YYYY-MM-DD') == dateToWork) {
+                        $($cellList[j]).addClass('cell-selected');
+                        $($cellList[j]).html("<i class='fa fa-check'></i>");
+                        testArray.push("+ " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
+                        return false;
+                        // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
+                    }
+                    else {
+                        $($cellList[j]).removeClass('cell-selected');
+                        $($cellList[j]).html("");
+                        testArray.push("- " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
+                        // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
+                    }
+                });
+            });
+        });
+        console.log(testArray);
     };
     WorkPlanHandler.prototype.loadEventHandlers = function () {
         var _this = this;
-        $(document).on('click', '.cell-date', function (e) {
+        $(document).on('click', '.date-to-work', function (e) {
             e.preventDefault();
             var $cell = $(this);
-            swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function (result) {
-                if (result.value) {
-                    if ($.trim($cell.html()) == "") {
-                        $cell.html("<i class='fa fa-check'></i>");
-                    }
-                    else {
-                        $cell.html("");
-                    }
-                }
-            });
+            if ($.trim($cell.html()) == "") {
+                $cell.html("<i class='fa fa-check'></i>");
+                $cell.addClass('cell-selected');
+            }
+            else {
+                $cell.html("");
+                $cell.removeClass('cell-selected');
+            }
         });
         $(document).on('click', '.change-week', function (e) {
             e.preventDefault();
@@ -151,7 +174,7 @@ var WorkPlanHandler = /** @class */ (function () {
                 _this._weekNumber--;
             else if ($(this).hasClass('next-week'))
                 _this._weekNumber++;
-            _this.printWeek(_this._weekNumber);
+            _this._printWeek();
         });
     };
     return WorkPlanHandler;

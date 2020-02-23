@@ -18,6 +18,7 @@ class WorkPlanHandler
     private _testData : any;
     private _projectList : any;
     private _weekNumber : any;
+    private _projectList : any;
     constructor()
     {
         moment.locale('es');
@@ -64,9 +65,11 @@ class WorkPlanHandler
         let $template = $("<div>"+response.data.template+"</div>");
         let htmlSource = $template.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
-        let html = template({workplan:response.data.workplanMasterDetail});
-
+        let html = template({workPlan:response.data.workPlanMasterDetail, fiscalList:response.data.fiscalList, builderList:response.data.builderList});
         $('#work-plan-form-content').html(html);
+        _this._projectList = response.data.workPlanMasterDetail.projectList;
+        _this._printWeek();
+        
     }
 
     private _setHeaderDates()
@@ -148,10 +151,10 @@ class WorkPlanHandler
         
     }
 
-    public printWeek(weekNumber)
+    private _printWeek()
     {
         let begin = moment().startOf('week').isoWeekday(1);
-        let startDate = begin.week(weekNumber).format('YYYY-MM-DD');
+        let startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');
         let endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format('YYYY-MM-DD');
         let range = moment.range(startDate, endDate);
         let arrayMoment = Array.from(range.by('day'));
@@ -166,38 +169,62 @@ class WorkPlanHandler
         });
         monthNameList = monthNameList.filter((a, b) => monthNameList.indexOf(a) === b);
         $tableMonth.text(monthNameList.join('/'));
+        this._printProjectWeek();
+    }
 
-        console.log(monthNameList, arrayDates);
+    private _printProjectWeek()
+    {
+        let begin = moment().startOf('week').isoWeekday(1);
+        let startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');
+        let endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format('YYYY-MM-DD');
+        let range = moment.range(startDate, endDate);
+        let arrayMoment = Array.from(range.by('day'));
+        let $tableDates = $('.table-dates');
+
+        let testArray = [];
+        $.each(this._projectList, function(i, project){
+            let $cellList = $('tr[data-project-id='+project.projectId+']').find("td.date-to-work");
+            $.each(arrayMoment, function(j, moment){
+                $.each(project.projectDateList, function(k, dateToWork){
+                    //la primera vez que itera pinta la penultima fecha , la segunda vez que itera pinta la ultima fecha y despinta la penultima
+                    if(moment.format('YYYY-MM-DD') == dateToWork)
+                    {
+                        $($cellList[j]).addClass('cell-selected');
+                        $($cellList[j]).html("<i class='fa fa-check'></i>");
+                        testArray.push("+ "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+dateToWork);
+                        return false;
+                        // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
+                    }
+                    else
+                    {
+                        $($cellList[j]).removeClass('cell-selected');
+                        $($cellList[j]).html("");
+                        testArray.push("- "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+dateToWork);
+                        // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
+                    }
+                });
+            });
+        });
+        console.log(testArray);
+        
     }
 
     public loadEventHandlers()
     {
         let _this = this;
-        $(document).on('click', '.cell-date', function(e){
+        $(document).on('click', '.date-to-work', function(e){
             e.preventDefault();
             let $cell = $(this);
-            swal.fire({
-              title: 'Are you sure?',
-              text: "You won't be able to revert this!",
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if(result.value)
-                {
-                    if($.trim($cell.html()) == "")
-                    {
-                        $cell.html("<i class='fa fa-check'></i>");
-                    }
-                    else
-                    {
-                        $cell.html("");   
-                    }    
-                }
-            });
-            
+            if($.trim($cell.html()) == "")
+            {
+                $cell.html("<i class='fa fa-check'></i>");
+                $cell.addClass('cell-selected');
+            }
+            else
+            {
+                $cell.html("");   
+                $cell.removeClass('cell-selected');
+            }
         });
 
         $(document).on('click', '.change-week', function(e){
@@ -207,7 +234,7 @@ class WorkPlanHandler
             else if($(this).hasClass('next-week'))
                 _this._weekNumber++;
 
-            _this.printWeek(_this._weekNumber);
+            _this._printWeek();
         });
     }
 }

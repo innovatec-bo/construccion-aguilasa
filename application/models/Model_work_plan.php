@@ -56,6 +56,7 @@ class Model_work_plan extends Model_work_plan_base
             $projectId = $result[$i]["project_id"];
 //            if($result[$i]["work_date_wpl"] != "")
 //            {
+                $singleList[$projectId]['projectId'] = $result[$i]["project_id"];
                 $singleList[$projectId]['projectCode'] = $result[$i]["project_code"];
                 $singleList[$projectId]['projectAddress'] = $result[$i]["project_address"];
                 $singleList[$projectId]['projectTotalDates'] = $result[$i]["total_dates"];

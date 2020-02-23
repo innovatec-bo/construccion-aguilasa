@@ -26,7 +26,7 @@
 }
 .cell-selected
 {
-  background: #F7C12B;
+  background: url('../../assets/images/truck.png');
   text-align: center;
   color: #fff;
 }

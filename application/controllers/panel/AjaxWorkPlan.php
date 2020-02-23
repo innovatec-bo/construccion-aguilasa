@@ -76,7 +76,7 @@ class AjaxWorkPlan extends PrivateController
                 $fiscal = $fiscal->toArray();
                 $arrayFiscal[] = array(
                     "id" => $fiscal['id_usr'],
-                    "fullName" => $fiscal['firstname_usr']." ".$fiscal['lastname_usr'],
+                    "fullName" => $fiscal['firstname_usr']." ".$fiscal['lastname_usr']
                 );
             }
             $builderList = Model_user::getByRoleKeyword('builder');
@@ -86,12 +86,17 @@ class AjaxWorkPlan extends PrivateController
                 $builder = $builder->toArray();
                 $arrayBuilder[] = array(
                     "id" => $builder['id_usr'],
-                    "fullName" => $builder['firstname_usr']." ".$builder['lastname_usr'],
+                    "fullName" => $builder['firstname_usr']." ".$builder['lastname_usr']
                 );
             }
+            // echo"<pre>";var_dump($arrayFiscal);exit;
             $workPlanMasterDetail = Model_work_plan::getWorkPlanMasterDetail(1);
+            $workPlanMasterDetail = $workPlanMasterDetail[0];
             $response['data']["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(),true);
+            $response['data']["templateName"] = '#work-plan-edit-form';
             $response["data"]["workPlanMasterDetail"] = $workPlanMasterDetail;
+            $response['data']['fiscalList'] = $arrayFiscal;
+            $response['data']['builderList'] = $arrayBuilder;
         }
         else
         {
