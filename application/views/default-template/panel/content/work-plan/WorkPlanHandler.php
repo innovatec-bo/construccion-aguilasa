@@ -31,13 +31,13 @@
           </div>
       </div>
       <div class="col-md-11"> 
-          <button type="button" class="btn btn-info btn-xs" data-toogle='tooltip' data-placement='top' data-original-title="Nueva fila"><i class="fa fa-plus"></i></button>
+          <button type="button" class="btn btn-info btn-xs add-row" data-toogle='tooltip' data-placement='top' data-original-title="Nueva fila"><i class="fa fa-plus"></i></button>
       </div>
   </div>
   <div class="row">
       <div class="col-md-12">
           <div class="table-responsive">
-              <table class="table table-striped table-bordered table-hover">
+              <table class="table table-striped table-bordered table-hover work-plan-table">
                   <thead>
                       <tr>
                           <th rowspan="3" class="text-center vertical-align">PROYECTO</th>
@@ -47,7 +47,7 @@
                           <th class="change-week next-week" data-original-title='SIGUIENTE SEMANA' data-placement='top' data-container="body" data-toggle='tooltip'>>></th>
                           <th rowspan="3" class="text-center vertical-align">TRABAJO</th>
                           <th rowspan="3" class="text-center vertical-align">OBSERVACION</th>
-                          <th rowspan="3" class="text-center vertical-align">X</th>
+                          <th rowspan="3" class="text-center vertical-align" width='25px'>X</th>
                       </tr>
                       <tr>
                           <th class="width-30 text-center table-days">L</th>
@@ -70,49 +70,8 @@
                   </thead>
                   <tbody>
                       {{#each workPlan.projectList}}
-                        <tr data-project-id='{{projectId}}'>
-                          <td>{{projectCode}}</td>
-                          <td>{{projectAddress}}</td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td class="date-to-work"></td>
-                          <td><input class="table-input-work-plan" placeholder="Especifique el trabajo" type="text" name="work"></td>
-                          <td><input class="table-input-work-plan" placeholder="Observacion" type="text" name="observation"></td>
-                          <td class="text-center delete-row"><i class="fa fa-times"></i></td>
-                        </tr>  
+                        {{> work-plan-table-row project=this}}
                       {{/each}}
-                      <tr>
-                          <td>RD.02.2222</td>
-                          <td>VIADUCTO COTOCA</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>Maniobra para recableo de linea MT.</td>
-                          <td>Coordinacion con Paul Rojas y Dario Flores</td>
-                          <td class="text-center">x</td>
-                      </tr>
-                      <tr>
-                          <td>RD.02.2222</td>
-                          <td>VIADUCTO COTOCA</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>Maniobra para recableo de linea MT.</td>
-                          <td>Coordinacion con Paul Rojas y Dario Flores</td>
-                          <td class="text-center">x</td>
-                      </tr>
                   </tbody>
               </table>
           </div>
@@ -124,7 +83,23 @@
       </div>
   </div>
 </script>
-<script id="work-plan-table" type="text/x-handlebars-template">
+<script id="work-plan-table-row" type="text/x-handlebars-template">
+  <tr data-project-id='{{projectId}}'>
+    <td>{{projectCode}}</td>
+    <td>{{projectAddress}}</td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td class="date-to-work"></td>
+    <td><input class="table-input-work-plan" placeholder="Especifique el trabajo" type="text" name="work"></td>
+    <td><input class="table-input-work-plan" placeholder="Observacion" type="text" name="observation"></td>
+    <td class="text-center delete-row"><i class="fa fa-times"></i></td>
+  </tr>
+</script>
+<script id="work-plan-table-old" type="text/x-handlebars-template">
     <table class='table table-striped table-bordered work-plan-table'>
         <thead>
           <tr>

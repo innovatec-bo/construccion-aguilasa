@@ -21,12 +21,12 @@
 .table-month, .table-days, .table-dates
 {
   text-align:center;
-  padding-bottom: 1px!important;
-  padding-top: 1px!important;
+  padding-bottom: 0px!important;
+  padding-top: 0px!important;
 }
 .cell-selected
 {
-    background-image: url(../../images/maintenance.png);
+    background-image: url(../../images/flaticon/electrician.png);
     background-size: contain;
     background-repeat: no-repeat;
     text-align: center;
@@ -43,7 +43,7 @@
 {
   width: 30px!important;
 }
-.work-plan-table
+/*.work-plan-table
 {
   margin-bottom: 0px;
 }
@@ -51,7 +51,7 @@
     color: #fff;
     background-color: #0F263A;
     text-transform: uppercase;
-}
+}*/
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #ffffff;
 }
@@ -65,34 +65,34 @@ div.table-content{
   /*border: 1px solid #ddd;*/
   /*height:200px;*/
 }
-.work-plan-table td,
-.work-plan-table th {
+/*.work-plan-table td,*/
+/*.work-plan-table th {*/
   /*border: 1px solid #000;*/
-  width: 100px;
-}
+  /*width: 100px;*/
+/*}*/
 /*th {background-color:inherit;}*/
 
-.work-plan-table table {
+/*.work-plan-table table {
   table-layout: fixed;
   width:100%;
-}
-.work-plan-table td:first-child, th:first-child {
+}*/
+/*.work-plan-table td:first-child, th:first-child {
   position:sticky!important;
   left:0;
   z-index:1;
   background-color:inherit!important;
-}
-.work-plan-table td:last-child, .work-plan-table th:last-child {
+}*/
+/*.work-plan-table td:last-child, .work-plan-table th:last-child {
   position:sticky!important;
   right:0;
   z-index:1;
   background-color:inherit!important;
-}
-.work-plan-table thead tr th {
+}*/
+/*.work-plan-table thead tr th {
   position:sticky;
   top:0;
-}
-.work-plan-table th:first-child, .work-plan-table th:last-child {z-index:2;}
+}*/
+/*.work-plan-table th:first-child, .work-plan-table th:last-child {z-index:2;}*/
 
 .days-width
 {

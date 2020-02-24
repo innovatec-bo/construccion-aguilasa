@@ -21,6 +21,7 @@ var WorkPlanHandler = /** @class */ (function () {
             },
             success: function (response) {
                 if (response.success === 1 && !formData) {
+                    _this._masterTemplate = $("<div>" + response.data.template + "</div>");
                     _this._launchForm(response);
                 }
                 else if (response.success === 1 && formData) {
@@ -34,8 +35,9 @@ var WorkPlanHandler = /** @class */ (function () {
     };
     WorkPlanHandler.prototype._launchForm = function (response) {
         var _this = this;
-        var $template = $("<div>" + response.data.template + "</div>");
-        var htmlSource = $template.find(response.data.templateName).html();
+        var workPlanTableRow = $("#work-plan-table-row").html();
+        Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
+        var htmlSource = _this._masterTemplate.find(response.data.templateName).html();
         var template = Handlebars.compile(htmlSource);
         var html = template({ workPlan: response.data.workPlanMasterDetail, fiscalList: response.data.fiscalList, builderList: response.data.builderList });
         $('#work-plan-form-content').html(html);
@@ -138,7 +140,6 @@ var WorkPlanHandler = /** @class */ (function () {
                     //la primera vez que itera pinta la penultima fecha , la segunda vez que itera pinta la ultima fecha y despinta la penultima
                     if (moment.format('YYYY-MM-DD') == dateToWork) {
                         $($cellList[j]).addClass('cell-selected');
-                        $($cellList[j]).html("<i class='fa fa-check'></i>");
                         testArray.push("+ " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
                         return false;
                         // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
@@ -154,17 +155,21 @@ var WorkPlanHandler = /** @class */ (function () {
         });
         console.log(testArray);
     };
+    WorkPlanHandler.prototype._addRow = function () {
+        var htmlSource = this._masterTemplate.find('#work-plan-table-row').html();
+        var template = Handlebars.compile(htmlSource);
+        var html = template({});
+        $('.work-plan-table tbody').append(html);
+    };
     WorkPlanHandler.prototype.loadEventHandlers = function () {
         var _this = this;
         $(document).on('click', '.date-to-work', function (e) {
             e.preventDefault();
             var $cell = $(this);
-            if ($.trim($cell.html()) == "") {
-                $cell.html("<i class='fa fa-check'></i>");
+            if (!$cell.hasClass('cell-selected')) {
                 $cell.addClass('cell-selected');
             }
             else {
-                $cell.html("");
                 $cell.removeClass('cell-selected');
             }
         });
@@ -175,6 +180,10 @@ var WorkPlanHandler = /** @class */ (function () {
             else if ($(this).hasClass('next-week'))
                 _this._weekNumber++;
             _this._printWeek();
+        });
+        $(document).on('click', '.add-row', function (e) {
+            e.preventDefault();
+            _this._addRow();
         });
     };
     return WorkPlanHandler;

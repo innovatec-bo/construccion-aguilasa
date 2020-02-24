@@ -16,9 +16,10 @@ class WorkPlanHandler
     private _headerDays : any;
     private _bodyChecks : any;
     private _testData : any;
-    private _projectList : any;
     private _weekNumber : any;
     private _projectList : any;
+    private _masterTemplate : any;
+
     constructor()
     {
         moment.locale('es');
@@ -45,6 +46,7 @@ class WorkPlanHandler
             success:function(response){
                 if(response.success === 1 && !formData)
                 {
+                    _this._masterTemplate = $("<div>"+response.data.template+"</div>");
                     _this._launchForm(response)
                 }
                 else if(response.success === 1 && formData)
@@ -62,8 +64,9 @@ class WorkPlanHandler
     private _launchForm(response)
     {
         let _this = this;
-        let $template = $("<div>"+response.data.template+"</div>");
-        let htmlSource = $template.find(response.data.templateName).html();
+        let workPlanTableRow = $("#work-plan-table-row").html();
+        Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
+        let htmlSource = _this._masterTemplate.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
         let html = template({workPlan:response.data.workPlanMasterDetail, fiscalList:response.data.fiscalList, builderList:response.data.builderList});
         $('#work-plan-form-content').html(html);
@@ -190,7 +193,6 @@ class WorkPlanHandler
                     if(moment.format('YYYY-MM-DD') == dateToWork)
                     {
                         $($cellList[j]).addClass('cell-selected');
-                        $($cellList[j]).html("<i class='fa fa-check'></i>");
                         testArray.push("+ "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+dateToWork);
                         return false;
                         // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
@@ -209,20 +211,26 @@ class WorkPlanHandler
         
     }
 
+    private _addRow()
+    {
+        let htmlSource = this._masterTemplate.find('#work-plan-table-row').html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({});
+        $('.work-plan-table tbody').append(html);
+    }
+
     public loadEventHandlers()
     {
         let _this = this;
         $(document).on('click', '.date-to-work', function(e){
             e.preventDefault();
             let $cell = $(this);
-            if($.trim($cell.html()) == "")
+            if(!$cell.hasClass('cell-selected'))
             {
-                $cell.html("<i class='fa fa-check'></i>");
                 $cell.addClass('cell-selected');
             }
             else
             {
-                $cell.html("");   
                 $cell.removeClass('cell-selected');
             }
         });
@@ -235,6 +243,11 @@ class WorkPlanHandler
                 _this._weekNumber++;
 
             _this._printWeek();
+        });
+
+        $(document).on('click', '.add-row', function(e){
+            e.preventDefault();
+            _this._addRow();            
         });
     }
 }
