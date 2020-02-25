@@ -50,12 +50,14 @@ class Model_work_plan extends Model_work_plan_base
 
         $objectiveList = array();
         $singleList = array();
+        $index = 1;
         for ($i = 0; $i < count($result); $i++)
         {
             $workPlanId = $result[$i]["work_plan_id"];
             $projectId = $result[$i]["project_id"];
 //            if($result[$i]["work_date_wpl"] != "")
 //            {
+                $singleList[$projectId]['index'] = $index;
                 $singleList[$projectId]['projectId'] = $result[$i]["project_id"];
                 $singleList[$projectId]['projectCode'] = $result[$i]["project_code"];
                 $singleList[$projectId]['projectAddress'] = $result[$i]["project_address"];
@@ -75,6 +77,7 @@ class Model_work_plan extends Model_work_plan_base
                     $objectiveList[$workPlanId]['builderFullName'] = $result[$i]["builder_full_name"];
                     $objectiveList[$workPlanId]['projectList'] = array_values($singleList);
                     $singleList = array();
+                    $index = 1;
                 }
             }
             else
@@ -87,6 +90,7 @@ class Model_work_plan extends Model_work_plan_base
                 $objectiveList[$workPlanId]['builderFullName'] = $result[$i]["builder_full_name"];
                 $objectiveList[$workPlanId]['projectList'] = array_values($singleList);
             }
+            $index++;
         }
         return array_values($objectiveList);
     }

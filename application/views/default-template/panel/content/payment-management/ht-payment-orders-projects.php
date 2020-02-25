@@ -10,16 +10,17 @@
     <table class="table">
         <thead class="thead-inverse">
 			<tr>
-				<th colspan="8" class="text-center">Importes</th>
+				<th colspan="9" class="text-center">Importes</th>
 			</tr>
             <tr>
                 <th>#</th>
-                <th>Proyecto</th>
+                <th width='110px'>Proyecto</th>
                 <th>Diseño</th>
                 <th>Transporte</th>
                 <th>Construccion</th>
                 <th>Linea viva</th>
                 <th>Derecho de via</th>
+                <th>Total</th>
                 <th class="text-center"><i class="fa fa-times"></i></th>
             </tr>
         </thead>
@@ -49,6 +50,8 @@
                 <td class="text-right">
                     <span class="total-budget">0.00</span>
                 </td>
+                <td class="text-right">
+                </td>
             </tr>
         </tfoot>
     </table>
@@ -76,6 +79,9 @@
         </td>
         <td>
             <input type="text" size="6" name="right-of-way-budget" class="form-control input-sm input-masked" placeholder="0.00" value="{{right_of_way_budget}}"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+        </td>
+        <td class='text-right' style='vertical-align: middle;'>
+            <span class='sub-total'></span>
         </td>
         <td class="text-center">
             <button type="button" class="btn btn-danger btn-sm remove-payment-order-project"><i class="fa fa-times"></i></button>

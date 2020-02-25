@@ -9,6 +9,7 @@ declare let $: any;
 declare let swal: any;
 declare let window: any;
 declare let moment: any;
+declare let select2ProjectGeneralList : any;
 
 class WorkPlanHandler
 {
@@ -64,12 +65,54 @@ class WorkPlanHandler
     private _launchForm(response)
     {
         let _this = this;
-        let workPlanTableRow = $("#work-plan-table-row").html();
+        let workPlanTableRow = _this._masterTemplate.find("#work-plan-table-row").html();
         Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
         let htmlSource = _this._masterTemplate.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
         let html = template({workPlan:response.data.workPlanMasterDetail, fiscalList:response.data.fiscalList, builderList:response.data.builderList});
-        $('#work-plan-form-content').html(html);
+        swal.fire({
+            title: 'Test',
+            html: html,
+            showCancelButton: true,
+            confirmButtonColor: '#E41C5E',
+            cancelButtonColor: '#DDDDDD',
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick:false,
+            showLoaderOnConfirm: true,
+            customClass:"modal-workplan-form",
+            width:'100%',
+            preConfirm: () => {
+                let $listContent = $("#product-item-list-content");
+                let $form = $("form[name=purchase-form]");
+                if(!$form.parsley().isValid())
+                {
+                    $form.parsley().validate();
+                    return false;
+                }
+                else if($listContent.children().length <= 0)
+                {
+                    $(".table-error-message").removeClass("hide");
+                    return false;
+                }
+            },
+        }).then((result) => {
+            if (result.value)
+            {
+                // let $form = $("form[name=purchase-form]");
+                // let purchaseId = parseInt($form.find("input[name=purchase-id]").val());
+                // if(isNaN(purchaseId))
+                // {
+                //     _this.add($form.serialize());
+                // }
+                // else
+                // {
+                //     _this.edit($form.serialize());
+                // }
+            }
+        });
+        select2ProjectGeneralList();
+        $('[data-toogle=tooltip]').tooltip();
         _this._projectList = response.data.workPlanMasterDetail.projectList;
         _this._printWeek();
         
@@ -215,8 +258,18 @@ class WorkPlanHandler
     {
         let htmlSource = this._masterTemplate.find('#work-plan-table-row').html();
         let template = Handlebars.compile(htmlSource);
-        let html = template({});
+        let index = $("#project-list-content").children().length;
+        let data = {
+            index: index +1
+        };
+        let html = template(data);
         $('.work-plan-table tbody').append(html);
+        select2ProjectGeneralList();
+    }
+
+    private _deleteRow(tr)
+    {
+        tr.remove();
     }
 
     public loadEventHandlers()
@@ -248,6 +301,19 @@ class WorkPlanHandler
         $(document).on('click', '.add-row', function(e){
             e.preventDefault();
             _this._addRow();            
+        });
+
+        $(document).on('click', '.delete-row', function(e){
+            e.preventDefault();
+            let $tr = $(this).closest('tr');
+            _this._deleteRow($tr);
+        });
+
+        $(document).on("change",".select2.project",function(e){
+            e.preventDefault();
+            let projectId = $(this).val();
+            let $row = $(this).closest("tr");
+            getOriginalBudgets(projectId, $row);
         });
     }
 }

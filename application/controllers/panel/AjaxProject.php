@@ -383,4 +383,39 @@ class AjaxProject extends PrivateController
         $result['data']['projectList'] = $projectList;
         echo json_encode($result);exit;   
     }
+
+    public function select2()
+    {
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $currentIds = $this->input->post("currentIds");
+        $currentIds = array_filter($currentIds);
+        $offset = ($page-1)*$limit;
+        $records = Model_project::searchProject("","",$term, $limit, $offset, 'code_pro', 'asc', array('code_pro'));
+        $recordsFiltered = Model_project::searchTotalCount("","",$term, array('code_pro'));
+
+        $resultArray = array();
+        $list = array();
+
+        foreach ($records as $row)
+        {
+            if(array_search($row->id_pro,$currentIds) === FALSE)
+            {
+                $list[] = array(
+                    "id" => $row->id_pro,
+                    "text" => $row->code_pro,
+                    "address"=> $row->address_pro,
+                    "responsible" => $row->responsible,
+                    "points" => $row->points_pro,
+                    "distance" => $row->distance_pro
+                );
+            }
+        }
+        $moreResults = ($page * $limit) < ($recordsFiltered - count($currentIds));
+        $resultArray['list'] = $list;
+        $resultArray['pagination'] = array("more" => $moreResults);
+        echo json_encode($resultArray);exit;
+
+    }
 }

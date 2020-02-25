@@ -35,12 +35,51 @@ var WorkPlanHandler = /** @class */ (function () {
     };
     WorkPlanHandler.prototype._launchForm = function (response) {
         var _this = this;
-        var workPlanTableRow = $("#work-plan-table-row").html();
+        var workPlanTableRow = _this._masterTemplate.find("#work-plan-table-row").html();
         Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
         var htmlSource = _this._masterTemplate.find(response.data.templateName).html();
         var template = Handlebars.compile(htmlSource);
         var html = template({ workPlan: response.data.workPlanMasterDetail, fiscalList: response.data.fiscalList, builderList: response.data.builderList });
-        $('#work-plan-form-content').html(html);
+        swal.fire({
+            title: 'Test',
+            html: html,
+            showCancelButton: true,
+            confirmButtonColor: '#E41C5E',
+            cancelButtonColor: '#DDDDDD',
+            confirmButtonText: 'Guardar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            showLoaderOnConfirm: true,
+            customClass: "modal-workplan-form",
+            width: '100%',
+            preConfirm: function () {
+                var $listContent = $("#product-item-list-content");
+                var $form = $("form[name=purchase-form]");
+                if (!$form.parsley().isValid()) {
+                    $form.parsley().validate();
+                    return false;
+                }
+                else if ($listContent.children().length <= 0) {
+                    $(".table-error-message").removeClass("hide");
+                    return false;
+                }
+            }
+        }).then(function (result) {
+            if (result.value) {
+                // let $form = $("form[name=purchase-form]");
+                // let purchaseId = parseInt($form.find("input[name=purchase-id]").val());
+                // if(isNaN(purchaseId))
+                // {
+                //     _this.add($form.serialize());
+                // }
+                // else
+                // {
+                //     _this.edit($form.serialize());
+                // }
+            }
+        });
+        select2ProjectGeneralList();
+        $('[data-toogle=tooltip]').tooltip();
         _this._projectList = response.data.workPlanMasterDetail.projectList;
         _this._printWeek();
     };
@@ -158,8 +197,16 @@ var WorkPlanHandler = /** @class */ (function () {
     WorkPlanHandler.prototype._addRow = function () {
         var htmlSource = this._masterTemplate.find('#work-plan-table-row').html();
         var template = Handlebars.compile(htmlSource);
-        var html = template({});
+        var index = $("#project-list-content").children().length;
+        var data = {
+            index: index + 1
+        };
+        var html = template(data);
         $('.work-plan-table tbody').append(html);
+        select2ProjectGeneralList();
+    };
+    WorkPlanHandler.prototype._deleteRow = function (tr) {
+        tr.remove();
     };
     WorkPlanHandler.prototype.loadEventHandlers = function () {
         var _this = this;
@@ -184,6 +231,11 @@ var WorkPlanHandler = /** @class */ (function () {
         $(document).on('click', '.add-row', function (e) {
             e.preventDefault();
             _this._addRow();
+        });
+        $(document).on('click', '.delete-row', function (e) {
+            e.preventDefault();
+            var $tr = $(this).closest('tr');
+            _this._deleteRow($tr);
         });
     };
     return WorkPlanHandler;

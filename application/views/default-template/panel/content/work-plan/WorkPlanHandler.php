@@ -68,7 +68,7 @@
                           <th class="width-30 text-center table-dates"></th>
                       </tr>
                   </thead>
-                  <tbody>
+                  <tbody id='project-list-content'>
                       {{#each workPlan.projectList}}
                         {{> work-plan-table-row project=this}}
                       {{/each}}
@@ -77,15 +77,14 @@
           </div>
       </div>    
   </div>
-  <div class="row">
-      <div class="col-lg-12">
-          <button type="button" class="btn btn-primary">Guardar</button>
-      </div>
-  </div>
 </script>
 <script id="work-plan-table-row" type="text/x-handlebars-template">
-  <tr data-project-id='{{projectId}}'>
-    <td>{{projectCode}}</td>
+  <tr data-row-index="{{index}}" data-project-id='{{projectId}}'>
+    <td width="110px" class='additional-data'>
+      <select class="form-control input-sm select2 project" data-select-index="{{index}}">
+        <option value="{{projectId}}">{{projectCode}}</option>
+      </select>
+    </td>
     <td>{{projectAddress}}</td>
     <td class="date-to-work"></td>
     <td class="date-to-work"></td>
@@ -94,8 +93,8 @@
     <td class="date-to-work"></td>
     <td class="date-to-work"></td>
     <td class="date-to-work"></td>
-    <td><input class="table-input-work-plan" placeholder="Especifique el trabajo" type="text" name="work"></td>
-    <td><input class="table-input-work-plan" placeholder="Observacion" type="text" name="observation"></td>
+    <td class='additional-data'><input class="table-input-work-plan" placeholder="Especifique el trabajo" type="text" name="work"></td>
+    <td class='additional-data'><input class="table-input-work-plan" placeholder="Observacion" type="text" name="observation"></td>
     <td class="text-center delete-row"><i class="fa fa-times"></i></td>
   </tr>
 </script>

@@ -144,7 +144,7 @@ function startSelect2Projects(selector)
                 };
             }
         },
-        width : "100%",
+        width : "100px",
         escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         templateResult: formatRepo
     });
@@ -219,19 +219,27 @@ function updateTotalBudgets()
     var totalBuilding = 0;
     var totalLiveLine = 0;
     var totalRightOfWayBudget = 0;
+    var subTotal = 0;
     var rows = $("tr[data-row-index]");
 
     $.each(rows,function(index,value){
         var designBudget = $(value).find("input[name=design-budget]").val().replace(",","");
         totalDesign += parseFloat(designBudget);
+        subTotal += parseFloat(designBudget);
         var transportationBudget = $(value).find("input[name=transportation-budget]").val().replace(",","");
         totalTransportation += parseFloat(transportationBudget);
+        subTotal += parseFloat(transportationBudget);
         var buildingBudget = $(value).find("input[name=building-budget]").val().replace(",","");
         totalBuilding += parseFloat(buildingBudget);
+        subTotal += parseFloat(buildingBudget);
         var liveLineBudget = $(value).find("input[name=live-line-budget]").val().replace(",","");
         totalLiveLine += parseFloat(liveLineBudget);
+        subTotal += parseFloat(liveLineBudget);
         var rightOfWayBudget = $(value).find("input[name=right-of-way-budget]").val().replace(",","");
         totalRightOfWayBudget += parseFloat(rightOfWayBudget);
+        subTotal += parseFloat(rightOfWayBudget);
+        $(value).find(".sub-total").text(parseFloat(subTotal).toLocaleString('en'));
+        subTotal = 0;
     });
     var totalBudget = totalDesign + totalTransportation + totalBuilding + totalLiveLine + totalRightOfWayBudget;
     totalBudget = totalBudget.toFixed(2);

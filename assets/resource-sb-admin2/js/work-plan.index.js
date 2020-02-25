@@ -9,5 +9,5 @@ $(function() {
 	let workPlanHandler = new WorkPlanHandler();
 	workPlanHandler.edit();
 	workPlanHandler.loadEventHandlers();
-	$('[data-toogle=tooltip]').tooltip();
+	
 });

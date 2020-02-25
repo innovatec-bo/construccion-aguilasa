@@ -295,3 +295,54 @@ function timbthumbImage(url, width, height)
     let response = base_url+"/timthumb/timthumb.php?src="+url+width+height;
     return response;
 }
+
+function select2ProjectGeneralList(selector)
+{
+    selector = selector || '.select2.project';
+    //select2 ajax for projects
+    $(selector).select2({
+        placeholder: "Codigo de proyecto",
+        containerCssClass: 'select-xs',
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxProject/select2',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                var currentIds = [];
+                $.each($(".select2.project"),function(index, value){
+                    currentIds.push($(value).val());
+                    // console.log($(value).val())
+                });
+                return {
+                    currentIds:currentIds,
+                    term : params.term || "", //search term
+                    limit : 5, // page size
+                    page: params.page || 1
+                };
+            },
+
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        width : "100px",
+        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        templateResult: select2ProjectGeneralListFormatResponse
+    });
+}
+
+function select2ProjectGeneralListFormatResponse (response) {
+    if (response.loading)
+        return response.text;
+
+    var htmlSource   = $("#ht-select2-project-response").html();
+    var template = Handlebars.compile(htmlSource);
+    var data = {project:response};
+    var html = template(data);
+    return html;
+}
