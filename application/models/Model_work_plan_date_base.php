@@ -8,7 +8,7 @@
 
 class Model_work_plan_date_base extends MY_Model
 {
-    const TABLE_NAME = "wfl_work_plan_date";
+    const TABLE_NAME = "wfl_work_plan_dates";
     const TABLE_ID = "id_wpd";
     const ATTRIB_SUFIX = "_wpd";
 
@@ -40,7 +40,7 @@ class Model_work_plan_date_base extends MY_Model
             "project_id_wpd" => $this->_projectId,
             "date_wpd" => $this->_date,
             "detail_wpd" => $this->_detail,
-            "observation_wpl" => $this->_observation,
+            "observation_wpd" => $this->_observation,
             "deleted_wpd" => $this->_deleted,
             "createdon_wpd" => $this->_createdOn,
             "createdby_wpd" => $this->_createdBy,

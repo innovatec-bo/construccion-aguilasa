@@ -14,10 +14,24 @@ class Model_work_plan extends Model_work_plan_base
         parent::__construct($title, $fiscalId, $builderId);
     }
 
-    public static function getWorkPlanMasterDetail($workPlanId)
+    public static function getWorkPlanMasterDetail($workPlanId = NULL)
     {
         $ci = &get_instance();
         $ci->load->database();
+
+        $startDate = date('Y-m-01');
+        $endDate  = date('Y-m-t');
+        $dateRangeFilter = "";
+        if(is_null($workPlanId))
+        {
+            $dateRangeFilter = " and date_wpd between ".$ci->db->escape($startDate)." and ".$ci->db->escape($endDate)." ";
+        }
+        $workPlanIdFilter = "";
+        if(!is_null($workPlanId))
+        {
+            $workPlanIdFilter = " and id_wpl = ".$ci->db->escape($workPlanId)." ";
+        }
+
         $sql = "
             SELECT
                 id_wpl work_plan_id,
@@ -40,9 +54,11 @@ class Model_work_plan extends Model_work_plan_base
             LEFT JOIN sec_users uf on fiscal_id_wpl = uf.id_usr
             LEFT JOIN sec_users ub on builder_id_wpl = ub.id_usr
             WHERE
-                id_wpl = ".$ci->db->escape($workPlanId)."
+                1 = 1
+                ".$workPlanIdFilter."
                 and deleted_wpl != 1
                 and deleted_wpd != 1
+                ".$dateRangeFilter."
                 GROUP BY project_id_wpd
         ";
         $query = $ci->db->query($sql);
@@ -61,6 +77,8 @@ class Model_work_plan extends Model_work_plan_base
                 $singleList[$projectId]['projectId'] = $result[$i]["project_id"];
                 $singleList[$projectId]['projectCode'] = $result[$i]["project_code"];
                 $singleList[$projectId]['projectAddress'] = $result[$i]["project_address"];
+                $singleList[$projectId]['workDetail'] = $result[$i]["work_detail"];
+                $singleList[$projectId]['workObservation'] = $result[$i]["work_observation"];
                 $singleList[$projectId]['projectTotalDates'] = $result[$i]["total_dates"];
                 $singleList[$projectId]['projectDateList'] = explode(",",$result[$i]["date_list"]);
 //            }
@@ -146,5 +164,39 @@ class Model_work_plan extends Model_work_plan_base
             }
         }
         return array_values($objectiveList);
+    }
+
+    public function updateDatesToWork($list = array())
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $dataToSave = array();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+        foreach($list as $row)
+        {
+            $projectId = $row['projectId'];
+            $date = $row['date'];
+            $detail = $row['detail'];
+            $observation = $row['observation'];
+            
+            $dataToSave[] = array(
+                'work_plan_id_wpd' => $this->_id,
+                'project_id_wpd' => $projectId,
+                'date_wpd' => $date,
+                'detail_wpd' => $detail,
+                'observation_wpd' => $observation,
+                'deleted_wpd' => 0,
+                'createdon_wpd' => date('Y-m-d H:i:s'),
+                'createdby_wpd' => $currentUserId
+            );
+        }
+        $this->save();
+        // echo"<pre>";var_dump($updateStockSale, $dataToSave);exit;
+        Model_work_plan_date::deleteDatesToWork($this->_id);
+        if(count($dataToSave) > 0)
+        {
+            Model_work_plan_date::insertBatch($dataToSave);
+        }
     }
 }

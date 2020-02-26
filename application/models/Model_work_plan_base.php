@@ -100,4 +100,138 @@ class Model_work_plan_base extends MY_Model
     }
 
     // getters - end
+
+    ################################################################################################# BEGIN - DATATABLE AJAX METHODS
+    /**
+     * @return mixed
+     */
+    public static function countAll($additionalParameters = array())
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = '
+                select count(' . static::TABLE_ID. ') as total
+                from ' . static::TABLE_NAME .' 
+                LEFT JOIN sec_users uf on fiscal_id_wpl = uf.id_usr
+                LEFT JOIN sec_users ub on builder_id_wpl = ub.id_usr
+                where '.static::notDeleted().' '.static::_additionalParameters($additionalParameters);
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    /**
+     * @param $limit
+     * @param $offset
+     * @param null $orderBy
+     * @param string $orderType
+     * @return mixed
+     */
+    public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc', $additionalParameters = array())
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' 
+                from ' . static::TABLE_NAME . ' 
+                LEFT JOIN wfl_work_plan_dates on work_plan_id_wpd = id_wpl
+                LEFT JOIN wfl_projects on project_id_wpd = id_pro and deleted_wpd != 1
+                LEFT JOIN sec_users uf on fiscal_id_wpl = uf.id_usr
+                LEFT JOIN sec_users ub on builder_id_wpl = ub.id_usr
+                where '.static::notDeleted().' '.static::_additionalParameters($additionalParameters).'           
+                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $query = $ci->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
+
+    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
+    {
+        if ($orderBy === null)
+        {
+            $orderBy = static::TABLE_ID;
+        }
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select '.static::_dataTableColumns().' 
+        from ' . static::TABLE_NAME;
+        $sql .= ' 
+        LEFT JOIN wfl_work_plan_dates on work_plan_id_wpd = id_wpl
+        LEFT JOIN wfl_projects on project_id_wpd = id_pro and deleted_wpd != 1
+        LEFT JOIN sec_users uf on fiscal_id_wpl = uf.id_usr
+        LEFT JOIN sec_users ub on builder_id_wpl = ub.id_usr
+        where '.static::notDeleted().' and (';
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+
+        $query = $ci->db->query($sql);
+        return $query->result();
+    }
+
+    public static function searchTotalCount($text, $colsArray = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+        $sql .= ' 
+        LEFT JOIN sec_users uf on fiscal_id_wpl = uf.id_usr
+        LEFT JOIN sec_users ub on builder_id_wpl = ub.id_usr
+        where '.static::notDeleted().' and (';
+
+        foreach ($colsArray as $var)
+        {
+            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+        }
+
+        $sql = substr($sql, 0, -3);
+        $sql .= ') '.static::_additionalParameters($additionalParameters);
+
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
+    }
+
+    private static function _dataTableColumns()
+    {
+        $columns = static::TABLE_NAME.".*, 
+                CONCAT(uf.firstname_usr,' ',uf.lastname_usr) fiscal_full_name,
+                CONCAT(ub.firstname_usr,' ',ub.lastname_usr) builder_full_name,
+                GROUP_CONCAT(distinct code_pro) project_list";
+        return $columns;
+    }
+
+    private static function _additionalParameters($list = array())
+    {
+        $ci=&get_instance();
+        $ci->load->database();
+        $sql = "";
+        if(is_array($list) && count($list) >= 1)
+        {
+            foreach($list as $parameter => $value)
+            {
+                switch ($parameter)
+                {
+                    case "fiscal":
+                            $sql .= ' and uf.id_usr = '.$ci->db->escape($value).' ';
+                        break;
+                }
+            }
+        }
+//        echo"<pre>";var_dump($sql);exit;
+        return $sql;
+    }
+    ################################################################################################# END - DATATABLE AJAX METHODS
 }

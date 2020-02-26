@@ -12,34 +12,90 @@ class AjaxWorkPlan extends PrivateController
     public function __construct()
     {
         parent::__construct();
+        $this->_validateFeature("work_plan");
         if(! $this->input->is_ajax_request())
         {
             redirect('404');
         }
     }
 
+    public function ajaxDtAllWorkPlans()
+    {
+        $dt = new JqdtHandler($this->input->post());
+        $additionalParameters = array();
+        if($this->_is("fiscal"))
+            $additionalParameters['fiscal'] = $this->sessionUser->id;
+        $recordsTotal = Model_work_plan::countAll($additionalParameters);
+        $recordsFiltered = $recordsTotal;
+        if (!$dt->hasSearchValue())
+        {
+            $resultArray = Model_work_plan::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $additionalParameters);
+        }
+        else
+        {
+            $resultArray = Model_work_plan::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
+            $recordsFiltered = Model_work_plan::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
+        }
+
+        echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
+        exit;
+    }
+
     public function add()
     {
-        // $this->_validateFeature('role_add');
+        // $this->_validateFeature('role_edit');
+
         /** Server Side Validations **/
-        $this->form_validation->set_rules('role-name', 'Name', 'trim');
-        $this->form_validation->set_rules('role-keyword', 'Keyword', 'trim');
+        $this->form_validation->set_rules('fiscalId', 'Fiscal', 'trim|required');
+        $this->form_validation->set_rules('builderId', 'Constructor', 'trim|required');
 
         if($this->form_validation->run() === FALSE)
         {
-            $response["success"] = 1;
-            $response["message"] = "";
-            $response["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(), true);
-            $response["WorkPlan"] = array();
+            $validationErrors = validation_errors();
+            $validationErrors = str_replace("<p>","",$validationErrors);
+            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $response = array("success" => 0, "message" => $validationErrors);
+            $success = $validationErrors != ""?0:1;
+            $response["success"] = $success;
+            $response["message"] = $validationErrors;
+            $fiscalList = Model_user::getByRoleKeyword('fiscal');
+            $arrayFiscal = array();
+            foreach ($fiscalList as $fiscal)
+            {
+                $fiscal = $fiscal->toArray();
+                $arrayFiscal[] = array(
+                    "id" => $fiscal['id_usr'],
+                    "fullName" => $fiscal['firstname_usr']." ".$fiscal['lastname_usr']
+                );
+            }
+            $builderList = Model_user::getByRoleKeyword('builder');
+            $arrayBuilder = array();
+            foreach ($builderList as $builder)
+            {
+                $builder = $builder->toArray();
+                $arrayBuilder[] = array(
+                    "id" => $builder['id_usr'],
+                    "fullName" => $builder['firstname_usr']." ".$builder['lastname_usr']
+                );
+            }
+            $response['data']["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(),true);
+            $response['data']["templateName"] = '#work-plan-add-form';
+            $response["data"]["workPlanMasterDetail"] = array('projectList'=> array('projectDateList'=>array()));
+            $response['data']['fiscalList'] = $arrayFiscal;
+            $response['data']['builderList'] = $arrayBuilder;
         }
         else
         {
             $formData = $this->input->post();
-            $fecha = $formData["date"];
-            $role = new Model_work_plan($roleName, $roleKeyword);
-            $role->save();
+            $fiscalId = $formData["fiscalId"];
+            $builderId = $formData["builderId"];
+            $datesToWork = $formData["datesToWork"];
+            $workPlan = new Model_work_plan("", $fiscalId, $builderId);
+            $workPlan->save();
+            $workPlan->updateDatesToWork($datesToWork);
             $response["success"] = 1;
-            $response["message"] = "User was added successfully";
+            $response["message"] = "Plan de trabajo creado correctamente";
+
         }
         echo json_encode($response);exit;
     }
@@ -63,12 +119,18 @@ class AjaxWorkPlan extends PrivateController
         }
 
         /** Server Side Validations **/
-        $this->form_validation->set_rules('role-name', 'Name', 'trim');
+        $this->form_validation->set_rules('fiscalId', 'Fiscal', 'trim|required');
+        $this->form_validation->set_rules('builderId', 'Constructor', 'trim|required');
 
         if($this->form_validation->run() === FALSE)
         {
-            $response["success"] = 1;
-            $response["message"] = "";
+            $validationErrors = validation_errors();
+            $validationErrors = str_replace("<p>","",$validationErrors);
+            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $response = array("success" => 0, "message" => $validationErrors);
+            $success = $validationErrors != ""?0:1;
+            $response["success"] = $success;
+            $response["message"] = $validationErrors;
             $fiscalList = Model_user::getByRoleKeyword('fiscal');
             $arrayFiscal = array();
             foreach ($fiscalList as $fiscal)
@@ -90,7 +152,7 @@ class AjaxWorkPlan extends PrivateController
                 );
             }
             // echo"<pre>";var_dump($arrayFiscal);exit;
-            $workPlanMasterDetail = Model_work_plan::getWorkPlanMasterDetail(1);
+            $workPlanMasterDetail = Model_work_plan::getWorkPlanMasterDetail($workPlanId);
             $workPlanMasterDetail = $workPlanMasterDetail[0];
             $response['data']["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(),true);
             $response['data']["templateName"] = '#work-plan-edit-form';
@@ -101,11 +163,15 @@ class AjaxWorkPlan extends PrivateController
         else
         {
             $formData = $this->input->post();
-            $roleName = $formData["role-name"];
-            $role->setRoleName($roleName);
-            $role->save();
+            $fiscalId = $formData["fiscalId"];
+            $builderId = $formData["builderId"];
+            $datesToWork = $formData["datesToWork"];
+            $workPlan->setFiscalId($fiscalId);
+            $workPlan->setBuilderId($builderId);
+            $workPlan->save();
+            $workPlan->updateDatesToWork($datesToWork);
             $response["success"] = 1;
-            $response["message"] = "User was added successfully";
+            $response["message"] = "Plan de trabajo editado correctamente";
 
         }
         echo json_encode($response);exit;
@@ -145,6 +211,15 @@ class AjaxWorkPlan extends PrivateController
         $result['data']['fiscalList'] = $fiscalList;
         $result['data']['builderList'] = $builderList;
         $result['data']['workPlanMasterDetail'] = $workPlanMasterDetail;
+    }
 
+    public function delete($workPlanId)
+    {
+        // $this->_validateFeature("delete_project");
+        $project = $this->_validateObjectToEdit($workPlanId,"Model_work_plan","panel/WorkPlan");
+        $project->delete();
+        $response["success"] = 1;
+        $response["message"] = "Plan de trabajo eliminado exitosamente.";       
+        echo json_encode($response);exit;
     }
 }

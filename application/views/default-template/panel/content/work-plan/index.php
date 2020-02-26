@@ -9,7 +9,7 @@
 <div class="container-fluid box-shadow-2">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Plan de trabajo</h1>
+            <h1 class="page-header">Planes de trabajo</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -20,13 +20,25 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-md-12" id="work-plan-form-content">
-            
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" id="work-plan-index">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fiscal</th>
+                        <th>Constructor</th>
+                        <th>Proyectos</th>
+                        <th>Opciones</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <!-- /.container-fluid -->
 <?php
-    $this->load->view("default-template/panel/content/work-plan/WorkPlanHandler");
+    // $this->load->view("default-template/panel/content/work-plan/WorkPlanHandler");
     $this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
 ?>

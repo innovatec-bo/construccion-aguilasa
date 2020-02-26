@@ -113,3 +113,6 @@ $config['complements']['fullcalendar.timegrid.main']['js'] = assets_url('resourc
 
 $config['complements']['momentsjs']['js'] = assets_url('resource-sb-admin2/plugins/moment.min.js');
 $config['complements']['moment-range']['js'] = assets_url('resource-sb-admin2/plugins/moment-range.js');
+
+$config['complements']['toastr']['css'] = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css';
+$config['complements']['toastr']['js'] = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js';

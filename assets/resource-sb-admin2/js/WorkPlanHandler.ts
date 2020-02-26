@@ -29,9 +29,39 @@ class WorkPlanHandler
         this._projectList = [];
         this._testData = [{"code":"ra.22.2221","dateList":["2020-01-01","2020-01-02","2020-01-03"]},{"code":"ra.22.2222","dateList":["2020-01-04","2020-01-05","2020-01-06"]}];        
         this._weekNumber = moment().week();
-        this._workPlanId = 1;
+        
     }
     
+    public add(formData?)
+    {
+        let _this = this;
+        let method = !formData?"GET":"POST";
+        $.ajax({
+            url : base_url + 'panel/AjaxWorkPlan/add',
+            dataType  :"json",
+            method : method,
+            data:formData,
+            beforeSend:function(){
+                // _this._beforeSend(method);
+            },
+            success:function(response){
+                if(response.success === 1 && !formData)
+                {
+                    _this._masterTemplate = $("<div>"+response.data.template+"</div>");
+                    _this._launchForm(response, 'Crear plan de trabajo');
+                }
+                else if(response.success === 1 && formData)
+                {
+                    toastr.success(response.message, '', {'progressBar':true})
+                }
+                else
+                {
+                    toastr.error(response.message, '', {'progressBar':true})
+                }
+            }
+        });
+    }
+
     public edit(formData?)
     {
         let _this = this;
@@ -48,30 +78,73 @@ class WorkPlanHandler
                 if(response.success === 1 && !formData)
                 {
                     _this._masterTemplate = $("<div>"+response.data.template+"</div>");
-                    _this._launchForm(response)
+                    _this._launchForm(response, 'Editar plan de trabajo');
                 }
                 else if(response.success === 1 && formData)
                 {
-                    // toastr.success(response.message, '', {"progressBar": true});
+                    toastr.success(response.message, '', {'progressBar':true});
+                    $("#work-plan-index").DataTable().ajax.reload(null, false);
                 }
                 else
                 {
-                    // toastr.error(response.message, '', {"progressBar": true});
+                    toastr.error(response.message, '', {'progressBar':true})
                 }
             }
         });
     }
 
-    private _launchForm(response)
+    public delete()
     {
         let _this = this;
+        swal.fire({
+            title: "Eliminar Plan de trabajo?",
+            html: "",
+            showCancelButton: true,
+            confirmButtonColor: '#E41C5E',
+            cancelButtonColor: '#DDDDDD',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick:false,
+            width:'50%'
+        }).then((result) => {
+            if (result.value)
+            {
+                $.ajax({
+                    url : base_url + 'panel/AjaxWorkPlan/delete/'+_this._workPlanId,
+                    dataType  :"json",
+                    method : "post",
+                    data:{},
+                    beforeSend:function(){
+                        // _this._beforeSend(method);
+                    },
+                    success:function(response){
+                        if(response.success === 1)
+                        {
+                            toastr.success(response.message, '', {'progressBar':true});
+                            $("#work-plan-index").DataTable().ajax.reload(null, false);
+                        }
+                        else
+                        {
+                            toastr.error(response.message, '', {'progressBar':true})
+                        }
+                    }
+                });        
+            }
+        });
+    }
+
+    private _launchForm(response, title)
+    {
+        let _this = this;
+        let workPlanTable = _this._masterTemplate.find("#work-plan-table").html();
+        Handlebars.registerPartial("work-plan-table", workPlanTable);
         let workPlanTableRow = _this._masterTemplate.find("#work-plan-table-row").html();
         Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
         let htmlSource = _this._masterTemplate.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
         let html = template({workPlan:response.data.workPlanMasterDetail, fiscalList:response.data.fiscalList, builderList:response.data.builderList});
         swal.fire({
-            title: 'Test',
+            title: title,
             html: html,
             showCancelButton: true,
             confirmButtonColor: '#E41C5E',
@@ -83,8 +156,8 @@ class WorkPlanHandler
             customClass:"modal-workplan-form",
             width:'100%',
             preConfirm: () => {
-                let $listContent = $("#product-item-list-content");
-                let $form = $("form[name=purchase-form]");
+                let $listContent = $("#project-list-content");
+                let $form = $("form[name=work-plan-form]");
                 if(!$form.parsley().isValid())
                 {
                     $form.parsley().validate();
@@ -92,23 +165,23 @@ class WorkPlanHandler
                 }
                 else if($listContent.children().length <= 0)
                 {
-                    $(".table-error-message").removeClass("hide");
+                    $(".table-error-message").removeClass("hidden");
                     return false;
                 }
             },
         }).then((result) => {
             if (result.value)
             {
-                // let $form = $("form[name=purchase-form]");
-                // let purchaseId = parseInt($form.find("input[name=purchase-id]").val());
-                // if(isNaN(purchaseId))
-                // {
-                //     _this.add($form.serialize());
-                // }
-                // else
-                // {
-                //     _this.edit($form.serialize());
-                // }
+                let $form = $("form[name=work-plan-form]");
+                let workPlanId = parseInt($form.find("input[name=work-plan-id]").val());
+                if(isNaN(workPlanId))
+                {
+                    _this.add(_this._prepareDataToSave());
+                }
+                else
+                {
+                    _this.edit(_this._prepareDataToSave());
+                }
             }
         });
         select2ProjectGeneralList();
@@ -116,6 +189,39 @@ class WorkPlanHandler
         _this._projectList = response.data.workPlanMasterDetail.projectList;
         _this._printWeek();
         
+        
+    }
+
+    private _prepareDataToSave()
+    {
+        let datesToWork = [];
+        let $tbody = $("#project-list-content");
+        let workPlan = {
+            id:"",
+            fiscalId:"",
+            builderId:"",
+            datesToWork:[]
+        };
+        workPlan.id = $(".modal-workplan-form").find('select[name=work-plan-id]').val();
+        workPlan.fiscalId = $(".modal-workplan-form").find('select[name=fiscal-id] option:selected').val();
+        workPlan.builderId = $(".modal-workplan-form").find('select[name=builder-id] option:selected').val();
+
+        $.each($tbody.children(), function(index, tr){
+            let projectId = $(tr).find('.select2.project option:selected').val();
+            let detail = $(tr).find('.detail').val();
+            let observation = $(tr).find('.observation').val();
+            $.each($(tr).children('.date-to-work'), function(j, td){
+                let $td = $(td);
+                let $th = $td.closest('table').find('th.table-dates').eq($td.index()-2);
+                if($td.hasClass('cell-selected'))
+                {
+                    let date = $th.data('date');
+                    datesToWork.push({'projectId':projectId, 'detail':detail, 'observation':observation, 'date': date});
+                }
+            });
+        });
+        workPlan.datesToWork = datesToWork;
+        return workPlan;
     }
 
     private _setHeaderDates()
@@ -212,6 +318,7 @@ class WorkPlanHandler
             monthNameList.push(moment.format('MMMM'));
             arrayDates.push(moment.format('DD'));
             $($tableDates[i]).text(moment.format('DD'));
+            $($tableDates[i]).data('date',moment.format('YYYY-MM-DD'));
         });
         monthNameList = monthNameList.filter((a, b) => monthNameList.indexOf(a) === b);
         $tableMonth.text(monthNameList.join('/'));
@@ -243,15 +350,12 @@ class WorkPlanHandler
                     else
                     {
                         $($cellList[j]).removeClass('cell-selected');
-                        $($cellList[j]).html("");
                         testArray.push("- "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+dateToWork);
                         // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
                     }
                 });
             });
         });
-        console.log(testArray);
-        
     }
 
     private _addRow()
@@ -264,6 +368,7 @@ class WorkPlanHandler
         };
         let html = template(data);
         $('.work-plan-table tbody').append(html);
+        $(".table-error-message").addClass("hidden");
         select2ProjectGeneralList();
     }
 
@@ -311,11 +416,24 @@ class WorkPlanHandler
 
         $(document).on("change",".select2.project",function(e){
             e.preventDefault();
-            let projectId = $(this).val();
-            let $row = $(this).closest("tr");
-            getOriginalBudgets(projectId, $row);
+            let $tr = $(this).closest('tr');
+            let projectData = $(this).select2('data');
+            projectData = projectData[0];
+            $tr.find('.project-address').text(projectData.address);
+        });
+
+        $(document).on("click", ".edit-work-plan", function(e){
+            e.preventDefault();
+            let workPlanId = $(this).data('work-plan-id');
+            _this._workPlanId = parseInt(workPlanId);
+            _this.edit();
+        });
+
+        $(document).on("click", ".delete-work-plan", function(e){
+            e.preventDefault();
+            let workPlanId = $(this).data('work-plan-id');
+            _this._workPlanId = parseInt(workPlanId);
+            _this.delete();
         });
     }
 }
-// var begin = moment().startOf('week').isoWeekday(1);
-// begin.week(1).format('YYYY-MM-DD');
