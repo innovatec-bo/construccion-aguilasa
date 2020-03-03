@@ -9,9 +9,9 @@
 class Model_work_plan extends Model_work_plan_base
 {
 
-    public function __construct($title = "", $fiscalId = NULL, $builderId = NULL)
+    public function __construct($title = "", $fiscalId = NULL, $builderId = NULL, $weekNumber = NULL)
     {
-        parent::__construct($title, $fiscalId, $builderId);
+        parent::__construct($title, $fiscalId, $builderId, $weekNumber);
     }
 
     public static function getWorkPlanMasterDetail($workPlanId = NULL)
@@ -40,6 +40,7 @@ class Model_work_plan extends Model_work_plan_base
                 CONCAT(uf.firstname_usr,' ',uf.lastname_usr) fiscal_full_name,
                 builder_id_wpl builder_id,
                 CONCAT(ub.firstname_usr,' ',ub.lastname_usr) builder_full_name,
+                week_number_wpl week_number,
                 project_id_wpd project_id,
                 code_pro project_code,
                 address_pro project_address,	
@@ -93,6 +94,7 @@ class Model_work_plan extends Model_work_plan_base
                     $objectiveList[$workPlanId]['fiscalFullName'] = $result[$i]["fiscal_full_name"];
                     $objectiveList[$workPlanId]['builderId'] = $result[$i]["builder_id"];
                     $objectiveList[$workPlanId]['builderFullName'] = $result[$i]["builder_full_name"];
+                    $objectiveList[$workPlanId]['weekNumber'] = $result[$i]["week_number"];
                     $objectiveList[$workPlanId]['projectList'] = array_values($singleList);
                     $singleList = array();
                     $index = 1;
@@ -106,6 +108,7 @@ class Model_work_plan extends Model_work_plan_base
                 $objectiveList[$workPlanId]['fiscalFullName'] = $result[$i]["fiscal_full_name"];
                 $objectiveList[$workPlanId]['builderId'] = $result[$i]["builder_id"];
                 $objectiveList[$workPlanId]['builderFullName'] = $result[$i]["builder_full_name"];
+                $objectiveList[$workPlanId]['weekNumber'] = $result[$i]["week_number"];
                 $objectiveList[$workPlanId]['projectList'] = array_values($singleList);
             }
             $index++;

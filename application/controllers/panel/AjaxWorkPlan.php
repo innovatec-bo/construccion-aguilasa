@@ -89,8 +89,9 @@ class AjaxWorkPlan extends PrivateController
             $formData = $this->input->post();
             $fiscalId = $formData["fiscalId"];
             $builderId = $formData["builderId"];
+            $weekNumber = $formData["weekNumber"];
             $datesToWork = $formData["datesToWork"];
-            $workPlan = new Model_work_plan("", $fiscalId, $builderId);
+            $workPlan = new Model_work_plan("", $fiscalId, $builderId, $weekNumber);
             $workPlan->save();
             $workPlan->updateDatesToWork($datesToWork);
             $response["success"] = 1;
@@ -165,9 +166,11 @@ class AjaxWorkPlan extends PrivateController
             $formData = $this->input->post();
             $fiscalId = $formData["fiscalId"];
             $builderId = $formData["builderId"];
+            $weekNumber = $formData["weekNumber"];
             $datesToWork = $formData["datesToWork"];
             $workPlan->setFiscalId($fiscalId);
             $workPlan->setBuilderId($builderId);
+            $workPlan->setWeekNumber($weekNumber);
             $workPlan->save();
             $workPlan->updateDatesToWork($datesToWork);
             $response["success"] = 1;

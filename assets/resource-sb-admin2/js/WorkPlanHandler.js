@@ -8,6 +8,7 @@ var WorkPlanHandler = /** @class */ (function () {
         this._weekNumber = moment().week();
     }
     WorkPlanHandler.prototype.add = function (formData) {
+        this._weekNumber = moment().week();
         var _this = this;
         var method = !formData ? "GET" : "POST";
         $.ajax({
@@ -25,6 +26,7 @@ var WorkPlanHandler = /** @class */ (function () {
                 }
                 else if (response.success === 1 && formData) {
                     toastr.success(response.message, '', { 'progressBar': true });
+                    $("#work-plan-index").DataTable().ajax.reload(null, false);
                 }
                 else {
                     toastr.error(response.message, '', { 'progressBar': true });
@@ -141,6 +143,9 @@ var WorkPlanHandler = /** @class */ (function () {
         select2ProjectGeneralList();
         $('[data-toogle=tooltip]').tooltip();
         _this._projectList = response.data.workPlanMasterDetail.projectList;
+        response.data.workPlanMasterDetail.weekNumber;
+        if ($.isNumeric(response.data.workPlanMasterDetail.weekNumber))
+            _this._weekNumber = response.data.workPlanMasterDetail.weekNumber;
         _this._printWeek();
     };
     WorkPlanHandler.prototype._prepareDataToSave = function () {
@@ -150,6 +155,7 @@ var WorkPlanHandler = /** @class */ (function () {
             id: "",
             fiscalId: "",
             builderId: "",
+            weekNumber: this._weekNumber,
             datesToWork: []
         };
         workPlan.id = $(".modal-workplan-form").find('select[name=work-plan-id]').val();
@@ -171,68 +177,74 @@ var WorkPlanHandler = /** @class */ (function () {
         workPlan.datesToWork = datesToWork;
         return workPlan;
     };
-    WorkPlanHandler.prototype._setHeaderDates = function () {
-        var _this = this;
-        var startOfMonth = moment('2020-01-01').startOf('month').format('YYYY-MM-DD HH:mm');
-        var endOfMonth = moment('2020-01-01').endOf('month').format('YYYY-MM-DD HH:mm');
-        var range = moment.range('2020-01-01', '2020-01-31');
-        var arrayMoment = Array.from(range.by('day'));
-        $.each(arrayMoment, function (index, value) {
-            var day = value.format('dd') + " " + value.format('DD');
-            _this._headerDays.push(day);
-        });
-    };
-    WorkPlanHandler.prototype._setWorkPlan = function () {
-        var _this = this;
-        var startOfMonth = moment('2020-01-01').startOf('month').format('YYYY-MM-DD HH:mm');
-        var endOfMonth = moment('2020-01-01').endOf('month').format('YYYY-MM-DD HH:mm');
-        var range = moment.range('2020-01-01', '2020-01-31');
-        var arrayMoment = Array.from(range.by('day'));
-        $.each(_this._projectList, function (i, project) {
-            var workPlan = [];
-            $.each(arrayMoment, function (k, moment) {
-                var monthDate = moment.format('YYYY-MM-DD');
-                var workDate = 0;
-                $.each(project.dateList, function (j, dateToWork) {
-                    if (monthDate == dateToWork) {
-                        workDate = 1;
-                    }
-                });
-                workPlan.push({ "date": monthDate, "workDate": workDate });
-            });
-            project.workPlan = workPlan;
-        });
-    };
-    WorkPlanHandler.prototype.printTable = function () {
-        var _this = this;
-        $.ajax({
-            url: base_url + 'panel/AjaxProject/getProjectsAndWorkPlan',
-            dataType: "json",
-            method: 'post',
-            data: {},
-            beforeSend: function () {
-                $(".table-content").html("Cargando informacion...");
-            },
-            success: function (response) {
-                if (response.success === 1) {
-                    _this._projectList = response.data.projectList;
-                    _this._setHeaderDates();
-                    _this._setWorkPlan();
-                    var htmlSource = $("#work-plan-table").html();
-                    var template = Handlebars.compile(htmlSource);
-                    var html = template({ days: _this._headerDays, projects: _this._projectList });
-                    $(".table-content").html(html);
-                    $(".table-content table").DataTable();
-                }
-                else {
-                    // toastr.error(response.message, '', {"progressBar": true});
-                    // _this.refreshCalendar();
-                    // _this._dateStartDateSelected = null;
-                }
-            }
-        });
-        // let $template = $("#work-plan-table");
-    };
+    // private _setHeaderDates()
+    // {
+    //     let _this = this;
+    //     let startOfMonth = moment('2020-01-01').startOf('month').format('YYYY-MM-DD HH:mm');
+    //     let endOfMonth   = moment('2020-01-01').endOf('month').format('YYYY-MM-DD HH:mm');
+    //     let range = moment.range('2020-01-01', '2020-01-31');
+    //     let arrayMoment = Array.from(range.by('day'));
+    //     $.each(arrayMoment, function(index, value){
+    //         let day = value.format('dd')+" "+value.format('DD');
+    //         _this._headerDays.push(day);
+    //     });
+    // }
+    // private _setWorkPlan()
+    // {
+    //     let _this = this;
+    //     let startOfMonth = moment('2020-01-01').startOf('month').format('YYYY-MM-DD HH:mm');
+    //     let endOfMonth   = moment('2020-01-01').endOf('month').format('YYYY-MM-DD HH:mm');
+    //     let range = moment.range('2020-01-01', '2020-01-31');
+    //     let arrayMoment = Array.from(range.by('day'));
+    //     $.each(_this._projectList, function(i, project){            
+    //         let workPlan = [];
+    //         $.each(arrayMoment, function(k, moment){
+    //             let monthDate = moment.format('YYYY-MM-DD');
+    //             let workDate = 0;
+    //             $.each(project.dateList, function(j, dateToWork){
+    //                 if(monthDate == dateToWork)
+    //                 {
+    //                     workDate = 1;
+    //                 }
+    //             });
+    //             workPlan.push({"date":monthDate, "workDate":workDate});
+    //         });
+    //         project.workPlan = workPlan;
+    //     });
+    // }
+    // public printTable()
+    // {
+    //     let _this = this;
+    //     $.ajax({
+    //         url : base_url + 'panel/AjaxProject/getProjectsAndWorkPlan',
+    //         dataType  :"json",
+    //         method : 'post',
+    //         data:{},
+    //         beforeSend:function(){
+    //             $(".table-content").html("Cargando informacion...");
+    //         },
+    //         success:function(response){
+    //             if(response.success === 1)
+    //             {
+    //                 _this._projectList = response.data.projectList;
+    //                 _this._setHeaderDates();
+    //                 _this._setWorkPlan();
+    //                 let htmlSource = $("#work-plan-table").html();
+    //                 let template = Handlebars.compile(htmlSource);
+    //                 let html = template({days:_this._headerDays, projects:_this._projectList});
+    //                 $(".table-content").html(html);
+    //                 $(".table-content table").DataTable();
+    //             }
+    //             else
+    //             {
+    //                 // toastr.error(response.message, '', {"progressBar": true});
+    //                 // _this.refreshCalendar();
+    //                 // _this._dateStartDateSelected = null;
+    //             }
+    //         }
+    //     });
+    // let $template = $("#work-plan-table");
+    // }
     WorkPlanHandler.prototype._printWeek = function () {
         var begin = moment().startOf('week').isoWeekday(1);
         var startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');

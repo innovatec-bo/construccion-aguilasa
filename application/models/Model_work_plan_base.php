@@ -15,13 +15,15 @@ class Model_work_plan_base extends MY_Model
     protected $_title;
     protected $_fiscalId;
     protected $_builderId;
+    protected $_weekNumber;
 
-    public function __construct($title = "", $fiscalId = NULL, $builderId = NULL)
+    public function __construct($title = "", $fiscalId = NULL, $builderId = NULL, $weekNumber = NULL)
     {
         parent::__construct();
         $this->_title = $title;
         $this->_fiscalId = $fiscalId;
         $this->_builderId = $builderId;
+        $this->_weekNumber = $weekNumber;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_work_plan_base extends MY_Model
             "title_wpl" => $this->_title,
             "fiscal_id_wpl" => $this->_fiscalId,
             "builder_id_wpl" => $this->_builderId,
+            "week_number_wpl" => $this->_weekNumber,
             "deleted_wpl" => $this->_deleted,
             "createdon_wpl" => $this->_createdOn,
             "createdby_wpl" => $this->_createdBy,
@@ -61,7 +64,8 @@ class Model_work_plan_base extends MY_Model
             $instance = new $className(
                 $object->title_wpl,
                 $object->fiscal_id_wpl,
-                $object->builder_id_wpl
+                $object->builder_id_wpl,
+                $object->week_number_wpl
             );
             $instance->_id = $object->id_wpl;
 
@@ -89,6 +93,11 @@ class Model_work_plan_base extends MY_Model
     public function setBuilderId($builderId)
     {
         $this->_builderId = $builderId;
+    }
+
+    public function setWeekNumber($weekNumber)
+    {
+        $this->_weekNumber = $weekNumber;
     }
     //    setters - end
 
