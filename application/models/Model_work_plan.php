@@ -202,4 +202,28 @@ class Model_work_plan extends Model_work_plan_base
             Model_work_plan_date::insertBatch($dataToSave);
         }
     }
+
+    public static function getMonthlySummary()
+    {
+        $sql = "
+            SELECT
+                id_wpl,
+                f.id_usr fiscal_id,
+                CONCAT(f.firstname_usr, ' ', f.lastname_usr) fiscal_full_name,
+                b.id_usr builder_id,
+                CONCAT(b.firstname_usr, ' ', b.lastname_usr) builder_full_name,
+                -- wfl_work_plans.*,
+                project_id_wpd,
+                GROUP_CONCAT(DISTINCT date_wpd) dates
+                
+            FROM
+                wfl_work_plans 
+                LEFT JOIN sec_users f on f.id_usr = fiscal_id_wpl
+                LEFT JOIN sec_users b on b.id_usr = builder_id_wpl
+                LEFT JOIN wfl_work_plan_dates on id_wpl = work_plan_id_wpd
+            WHERE
+                deleted_wpl != 1
+                GROUP BY fiscal_id, builder_id, project_id_wpd
+        ";
+    }
 }
