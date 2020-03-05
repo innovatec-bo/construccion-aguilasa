@@ -116,17 +116,17 @@ class Model_work_plan extends Model_work_plan_base
         return array_values($objectiveList);
     }
 
-    public static function getByProjectIdsAndDateRange($projectIds, $startDate, $endDate)
+    public static function getByProjectIdsAndDateRange_deprecated($projectIds, $startDate, $endDate)
     {
         $ci = &get_instance();
         $ci->load->database();
 
-        $scapedIds = "";
+        $escapedIds = "";
     	foreach ($projectIds as $id) 
     	{
-    		$scapedIds .= $ci->db->escape($id).",";
+            $escapedIds .= $ci->db->escape($id).",";
     	}
-    	$scapedIds = substr($scapedIds, 0, -1);
+        $escapedIds = substr($escapedIds, 0, -1);
         $sql = "
 			SELECT
 				id_pro,
@@ -135,7 +135,7 @@ class Model_work_plan extends Model_work_plan_base
 			FROM
 				wfl_projects
 			LEFT JOIN	wfl_work_plan on id_pro = project_id_wpl
-			where id_pro in (".$scapedIds.")
+			where id_pro in (".$escapedIds.")
 			ORDER BY id_pro, work_date_wpl
         ";
         $query = $ci->db->query($sql);
@@ -145,8 +145,7 @@ class Model_work_plan extends Model_work_plan_base
         for ($i = 0; $i < count($result); $i++)
         {
             $projectId = $result[$i]["id_pro"];
-            if($result[$i]["work_date_wpl"] != "")
-            	$singleList[] = $result[$i]["work_date_wpl"];
+
             if(isset($result[$i+1]))
             {
                 if($result[$i]["id_pro"] != $result[$i+1]["id_pro"])
@@ -203,8 +202,10 @@ class Model_work_plan extends Model_work_plan_base
         }
     }
 
-    public static function getMonthlySummary()
+    public static function getMonthlySummary($startDate = "", $endDate = "")
     {
+        $ci = &get_instance();
+        $ci->load->database();
         $sql = "
             SELECT
                 id_wpl,
@@ -213,7 +214,8 @@ class Model_work_plan extends Model_work_plan_base
                 b.id_usr builder_id,
                 CONCAT(b.firstname_usr, ' ', b.lastname_usr) builder_full_name,
                 -- wfl_work_plans.*,
-                project_id_wpd,
+                project_id_wpd project_id,
+                code_pro project_code,
                 GROUP_CONCAT(DISTINCT date_wpd) dates
                 
             FROM
@@ -221,9 +223,58 @@ class Model_work_plan extends Model_work_plan_base
                 LEFT JOIN sec_users f on f.id_usr = fiscal_id_wpl
                 LEFT JOIN sec_users b on b.id_usr = builder_id_wpl
                 LEFT JOIN wfl_work_plan_dates on id_wpl = work_plan_id_wpd
+                LEFT JOIN wfl_projects on id_pro = project_id_wpd
             WHERE
                 deleted_wpl != 1
                 GROUP BY fiscal_id, builder_id, project_id_wpd
         ";
+
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+
+        $fiscalList = array();
+        $builderList = array();
+        $projectList = array();
+        $index = 1;
+        for ($i = 0; $i < count($result); $i++)
+        {
+            $fiscalId = $result[$i]["fiscal_id"];
+            $builderId = $result[$i]["builder_id"];
+            $projectId = $result[$i]["project_id"];
+
+            $projectList[$projectId]['index'] = $index;
+            $projectList[$projectId]['id'] = $result[$i]["project_id"];
+            $projectList[$projectId]['code'] = $result[$i]["project_code"];
+            $projectList[$projectId]['dateList'] = $result[$i]["dates"];
+
+            $builderList[$builderId]['index'] = $index;
+            $builderList[$builderId]['id'] = $result[$i]["builder_id"];
+            $builderList[$builderId]['fullName'] = $result[$i]["builder_full_name"];
+            if(isset($result[$i+1]))
+            {
+                if($result[$i]["builder_id"] != $result[$i+1]["builder_id"])
+                {
+                    $builderList[$builderId]['projectList'] = array_values($projectList);
+                    $projectList = array();
+                }
+                if($result[$i]["fiscal_id"] != $result[$i+1]["fiscal_id"])
+                {
+                    $fiscalList[$fiscalId]['id'] = $result[$i]["fiscal_id"];
+                    $fiscalList[$fiscalId]['fullName'] = $result[$i]["fiscal_full_name"];
+                    $fiscalList[$fiscalId]['builderList'] = array_values($builderList);
+                    $builderList = array();
+                    $index ++;
+                }
+            }
+            else
+            {
+                $fiscalList[$fiscalId]['id'] = $result[$i]["fiscal_id"];
+                $fiscalList[$fiscalId]['fullName'] = $result[$i]["fiscal_full_name"];
+                $builderList[$builderId]['projectList'] = array_values($projectList);
+                $fiscalList[$fiscalId]['builderList'] = array_values($builderList);
+            }
+            $index ++;
+        }
+        return array_values($fiscalList);
     }
 }

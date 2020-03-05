@@ -19,11 +19,14 @@ class Home extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("core");
         $this->complementHandler->addViewComplement("charts");
         $this->complementHandler->addViewComplement("themes.animated");
         $this->complementHandler->addViewComplement("perfect-scrollbar");
+        $this->complementHandler->addProjectJs('WorkPlanHandler', TRUE);
+        $this->complementHandler->addProjectCss('WorkPlanHandler', TRUE);
         $this->complementHandler->addProjectCss('home.index', TRUE);
         $this->complementHandler->addProjectJs('home.index', TRUE);
 

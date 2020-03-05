@@ -19,13 +19,38 @@
         ?>
     </div>
     <!-- /.row -->
-    <h3>Todos los incidentes
-        <small><span id="days-without-incidents">23 dias</span> sin incidentes</small>
-    </h3>
-    <div class="col-md-12" id="incident-content">
-        <div class="list-group" id="incident-list">
-            Cargando incidentes...
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Plan de trabajo
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body" id="work-plan-summary-table">
+
+            </div>
+            <!-- /.panel-body -->
         </div>
+        <!-- /.panel -->
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Todos los incidentes
+                    <small><span id="days-without-incidents">...</span> sin incidentes</small>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body" id="incident-content">
+                <div class="list-group" id="incident-list">
+                    Cargando incidentes...
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+
+    <div class="col-md-12">
+
     </div>
 </div>
 <!-- /.container-fluid -->

@@ -1,4 +1,4 @@
-var WorkPlanHandler = /** @class */ (function () {
+var WorkPlanHandler = (function () {
     function WorkPlanHandler() {
         moment.locale('es');
         this._headerDays = [];
@@ -60,7 +60,7 @@ var WorkPlanHandler = /** @class */ (function () {
             }
         });
     };
-    WorkPlanHandler.prototype["delete"] = function () {
+    WorkPlanHandler.prototype.delete = function () {
         var _this = this;
         swal.fire({
             title: "Eliminar Plan de trabajo?",
@@ -127,7 +127,7 @@ var WorkPlanHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hidden");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=work-plan-form]");
@@ -143,7 +143,6 @@ var WorkPlanHandler = /** @class */ (function () {
         select2ProjectGeneralList();
         $('[data-toogle=tooltip]').tooltip();
         _this._projectList = response.data.workPlanMasterDetail.projectList;
-        response.data.workPlanMasterDetail.weekNumber;
         if ($.isNumeric(response.data.workPlanMasterDetail.weekNumber))
             _this._weekNumber = response.data.workPlanMasterDetail.weekNumber;
         _this._printWeek();
@@ -265,6 +264,76 @@ var WorkPlanHandler = /** @class */ (function () {
         $tableMonth.text(monthNameList.join('/'));
         this._printProjectWeek();
     };
+    WorkPlanHandler.prototype.printWorkPlanSummary = function (startDate, endDate) {
+        var _this = this;
+        $.ajax({
+            url: base_url + 'panel/AjaxWorkPlan/getWorkPlanSummary/' + _this._workPlanId + '/' + startDate + '/' + endDate,
+            dataType: "json",
+            method: "GET",
+            beforeSend: function () {
+                // _this._beforeSend(method);
+            },
+            success: function (response) {
+                if (response.success === 1) {
+                    _this._masterTemplate = $("<div>" + response.data.template + "</div>");
+                    _this._printSummaryWeek(response, "2020-03-01", "2020-03-28");
+                    console.log(response);
+                }
+                else {
+                    toastr.error(response.message, '', { 'progressBar': true });
+                }
+            }
+        });
+    };
+    WorkPlanHandler.prototype._printSummaryWeek = function (response, startDate, endDate) {
+        startDate = moment(startDate, "YYYY-MM-DD");
+        endDate = moment(endDate, "YYYY-MM-DD");
+        var range = moment.range(startDate, endDate);
+        var arrayMoment = Array.from(range.by('day'));
+        var workPlanTable = this._masterTemplate.find("#work-plan-table").html();
+        Handlebars.registerPartial("work-plan-table", workPlanTable);
+        var workPlanTableRow = this._masterTemplate.find("#work-plan-table-row").html();
+        Handlebars.registerPartial("work-plan-table-row", workPlanTableRow);
+        var htmlSource = this._masterTemplate.find(response.data.templateName).html();
+        var template = Handlebars.compile(htmlSource);
+        var html = template({ totalDays: arrayMoment.length, arrayMoment: arrayMoment, workPlanSummary: response.data.workPlanSummary });
+        $("#work-plan-summary-table").html(html);
+        var arrayDates = [];
+        var monthNameList = [];
+        var $tableDays = $(".table-days");
+        var $tableDates = $('.table-dates');
+        // let $tableMonth = $('.table-month');
+        $.each(arrayMoment, function (i, moment) {
+            monthNameList.push(moment.format('MMMM'));
+            arrayDates.push(moment.format('DD'));
+            $($tableDays[i]).text(moment.format("dd"));
+            $($tableDates[i]).text(moment.format('DD'));
+            $($tableDates[i]).data('date', moment.format('YYYY-MM-DD'));
+        });
+        // monthNameList = monthNameList.filter((a, b) => monthNameList.indexOf(a) === b);
+        // $tableMonth.text(monthNameList.join('/'));
+        // this._printProjectWeek();
+        $.each(response.data.workPlanSummary, function (i, fiscal) {
+            $.each(fiscal.builderList, function (j, builder) {
+                $.each(builder.projectList, function (j, project) {
+                    var $cellList = $('tr[data-project-id=' + fiscal.id + '][data-project-id=' + builder.id + '][data-project-id=' + project.id + ']').find("td.work-date");
+                    $.each(arrayMoment, function (j, moment) {
+                        $.each(project.dateList, function (k, workDate) {
+                            //la primera vez que itera pinta la penultima fecha , la segunda vez que itera pinta la ultima fecha y despinta la penultima
+                            if (moment.format('YYYY-MM-DD') == workDate) {
+                                $($cellList[j]).addClass('cell-selected');
+                                // testArray.push("+ "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+workDate);
+                                return false;
+                            }
+                            else {
+                                $($cellList[j]).removeClass('cell-selected');
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    };
     WorkPlanHandler.prototype._printProjectWeek = function () {
         var begin = moment().startOf('week').isoWeekday(1);
         var startDate = begin.week(this._weekNumber).format('YYYY-MM-DD');
@@ -282,12 +351,10 @@ var WorkPlanHandler = /** @class */ (function () {
                         $($cellList[j]).addClass('cell-selected');
                         testArray.push("+ " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
                         return false;
-                        // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
                     }
                     else {
                         $($cellList[j]).removeClass('cell-selected');
                         testArray.push("- " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
-                        // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
                     }
                 });
             });
@@ -354,7 +421,7 @@ var WorkPlanHandler = /** @class */ (function () {
             e.preventDefault();
             var workPlanId = $(this).data('work-plan-id');
             _this._workPlanId = parseInt(workPlanId);
-            _this["delete"]();
+            _this.delete();
         });
     };
     return WorkPlanHandler;

@@ -138,3 +138,44 @@
     <td class="text-center delete-row"><i class="fa fa-times"></i></td>
   </tr>
 </script>
+<script id="work-plan-summary-table" type="text/x-handlebars-template">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <td rowspan="2" width="120px">{{totalDays}}</td>
+                {{#each arrayMoment}}
+                    <td class="width-30 text-center table-days"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each arrayMoment}}
+                    <td class="width-30 text-center table-dates"></td>
+                {{/each}}
+            </tr>
+            </thead>
+            <tbody>
+            {{#each workPlanSummary}}
+                <tr class="success">
+                    <td colspan="{{../totalDays}}" class=""><strong>{{fullName}}</strong></td>
+                    <td></td>
+                </tr>
+                {{#each builderList}}
+                    <tr class="info">
+                        <td colspan={{../../totalDays}}" class="">&nbsp<i class="fa fa-user fa-fw"></i> {{fullName}}</td>
+                        <td></td>
+                    </tr>
+                    {{#each projectList}}
+                        <tr data-fiscal-id>
+                            <td>&nbsp&nbsp- {{code}}</td>
+                            {{#each ../../../arrayMoment}}
+                                <td class="work-date"></td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                {{/each}}
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</script>

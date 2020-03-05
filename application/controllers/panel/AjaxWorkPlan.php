@@ -187,7 +187,7 @@ class AjaxWorkPlan extends PrivateController
         echo json_encode($response);exit;
     }
 
-    public function getWorkPlan()
+    public function getWorkPlan_deprecated()
     {
         $fiscalList = Model_user::getByRoleKeyword('fiscal');
         $arrayFiscal = array();
@@ -223,6 +223,17 @@ class AjaxWorkPlan extends PrivateController
         $project->delete();
         $response["success"] = 1;
         $response["message"] = "Plan de trabajo eliminado exitosamente.";       
+        echo json_encode($response);exit;
+    }
+
+    public function getWorkPlanSummary($workPlanId, $startDate, $endDate)
+    {
+        $workPlanSummary = Model_work_plan::getMonthlySummary();
+        $response["success"] = 1;
+        $response["message"] = "";
+        $response["data"]["workPlanSummary"] = $workPlanSummary;
+        $response['data']["template"] = $this->loadView("panel/content/work-plan/WorkPlanHandler", array(),true);
+        $response['data']["templateName"] = '#work-plan-summary-table';
         echo json_encode($response);exit;
     }
 }

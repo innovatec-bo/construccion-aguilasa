@@ -3,9 +3,13 @@
  */
 
 $(function() {
+    window['moment-range'].extendMoment(moment);
     let incidentHandler = new IncidentHandler();
     incidentHandler.getAllIncidents();
     $("#days-without-incidents").text(incidentHandler.daysWithoutIncidents);
+    let workPlanHandler = new WorkPlanHandler();
+    workPlanHandler.printWorkPlanSummary("2020-03-01","2020-03-25");
+    workPlanHandler.loadEventHandlers();
     // $("#incident-content").perfectScrollbar({
     //     wheelPropagation: true
     // });
