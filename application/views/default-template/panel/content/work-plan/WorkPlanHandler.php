@@ -143,14 +143,14 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <td rowspan="2" width="120px">{{totalDays}}</td>
+                <td rowspan="2" width="150px">{{totalDays}}</td>
                 {{#each arrayMoment}}
-                    <td class="width-30 text-center table-days"></td>
+                    <td class="width-30 text-center table-days" width="30px"></td>
                 {{/each}}
             </tr>
             <tr>
                 {{#each arrayMoment}}
-                    <td class="width-30 text-center table-dates"></td>
+                    <td class="width-30 text-center table-dates" width="30px"></td>
                 {{/each}}
             </tr>
             </thead>
@@ -158,18 +158,18 @@
             {{#each workPlanSummary}}
                 <tr class="success" data-fiscal-id="{{id}}">
                     <td colspan="{{../totalDays}}" class=""><strong>{{fullName}}</strong></td>
-                    <td></td>
+                    <td class="width-30"></td>
                 </tr>
                 {{#each builderList}}
                     <tr class="info" data-builder-id="{{id}}">
-                        <td colspan={{../../totalDays}}" class="">&nbsp<i class="fa fa-user fa-fw"></i> {{fullName}}</td>
-                        <td></td>
+                        <td colspan={{../../totalDays}}" class="width-30">&nbsp<i class="fa fa-user fa-fw"></i> {{fullName}}</td>
+                        <td class="width-30"></td>
                     </tr>
                     {{#each projectList}}
                         <tr  data-fiscal-id="{{../../id}}"  data-builder-id="{{../id}}" data-project-id="{{id}}">
                             <td>&nbsp&nbsp- {{code}}</td>
                             {{#each ../../../arrayMoment}}
-                                <td class="work-date"></td>
+                                <td class="width-30 work-date"></td>
                             {{/each}}
                         </tr>
                     {{/each}}
