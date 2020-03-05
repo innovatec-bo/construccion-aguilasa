@@ -245,7 +245,7 @@ class Model_work_plan extends Model_work_plan_base
             $projectList[$projectId]['index'] = $index;
             $projectList[$projectId]['id'] = $result[$i]["project_id"];
             $projectList[$projectId]['code'] = $result[$i]["project_code"];
-            $projectList[$projectId]['dateList'] = $result[$i]["dates"];
+            $projectList[$projectId]['dateList'] = explode(",",$result[$i]["dates"]);
 
             $builderList[$builderId]['index'] = $index;
             $builderList[$builderId]['id'] = $result[$i]["builder_id"];

@@ -156,17 +156,17 @@
             </thead>
             <tbody>
             {{#each workPlanSummary}}
-                <tr class="success">
+                <tr class="success" data-fiscal-id="{{id}}">
                     <td colspan="{{../totalDays}}" class=""><strong>{{fullName}}</strong></td>
                     <td></td>
                 </tr>
                 {{#each builderList}}
-                    <tr class="info">
+                    <tr class="info" data-builder-id="{{id}}">
                         <td colspan={{../../totalDays}}" class="">&nbsp<i class="fa fa-user fa-fw"></i> {{fullName}}</td>
                         <td></td>
                     </tr>
                     {{#each projectList}}
-                        <tr data-fiscal-id>
+                        <tr  data-fiscal-id="{{../../id}}"  data-builder-id="{{../id}}" data-project-id="{{id}}">
                             <td>&nbsp&nbsp- {{code}}</td>
                             {{#each ../../../arrayMoment}}
                                 <td class="work-date"></td>

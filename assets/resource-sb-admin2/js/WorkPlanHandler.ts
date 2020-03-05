@@ -386,7 +386,7 @@ class WorkPlanHandler
         $.each(response.data.workPlanSummary, function(i, fiscal){
             $.each(fiscal.builderList, function(j, builder){
                 $.each(builder.projectList, function(j, project){
-                    let $cellList = $('tr[data-project-id='+fiscal.id+'][data-project-id='+builder.id+'][data-project-id='+project.id+']').find("td.work-date");
+                    let $cellList = $('tr[data-fiscal-id='+fiscal.id+'][data-builder-id='+builder.id+'][data-project-id='+project.id+']').find("td.work-date");
                     $.each(arrayMoment, function(j, moment){
                         $.each(project.dateList, function(k, workDate){
                             //la primera vez que itera pinta la penultima fecha , la segunda vez que itera pinta la ultima fecha y despinta la penultima
