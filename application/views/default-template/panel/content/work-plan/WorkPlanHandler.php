@@ -166,8 +166,8 @@
                         <td class="width-30"></td>
                     </tr>
                     {{#each projectList}}
-                        <tr  data-fiscal-id="{{../../id}}"  data-builder-id="{{../id}}" data-project-id="{{id}}">
-                            <td>&nbsp&nbsp- {{code}}</td>
+                        <tr  data-fiscal-id="{{../../id}}" data-builder-id="{{../id}}" data-project-id="{{id}}">
+                            <td>&nbsp&nbsp&nbsp&nbsp&nbsp{{code}}</td>
                             {{#each ../../../arrayMoment}}
                                 <td class="width-30 work-date"></td>
                             {{/each}}
