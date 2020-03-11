@@ -6,17 +6,29 @@
  * Time: 12:26 AM
  */
 
-function panel_url($url="")
+if ( ! function_exists('panel_url'))
 {
-    return base_url("/panel/".$url);
+    function panel_url($url="")
+	{
+	    return base_url("/panel/".$url);
+	}
+
 }
 
-function public_url($url="")
+if ( ! function_exists('public_url'))
 {
-    return base_url("/web/".$url);
+    function public_url($url="")
+	{
+	    return base_url("/web/".$url);
+	}
+
 }
 
-function assets_url($url="")
+if ( ! function_exists('assets_url'))
 {
-    return base_url("assets/".$url);
+    function assets_url($url="")
+	{
+	    return base_url("assets/".$url);
+	}
+
 }
