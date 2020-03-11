@@ -25,7 +25,7 @@ class IncidentHandler
         this._htmlTemplate = "";
         this._daysWithoutIncident = 0;
     }
-
+    
     public add(formData?)
     {
         let _this = this;

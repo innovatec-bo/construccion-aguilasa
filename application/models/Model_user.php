@@ -126,7 +126,7 @@ class Model_user extends Model_user_base
         $pathToFile = FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").".pdf";
         $sendTo = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@me.com",
+            "gilbertof@serebo.com","vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
 //            "genaromj@serebo.com",
@@ -209,7 +209,7 @@ class Model_user extends Model_user_base
         $supervisionList = PublicController::creFiscalSupervisingList($creFiscalEmail);
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@me.com",
+            "gilbertof@serebo.com","vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
             "pmendoza@serebo.com"
@@ -318,7 +318,7 @@ class Model_user extends Model_user_base
 
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@me.com"
+            "gilbertof@serebo.com","vh.suarez@serebo.com"
         );
 
         $subjectList = array(
@@ -418,7 +418,7 @@ class Model_user extends Model_user_base
         $data = array();
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@me.com"
+            "gilbertof@serebo.com","vh.suarez@serebo.com"
         );
 
         $subjectList = array(
@@ -492,7 +492,7 @@ class Model_user extends Model_user_base
         $data = array();
         $sendTo = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@me.com",
+            "gilbertof@serebo.com","vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
             "pmendoza@serebo.com"
