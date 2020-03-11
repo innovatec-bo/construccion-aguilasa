@@ -95,7 +95,7 @@ class ExcelWorkPlanReport
             new DateInterval('P1D'),
             new DateTime($this->_endDate)
         );
-        $arrayRounds = array("","A","B", "C");
+        $arrayRounds = array("","A","B", "C", "D", "E");
         $arrayAlphabet = range("A","Z");
         $cols = array();
         foreach ($arrayRounds as $round)

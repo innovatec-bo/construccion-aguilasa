@@ -554,4 +554,18 @@ class Project extends PrivateController
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);
     }
+
+    public function getWorkPlanReport()
+    {
+        $formData = $this->input->post();
+        $startDate = $formData["work-plan-report-from"];
+        $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+        $startDate = date_format($startDate, 'Y-m-d');
+
+        $endDate = $formData["work-plan-report-to"];
+        $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        $endDate = date_format($endDate, 'Y-m-d');
+        $report = new ExcelWorkPlanReport($this->sessionUser, $startDate, $endDate);
+        $report->getReport();
+    }
 }
