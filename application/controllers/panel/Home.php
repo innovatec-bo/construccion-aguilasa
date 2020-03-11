@@ -87,7 +87,7 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testFiscalReport()
+    public function testWeek()
     {
         // $alphabeth = "";
         // for ($i = 'A'; $i !== 'ZZ'; $i++)
@@ -97,9 +97,9 @@ class Home extends PrivateController
         // $allCols = explode(",", $alphabeth);
         // $cols = range("A", "Z");
         // echo"<pre>";var_dump($cols);exit;
-        $startDate = "2019-01-01";
-        $endDate = "2019-01-30";
-        $report = new ExcelFiscalReport($this->sessionUser, $startDate, $endDate);
+        $startDate = "2020-03-01";
+        $endDate = "2020-03-31";
+        $report = new ExcelWorkPlanReport($this->sessionUser, $startDate, $endDate);
         $report->getReport();   
     }
 }
