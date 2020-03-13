@@ -2,51 +2,6 @@
  * Created by Jair on 10/01/2018.
  */
 
-// var statusSet = [];
-// statusSet["46"] = "design";
-// statusSet["1"] = "design";
-// statusSet["2"] = "design";
-// statusSet["20"] = "design";
-// statusSet["3"] = "design";
-// statusSet["5"] = "design";
-// statusSet["6"] = "design";
-
-// statusSet["9"] = "approvement";
-// statusSet["10"] = "approvement";
-// statusSet["11"] = "approvement";
-// statusSet["12"] = "approvement";
-
-// statusSet["13"] = "rectify_design";
-// statusSet["15"] = "rectify_design";
-// statusSet["16"] = "rectify_design";
-// statusSet["17"] = "rectify_design";
-
-// statusSet["14"] = "rectify_illustration";
-// statusSet["18"] = "rectify_illustration";
-// statusSet["19"] = "rectify_illustration";
-
-// el proyecto en estado 21(asignacion no va a ninguno de los procesos)
-// statusSet["21"] = "warehouse";
-// statusSet["22"] = "warehouse";
-// statusSet["23"] = "warehouse";
-// statusSet["24"] = "warehouse";
-// statusSet["25"] = "warehouse";
-
-// statusSet["21"] = "building";
-// statusSet["27"] = "building";
-// statusSet["28"] = "building";
-// statusSet["29"] = "building";
-// statusSet["30"] = "building";
-// statusSet["31"] = "building";
-// statusSet["32"] = "building";
-// statusSet["33"] = "building";
-// statusSet["34"] = "building";
-// statusSet["35"] = "building";
-// statusSet["38"] = "building";
-// statusSet["39"] = "building";
-// statusSet["47"] = "building";
-// statusSet["45"] = "building";
-
 $(document).ready(function() {
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
@@ -243,6 +198,10 @@ $(document).ready(function() {
                     if(statusSet[row.status_pro] == "building")
                     {
                         html += ' <a class="btn btn-warning btn-xs add-incident" data-project-id="'+row.id_pro+'" data-status-id="'+row.status_pro+'" href="#" title="" data-original-title="AÑADIR INCIDENTE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-flag-o"></i></a> ';
+                    }
+                    if(row.manpower_file_id !== null && !isNaN(row.manpower_file_id))
+                    {
+                        html += ' <a class="btn btn-warning btn-xs" href="'+base_url + 'panel/Project/manpower/'+row.id_pro+'" title="" data-original-title="MANO DE OBRA"  data-toggle="tooltip" data-placement="top"><i class="fa fa-table"></i></a> ';
                     }
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
                     html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
