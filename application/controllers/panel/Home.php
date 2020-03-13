@@ -87,19 +87,9 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testWeek()
+    public function testForm()
     {
-        // $alphabeth = "";
-        // for ($i = 'A'; $i !== 'ZZ'; $i++)
-        // {
-        //     $alphabeth .= $i.',';
-        // }
-        // $allCols = explode(",", $alphabeth);
-        // $cols = range("A", "Z");
-        // echo"<pre>";var_dump($cols);exit;
-        $startDate = "2020-03-01";
-        $endDate = "2020-03-31";
-        $report = new ExcelWorkPlanReport($this->sessionUser, $startDate, $endDate);
+        $report = new ExcelManPowerEntryActivity($this->sessionUser, 653);
         $report->getReport();   
     }
 }
