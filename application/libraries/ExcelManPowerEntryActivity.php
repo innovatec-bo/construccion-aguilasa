@@ -7,7 +7,7 @@ class ExcelManPowerEntryActivity
     private $_sessionUser;
     private $_projectId;
 
-    CONST FORM_QUANTITY = 5;
+    CONST FORM_QUANTITY = 25;
 
     public function __construct($sessionUser, $projectId)
     {
