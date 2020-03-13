@@ -26,10 +26,10 @@ class ExcelManPowerEntryActivity
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
-            ->setTitle("Reporte de estaqueadores")
-            ->setSubject("Reporte de estaqueadores")
-            ->setDescription("Reporte de production de estaqueadores")
-            ->setKeywords("reporte estaqueadores estaquedo")
+            ->setTitle("Formulario de registro de actividad")
+            ->setSubject("Registro de actividad en mano de obra")
+            ->setDescription("Ingrese las actividades en cada una de las hojas de este documento")
+            ->setKeywords("formulario registro actividad mano de obra")
             ->setCategory("Reporte");
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         
@@ -260,6 +260,7 @@ class ExcelManPowerEntryActivity
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('D12', "4) No altere la informacion que esta en la hoja de Mano de obra y Constructores.");
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('D13', "5) La lista de estructura esta compuesta por \"codigoInterno codigoDeEstructura_unidadDeMedida_actividad_ejecucion\"");
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('D14', "6) La lista de constructores esta compuesta por \"codigoInterno nombreCompletoDelConstructor\"");
+            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D15', "7) No cambie el nombre de las hojas");
 
             $counter++;
         }
@@ -278,7 +279,7 @@ class ExcelManPowerEntryActivity
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
         $oVal->setShowDropDown(true);
-        $oVal->setErrorTitle('Estimado usuario');
+        $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('El valor que intentas colocar no forma parte de la lista predeterminada');
         $oVal->setPromptTitle('Lista de estructuras');
         $oVal->setPrompt('Por favor escoger una estructura de la lista predeterminada.');
@@ -301,7 +302,7 @@ class ExcelManPowerEntryActivity
         $oVal->setAllowBlank(true);
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
-        $oVal->setErrorTitle('Estimado usuario');
+        $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('Por favor ingresar un numero valido entero o decimal. Los valores fuera de este criterio no seran tomados en cuenta.');
         $oVal->setPromptTitle('Cantidad de avance');
         $oVal->setPrompt("Ingrese un numero mayor que 0\n(puede ser un numero decimal)");
@@ -323,7 +324,7 @@ class ExcelManPowerEntryActivity
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
         $oVal->setShowDropDown(true);
-        $oVal->setErrorTitle('Estimado usuario');
+        $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('El valor que intentas colocar no forma parte de la lista de constructores');
         $oVal->setPromptTitle('Lista de constructores');
         $oVal->setPrompt('Por favor escoger un constructor de la lista predeterminada.');
@@ -343,7 +344,7 @@ class ExcelManPowerEntryActivity
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
         $oVal->setShowDropDown(false);
-        $oVal->setErrorTitle('Estimado usuario');
+        $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('El valor que intentas colocar no cuenta con el formato especifico de fecha permitida. Este dato es determinante para el guardado de la informacion.');
         $oVal->setPromptTitle('Formatos permitidos');
         $oVal->setPrompt("YYYY-MM-DD\nDD-MM-YYYY\nYYYY/MM/DD\nDD/MM/YYYY");

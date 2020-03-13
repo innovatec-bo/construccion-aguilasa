@@ -20,6 +20,25 @@
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
+    <div class="col-md-6">
+        <form class="form-inline">
+            <div class="form-group">
+                <div class="input-group"> 
+                    <input type="file" class="form-control" placeholder="Search for..."> 
+                    <span class="input-group-btn"> 
+                        <button class="btn btn-danger disabled" type="button">Cargar formulario <i class="fa fa-upload"></i></button> 
+                    </span> 
+                </div>
+            </div>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <form class="form-inline pull-right" action="<?=base_url("panel/Project/getManpowerActivityForm/".$project['id_pro'])?>" method="post">
+            <button type="submit" class="btn btn-info">Descargar formulario <i class="fa fa-download"></i></button>
+        </form>
+        <br>
+    </div>
     <div class="col-md-9">
         <div class="table-responsive" id="manpower-table">
 

@@ -568,4 +568,10 @@ class Project extends PrivateController
         $report = new ExcelWorkPlanReport($this->sessionUser, $startDate, $endDate);
         $report->getReport();
     }
+
+    public function getManpowerActivityForm($projectId)
+    {
+        $report = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
+        $report->getReport();   
+    }
 }
