@@ -1,6 +1,8 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 
 class ExcelManPowerEntryActivity
 {
@@ -350,5 +352,69 @@ class ExcelManPowerEntryActivity
         $oVal->setPrompt("YYYY-MM-DD\nDD-MM-YYYY\nYYYY/MM/DD\nDD/MM/YYYY");
         // $oVal->setPrompt('Por favor escoger una estructura de la lista predeterminada.');
         $sht->setDataValidation($column."4", $oVal);
+    }
+
+    public function uploadActivity(Model_file $document)
+    {
+        require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+        set_time_limit(240);
+        ini_set('memory_limit','256M');
+        $xlsxLog = array();
+        $fileLocation = FCPATH.$document->getUrl();
+        $newTeamsInXLS = array();
+
+        if(strtolower($document->getExtension()) == "xls")
+        {
+           $reader = new XlsReader();
+        }
+
+        elseif(strtolower($document->getExtension()) == "xlsx")
+        {
+           $reader = new XlsxReader();
+        }
+
+        $spreadsheet = $reader->load($fileLocation);
+        $sheetList = $spreadsheet->getAllSheets();
+
+        $i = 0;
+        foreach ($sheetList as $sheetData)
+        {
+            $teamName = trim($sheetData->getTitle());
+            if($i > 1)
+            {
+                $arrayData = $sheetData->toArray();
+                //echo"<pre>";var_dump($arrayData);exit;
+                //Date
+                $date = isset($arrayData[3][1])?trim($arrayData[3][1]):"";
+                //Builders
+                $builders[] = isset($arrayData[4][1])?trim($arrayData[4][1]):"";
+                $builders[] = isset($arrayData[4][2])?trim($arrayData[4][2]):"";
+                $builders[] = isset($arrayData[4][3])?trim($arrayData[4][3]):"";
+                $builders[] = isset($arrayData[4][4])?trim($arrayData[4][4]):"";
+                $builders = array_unique($builders);
+                $builders = array_filter($builders);
+                $builders = array_values($builders);
+                //detail
+                $detail = isset($arrayData[5][1])?trim($arrayData[5][1]):"";
+                //$worked up
+                for ($i=8; $i < 20; $i++) 
+                { 
+                    $laborCostId = isset($arrayData[$i][0])?trim($arrayData[$i][0]):"";
+                    $laborCostId = explode(" ", $laborCostId);
+                    $laborCostId = intval($laborCostId[0]);
+                    $quantityWorkedUp = isset($arrayData[$i][1])?floatval(trim($arrayData[$i][1])):"";
+                    if($laborCostId != "" && $quantityWorkedUp > 0)
+                    {
+                        $workedUp[] = array(
+                                        "laborCostId" => $laborCostId,
+                                        "quantityWorkedUp" => $quantityWorkedUp
+                                    );    
+                    }
+                    
+                }
+                echo "<pre>";var_dump($date, $builders, $detail, $workedUp);exit;
+            }
+            $i++;
+        }
     }
 }

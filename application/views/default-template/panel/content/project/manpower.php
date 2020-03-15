@@ -21,12 +21,12 @@
         ?>
     </div>
     <div class="col-md-6">
-        <form class="form-inline">
+        <form class="form-inline" action="<?=base_url("panel/Project/uploadActivityByExcelFile/".$project['id_pro'])?>" method='post' enctype="multipart/form-data">
             <div class="form-group">
                 <div class="input-group"> 
-                    <input type="file" class="form-control" placeholder="Search for..."> 
+                    <input type="file" name="file" class="form-control" placeholder="Search for..."> 
                     <span class="input-group-btn"> 
-                        <button class="btn btn-danger disabled" type="button">Cargar formulario <i class="fa fa-upload"></i></button> 
+                        <button class="btn btn-danger" type="submit">Cargar formulario <i class="fa fa-upload"></i></button> 
                     </span> 
                 </div>
             </div>

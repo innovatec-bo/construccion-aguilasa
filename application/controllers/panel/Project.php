@@ -574,4 +574,43 @@ class Project extends PrivateController
         $report = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
         $report->getReport();   
     }
+
+    public function uploadActivityByExcelFile($projectId)
+    {
+        if (!empty($_FILES['file']['name']))
+        {
+            try
+            {
+                $fileHandler = new FileHandler();
+                $document = $fileHandler->fileUpload($_FILES['file'],"activity_form","documents","document");
+                $document->save();
+
+                $excelManPowerEntryActivity = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
+                $excelManPowerEntryActivity->uploadActivity($document);
+                // $log = Model_team::uploadXlsx($document);
+                if (count($log) > 0)
+                {
+                    $errorList = array();
+                    foreach ($log as $team)
+                    {
+                        if(count($team)>0)
+                        {
+                            $errorList = array_merge($errorList,$team);
+                        }
+                    }
+                    $logHtml = implode("<br/>", $errorList);
+                    $this->session->set_flashdata('errorMessage', "<br/>". $logHtml);
+                }
+                else
+                {
+                    $this->session->set_flashdata('successMessage', "The teams were uploaded successfully!.");
+                }
+            }catch (Exception $e)
+            {
+                redirect(base_url("panel/Project/manpower/".$projectId));
+                $this->session->set_flashdata('errorMessage', $e->getMessage());
+            }
+        }
+        redirect(base_url("panel/Project/manpower/".$projectId));
+    }
 }
