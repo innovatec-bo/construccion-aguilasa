@@ -206,6 +206,11 @@ class Model_work_plan extends Model_work_plan_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $dateFilter = "";
+        if($startDate != "" && $endDate != "")
+        {
+            $dateFilter = " and date_wpd between ".$ci->db->escape($startDate)." and ".$ci->db->escape($endDate)." ";
+        }
         $sql = "
             SELECT
                 id_wpl,
@@ -216,7 +221,10 @@ class Model_work_plan extends Model_work_plan_base
                 -- wfl_work_plans.*,
                 project_id_wpd project_id,
                 code_pro project_code,
-                GROUP_CONCAT(DISTINCT date_wpd) dates
+                address_pro project_address,
+                GROUP_CONCAT(DISTINCT date_wpd) dates,
+                detail_wpd date_detail,
+                observation_wpd date_observation
                 
             FROM
                 wfl_work_plans 
@@ -226,6 +234,7 @@ class Model_work_plan extends Model_work_plan_base
                 LEFT JOIN wfl_projects on id_pro = project_id_wpd
             WHERE
                 deleted_wpl != 1
+                ".$dateFilter."
                 GROUP BY fiscal_id, builder_id, project_id_wpd
         ";
 
@@ -245,7 +254,10 @@ class Model_work_plan extends Model_work_plan_base
             $projectList[$projectId]['index'] = $index;
             $projectList[$projectId]['id'] = $result[$i]["project_id"];
             $projectList[$projectId]['code'] = $result[$i]["project_code"];
+            $projectList[$projectId]['address'] = $result[$i]["project_address"];
             $projectList[$projectId]['dateList'] = explode(",",$result[$i]["dates"]);
+            $projectList[$projectId]['dateDetail'] = $result[$i]["date_detail"];
+            $projectList[$projectId]['dateObservation'] = $result[$i]["date_observation"];
 
             $builderList[$builderId]['index'] = $index;
             $builderList[$builderId]['id'] = $result[$i]["builder_id"];

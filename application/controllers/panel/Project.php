@@ -554,4 +554,63 @@ class Project extends PrivateController
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);
     }
+
+    public function getWorkPlanReport()
+    {
+        $formData = $this->input->post();
+        $startDate = $formData["work-plan-report-from"];
+        $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
+        $startDate = date_format($startDate, 'Y-m-d');
+
+        $endDate = $formData["work-plan-report-to"];
+        $endDate = DateTime::createFromFormat('d-m-Y', $endDate);
+        $endDate = date_format($endDate, 'Y-m-d');
+        $report = new ExcelWorkPlanReport($this->sessionUser, $startDate, $endDate);
+        $report->getReport();
+    }
+
+    public function getManpowerActivityForm($projectId)
+    {
+        $report = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
+        $report->getReport();   
+    }
+
+    public function uploadActivityByExcelFile($projectId)
+    {
+        if (!empty($_FILES['file']['name']))
+        {
+            try
+            {
+                $fileHandler = new FileHandler();
+                $document = $fileHandler->fileUpload($_FILES['file'],"activity_form","documents","document");
+                $document->save();
+
+                $excelManPowerEntryActivity = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
+                $excelManPowerEntryActivity->uploadActivity($document);
+                // $log = Model_team::uploadXlsx($document);
+                if (count($log) > 0)
+                {
+                    $errorList = array();
+                    foreach ($log as $team)
+                    {
+                        if(count($team)>0)
+                        {
+                            $errorList = array_merge($errorList,$team);
+                        }
+                    }
+                    $logHtml = implode("<br/>", $errorList);
+                    $this->session->set_flashdata('errorMessage', "<br/>". $logHtml);
+                }
+                else
+                {
+                    $this->session->set_flashdata('successMessage', "The teams were uploaded successfully!.");
+                }
+            }catch (Exception $e)
+            {
+                redirect(base_url("panel/Project/manpower/".$projectId));
+                $this->session->set_flashdata('errorMessage', $e->getMessage());
+            }
+        }
+        redirect(base_url("panel/Project/manpower/".$projectId));
+    }
 }

@@ -86,20 +86,4 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
-
-    public function testFiscalReport()
-    {
-        // $alphabeth = "";
-        // for ($i = 'A'; $i !== 'ZZ'; $i++)
-        // {
-        //     $alphabeth .= $i.',';
-        // }
-        // $allCols = explode(",", $alphabeth);
-        // $cols = range("A", "Z");
-        // echo"<pre>";var_dump($cols);exit;
-        $startDate = "2019-01-01";
-        $endDate = "2019-01-30";
-        $report = new ExcelFiscalReport($this->sessionUser, $startDate, $endDate);
-        $report->getReport();   
-    }
 }

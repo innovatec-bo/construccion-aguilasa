@@ -1,4 +1,4 @@
-var IncidentHandler = /** @class */ (function () {
+var IncidentHandler = (function () {
     function IncidentHandler() {
         this._buttonAdd = ".add-incident";
         this._serverResponse = {};
@@ -108,10 +108,6 @@ var IncidentHandler = /** @class */ (function () {
             }
         }).queue(queue.list).then(function (result) {
             if (result.value) {
-                // Swal.fire({
-                //     title: 'Guardando incidencias...',
-                //     showConfirmButton: TRUE,
-                // });
             }
         });
     };

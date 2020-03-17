@@ -14,6 +14,21 @@ $(function() {
     //     wheelPropagation: true
     // });
     // daysWithoutIncidents();
+
+    $('input[name=work-plan-report-from]').datetimepicker({
+        defaultDate: moment().startOf('month').format('YYYY-MM-DD'),
+        ignoreReadonly: true,
+        format: 'DD-MM-YYYY',
+        locale:'es'
+    });
+
+    $('input[name=work-plan-report-to]').datetimepicker({
+        ignoreReadonly: true,
+        defaultDate:moment().endOf('month').format('YYYY-MM-DD'),
+        format: 'DD-MM-YYYY',
+        locale:'es',
+        useCurrent: false
+    });
     
 });
 
