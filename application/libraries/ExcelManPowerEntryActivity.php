@@ -255,15 +255,27 @@ class ExcelManPowerEntryActivity
             $this->createDateValidation($spreadsheet, "B");
 
             //Nota
+            $noteList = array(
+                "Debe especificar al menos un constructor",
+                "Debe especificar al menos una estructura",
+                "No ingrese ningun valor que fuera de los que aparecen en la lista.",
+                "No deje en blanco el campo de fecha. Los formularios con fecha en blanco no seran tomados en cuenta.",
+                "Si especifica una fecha que ya existe, esta sera sobre escrita con la nueva informacion.",
+                "No altere la informacion que esta en la hoja de Mano de obra y Constructores.",
+                "La lista de estructura esta compuesta por \"codigoInterno codigoDeEstructura_unidadDeMedida_actividad_ejecucion\"",
+                "La lista de constructores esta compuesta por \"codigoInterno nombreCompletoDelConstructor\"",
+                "No edite el nombre de las hojas de este archivo.",
+                "Revise que no este especificando mas de una vez la misma estructura en la lista de avance, ya que solo se guardara la ulima ocurrencia de la lista.",
+                "Si elige una estructura no olvide ingresar su cantidad de avance y viceversa."
+            );
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('D8', "NOTA");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D9', "1) No ingrese ningun valor que fuera de los que aparecen en la lista.");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D10', "2) No deje en blanco el campo de fecha. Los formularios con fecha en blanco no seran tomados en cuenta.");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D11', "3) Si especifica una fecha que ya existe, esta sera sobre escrita con la nueva informacion.");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D12', "4) No altere la informacion que esta en la hoja de Mano de obra y Constructores.");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D13', "5) La lista de estructura esta compuesta por \"codigoInterno codigoDeEstructura_unidadDeMedida_actividad_ejecucion\"");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D14', "6) La lista de constructores esta compuesta por \"codigoInterno nombreCompletoDelConstructor\"");
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D15', "7) No cambie el nombre de las hojas");
-
+            $j = 1;
+            foreach ($noteList as $row) 
+            {
+                $spreadsheet->setActiveSheetIndex($i)->setCellValue('D'.($j+8), $j.") ".$row);    
+                $j++;
+            }
+            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D'.($j+9), "APLIQUE LAS NOTAS ESPECIFICADAS PARA CARGAR EL FORMULARIO DE FORMA CORRECTA");
             $counter++;
         }
         $spreadsheet->setActiveSheetIndex(2);
@@ -349,7 +361,7 @@ class ExcelManPowerEntryActivity
         $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('El valor que intentas colocar no cuenta con el formato especifico de fecha permitida. Este dato es determinante para el guardado de la informacion.');
         $oVal->setPromptTitle('Formatos permitidos');
-        $oVal->setPrompt("YYYY-MM-DD\nDD-MM-YYYY\nYYYY/MM/DD\nDD/MM/YYYY");
+        $oVal->setPrompt("DD/MM/YYYY\nDD-MM-YYYY\nYYYY/MM/DD\nYYYY-MM-DD");
         // $oVal->setPrompt('Por favor escoger una estructura de la lista predeterminada.');
         $sht->setDataValidation($column."4", $oVal);
     }
@@ -361,7 +373,8 @@ class ExcelManPowerEntryActivity
         ini_set('memory_limit','256M');
         $xlsxLog = array();
         $fileLocation = FCPATH.$document->getUrl();
-        $newTeamsInXLS = array();
+        $dataToSave = array();
+        $datesToDelete = array();
 
         if(strtolower($document->getExtension()) == "xls")
         {
@@ -379,42 +392,115 @@ class ExcelManPowerEntryActivity
         $i = 0;
         foreach ($sheetList as $sheetData)
         {
-            $teamName = trim($sheetData->getTitle());
             if($i > 1)
             {
+                $formName = trim($sheetData->getTitle());
+                $xlsxLog[$formName] = array();
                 $arrayData = $sheetData->toArray();
-                //echo"<pre>";var_dump($arrayData);exit;
+                // if($i == 3)
+                // {
+                //     echo"<pre>";var_dump($arrayData);exit;    
+                // }
+                
                 //Date
-                $date = isset($arrayData[3][1])?trim($arrayData[3][1]):"";
+                $manualEntryDate = "";
+                if(isset($arrayData[3][1]))
+                {
+                    try 
+                    {
+                        $manualEntryDate = new DateTime($manualEntryDate);
+                        $manualEntryDate = $manualEntryDate->format("Y-m-d");
+                    } 
+                    catch (Exception $e) 
+                    {
+                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El formato de la fecha <strong>".$manualEntryDate."</strong> es incorrecto.";
+                    }    
+                }
+                
                 //Builders
-                $builders[] = isset($arrayData[4][1])?trim($arrayData[4][1]):"";
-                $builders[] = isset($arrayData[4][2])?trim($arrayData[4][2]):"";
-                $builders[] = isset($arrayData[4][3])?trim($arrayData[4][3]):"";
-                $builders[] = isset($arrayData[4][4])?trim($arrayData[4][4]):"";
+                $builders = array();
+                for ($j=1; $j < 5; $j++) 
+                { 
+                    if(isset($arrayData[4][$j]))
+                    {
+                        $builder = trim($arrayData[4][$j]);
+                        $builder = explode(" ", $builder);
+                        $builderId = intval($builder[0]);
+                        $builders[] = $builderId;    
+                    }
+                }
                 $builders = array_unique($builders);
                 $builders = array_filter($builders);
                 $builders = array_values($builders);
+                // var_dump($manualEntryDate, $manualEntryDate != "");exit;
+                if(count($builders) <=0 && $manualEntryDate != "")
+                {
+                    $xlsxLog[$formName][] = "<strong>".$formName.":</strong> No se especifico ningun constructor.";
+                }
                 //detail
                 $detail = isset($arrayData[5][1])?trim($arrayData[5][1]):"";
                 //$worked up
-                for ($i=8; $i < 20; $i++) 
+                $workedUp = array();
+                for ($j=8; $j < 20; $j++) 
                 { 
-                    $laborCostId = isset($arrayData[$i][0])?trim($arrayData[$i][0]):"";
+                    $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
                     $laborCostId = explode(" ", $laborCostId);
                     $laborCostId = intval($laborCostId[0]);
-                    $quantityWorkedUp = isset($arrayData[$i][1])?floatval(trim($arrayData[$i][1])):"";
+                    $quantityWorkedUp = isset($arrayData[$j][1])?floatval(trim($arrayData[$j][1])):"";
                     if($laborCostId != "" && $quantityWorkedUp > 0)
                     {
-                        $workedUp[] = array(
-                                        "laborCostId" => $laborCostId,
-                                        "quantityWorkedUp" => $quantityWorkedUp
+                        $workedUp[$laborCostId] = array(
+                                        "labor-cost-id" => $laborCostId,
+                                        "quantity" => $quantityWorkedUp
                                     );    
                     }
-                    
                 }
-                echo "<pre>";var_dump($date, $builders, $detail, $workedUp);exit;
+                $workedUp = array_values($workedUp);
+                if(count($workedUp) <=0 && $manualEntryDate != "")
+                {
+                    $xlsxLog[$formName][] = "<strong>".$formName.":</strong> No se especifico ninguna estructura.";
+                }
+                
+                //define if save or not
+                if(count($xlsxLog[$formName]) <= 0 && $manualEntryDate != "")
+                {
+                    $dataToSave[$formName][] = array(
+                        "detail" => $detail,
+                        "manualEntryDate" => $manualEntryDate,
+                        "workedUp" => $workedUp,
+                        "builders" => $builders
+                    );
+                    $datesToDelete[] = $manualEntryDate;
+                    // echo "<pre>";var_dump($userId, $detail, $manualEntryDate->format("Y-m-d"), $workedUp, $builders);exit;
+                }
             }
             $i++;
+        }
+        $this->_deleteDates($datesToDelete, $dataToSave, $xlsxLog);
+    }
+
+    private function _deleteDates($datesToDelete,$dataToSave, $xlsxLog)
+    {
+        $arrayLog = Model_labor_cost_log::prepareArrayLog($this->_projectId);
+        $logIds = array();
+        foreach ($arrayLog as $row) 
+        {
+            $logDate = new DateTime($row['manualEntryDate']);
+            $logDate = $logDate->format("Y-m-d");
+            if(array_search($logDate, $datesToDelete))
+            {
+                $logIds[] = $logId;
+            }
+        }
+        echo"<pre>";var_dump($logIds, $arrayLog, $datesToDelete, $dataToSave, $xlsxLog);exit;
+    }
+
+    private function insertData($dataToSave)
+    {
+        $userId = $this->_sessionUser->id;
+        foreach ($dataToSave as $row)
+        {
+            Model_labor_cost_log::addLog($userId, $row['detail'], $row['manualEntryDate'], $row['workedUp'], $row['builders']);
         }
     }
 }
