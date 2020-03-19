@@ -1,8 +1,9 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
+// use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExcelManPowerEntryActivity
 {
@@ -43,10 +44,13 @@ class ExcelManPowerEntryActivity
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Formulario de actividad - '.$project['code_pro'].'.xlsx"');
+        header('Content-Disposition: attachment;filename="Formulario de actividad - '.$project['code_pro'].'.xls"');
         header('Cache-Control: max-age=0');
 
-        $writer = new Xlsx($spreadsheet);
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save('php://output');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
     }
 
