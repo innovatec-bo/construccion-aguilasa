@@ -167,42 +167,21 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         return $arrayLog;
     }
 
-    public static function deleteDatesFromLogByProjectIdAndDateList($projectId, $dateList)
+    public static function deleteLogsByIdsArray($idsArray = array())
     {
         $ci = &get_instance();
         $ci->load->database();
+
+        $escapedIds = "";
+        foreach ($idsArray as $id) 
+        {
+            $escapedIds .= $ci->db->escape($id).", ";
+        }
+        $escapedIds = substr($escapedIds, 0, -2);
         $sql = "
-        SELECT
-            id_lal log_id,
-            project_id_lad project_id            
-        FROM
-            bui_labor_cost_log
-        LEFT JOIN bui_builders_in_manpower on id_lal = labor_cost_log_id_bim
-        LEFT JOIN sec_users builders on builders.id_usr = user_id_bim
-        LEFT JOIN sec_users fiscals on fiscals.id_usr = user_id_lal
-        LEFT JOIN bui_worked_up_structures on id_lal = labor_cost_log_id_wus
-        LEFT JOIN (
-            select 
-                id_lac,
-                bui_labor_cost.labor_detail_id_lac,
-                bui_labor_cost.execution_lac,       
-                bui_labor_cost.activity_lac,
-                bui_building_structures.structure_code_bus, 
-                bui_building_structures.unit_of_measurement_bus,
-                bui_building_structures.description_bus
-            from bui_labor_cost 
-            LEFT JOIN bui_building_structures on bui_labor_cost.building_structure_id_lac = id_bus
-            where deleted_lac !=1 and deleted_bus != 1
-        ) bui_labor_cost on id_lac = labor_cost_id_wus
-        LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
-        LEFT JOIN bui_building_points on id_bpo = point_id_lal
-        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 and project_id_lad = ".$ci->db->escape($projectId)."
-        GROUP BY id_lal, id_lac
-        ORDER BY manual_entry_date_lal desc
+        update bui_labor_cost_log set deleted_lal = 1 where id_lal in (".$escapedIds.")
         ";
 
-        $query = $ci->db->query($sql);
-        $response = $query->result_array();
-        return $response;
+        $ci->db->query($sql);
     }
 }

@@ -356,7 +356,7 @@ class ExcelManPowerEntryActivity
         $xl = $spreadsheet;
         $sht = $xl->getActiveSheet();
         $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
-        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_DATE );
+        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_NONE);
         $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
         $oVal->setAllowBlank(false);
         $oVal->setShowInputMessage(true);
@@ -364,8 +364,8 @@ class ExcelManPowerEntryActivity
         $oVal->setShowDropDown(false);
         $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
         $oVal->setError('El valor que intentas colocar no cuenta con el formato especifico de fecha permitida. Este dato es determinante para el guardado de la informacion.');
-        $oVal->setPromptTitle('Formatos permitidos');
-        $oVal->setPrompt("DD/MM/YYYY\nDD-MM-YYYY\nYYYY/MM/DD\nYYYY-MM-DD");
+        $oVal->setPromptTitle('Formato permitido');
+        $oVal->setPrompt("DD-MM-YYYY");
         // $oVal->setPrompt('Por favor escoger una estructura de la lista predeterminada.');
         $sht->setDataValidation($column."4", $oVal);
     }
@@ -380,44 +380,41 @@ class ExcelManPowerEntryActivity
         $dataToSave = array();
         $datesToDelete = array();
 
-        if(strtolower($document->getExtension()) == "xls")
-        {
-           $reader = new XlsReader();
-        }
+        // if(strtolower($document->getExtension()) == "xls")
+        // {
+        //    $reader = new XlsReader();
+        // }
 
-        elseif(strtolower($document->getExtension()) == "xlsx")
-        {
-           $reader = new XlsxReader();
-        }
+        // elseif(strtolower($document->getExtension()) == "xlsx")
+        // {
+        //    $reader = new XlsxReader();
+        // }
 
-        $spreadsheet = $reader->load($fileLocation);
+        $spreadsheet = IOFactory::load($fileLocation);
+        // $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();
-
+        // echo"<pre>";var_dump($sheetList, $document);exit;
         $i = 0;
         foreach ($sheetList as $sheetData)
         {
-            if($i > 1)
-            {
-                $formName = trim($sheetData->getTitle());
+            $formName = trim($sheetData->getTitle());
+            if(strpos($formName, "Form") !== FALSE)
+            {                
                 $xlsxLog[$formName] = array();
                 $arrayData = $sheetData->toArray();
-                // if($i == 3)
-                // {
-                //     echo"<pre>";var_dump($arrayData);exit;    
-                // }
                 
                 //Date
                 $manualEntryDate = "";
                 if(isset($arrayData[3][1]))
                 {
-                    try 
+                    $manualEntryDate = DateTime::createFromFormat("d-m-Y", $arrayData[3][1]);
+                    if($manualEntryDate instanceof DateTime)
                     {
-                        $manualEntryDate = new DateTime($manualEntryDate);
                         $manualEntryDate = $manualEntryDate->format("Y-m-d");
-                    } 
-                    catch (Exception $e) 
+                    }
+                    else
                     {
-                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El formato de la fecha <strong>".$manualEntryDate."</strong> es incorrecto.";
+                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El formato de la fecha <strong>".$arrayData[3][1]."</strong> es incorrecto.";   
                     }    
                 }
                 
@@ -468,19 +465,23 @@ class ExcelManPowerEntryActivity
                 //define if save or not
                 if(count($xlsxLog[$formName]) <= 0 && $manualEntryDate != "")
                 {
-                    $dataToSave[$formName][] = array(
+                    $dataToSave[$formName] = array(
                         "detail" => $detail,
                         "manualEntryDate" => $manualEntryDate,
                         "workedUp" => $workedUp,
                         "builders" => $builders
                     );
                     $datesToDelete[] = $manualEntryDate;
-                    // echo "<pre>";var_dump($userId, $detail, $manualEntryDate->format("Y-m-d"), $workedUp, $builders);exit;
                 }
             }
             $i++;
         }
-        $this->_deleteDates($datesToDelete, $dataToSave, $xlsxLog);
+        if(count($dataToSave)>0)
+        {
+            $this->_deleteDates($datesToDelete, $dataToSave, $xlsxLog);
+            $this->_insertData($dataToSave);    
+        }
+        return $xlsxLog;
     }
 
     private function _deleteDates($datesToDelete,$dataToSave, $xlsxLog)
@@ -489,21 +490,26 @@ class ExcelManPowerEntryActivity
         $logIds = array();
         foreach ($arrayLog as $row) 
         {
+            $logId = $row['logId'];
             $logDate = new DateTime($row['manualEntryDate']);
             $logDate = $logDate->format("Y-m-d");
-            if(array_search($logDate, $datesToDelete))
+            // var_dump($logDate, $datesToDelete,array_search($logDate, $datesToDelete));exit;
+            if(array_search($logDate, $datesToDelete) !== FALSE)
             {
                 $logIds[] = $logId;
             }
         }
-        echo"<pre>";var_dump($logIds, $arrayLog, $datesToDelete, $dataToSave, $xlsxLog);exit;
+        if(count($logIds)>0)
+            Model_labor_cost_log::deleteLogsByIdsArray($logIds);
+        // echo"<pre>";var_dump($logIds, $arrayLog, $datesToDelete, $dataToSave, $xlsxLog);exit;
     }
 
-    private function insertData($dataToSave)
+    private function _insertData($dataToSave)
     {
+        // $dataToSave = array_values($dataToSave);
         $userId = $this->_sessionUser->id;
         foreach ($dataToSave as $row)
-        {
+        {//echo"<pre>";var_dump($row);exit;
             Model_labor_cost_log::addLog($userId, $row['detail'], $row['manualEntryDate'], $row['workedUp'], $row['builders']);
         }
     }

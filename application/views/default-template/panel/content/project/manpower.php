@@ -47,7 +47,7 @@
     <div class="col-md-3" id="history-content">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Historial de avance
+                Hist. de avance
                 <div class="pull-right">
                     <div class="btn-group">
                         <a href="<?=base_url()?>" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>

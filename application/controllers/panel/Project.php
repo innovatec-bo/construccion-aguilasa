@@ -577,6 +577,7 @@ class Project extends PrivateController
 
     public function uploadActivityByExcelFile($projectId)
     {
+
         if (!empty($_FILES['file']['name']))
         {
             try
@@ -586,16 +587,16 @@ class Project extends PrivateController
                 $document->save();
 
                 $excelManPowerEntryActivity = new ExcelManPowerEntryActivity($this->sessionUser, $projectId);
-                $excelManPowerEntryActivity->uploadActivity($document);
+                $log = $excelManPowerEntryActivity->uploadActivity($document);
                 // $log = Model_team::uploadXlsx($document);
                 if (count($log) > 0)
                 {
                     $errorList = array();
-                    foreach ($log as $team)
+                    foreach ($log as $form)
                     {
-                        if(count($team)>0)
+                        if(count($form)>0)
                         {
-                            $errorList = array_merge($errorList,$team);
+                            $errorList = array_merge($errorList,$form);
                         }
                     }
                     $logHtml = implode("<br/>", $errorList);
@@ -603,12 +604,13 @@ class Project extends PrivateController
                 }
                 else
                 {
-                    $this->session->set_flashdata('successMessage', "The teams were uploaded successfully!.");
+                    $this->session->set_flashdata('successMessage', "Todos los formularios se ingresaron correctamente.");
                 }
             }catch (Exception $e)
             {
-                redirect(base_url("panel/Project/manpower/".$projectId));
                 $this->session->set_flashdata('errorMessage', $e->getMessage());
+                redirect(base_url("panel/Project/manpower/".$projectId));
+                
             }
         }
         redirect(base_url("panel/Project/manpower/".$projectId));
