@@ -444,8 +444,8 @@ class ExcelManPowerEntryActivity
                 $workedUp = array();
                 for ($j=8; $j < 20; $j++) 
                 {
-                    if(is_numeric(trim($arrayData[$j][0])))
-                    {
+                    // if(is_numeric(trim($arrayData[$j][0])))
+                    // {
                         $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
                         $laborCostId = explode(" ", $laborCostId);
                         $laborCostId = intval($laborCostId[0]);
@@ -457,11 +457,11 @@ class ExcelManPowerEntryActivity
                                             "quantity" => $quantityWorkedUp
                                         );    
                         }    
-                    }
-                    else
-                    {
-                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
-                    }
+                    // }
+                    // else
+                    // {
+                    //     $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
+                    // }
                 }
                 $workedUp = array_values($workedUp);
                 if(count($workedUp) <=0 && $manualEntryDate != "")
