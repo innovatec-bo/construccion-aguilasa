@@ -599,8 +599,12 @@ class Project extends PrivateController
                             $errorList = array_merge($errorList,$form);
                         }
                     }
-                    $logHtml = implode("<br/>", $errorList);
-                    $this->session->set_flashdata('errorMessage', "<br/>". $logHtml);
+                    if(count($errorList)>0)
+                    {
+                        $logHtml = implode("<br/>", $errorList);
+                        $this->session->set_flashdata('errorMessage', "<br/>". $logHtml);    
+                    }
+                    $this->session->set_flashdata('successMessage', "Todos los formularios se ingresaron correctamente.");   
                 }
                 else
                 {
