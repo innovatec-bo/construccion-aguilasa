@@ -144,11 +144,24 @@
         }
     }
 
+    function addMarkerOnGlobalMap(project)
+    {
+        let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
+        map.addMarker({
+            lat: project.latitude,
+            lng: project.longitude,
+            icon: markerImage,
+            infoWindow: {
+              content: '<dl><dt>CODIGO</dt><dd>'+project.code+'</dd><dt>STATUS</dt><dd>'+project.statusName+'</dd><dt>DETALLE</dt><dd>'+project.detail+'</dd></dl>'
+            }
+        });
+    }
+
     function addInitialMarker()
     {
         let latitude = $("input[name=latitude]").val();
         let longitude = $("input[name=longitude]").val();
-        if(latitude!="")
+        if(latitude!="" && latitude !== undefined)
         {
             let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
             map.setCenter(latitude, longitude);

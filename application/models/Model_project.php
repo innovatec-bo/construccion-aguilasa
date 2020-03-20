@@ -2169,4 +2169,24 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;       
     }
+
+    public static function getProjectsWithCoordinates()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            select
+            wfl_projects.*, 
+            wfl_project_status.*
+            from 
+            wfl_projects 
+            left join wfl_project_status on status_pro = id_pst
+            where 
+            latitude_pro is not null
+            and deleted_pro != 1
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;       
+    }
 }

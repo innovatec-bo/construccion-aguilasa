@@ -619,4 +619,35 @@ class Project extends PrivateController
         }
         redirect(base_url("panel/Project/manpower/".$projectId));
     }
+
+    public function locations()
+    {
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("moment-with-locales");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("google.maps.api");
+        $this->complementHandler->addViewComplement("gmaps");
+        $this->complementHandler->addProjectJs('gmaps-script-handler', TRUE);
+        $this->complementHandler->addProjectCss('project.locations',TRUE);
+        $this->complementHandler->addProjectJs('project.locations', TRUE);       
+        $data = array();
+        $projects = Model_project::getProjectsWithCoordinates();
+        // echo"<pre>";var_dump($projects);exit;
+        $arrayProjects = array();
+        foreach ($projects as $project) 
+        {
+            $arrayProjects[] = array(
+                                "id" => $project['id_pro'],
+                                "code" => $project['code_pro'],
+                                "statusName" => $project['status_name_pst'],
+                                "detail" => $project['detail_pro'],
+                                "latitude" => $project['latitude_pro'],
+                                "longitude" => $project['longitude_pro']
+                                );
+        }
+        $data['projects'] = $arrayProjects;
+        
+        $this->_loadPanelView("project/locations", $data);
+    }
 }
