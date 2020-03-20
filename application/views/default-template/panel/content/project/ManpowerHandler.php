@@ -88,12 +88,12 @@ $projectSystems = array(
             <th>DESCRIPCION</th>
             <th>UNIDAD</th>
             <th>CANTIDAD</th>
-            <?php if($isSuperAdmin == 1){?>
+            
             <th>P/UNITARIO</th>
             <th>P/TOTAL</th>
             <th>TRABAJADO</th>
             <th>DIFERENCIA</th>
-            <?php }?>
+            
         </tr>
         </thead>
         <tbody>
@@ -106,12 +106,12 @@ $projectSystems = array(
                 <td>{{description}}</td>
                 <td class="text-center">{{unit_of_measurement}}</td>
                 <td class="text-right">{{quantity}}</td>
-                <?php if($isSuperAdmin == 1){?>
+                
                 <td class="text-right">{{unit_price}}</td>
                 <td class="text-right">{{total_price_by_structure}}</td>
                 <td class="text-right">{{worked_up}}</td>
                 <td class="text-right">{{diff}}</td>
-                <?php }?>
+                
             </tr>
         {{/each}}
         </tbody>

@@ -45,7 +45,7 @@ function showProjects(projectList)
 function findProject(projectCode)
 {
     $.each(projectList, function(index, value){
-        if(value.code == projectCode)
+        if(value.code.toLocaleLowerCase() == projectCode.toLocaleLowerCase())
         map.setCenter(value.latitude, value.longitude);
     });   
 }

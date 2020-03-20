@@ -443,17 +443,24 @@ class ExcelManPowerEntryActivity
                 //$worked up
                 $workedUp = array();
                 for ($j=8; $j < 20; $j++) 
-                { 
-                    $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
-                    $laborCostId = explode(" ", $laborCostId);
-                    $laborCostId = intval($laborCostId[0]);
-                    $quantityWorkedUp = isset($arrayData[$j][1])?floatval(trim($arrayData[$j][1])):"";
-                    if($laborCostId != "" && $quantityWorkedUp > 0)
+                {
+                    if(is_numeric(trim($arrayData[$j][0])))
                     {
-                        $workedUp[$laborCostId] = array(
-                                        "labor-cost-id" => $laborCostId,
-                                        "quantity" => $quantityWorkedUp
-                                    );    
+                        $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
+                        $laborCostId = explode(" ", $laborCostId);
+                        $laborCostId = intval($laborCostId[0]);
+                        $quantityWorkedUp = isset($arrayData[$j][1])?floatval(trim($arrayData[$j][1])):"";
+                        if($laborCostId != "" && $quantityWorkedUp > 0)
+                        {
+                            $workedUp[$laborCostId] = array(
+                                            "labor-cost-id" => $laborCostId,
+                                            "quantity" => $quantityWorkedUp
+                                        );    
+                        }    
+                    }
+                    else
+                    {
+                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
                     }
                 }
                 $workedUp = array_values($workedUp);
