@@ -26,7 +26,7 @@ class IncidentHandler
         this._daysWithoutIncident = 0;
     }
     
-    public add(formData?)
+    public add(formData?, statusId?, projectId?)
     {
         let _this = this;
         let method = !formData?"GET":"POST";

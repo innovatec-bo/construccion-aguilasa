@@ -1,11 +1,11 @@
-var IncidentHandler = (function () {
+var IncidentHandler = /** @class */ (function () {
     function IncidentHandler() {
         this._buttonAdd = ".add-incident";
         this._serverResponse = {};
         this._htmlTemplate = "";
         this._daysWithoutIncident = 0;
     }
-    IncidentHandler.prototype.add = function (formData) {
+    IncidentHandler.prototype.add = function (formData, statusId, projectId) {
         var _this = this;
         var method = !formData ? "GET" : "POST";
         $.ajax({
@@ -108,6 +108,10 @@ var IncidentHandler = (function () {
             }
         }).queue(queue.list).then(function (result) {
             if (result.value) {
+                // Swal.fire({
+                //     title: 'Guardando incidencias...',
+                //     showConfirmButton: TRUE,
+                // });
             }
         });
     };
