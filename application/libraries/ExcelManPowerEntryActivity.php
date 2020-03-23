@@ -222,6 +222,7 @@ class ExcelManPowerEntryActivity
             ]
         ];
         $counter = 1;
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         for ($i=2; $i <= static::FORM_QUANTITY; $i++) 
         { 
             $worksheetForm = $spreadsheet->createSheet($i);
@@ -233,6 +234,7 @@ class ExcelManPowerEntryActivity
 
             //Header data
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A4', "FECHA");
+            // $spreadsheet->getActiveSheet()->getCell('B4')->setValueExplicit('55',\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
             $spreadsheet->getActiveSheet()->getStyle('A4:B4')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A5', "CONSTRUCTOR");
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A6', "DETALLE");
@@ -444,8 +446,8 @@ class ExcelManPowerEntryActivity
                 $workedUp = array();
                 for ($j=8; $j < 20; $j++) 
                 {
-                    // if(is_numeric(trim($arrayData[$j][0])))
-                    // {
+                    if(is_numeric(trim($arrayData[$j][1])))
+                    {
                         $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
                         $laborCostId = explode(" ", $laborCostId);
                         $laborCostId = intval($laborCostId[0]);
@@ -457,11 +459,11 @@ class ExcelManPowerEntryActivity
                                             "quantity" => $quantityWorkedUp
                                         );    
                         }    
-                    // }
-                    // else
-                    // {
-                    //     $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
-                    // }
+                    }
+                    else
+                    {
+                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
+                    }
                 }
                 $workedUp = array_values($workedUp);
                 if(count($workedUp) <=0 && $manualEntryDate != "")
