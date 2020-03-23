@@ -234,7 +234,8 @@ class ExcelManPowerEntryActivity
 
             //Header data
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A4', "FECHA");
-            // $spreadsheet->getActiveSheet()->getCell('B4')->setValueExplicit('55',\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
+//            $spreadsheet->getActiveSheet()->getStyle("B4")->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::);
+            $spreadsheet->getActiveSheet()->getStyle("B4")->getNumberFormat()->setFormatCode("DD-MM-YYYY");
             $spreadsheet->getActiveSheet()->getStyle('A4:B4')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A5', "CONSTRUCTOR");
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A6', "DETALLE");
@@ -253,7 +254,21 @@ class ExcelManPowerEntryActivity
             $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(27);
             $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(27);
             $this->createStructureList($spreadsheet, "A");
-            $this->createValidationQuantity($spreadsheet, "B");
+//            $this->createValidationQuantity($spreadsheet, "B");
+            $validation = $spreadsheet->getActiveSheet()->getCell('B9')
+                ->getDataValidation();
+            $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE );
+            $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
+            $validation->setAllowBlank(true);
+            $validation->setShowInputMessage(true);
+            $validation->setShowErrorMessage(true);
+            $validation->setErrorTitle('Input error');
+            $validation->setError('Number is not allowed!');
+            $validation->setPromptTitle('Allowed input');
+            $validation->setPrompt('Only numbers between 10 and 20 are allowed.');
+            $validation->setFormula1(10);
+            $validation->setFormula2(20);
+
             $this->createBuilderList($spreadsheet, "B");
             $this->createBuilderList($spreadsheet, "C");
             $this->createBuilderList($spreadsheet, "D");
@@ -317,8 +332,8 @@ class ExcelManPowerEntryActivity
         $xl = $spreadsheet;
         $sht = $xl->getActiveSheet();
         $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
-        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_DECIMAL );
-        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION);
+        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE );
+        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
         $oVal->setAllowBlank(true);
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
@@ -326,10 +341,11 @@ class ExcelManPowerEntryActivity
         $oVal->setError('Por favor ingresar un numero valido entero o decimal. Los valores fuera de este criterio no seran tomados en cuenta.');
         $oVal->setPromptTitle('Cantidad de avance');
         $oVal->setPrompt("Ingrese un numero mayor que 0\n(puede ser un numero decimal)");
-
+        $oVal->setFormula1(10);
+        $oVal->setFormula2(20);
         for ($i=9; $i <= 20 ; $i++) 
-        { 
-            $sht->setDataValidation($column.$i, $oVal);    
+        {
+            $sht->setDataValidation($column.$i, $oVal);
         }
     }
 
