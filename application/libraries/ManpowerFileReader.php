@@ -51,12 +51,29 @@ class ManpowerFileReader
 
 	private function _setExcelArrayData()
     {
-        $reader = new Xlsx();
-        if(strtolower($this->_file->getExtension()) == "xls")
+        // $reader = new Xlsx();
+        // if(strtolower($this->_file->getExtension()) == "xls")
+        // {
+        //     $reader = new Xls();
+        // }
+        // if(strtolower($pointToPointFile->getExtension()) == "csv")
+        //     {
+        //         $reader = new Csv();
+        //         $reader->setDelimiter(';');
+        // }
+        switch (strtolower($this->_file->getExtension())) 
         {
-            $reader = new Xls();
+            case 'xlsx':
+                $reader = new Xlsx();       
+                break;
+            case 'xls':
+                $reader = new Xls();
+                break;
+            default:
+                $reader = new Csv();
+                $reader->setDelimiter(';');       
+                break;
         }
-
         $fileLocation = FCPATH.$this->_file->getUrl();
         $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();

@@ -604,7 +604,10 @@ class Project extends PrivateController
                         $logHtml = implode("<br/>", $errorList);
                         $this->session->set_flashdata('errorMessage', "<br/>". $logHtml);    
                     }
-                    $this->session->set_flashdata('successMessage', "Todos los formularios se ingresaron correctamente.");   
+                    else
+                    {
+                        $this->session->set_flashdata('successMessage', "Todos los formularios se ingresaron correctamente.");       
+                    }
                 }
                 else
                 {

@@ -15,13 +15,15 @@ class Model_worked_up_structure_base extends MY_Model
     protected $_laborCostLogId;
     protected $_laborCostId;
     protected $_workedUp;
+    protected $_price;
 
-    public function __construct($laborCostLogId = NULL, $laborCostId = NULL, $workedUp = 0)
+    public function __construct($laborCostLogId = NULL, $laborCostId = NULL, $workedUp = 0, $price = 0)
     {
         parent::__construct();
         $this->_laborCostLogId = $laborCostLogId;
         $this->_laborCostId = $laborCostId;
         $this->_workedUp = $workedUp;
+        $this->_price = $price;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_worked_up_structure_base extends MY_Model
             "labor_cost_log_id_wus" => $this->_laborCostLogId,
             "labor_cost_id_wus" => $this->_laborCostId,
             "worked_up_wus" => $this->_workedUp,
+            "price_wus" => $this->_price,
             "deleted_wus" => $this->_deleted,
             "createdon_wus" => $this->_createdOn,
             "createdby_wus" => $this->_createdBy,
@@ -61,7 +64,8 @@ class Model_worked_up_structure_base extends MY_Model
             $instance = new $className(
                 $object->labor_cost_log_id_wus,
                 $object->labor_cost_id_wus,
-                $object->worked_up_wus
+                $object->worked_up_wus,
+                $object->price_wus
             );
             $instance->_id = $object->id_wus;
 

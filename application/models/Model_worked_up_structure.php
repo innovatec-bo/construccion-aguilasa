@@ -8,8 +8,8 @@
 
 class Model_worked_up_structure extends Model_worked_up_structure_base
 {
-    public function __construct($laborCostLogId = NULL, $laborCostId = NULL, $workedUp = 0)
+    public function __construct($laborCostLogId = NULL, $laborCostId = NULL, $workedUp = 0, $price = 0)
     {
-        parent::__construct($laborCostLogId, $laborCostId, $workedUp);
+        parent::__construct($laborCostLogId, $laborCostId, $workedUp, $price);
     }
 }

@@ -120,7 +120,7 @@ class ExcelManPowerEntryActivity
                 ->setCellValue('I'.($i+1), $row["total_price_by_structure"])
                 ->setCellValue('J'.($i+1), $row["worked_up"])
                 ->setCellValue('K'.($i+1), $row["diff"])
-                ->setCellValue('L'.($i+1), $row["labor_cost_id"]." ".$row["structure_code"]."_".$row["unit_of_measurement"]."_".$row["activity"]."_".$row["execution"]);
+                ->setCellValue('L'.($i+1), $row["labor_cost_id"]." ".$row["structure_code"]."_".$row["unit_of_measurement"]."_".$row["activity"]."_".$row["execution"]."_".$row["unit_price"]);
             $i++;
             $counter++;
             
@@ -246,29 +246,18 @@ class ExcelManPowerEntryActivity
             //Table
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('A8', "ESTRUCTURA");
             $spreadsheet->setActiveSheetIndex($i)->setCellValue('B8', "CANTIDAD");
-            $spreadsheet->getActiveSheet()->getStyle('A8:B20')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-            $spreadsheet->getActiveSheet()->getStyle('A8:B8')->getFont()->setBold(true);
+            $spreadsheet->setActiveSheetIndex($i)->setCellValue('C8', "PRECIO UNITARIO");
+            $spreadsheet->getActiveSheet()->getStyle('A8:C30')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $spreadsheet->getActiveSheet()->getStyle('A8:C8')->getFont()->setBold(true);
             $spreadsheet->getActiveSheet()->getColumnDimension("A")->setWidth(25);
             $spreadsheet->getActiveSheet()->getColumnDimension("B")->setWidth(27);
             $spreadsheet->getActiveSheet()->getColumnDimension("C")->setWidth(27);
             $spreadsheet->getActiveSheet()->getColumnDimension("D")->setWidth(27);
             $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(27);
+            
             $this->createStructureList($spreadsheet, "A");
-//            $this->createValidationQuantity($spreadsheet, "B");
-            $validation = $spreadsheet->getActiveSheet()->getCell('B9')
-                ->getDataValidation();
-            $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE );
-            $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
-            $validation->setAllowBlank(true);
-            $validation->setShowInputMessage(true);
-            $validation->setShowErrorMessage(true);
-            $validation->setErrorTitle('Input error');
-            $validation->setError('Number is not allowed!');
-            $validation->setPromptTitle('Allowed input');
-            $validation->setPrompt('Only numbers between 10 and 20 are allowed.');
-            $validation->setFormula1(10);
-            $validation->setFormula2(20);
-
+            $this->createValidationQuantity($spreadsheet, "B");
+            $this->createValidationPrice($spreadsheet, "C");
             $this->createBuilderList($spreadsheet, "B");
             $this->createBuilderList($spreadsheet, "C");
             $this->createBuilderList($spreadsheet, "D");
@@ -283,20 +272,20 @@ class ExcelManPowerEntryActivity
                 "No deje en blanco el campo de fecha. Los formularios con fecha en blanco no seran tomados en cuenta.",
                 "Si especifica una fecha que ya existe, esta sera sobre escrita con la nueva informacion.",
                 "No altere la informacion que esta en la hoja de Mano de obra y Constructores.",
-                "La lista de estructura esta compuesta por \"codigoInterno codigoDeEstructura_unidadDeMedida_actividad_ejecucion\"",
+                "La lista de estructura esta compuesta por \"codigoInterno codigoDeEstructura_unidadDeMedida_actividad_ejecucion_precioUnitario\"",
                 "La lista de constructores esta compuesta por \"codigoInterno nombreCompletoDelConstructor\"",
                 "No edite el nombre de las hojas de este archivo.",
                 "Revise que no este especificando mas de una vez la misma estructura en la lista de avance, ya que solo se guardara la ulima ocurrencia de la lista.",
                 "Si elige una estructura no olvide ingresar su cantidad de avance y viceversa."
             );
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D8', "NOTA");
+            $spreadsheet->setActiveSheetIndex($i)->setCellValue('E8', "NOTA");
             $j = 1;
             foreach ($noteList as $row) 
             {
-                $spreadsheet->setActiveSheetIndex($i)->setCellValue('D'.($j+8), $j.") ".$row);    
+                $spreadsheet->setActiveSheetIndex($i)->setCellValue('E'.($j+8), $j.") ".$row);    
                 $j++;
             }
-            $spreadsheet->setActiveSheetIndex($i)->setCellValue('D'.($j+9), "APLIQUE LAS NOTAS ESPECIFICADAS PARA CARGAR EL FORMULARIO DE FORMA CORRECTA");
+            $spreadsheet->setActiveSheetIndex($i)->setCellValue('E'.($j+9), "APLIQUE LAS NOTAS ESPECIFICADAS PARA CARGAR EL FORMULARIO DE FORMA CORRECTA");
             $counter++;
         }
         $spreadsheet->setActiveSheetIndex(2);
@@ -309,7 +298,7 @@ class ExcelManPowerEntryActivity
         $sht = $xl->getActiveSheet();
         $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
         $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST );
-        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
+        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
         $oVal->setAllowBlank(false);
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
@@ -320,7 +309,7 @@ class ExcelManPowerEntryActivity
         $oVal->setPrompt('Por favor escoger una estructura de la lista predeterminada.');
         $oVal->setFormula1('Mano_de_obra!$L$3:$L$1000');
 
-        for ($i=9; $i <= 20 ; $i++) 
+        for ($i=9; $i <= 30 ; $i++) 
         { 
             // echo"<pre>";var_dump($column.$i);exit;
             $sht->setDataValidation($column.$i, $oVal);    
@@ -332,7 +321,7 @@ class ExcelManPowerEntryActivity
         $xl = $spreadsheet;
         $sht = $xl->getActiveSheet();
         $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
-        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE );
+        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_NONE );
         $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
         $oVal->setAllowBlank(true);
         $oVal->setShowInputMessage(true);
@@ -341,9 +330,29 @@ class ExcelManPowerEntryActivity
         $oVal->setError('Por favor ingresar un numero valido entero o decimal. Los valores fuera de este criterio no seran tomados en cuenta.');
         $oVal->setPromptTitle('Cantidad de avance');
         $oVal->setPrompt("Ingrese un numero mayor que 0\n(puede ser un numero decimal)");
-        $oVal->setFormula1(10);
-        $oVal->setFormula2(20);
-        for ($i=9; $i <= 20 ; $i++) 
+
+        for ($i=9; $i <= 30 ; $i++) 
+        {
+            $sht->setDataValidation($column.$i, $oVal);
+        }
+    }
+
+    public function createValidationPrice($spreadsheet, $column)
+    {
+        $xl = $spreadsheet;
+        $sht = $xl->getActiveSheet();
+        $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
+        $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_NONE );
+        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
+        $oVal->setAllowBlank(true);
+        $oVal->setShowInputMessage(true);
+        $oVal->setShowErrorMessage(true);
+        $oVal->setErrorTitle('Estimado '.$this->_sessionUser->fullName);
+        $oVal->setError('Por favor ingresar un numero valido entero o decimal.');
+        $oVal->setPromptTitle('Precio unitario');
+        $oVal->setPrompt("Puede ingresar un numero mayor o igual a 0");
+
+        for ($i=9; $i <= 30 ; $i++) 
         {
             $sht->setDataValidation($column.$i, $oVal);
         }
@@ -355,7 +364,7 @@ class ExcelManPowerEntryActivity
         $sht = $xl->getActiveSheet();
         $oVal = new \PhpOffice\PhpSpreadsheet\Cell\DataValidation();
         $oVal->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST );
-        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
+        $oVal->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
         $oVal->setAllowBlank(false);
         $oVal->setShowInputMessage(true);
         $oVal->setShowErrorMessage(true);
@@ -460,29 +469,54 @@ class ExcelManPowerEntryActivity
                 $detail = isset($arrayData[5][1])?trim($arrayData[5][1]):"";
                 //$worked up
                 $workedUp = array();
+                $showErrorByEmptyWorkedUpList = TRUE;
                 for ($j=8; $j < 20; $j++) 
                 {
-                    if(is_numeric(trim($arrayData[$j][1])))
+                    $dataOnStructureRow = isset($arrayData[$j][0])?1:0;//This data neve will be wrong, but can be emtpy.
+                    $dataOnQuantityRow = isset($arrayData[$j][1])?1:0;
+                    $dataOnUnitPriceRow = isset($arrayData[$j][2])?1:0;
+                    $totalDataInRow = $dataOnStructureRow + $dataOnQuantityRow + $dataOnUnitPriceRow;
+                    if($totalDataInRow == 3)
                     {
                         $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
                         $laborCostId = explode(" ", $laborCostId);
                         $laborCostId = intval($laborCostId[0]);
-                        $quantityWorkedUp = isset($arrayData[$j][1])?floatval(trim($arrayData[$j][1])):"";
-                        if($laborCostId != "" && $quantityWorkedUp > 0)
+                        $quantityWorkedUp = isset($arrayData[$j][1])?trim($arrayData[$j][1]):"";
+                        $unitPrice = isset($arrayData[$j][2])?trim($arrayData[$j][2]):"";
+                        $hasValidData = TRUE;
+                        if(!is_numeric($quantityWorkedUp) || $quantityWorkedUp <= 0)
+                        {
+                            $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][1])."</strong> no es un dato numerico valido en la fila #".($j-7)." de la lista de estructuras.";
+                            $hasValidData = FALSE;
+                            $showErrorByEmptyWorkedUpList = FALSE;       
+                        }
+                        if(!is_numeric($unitPrice) || $unitPrice < 0)
+                        {
+                            $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El precio <strong>".trim($arrayData[$j][2])."</strong> no es un dato numerico valido en la fila #".($j-7)." de la lista de estructuras.";
+                            $hasValidData = FALSE;
+                            $showErrorByEmptyWorkedUpList = FALSE;
+                        }
+                        if($hasValidData)
                         {
                             $workedUp[$laborCostId] = array(
                                             "labor-cost-id" => $laborCostId,
-                                            "quantity" => $quantityWorkedUp
-                                        );    
-                        }    
+                                            "quantity" => $quantityWorkedUp,
+                                            "unit-price" => $unitPrice
+                                        );
+                        }
                     }
-                    else
+                    else if($totalDataInRow >= 1 && $totalDataInRow <3)
                     {
-                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][0])."</strong> no es un dato numerico valido.";
+                        $xlsxLog[$formName][] = "<strong>".$formName.":</strong> Faltan datos en la fila #".($j-7)." de la lista de estructuras.";
+                        $showErrorByEmptyWorkedUpList = FALSE;
                     }
+                    // else
+                    // {
+                    //     $xlsxLog[$formName][] = "<strong>".$formName.":</strong> La cantidad <strong>".trim($arrayData[$j][1])."</strong> no es un dato numerico valido.";
+                    // }
                 }
                 $workedUp = array_values($workedUp);
-                if(count($workedUp) <=0 && $manualEntryDate != "")
+                if(count($workedUp) <=0 && $manualEntryDate != "" && $showErrorByEmptyWorkedUpList)
                 {
                     $xlsxLog[$formName][] = "<strong>".$formName.":</strong> No se especifico ninguna estructura.";
                 }

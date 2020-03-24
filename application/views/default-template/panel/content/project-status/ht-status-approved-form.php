@@ -65,7 +65,7 @@
                                             <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
                                             </button>
                                         </span>
-                                        <input type="file" name="manpower-file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                        <input type="file" name="manpower-file" accept=".xlsx, .xls, .csv">
                                     </div>
                                 {{/ifCond}}
                                 {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
