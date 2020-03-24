@@ -500,11 +500,13 @@ class ManpowerHandler
             let activity = $optionElement.data('activity');
             let execution = $optionElement.data('execution');
             let description = $optionElement.data('description');
+            let unitPrice = $optionElement.data('unit-price');
             let quantity = $optionElement.data('quantity');
             $optionElement.closest('tr').find('.activity').text(activity);
             $optionElement.closest('tr').find('.execution').text(execution);
             $optionElement.closest('tr').find('.description').text(description);
             $optionElement.closest('tr').find('.unit-of-measurement').text(unitOfMeasurement);
+            $optionElement.closest('tr').find('.unit-price').val(unitPrice);
             $optionElement.closest('tr').find('.quantity').text(quantity);
         });
 

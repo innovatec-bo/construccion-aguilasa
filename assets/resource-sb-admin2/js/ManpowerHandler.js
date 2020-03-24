@@ -1,4 +1,4 @@
-var ManpowerHandler = (function () {
+var ManpowerHandler = /** @class */ (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
@@ -115,7 +115,7 @@ var ManpowerHandler = (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            },
+            }
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
@@ -243,11 +243,11 @@ var ManpowerHandler = (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                },
+                }
             },
             escapeMarkup: function (markup) {
                 return markup;
-            },
+            }
         });
     };
     ManpowerHandler.prototype.loadManpowerLog = function () {
@@ -423,11 +423,13 @@ var ManpowerHandler = (function () {
             var activity = $optionElement.data('activity');
             var execution = $optionElement.data('execution');
             var description = $optionElement.data('description');
+            var unitPrice = $optionElement.data('unit-price');
             var quantity = $optionElement.data('quantity');
             $optionElement.closest('tr').find('.activity').text(activity);
             $optionElement.closest('tr').find('.execution').text(execution);
             $optionElement.closest('tr').find('.description').text(description);
             $optionElement.closest('tr').find('.unit-of-measurement').text(unitOfMeasurement);
+            $optionElement.closest('tr').find('.unit-price').val(unitPrice);
             $optionElement.closest('tr').find('.quantity').text(quantity);
         });
         $(document).on("change", "select[name='builders[]']", function () {

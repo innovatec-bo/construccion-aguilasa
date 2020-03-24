@@ -169,13 +169,14 @@ $projectSystems = array(
                                 <tr>
                                     <th class="hide">#</th>
                                     <th>ESTRUCTURA</th>
-                                    <th>ACTIV.</th>
-                                    <th>EJEC.</th>
+                                    <th width="10">ACTIV.</th>
+                                    <th width="10">EJEC.</th>
                                     <th>DESCRIPCION</th>
-                                    <th>UNIDAD</th>
-                                    <th>CANTIDAD</th>
-                                    <th>AVANCE</th>
-                                    <th>QUITAR</th>
+                                    <th width="10">UNIDAD</th>
+                                    <th width="10">CANT.</th>
+                                    <th width="10">AVANCE</th>
+                                    <th width="10">P.UNITARIO</th>
+                                    <th width="10">QUITAR</th>
                                 </tr>
                             </thead>
                             <tbody id="structure-item-list-content">
@@ -204,7 +205,9 @@ $projectSystems = array(
             <select class="form-control input-sm select2-structure-code" name="worked-up[{{index}}][labor-cost-id]" data-parsley-required="">
                 <option value=""></option>
                 {{#each laborCostList}}
-                    <option value="{{labor_cost_id}}" data-activity="{{activity}}" data-execution="{{execution}}" data-description="{{description}}" data-quantity="{{quantity}}" data-unit-of-measurement="{{unit_of_measurement}}">{{structure_code}}</option>
+                    <option value="{{labor_cost_id}}" data-activity="{{activity}}" data-execution="{{execution}}" data-description="{{description}}" data-quantity="{{quantity}}" 
+                    data-unit-price="{{unit_price}}" 
+                    data-unit-of-measurement="{{unit_of_measurement}}">{{structure_code}}</option>
                 {{/each}}
             </select>
         </td>
@@ -214,7 +217,10 @@ $projectSystems = array(
         <td class="text-center"><span class="unit-of-measurement"></span></td>
         <td class="text-right"><span class="quantity"></span></td>
         <td class="text-center" style="padding:1px">
-            <input class="input-masked" name="worked-up[{{index}}][quantity]" size="7" data-parsley-required="">
+            <input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
+        </td>
+        <td class="text-center" style="padding:1px">
+            <input class="input-masked unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
         </td>
         <td class="text-center">
             <a href="#" class="remove-row"><i class="fa fa-times"></i></a>
