@@ -2190,7 +2190,7 @@ class Model_project extends Model_project_base
         return $result;       
     }
 
-    public static function getProductivityBaseReport()
+    public static function getProductivityBaseReport($startDate, $endDate)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -2288,6 +2288,7 @@ class Model_project extends Model_project_base
             where 
             deleted_wus != 1
             and deleted_lal != 1
+            and manual_entry_date_lal BETWEEN ".$ci->db->escape($startDate)." and ".$ci->db->escape($endDate)."
             -- and project_id_lad = 653
             order by project_id_lad, manual_entry_date_lal
         ";
@@ -2296,9 +2297,9 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    public static function getBuilderIndividualReport()
+    public static function getBuilderIndividualReport($startDate, $endDate)
     {
-        $productivityBaseReport =Model_project::getProductivityBaseReport();
+        $productivityBaseReport =Model_project::getProductivityBaseReport($startDate, $endDate);
         
         $projectList = array();
         $totalWorkedUpAmount = 0;
@@ -2322,7 +2323,8 @@ class Model_project extends Model_project_base
                 $manualEntryDate = $productivityBaseReport[$i]["manual_entry_date_lal"];
                 $projectList[$projectId] = array(
                                 "id" => $projectId,
-                                "code" => $projectCode
+                                "code" => $projectCode,
+                                "builderIdAssigned" => $responsibleBuilderId
                                 );
                 $totalWorkedUpAmount += $totalAmountWorkedToSplit;
                 $totalBuilderProductivity += $totalAmountWorkedByBuilder;

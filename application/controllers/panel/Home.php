@@ -87,9 +87,14 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testProductivityReport()
+    public function testProductivityReport($builderId, $month, $year)
     {
-        $test = Model_project::getBuilderIndividualReport();
-        echo"<pre>";var_dump($test);exit;
+        $startDate = $year."-".$month."-01";
+        $endDate = date("Y-m-t", strtotime($startDate));
+        // var_dump($startDate, $endDate);exit;
+        $test = new ExcelBuilderProductivityReport($this->sessionUser, $builderId, $startDate, $endDate);
+        $test->getReport();
+        // $test = Model_project::getBuilderIndividualReport();
+        // echo"<pre>";var_dump($test);exit;
     }
 }
