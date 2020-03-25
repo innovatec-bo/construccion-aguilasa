@@ -475,14 +475,17 @@ class ExcelManPowerEntryActivity
                     $dataOnStructureRow = isset($arrayData[$j][0])?1:0;//This data neve will be wrong, but can be emtpy.
                     $dataOnQuantityRow = isset($arrayData[$j][1])?1:0;
                     $dataOnUnitPriceRow = isset($arrayData[$j][2])?1:0;
-                    $totalDataInRow = $dataOnStructureRow + $dataOnQuantityRow + $dataOnUnitPriceRow;
-                    if($totalDataInRow == 3)
+                    $totalDataInRow = $dataOnStructureRow + $dataOnQuantityRow;
+                    if($totalDataInRow == 2)
                     {
                         $laborCostId = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
                         $laborCostId = explode(" ", $laborCostId);
                         $laborCostId = intval($laborCostId[0]);
+                        $defaultUnitPrice = isset($arrayData[$j][0])?trim($arrayData[$j][0]):"";
+                        $defaultUnitPrice = explode("_", $defaultUnitPrice);
+                        $defaultUnitPrice = end($defaultUnitPrice);
                         $quantityWorkedUp = isset($arrayData[$j][1])?trim($arrayData[$j][1]):"";
-                        $unitPrice = isset($arrayData[$j][2])?trim($arrayData[$j][2]):"";
+                        $unitPrice = isset($arrayData[$j][2])?trim($arrayData[$j][2]):$defaultUnitPrice;
                         $hasValidData = TRUE;
                         if(!is_numeric($quantityWorkedUp) || $quantityWorkedUp <= 0)
                         {
@@ -490,12 +493,16 @@ class ExcelManPowerEntryActivity
                             $hasValidData = FALSE;
                             $showErrorByEmptyWorkedUpList = FALSE;       
                         }
-                        if(!is_numeric($unitPrice) || $unitPrice < 0)
+                        if($unitPrice != "")//if exist data on unit price cell
                         {
-                            $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El precio <strong>".trim($arrayData[$j][2])."</strong> no es un dato numerico valido en la fila #".($j-7)." de la lista de estructuras.";
-                            $hasValidData = FALSE;
-                            $showErrorByEmptyWorkedUpList = FALSE;
+                            if(!is_numeric($unitPrice) || $unitPrice < 0)
+                            {
+                                $xlsxLog[$formName][] = "<strong>".$formName.":</strong> El precio <strong>".trim($arrayData[$j][2])."</strong> no es un dato numerico valido en la fila #".($j-7)." de la lista de estructuras.";
+                                $hasValidData = FALSE;
+                                $showErrorByEmptyWorkedUpList = FALSE;
+                            }    
                         }
+                        
                         if($hasValidData)
                         {
                             $workedUp[$laborCostId] = array(
@@ -505,7 +512,7 @@ class ExcelManPowerEntryActivity
                                         );
                         }
                     }
-                    else if($totalDataInRow >= 1 && $totalDataInRow <3)
+                    else if($totalDataInRow == 1)
                     {
                         $xlsxLog[$formName][] = "<strong>".$formName.":</strong> Faltan datos en la fila #".($j-7)." de la lista de estructuras.";
                         $showErrorByEmptyWorkedUpList = FALSE;
