@@ -87,9 +87,9 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
-    public function testProductivityReport($builderId)
+    public function testProductivityReport()
     {
-        $test = Model_project::getBuilderIndividualReport($builderId);
+        $test = Model_project::getBuilderIndividualReport();
         echo"<pre>";var_dump($test);exit;
     }
 }

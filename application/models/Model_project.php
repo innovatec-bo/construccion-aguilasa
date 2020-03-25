@@ -2296,7 +2296,7 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    public static function getBuilderIndividualReport($builderId)
+    public static function getBuilderIndividualReport()
     {
         $productivityBaseReport =Model_project::getProductivityBaseReport();
         
