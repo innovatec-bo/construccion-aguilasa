@@ -2189,4 +2189,175 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;       
     }
+
+    public static function getProductivityBaseReport()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            SELECT
+                id_lad,
+                project_id_lad,
+                code_pro,
+                id_lac,
+                id_lal,
+                manual_entry_date_lal,
+                building_responsibles.fiscal_responsible_id,
+                building_responsibles.fiscal_responsible,
+                building_responsibles.builder_responsible_id,
+                building_responsibles.builder_responsible,
+                builders_in_manpower.builders,
+                builders_in_manpower.total_builders,
+                ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split,
+                ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder,
+                bui_worked_up_structures.*
+            FROM
+                bui_worked_up_structures
+            LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
+            LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
+            LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
+            LEFT JOIN wfl_projects on id_pro = project_id_lad
+            LEFT JOIN(
+                select 
+                        id_psl,
+                        project_id_psl,
+                        status_id_psl,  
+                        filter.entry_date,
+                        GROUP_CONCAT(CONCAT(responsible.id_usr)) responsible_user_id,
+                        GROUP_CONCAT(CONCAT(responsible.firstname_usr,' ',responsible.lastname_usr)) responsible,
+                        GROUP_CONCAT(CONCAT(builder.builder_id)) builder_responsible_id,
+                        GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible,
+                        GROUP_CONCAT(CONCAT(fiscal.fiscal_id)) fiscal_responsible_id,
+                        GROUP_CONCAT(CONCAT(fiscal.fiscal_firstname,' ',fiscal.fiscal_lastname)) fiscal_responsible
+                    from 
+                        wfl_project_status_log
+                    RIGHT JOIN(
+                        SELECT          
+                            project_id_psl project_id,
+                            max(manual_entry_date_psl) entry_date
+                        FROM
+                            wfl_project_status_log
+                        WHERE       
+                        status_id_psl = 29
+                        and deleted_psl != 1
+                        
+                        GROUP BY project_id_psl
+                    ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                    
+                    LEFT JOIN wfl_projects on id_pro = project_id_psl
+                    LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre        
+                    LEFT JOIN sec_users responsible on user_id_sre = responsible.id_usr
+                    LEFT JOIN (
+                            SELECT
+                                id_usr builder_id,
+                                firstname_usr builder_firstname,
+                                lastname_usr builder_lastname
+                            FROM
+                                sec_users
+                            right JOIN sec_userroles on userid_uro = id_usr
+                            where 
+                                roleid_uro = 9
+                            and deleted_uro != 1
+                        ) as builder on builder.builder_id = user_id_sre
+                    LEFT JOIN (
+                            SELECT
+                                id_usr fiscal_id,
+                                firstname_usr fiscal_firstname,
+                                lastname_usr fiscal_lastname
+                            FROM
+                                sec_users
+                            right JOIN sec_userroles on userid_uro = id_usr
+                            where 
+                                roleid_uro = 8
+                            and deleted_uro != 1
+                        ) as fiscal on fiscal.fiscal_id = user_id_sre       
+                    LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
+                    where deleted_pro != 1 and deleted_slr != 1 and id_pro = 653
+                    GROUP BY id_psl
+            ) building_responsibles on building_responsibles.project_id_psl = project_id_lad
+            LEFT JOIN (
+                        select 
+                            labor_cost_log_id_bim,
+                            count(DISTINCT user_id_bim) total_builders,
+                            GROUP_CONCAT(DISTINCT user_id_bim) builders
+                        from 
+                        bui_builders_in_manpower
+                        GROUP BY labor_cost_log_id_bim
+                    ) builders_in_manpower on builders_in_manpower.labor_cost_log_id_bim = id_lal
+            where 
+            deleted_wus != 1
+            and deleted_lal != 1
+            -- and project_id_lad = 653
+            order by project_id_lad, manual_entry_date_lal
+        ";
+        $query = $ci->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public static function getBuilderIndividualReport($builderId)
+    {
+        $productivityBaseReport =Model_project::getProductivityBaseReport();
+        
+        $projectList = array();
+        $totalWorkedUpAmount = 0;
+        $totalBuilderProductivity = 0;
+        $totalDates = array();
+        $totalBuilderDates = array();
+        $buildersInProject = array();
+        for ($i=0; $i < count($productivityBaseReport); $i++) 
+        { 
+            $responsibleBuilderId = $productivityBaseReport[$i]["builder_responsible_id"];
+            $builderIds = $productivityBaseReport[$i]["builders"];
+
+            $builderIds = explode(",",$builderIds);
+            //if($builderId == $responsibleBuilderId && array_search($responsibleBuilderId, $builderIds) !== FALSE)
+            //{
+                $projectId = $productivityBaseReport[$i]["project_id_lad"];
+                $projectCode = $productivityBaseReport[$i]["code_pro"];
+                $logId = $productivityBaseReport[$i]["id_lal"];
+                $totalAmountWorkedToSplit = $productivityBaseReport[$i]["total_amount_worked_to_split"];
+                $totalAmountWorkedByBuilder = $productivityBaseReport[$i]["total_amount_worked_by_builder"];
+                $manualEntryDate = $productivityBaseReport[$i]["manual_entry_date_lal"];
+                $projectList[$projectId] = array(
+                                "id" => $projectId,
+                                "code" => $projectCode
+                                );
+                $totalWorkedUpAmount += $totalAmountWorkedToSplit;
+                $totalBuilderProductivity += $totalAmountWorkedByBuilder;
+                $date = DateTime::createFromFormat('Y-m-d H:i:s', $manualEntryDate);
+                $date = $date->format('Y-m-d');
+                $totalDates[$date] = $date;
+                foreach ($builderIds as $id) 
+                {
+                    if(!isset($buildersInProject[$id]))
+                    {
+                        $buildersInProject[$id]['totalWorked'] = 0;
+                        $buildersInProject[$id]['totalWorkedAsSupport'] = 0;
+                        // $buildersInProject[$id]['totalDatesInProject'][] = array();
+                    }
+                    if($id == $responsibleBuilderId)
+                        $buildersInProject[$id]['totalWorked'] += $totalAmountWorkedByBuilder;
+                    else
+                        $buildersInProject[$id]['totalWorkedAsSupport'] += $totalAmountWorkedByBuilder;
+                    $buildersInProject[$id]['totalDatesInProject'][$date] = $date;
+                }
+                
+                if(!isset($productivityBaseReport[$i+1]) || $projectId != $productivityBaseReport[$i+1]['project_id_lad'])
+                {
+                    $projectList[$projectId]['totalWorkedUpAmount'] = $totalWorkedUpAmount;
+                    $projectList[$projectId]['totalBuilderProductivity'] = $totalBuilderProductivity;
+                    $projectList[$projectId]['totalDates'] = count(array_values($totalDates));
+                    $projectList[$projectId]['allBuilders'] = $buildersInProject;
+                    $totalWorkedUpAmount = 0;
+                    $totalAmountWorkedByBuilder = 0;
+                    $totalDates = array();
+                    $buildersInProject = array();
+                }
+            //}
+        }
+
+        return $projectList;
+    }
 }

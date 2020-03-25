@@ -86,4 +86,10 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
+
+    public function testProductivityReport($builderId)
+    {
+        $test = Model_project::getBuilderIndividualReport($builderId);
+        echo"<pre>";var_dump($test);exit;
+    }
 }
