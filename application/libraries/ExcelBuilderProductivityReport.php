@@ -136,7 +136,7 @@ class ExcelBuilderProductivityReport
 
         //**** AS SUPPORT 
         $k = $j+6;       
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$k, "PRODUCCION CON PROYECTOS ASIGNADOS");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$k, "PROYECTOS COMO APOYO");
         $k++;
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D'.$k, "No")
