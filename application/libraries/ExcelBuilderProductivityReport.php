@@ -1,6 +1,5 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 class ExcelBuilderProductivityReport
 {
@@ -36,7 +35,6 @@ class ExcelBuilderProductivityReport
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
-        // $workflowDetail = Model_project::getWorkflowDetail();
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
         $date = date_create_from_format('Y-m-d', $this->_startDate);
         $month = date_format($date, 'F');
@@ -55,15 +53,11 @@ class ExcelBuilderProductivityReport
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
         $spreadsheet = $this->builder($spreadsheet, $projectProductivity);
-        // $spreadsheet = $this->approves($spreadsheet, $workflowDetail);
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="'.$this->_userBuilder->getFullName().' - '.$month.' del '.$year.'.xls"');
         header('Cache-Control: max-age=0');
-
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save('php://output');
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
@@ -136,9 +130,11 @@ class ExcelBuilderProductivityReport
                 $rowCounter++;
         }
         $spreadsheet->getActiveSheet()->getStyle('D11:H'.($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $totalAssigned = "H".$i;
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.$i, 'A) TOTAL')
-            ->setCellValue('H'.$i, $totalExecutedAmount);
+            ->setCellValue('H'.$i, '=SUM(H12:H'.($i-1).')');
+        $spreadsheet->getActiveSheet()->getStyle('G'.$i)->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
         $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -156,10 +152,15 @@ class ExcelBuilderProductivityReport
             ->setCellValue('H'.$j, "MONTO BS");
         $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.$j)->applyFromArray($tableHeader);
         $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.($j+2))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $totalAdditional = "H".($j+3);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.($j+3), 'B) TOTAL')
-            ->setCellValue('H'.($j+3), "");
+            // ->setCellValue('H'.($j+3), 0.00);
+            ->setCellValue('H'.($j+3), '=SUM(H'.($j+1).':H'.($j+2).')');
+        $spreadsheet->getActiveSheet()->getStyle('G'.($j+3))->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.($j+3).':H'.($j+3))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        //Currency format
+        $spreadsheet->getActiveSheet()->getStyle('H'.($j+3))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
         //**** AS SUPPORT 
         $k = $j+6;       
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$k, "PROYECTOS COMO APOYO");
@@ -191,12 +192,27 @@ class ExcelBuilderProductivityReport
         }
         
         $spreadsheet->getActiveSheet()->getStyle('D'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $totalAsSupport = "H".($k);
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('G'.$k, 'A) TOTAL')
-            ->setCellValue('H'.$k, $totalExecutedAmount);
+            ->setCellValue('G'.$k, 'B) TOTAL')
+            // ->setCellValue('H'.$k, $totalExecutedAmount);
+            ->setCellValue('H'.$k, '=SUM(D'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1).')');
+        $spreadsheet->getActiveSheet()->getStyle('G'.$k)->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.$k.':H'.$k)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
         $spreadsheet->getActiveSheet()->getStyle('H'.($k))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('D'.($k+2), '(A + B) TOTAL EJECUTADO EN PERIODO BS.:')
+            ->setCellValue('H'.($k+2), '=SUM('.$totalAssigned.','.$totalAdditional.','.$totalAsSupport.')');
+            $spreadsheet->getActiveSheet()->getStyle('H'.($k+2))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            // ->setCellValue('H'.($k+2), '=SUM(H13,H20,H25)');
+        $spreadsheet->getActiveSheet()->mergeCells('D'.($k+2).':G'.($k+2));
+        $spreadsheet->getActiveSheet()->getStyle('D'.($k+2).':H'.($k+2))->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->getStyle('D'.($k+2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+        $spreadsheet->getActiveSheet()->getStyle('D'.($k+2).':H'.($k+2))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3.83);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(2);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.83);
@@ -207,65 +223,6 @@ class ExcelBuilderProductivityReport
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 
         return $spreadsheet;
-    }
-
-    public function approves($spreadsheet, $workflowDetail)
-    {
-        $titleStyleArray = [
-            'font' => ['bold' => true],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'BFBFBF']
-            ]
-        ];
-
-        $i = 12;
-        $borderCoordinate1 = $borderCoordinate2 = '';
-        
-        foreach ($workflowDetail as $row)
-        {
-            
-            // $isBetweenDates = $this->isInGivenRange($row["in_progress_date"]);
-            // if($isBetweenDates && $row["in_progress_date"] != "")
-            // {
-
-                
-            // }
-        }
-        
-
-        
-        // $spreadsheet->getActiveSheet()->getStyle('B3:G3')->getAlignment()->setWrapText(true);
-        // $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        // $spreadsheet->setActiveSheetIndex(0);
-        return $spreadsheet;
-    }
-
-    // Function to get all the dates in given range
-    public function isInGivenRange($date)
-    {
-        $date = new DateTime($date);
-        $startDate = new DateTime($this->_startDate);
-        $endDate = new DateTime($this->_endDate);
-        return $date > $startDate && $date < $endDate;
-    }
-
-    public function findPartners($currentStaker, $stakerList)
-    {
-        $stakerArray = explode(",",$stakerList);
-        $currentStakerPosition = array_search($currentStaker, $stakerArray);
-        $partnerList = "";
-        if($currentStakerPosition !== FALSE)
-        {
-            unset($stakerArray[$currentStakerPosition]);
-            $partnerList = implode(",",$stakerArray);
-        }
-
-        return $partnerList;
     }
 
     public function prepareDataToPrint($projectProductivity)
