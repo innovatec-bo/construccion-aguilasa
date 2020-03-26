@@ -196,7 +196,7 @@ class ExcelBuilderProductivityReport
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.$k, 'B) TOTAL')
             // ->setCellValue('H'.$k, $totalExecutedAmount);
-            ->setCellValue('H'.$k, '=SUM(D'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1).')');
+            ->setCellValue('H'.$k, '=SUM(H'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1).')');
         $spreadsheet->getActiveSheet()->getStyle('G'.$k)->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.$k.':H'.$k)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
