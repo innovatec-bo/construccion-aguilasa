@@ -172,7 +172,7 @@ class ExcelBuilderProductivityReport
             ->setCellValue('F'.$k, "UBICACION")
             ->setCellValue('G'.$k, "DIAS EN OBRA")
             ->setCellValue('H'.$k, "MONTO\nEJECUTADO BS");
-        $spreadsheet->getActiveSheet()->getStyle('D'.$k.':H'.$k)->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('H'.$k.':H'.$k)->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
         $k++;
