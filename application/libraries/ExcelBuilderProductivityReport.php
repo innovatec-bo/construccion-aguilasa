@@ -296,7 +296,7 @@ class ExcelBuilderProductivityReport
                     $asSupport[] = array(
                         "id"=> $row['id'],
                         "code" => $row['code'],
-                        "address" => "",
+                        "address" => $row['address'],
                         "datesOnProject" => count($builder['totalDatesInProject']),
                         "executedAmount" => $builder['totalWorkedAsSupport']
                     );
