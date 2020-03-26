@@ -136,7 +136,7 @@ class ExcelBuilderProductivityReport
             // ->setCellValue('H'.$i, '=SUM(H12:H'.($i-1).')');
             ->setCellValue('H'.$i, '=SUM(H'.(($i-1)-(count($dataToPrint['asAssigned']))).':H'.($i-1).')');
         $spreadsheet->getActiveSheet()->getStyle('G'.$i)->getFont()->setBold(true);
-        $spreadsheet->getActiveSheet()->getActiveSheettyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
         $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
@@ -156,7 +156,6 @@ class ExcelBuilderProductivityReport
         $totalAdditional = "H".($j+3);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.($j+3), 'B) TOTAL')
-            // ->setCellValue('H'.($j+3), 0.00);
             ->setCellValue('H'.($j+3), '=SUM(H'.($j+1).':H'.($j+2).')');
         $spreadsheet->getActiveSheet()->getStyle('G'.($j+3))->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.($j+3).':H'.($j+3))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
