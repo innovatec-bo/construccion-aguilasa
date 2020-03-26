@@ -38,18 +38,20 @@ class ExcelBuilderProductivityReport
 
         // $workflowDetail = Model_project::getWorkflowDetail();
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
+        $date = date_create_from_format('Y-m-d', $this->_startDate);
+        $month = date_format($date, 'F');
+        $month = $this->_months[strtolower($month)];
+        $year = date_format($date, 'Y');
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
-            ->setTitle("Reporte de produccion de Constructores")
+            ->setTitle("Reporte de produccion de ".$this->_userBuilder->getFullName()." - ".$month." del ".$year)
             ->setSubject("Reporte de constructores")
             ->setDescription("Reporte de production de constructores")
             ->setKeywords("reporte Constructor constructores")
             ->setCategory("Reporte");
         $worksheet1 = $spreadsheet->createSheet(0);
-        $worksheet1->setTitle('Por Constructor');
-        $worksheet2 = $spreadsheet->createSheet(1);
-        $worksheet2->setTitle('En progreso');
+        $worksheet1->setTitle('Resumen');
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
         $spreadsheet = $this->builder($spreadsheet, $projectProductivity);
@@ -57,7 +59,7 @@ class ExcelBuilderProductivityReport
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="reporte_fiscales.xls"');
+        header('Content-Disposition: attachment;filename="'.$this->_userBuilder->getFullName().' - '.$month.' del '.$year.'.xls"');
         header('Cache-Control: max-age=0');
 
         // $writer = new Xlsx($spreadsheet);
@@ -114,7 +116,7 @@ class ExcelBuilderProductivityReport
             ->setCellValue('E11', "PROYECTO")
             ->setCellValue('F11', "UBICACION")
             ->setCellValue('G11', "DIAS EN OBRA")
-            ->setCellValue('H11', "MONTO EJECUTADO BS");
+            ->setCellValue('H11', "MONTO\nEJECUTADO BS");
         $spreadsheet->getActiveSheet()->getStyle('D11:H11')->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
@@ -168,7 +170,7 @@ class ExcelBuilderProductivityReport
             ->setCellValue('E'.$k, "PROYECTO")
             ->setCellValue('F'.$k, "UBICACION")
             ->setCellValue('G'.$k, "DIAS EN OBRA")
-            ->setCellValue('H'.$k, "MONTO EJECUTADO BS");
+            ->setCellValue('H'.$k, "MONTO\nEJECUTADO BS");
         $spreadsheet->getActiveSheet()->getStyle('D'.$k.':H'.$k)->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
@@ -195,6 +197,9 @@ class ExcelBuilderProductivityReport
         $spreadsheet->getActiveSheet()->getStyle('G'.$k.':H'.$k)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
         $spreadsheet->getActiveSheet()->getStyle('H'.($k))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3.83);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(2);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.83);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(4);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(30);
