@@ -74,10 +74,6 @@ class ExcelBuilderProductivityReport
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'BFBFBF']
             ]
         ];
         $tableTitle = [
@@ -98,11 +94,15 @@ class ExcelBuilderProductivityReport
         $date = date_create_from_format('Y-m-d', $this->_startDate);
         $month = date_format($date, 'F');
         $year = date_format($date, 'Y');
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D12', "INFORME DE PRODUCCION MENSUAL");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D5', "INFORME DE PRODUCCION MENSUAL");
+        $spreadsheet->getActiveSheet()->mergeCells('D5:H5');
+        $spreadsheet->getActiveSheet()->getStyle('D5')->applyFromArray($titleStyleArray);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('E7', "MES");
+        $spreadsheet->getActiveSheet()->getStyle('E7')->getFont()->setBold(true);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('F7', $this->_months[strtolower($month)]);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('G7', $year);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('E8', "GRUPO");
+        $spreadsheet->getActiveSheet()->getStyle('E8')->getFont()->setBold(true);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('F8', $this->_userBuilder->getFullName());
         $dataToPrint = $this->prepareDataToPrint($projectProductivity);
         
@@ -152,8 +152,12 @@ class ExcelBuilderProductivityReport
             ->setCellValue('F'.$j, "ESTRUCTURA")
             ->setCellValue('G'.$j, "CANTIDAD")
             ->setCellValue('H'.$j, "MONTO BS");
-            $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.$j)->applyFromArray($tableHeader);
-
+        $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.$j)->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.($j+2))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('G'.($j+3), 'B) TOTAL')
+            ->setCellValue('H'.($j+3), "");
+        $spreadsheet->getActiveSheet()->getStyle('G'.($j+3).':H'.($j+3))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //**** AS SUPPORT 
         $k = $j+6;       
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$k, "PROYECTOS COMO APOYO");
@@ -181,15 +185,22 @@ class ExcelBuilderProductivityReport
                 $totalExecutedAmount += $row["executedAmount"];
                 $spreadsheet->getActiveSheet()->getStyle('H'.$k)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
                 $k++; 
-                $rowCounter;
+                $rowCounter++;
         }
-        $spreadsheet->getActiveSheet()->getStyle('D'.($k-(count($dataToPrint['asSupport']))).':H'.($k-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        
+        $spreadsheet->getActiveSheet()->getStyle('D'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.$k, 'A) TOTAL')
             ->setCellValue('H'.$k, $totalExecutedAmount);
-        $spreadsheet->getActiveSheet()->getStyle('D11:H'.($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle('G'.$k.':H'.$k)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
         $spreadsheet->getActiveSheet()->getStyle('H'.($k))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(4);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+
         return $spreadsheet;
     }
 
