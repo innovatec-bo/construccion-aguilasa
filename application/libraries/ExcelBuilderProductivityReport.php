@@ -80,6 +80,20 @@ class ExcelBuilderProductivityReport
                 'startColor' => ['argb' => 'BFBFBF']
             ]
         ];
+        $tableTitle = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+        $tableHeader = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
         //HEADER
         $date = date_create_from_format('Y-m-d', $this->_startDate);
         $month = date_format($date, 'F');
@@ -90,16 +104,18 @@ class ExcelBuilderProductivityReport
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('G7', $year);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('E8', "GRUPO");
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('F8', $this->_userBuilder->getFullName());
+        $dataToPrint = $this->prepareDataToPrint($projectProductivity);
+        
         //********AS ASSIGNED
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D10', "PRODUCCION CON PROYECTOS ASIGNADOS");
+        $spreadsheet->getActiveSheet()->getStyle('D10')->applyFromArray($tableTitle);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D11', "No")
             ->setCellValue('E11', "PROYECTO")
             ->setCellValue('F11', "UBICACION")
             ->setCellValue('G11', "DIAS EN OBRA")
             ->setCellValue('H11', "MONTO EJECUTADO BS");
-        $spreadsheet->getActiveSheet()->getStyle('D11:H11')->applyFromArray($titleStyleArray);
-        $dataToPrint = $this->prepareDataToPrint($projectProductivity);
+        $spreadsheet->getActiveSheet()->getStyle('D11:H11')->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
         $i = 12;
@@ -117,15 +133,18 @@ class ExcelBuilderProductivityReport
                 $i++; 
                 $rowCounter++;
         }
+        $spreadsheet->getActiveSheet()->getStyle('D11:H'.($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.$i, 'A) TOTAL')
             ->setCellValue('H'.$i, $totalExecutedAmount);
+        $spreadsheet->getActiveSheet()->getStyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
-        $spreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
         //******ADDITIONAL ITEMS
         $j = $i +3;
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$j, "ITEMS ADICIONALES, NO CONTEMPLADOS EN PROYECTO ORIGINAL");
+        $spreadsheet->getActiveSheet()->getStyle('D'.$j)->applyFromArray($tableTitle);
         $j++;
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D'.$j, "No")
@@ -133,10 +152,12 @@ class ExcelBuilderProductivityReport
             ->setCellValue('F'.$j, "ESTRUCTURA")
             ->setCellValue('G'.$j, "CANTIDAD")
             ->setCellValue('H'.$j, "MONTO BS");
+            $spreadsheet->getActiveSheet()->getStyle('D'.$j.':H'.$j)->applyFromArray($tableHeader);
 
         //**** AS SUPPORT 
         $k = $j+6;       
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$k, "PROYECTOS COMO APOYO");
+        $spreadsheet->getActiveSheet()->getStyle('D'.$k)->applyFromArray($tableTitle);
         $k++;
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D'.$k, "No")
@@ -144,8 +165,7 @@ class ExcelBuilderProductivityReport
             ->setCellValue('F'.$k, "UBICACION")
             ->setCellValue('G'.$k, "DIAS EN OBRA")
             ->setCellValue('H'.$k, "MONTO EJECUTADO BS");
-        $spreadsheet->getActiveSheet()->getStyle('D11:H11')->applyFromArray($titleStyleArray);
-        $dataToPrint = $this->prepareDataToPrint($projectProductivity);
+        $spreadsheet->getActiveSheet()->getStyle('D'.$k.':H'.$k)->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
         $k++;
@@ -163,11 +183,13 @@ class ExcelBuilderProductivityReport
                 $k++; 
                 $rowCounter;
         }
+        $spreadsheet->getActiveSheet()->getStyle('D'.($k-(count($dataToPrint['asSupport']))).':H'.($k-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('G'.$k, 'A) TOTAL')
             ->setCellValue('H'.$k, $totalExecutedAmount);
+        $spreadsheet->getActiveSheet()->getStyle('D11:H'.($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
-        $spreadsheet->getActiveSheet()->getStyle('H'.($k+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $spreadsheet->getActiveSheet()->getStyle('H'.($k))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
         return $spreadsheet;
     }
 

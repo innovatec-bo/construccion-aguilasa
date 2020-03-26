@@ -90,6 +90,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             detail_lal detail,
             manual_entry_date_lal manual_entry_date,
             GROUP_CONCAT(DISTINCT CONCAT(builders.firstname_usr,' ',builders.lastname_usr) SEPARATOR ', ') builders,
+            GROUP_CONCAT(DISTINCT CONCAT(builders.id_usr,'-',builders.firstname_usr,' ',builders.lastname_usr) SEPARATOR ', ') builder_with_id,
             activity_lac activity,
             execution_lac execution,
             structure_code_bus structure_code,
@@ -149,6 +150,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                     $arrayLog[$partnerId]['detail'] = $laborCostLog[$i]["detail"];
                     $arrayLog[$partnerId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];
                     $arrayLog[$partnerId]['builders'] = $laborCostLog[$i]["builders"];
+                    $arrayLog[$partnerId]['builderWithId'] = $laborCostLog[$i]["builder_with_id"];
                     $arrayLog[$partnerId]['itemList'] = $singleList;
                     $singleList = array();
                 }
@@ -162,6 +164,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                 $arrayLog[$partnerId]['detail'] = $laborCostLog[$i]["detail"];
                 $arrayLog[$partnerId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];
                 $arrayLog[$partnerId]['builders'] = $laborCostLog[$i]["builders"];
+                $arrayLog[$partnerId]['builderWithId'] = $laborCostLog[$i]["builder_with_id"];
                 $arrayLog[$partnerId]['itemList'] = $singleList;
             }
         }

@@ -346,3 +346,28 @@ function select2ProjectGeneralListFormatResponse (response) {
     var html = template(data);
     return html;
 }
+
+function downloadBuilderProductivityReport(builderId, month, year)
+{
+    // Swal({
+    //   title: 'Reporte de produccion',
+    //   text: "Especifique mes y anio",
+    //   input:"text",
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Descargar',
+    //   cancelButtonText: 'Cancelar',
+    //   allowOutsideClick:false
+    // }).then((result) => {
+    //     if (result.value) 
+    //     {
+    //         let data = $('.swal2-input').val();
+    //         data = data.split("-");
+    //         let month = data[0];
+    //         let year = data[1];            
+    //         window.location.href = base_url+"panel/Home/testProductivityReport/"+builderId+"/"+month+"/"+year;
+    //     }
+    // });
+    window.location.href = base_url+"panel/Home/testProductivityReport/"+builderId+"/"+month+"/"+year;
+}

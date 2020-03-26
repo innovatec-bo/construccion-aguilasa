@@ -53,10 +53,12 @@ class Dashboard extends PrivateController
         $trackingList = Model_tracking_list::getAll(100, 0);
         $contractList = Model_contract::getAll(100, 0);
         $workflowColumnList = static::getWorkflowColumns();
+        $builderList = Model_user::getByRoleKeyword('builder');
         $data["systemList"] = $this->_projectSystems;
         $data["trackingList"] = $trackingList;
         $data["contractList"] = $contractList;
         $data["workflowColumnList"] = $workflowColumnList;
+        $data['builderList'] = $builderList;
         $data["view"] = "tables";
         $this->_loadPanelView('dashboard/tables', $data);
     }
@@ -79,9 +81,11 @@ class Dashboard extends PrivateController
 
         $trackingList = Model_tracking_list::getAll(100, 0);
         $contractList = Model_contract::getAll(100, 0);
+        $builderList = Model_user::getByRoleKeyword('builder');
         $data["systemList"] = $this->_projectSystems;
         $data["trackingList"] = $trackingList;
         $data["contractList"] = $contractList;
+        $data['builderList'] = $builderList;
         $data["view"] = "charts";
         $this->_loadPanelView('dashboard/charts', $data);
     }

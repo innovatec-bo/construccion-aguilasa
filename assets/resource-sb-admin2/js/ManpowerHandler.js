@@ -272,8 +272,37 @@ var ManpowerHandler = /** @class */ (function () {
                 var html = template({ log: response.data.log });
                 $("#status-project-log-content").html(html);
                 $('[data-toggle="tooltip"]').tooltip();
+                var builderList = [];
+                var builder = {};
+                $.each(response.data.log, function (index, string) {
+                    var splitBuilderString = string.builderWithId;
+                    splitBuilderString = splitBuilderString.split(",");
+                    $.each(splitBuilderString, function (index, value) {
+                        var string = value;
+                        var result = string.split("-");
+                        builder = { "id": result[0], "fullName": result[1] };
+                        builderList[result[0]] = builder;
+                        builder = {};
+                    });
+                });
+                // builderList = _this.arrayValues(builderList);
+                // let tag : string = "";
+                // $.each(builderList, function(index, value){
+                //     if(value !== undefined)
+                //         tag += "<a href='"+base_url+"Home/testProductivityReport/12/03/2020'>"+value.fullName+"</a> ";
+                // });
+                // $("#builder-list").html(tag);
             }
         });
+    };
+    ManpowerHandler.prototype.arrayValues = function (arrayObj) {
+        var tempObj = {};
+        Object.keys(arrayObj).forEach(function (prop) {
+            if (arrayObj[prop]) {
+                tempObj[prop] = arrayObj[prop];
+            }
+        });
+        return tempObj;
     };
     ManpowerHandler.prototype._addBuildingStructure = function (formData) {
         var _this = this;

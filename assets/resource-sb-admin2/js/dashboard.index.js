@@ -158,6 +158,15 @@ $(document).ready(function() {
         locale:'es',
         useCurrent: false
     });
+
+    $(document).on("submit","form.builder-manpower-productivity-report", function(e){
+        e.preventDefault();
+        let builderId = $("select[name=builder-productivity-report-builder] option:selected").val();
+        let month = $("select[name=builder-productivity-report-month] option:selected").val();
+        let year = $("select[name=builder-productivity-report-year] option:selected").val();
+        // console.log(builderId, month, year);
+        window.location.href = base_url+"panel/Home/testProductivityReport/"+builderId+"/"+month+"/"+year;
+    });
 });
 
 function getUsersQuantity()

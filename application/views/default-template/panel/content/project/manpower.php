@@ -40,6 +40,7 @@
         <br>
     </div>
     <div class="col-md-9">
+        <p id="builder-list"></p>
         <div class="table-responsive" id="manpower-table">
 
         </div>

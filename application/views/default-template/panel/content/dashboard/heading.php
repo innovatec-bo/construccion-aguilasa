@@ -189,6 +189,51 @@
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
             <div class="panel-heading">
+                <form class="form-inline builder-manpower-productivity-report" method="post">
+                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de productividad por mano de obra
+                    <select class="form-control input-sm" name="builder-productivity-report-builder">
+                    <option value="">Constructor</option>
+                    <?php
+                    $html = "";
+                    foreach ($builderList as $builder)
+                    {
+                        $html .= '<option value="'.$builder->getId().'" >'.$builder->getFullName().'</option>';
+                    }
+                    echo $html;
+                    ?>
+                </select>
+                <select class="form-control input-sm" name="builder-productivity-report-month">
+                    <option value="">Mes</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <select class="form-control input-sm" name="builder-productivity-report-year">
+                    <option value="">Anio</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                </select>
+                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary" id="">
+            <div class="panel-heading">
                 <form class="form-inline stake-report-inline-form" action="<?=base_url("panel/Project/getStakeReport")?>" method="post">
                     <i class="fa fa-file-excel-o fa-fw"></i> Reporte de estaqueado
                     <div class="form-group">

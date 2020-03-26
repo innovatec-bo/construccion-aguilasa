@@ -332,8 +332,37 @@ class ManpowerHandler
                 let html = template({log:response.data.log});
                 $("#status-project-log-content").html(html);
                 $('[data-toggle="tooltip"]').tooltip();
+                let builderList : any = [];
+                let builder = {};
+                $.each(response.data.log, function(index, string){
+                    let splitBuilderString = string.builderWithId;
+                    splitBuilderString = splitBuilderString.split(",");
+                    $.each(splitBuilderString, function(index, value){
+                        let string = value;
+                        let result = string.split("-");
+                        builder = {"id":result[0], "fullName":result[1]}
+                        builderList[result[0]] = builder;
+                        builder = {};
+                    });
+                });
+                // builderList = _this.arrayValues(builderList);
+                // let tag : string = "";
+                // $.each(builderList, function(index, value){
+                //     if(value !== undefined)
+                //         tag += "<a href='"+base_url+"Home/testProductivityReport/12/03/2020'>"+value.fullName+"</a> ";
+                // });
+                // $("#builder-list").html(tag);
             }
         });
+    }
+
+    private arrayValues(arrayObj) 
+    {
+      let tempObj = {};
+      Object.keys(arrayObj).forEach((prop) => {
+        if (arrayObj[prop]) { tempObj[prop] = arrayObj[prop]; }
+      });
+      return tempObj;
     }
 
     public _addBuildingStructure(formData?)
