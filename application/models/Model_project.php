@@ -2199,6 +2199,9 @@ class Model_project extends Model_project_base
                 id_lad,
                 project_id_lad,
                 code_pro,
+                address_pro,
+                latitude_pro,
+                longitude_pro,
                 id_lac,
                 id_lal,
                 manual_entry_date_lal,
@@ -2273,7 +2276,7 @@ class Model_project extends Model_project_base
                             and deleted_uro != 1
                         ) as fiscal on fiscal.fiscal_id = user_id_sre       
                     LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
-                    where deleted_pro != 1 and deleted_slr != 1 and id_pro = 653
+                    where deleted_pro != 1 and deleted_slr != 1 -- and id_pro = 653
                     GROUP BY id_psl
             ) building_responsibles on building_responsibles.project_id_psl = project_id_lad
             LEFT JOIN (
@@ -2317,6 +2320,9 @@ class Model_project extends Model_project_base
             //{
                 $projectId = $productivityBaseReport[$i]["project_id_lad"];
                 $projectCode = $productivityBaseReport[$i]["code_pro"];
+                $projectAddress = $productivityBaseReport[$i]["address_pro"];
+                $projectLatitude = $productivityBaseReport[$i]["latitude_pro"];
+                $projectLongitude = $productivityBaseReport[$i]["longitude_pro"];
                 $logId = $productivityBaseReport[$i]["id_lal"];
                 $totalAmountWorkedToSplit = $productivityBaseReport[$i]["total_amount_worked_to_split"];
                 $totalAmountWorkedByBuilder = $productivityBaseReport[$i]["total_amount_worked_by_builder"];
@@ -2324,6 +2330,9 @@ class Model_project extends Model_project_base
                 $projectList[$projectId] = array(
                                 "id" => $projectId,
                                 "code" => $projectCode,
+                                "address"=> $projectAddress,
+                                "latitude" => $projectLatitude,
+                                "longitude" => $projectLongitude,
                                 "builderIdAssigned" => $responsibleBuilderId
                                 );
                 $totalWorkedUpAmount += $totalAmountWorkedToSplit;
