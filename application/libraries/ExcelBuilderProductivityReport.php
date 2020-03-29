@@ -66,7 +66,7 @@ class ExcelBuilderProductivityReport
 	public function builder($spreadsheet, $projectProductivity)
     {
         $titleStyleArray = [
-            'font' => ['bold' => true],
+            'font' => ['bold' => true, 'size' => 14],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
@@ -86,6 +86,8 @@ class ExcelBuilderProductivityReport
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
             ]
         ];
+        
+        
         //HEADER
         $date = date_create_from_format('Y-m-d', $this->_startDate);
         $month = date_format($date, 'F');
@@ -212,15 +214,54 @@ class ExcelBuilderProductivityReport
         $spreadsheet->getActiveSheet()->getStyle('D'.($k+2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
         $spreadsheet->getActiveSheet()->getStyle('D'.($k+2).':H'.($k+2))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
-        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(3.83);
-        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(2);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.83);
+        //Boder
+        $fillGradientLinear = [
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Reader\Xls\Style\FillPattern::lookup(0x07),
+                    'rotation' => 90,
+                    'startColor' => [
+                        'rgb' => 'c0c0c0',
+                    ],
+                    'endColor' => [
+                        'argb' => '00000000',
+                    ],
+                ],
+            ];
+        // $spreadsheet->setActiveSheetIndex(0)->setCellValue('B2', "");
+        // $spreadsheet->getActiveSheet()->mergeCells('B2:H2');
+        $spreadsheet->getActiveSheet()->getStyle('B2:J2')->applyFromArray($fillGradientLinear);
+        $spreadsheet->getActiveSheet()->getStyle('B3:B'.($k+4))->applyFromArray($fillGradientLinear);
+        $spreadsheet->getActiveSheet()->getStyle('J3:J'.($k+4))->applyFromArray($fillGradientLinear);
+        $spreadsheet->getActiveSheet()->getStyle('B'.($k+4).':J'.($k+4))->applyFromArray($fillGradientLinear);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(1.8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(3.93);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(4);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(15);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(1.8);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(3.93);
 
+        $spreadsheet->getActiveSheet()->getRowDimension('2')->setRowHeight(12);
+        $spreadsheet->getActiveSheet()->getRowDimension('6')->setRowHeight(25);
+        $spreadsheet->getActiveSheet()->getRowDimension(($k+4))->setRowHeight(12);
+
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo');
+        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setHeight(60);
+        $drawing->setCoordinates('D4');
+
+        $spreadsheet->getActiveSheet()->getPageSetup()
+            ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_LETTER);
+
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToPage(1);
+
+        $drawing->setWorksheet($spreadsheet->getActiveSheet());
         return $spreadsheet;
     }
 
