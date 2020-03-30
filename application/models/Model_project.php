@@ -2312,6 +2312,7 @@ class Model_project extends Model_project_base
         $buildersInProject = array();
         for ($i=0; $i < count($productivityBaseReport); $i++) 
         { 
+            $responsibleFiscalId = $productivityBaseReport[$i]["fiscal_responsible_id"];
             $responsibleBuilderId = $productivityBaseReport[$i]["builder_responsible_id"];
             $builderIds = $productivityBaseReport[$i]["builders"];
 
@@ -2333,6 +2334,7 @@ class Model_project extends Model_project_base
                                 "address"=> $projectAddress,
                                 "latitude" => $projectLatitude,
                                 "longitude" => $projectLongitude,
+                                "fiscalIdAssigned" => $responsibleFiscalId,
                                 "builderIdAssigned" => $responsibleBuilderId
                                 );
                 $totalWorkedUpAmount += $totalAmountWorkedToSplit;
@@ -2372,7 +2374,7 @@ class Model_project extends Model_project_base
         return $projectList;
     }
 
-    public static function getBuildersGeneralReport($startDate, $endDate)
+    public static function getBuildersGeneralReport_neverUsed($startDate, $endDate)
     {
         $productivityBaseReport =Model_project::getProductivityBaseReport($startDate, $endDate);
         
