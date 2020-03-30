@@ -2371,4 +2371,76 @@ class Model_project extends Model_project_base
 
         return $projectList;
     }
+
+    public static function getBuildersGeneralReport($startDate, $endDate)
+    {
+        $productivityBaseReport =Model_project::getProductivityBaseReport($startDate, $endDate);
+        
+        $projectList = array();
+        $totalWorkedUpAmount = 0;
+        $totalBuilderProductivity = 0;
+        $totalDates = array();
+        $totalBuilderDates = array();
+        $buildersInProject = array();
+        for ($i=0; $i < count($productivityBaseReport); $i++) 
+        { 
+            $responsibleBuilderId = $productivityBaseReport[$i]["builder_responsible_id"];
+            $builderIds = $productivityBaseReport[$i]["builders"];
+
+            $builderIds = explode(",",$builderIds);
+            //if($builderId == $responsibleBuilderId && array_search($responsibleBuilderId, $builderIds) !== FALSE)
+            //{
+                $projectId = $productivityBaseReport[$i]["project_id_lad"];
+                $projectCode = $productivityBaseReport[$i]["code_pro"];
+                $projectAddress = $productivityBaseReport[$i]["address_pro"];
+                $projectLatitude = $productivityBaseReport[$i]["latitude_pro"];
+                $projectLongitude = $productivityBaseReport[$i]["longitude_pro"];
+                $logId = $productivityBaseReport[$i]["id_lal"];
+                $totalAmountWorkedToSplit = $productivityBaseReport[$i]["total_amount_worked_to_split"];
+                $totalAmountWorkedByBuilder = $productivityBaseReport[$i]["total_amount_worked_by_builder"];
+                $manualEntryDate = $productivityBaseReport[$i]["manual_entry_date_lal"];
+                $projectList[$projectId] = array(
+                                "id" => $projectId,
+                                "code" => $projectCode,
+                                "address"=> $projectAddress,
+                                "latitude" => $projectLatitude,
+                                "longitude" => $projectLongitude,
+                                "builderIdAssigned" => $responsibleBuilderId
+                                );
+                $totalWorkedUpAmount += $totalAmountWorkedToSplit;
+                $totalBuilderProductivity += $totalAmountWorkedByBuilder;
+                $date = DateTime::createFromFormat('Y-m-d H:i:s', $manualEntryDate);
+                $date = $date->format('Y-m-d');
+                $totalDates[$date] = $date;
+                foreach ($builderIds as $id) 
+                {
+                    if(!isset($buildersInProject[$id]))
+                    {
+                        $buildersInProject[$id]['totalWorked'] = 0;
+                        $buildersInProject[$id]['totalWorkedAsSupport'] = 0;
+                        // $buildersInProject[$id]['totalDatesInProject'][] = array();
+                    }
+                    if($id == $responsibleBuilderId)
+                        $buildersInProject[$id]['totalWorked'] += $totalAmountWorkedByBuilder;
+                    else
+                        $buildersInProject[$id]['totalWorkedAsSupport'] += $totalAmountWorkedByBuilder;
+                    $buildersInProject[$id]['totalDatesInProject'][$date] = $date;
+                }
+                
+                if(!isset($productivityBaseReport[$i+1]) || $projectId != $productivityBaseReport[$i+1]['project_id_lad'])
+                {
+                    $projectList[$projectId]['totalWorkedUpAmount'] = $totalWorkedUpAmount;
+                    $projectList[$projectId]['totalBuilderProductivity'] = $totalBuilderProductivity;
+                    $projectList[$projectId]['totalDates'] = count(array_values($totalDates));
+                    $projectList[$projectId]['allBuilders'] = $buildersInProject;
+                    $totalWorkedUpAmount = 0;
+                    $totalAmountWorkedByBuilder = 0;
+                    $totalDates = array();
+                    $buildersInProject = array();
+                }
+            //}
+        }
+
+        return $projectList;
+    }
 }

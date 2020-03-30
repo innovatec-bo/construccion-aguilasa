@@ -40,9 +40,10 @@ class Model_building_point extends Model_building_point_base
         $sql = "
         SELECT
             id_bpo point_id,
-                        id_sbp,
+            id_sbp,
             label_bpo point_label,
             activity_lac labor_activity,
+            unit_price_lac unit_price,
             quantity_to_use_sbp quantity_to_use,
             structure_code_bus structure_code,
             execution_lac execution,
@@ -88,6 +89,7 @@ class Model_building_point extends Model_building_point_base
                                                         "index" => $i,
                                                         "labor_activity" => $row["labor_activity"],
                                                         "quantity_to_use" => $row["quantity_to_use"],
+                                                        "unit_price" => $row["unit_price"],
                                                         "structure_code" => $row["structure_code"],
                                                         "execution" => $row["execution"],
                                                         "unit_of_measurement" => $row["unit_of_measurement"],

@@ -101,5 +101,19 @@ class Dashboard extends PrivateController
         $this->_loadPanelView('dashboard/executive-summary-differential');
     }
 
+    public function productivityReport($builderId, $month, $year)
+    {
+        $startDate = $year."-".$month."-01";
+        $endDate = date("Y-m-t", strtotime($startDate));
+        $test = new ExcelBuilderProductivityReport($this->sessionUser, $builderId, $startDate, $endDate);
+        $test->getReport();
+    }
 
+    public function builderGeneralReport($month, $year)
+    {
+        $startDate = $year."-".$month."-01";
+        $endDate = date("Y-m-t", strtotime($startDate));
+        $test = new ExcelBuildersGeneralReport($this->sessionUser, $startDate, $endDate);
+        $test->getReport();
+    }
 }

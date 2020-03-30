@@ -164,8 +164,14 @@ $(document).ready(function() {
         let builderId = $("select[name=builder-productivity-report-builder] option:selected").val();
         let month = $("select[name=builder-productivity-report-month] option:selected").val();
         let year = $("select[name=builder-productivity-report-year] option:selected").val();
-        // console.log(builderId, month, year);
-        window.location.href = base_url+"panel/Home/testProductivityReport/"+builderId+"/"+month+"/"+year;
+        window.location.href = base_url+"panel/Dashboard/productivityReport/"+builderId+"/"+month+"/"+year;
+    });
+
+    $(document).on("submit","form.builder-general-report", function(e){
+        e.preventDefault();
+        let month = $("select[name=builder-general-report-month] option:selected").val();
+        let year = $("select[name=builder-general-report-year] option:selected").val();
+        window.location.href = base_url+"panel/Dashboard/builderGeneralReport/"+month+"/"+year;
     });
 });
 

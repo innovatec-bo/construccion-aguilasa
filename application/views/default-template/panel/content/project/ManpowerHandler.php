@@ -518,6 +518,7 @@ $projectSystems = array(
                                     <th>DESCRIPCION</th>
                                     <th>CANTIDAD<br>UTILIZADA</th>
                                     <th>NUEVO<br>REGISTRO</th>
+                                    <th>PRECIO<br>UNITARIO</th>
                                 </tr>
                             </thead>
                             <tbody id="structure-item-list-content">
@@ -532,7 +533,8 @@ $projectSystems = array(
                                     <td class="text-center">{{unit_of_measurement}}</td>
                                     <td>{{description}}</td>
                                     <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
-                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][quantity]" size="7" style="text-align: right;"></td>
+                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
+                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
                                 </tr>
                                 {{/each}}
                             </tbody>
