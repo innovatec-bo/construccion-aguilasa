@@ -71,7 +71,13 @@ class ExcelBuildersGeneralReport
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ]
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => '8DB4E2'
+                ]
+            ],
         ];
         $tableTitle = [
             'font' => ['bold' => true],
@@ -80,11 +86,50 @@ class ExcelBuildersGeneralReport
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
             ]
         ];
-        $tableHeader = [
-            'font' => ['bold' => true],
+        $bold12CenterBorder = [
+            'font' => ['bold' => true, 'size' => 12],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ]
+        ];
+
+        $bold12Center = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+
+        $bold12LeftBorder = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ]
+        ];
+
+        $bold12RightBorder = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
             ]
         ];
         
@@ -94,22 +139,23 @@ class ExcelBuildersGeneralReport
         $month = date_format($date, 'F');
         $year = date_format($date, 'Y');
         
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D2', "RESUMEN DE PRODUCCION MES DE ".$this->_months[strtolower($month)]." ".$year."  - CONSTRUCCION DE REDES");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('D2', "RESUMEN DE PRODUCCION MES DE ".strtoupper($this->_months[strtolower($month)])." ".$year."  - CONSTRUCCION DE REDES");
         $spreadsheet->getActiveSheet()->mergeCells('D2:M2');
+        $spreadsheet->getActiveSheet()->getStyle('D2:M2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
         $spreadsheet->getActiveSheet()->getStyle('D2')->applyFromArray($titleStyleArray);
         
         $dataToPrint = $this->_prepareDataToPrint($projectProductivity);
         
         //******** MONTH PRODUCTION
-        // $spreadsheet->setActiveSheetIndex(0)->setCellValue('D5', "INFORME DE PRODUCCION MENSUAL");
-        // $spreadsheet->getActiveSheet()->getStyle('D10')->applyFromArray($tableTitle);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('B4', "No")
             ->setCellValue('D4', "GRUPO")
             ->setCellValue('I4', "PRODUCCION MES");
         $spreadsheet->getActiveSheet()->mergeCells('D4:F4');
         $spreadsheet->getActiveSheet()->mergeCells('I4:M4');
-        $spreadsheet->getActiveSheet()->getStyle('D4:I4')->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('B4')->applyFromArray($bold12Center);
+        $spreadsheet->getActiveSheet()->getStyle('D4:F4')->applyFromArray($bold12CenterBorder);
+        $spreadsheet->getActiveSheet()->getStyle('I4:M4')->applyFromArray($bold12CenterBorder);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
         $i = 6;
@@ -118,10 +164,13 @@ class ExcelBuildersGeneralReport
         {
             $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue('B'.$i, $rowCounter)
-                    ->setCellValue('D'.$i, $row["builderFullName"])
+                    ->setCellValue('D'.$i, strtoupper($row["builderFullName"]))
                     ->setCellValue('I'.$i, $row["production"]);
             $spreadsheet->getActiveSheet()->mergeCells('D'.$i.':F'.$i);
             $spreadsheet->getActiveSheet()->mergeCells('I'.$i.':M'.$i);
+            $spreadsheet->getActiveSheet()->getStyle('B'.$i)->applyFromArray($bold12Center);
+            $spreadsheet->getActiveSheet()->getStyle('D'.$i.':F'.$i)->applyFromArray($bold12LeftBorder);
+            $spreadsheet->getActiveSheet()->getStyle('I'.$i.':M'.$i)->applyFromArray($bold12RightBorder);
             $spreadsheet->getActiveSheet()->getStyle('I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
             $i++;
             $i++; 
