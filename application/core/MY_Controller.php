@@ -204,11 +204,13 @@ class PrivateController extends PublicController
         parent::__construct();
         //Add General Components
         $this->complementHandler = new ComplementHandler();
+
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
         $this->complementHandler->addViewComplement("metisMenu");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addViewComplement("sb-admin-2");
+        $this->complementHandler->addViewComplement("toastr");
         $this->complementHandler->addViewComplement('bootbox');
         $this->complementHandler->addViewComplement('sweet-alert2');
         $this->complementHandler->addViewComplement("handlebars");

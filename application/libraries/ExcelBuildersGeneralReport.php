@@ -78,6 +78,11 @@ class ExcelBuildersGeneralReport
                     'rgb' => '8DB4E2'
                 ]
             ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ]
         ];
         $tableTitle = [
             'font' => ['bold' => true],
@@ -86,7 +91,34 @@ class ExcelBuildersGeneralReport
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
             ]
         ];
-        $bold12CenterBorder = [
+        $tableHeader = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => '8DB4E2'
+                ]
+            ]
+        ];
+
+        $indexColumn = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ]
+        ];
+
+        $fiscalNameStyle1 = [
             'font' => ['bold' => true, 'size' => 12],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -99,15 +131,7 @@ class ExcelBuildersGeneralReport
             ]
         ];
 
-        $bold12Center = [
-            'font' => ['bold' => true, 'size' => 12],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-            ]
-        ];
-
-        $bold12LeftBorder = [
+        $builderNameStyle1 = [
             'font' => ['bold' => true, 'size' => 12],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
@@ -120,7 +144,7 @@ class ExcelBuildersGeneralReport
             ]
         ];
 
-        $bold12RightBorder = [
+        $amountByBuilderStyle1 = [
             'font' => ['bold' => true, 'size' => 12],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
@@ -129,6 +153,46 @@ class ExcelBuildersGeneralReport
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ],
+            'numberFormat' => ['formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2]
+        ];
+
+        $totalAmountStyle1 = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ],
+            'numberFormat' => ['formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'F4F402'
+                ]
+            ]
+        ];
+        $textTotalAmountStyle1 = [
+            'font' => ['bold' => true, 'size' => 12],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+                ]
+            ],
+            'numberFormat' => ['formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'F4F402'
                 ]
             ]
         ];
@@ -141,21 +205,20 @@ class ExcelBuildersGeneralReport
         
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D2', "RESUMEN DE PRODUCCION MES DE ".strtoupper($this->_months[strtolower($month)])." ".$year."  - CONSTRUCCION DE REDES");
         $spreadsheet->getActiveSheet()->mergeCells('D2:M2');
-        $spreadsheet->getActiveSheet()->getStyle('D2:M2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-        $spreadsheet->getActiveSheet()->getStyle('D2')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->getStyle('D2:M2')->applyFromArray($titleStyleArray);
         
         $dataToPrint = $this->_prepareDataToPrint($projectProductivity);
         
-        //******** MONTH PRODUCTION
+        //************************************** MONTH PRODUCTION
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('B4', "No")
             ->setCellValue('D4', "GRUPO")
             ->setCellValue('I4', "PRODUCCION MES");
         $spreadsheet->getActiveSheet()->mergeCells('D4:F4');
         $spreadsheet->getActiveSheet()->mergeCells('I4:M4');
-        $spreadsheet->getActiveSheet()->getStyle('B4')->applyFromArray($bold12Center);
-        $spreadsheet->getActiveSheet()->getStyle('D4:F4')->applyFromArray($bold12CenterBorder);
-        $spreadsheet->getActiveSheet()->getStyle('I4:M4')->applyFromArray($bold12CenterBorder);
+        $spreadsheet->getActiveSheet()->getStyle('B4')->applyFromArray($indexColumn);
+        $spreadsheet->getActiveSheet()->getStyle('D4:F4')->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('I4:M4')->applyFromArray($tableHeader);
         // echo"<pre>";var_dump($dataToPrint);exit;
         $totalExecutedAmount = 0;
         $i = 6;
@@ -168,87 +231,75 @@ class ExcelBuildersGeneralReport
                     ->setCellValue('I'.$i, $row["production"]);
             $spreadsheet->getActiveSheet()->mergeCells('D'.$i.':F'.$i);
             $spreadsheet->getActiveSheet()->mergeCells('I'.$i.':M'.$i);
-            $spreadsheet->getActiveSheet()->getStyle('B'.$i)->applyFromArray($bold12Center);
-            $spreadsheet->getActiveSheet()->getStyle('D'.$i.':F'.$i)->applyFromArray($bold12LeftBorder);
-            $spreadsheet->getActiveSheet()->getStyle('I'.$i.':M'.$i)->applyFromArray($bold12RightBorder);
-            $spreadsheet->getActiveSheet()->getStyle('I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            $spreadsheet->getActiveSheet()->getStyle('B'.$i)->applyFromArray($indexColumn);
+            $spreadsheet->getActiveSheet()->getStyle('D'.$i.':F'.$i)->applyFromArray($builderNameStyle1);
+            $spreadsheet->getActiveSheet()->getStyle('I'.$i.':M'.$i)->applyFromArray($amountByBuilderStyle1);
             $i++;
             $i++; 
             $rowCounter++;
         }
-        // $spreadsheet->getActiveSheet()->getStyle('D11:H'.($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('K'.$i, 'TOTAL Bs.')
             ->setCellValue('M'.$i, '=SUM(I'.(($i-1)-(count($dataToPrint['buildersAndProductivity'])*2)).':I'.($i-1).')');
-        // $spreadsheet->getActiveSheet()->getStyle('G'.$i)->getFont()->setBold(true);
-        // $spreadsheet->getActiveSheet()->getStyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        //Currency format
-        // $spreadsheet->getActiveSheet()->getStyle('H'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $spreadsheet->getActiveSheet()->getStyle('K'.$i)->applyFromArray($textTotalAmountStyle1);
+        $spreadsheet->getActiveSheet()->getStyle('M'.$i)->applyFromArray($totalAmountStyle1);
 
-        //**** AS SUPPORT 
+        //*********************************** AS SUPPORT 
         $j = $i+2;       
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$j, "REPORTE GENERAL - CONSTRUCCION");
-        // $spreadsheet->getActiveSheet()->getStyle('D'.$j)->applyFromArray($tableTitle);
+        $spreadsheet->getActiveSheet()->mergeCells('D'.$j.':M'.$j);
+        $spreadsheet->getActiveSheet()->getStyle('D'.$j.':M'.$j)->applyFromArray($titleStyleArray);
+        $secondTitleHeight = $j;
+        $j++;
         $j++;
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D'.$j, "FISCAL")
             ->setCellValue('I'.$j, "ENCARGADO")
-            ->setCellValue('K'.$j, "CONCILIADO CON SEREBO");
-        // $spreadsheet->getActiveSheet()->getStyle('D'.$k.':H'.$k)->applyFromArray($tableHeader);
-        // $totalExecutedAmount = 0;
+            ->setCellValue('K'.$j, "CONCILIADO CON\nSEREBO");
+        $spreadsheet->getActiveSheet()->mergeCells('D'.$j.':F'.$j);
+        $spreadsheet->getActiveSheet()->getStyle('D'.$j.':F'.$j)->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('I'.$j)->applyFromArray($tableHeader);
+        $spreadsheet->getActiveSheet()->getStyle('K'.$j)->applyFromArray($tableHeader);
         $j++;
+        $j++;
+        $cellsToSum = "";
         foreach ($dataToPrint['fiscalsAndBuildersProductivity'] as $row)
         {
-            $spreadsheet->setActiveSheetIndex(0)
-                ->setCellValue('D'.$j, $row["fiscalFullName"]);
-            // $spreadsheet->getActiveSheet()->getStyle('H'.$k)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+            $spreadsheet->setActiveSheetIndex(0)->setCellValue('D'.$j, strtoupper($row["fiscalFullName"]));
             $k=$j;
+            $mergeStart = $k;
             foreach ($row['builders'] as $data) 
             {
                 $spreadsheet->setActiveSheetIndex(0)
-                ->setCellValue('I'.$k, $data["builderFullName"])
+                ->setCellValue('I'.$k, strtoupper($data["builderFullName"]))
                 ->setCellValue('K'.$k, $data["production"]);
-                $k++;
-                $j++;
+                $spreadsheet->getActiveSheet()->getStyle('I'.$k)->applyFromArray($builderNameStyle1);   
+                $spreadsheet->getActiveSheet()->getStyle('K'.$k)->applyFromArray($amountByBuilderStyle1);
+                $cellsToSum .= "K".$k.", ";
+                $k = $k + 2;
+                $j = $j + 2;
             }
-            // $j=$j+$k; 
+            $mergeEnd = $j-2;
+            $spreadsheet->getActiveSheet()->mergeCells('D'.$mergeStart.':F'.$mergeEnd);
+            $spreadsheet->getActiveSheet()->getStyle('D'.$mergeStart.':F'.$mergeEnd)->applyFromArray($fiscalNameStyle1);
         }
-        
-        // $spreadsheet->getActiveSheet()->getStyle('D'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        // $totalAsSupport = "H".($k);
-        // $spreadsheet->setActiveSheetIndex(0)
-        //     ->setCellValue('G'.$k, 'B) TOTAL')
-        //     ->setCellValue('H'.$k, '=SUM(H'.(($k-1)-(count($dataToPrint['asSupport']))).':H'.($k-1).')');
-        // $spreadsheet->getActiveSheet()->getStyle('G'.$k)->getFont()->setBold(true);
-        // $spreadsheet->getActiveSheet()->getStyle('G'.$k.':H'.$k)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        //Currency format
-        // $spreadsheet->getActiveSheet()->getStyle('H'.($k))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        $cellsToSum = substr($cellsToSum, 0, -2);
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('K'.$j, '=SUM('.$cellsToSum.')');
+        $spreadsheet->getActiveSheet()->getStyle('K'.$j)->applyFromArray($totalAmountStyle1);
 
-
-        // $spreadsheet->setActiveSheetIndex(0)
-        //     ->setCellValue('D'.($k+2), '(A + B) TOTAL EJECUTADO EN PERIODO BS.:')
-        //     ->setCellValue('H'.($k+2), '=SUM('.$totalAssigned.','.$totalAdditional.','.$totalAsSupport.')');
-        //     $spreadsheet->getActiveSheet()->getStyle('H'.($k+2))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-            // ->setCellValue('H'.($k+2), '=SUM(H13,H20,H25)');
-        // $spreadsheet->getActiveSheet()->mergeCells('D'.($k+2).':G'.($k+2));
-        // $spreadsheet->getActiveSheet()->getStyle('D'.($k+2).':H'.($k+2))->getFont()->setBold(true);
-        // $spreadsheet->getActiveSheet()->getStyle('D'.($k+2))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-        // $spreadsheet->getActiveSheet()->getStyle('D'.($k+2).':H'.($k+2))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        // $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(6);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(3);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(1.8);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(4);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(30);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(1.8);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(2);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(1.8);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(3.93);
-
-        // $spreadsheet->getActiveSheet()->getRowDimension('2')->setRowHeight(12);
-        // $spreadsheet->getActiveSheet()->getRowDimension('6')->setRowHeight(25);
-        // $spreadsheet->getActiveSheet()->getRowDimension(($k+4))->setRowHeight(12);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(TRUE);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(2);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(17);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setWidth(2);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(TRUE);
+        $spreadsheet->getActiveSheet()->getRowDimension('2')->setRowHeight(25);
+        $spreadsheet->getActiveSheet()->getRowDimension($secondTitleHeight)->setRowHeight(25);
 
         return $spreadsheet;
     }

@@ -164,14 +164,29 @@ $(document).ready(function() {
         let builderId = $("select[name=builder-productivity-report-builder] option:selected").val();
         let month = $("select[name=builder-productivity-report-month] option:selected").val();
         let year = $("select[name=builder-productivity-report-year] option:selected").val();
-        window.location.href = base_url+"panel/Dashboard/productivityReport/"+builderId+"/"+month+"/"+year;
+        if(builderId == "" || month == "" || year == "" )
+        {
+            toastr.error("Debe especificar un constructor, mes y anio para descagar el reporte", '', {'progressBar':true});
+        }
+        else
+        {
+            window.location.href = base_url+"panel/Dashboard/productivityReport/"+builderId+"/"+month+"/"+year;
+        }
     });
 
     $(document).on("submit","form.builder-general-report", function(e){
         e.preventDefault();
         let month = $("select[name=builder-general-report-month] option:selected").val();
         let year = $("select[name=builder-general-report-year] option:selected").val();
-        window.location.href = base_url+"panel/Dashboard/builderGeneralReport/"+month+"/"+year;
+        if(month == "" || year == "")
+        {
+            toastr.error("Debe especificar un mes y anio para descargar el reporte", '', {'progressBar':true});
+        }
+        else
+        {
+            window.location.href = base_url+"panel/Dashboard/builderGeneralReport/"+month+"/"+year;
+        }
+        
     });
 });
 
