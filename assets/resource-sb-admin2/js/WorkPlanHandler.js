@@ -1,4 +1,4 @@
-var WorkPlanHandler = (function () {
+var WorkPlanHandler = /** @class */ (function () {
     function WorkPlanHandler() {
         moment.locale('es');
         this._headerDays = [];
@@ -60,7 +60,7 @@ var WorkPlanHandler = (function () {
             }
         });
     };
-    WorkPlanHandler.prototype.delete = function () {
+    WorkPlanHandler.prototype["delete"] = function () {
         var _this = this;
         swal.fire({
             title: "Eliminar Plan de trabajo?",
@@ -127,7 +127,7 @@ var WorkPlanHandler = (function () {
                     $(".table-error-message").removeClass("hidden");
                     return false;
                 }
-            },
+            }
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=work-plan-form]");
@@ -276,8 +276,8 @@ var WorkPlanHandler = (function () {
             success: function (response) {
                 if (response.success === 1) {
                     _this._masterTemplate = $("<div>" + response.data.template + "</div>");
-                    _this._printSummaryWeek(response, "2020-03-01", "2020-03-28");
-                    console.log(response);
+                    _this._printSummaryWeek(response, startDate, endDate);
+                    // console.log(response);
                 }
                 else {
                     toastr.error(response.message, '', { 'progressBar': true });
@@ -324,14 +324,24 @@ var WorkPlanHandler = (function () {
                                 $($cellList[j]).addClass('cell-selected');
                                 // testArray.push("+ "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+workDate);
                                 return false;
+                                // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
                             }
                             else {
                                 $($cellList[j]).removeClass('cell-selected');
+                                // testArray.push("- "+j+" "+project.projectId+moment.format('YYYY-MM-DD')+" "+workDate);
+                                // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
                             }
                         });
                     });
                 });
             });
+        });
+        $('input[name=work-plan-report-year-month]').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: moment().endOf('month').format('YYYY-MM-DD'),
+            format: 'MM-YYYY',
+            locale: 'es',
+            useCurrent: true
         });
     };
     WorkPlanHandler.prototype._printProjectWeek = function () {
@@ -351,10 +361,12 @@ var WorkPlanHandler = (function () {
                         $($cellList[j]).addClass('cell-selected');
                         testArray.push("+ " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
                         return false;
+                        // console.log("+",j,project.projectId, moment.format('YYYY-MM-DD'));
                     }
                     else {
                         $($cellList[j]).removeClass('cell-selected');
                         testArray.push("- " + j + " " + project.projectId + moment.format('YYYY-MM-DD') + " " + dateToWork);
+                        // console.log('-',j,project.projectId, moment.format('YYYY-MM-DD'));
                     }
                 });
             });
@@ -421,7 +433,16 @@ var WorkPlanHandler = (function () {
             e.preventDefault();
             var workPlanId = $(this).data('work-plan-id');
             _this._workPlanId = parseInt(workPlanId);
-            _this.delete();
+            _this["delete"]();
+        });
+        $(document).on("click", "#download-work-plan-report", function (e) {
+            $("form[name=work-plan-report]").submit();
+        });
+        $(document).on("click", ".load-work-plan-report", function (e) {
+            var startMonth = moment($("input[name=work-plan-report-from]").val(), "DD-MM-YYYY").format("YYYY-MM-01");
+            var endMonth = moment($("input[name=work-plan-report-from]").val(), "DD-MM-YYYY").endOf('month').format("YYYY-MM-DD");
+            // console.log(startMonth, endMonth);
+            _this.printWorkPlanSummary(startMonth, endMonth);
         });
     };
     return WorkPlanHandler;

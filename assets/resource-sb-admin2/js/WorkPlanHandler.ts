@@ -342,12 +342,12 @@ class WorkPlanHandler
                 if(response.success === 1)
                 {
                     _this._masterTemplate = $("<div>"+response.data.template+"</div>");
-                    _this._printSummaryWeek(response, "2020-03-01", "2020-03-28");
-                    console.log(response);
+                    _this._printSummaryWeek(response, startDate, endDate);
+                    // console.log(response);
                 }
                 else
                 {
-                    toastr.error(response.message, '', {'progressBar':true})
+                    toastr.error(response.message, '', {'progressBar':true});
                 }
             }
         });
@@ -407,6 +407,13 @@ class WorkPlanHandler
                     });
                 });
             });
+        });
+        $('input[name=work-plan-report-year-month]').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate:moment().endOf('month').format('YYYY-MM-DD'),
+            format: 'MM-YYYY',
+            locale:'es',
+            useCurrent: true
         });
     }
 
@@ -519,6 +526,17 @@ class WorkPlanHandler
             let workPlanId = $(this).data('work-plan-id');
             _this._workPlanId = parseInt(workPlanId);
             _this.delete();
+        });
+
+        $(document).on("click", "#download-work-plan-report", function(e){
+            $("form[name=work-plan-report]").submit();
+        });
+
+        $(document).on("click", ".load-work-plan-report", function(e){
+            let startMonth = moment($("input[name=work-plan-report-from]").val(), "DD-MM-YYYY").format("YYYY-MM-01");
+            let endMonth = moment($("input[name=work-plan-report-from]").val(), "DD-MM-YYYY").endOf('month').format("YYYY-MM-DD");
+            // console.log(startMonth, endMonth);
+            _this.printWorkPlanSummary(startMonth, endMonth);
         });
     }
 }

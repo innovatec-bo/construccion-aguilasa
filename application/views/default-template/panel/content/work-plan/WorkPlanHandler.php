@@ -143,7 +143,9 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <td rowspan="2" width="150px">{{totalDays}}</td>
+                <td rowspan="2" width="150px">
+                     <button type="button" class="btn btn-default btn-xs" id="download-work-plan-report">Descargar <i class='fa fa-download'></i></button>
+                </td>
                 {{#each arrayMoment}}
                     <td class="width-30 text-center table-days" width="30px"></td>
                 {{/each}}

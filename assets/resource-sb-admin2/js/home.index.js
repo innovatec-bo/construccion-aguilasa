@@ -7,8 +7,11 @@ $(function() {
     let incidentHandler = new IncidentHandler();
     incidentHandler.getAllIncidents();
     $("#days-without-incidents").text(incidentHandler.daysWithoutIncidents);
+
+    let startMonth = moment().format("YYYY-MM-01");
+    let endMonth = moment().endOf('month').format("YYYY-MM-DD");
     let workPlanHandler = new WorkPlanHandler();
-    workPlanHandler.printWorkPlanSummary("2020-03-01","2020-03-25");
+    workPlanHandler.printWorkPlanSummary(startMonth, endMonth);
     workPlanHandler.loadEventHandlers();
     // $("#incident-content").perfectScrollbar({
     //     wheelPropagation: true
@@ -29,7 +32,6 @@ $(function() {
         locale:'es',
         useCurrent: false
     });
-    
 });
 
 // function daysWithoutIncidents()

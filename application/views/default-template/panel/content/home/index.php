@@ -22,16 +22,16 @@
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <form class="form-inline stake-report-inline-form" action="<?=base_url("panel/Project/getWorkPlanReport")?>" method="post">
+                <form class="form-inline stake-report-inline-form" name="work-plan-report" action="<?=base_url("panel/Project/getWorkPlanReport")?>" method="post">
                     <i class="fa fa-file-excel-o fa-fw"></i> Plan de Trabajo
                     <div class="form-group">
                         <label class="sr-only input-sm" for="exampleInputEmail3">Desde</label>
-                        <input type="text" class="form-control input-sm date-time-work-plan-report" name="work-plan-report-from">
+                        <input type="text" class="form-control input-sm date-time-work-plan-report" size="10" style="height: 21px" name="work-plan-report-from">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control input-sm date-time-work-plan-report" name="work-plan-report-to">
+                        <input type="text" class="form-control input-sm date-time-work-plan-report" size="10" style="height: 21px" name="work-plan-report-to">
                     </div>
-                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
+                    <button type="button" class="btn btn-default btn-xs load-work-plan-report">Ver <i class="fa fa-search"></i></button>
                 </form>
             </div>
             <!-- /.panel-heading -->

@@ -1,6 +1,6 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class ExcelWorkPlanReport
 {
     private $_sessionUser;
@@ -37,10 +37,13 @@ class ExcelWorkPlanReport
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="reporte_plan_de_trabajo.xlsx"');
+        header('Content-Disposition: attachment;filename="reporte_plan_de_trabajo.xls"');
         header('Cache-Control: max-age=0');
 
-        $writer = new Xlsx($spreadsheet);
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save('php://output');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
 	}
 
