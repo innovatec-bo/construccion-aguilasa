@@ -7,6 +7,7 @@ declare let Object: any;
 declare let window: any;
 declare let Swal: any;
 declare let bootbox: any;
+declare let toastr : any;
 
 class PointToPointHandler
 {
@@ -50,15 +51,60 @@ class PointToPointHandler
                 });
             },
             success:function(response){
+                Swal.close();
                 if(response.success === 1 && !formData)
                 {
                     _this.launchForm(response, "Registrar avance en punto "+response.data.point.point_label);
                 }
                 else if(response.success === 1 && formData)
                 {
-                    Swal({ title:'', html:response.message, type:"success"});
-                    // _this.loadManpower();
+                    toastr.success(response.message, '', {'progressBar':true});
                     _this.loadManpowerLog();
+                    _this.loadBuildingPoints();
+                }
+                else
+                {
+                    Swal({ title:'', html:response.message, type:"error"});
+                }
+            }
+        });
+    }
+
+    private _addMassiveProgress(formData?)
+    {
+        let _this = this;
+        let method = !formData?"GET":"POST";
+        $.ajax({
+            url : base_url + 'panel/AjaxProject/addMassivePointToPointProgress/'+_this._projectId,
+            dataType  :"json",
+            method : method,
+            data:formData,
+            beforeSend:function()
+            {
+                let message = "Cargando formulario..";
+                if(formData)
+                {
+                    message = "Procesando.."
+                }
+                Swal({
+                    html: "<h3>"+message+"</h3>",
+                    allowOutsideClick:false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success:function(response){
+                Swal.close();
+                if(response.success === 1 && !formData)
+                {
+                    _this.launchFormMassiveProgress(response, "Completar puntos");
+                }
+                else if(response.success === 1 && formData)
+                {
+                    toastr.success(response.message, '', {'progressBar':true});
+                    _this.loadManpowerLog();
+                    _this.loadBuildingPoints();
                 }
                 else
                 {
@@ -84,7 +130,7 @@ class PointToPointHandler
             laborCostList:this._laborCostMasterDetail
         };
         let structureList = [item];
-        let data = {point:response.data.point, builders:response.data.builders};
+        let data = {point:response.data.point, builders:response.data.builders, response:response};
         let html = template(data);
         let _this = this;
         Swal({
@@ -130,9 +176,71 @@ class PointToPointHandler
         $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     }
 
+    private launchFormMassiveProgress(response, formTitle)
+    {
+        this._loadViewTemplate = response.data.template;
+        this._laborCostMasterDetail = response.data.laborCostMasterDetail;
+        let $template = $("<div>"+this._loadViewTemplate+"</div>");
+        let structureItemList = $template.find("#ht-structure-item-list").html();
+        Handlebars.registerPartial("ht-structure-item-list", structureItemList);
+        let structureItem = $template.find("#ht-structure-item").html();
+        Handlebars.registerPartial("ht-structure-item", structureItem);
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let item = {
+            index:1,
+            laborCostList:this._laborCostMasterDetail
+        };
+        let structureList = [item];
+        let data = {point:response.data.point, builders:response.data.builders, response:response};
+        let html = template(data);
+        let _this = this;
+        Swal({
+            title: formTitle,
+            html: html,
+            showCancelButton: true,
+            confirmButtonColor: '#E41C5E',
+            cancelButtonColor: '#DDDDDD',
+            confirmButtonText: 'Guardar',
+            allowOutsideClick:false,
+            showLoaderOnConfirm: true,
+            customClass:"modal-manpower-form",
+            width:'100%',
+            preConfirm: () => {
+                let $form = $("form[name=point-to-point-massive-progress-form]");
+                if(!$form.parsley().isValid())
+                {
+                    $form.parsley().validate();
+                    return false;
+                }
+            },
+        }).then((result) => {
+            if (result.value)
+            {
+                let $form = $("form[name=point-to-point-massive-progress-form]");
+                _this._addMassiveProgress($form.serialize());
+            }
+        });
+        let date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            defaultDate: date,
+            format: 'DD-MM-YYYY'
+        });
+        $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
+        this._startSelect2();
+        $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
+        if($('#select2-points').length > 0)
+        {
+            $('#select2-points').select2();
+        }
+    }
+
     public loadBuildingPoints()
     {
         let _this = this;
+        let $buildingPointsContent = $("#building-points");
+        blockArea($buildingPointsContent);
         $.ajax({
             url : base_url + 'panel/AjaxProject/getBuildingPoints/'+_this._projectId,
             dataType  :"json",
@@ -154,7 +262,14 @@ class PointToPointHandler
                 let template = Handlebars.compile(htmlSource);
                 // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
                 let html = template({buildingPoints:response.data.buildingPoints});
-                $("#building-points").html(html);
+                if(response.data.buildingPoints.length > 0)
+                    $buildingPointsContent.html(html);
+                else
+                    $buildingPointsContent.html("<h1>No se encontraron puntos</h1>");
+                if(response.data.buildingPoints.length <= 5)
+                {
+                    $('.add-massive-point-to-point-progress').removeClass('hide');
+                }
             }
         });
     }
@@ -249,6 +364,12 @@ class PointToPointHandler
             e.preventDefault();
             _this._pointId = parseInt($(this).data("point-id"));
             _this.add();
+        });
+
+        $(document).on("click", ".add-massive-point-to-point-progress", function(e){
+            e.preventDefault();
+            _this._pointId = parseInt($(this).data("point-id"));
+            _this._addMassiveProgress();
         });
 
         $(document).on("change","select[name='builders[]']",function(){

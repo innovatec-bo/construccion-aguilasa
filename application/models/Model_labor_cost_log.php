@@ -189,4 +189,70 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 
         $ci->db->query($sql);
     }
-}
+
+    /*
+    This method is only for point to point progress
+    */
+    public static function addMassiveLog($userId, $detail, $manualEntryDate, $builders, $pointsId, $projectId)
+    {
+        $buildingPoints = Model_building_point::getMasterDetail($projectId);
+        $workedUp = array();
+        $pointCounter = 0;
+        $logMessage = "";
+        foreach ($pointsId as $pointId) 
+        {
+            $pointToFinish = $buildingPoints[$pointId];
+            $pointLabel = $pointToFinish['point_label'];
+            foreach ($pointToFinish['structures'] as $structure)
+            {
+                $quantity = floatval($structure['quantity_to_use']) - floatval($structure['total_worked_up']);
+                if($quantity > 0)
+                {
+                    $workedUp[] = array(
+                                'quantity' => $quantity,
+                                'unit-price' => $structure['unit_price'],
+                                'labor-cost-id' => $structure['labor_cost_id']
+                            );
+                }
+            }
+
+            if(count($workedUp) > 0)
+            {
+                $laborCostLog = New Model_labor_cost_log($userId, $detail, $manualEntryDate, $pointId);
+                $laborCostLog->save();
+                if(is_numeric($laborCostLog->getId()))
+                {
+                    $laborCostLog->addWorkedUpStructures($workedUp);
+                    $laborCostLog->addBuildersToManpower($builders);
+                    $pointCounter++;    
+                }
+                else
+                {
+                    $logMessage .= "No se pudo guardar el registro del <strong>Punto ".$pointLabel.".</strong><br>";
+                }
+            }
+            else
+            {
+                $logMessage .= "Nada pendiente en el <strong>Punto ".$pointLabel.".</strong><br>";
+            }
+            
+            $workedUp = array();
+        }
+        switch ($pointCounter) 
+        {
+            case 0:
+                $response['success'] = 0;
+                $response['message'] = $logMessage;
+                break;
+            case 1:
+                $response['success'] = 1;
+                $response['message'] = "Se finaliz&oacute; un punto.";
+                break;
+            default:
+                $response['success'] = 1;
+                $response['message'] = "Se finalizaron ".$pointCounter." puntos.";
+                break;
+        }
+        return $response;
+    }
+}   

@@ -29,11 +29,9 @@ $projectSystems = array(
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-default btn-xs add-point-to-point-progress" data-point-id="{{point_id}}"><span class="fa fa-plus"></span></button>
-                                <button type="submit" class="btn btn-default btn-xs hide"><span class="fa fa-save"></span></button>
                             </div>
                         </div>
                     </h4>
-
                 </div>
                 <div id="collapse{{point_id}}" class="panel-collapse collapse">
                     <div class="panel-body">
@@ -254,14 +252,14 @@ $projectSystems = array(
         <blockquote>
             <dl>
                 {{#ifCond pointLabel '!=' null}}
-                <dt class="text-center">Punto {{pointLabel}}</dt>
+                <dt class="text-center"><i class='fa fa-map-marker fa-fw'></i>Punto {{pointLabel}}</dt>
                 {{/ifCond}}
                 {{#ifCond builders '!=' null}}
                     <dt>Constructores</dt>
-                    <dd>{{builders}}</dd>
+                    <dd style='padding-left:10px'>{{builders}}</dd>
                 {{/ifCond}}
                 <dt>Structuras</dt>
-                <dd>
+                <dd style='padding-left:10px'>
                     {{#each itemList}}
                     {{activity}} {{execution}} <a href="#" data-original-title="{{description}}" data-toggle="tooltip" data-placement="top">{{structure_code}}</a> {{worked_up}} {{unit_of_measurement}}<br>
                     {{/each}}
@@ -540,6 +538,63 @@ $projectSystems = array(
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="ht-modal-form-add-several-point-to-point-progress" type="text/x-handlebars-template">
+    <form name="point-to-point-massive-progress-form" data-parsley-validate>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <i class="fa fa-info-circle fa-fw"></i>Espeficique la fecha, los constructores el detalle y los puntos que han sido completados.<br>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <div class="input-group date date-time-picker">
+                        <input name="entry-date" readonly="" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <div id="error-entry-date"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Constructores</label><br>
+                    <select class="form-control select2-builders" multiple="multiple" data-parsley-required="" parsley-trigger="change" name="builders[]">
+                        {{#each builders}}
+                        <option value="{{id}}">{{firstName}} {{lastName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Detalles</label>
+                    <textarea class="form-control" name="detail" rows="2" placeholder=""></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="select2-points">Puntos</label><br>
+                    <select id="select2-points" name="points-to-finish[]" required class="form-control"  multiple="multiple">
+                        {{#each response.data.points}}
+                            <option value="{{point_id}}">Punto {{point_label}}</option>
+                        {{/each}}
+                    </select>
                 </div>
             </div>
         </div>

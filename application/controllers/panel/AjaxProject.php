@@ -285,10 +285,73 @@ class AjaxProject extends PrivateController
             $workedUp = $formData["worked-up"];
             $builders = $formData["builders"];
             $userId = $this->sessionUser->id;            
-            // echo"<pre>";var_dump($userId, $detail, $manualEntryDate, $workedUp, $builders, $pointId);exit;
             Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders, $pointId);
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
+        }
+        echo json_encode($response);exit;
+    }
+
+    public function addMassivePointToPointProgress($projectId = NULL)
+    {
+        //        $this->_validateFeature('qb_create_invoice');
+        $this->_validateObjectToEdit($projectId,"Model_project","panel/Home");
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
+        $this->form_validation->set_rules('detail', 'Detalle', 'trim');
+
+        if($this->form_validation->run() === FALSE)
+        {
+            $validationErrors = validation_errors();
+            $validationErrors = str_replace("<p>","",$validationErrors);
+            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $response = array("success" => 0, "message" => $validationErrors);
+            $success = $validationErrors != ""?0:1;
+            $response["success"] = $success;
+            $response["message"] = $validationErrors;
+            $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
+            $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
+            $i = 0;
+            foreach($laborCostMasterDetail as &$laborCost)
+            {
+                $i++;
+                $laborCost['index'] = $i;
+                $laborCost['quantity'] = number_format($laborCost['quantity'], 2);
+                $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
+                $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
+            }
+            $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+            $builders = Model_user::getByRoleKeyword('builder');
+            $arrayBuilder = array();
+            foreach($builders as $builder)
+            {
+                $builder = $builder->toArray();
+                $arrayBuilder[] = array(
+                    'id' => $builder['id_usr'],
+                    'firstName' => $builder['firstname_usr'],
+                    'lastName' => $builder['lastname_usr']
+                );
+            }
+            $buildingPoints = Model_building_point::getMasterDetail($projectId);
+            $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
+            $response["data"]["builders"] = $arrayBuilder;
+            $response["data"]["template"] = $template;
+            $response["data"]["points"] = array_values($buildingPoints);
+            $response["data"]["templateName"] = "#ht-modal-form-add-several-point-to-point-progress";
+        }
+        else
+        {
+            $formData = $this->input->post();
+            // echo"<pre>";var_dump($formData, $buildingPoints);exit;
+            $manualEntryDate = $formData["entry-date"];
+            $manualEntryDate = DateTime::createFromFormat('d-m-Y', $manualEntryDate);
+            $manualEntryDate = date_format($manualEntryDate, 'Y-m-d');
+            $manualEntryDate = $manualEntryDate." ".date("H:i:s");
+            $detail = $formData["detail"];
+            $builders = $formData["builders"];
+            $pointsToFinish = $formData["points-to-finish"];
+            $userId = $this->sessionUser->id;            
+            $response = Model_labor_cost_log::addMassiveLog($userId, $detail, $manualEntryDate, $builders, $pointsToFinish, $projectId);
         }
         echo json_encode($response);exit;
     }
