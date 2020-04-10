@@ -217,7 +217,7 @@ class PrivateController extends PublicController
         $this->complementHandler->addViewComplement("handlebars.custom.helpers");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addProjectCss('general-custom-style');
+        $this->complementHandler->addProjectCss('general-custom-style', TRUE);
         $this->complementHandler->addViewComplement("jquery.blockui");
         $this->complementHandler->addProjectJs('IncidentHandler');
         $this->complementHandler->addProjectJs('general-scripts', TRUE);

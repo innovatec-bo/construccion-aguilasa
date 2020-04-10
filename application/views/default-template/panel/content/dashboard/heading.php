@@ -168,17 +168,7 @@
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
-<!--                    <select class="form-control input-sm" name="contract-number">-->
-<!--                        <option value="">Contratos</option>-->
-<!--                        --><?php
-//                        $html = "";
-//                        foreach ($contractList as $contract)
-//                        {
-//                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
-//                        }
-//                        echo $html;
-//                        ?>
-<!--                        </select>-->
+                    Tiempo seg&uacute;n contrato
                 </span>
                 <div class="clearfix"></div>
             </div>
@@ -186,85 +176,109 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" id="">
-            <div class="panel-heading">
-                <form class="form-inline builder-general-report" method="post">
-                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte general por mano de obra
-                    <select class="form-control input-sm" name="builder-general-report-month">
-                        <option value="">Mes</option>
-                        <option value="01">Enero</option>
-                        <option value="02">Febrero</option>
-                        <option value="03">Marzo</option>
-                        <option value="04">Abril</option>
-                        <option value="05">Mayo</option>
-                        <option value="06">Junio</option>
-                        <option value="07">Julio</option>
-                        <option value="08">Agosto</option>
-                        <option value="09">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
-                    </select>
-                    <select class="form-control input-sm" name="builder-general-report-year">
-                        <option value="">Anio</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                    </select>
-                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
-                </form>
+    <div class="col-lg-3 col-md-6">
+        <form class="form-inline builder-general-report" method="post">
+            <div class="panel panel-primary" id="panel-days-progress-chart">
+                <div class="panel-heading">
+                    Reporte general
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="builder-general-report-month">
+                                    <option value="">Mes</option>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero</option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>    
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="builder-general-report-year">
+                                    <option value="">A&ntilde;o</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer p-0">
+                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
+    <div class="col-lg-5 col-md-6">
+        <form class="form-inline builder-manpower-productivity-report" method="post">
+            <div class="panel panel-primary" id="panel-days-progress-chart">
+                <div class="panel-heading">
+                    Reporte de productividad
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="builder-productivity-report-builder">
+                                    <option value="">Constructor</option>
+                                    <?php
+                                    $html = "";
+                                    foreach ($builderList as $builder)
+                                    {
+                                        $html .= '<option value="'.$builder->getId().'" >'.$builder->getFullName().'</option>';
+                                    }
+                                    echo $html;
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="builder-productivity-report-month">
+                                    <option value="">Mes</option>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero</option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>    
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="builder-productivity-report-year">
+                                    <option value="">A&ntilde;o</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer p-0">
+                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" id="">
-            <div class="panel-heading">
-                <form class="form-inline builder-manpower-productivity-report" method="post">
-                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de productividad por mano de obra
-                    <select class="form-control input-sm" name="builder-productivity-report-builder">
-                    <option value="">Constructor</option>
-                    <?php
-                    $html = "";
-                    foreach ($builderList as $builder)
-                    {
-                        $html .= '<option value="'.$builder->getId().'" >'.$builder->getFullName().'</option>';
-                    }
-                    echo $html;
-                    ?>
-                </select>
-                <select class="form-control input-sm" name="builder-productivity-report-month">
-                    <option value="">Mes</option>
-                    <option value="01">Enero</option>
-                    <option value="02">Febrero</option>
-                    <option value="03">Marzo</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Mayo</option>
-                    <option value="06">Junio</option>
-                    <option value="07">Julio</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-                </select>
-                <select class="form-control input-sm" name="builder-productivity-report-year">
-                    <option value="">Anio</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
-                    <option value="2020">2020</option>
-                </select>
-                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
             <div class="panel-heading">
@@ -282,8 +296,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
+</div> -->
+<!-- <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
             <div class="panel-heading">
@@ -300,7 +314,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="panel-main-report-control-filter">
