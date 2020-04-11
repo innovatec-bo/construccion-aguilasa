@@ -31,6 +31,7 @@ $(document).ready(function() {
     getProjectsQuantity();
     getProjectProgressBySection();
     getContractTimeProgress();
+    getAmountWorked();
 
     $(document).on("change","#panel-serebo-thermometer-chart select",function(){
         var inputData = getInputData();
@@ -265,4 +266,18 @@ function getInputData()
     inputData.managementBy = $content.find('select[name=management-by] option:selected').val();
     inputData.contractNumber = $content.find('select[name=contract-number] option:selected').val();
     return inputData;
+}
+
+function getAmountWorked()
+{
+     $.ajax({
+        url : base_url + 'panel/AjaxDashboard/getAmountWorked',
+        dataType  :"json",
+        type : "POST",
+        success:function(response){
+            $("#dashboard-total-amount-worked").text(response.totalWorkedUp);
+            $("#dashboard-total-quantity-projects-worked").text(response.totalProjects);
+            console.log(response);
+        }
+    });
 }

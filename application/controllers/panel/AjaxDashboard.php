@@ -407,4 +407,25 @@ class AjaxDashboard extends PrivateController
         $response["log"] = $arrayLog;
         echo json_encode($response);exit;
     }
+
+    public function getAmountWorked()
+    {
+        $date = new DateTime( '2020-03-01' ); 
+        $startDate = $date->format('Y-m-1');
+        $endDate = $date->format('Y-m-t');
+        $projectProductivity = Model_project::getBuilderIndividualReport($startDate, $endDate);
+        $totalWorkedUp = 0;
+        $list = array();
+        foreach ($projectProductivity as $value) 
+        {
+            $list[] = $value['totalWorkedUpAmount'];
+            $totalWorkedUp += $value['totalWorkedUpAmount'];
+        }
+        $result['totalWorkedUp'] = number_format($totalWorkedUp, 2, '.', ',');
+        $result['projectProductivity'] = $projectProductivity;
+        $result['list'] = $list;
+        $result['totalProjects'] = count($list);
+        echo json_encode($result);exit;
+        // echo"<pre>";var_dump($startDate, $endDate);exit;
+    }
 }

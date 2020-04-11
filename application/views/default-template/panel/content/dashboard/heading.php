@@ -48,60 +48,21 @@
 
 <!-- /.row -->
 <div class="row">
-    <div class="col-lg-3 col-md-6" style="display: none">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-users fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><span id="dashboard-total-users"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                        <div>Users!</div>
-                    </div>
-                </div>
-            </div>
-            <a href="<?=base_url("panel/User")?>">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6" style="display: none">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-user fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><span id="dashboard-total-roles"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                        <div>Roles!</div>
-                    </div>
-                </div>
-            </div>
-            <a href="<?=base_url("panel/Role")?>">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-folder fa-5x"></i>
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/business-and-finance.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><span id="dashboard-total-projects"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
-                        <div>Projects!</div>
+                        <div>Proyectos!</div>
                     </div>
                 </div>
             </div>
@@ -119,28 +80,20 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-dollar fa-5x"></i>
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/money.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
                     </div>
                     <div class="col-xs-9 text-right" id="serebo-thermometer-chart-content"  style="height: 76px">
                     </div>
                 </div>
-<!--                <div class="row" id="serebo-thermometer-chart-content" style="height: 76px">-->
-<!---->
-<!--                </div>-->
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
-<!--                    <select class="form-control input-sm" name="contract-number">-->
-<!--                        <option value="">Contratos</option>-->
-<!--                        --><?php
-//                        $html = "";
-//                        foreach ($contractList as $contract)
-//                        {
-//                            $html .= '<option value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
-//                        }
-//                        echo $html;
-//                        ?>
-<!--                        </select>-->
+                    Ejecutado
                 </span>
                 <span class="pull-right">
                     <select class="form-control input-sm" name="stage" style="width: 90px">
@@ -160,7 +113,12 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="glyphicon glyphicon-hourglass fa-5x"></i>
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/deadline.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
                     </div>
                     <div class="col-xs-9 text-right" id="days-progress-chart-content"  style="height: 76px">
                     </div>
@@ -169,6 +127,33 @@
             <div class="panel-footer">
                 <span class="pull-left">
                     Tiempo seg&uacute;n contrato
+                </span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/balance.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <h4><span id="dashboard-total-amount-worked"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></h4>
+                        <div><span id="dashboard-total-quantity-projects-worked"></span> proyectos!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <span class="pull-left">
+                    Producci&oacute;n del mes
                 </span>
                 <div class="clearfix"></div>
             </div>
