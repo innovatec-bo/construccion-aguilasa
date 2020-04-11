@@ -371,6 +371,7 @@ class AjaxProject extends PrivateController
     {
         $buildingPoints = Model_building_point::getMasterDetail($projectId);
         $i = 0;
+        $data['isSuperAdmin'] = $this->_is('super_admin');
         foreach($buildingPoints as &$point)
         {
             $i++;
@@ -378,7 +379,7 @@ class AjaxProject extends PrivateController
         }
         if(count($buildingPoints) > 0)
         {
-            $data['isSuperAdmin'] = $this->_is('super_admin');
+            
             $result['success'] = 1;
             $result['message'] = '';
             $result['data']['template'] = $this->loadView('panel/content/project/ManpowerHandler', $data, TRUE);
@@ -389,6 +390,8 @@ class AjaxProject extends PrivateController
         {
             $result['success'] = 0;
             $result['message'] = 'No se encontraron datos';
+            $result['data']['template'] = $this->loadView('panel/content/project/ManpowerHandler', $data, TRUE);
+            $result['data']['templateName'] = "#ht-building-points";
             $result['data']['buildingPoints'] = array();
         }
         echo json_encode($result);exit;

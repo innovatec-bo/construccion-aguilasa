@@ -23,7 +23,7 @@
     <div class="col-md-12">
         <p>
             <div class="alert alert-info">
-                <i class="fa fa-info-circle fa-fw"></i>La opci&oacute;n de <strong>Completar puntos</strong> esta disponible para proyectos con 5 o menos puntos.
+                <i class="fa fa-info-circle fa-fw"></i>La opci&oacute;n de <strong>Completar puntos</strong> esta disponible para proyectos con 7 o menos puntos.
             </div>
             <button type="button" class="btn btn-info add-massive-point-to-point-progress hide">Completar puntos</button>
         </p>

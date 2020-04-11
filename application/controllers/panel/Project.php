@@ -547,10 +547,10 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addProjectCss('project.building-points');
-        $this->complementHandler->addProjectJs('project.building-points');
-        $this->complementHandler->addProjectCss('PointToPointHandler');
-        $this->complementHandler->addProjectJs('PointToPointHandler');
+        $this->complementHandler->addProjectCss('project.building-points', TRUE);
+        $this->complementHandler->addProjectJs('project.building-points', TRUE);
+        $this->complementHandler->addProjectCss('PointToPointHandler', TRUE);
+        $this->complementHandler->addProjectJs('PointToPointHandler', TRUE);
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);
     }

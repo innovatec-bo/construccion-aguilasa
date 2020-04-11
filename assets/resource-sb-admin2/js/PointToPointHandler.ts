@@ -265,8 +265,8 @@ class PointToPointHandler
                 if(response.data.buildingPoints.length > 0)
                     $buildingPointsContent.html(html);
                 else
-                    $buildingPointsContent.html("<h1>No se encontraron puntos</h1>");
-                if(response.data.buildingPoints.length <= 5)
+                    $buildingPointsContent.html("<div class='col-md-9'><h1>No se encontraron puntos</h1></div>");
+                if(response.data.buildingPoints.length <= 7)
                 {
                     $('.add-massive-point-to-point-progress').removeClass('hide');
                 }
