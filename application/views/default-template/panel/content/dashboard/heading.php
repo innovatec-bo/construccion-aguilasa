@@ -29,9 +29,25 @@
             }
             ?>
             <ul class="nav nav-pills dashboard-navigation">
-                <li class="<?=$chartsActive?>"><a href="<?=$chartsUrl?>"><i class="fa fa-bar-chart-o fa-fw"></i></a>
+                <li class="<?=$chartsActive?>">
+                    <a class='p-0' href="<?=$chartsUrl?>">
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/analysis.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=30";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='padding-top: 4px;padding-bottom: 0px;padding-right: 0px;padding-left: 4px;'>
+                    </a>
                 </li>
-                <li class="<?=$tablesActive?>"><a href="<?=$tablesUrl?>"><i class="fa fa-table fa-fw"></i></a>
+                <li class="<?=$tablesActive?>">
+                    <a class='p-0' href="<?=$tablesUrl?>">
+                        <?php
+                        $timthumbUrl = base_url("timthumb/timthumb.php");
+                        $imageUrl = assets_url("images/flaticon/frequency.png");
+                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=30";
+                        ?>
+                        <img src="<?=$imageSrc?>" style='padding-top: 4px;padding-bottom: 0px;padding-right: 0px;padding-left: 4px;'>
+                    </a>
                 </li>
             </ul>
         </h1>
