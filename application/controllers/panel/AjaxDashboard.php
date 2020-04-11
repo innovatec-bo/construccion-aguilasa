@@ -410,7 +410,7 @@ class AjaxDashboard extends PrivateController
 
     public function getAmountWorked()
     {
-        $date = new DateTime( '2020-03-01' ); 
+        $date = new DateTime(); 
         $startDate = $date->format('Y-m-1');
         $endDate = $date->format('Y-m-t');
         $projectProductivity = Model_project::getBuilderIndividualReport($startDate, $endDate);
