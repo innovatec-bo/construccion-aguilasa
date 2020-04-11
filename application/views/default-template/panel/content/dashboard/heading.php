@@ -153,7 +153,7 @@
             </div>
             <div class="panel-footer">
                 <span class="pull-left">
-                    Producci&oacute;n del mes
+                    Producci&oacute;n de <span id="dashboard-amount-worked-month"></span>
                 </span>
                 <div class="clearfix"></div>
             </div>

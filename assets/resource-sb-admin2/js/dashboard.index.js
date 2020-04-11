@@ -275,8 +275,10 @@ function getAmountWorked()
         dataType  :"json",
         type : "POST",
         success:function(response){
+            moment.locale('es');
             $("#dashboard-total-amount-worked").text(response.totalWorkedUp);
             $("#dashboard-total-quantity-projects-worked").text(response.totalProjects);
+            $("#dashboard-amount-worked-month").text(moment().format('MMMM'));
             console.log(response);
         }
     });
