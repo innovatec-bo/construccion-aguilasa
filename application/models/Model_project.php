@@ -427,7 +427,7 @@ class Model_project extends Model_project_base
             conciliation_shipment.building_reb payment_order_registered_building_budget,
             conciliation_shipment.transportation_reb payment_order_registered_transportation_budget,
             conciliation_shipment.live_line_reb payment_order_registered_live_line_budget,
-            conciliation_shipment.right_of_way_prb payment_order_registered_right_of_way_budget,
+            conciliation_shipment.right_of_way_reb payment_order_registered_right_of_way_budget,
             conciliation_shipment.total_real_budget payment_order_registered_total_real_budget,
             payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
             payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,

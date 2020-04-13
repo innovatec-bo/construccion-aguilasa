@@ -340,16 +340,80 @@ class Model_project_base extends MY_Model
      */
     public static function countAll_deprecated()
     {
-        $ci = &get_instance();
-        $ci->load->database();
+        // $ci = &get_instance();
+        // $ci->load->database();
 
-        $sql = '
-                select count(' . static::TABLE_ID. ') as total
-                from ' . static::TABLE_NAME .' where '.static::notDeleted();
+        // $sql = '
+        //     select count(id_pro) as total from
+        //     (
+        //         SELECT
+        //             wfl_projects.*,
+        //             status_name_pst,
+        //             order_pst,
+        //             status_log_manual_entry_date.manual_entry_date_psl,
+        //             status_log_manual_entry_date.responsible,
+        //             status_log_manual_entry_date.responsible_ids,
+        //             id_psl,
+        //             manpower.manpower_file_id
+        //         FROM
+        //             wfl_projects
+        //         LEFT JOIN (
+        //             select * from (
+        //                 select
+        //                     project_id_psl project_id, max(manual_entry_date_psl) max_date
+        //                     from (
+        //                         SELECT
+        //                             project_id_psl,
+        //                             manual_entry_date_psl
+        //                         FROM
+        //                             wfl_project_status_log
+        //                         LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        //                         where deleted_psl != 1 and deleted_slr != 1
+        //                         GROUP BY id_psl
+        //                     ) statusLogAndResponsible group by project_id_psl
+        //             ) as max_entry
+        //             LEFT JOIN (
+        //                         SELECT
+        //                             id_psl,
+        //                             project_id_psl,
+        //                             log_detail_psl,
+        //                             manual_entry_date_psl,
+        //                             GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+        //                             GROUP_CONCAT(id_usr) responsible_ids
+        //                         FROM
+        //                             wfl_project_status_log
+        //                         LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+        //                         LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+        //                         LEFT JOIN sec_users on id_usr = user_id_sre
+        //                         where deleted_psl != 1  and deleted_slr != 1
+        //                         GROUP BY id_psl
+        //                         ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+        //         ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+        //         LEFT JOIN wfl_project_status on status_pro = id_pst
+        //         LEFT JOIN (
+        //             SELECT
+        //                 id_pro project_id,
+        //                 wfl_project_budgets.manpower_file_id_prb manpower_file_id   
+        //             FROM
+        //                 wfl_project_budgets
+        //             LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
+        //             left join wfl_projects on id_pro = project_id_psl
+        //             WHERE 
+        //                 deleted_prb != 1
+        //             and deleted_pro != 1
+        //             and deleted_psl != 1
+        //             and manpower_file_id_prb is not null
+        //         ) manpower on manpower.project_id = id_pro
+        //         WHERE
+        //             deleted_pro != 1
+        //             and ",@statusIdFilter2,"
+        //             and ",@statusIdFilter3,"
+        //     ) projects;
+        // ';
 
-        $query = $ci->db->query($sql);
-        $totalCount = $query->row()->total;
-        return $totalCount;
+        // $query = $ci->db->query($sql);
+        // $totalCount = $query->row()->total;
+        // return $totalCount;
     }
 
     /**

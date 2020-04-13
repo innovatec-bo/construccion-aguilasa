@@ -4,6 +4,7 @@
  */
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class ExcelProjectWorkflow
 {
     private $_sessionUser;
@@ -25,6 +26,7 @@ class ExcelProjectWorkflow
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
         $projectWorkflow = Model_project::getWorkflowDetail($this->_additionalParameters);
+        // echo"<pre>";var_dump($projectWorkflow);exit;
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -59,10 +61,13 @@ class ExcelProjectWorkflow
         $this->_hideColumns($spreadsheet, $this->_getNotEmptyColumns());
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="projects_workflow.xlsx"');
+        header('Content-Disposition: attachment;filename="projects_workflow.xls"');
         header('Cache-Control: max-age=0');
 
-        $writer = new Xlsx($spreadsheet);
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save('php://output');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
 	}
 
