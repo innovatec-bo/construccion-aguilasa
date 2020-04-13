@@ -218,7 +218,7 @@ $projectSystems = array(
             <input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
         </td>
         <td class="text-center" style="padding:1px">
-            <input class="input-masked unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
+            <input class="input-masked-price unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
         </td>
         <td class="text-center">
             <a href="#" class="remove-row"><i class="fa fa-times"></i></a>
@@ -243,7 +243,18 @@ $projectSystems = array(
         Sin historial de avance.
     {{/ifCond}}
     {{#each log}}
-        <h6 class="quick-log-status-name">{{fiscal}}
+        <h6 class="quick-log-status-name">
+            <div class="dropdown" style='display:inline'>
+              <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="caret"></span>
+                
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#" class='edit-log' data-log-id="{{logId}}"><i class='fa fa-edit fa-fw'></i> Editar</a></li>
+                <li><a href="#" class='delete-log' data-log-id="{{logId}}"><i class='fa fa-trash fa-fw'></i> Eliminar</a></li>
+              </ul>
+            </div>
+            {{fiscal}}
             {{#ifCond detail '!=' ''}}
                 <a href="#" data-original-title="{{detail}}" data-toggle="tooltip" data-placement="top"><span class="fa fa-comment fa-fw"></span></a>
             {{/ifCond}}
@@ -532,7 +543,89 @@ $projectSystems = array(
                                     <td>{{description}}</td>
                                     <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
                                     <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
-                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
+                                    <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="ht-modal-form-edit-point-to-point-progress" type="text/x-handlebars-template">
+    <form name="point-to-point-progress-form" data-parsley-validate>
+        <input name="labor-cost-log-id" value="{{data.logMasterDetail.logId}}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <div class="input-group date date-time-picker">
+                        <input name="entry-date" readonly="" value="{{data.logMasterDetail.manualEntryDate}}" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <div id="error-entry-date"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Constructores</label><br>
+                    <select class="form-control select2-builders" multiple="multiple" data-parsley-required="" parsley-trigger="change" name="builders[]">
+                        {{#each buildersSelected}}
+                            <option selected value="{{id}}">{{fullName}}</option>
+                        {{/each}}
+                        {{#each data.builders}}
+                            <option value="{{id}}">{{firstName}} {{lastName}}</option>
+                        {{/each}}
+                        
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Detalles</label>
+                    <textarea class="form-control" name="detail" rows="2" placeholder="">{{data.logMasterDetail.detail}}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="table-responsive">
+                        <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
+                        <table class="table table-striped table-bordered table-hover table-minimum-padding">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ACTIV.</th>
+                                    <th>ESTRUCTURA</th>
+                                    <th>EJEC.</th>
+                                    <th>UNIDAD</th>
+                                    <th>DESCRIPCION</th>
+                                    <th>REGISTRO<br>DEL LOG</th>
+                                    <th>PRECIO<br>UNITARIO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="structure-item-list-content">
+                                {{#each data.logMasterDetail.itemList}}
+                                <tr>
+                                    <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
+                                    <td class="text-center">{{index}}</td>
+                                    <td class="text-center">{{activity}}</td>
+                                    <td>{{structure_code}}</td>
+                                    <td class="text-center">{{execution}}</td>
+                                    <td class="text-center">{{unit_of_measurement}}</td>
+                                    <td>{{description}}</td>
+                                    <td class="text-center"><input class="input-masked" value="{{worked_up}}" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
+                                    <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{worked_up_price}}"></td>
                                 </tr>
                                 {{/each}}
                             </tbody>

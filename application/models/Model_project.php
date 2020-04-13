@@ -2285,7 +2285,7 @@ class Model_project extends Model_project_base
                             count(DISTINCT user_id_bim) total_builders,
                             GROUP_CONCAT(DISTINCT user_id_bim) builders
                         from 
-                        bui_builders_in_manpower
+                        bui_builders_in_manpower where deleted_bim != 1
                         GROUP BY labor_cost_log_id_bim
                     ) builders_in_manpower on builders_in_manpower.labor_cost_log_id_bim = id_lal
             where 
@@ -2295,7 +2295,7 @@ class Model_project extends Model_project_base
             -- and project_id_lad = 653
             order by project_id_lad, manual_entry_date_lal
         ";
-        $query = $ci->db->query($sql);
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
         $result = $query->result_array();
         return $result;
     }

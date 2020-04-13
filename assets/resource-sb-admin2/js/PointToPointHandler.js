@@ -186,6 +186,7 @@ var PointToPointHandler = /** @class */ (function () {
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
+        $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
         if ($('#select2-points').length > 0) {
             $('#select2-points').select2();
         }

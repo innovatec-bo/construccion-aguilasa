@@ -131,6 +131,7 @@ var ManpowerHandler = /** @class */ (function () {
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
+        $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
     };
     ManpowerHandler.prototype.loadManpower = function () {
         var _this = this;
@@ -280,7 +281,7 @@ var ManpowerHandler = /** @class */ (function () {
                     $.each(splitBuilderString, function (index, value) {
                         var string = value;
                         var result = string.split("-");
-                        builder = { "id": result[0], "fullName": result[1] };
+                        builder = { "id": result[0].trim(), "fullName": result[1].trim() };
                         builderList[result[0]] = builder;
                         builder = {};
                     });

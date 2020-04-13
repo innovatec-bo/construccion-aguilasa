@@ -78,4 +78,29 @@ class Model_labor_cost_log_base extends MY_Model
         }
         return $response;
     }
+
+    public function delete($makePhysicalDelete = false)
+    {
+        parent::delete($makePhysicalDelete);
+        static::deleteBuildersFromManpowerByLaborCostLogId($this->_id);
+        static::deleteWorkedUpStructuresByLaborCostLogId($this->_id);
+    }
+
+    //setters
+    public function setDetail($detail)
+    {
+        $this->_detail = $detail;
+    }
+
+    public function setManualEntryDate($manualEntryDate)
+    {
+        $this->_manualEntryDate = $manualEntryDate;
+    }
+
+    //getters
+
+    public function getPointId()
+    {
+        return $this->_pointId;
+    }
 }

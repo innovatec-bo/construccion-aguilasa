@@ -59,7 +59,7 @@ class Model_building_point extends Model_building_point_base
         LEFT JOIN bui_building_structures on id_bus = building_structure_id_lac
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad             
         LEFT JOIN bui_labor_cost_log on point_id_lal = point_id_sbp
-        LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus                
+        LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus and deleted_wus !=1            
         WHERE project_id_lad = ".$ci->db->escape($projectId)."
         GROUP BY id_sbp 
         ";

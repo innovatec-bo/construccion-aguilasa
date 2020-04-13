@@ -529,10 +529,11 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addProjectCss('project.manpower');
-        $this->complementHandler->addProjectJs('project.manpower');
-        $this->complementHandler->addProjectCss('ManpowerHandler');
-        $this->complementHandler->addProjectJs('ManpowerHandler');
+        $this->complementHandler->addProjectCss('project.manpower', TRUE);
+        $this->complementHandler->addProjectJs('project.manpower', TRUE);
+        $this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
+        $this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
+        $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/manpower', $data);
     }
@@ -551,6 +552,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('project.building-points', TRUE);
         $this->complementHandler->addProjectCss('PointToPointHandler', TRUE);
         $this->complementHandler->addProjectJs('PointToPointHandler', TRUE);
+        $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);
     }

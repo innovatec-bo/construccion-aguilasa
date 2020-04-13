@@ -170,6 +170,7 @@ class ManpowerHandler
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         this._startSelect2();
         $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
+        $(".input-masked-price").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
     }
 
     public loadManpower()
@@ -340,7 +341,7 @@ class ManpowerHandler
                     $.each(splitBuilderString, function(index, value){
                         let string = value;
                         let result = string.split("-");
-                        builder = {"id":result[0], "fullName":result[1]}
+                        builder = {"id":result[0].trim(), "fullName":result[1].trim()}
                         builderList[result[0]] = builder;
                         builder = {};
                     });

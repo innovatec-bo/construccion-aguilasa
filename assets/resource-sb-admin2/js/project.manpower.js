@@ -9,4 +9,7 @@ $(document).ready(function() {
     manpowerHandler.loadManpower();
     manpowerHandler.loadManpowerLog();
     manpowerHandler.loadEventHandler();
+
+    let laborCostLogHandler = new LaborCostLogHandler(projectId);
+    laborCostLogHandler.loadEventHandler();
 });

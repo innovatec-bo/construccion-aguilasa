@@ -1,0 +1,239 @@
+// export {};
+declare let Handlebars: any;
+declare let blockArea: any;
+declare let base_url: any;
+declare let language: any;
+declare let $: any;
+declare let swal: any;
+declare let window: any;
+declare let toastr : any;
+declare let moment : any;
+declare let PointToPointHandler : any;
+declare let ManpowerHandler : any;
+class LaborCostLogHandler
+{
+    private _laborCostLogId;
+    private _projectId: number;
+    constructor(private projectID: number)
+    {
+        this._projectId = projectID;
+    }
+
+    private _edit(formData?)
+    {
+        let _this = this;
+        let method = !formData?"GET":"POST";
+        $.ajax({
+            url : base_url + 'panel/AjaxLaborCostLog/edit/'+_this._laborCostLogId,
+            dataType  :"json",
+            method : method,
+            data:formData,
+            beforeSend:function()
+            {
+                let message = "Cargando formulario..";
+                if(formData)
+                {
+                    message = "Guardando.."
+                }
+                swal({
+                    html: "<h3>"+message+"</h3>",
+                    allowOutsideClick:false,
+                    onBeforeOpen: () => {
+                        swal.showLoading();
+                    }
+                });
+            },
+            success:function(response){
+                swal.close();
+                if(response.success === 1 && !formData)
+                {
+                    let title = "Editar registro de avance";
+                    if(response.data.logMasterDetail.pointId !== null)
+                        title = title + " en el Punto "+response.data.logMasterDetail.pointLabel;
+                    _this.launchForm(response, title);
+
+                }
+                else if(response.success === 1 && formData)
+                {
+                    toastr.success(response.message, '', {'progressBar':true});
+                    _this._updateView(response.data.pointId);
+                }
+                else
+                {
+                    swal({ title:'', html:response.message, type:"error"});
+                }
+            }
+        });
+    }
+
+    private _delete(formData?)
+    {
+        let _this = this;
+        let method = !formData?"GET":"POST";
+        $.ajax({
+            url : base_url + 'panel/AjaxLaborCostLog/delete/'+_this._laborCostLogId,
+            dataType  :"json",
+            method : method,
+            data:formData,
+            beforeSend:function()
+            {
+                let message = "....";
+                if(formData)
+                {
+                    message = "Eliminando registro.."
+                }
+                swal({
+                    html: "<h3>"+message+"</h3>",
+                    allowOutsideClick:false,
+                    onBeforeOpen: () => {
+                        swal.showLoading();
+                    }
+                });
+            },
+            success:function(response){
+                swal.close();
+                if(response.success === 1 && !formData)
+                {
+                    let title = "Eliminar registro de avance";
+                    if(response.data.logMasterDetail.pointId !== null)
+                        title = title + " en el Punto "+response.data.logMasterDetail.pointLabel;
+                    title = title + "?"; 
+                    swal({
+                        title: title,
+                        icon:'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#E41C5E',
+                        cancelButtonColor: '#DDDDDD',
+                        confirmButtonText: 'Eliminar registro',
+                        cancelButtonText: 'Cancelar',
+                        allowOutsideClick:false,
+                        customClass:"modal-manpower-form"
+                    }).then((result) => {
+                        if (result.value)
+                        {
+                            _this._delete({data:"xyz"});
+                        }
+                    });
+
+                }
+                else if(response.success === 1 && formData)
+                {
+                    toastr.success(response.message, '', {'progressBar':true});
+                    _this._updateView(response.data.pointId);
+                }
+                else
+                {
+                    swal({ title:'', html:response.message, type:"error"});
+                }
+            }
+        });
+    }
+
+    private launchForm (response, formTitle)
+    {
+        let builderList : any = [];
+        let builder = {};
+        let splitBuilderString = response.data.logMasterDetail.builderWithId;
+        splitBuilderString = splitBuilderString.split(",");
+        $.each(splitBuilderString, function(index, value){
+            let string = value;
+            let result = string.split("-");
+            builder = {"id":result[0].trim(), "fullName":result[1].trim()}
+            builderList.push(builder);
+            builder = {};
+        });
+
+        response.data.builders = response.data.builders.filter(function(obj) {
+            return !builderList.some(function(obj2) {
+                return obj.id == obj2.id;
+            });
+        });
+        response.data.logMasterDetail.manualEntryDate = moment(response.data.logMasterDetail.manualEntryDate).format('DD-MM-YYYY');
+        let htmlTemplate = response.data.template;
+        let $template = $("<div>"+htmlTemplate+"</div>");
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let data = {data:response.data, buildersSelected:builderList};
+        let html = template(data);
+        let _this = this;
+        swal({
+            title: formTitle,
+            html: html,
+            showCancelButton: true,
+            confirmButtonColor: '#E41C5E',
+            cancelButtonColor: '#DDDDDD',
+            confirmButtonText: 'Modificar registro',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick:false,
+            showLoaderOnConfirm: true,
+            customClass:"modal-manpower-form",
+            width:'100%',
+            preConfirm: () => {
+                let $form = $("form[name=point-to-point-progress-form]");
+                if(!$form.parsley().isValid())
+                {
+                    $form.parsley().validate();
+                }
+            },
+        }).then((result) => {
+            if (result.value)
+            {
+                let $form = $("form[name=point-to-point-progress-form]");
+                let laborCostLogId = parseInt($form.find("input[name=labor-cost-log-id]").val());
+                if(isNaN(laborCostLogId))
+                {
+                    // _this.add($form.serialize());
+
+                }
+                else
+                {
+                    _this._edit($form.serialize());
+                }
+            }
+        });
+        let date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            // defaultDate: date,
+            format: 'DD-MM-YYYY',
+            locale:'es'
+        });
+        $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
+        $(".input-masked").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
+        $(".input-masked-price").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
+    }
+
+    private _updateView(pointId)
+    {
+        if(pointId !== null)
+        {
+            let pointToPointHandler = new PointToPointHandler(this._projectId);
+            pointToPointHandler.loadBuildingPoints();
+            pointToPointHandler.loadManpowerLog();
+        }
+        else
+        {
+            let manpowerHandler = new ManpowerHandler(this._projectId);
+            manpowerHandler.loadManpower();
+            manpowerHandler.loadManpowerLog();
+        }
+    }
+
+    public loadEventHandler()
+    {
+        let _this = this;
+        $(document).on("click", ".delete-log", function(e){
+            e.preventDefault();
+            let id = $(this).data("log-id");
+            _this._laborCostLogId = parseInt(id);
+            _this._delete();
+        });
+
+        $(document).on("click", ".edit-log", function(e){
+            e.preventDefault();
+            let id = $(this).data("log-id");
+            _this._laborCostLogId = parseInt(id);
+            _this._edit();
+        });
+    }
+}
