@@ -556,7 +556,7 @@ $projectSystems = array(
 </script>
 <script id="ht-modal-form-edit-point-to-point-progress" type="text/x-handlebars-template">
     <form name="point-to-point-progress-form" data-parsley-validate>
-        <input name="labor-cost-log-id" value="{{data.logMasterDetail.logId}}">
+        <input type="hidden" name="labor-cost-log-id" value="{{data.logMasterDetail.logId}}">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
