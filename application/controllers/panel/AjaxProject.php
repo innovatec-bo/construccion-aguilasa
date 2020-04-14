@@ -21,25 +21,25 @@ class AjaxProject extends PrivateController
 
     public function ajaxDtAllProjects()
     {
+        $additionalParameters = $this->input->post("additionalParameters");
         $response = $this->_is("fiscal");
-        $userId = "";
         if($response == 1)
         {
-            $userId = $this->sessionUser->id;
+            $additionalParameters["responsible-id"] = $this->sessionUser->id;
         }
         $dt = new JqdtHandler($this->input->post());
-        $additionalParameters = $this->input->post("additionalParameters");
+        
         $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
-        $recordsTotal = Model_project::countAll($additionalParameters["status"], $userId);
+        $recordsTotal = Model_project::countAll($additionalParameters);
         $recordsFiltered = $recordsTotal;
         if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
-        {
-            $resultArray = Model_project::getAllProjects($additionalParameters["status"], $userId, $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0));
+        {//echo"<pre>";var_dump($response, $additionalParameters);exit;
+            $resultArray = Model_project::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $additionalParameters);
         }
         else
         {
-            $resultArray = Model_project::searchProject($additionalParameters["status"], $userId, $dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
-            $recordsFiltered = Model_project::searchTotalCount($additionalParameters["status"], $userId, $dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
+            $resultArray = Model_project::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
+            $recordsFiltered = Model_project::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);

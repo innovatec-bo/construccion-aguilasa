@@ -338,82 +338,86 @@ class Model_project_base extends MY_Model
     /**
      * @return mixed
      */
-    public static function countAll_deprecated()
+    public static function countAll($additionalParameters = array())
     {
-        // $ci = &get_instance();
-        // $ci->load->database();
+        $ci = &get_instance();
+        $ci->load->database();
 
-        // $sql = '
-        //     select count(id_pro) as total from
-        //     (
-        //         SELECT
-        //             wfl_projects.*,
-        //             status_name_pst,
-        //             order_pst,
-        //             status_log_manual_entry_date.manual_entry_date_psl,
-        //             status_log_manual_entry_date.responsible,
-        //             status_log_manual_entry_date.responsible_ids,
-        //             id_psl,
-        //             manpower.manpower_file_id
-        //         FROM
-        //             wfl_projects
-        //         LEFT JOIN (
-        //             select * from (
-        //                 select
-        //                     project_id_psl project_id, max(manual_entry_date_psl) max_date
-        //                     from (
-        //                         SELECT
-        //                             project_id_psl,
-        //                             manual_entry_date_psl
-        //                         FROM
-        //                             wfl_project_status_log
-        //                         LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-        //                         where deleted_psl != 1 and deleted_slr != 1
-        //                         GROUP BY id_psl
-        //                     ) statusLogAndResponsible group by project_id_psl
-        //             ) as max_entry
-        //             LEFT JOIN (
-        //                         SELECT
-        //                             id_psl,
-        //                             project_id_psl,
-        //                             log_detail_psl,
-        //                             manual_entry_date_psl,
-        //                             GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
-        //                             GROUP_CONCAT(id_usr) responsible_ids
-        //                         FROM
-        //                             wfl_project_status_log
-        //                         LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-        //                         LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-        //                         LEFT JOIN sec_users on id_usr = user_id_sre
-        //                         where deleted_psl != 1  and deleted_slr != 1
-        //                         GROUP BY id_psl
-        //                         ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
-        //         ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
-        //         LEFT JOIN wfl_project_status on status_pro = id_pst
-        //         LEFT JOIN (
-        //             SELECT
-        //                 id_pro project_id,
-        //                 wfl_project_budgets.manpower_file_id_prb manpower_file_id   
-        //             FROM
-        //                 wfl_project_budgets
-        //             LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
-        //             left join wfl_projects on id_pro = project_id_psl
-        //             WHERE 
-        //                 deleted_prb != 1
-        //             and deleted_pro != 1
-        //             and deleted_psl != 1
-        //             and manpower_file_id_prb is not null
-        //         ) manpower on manpower.project_id = id_pro
-        //         WHERE
-        //             deleted_pro != 1
-        //             and ",@statusIdFilter2,"
-        //             and ",@statusIdFilter3,"
-        //     ) projects;
-        // ';
+        $sql = '
+            select count(id_pro) as total from
+            (
+                SELECT
+                    '.static::_dataTableColumns().'
+                FROM
+                    wfl_projects
+                LEFT JOIN (
+                    select * from (
+                        select
+                            project_id_psl project_id, max(manual_entry_date_psl) max_date
+                            from (
+                                SELECT
+                                    project_id_psl,
+                                    manual_entry_date_psl
+                                FROM
+                                    wfl_project_status_log
+                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                                where deleted_psl != 1 and deleted_slr != 1
+                                GROUP BY id_psl
+                            ) statusLogAndResponsible group by project_id_psl
+                    ) as max_entry
+                    LEFT JOIN (
+                                SELECT
+                                    id_psl,
+                                    project_id_psl,
+                                    log_detail_psl,
+                                    manual_entry_date_psl,
+                                    GROUP_CONCAT(CONCAT(firstname_usr,\' \',lastname_usr)) responsible,
+                                    GROUP_CONCAT(id_usr) responsible_ids
+                                FROM
+                                    wfl_project_status_log
+                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                                LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                                LEFT JOIN sec_users on id_usr = user_id_sre
+                                where deleted_psl != 1  and deleted_slr != 1
+                                GROUP BY id_psl
+                                ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+                LEFT JOIN wfl_project_status on status_pro = id_pst
+                LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
+                LEFT JOIN (
+                    select inc.*
+                    from (
+                       select
+                            project_id_inc,
+                            max(manual_entry_date_inc) manual_entry_date_inc
+                            from wfl_incidents
+                            where status_id_inc in (29) -- in_progress
+                            GROUP BY project_id_inc
+                    ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+                ) wfl_incidents on project_id_inc = id_pro
+                LEFT JOIN (
+                    SELECT
+                        id_pro project_id,
+                        wfl_project_budgets.manpower_file_id_prb manpower_file_id   
+                    FROM
+                        wfl_project_budgets
+                    LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
+                    left join wfl_projects on id_pro = project_id_psl
+                    WHERE 
+                        deleted_prb != 1
+                    and deleted_pro != 1
+                    and deleted_psl != 1
+                    and manpower_file_id_prb is not null
+                ) manpower on manpower.project_id = id_pro
+                WHERE
+                    deleted_pro != 1
+                    '.static::_additionalParameters($additionalParameters).'
+            ) projects;
+        ';
 
-        // $query = $ci->db->query($sql);
-        // $totalCount = $query->row()->total;
-        // return $totalCount;
+        $query = $ci->db->query($sql);
+        $totalCount = $query->row()->total;
+        return $totalCount;
     }
 
     /**
@@ -423,7 +427,7 @@ class Model_project_base extends MY_Model
      * @param string $orderType
      * @return mixed
      */
-    public static function getAll_deprecated($limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc', $additionalParameters = array())
     {
         if ($orderBy === null)
         {
@@ -432,12 +436,79 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        $sql = 'select '.static::_dataTableColumns().' 
-                from ' . static::TABLE_NAME . '
-                LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
-                LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
-                where '.static::notDeleted().'             
-                group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $sql = "
+        select * from
+            (
+                SELECT
+                    ".static::_dataTableColumns()."
+                FROM
+                    wfl_projects
+                LEFT JOIN (
+                    select * from (
+                        select
+                            project_id_psl project_id, max(manual_entry_date_psl) max_date
+                            from (
+                                SELECT
+                                    project_id_psl,
+                                    manual_entry_date_psl
+                                FROM
+                                    wfl_project_status_log
+                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                                where deleted_psl != 1 and deleted_slr != 1
+                                GROUP BY id_psl
+                            ) statusLogAndResponsible group by project_id_psl
+                    ) as max_entry
+                    LEFT JOIN (
+                                SELECT
+                                    id_psl,
+                                    project_id_psl,
+                                    log_detail_psl,
+                                    manual_entry_date_psl,
+                                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                                    GROUP_CONCAT(id_usr) responsible_ids
+                                FROM
+                                    wfl_project_status_log
+                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                                LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                                LEFT JOIN sec_users on id_usr = user_id_sre
+                                where deleted_psl != 1  and deleted_slr != 1
+                                GROUP BY id_psl
+                                ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+                LEFT JOIN wfl_project_status on status_pro = id_pst
+                LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
+                LEFT JOIN (
+                            select inc.*
+                            from (
+                               select
+                                    project_id_inc,
+                                    max(manual_entry_date_inc) manual_entry_date_inc
+                                    from wfl_incidents
+                                    where status_id_inc in (29) -- in_progress
+                                    GROUP BY project_id_inc
+                            ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+                        ) wfl_incidents on project_id_inc = id_pro
+                LEFT JOIN (
+                    SELECT
+                        id_pro project_id,
+                        wfl_project_budgets.manpower_file_id_prb manpower_file_id   
+                    FROM
+                        wfl_project_budgets
+                    LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
+                    left join wfl_projects on id_pro = project_id_psl
+                    WHERE 
+                        deleted_prb != 1
+                    and deleted_pro != 1
+                    and deleted_psl != 1
+                    and manpower_file_id_prb is not null
+                ) manpower on manpower.project_id = id_pro
+                WHERE
+                    deleted_pro != 1
+                    ".static::_additionalParameters($additionalParameters)."
+            ) projects
+            ORDER BY order_pst ASC, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+        ";
+
         $query = $ci->db->query($sql);
         $result = $query->result();
         return $result;
@@ -453,7 +524,7 @@ class Model_project_base extends MY_Model
      * @param array $additionalParameters
      * @return mixed
      */
-    public static function search_deprecated($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
+    public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
     {
         if ($orderBy === null)
         {
@@ -462,19 +533,93 @@ class Model_project_base extends MY_Model
         $ci = &get_instance();
         $ci->load->database();
 
-        $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
-        $sql.='
-            LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
-            LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
-        ';
-        $sql .= ' where '.static::notDeleted().' and (';
-        foreach ($colsArray as $var)
+        $like = "";
+        if(!is_null($colsArray))
         {
-            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            $like .= " and ( ";
+            foreach ($colsArray as $var)
+            {
+                $like .= " " . $var . " like '%" . $text . "%' or ";
+            }
+            $like = substr($like, 0, -3).") ";    
         }
 
-        $sql = substr($sql, 0, -3);
-        $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $sql = "
+        select * from
+        (
+            SELECT
+                ".static::_dataTableColumns()."
+            FROM
+                wfl_projects
+            LEFT JOIN (
+                select * from (
+                    select
+                        project_id_psl project_id, max(manual_entry_date_psl) max_date
+                        from (
+                            SELECT
+                                project_id_psl,
+                                manual_entry_date_psl
+                            FROM
+                                wfl_project_status_log
+                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                            where deleted_psl != 1 and deleted_slr != 1
+                            GROUP BY id_psl
+                        ) statusLogAndResponsible group by project_id_psl
+                ) as max_entry
+                LEFT JOIN (
+                            SELECT
+                                id_psl,
+                                project_id_psl,
+                                log_detail_psl,
+                                manual_entry_date_psl,
+                                GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                                GROUP_CONCAT(id_usr) responsible_ids
+                            FROM
+                                wfl_project_status_log
+                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                            LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                            LEFT JOIN sec_users on id_usr = user_id_sre
+                            where deleted_psl != 1  and deleted_slr != 1
+                            GROUP BY id_psl
+                            ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            LEFT JOIN wfl_project_status on status_pro = id_pst
+            LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
+            LEFT JOIN (
+                            select inc.*
+                            from (
+                               select
+                                    project_id_inc,
+                                    max(manual_entry_date_inc) manual_entry_date_inc
+                                    from wfl_incidents
+                                    where status_id_inc in (29) -- in_progress
+                                    GROUP BY project_id_inc
+                            ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+                        ) wfl_incidents on project_id_inc = id_pro
+            LEFT JOIN (
+                SELECT
+                    id_pro project_id,
+                    wfl_project_budgets.manpower_file_id_prb manpower_file_id   
+                FROM
+                    wfl_project_budgets
+                LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
+                left join wfl_projects on id_pro = project_id_psl
+                WHERE 
+                    deleted_prb != 1
+                and deleted_pro != 1
+                and deleted_psl != 1
+                and manpower_file_id_prb is not null
+            ) manpower on manpower.project_id = id_pro            
+            WHERE
+                deleted_pro != 1
+                ".static::_additionalParameters($additionalParameters)."
+        ) projects
+        where
+            1 = 1
+            ".$like."
+        ORDER BY ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+        ";
+
         $query = $ci->db->query($sql);
         return $query->result();
     }
@@ -485,25 +630,97 @@ class Model_project_base extends MY_Model
      * @param array $additionalParameters
      * @return mixed
      */
-    public static function searchTotalCount_deprecated($text, $colsArray = null, $additionalParameters = array())
+    public static function searchTotalCount($text, $colsArray = null, $additionalParameters = array())
     {
         $ci = &get_instance();
         $ci->load->database();
 
-        $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
-        $sql.='
-            LEFT JOIN wfl_project_stakes on project_id_prs = id_pro
-            LEFT JOIN wfl_stakes_team_leader on id_stl = stakes_leader_id_prs
-        ';
-        $sql .= ' where '.static::notDeleted().' and (';
-
-        foreach ($colsArray as $var)
+        $like = "";
+        if(!is_null($colsArray))
         {
-            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            $like .= " and ( ";
+            foreach ($colsArray as $var)
+            {
+                $like .= " " . $var . " like '%" . $text . "%' or ";
+            }
+            $like = substr($like, 0, -3).") ";    
         }
 
-        $sql = substr($sql, 0, -3);
-        $sql .= ') '.static::_additionalParameters($additionalParameters);
+        $sql = "
+        select count(id_pro) as total from
+        (
+            SELECT
+                ".static::_dataTableColumns()."
+            FROM
+                wfl_projects
+            LEFT JOIN (
+                select * from (
+                    select
+                        project_id_psl project_id, max(manual_entry_date_psl) max_date
+                        from (
+                            SELECT
+                                project_id_psl,
+                                manual_entry_date_psl
+                            FROM
+                                wfl_project_status_log
+                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                            where deleted_psl != 1 and deleted_slr != 1
+                            GROUP BY id_psl
+                        ) statusLogAndResponsible group by project_id_psl
+                ) as max_entry
+                LEFT JOIN (
+                            SELECT
+                                id_psl,
+                                project_id_psl,
+                                log_detail_psl,
+                                manual_entry_date_psl,
+                                GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                                GROUP_CONCAT(id_usr) responsible_ids
+                            FROM
+                                wfl_project_status_log
+                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                            LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                            LEFT JOIN sec_users on id_usr = user_id_sre
+                            where deleted_psl != 1  and deleted_slr != 1
+                            GROUP BY id_psl
+                            ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            LEFT JOIN wfl_project_status on status_pro = id_pst
+            LEFT JOIN (
+                select inc.*
+                from (
+                   select
+                        project_id_inc,
+                        max(manual_entry_date_inc) manual_entry_date_inc
+                        from wfl_incidents
+                        where status_id_inc in (29) -- in_progress
+                        GROUP BY project_id_inc
+                ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+            ) wfl_incidents on project_id_inc = id_pro
+            LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
+            LEFT JOIN (
+                SELECT
+                    id_pro project_id,
+                    wfl_project_budgets.manpower_file_id_prb manpower_file_id   
+                FROM
+                    wfl_project_budgets
+                LEFT JOIN wfl_project_status_log on id_psl = status_log_id_prb
+                left join wfl_projects on id_pro = project_id_psl
+                WHERE 
+                    deleted_prb != 1
+                and deleted_pro != 1
+                and deleted_psl != 1
+                and manpower_file_id_prb is not null
+            ) manpower on manpower.project_id = id_pro
+            WHERE
+                deleted_pro != 1
+                ".static::_additionalParameters($additionalParameters)."
+        ) projects
+        where
+            1 = 1
+            ".$like."
+        ;
+        ";
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -512,7 +729,19 @@ class Model_project_base extends MY_Model
 
     private static function _dataTableColumns()
     {
-        $columns = static::TABLE_NAME.".*, GROUP_CONCAT(DISTINCT leader_stl) leader_stl";
+        $columns = static::TABLE_NAME.".*,
+                        status_name_pst,
+                        keyword_pst,
+                        IFNULL(percentage_inc,0) percentage_inc,
+                        detail_inc,
+                        order_pst,
+                        status_log_manual_entry_date.manual_entry_date_psl,
+                        status_log_manual_entry_date.responsible,
+                        status_log_manual_entry_date.responsible_ids,
+                        manpower.manpower_file_id,
+                        id_psl,
+                        id_war
+        ";
         return $columns;
     }
 
@@ -527,6 +756,7 @@ class Model_project_base extends MY_Model
             {
                 switch ($parameter)
                 {
+                    //For this parameter the ids are separated by comma
                     case "status":
                         $statusList = explode(",",$value);
                         $statusScape = "";
@@ -536,7 +766,10 @@ class Model_project_base extends MY_Model
                         }
                         $statusScape = substr($statusScape,0,-2);
                         $sql .= " and status_pro in ( ".$statusScape." )";
-                        break;
+                    break;
+                    case "responsible-id":
+                        $sql .= " and responsible_ids like '%".$value."%'";
+                    break;
                 }
             }
         }
@@ -551,7 +784,7 @@ class Model_project_base extends MY_Model
      * @param string $statusId
      * @return mixed
      */
-    public static function countAll($statusId = "", $userId = "")
+    public static function countAll_deprecated($statusId = "", $userId = "")
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -573,7 +806,7 @@ class Model_project_base extends MY_Model
      * @param string $orderType
      * @return mixed
      */
-    public static function getAllProjects($statusId = "", $userId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllProjects_deprecated($statusId = "", $userId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {
@@ -601,7 +834,7 @@ class Model_project_base extends MY_Model
      * @param null $colsArray
      * @return mixed
      */
-    public static function searchProject($statusId = "", $userId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchProject_deprecated($statusId = "", $userId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
     {
         if ($orderBy === null)
         {
@@ -625,7 +858,7 @@ class Model_project_base extends MY_Model
      * @param null $colsArray
      * @return mixed
      */
-    public static function searchTotalCount($statusId = "", $userId = "", $text = "", $colsArray = null)
+    public static function searchTotalCount_deprecated($statusId = "", $userId = "", $text = "", $colsArray = null)
     {
         $ci = &get_instance();
         $ci->load->database();

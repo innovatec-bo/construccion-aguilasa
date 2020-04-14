@@ -161,7 +161,7 @@ $(document).ready(function() {
         }, {
             "data" : "address_pro",
             "defaultContent" : "",
-            "searchable" : false,
+            "searchable" : true,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var address = row.address_pro;
