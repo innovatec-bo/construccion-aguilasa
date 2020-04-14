@@ -86,15 +86,4 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
-
-    public function test()
-    {
-        $data['status'] = "29";
-        $data['responsible-id'] = "15";
-        $result1 = Model_project::countAll_deprecated($data);
-        $result2 = Model_project::getAll_deprecated(100, 0, NULL, 'asc', $data);
-        // $result1 = Model_project::search_deprecated('03',100, 0, NULL, 'asc', array('code_pro'), $data);
-        // $result2 = Model_project::searchTotalCount_deprecated('03', array('code_pro'), $data);
-        echo "<pre>";var_dump($result1, $result2);exit;
-    }
 }

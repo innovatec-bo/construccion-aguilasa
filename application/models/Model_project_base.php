@@ -506,8 +506,8 @@ class Model_project_base extends MY_Model
                     deleted_pro != 1
                     ".static::_additionalParameters($additionalParameters)."
             ) projects
-            ORDER BY order_pst ASC, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
-        ";
+            ORDER BY order_pst asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+        ";//echo"<pre>";var_dump($sql);exit;
 
         $query = $ci->db->query($sql);
         $result = $query->result();
@@ -617,7 +617,7 @@ class Model_project_base extends MY_Model
         where
             1 = 1
             ".$like."
-        ORDER BY ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+        ORDER BY order_pst asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
         ";
 
         $query = $ci->db->query($sql);
@@ -750,6 +750,7 @@ class Model_project_base extends MY_Model
         $ci=&get_instance();
         $ci->load->database();
         $sql = "";
+        // echo"<pre>";var_dump($list,'df');exit;
         if(is_array($list) && count($list) >= 1)
         {
             foreach($list as $parameter => $value)
@@ -760,20 +761,23 @@ class Model_project_base extends MY_Model
                     case "status":
                         $statusList = explode(",",$value);
                         $statusScape = "";
+                        // $includeFilter = FALSE;
                         foreach ($statusList as $status)
                         {
                             $statusScape .= $ci->db->escape($status).", ";
+                            $includeFilter = TRUE;
                         }
                         $statusScape = substr($statusScape,0,-2);
-                        $sql .= " and status_pro in ( ".$statusScape." )";
+                        // if($includeFilter)
+                            $sql .= " and status_pro in ( ".$statusScape." )";
                     break;
                     case "responsible-id":
-                        $sql .= " and responsible_ids like '%".$value."%'";
+                        // if($value != "")
+                            $sql .= " and responsible_ids like '%".$value."%'";
                     break;
                 }
             }
         }
-
         return $sql;
     }
     ################################################################################################# END - DATATABLE AJAX METHODS

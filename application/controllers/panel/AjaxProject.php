@@ -29,17 +29,20 @@ class AjaxProject extends PrivateController
         }
         $dt = new JqdtHandler($this->input->post());
         
-        $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
+        // $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
         $recordsTotal = Model_project::countAll($additionalParameters);
         $recordsFiltered = $recordsTotal;
-        if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
-        {//echo"<pre>";var_dump($response, $additionalParameters);exit;
+        if (!$dt->hasSearchValue())
+            // if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
+        {
             $resultArray = Model_project::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $additionalParameters);
+            //echo"<pre>";var_dump($resultArray, $recordsFiltered, $additionalParameters);exit;
         }
         else
         {
             $resultArray = Model_project::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
             $recordsFiltered = Model_project::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
+            
         }
 
         echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
@@ -96,8 +99,9 @@ class AjaxProject extends PrivateController
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");
         $offset = ($page-1)*$limit;
-        $projects = Model_project::searchProject("39","",$term, $limit, $offset, 'code_pro', 'asc', array('code_pro'));
-        $recordsFiltered = Model_project::searchTotalCount("39","",$term, array('code_pro'));
+        $additionalParameters['status'] = "39";
+        $projects = Model_project::search($term, $limit, $offset, 'code_pro', 'asc', array('code_pro'), $additionalParameters);
+        $recordsFiltered = Model_project::searchTotalCount($term, array('code_pro'), $additionalParameters);
 
         $resultArray = array();
         $list = array();
@@ -419,36 +423,6 @@ class AjaxProject extends PrivateController
         echo json_encode($result);exit;
     }
 
-    public function getProjectsAndWorkPlan()
-    {
-        // $this->_validateFeature('project_quick_search');
-        $formData = $this->input->post();
-        $response = $this->_is("fiscal");
-        $userId = "";
-        if($response == 1)
-        {
-            $userId = $this->sessionUser->id;
-        }
-        $resultArray = Model_project::getAllProjects("", $userId, 1000, 0);
-        $projectIds = array();
-        foreach ($resultArray as $row) 
-        {
-            $projectIds[] = $row->id_pro;
-        }
-        $projectList = Model_work_plan::getByProjectIdsAndDateRange($projectIds,"","");
-        $success = 0;
-        $message = "No se encontraron registros para mostrar.";
-        if(count($projectList)>0)
-        {
-            $success = 1;
-            $message = "";
-        }
-        $result['success'] = $success;
-        $result['message'] = '';
-        $result['data']['projectList'] = $projectList;
-        echo json_encode($result);exit;   
-    }
-
     public function select2()
     {
         $term = $this->input->post("term");
@@ -457,8 +431,8 @@ class AjaxProject extends PrivateController
         $currentIds = $this->input->post("currentIds");
         $currentIds = array_filter($currentIds);
         $offset = ($page-1)*$limit;
-        $records = Model_project::searchProject("","",$term, $limit, $offset, 'code_pro', 'asc', array('code_pro'));
-        $recordsFiltered = Model_project::searchTotalCount("","",$term, array('code_pro'));
+        $records = Model_project::search($term, $limit, $offset, 'code_pro', 'asc', array('code_pro'));
+        $recordsFiltered = Model_project::searchTotalCount($term, array('code_pro'));
 
         $resultArray = array();
         $list = array();

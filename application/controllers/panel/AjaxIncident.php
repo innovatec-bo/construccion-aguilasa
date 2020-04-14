@@ -61,7 +61,8 @@ class AjaxIncident extends PrivateController
             $response["incident"] = array();
             if(!is_numeric($projectId))
             {
-                $projectList = Model_project::getAllProjects($statusId, "", 100, 0,"entry_date_pro","desc");
+                $additionalParameters['status'] = $statusId;
+                $projectList = Model_project::getAll(100, 0, "entry_date_pro","desc", $additionalParameters);
             }
             else
             {
