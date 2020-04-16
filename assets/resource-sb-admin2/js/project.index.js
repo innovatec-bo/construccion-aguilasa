@@ -6,6 +6,10 @@ $(document).ready(function() {
 
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
     additionalParameter.addParameterObject('status','text');
+    additionalParameter.addParameterObject('work-area','select');
+    additionalParameter.addParameterObject('fiscal-responsible-id','select');
+    additionalParameter.addParameterObject('builder-responsible-id','select');
+    additionalParameter.addParameterObject('manpower-uploaded','select');
     additionalParameter.setButtonFilter('#send-filters');
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
@@ -159,6 +163,10 @@ $(document).ready(function() {
         }, {
             "data" : "responsible"
         }, {
+            "data" : "fiscal_responsible"
+        }, {
+            "data" : "builder_responsible"
+        }, {
             "data" : "address_pro",
             "defaultContent" : "",
             "searchable" : true,
@@ -185,22 +193,36 @@ $(document).ready(function() {
             "render" : function(data, type, row, meta) {
                 var currentStatusSet = $("input[name=status-set]").val();
                 var html = '';
+                let showStatusManagementProjectBtn = 0;
+                let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro;
+                let showStatusManagementWharehouseBtn = 0;
+                let statusManagementWharehouseUrl = base_url + 'panel/Warehouse/statusManagement/'+row.id_war;
+                let showAddIncidentBtn = 0;
+                let showManpowerBtn = 0;
+                let showEditProjectBtn = 1;
+                let showDeleteProjectBtn = 1;
+                let showAssignProjectBtn = 0;
+                let assignProjectUrl = base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro;
                 if(currentStatusSet != "")
                 {
                     if(statusSet[row.status_pro] == "warehouse")
                     {
+                        showStatusManagementWharehouseBtn = 1;
                         html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Warehouse/statusManagement/'+row.id_war+'" title="" data-original-title="ALMACEN"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                     }
                     else
                     {
+                        showStatusManagementProjectBtn = 1;
                         html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                     }
                     if(statusSet[row.status_pro] == "building")
                     {
+                        showAddIncidentBtn = 1;
                         html += ' <a class="btn btn-warning btn-xs add-incident" data-project-id="'+row.id_pro+'" data-status-id="'+row.status_pro+'" href="#" title="" data-original-title="AÑADIR INCIDENTE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-flag-o"></i></a> ';
                     }
                     if(row.manpower_file_id !== null && !isNaN(row.manpower_file_id))
                     {
+                        showManpowerBtn = 1;
                         html += ' <a class="btn btn-warning btn-xs" href="'+base_url + 'panel/Project/manpower/'+row.id_pro+'" title="" data-original-title="MANO DE OBRA"  data-toggle="tooltip" data-placement="top"><i class="fa fa-table"></i></a> ';
                     }
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
@@ -208,9 +230,26 @@ $(document).ready(function() {
                 }
                 else
                 {
+                    showAssignProjectBtn = 1;
                     html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro+'" title="" data-original-title="ASIGNAR PROYECTO"  data-toggle="tooltip" data-placement="top"><i class="fa fa-th-list"></i></a> ';
                 }
-                return html;
+                // return html;
+                let visibility = {
+                    showStatusManagementProjectBtn:showStatusManagementProjectBtn,
+                    statusManagementProjectUrl:statusManagementProjectUrl,
+                    showStatusManagementWharehouseBtn:showStatusManagementWharehouseBtn,
+                    statusManagementWharehouseUrl:statusManagementWharehouseUrl,
+                    showAddIncidentBtn:showAddIncidentBtn,
+                    showManpowerBtn:showManpowerBtn,
+                    showEditProjectBtn:showEditProjectBtn,
+                    showDeleteProjectBtn:showDeleteProjectBtn,
+                    showAssignProjectBtn:showAssignProjectBtn,
+                    assignProjectUrl:assignProjectUrl
+                };
+                let htmlSource   = $("#ht-datatable-dropdown-menu").html();
+                let template = Handlebars.compile(htmlSource);
+                let teamData = {row:row, visibility:visibility};
+                return template(teamData);
             }
         }],
         "drawCallback" : function(object) {
@@ -237,6 +276,20 @@ function columnVisibility(_this)
         case "drawing":
             _this.api().column(3).visible(false);
             _this.api().column(6).visible(false);
+    }
+    let statusSet = $("input[name=status-set]").val();
+    
+    switch(statusSet)
+    {
+        case "building":
+            _this.api().column(9).visible(false);
+            _this.api().column(10).visible(true);
+            _this.api().column(11).visible(true);
+            break;
+        default:
+            _this.api().column(9).visible(true);
+            _this.api().column(10).visible(false);
+            _this.api().column(11).visible(false);
     }
 
 }

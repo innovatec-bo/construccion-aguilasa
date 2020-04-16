@@ -239,6 +239,7 @@ class PrivateController extends PublicController
         $contentData["contentView"] = $contentView;
         $contentData["sessionUser"] = $this->sessionUser;
         $contentData["isSuperAdmin"] = $this->_is("super_admin");
+        $contentData["isFiscal"] = $this->_is("fiscal");
         $contentData["showProjectQuickSearch"] = $this->_validateFeature('project_quick_search', TRUE);
         $featureList = unserialize($this->sessionUser->featureList);
         $treeFeatureHtml = Model_feature::drawTreeHtml(NULL,$featureList,array());

@@ -25,18 +25,16 @@ class AjaxProject extends PrivateController
         $response = $this->_is("fiscal");
         if($response == 1)
         {
-            $additionalParameters["responsible-id"] = $this->sessionUser->id;
+            $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
         }
         $dt = new JqdtHandler($this->input->post());
         
-        // $additionalParameters["status"] = isset($additionalParameters["status"])?$additionalParameters["status"]:"";
         $recordsTotal = Model_project::countAll($additionalParameters);
         $recordsFiltered = $recordsTotal;
+        // echo"<pre>";var_dump($additionalParameters);exit;
         if (!$dt->hasSearchValue())
-            // if (!$dt->hasSearchValue() && count($additionalParameters) <= 1)
         {
             $resultArray = Model_project::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $additionalParameters);
-            //echo"<pre>";var_dump($resultArray, $recordsFiltered, $additionalParameters);exit;
         }
         else
         {

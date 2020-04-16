@@ -136,7 +136,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Pausado";
-        $data["statusSet"] = "paused";
+        $data["statusSet"] = "building";
         $data["status"] = 31;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -169,7 +169,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Completado";
-        $data["statusSet"] = "completed";
+        $data["statusSet"] = "building";
         $data["status"] = 32;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -202,7 +202,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Energizado";
-        $data["statusSet"] = "project_energized";
+        $data["statusSet"] = "building";
         $data["status"] = 47;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -235,7 +235,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya enviaron su As Built";
-        $data["statusSet"] = "as_built";
+        $data["statusSet"] = "building";
         $data["status"] = 33;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -268,7 +268,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya tienen recepcion de conciliacion";
-        $data["statusSet"] = "conciliation_reception";
+        $data["statusSet"] = "building";
         $data["status"] = 34;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -301,7 +301,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya enviaron la conciliacion";
-        $data["statusSet"] = "conciliation_shipment";
+        $data["statusSet"] = "building";
         $data["status"] = 35;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -334,7 +334,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos ha recibido la orden de devolucion de materiales";
-        $data["statusSet"] = "cre_return_order";
+        $data["statusSet"] = "building";
         $data["status"] = 38;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -367,7 +367,7 @@ class Building extends PrivateController
         $this->complementHandler->addProjectCss('project.index', TRUE);
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que confirmaron la devolucion de materiales a CRE";
-        $data["statusSet"] = "project_return_materials";
+        $data["statusSet"] = "building";
         $data["status"] = 39;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);

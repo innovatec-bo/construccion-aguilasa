@@ -17,29 +17,86 @@
             ?>
         </div>
 
-        <div class="col-md-12 hide">
+        <div class="col-md-12">
             <input type="hidden" name="status-set" value="<?=$statusSet?>">
             <form class="form-group" id="extra-request-data">
-                <div class="row">
-                    <div class="col-md-12">
+                <input type="hidden" name="status" value="<?=$status?>">
+                <fieldset class="custom-border">
+                    <legend class="custom-border">Filtros</legend>
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label class="radio-inline">
-                                <input name="status" value="<?=$status?>">
-                            </label>
+                            <label>Area de trabajo</label>
+                            <select class="form-control" name="work-area">
+                                <option value="">--Todos--</option>
+                                <option value="gir">GIR</option>
+                                <option value="gis">GIS</option>
+                            </select>    
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>
-                    <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove parametros adicionales</button>
-                </div>
-            </form>
-            <form name="workflow-with-parameters" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
-                    <input type="hidden" name="is-super-admin" value="<?=$isSuperAdmin?>">
-                <input type="hidden" name="code-list" value="">
-                <input type="hidden" name="columns-to-download" value="">
+                    <?php
+                    if($isSuperAdmin == 1)
+                    {
+                    ?>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fiscales</label>
+                            <select class="form-control" name="fiscal-responsible-id">
+                                <option value="">--Todos--</option>
+                                <?php
+                                    $list = "";
+                                    foreach ($fiscalList as $fiscal) 
+                                    {
+                                        $list .= "<option value='".$fiscal->getId()."'>".$fiscal->getFullName()."</option>";
+                                    }
+                                    echo $list;
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Constructores</label>
+                            <select class="form-control" name="builder-responsible-id">
+                                <option value="">--Todos--</option>
+                                <?php
+                                    $list = "";
+                                    foreach ($builderList as $builder) 
+                                    {
+                                        $list .= "<option value='".$builder->getId()."'>".$builder->getFullName()."</option>";
+                                    }
+                                    echo $list;
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Mano de obra</label>
+                            <select class="form-control" name="manpower-uploaded">
+                                <option value="">--Todos--</option>
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group mb-0">
+                            <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>
+                            <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove filtros</button>
+                        </div>
+                    </div>
+                </fieldset>
             </form>
         </div>
+        
+        <form name="workflow-with-parameters" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
+            <input type="hidden" name="is-super-admin" value="<?=$isSuperAdmin?>">
+            <input type="hidden" name="code-list" value="">
+            <input type="hidden" name="columns-to-download" value="">
+        </form>
         <?php
         if($statusSet == "building") {
             ?>
@@ -67,8 +124,10 @@
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
                         <th>RESPONSABLE</th>
+                        <th>FISCAL</th>
+                        <th>CONSTRUCTOR</th>
                         <th>UBICACION</th>
-                        <th>ACCIONES</th>
+                        <th class="text-center"><i class="fa fa-cogs fa-2x"></i></th>
                     </tr>
                     </thead>
                 </table>

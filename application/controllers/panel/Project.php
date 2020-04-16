@@ -40,6 +40,9 @@ class Project extends PrivateController
         $data["status"] = '';//todos los estados
         $data["statusSet"] = "none";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
+        // echo"<pre>";var_dump($data['builderList']);exit;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)

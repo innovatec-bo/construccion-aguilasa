@@ -12,4 +12,7 @@
     <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
-<?php $this->load->view('default-template/panel/footer/footer', $contentData); ?>
+<?php 
+$this->load->view('default-template/panel/footer/footer', $contentData); 
+$this->load->view('default-template/panel/content/project/ht-datatable-dropdown-menu'); 
+?>

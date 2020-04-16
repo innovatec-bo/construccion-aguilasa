@@ -39,6 +39,9 @@ function DTAdditionalParameterHandler(objectContent, table) {
                         value = $content.find("input[name="+parameter.name+"]").is(":checked");
                         value = value?"1":"";
                         break;
+                    case "select":
+                        value = $content.find("select[name="+parameter.name+"] option:selected").val();
+                        break;
                 }
                 parameter.value = value;
                 if(parameter.value != "")
@@ -75,6 +78,7 @@ function DTAdditionalParameterHandler(objectContent, table) {
         $content.on("click",selectorButtonRest,function(){
             clearAdditionalParameters = true;
             $(tableSelector).DataTable().ajax.reload();
+            $("#extra-request-data")[0].reset();
         });
     };
 }

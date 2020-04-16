@@ -194,6 +194,7 @@ class Model_user extends Model_user_base
         LEFT JOIN sec_users usr on users.id_usr = usr.id_usr
         where       
         usr.deleted_usr != 1
+        order by firstname_usr, lastname_usr
         ";
 //        echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);

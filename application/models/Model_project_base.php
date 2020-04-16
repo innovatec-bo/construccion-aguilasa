@@ -365,23 +365,57 @@ class Model_project_base extends MY_Model
                                 GROUP BY id_psl
                             ) statusLogAndResponsible group by project_id_psl
                     ) as max_entry
-                    LEFT JOIN (
-                                SELECT
-                                    id_psl,
-                                    project_id_psl,
-                                    log_detail_psl,
-                                    manual_entry_date_psl,
-                                    GROUP_CONCAT(CONCAT(firstname_usr,\' \',lastname_usr)) responsible,
-                                    GROUP_CONCAT(id_usr) responsible_ids
-                                FROM
-                                    wfl_project_status_log
-                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                                LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-                                LEFT JOIN sec_users on id_usr = user_id_sre
-                                where deleted_psl != 1  and deleted_slr != 1
-                                GROUP BY id_psl
-                                ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
-                ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+                LEFT JOIN (
+                    SELECT
+                        id_psl,
+                        project_id_psl,
+                        log_detail_psl,
+                        manual_entry_date_psl,
+                        GROUP_CONCAT(CONCAT(firstname_usr," ",lastname_usr)) responsible,
+                        GROUP_CONCAT(id_usr) responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1
+                    GROUP BY id_psl
+                    ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl fiscal_id_psl,
+                        project_id_psl fiscal_project_id_psl,
+                        log_detail_psl fiscal_log_detail_psl,
+                        manual_entry_date_psl fiscal_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr," ",lastname_usr)) fiscal_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) fiscal_responsible_id
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 8
+                    GROUP BY id_psl
+                ) log_fiscal on log_fiscal.fiscal_project_id_psl = max_entry.project_id and log_fiscal.fiscal_manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl builder_id_psl,
+                        project_id_psl builder_project_id_psl,
+                        log_detail_psl builder_log_detail_psl,
+                        manual_entry_date_psl builder_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr," ",lastname_usr)) builder_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) builder_responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
+                    GROUP BY id_psl
+                ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
                 LEFT JOIN wfl_project_status on status_pro = id_pst
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
@@ -458,23 +492,57 @@ class Model_project_base extends MY_Model
                                 GROUP BY id_psl
                             ) statusLogAndResponsible group by project_id_psl
                     ) as max_entry
-                    LEFT JOIN (
-                                SELECT
-                                    id_psl,
-                                    project_id_psl,
-                                    log_detail_psl,
-                                    manual_entry_date_psl,
-                                    GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
-                                    GROUP_CONCAT(id_usr) responsible_ids
-                                FROM
-                                    wfl_project_status_log
-                                LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                                LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-                                LEFT JOIN sec_users on id_usr = user_id_sre
-                                where deleted_psl != 1  and deleted_slr != 1
-                                GROUP BY id_psl
-                                ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
-                ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+                LEFT JOIN (
+                    SELECT
+                        id_psl,
+                        project_id_psl,
+                        log_detail_psl,
+                        manual_entry_date_psl,
+                        GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                        GROUP_CONCAT(id_usr) responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1
+                    GROUP BY id_psl
+                    ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl fiscal_id_psl,
+                        project_id_psl fiscal_project_id_psl,
+                        log_detail_psl fiscal_log_detail_psl,
+                        manual_entry_date_psl fiscal_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) fiscal_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) fiscal_responsible_id
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 8
+                    GROUP BY id_psl
+                ) log_fiscal on log_fiscal.fiscal_project_id_psl = max_entry.project_id and log_fiscal.fiscal_manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl builder_id_psl,
+                        project_id_psl builder_project_id_psl,
+                        log_detail_psl builder_log_detail_psl,
+                        manual_entry_date_psl builder_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) builder_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) builder_responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
+                    GROUP BY id_psl
+                ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
                 LEFT JOIN wfl_project_status on status_pro = id_pst
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
@@ -537,6 +605,7 @@ class Model_project_base extends MY_Model
         if(!is_null($colsArray))
         {
             $like .= " and ( ";
+            // $like .= " responsible like '%" . $text . "%' or ";
             foreach ($colsArray as $var)
             {
                 $like .= " " . $var . " like '%" . $text . "%' or ";
@@ -567,21 +636,55 @@ class Model_project_base extends MY_Model
                         ) statusLogAndResponsible group by project_id_psl
                 ) as max_entry
                 LEFT JOIN (
-                            SELECT
-                                id_psl,
-                                project_id_psl,
-                                log_detail_psl,
-                                manual_entry_date_psl,
-                                GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
-                                GROUP_CONCAT(id_usr) responsible_ids
-                            FROM
-                                wfl_project_status_log
-                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                            LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-                            LEFT JOIN sec_users on id_usr = user_id_sre
-                            where deleted_psl != 1  and deleted_slr != 1
-                            GROUP BY id_psl
-                            ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                    SELECT
+                        id_psl,
+                        project_id_psl,
+                        log_detail_psl,
+                        manual_entry_date_psl,
+                        GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                        GROUP_CONCAT(id_usr) responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1
+                    GROUP BY id_psl
+                    ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl fiscal_id_psl,
+                        project_id_psl fiscal_project_id_psl,
+                        log_detail_psl fiscal_log_detail_psl,
+                        manual_entry_date_psl fiscal_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) fiscal_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) fiscal_responsible_id
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 8
+                    GROUP BY id_psl
+                ) log_fiscal on log_fiscal.fiscal_project_id_psl = max_entry.project_id and log_fiscal.fiscal_manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl builder_id_psl,
+                        project_id_psl builder_project_id_psl,
+                        log_detail_psl builder_log_detail_psl,
+                        manual_entry_date_psl builder_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) builder_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) builder_responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
+                    GROUP BY id_psl
+                ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
             ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
@@ -639,6 +742,7 @@ class Model_project_base extends MY_Model
         if(!is_null($colsArray))
         {
             $like .= " and ( ";
+            // $like .= " responsible like '%" . $text . "%' or ";
             foreach ($colsArray as $var)
             {
                 $like .= " " . $var . " like '%" . $text . "%' or ";
@@ -669,22 +773,57 @@ class Model_project_base extends MY_Model
                         ) statusLogAndResponsible group by project_id_psl
                 ) as max_entry
                 LEFT JOIN (
-                            SELECT
-                                id_psl,
-                                project_id_psl,
-                                log_detail_psl,
-                                manual_entry_date_psl,
-                                GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
-                                GROUP_CONCAT(id_usr) responsible_ids
-                            FROM
-                                wfl_project_status_log
-                            LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                            LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-                            LEFT JOIN sec_users on id_usr = user_id_sre
-                            where deleted_psl != 1  and deleted_slr != 1
-                            GROUP BY id_psl
-                            ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                    SELECT
+                        id_psl,
+                        project_id_psl,
+                        log_detail_psl,
+                        manual_entry_date_psl,
+                        GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+                        GROUP_CONCAT(id_usr) responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1
+                    GROUP BY id_psl
+                    ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl fiscal_id_psl,
+                        project_id_psl fiscal_project_id_psl,
+                        log_detail_psl fiscal_log_detail_psl,
+                        manual_entry_date_psl fiscal_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) fiscal_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) fiscal_responsible_id
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 8
+                    GROUP BY id_psl
+                ) log_fiscal on log_fiscal.fiscal_project_id_psl = max_entry.project_id and log_fiscal.fiscal_manual_entry_date_psl = max_entry.max_date
+                LEFT JOIN (
+                    SELECT
+                        id_psl builder_id_psl,
+                        project_id_psl builder_project_id_psl,
+                        log_detail_psl builder_log_detail_psl,
+                        manual_entry_date_psl builder_manual_entry_date_psl,
+                        GROUP_CONCAT(DISTINCT CONCAT(firstname_usr,' ',lastname_usr)) builder_responsible,
+                        GROUP_CONCAT(DISTINCT id_usr) builder_responsible_ids
+                    FROM
+                        wfl_project_status_log
+                    LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+                    LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+                    LEFT JOIN sec_users on id_usr = user_id_sre
+                    LEFT JOIN sec_userroles on userid_uro = user_id_sre
+                    where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
+                    GROUP BY id_psl
+                ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
             ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN (
                 select inc.*
@@ -738,6 +877,10 @@ class Model_project_base extends MY_Model
                         status_log_manual_entry_date.manual_entry_date_psl,
                         status_log_manual_entry_date.responsible,
                         status_log_manual_entry_date.responsible_ids,
+                        status_log_manual_entry_date.fiscal_responsible,
+                        status_log_manual_entry_date.fiscal_responsible_id,
+                        status_log_manual_entry_date.builder_responsible,
+                        status_log_manual_entry_date.builder_responsible_ids,
                         manpower.manpower_file_id,
                         id_psl,
                         id_war
@@ -749,6 +892,7 @@ class Model_project_base extends MY_Model
     {
         $ci=&get_instance();
         $ci->load->database();
+        // echo"<pre>";var_dump($list);exit;
         $sql = "";
         // echo"<pre>";var_dump($list,'df');exit;
         if(is_array($list) && count($list) >= 1)
@@ -761,23 +905,101 @@ class Model_project_base extends MY_Model
                     case "status":
                         $statusList = explode(",",$value);
                         $statusScape = "";
-                        // $includeFilter = FALSE;
                         foreach ($statusList as $status)
                         {
                             $statusScape .= $ci->db->escape($status).", ";
                             $includeFilter = TRUE;
                         }
                         $statusScape = substr($statusScape,0,-2);
-                        // if($includeFilter)
-                            $sql .= " and status_pro in ( ".$statusScape." )";
+                        $sql .= " and status_pro in ( ".$statusScape." )";
                     break;
                     case "responsible-id":
-                        // if($value != "")
+                        if($value != "")
                             $sql .= " and responsible_ids like '%".$value."%'";
+                    break;
+                    case "work-area":
+                        $sql .= " and work_area_pro = ".$ci->db->escape($value)." ";
+                    break;
+                    case "fiscal-responsible-id":
+                        if($value != "")
+                            $sql .= " and fiscal_responsible_id = ".$ci->db->escape($value)." ";
+                    break;
+                    case "builder-responsible-id":
+                        if($value != "")
+                            $sql .= " and builder_responsible_ids like '%".$value."%'";
+                    break;
+                    case "manpower-uploaded":
+                        if($value == 1)
+                            $sql .= " and manpower_file_id is not null ";
+                        else if($value == 0)
+                            $sql .= " and manpower_file_id is null ";
+                        else
+                            $sql .= " ";
                     break;
                 }
             }
         }
+        return $sql;
+    }
+
+    private static function _statusDetailQuery($statusId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+        select 
+            id_psl,
+            project_id_psl,
+            status_id_psl,  
+            filter.entry_date,
+            GROUP_CONCAT(CONCAT(builder.builder_id)) builder_responsible_id,
+            GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible,
+            GROUP_CONCAT(CONCAT(fiscal.fiscal_id)) fiscal_responsible_id,
+            GROUP_CONCAT(CONCAT(fiscal.fiscal_firstname,' ',fiscal.fiscal_lastname)) fiscal_responsible
+        from 
+            wfl_project_status_log
+        RIGHT JOIN(
+            SELECT          
+                project_id_psl project_id,
+                max(manual_entry_date_psl) entry_date
+            FROM
+                wfl_project_status_log
+            WHERE       
+            status_id_psl = ".$ci->db->query($statusId)."
+            and deleted_psl != 1
+            GROUP BY project_id_psl
+        ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+        LEFT JOIN wfl_projects on id_pro = project_id_psl
+        LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+        LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre        
+        LEFT JOIN sec_users responsible on user_id_sre = responsible.id_usr
+        LEFT JOIN (
+                SELECT
+                    id_usr builder_id,
+                    firstname_usr builder_firstname,
+                    lastname_usr builder_lastname
+                FROM
+                    sec_users
+                right JOIN sec_userroles on userid_uro = id_usr
+                where 
+                    roleid_uro = 9
+                and deleted_uro != 1
+            ) as builder on builder.builder_id = user_id_sre
+        LEFT JOIN (
+                SELECT
+                    id_usr fiscal_id,
+                    firstname_usr fiscal_firstname,
+                    lastname_usr fiscal_lastname
+                FROM
+                    sec_users
+                right JOIN sec_userroles on userid_uro = id_usr
+                where 
+                    roleid_uro = 8
+                and deleted_uro != 1
+            ) as fiscal on fiscal.fiscal_id = user_id_sre
+        where deleted_pro != 1 and deleted_slr != 1 -- and id_pro = 871
+        GROUP BY id_psl
+        ";
         return $sql;
     }
     ################################################################################################# END - DATATABLE AJAX METHODS
