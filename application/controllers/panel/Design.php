@@ -36,6 +36,8 @@ class Design extends PrivateController
         $data["viewTitle"] = "Proyectos en diseño";
         $data["status"] = "46,1,2,3,5,6";
         $data["statusSet"] = "design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -69,6 +71,8 @@ class Design extends PrivateController
         $data["viewTitle"] = "Proyectos en estaqueado";
         $data["status"] = 2;
         $data["statusSet"] = "design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -102,6 +106,8 @@ class Design extends PrivateController
         $data["viewTitle"] = "Proyectos en Digitalizacion";
         $data["status"] = 3;
         $data["statusSet"] = "design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -135,6 +141,8 @@ class Design extends PrivateController
         $data["viewTitle"] = "Proyectos en dibujo";
         $data["status"] = 5;
         $data["statusSet"] = "design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -168,6 +176,8 @@ class Design extends PrivateController
         $data["viewTitle"] = "Proyectos en Cronograma";
         $data["status"] = 6;
         $data["statusSet"] = "design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

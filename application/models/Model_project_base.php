@@ -574,7 +574,7 @@ class Model_project_base extends MY_Model
                     deleted_pro != 1
                     ".static::_additionalParameters($additionalParameters)."
             ) projects
-            ORDER BY order_pst asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+            ORDER BY id_pro asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
         ";//echo"<pre>";var_dump($sql);exit;
 
         $query = $ci->db->query($sql);
@@ -933,6 +933,14 @@ class Model_project_base extends MY_Model
                             $sql .= " and manpower_file_id is not null ";
                         else if($value == 0)
                             $sql .= " and manpower_file_id is null ";
+                        else
+                            $sql .= " ";
+                    break;
+                    case "has-location":
+                        if($value == 1)
+                            $sql .= " and latitude_pro is not null and latitude_pro != '' ";
+                        else if($value == 0)
+                            $sql .= " and latitude_pro is null or latitude_pro = '' ";
                         else
                             $sql .= " ";
                     break;

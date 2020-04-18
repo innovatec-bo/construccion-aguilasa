@@ -39,6 +39,8 @@ class Building extends PrivateController
         $data["viewTitle"] = "Listos para iniciar la construccion";
         $data["status"] = "21";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -71,6 +73,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "En construccion";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 29;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -104,6 +108,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Detenido";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 30;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -137,6 +143,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Pausado";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 31;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -170,6 +178,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Completado";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 32;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -203,6 +213,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Energizado";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 47;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -236,6 +248,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya enviaron su As Built";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 33;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -269,6 +283,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya tienen recepcion de conciliacion";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 34;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -302,6 +318,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que ya enviaron la conciliacion";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 35;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -335,6 +353,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos ha recibido la orden de devolucion de materiales";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 38;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
@@ -368,6 +388,8 @@ class Building extends PrivateController
         $this->complementHandler->addProjectJs('project.index', TRUE);
         $data["viewTitle"] = "Proyectos que confirmaron la devolucion de materiales a CRE";
         $data["statusSet"] = "building";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 39;
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);

@@ -66,8 +66,9 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("google.maps.api");
-        $this->complementHandler->addViewComplement("gmaps");
-        $this->complementHandler->addProjectJs('gmaps-script-handler');
+        // $this->complementHandler->addViewComplement("gmaps");
+        // $this->complementHandler->addProjectJs('gmaps-script-handler');
+        $this->complementHandler->addProjectJs('MapsHandler',TRUE);
         $this->complementHandler->addProjectCss('project.add', TRUE);
         $this->complementHandler->addProjectJs('project.add', TRUE);
 
@@ -184,8 +185,9 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("google.maps.api");
-        $this->complementHandler->addViewComplement("gmaps");
-        $this->complementHandler->addProjectJs('gmaps-script-handler');
+        // $this->complementHandler->addViewComplement("gmaps");
+        // $this->complementHandler->addProjectJs('gmaps-script-handler');
+        $this->complementHandler->addProjectJs('MapsHandler',TRUE);
         $this->complementHandler->addProjectCss('project.edit',TRUE);
         $this->complementHandler->addProjectJs('project.edit', TRUE);
 
@@ -634,28 +636,15 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("pagination-js");
         $this->complementHandler->addViewComplement("google.maps.api");
-        $this->complementHandler->addViewComplement("gmaps");
-        $this->complementHandler->addProjectJs('gmaps-script-handler', TRUE);
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectJs('ProjectsLocationHandler', TRUE);
         $this->complementHandler->addProjectCss('project.locations',TRUE);
         $this->complementHandler->addProjectJs('project.locations', TRUE);       
         $data = array();
-        $projects = Model_project::getProjectsWithCoordinates();
-        // echo"<pre>";var_dump($projects);exit;
-        $arrayProjects = array();
-        foreach ($projects as $project) 
-        {
-            $arrayProjects[] = array(
-                                "id" => $project['id_pro'],
-                                "code" => $project['code_pro'],
-                                "statusName" => $project['status_name_pst'],
-                                "detail" => $project['detail_pro'],
-                                "latitude" => $project['latitude_pro'],
-                                "longitude" => $project['longitude_pro']
-                                );
-        }
-        $data['projects'] = $arrayProjects;
-        
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $this->_loadPanelView("project/locations", $data);
     }
 }

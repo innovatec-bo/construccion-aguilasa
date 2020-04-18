@@ -20,6 +20,9 @@
                 lng: longitude,
                 icon: markerImage,
                 draggable: true,
+                infoWindow: {
+                  content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Share Whatsapp</a>'
+                },
                 dragend: function(event) {
                     let latitude = event.latLng.lat();
                     let longitude = event.latLng.lng();
@@ -30,6 +33,9 @@
         else
         {
             map.markers[0].setPosition(new google.maps.LatLng(latitude, longitude));
+            map.markers[0].setInfoWindow({
+                              content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Share Whatsapp</a>'
+                            });
             updateFormInput(latitude, longitude);
         }
     });
@@ -94,6 +100,9 @@
                             lng: longitude,
                             icon: markerImage,
                             draggable: true,
+                            infoWindow: {
+                              content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Share Whatsapp</a>'
+                            },
                             dragend: function(event) {
                                 let latitude = event.latLng.lat();
                                 let longitude = event.latLng.lng();
@@ -122,12 +131,15 @@
             var index = map.markers.length;
             if(index == 0)
             {
-                let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
+                let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png', 35);
                 map.addMarker({
                     lat: latitude,
                     lng: longitude,
                     icon: markerImage,
                     draggable: true,
+                    infoWindow: {
+                      content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Share Whatsapp</a>'
+                    },
                     dragend: function(event) {
                         let latitude = event.latLng.lat();
                         let longitude = event.latLng.lng();
@@ -138,6 +150,7 @@
             else
             {
                 map.markers[0].setPosition(new google.maps.LatLng(latitude, longitude));
+                
                 updateFormInput(latitude, longitude);
             }
             map.setCenter(latitude, longitude);
@@ -170,6 +183,9 @@
                 lng: longitude,
                 icon: markerImage,
                 draggable: true,
+                infoWindow: {
+                  content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Share Whatsapp</a>'
+                },
                 dragend: function(event) {
                     let latitude = event.latLng.lat();
                     let longitude = event.latLng.lng();

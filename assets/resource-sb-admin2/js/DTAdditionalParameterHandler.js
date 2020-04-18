@@ -72,12 +72,19 @@ function DTAdditionalParameterHandler(objectContent, table) {
 
         $content.on("click",selectorButtonFilter,function(){
             clearAdditionalParameters = false;
-            $(tableSelector).DataTable().ajax.reload();
+            if($(tableSelector).length > 0)
+                $(tableSelector).DataTable().ajax.reload();
+
+            if($('#pagination-content').length > 0)
+                $('#pagination-content').pagination('go', 1);
         });
 
         $content.on("click",selectorButtonRest,function(){
             clearAdditionalParameters = true;
-            $(tableSelector).DataTable().ajax.reload();
+            if($(tableSelector).length > 0)
+                $(tableSelector).DataTable().ajax.reload();
+            if($('#pagination-content').length > 0)
+                $('#pagination-content').pagination('go', 1);
             $("#extra-request-data")[0].reset();
         });
     };

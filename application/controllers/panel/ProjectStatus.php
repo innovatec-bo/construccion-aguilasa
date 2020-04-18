@@ -272,6 +272,8 @@ class ProjectStatus extends PrivateController
         $data["status"] = "11,31";
         $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)

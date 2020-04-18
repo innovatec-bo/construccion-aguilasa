@@ -35,6 +35,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Es necesario grabar los materiales de estos proyectos";
         $data["status"] = "22";
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -68,6 +70,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Materiales ya grabados en CRE";
         $data["status"] = 23;
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -101,6 +105,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Materiales ya retirados de CRE";
         $data["status"] = 24;
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -134,6 +140,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Materiales entragados a responsables de contruccion";
         $data["status"] = 25;
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -167,6 +175,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Materiales recibidos de construccion";
         $data["status"] = 36;
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -200,6 +210,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Devolvera CRE los materiales de estos proyectos";
         $data["status"] = 37;
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -233,6 +245,8 @@ class Warehouse extends PrivateController
         $data["viewTitle"] = "Materiales devueltos a CRE";
         $data["status"] = "26";
         $data["statusSet"] = "warehouse";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

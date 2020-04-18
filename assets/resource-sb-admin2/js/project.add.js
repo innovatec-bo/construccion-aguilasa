@@ -3,7 +3,14 @@
  */
 
 $(document).ready(function() {
-    // Basic date
+    // let latitude = parseFloat($("input[name=latitude]").val());
+    // let longitude = parseFloat($("input[name=longitude]").val());
+    
+    let mapsHandler = new MapsHandler("maps");
+    mapsHandler.startMap();
+    // mapsHandler.addUniqueMarker(latitude, longitude);
+    mapsHandler.loadEventHandlers();
+
     $("select[name=project-cre-fiscal]").select2();
     var date = new Date();
     $('.input-group.date').datetimepicker({

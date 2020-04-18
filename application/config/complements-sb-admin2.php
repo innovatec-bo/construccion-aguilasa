@@ -116,3 +116,6 @@ $config['complements']['moment-range']['js'] = assets_url('resource-sb-admin2/pl
 
 $config['complements']['toastr']['css'] = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css';
 $config['complements']['toastr']['js'] = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js';
+
+$config['complements']['pagination-js']['css'] = assets_url('resource-sb-admin2/plugins/paginationjs/dist/pagination.css');
+$config['complements']['pagination-js']['js'] = assets_url('resource-sb-admin2/plugins/paginationjs/dist/pagination.min.js');

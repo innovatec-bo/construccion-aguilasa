@@ -4,6 +4,13 @@
 
 $(document).ready(function() {
 
+    
+
+    let projectsLocationHandler = new ProjectsLocationHandler("maps");
+    projectsLocationHandler.startMap();
+    projectsLocationHandler.startPaginationJs();
+    // mapsHandler.addUniqueMarker(latitude, longitude, true);
+    projectsLocationHandler.loadEventHandlers();
     $("select[name=project-cre-fiscal]").select2();
     // Basic date
     var date = new Date();
@@ -31,21 +38,21 @@ $(document).ready(function() {
         let projectCode = $("input[name=code]").val();
         findProject(projectCode);
     });
-    showProjects(projectList);
+    // showProjects(projectList);
 
 });
 
-function showProjects(projectList)
-{
-    $.each(projectList, function(index, value){
-        addMarkerOnGlobalMap(value);
-    });
-}
+// function showProjects(projectList)
+// {
+//     $.each(projectList, function(index, value){
+//         addMarkerOnGlobalMap(value);
+//     });
+// }
 
-function findProject(projectCode)
-{
-    $.each(projectList, function(index, value){
-        if(value.code.toLocaleLowerCase() == projectCode.toLocaleLowerCase())
-        map.setCenter(value.latitude, value.longitude);
-    });   
-}
+// function findProject(projectCode)
+// {
+//     $.each(projectList, function(index, value){
+//         if(value.code.toLocaleLowerCase() == projectCode.toLocaleLowerCase())
+//         map.setCenter(value.latitude, value.longitude);
+//     });   
+// }

@@ -35,6 +35,8 @@ class RectifyDesign extends PrivateController
         $data["viewTitle"] = "Rectificacion de diseño";
         $data["status"] = "13,15,16,17";
         $data["statusSet"] = "rectify_design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -68,6 +70,8 @@ class RectifyDesign extends PrivateController
         $data["viewTitle"] = "Rectificacion de estaqueado";
         $data["status"] = 15;
         $data["statusSet"] = "rectify_design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -101,6 +105,8 @@ class RectifyDesign extends PrivateController
         $data["viewTitle"] = "Rectificacion de Digitalizacion";
         $data["status"] = 16;
         $data["statusSet"] = "rectify_design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
@@ -134,6 +140,8 @@ class RectifyDesign extends PrivateController
         $data["viewTitle"] = "Rectificacion de dibujo";
         $data["status"] = 17;
         $data["statusSet"] = "rectify_design";
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();

@@ -35,6 +35,8 @@ class Approvement extends PrivateController
         $data["viewTitle"] = "Proyectos en Aprobacion";
         $data["status"] = "8";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -68,6 +70,8 @@ class Approvement extends PrivateController
         $data["status"] = 9;
         $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -101,6 +105,8 @@ class Approvement extends PrivateController
         $data["status"] = 10;
         $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -134,6 +140,8 @@ class Approvement extends PrivateController
         $data["status"] = 11;
         $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -167,6 +175,8 @@ class Approvement extends PrivateController
         $data["status"] = 12;
         $data["statusSet"] = "approvement";
         $data["projectSystems"] = $this->_projectSystems;
+        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
