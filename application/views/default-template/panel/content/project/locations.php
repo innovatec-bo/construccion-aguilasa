@@ -106,13 +106,15 @@
           <button type="button" class="btn btn-default search-project-in-map">Buscar</button>
         </form>
     </div>
-    <div class="col-md-12">
-        <div class="map-fancy-framework">
-            <div id="maps" style="height: 500px;width: auto;position: relative;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="map-fancy-framework">
+                <div id="maps" style="height: 500px;width: auto;position: relative;">
+                </div>
+                <em class="map-search-message"></em>
             </div>
-            <em class="map-search-message"></em>
-        </div>
-        <br><br>
+            <br><br>
+        </div>    
     </div>
     <!-- /.row -->
 </div>
