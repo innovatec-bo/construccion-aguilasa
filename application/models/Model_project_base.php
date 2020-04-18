@@ -574,7 +574,7 @@ class Model_project_base extends MY_Model
                     deleted_pro != 1
                     ".static::_additionalParameters($additionalParameters)."
             ) projects
-            ORDER BY id_pro asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
+            ORDER BY order_pst asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
         ";//echo"<pre>";var_dump($sql);exit;
 
         $query = $ci->db->query($sql);
