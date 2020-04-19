@@ -21,6 +21,11 @@
         ?>
     </div>
     <div class="col-md-12">
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle fa-fw"></i> Solo proyectos con coordenadas aparecen en este buscador.
+        </div>
+    </div>
+    <div class="col-md-12">
             <input type="hidden" name="status-set" value="none">
             <form class="form-group" id="extra-request-data">
                 <input type="hidden" name="status" value="">
@@ -98,23 +103,31 @@
         <div class="col-md-6">
             <div id="pagination-content" class="py-1"></div>
         </div>
+        
         <div class="col-md-6">
             <form class="form-inline py-1" style="float:right">
-              <div class="form-group">
-                <input type="text" name="code" class="form-control" id="exampleInputEmail3" placeholder="">
-              </div>
-              <button type="button" class="btn btn-default search-project-in-map">Buscar</button>
+                <div class="input-group">
+                    <!-- <span class="input-group-addon" id="basic-addon3">Buscar</span>  -->
+                    <input class="form-control" placeholder="Codigo de proyecto" id="text-to-search"> 
+                    <!-- <span class="input-group-btn"> 
+                        <button class="btn btn-default" id="search-text-on-map" type="button">Buscar</button> 
+                    </span>  -->
+                </div>
             </form>
         </div>    
+        <div class="col-md-12">
+            <h5 class="mt-0 pt-0 text-left">
+                <span id="total-projects-found"></span>
+            </h5>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="map-fancy-framework">
+            <div class="map-fancy-framework mb-2">
                 <div id="maps" style="height: 500px;width: auto;position: relative;">
                 </div>
                 <em class="map-search-message"></em>
             </div>
-            <br><br>
         </div>    
     </div>
     <!-- /.row -->

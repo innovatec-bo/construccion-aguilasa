@@ -632,6 +632,7 @@ class Project extends PrivateController
 
     public function locations()
     {
+        $this->_validateFeature('project_locations');
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");

@@ -6,30 +6,32 @@ var ProjectsLocationHandler = /** @class */ (function () {
         this._currentMarkers = [];
         this._bounds = new google.maps.LatLngBounds();
     }
-    ProjectsLocationHandler.prototype.startPaginationJs = function () {
+    ProjectsLocationHandler.prototype.startPaginationJs = function (additionalParameter) {
         var _this = this;
-        var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data", "#project-index");
-        additionalParameter.addParameterObject('status', 'text');
-        additionalParameter.addParameterObject('work-area', 'select');
-        additionalParameter.addParameterObject('fiscal-responsible-id', 'select');
-        additionalParameter.addParameterObject('builder-responsible-id', 'select');
-        additionalParameter.addParameterObject('manpower-uploaded', 'select');
-        additionalParameter.setButtonFilter('#send-filters');
-        additionalParameter.setButtonRest('#remove-additional-parameters');
-        additionalParameter.loadEventHandlers();
         $('#pagination-content').pagination({
             dataSource: base_url + 'panel/AjaxProject/paginationJs',
             locator: 'resultArray',
             totalNumberLocator: function (response) {
                 // you can return totalNumber by analyzing response content
-                return response.recordsTotal;
+                var text = "Se encontraron " + response.recordsFiltered + " proyectos";
+                if (response.recordsFiltered == 1)
+                    text = "Se encontro 1 proyecto";
+                else if (response.recordsFiltered == 0)
+                    text = "No se encontraron proyectos";
+                $("#total-projects-found").text(text);
+                return response.recordsFiltered;
             },
             pageSize: 20,
             ajax: {
                 type: 'POST',
-                data: { additionalParameters: additionalParameter.getList() },
-                beforeSend: function () {
+                data: { number: (Math.floor(Math.random() * (1000 - 100)) + 100) },
+                beforeSend: function (jqXHR) {
                     blockArea($("#" + _this._mapContent));
+                    this.data += '&' + $.param({
+                        additionalParameters: additionalParameter.getList(),
+                        textToSearch: $("#text-to-search").val()
+                    });
+                    return true;
                 }
             },
             callback: function (data, pagination) {
@@ -39,14 +41,22 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 });
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
+                var marker = {};
                 $.each(data, function (index, project) {
                     var loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
                     _this._bounds.extend(loc);
-                    var marker = _this.addMarker(project);
+                    marker = _this.addMarker(project);
                     _this._currentMarkers.push(marker);
                 });
-                _this._map.fitBounds(_this._bounds);
-                _this._map.panToBounds(_this._bounds);
+                if (data.length == 1) {
+                    var coordinate = data[0];
+                    _this._map.setZoom(15);
+                    _this._map.panTo(marker.getPosition());
+                }
+                else {
+                    _this._map.fitBounds(_this._bounds);
+                    _this._map.panToBounds(_this._bounds);
+                }
                 $("#" + _this._mapContent).unblock();
             }
         });
@@ -81,8 +91,26 @@ var ProjectsLocationHandler = /** @class */ (function () {
         });
         return marker;
     };
+    ProjectsLocationHandler.prototype._delay = function (callback, ms) {
+        var timer = 0;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
+    };
     ProjectsLocationHandler.prototype.loadEventHandlers = function () {
         var _this = this;
+        $(document).on("click", "#search-text-on-map", function () {
+            if ($('#pagination-content').length > 0)
+                $('#pagination-content').pagination('go', 1);
+        });
+        $('#text-to-search').keyup(this._delay(function (e) {
+            if ($('#pagination-content').length > 0)
+                $('#pagination-content').pagination('go', 1);
+        }, 2000));
     };
     return ProjectsLocationHandler;
 }());

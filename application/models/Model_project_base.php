@@ -723,7 +723,7 @@ class Model_project_base extends MY_Model
         ORDER BY order_pst asc, ".$orderBy." ".$orderType." LIMIT ".$limit." offset ".$offset.";
         ";
 
-        $query = $ci->db->query($sql);
+        $query = $ci->db->query($sql);//echo "<pre>";var_dump($sql);exit;
         return $query->result();
     }
 

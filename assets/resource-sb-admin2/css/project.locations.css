@@ -1,0 +1,18 @@
+#map-description-list
+{
+	max-width: 242px;
+}
+#map-description-list dt
+{
+	width: 100px
+}
+#map-description-list dd
+{
+	margin-left: 108px;
+}
+#map-description-list .btn-whatsapp
+{
+	color: #ffffff;
+    background-color: #28AF17;
+    border-color: #28AF17;
+}

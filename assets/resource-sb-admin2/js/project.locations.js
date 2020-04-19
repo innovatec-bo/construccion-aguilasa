@@ -4,11 +4,19 @@
 
 $(document).ready(function() {
 
-    
+    let additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#project-index");
+    additionalParameter.addParameterObject('status','text');
+    additionalParameter.addParameterObject('work-area','select');
+    additionalParameter.addParameterObject('fiscal-responsible-id','select');
+    additionalParameter.addParameterObject('builder-responsible-id','select');
+    additionalParameter.addParameterObject('manpower-uploaded','select');
+    additionalParameter.setButtonFilter('#send-filters');
+    additionalParameter.setButtonRest('#remove-additional-parameters');
+    additionalParameter.loadEventHandlers();
 
     let projectsLocationHandler = new ProjectsLocationHandler("maps");
     projectsLocationHandler.startMap();
-    projectsLocationHandler.startPaginationJs();
+    projectsLocationHandler.startPaginationJs(additionalParameter);
     // mapsHandler.addUniqueMarker(latitude, longitude, true);
     projectsLocationHandler.loadEventHandlers();
     $("select[name=project-cre-fiscal]").select2();

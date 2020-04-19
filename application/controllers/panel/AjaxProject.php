@@ -460,9 +460,8 @@ class AjaxProject extends PrivateController
     {
         $formData = $this->input->post();
         $pageSize = $formData['pageSize'];
-        $pageNumber = $formData['pageNumber'] == 1?$formData['pageNumber']:(($formData['pageNumber']-1)*20)+1;
+        $pageNumber = $formData['pageNumber'] == 1?($formData['pageNumber'] - 1):(($formData['pageNumber']-1)*20)+1;
         $textToSearch = isset($formData['textToSearch'])?$formData['textToSearch']:"";
-        // echo"<pre>";var_dump($formData);exit;
         $additionalParameters = isset($formData["additionalParameters"])?$formData["additionalParameters"]:array();
         $additionalParameters["has-location"] = 1;
         $response = $this->_is("fiscal");
@@ -470,18 +469,15 @@ class AjaxProject extends PrivateController
         {
             $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
         }
-        // $dt = new JqdtHandler($this->input->post());
         $recordsTotal = Model_project::countAll($additionalParameters);
         $recordsFiltered = $recordsTotal;
-        // echo"<pre>";var_dump($additionalParameters);exit;
         if ($textToSearch == "")
         {
-            // echo"<pre>";var_dump($pageSize, $pageNumber, NULL, "asc", $additionalParameters);exit;
             $resultArray = Model_project::getAll($pageSize, $pageNumber, NULL, "asc", $additionalParameters);
         }
         else
-        {
-            $resultArray = Model_project::search($textToSearch, $pageNumber, $pageNumber, NULL, "asc", array("code_pro"), $additionalParameters);
+        {   
+            $resultArray = Model_project::search($textToSearch, $pageSize, $pageNumber, NULL, "asc", array("code_pro"), $additionalParameters);
             $recordsFiltered = Model_project::searchTotalCount($textToSearch, array("code_pro"), $additionalParameters);
             
         }
@@ -490,7 +486,5 @@ class AjaxProject extends PrivateController
         $response['recordsFiltered'] = $recordsFiltered;
         $response['resultArray'] = $resultArray;
         echo json_encode($response);exit;
-        // echo"<pre>";var_dump($recordsTotal, $recordsFiltered, $resultArray);exit;
-        // echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);exit;
     }
 }
