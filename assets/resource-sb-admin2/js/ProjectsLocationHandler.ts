@@ -19,6 +19,7 @@ class ProjectsLocationHandler
     private _map : any;
     private _currentMarkers : any;
     private _bounds : any;
+    private _markerCluster : any;
     
     constructor(private divContent: string)
     {
@@ -26,6 +27,8 @@ class ProjectsLocationHandler
         this._mapContent = divContent;
         this._currentMarkers = [];
         this._bounds = new google.maps.LatLngBounds();
+        this._markerCluster = new MarkerClusterer(this._map, this._currentMarkers,
+                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});    
     }
 
     public startPaginationJs(additionalParameter)
@@ -65,6 +68,7 @@ class ProjectsLocationHandler
                 });
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
+                _this._markerCluster.clearMarkers();
                 let marker = {};
                 $.each(data, function(index, project){
                         let loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
@@ -73,7 +77,7 @@ class ProjectsLocationHandler
                         _this._currentMarkers.push(marker);
                     
                 });
-                
+
                 if(data.length == 1) 
                 {
                     let coordinate = data[0];
@@ -85,8 +89,9 @@ class ProjectsLocationHandler
                     _this._map.fitBounds(_this._bounds);
                     _this._map.panToBounds(_this._bounds);    
                 }
-                let markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+                _this._markerCluster.setMap(_this._map);
+                _this._markerCluster.addMarkers(_this._currentMarkers);
+                // _this._markerCluster.repaint();
                 $("#"+_this._mapContent).unblock();
             }
         });

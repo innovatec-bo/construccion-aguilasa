@@ -5,6 +5,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
         this._mapContent = divContent;
         this._currentMarkers = [];
         this._bounds = new google.maps.LatLngBounds();
+        this._markerCluster = new MarkerClusterer(this._map, this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     }
     ProjectsLocationHandler.prototype.startPaginationJs = function (additionalParameter) {
         var _this = this;
@@ -41,6 +42,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 });
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
+                _this._markerCluster.clearMarkers();
                 var marker = {};
                 $.each(data, function (index, project) {
                     var loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
@@ -57,7 +59,9 @@ var ProjectsLocationHandler = /** @class */ (function () {
                     _this._map.fitBounds(_this._bounds);
                     _this._map.panToBounds(_this._bounds);
                 }
-                var markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+                _this._markerCluster.setMap(_this._map);
+                _this._markerCluster.addMarkers(_this._currentMarkers);
+                // _this._markerCluster.repaint();
                 $("#" + _this._mapContent).unblock();
             }
         });
