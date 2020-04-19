@@ -638,6 +638,7 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("pagination-js");
+        $this->complementHandler->addViewComplement("google.maps.api.cluster");
         $this->complementHandler->addViewComplement("google.maps.api");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
         $this->complementHandler->addProjectJs('ProjectsLocationHandler', TRUE);

@@ -100,6 +100,7 @@ $config['complements']['photoswipe-default-skin']['css'] = assets_url('resource-
 $config['complements']['photoswipe']['js'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/photoswipe.js');
 $config['complements']['photoswipe-ui-default']['js'] = assets_url('resource-sb-admin2/plugins/PhotoSwipe-master/dist/photoswipe-ui-default.min.js');
 
+$config['complements']['google.maps.api.cluster']['js'] = "https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js";
 $config['complements']['google.maps.api']['js'] = "https://maps.google.com/maps/api/js?key=AIzaSyAmvQYUvBW9AV2vdrNQzwRjXlojUClF-Zg";
 $config['complements']['gmaps']['js'] = assets_url('resource-sb-admin2/plugins/gmaps/gmaps.js');
 
