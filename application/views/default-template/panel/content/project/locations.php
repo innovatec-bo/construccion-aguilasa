@@ -122,7 +122,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="map-section">
             <div class="map-fancy-framework mb-2">
                 <div id="maps" style="height: 500px;width: auto;position: relative;">
                 </div>

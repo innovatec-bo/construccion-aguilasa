@@ -19,3 +19,11 @@
     background-color: #28AF17;
     border-color: #28AF17;
 }
+@media (max-width: 370px)
+{
+	#map-section
+	{
+		padding-left: 0px;
+		padding-right: 0px;	
+	}
+}
