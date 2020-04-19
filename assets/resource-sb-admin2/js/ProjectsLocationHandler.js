@@ -50,6 +50,8 @@ var ProjectsLocationHandler = /** @class */ (function () {
                     marker = _this.addMarker(project);
                     _this._currentMarkers.push(marker);
                 });
+                _this._markerCluster.setMap(_this._map);
+                _this._markerCluster.addMarkers(_this._currentMarkers);
                 if (data.length == 1) {
                     var coordinate = data[0];
                     _this._map.setZoom(15);
@@ -57,10 +59,8 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 }
                 else {
                     _this._map.fitBounds(_this._bounds);
-                    // _this._map.panToBounds(_this._bounds);    
+                    _this._map.panToBounds(_this._bounds);
                 }
-                _this._markerCluster.setMap(_this._map);
-                _this._markerCluster.addMarkers(_this._currentMarkers);
                 // _this._markerCluster.repaint();
                 $("#" + _this._mapContent).unblock();
             }

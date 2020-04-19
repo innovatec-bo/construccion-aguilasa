@@ -77,7 +77,9 @@ class ProjectsLocationHandler
                         _this._currentMarkers.push(marker);
                     
                 });
-
+                _this._markerCluster.setMap(_this._map);
+                _this._markerCluster.addMarkers(_this._currentMarkers);
+                
                 if(data.length == 1) 
                 {
                     let coordinate = data[0];
@@ -87,10 +89,9 @@ class ProjectsLocationHandler
                 else
                 {
                     _this._map.fitBounds(_this._bounds);
-                    // _this._map.panToBounds(_this._bounds);    
+                    _this._map.panToBounds(_this._bounds);    
                 }
-                _this._markerCluster.setMap(_this._map);
-                _this._markerCluster.addMarkers(_this._currentMarkers);
+
                 // _this._markerCluster.repaint();
                 $("#"+_this._mapContent).unblock();
             }
