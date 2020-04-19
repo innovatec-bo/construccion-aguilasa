@@ -73,8 +73,7 @@ class ProjectsLocationHandler
                         _this._currentMarkers.push(marker);
                     
                 });
-                let markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+                
                 if(data.length == 1) 
                 {
                     let coordinate = data[0];
@@ -86,7 +85,8 @@ class ProjectsLocationHandler
                     _this._map.fitBounds(_this._bounds);
                     _this._map.panToBounds(_this._bounds);    
                 }
-                
+                let markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers,
+                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
                 $("#"+_this._mapContent).unblock();
             }
         });
