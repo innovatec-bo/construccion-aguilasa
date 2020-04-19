@@ -81,7 +81,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
         var marker = new google.maps.Marker({
             position: position,
             map: _this._map,
-            animation: google.maps.Animation.DROP,
+            // animation: google.maps.Animation.DROP,
             icon: markerImage
         });
         var htmlSource = $("#location-info-window").html();

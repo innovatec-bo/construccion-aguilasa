@@ -115,7 +115,7 @@ class ProjectsLocationHandler
         let marker = new google.maps.Marker({
             position: position,
             map: _this._map,
-            animation: google.maps.Animation.DROP,
+            // animation: google.maps.Animation.DROP,
             icon: markerImage
           });
 
