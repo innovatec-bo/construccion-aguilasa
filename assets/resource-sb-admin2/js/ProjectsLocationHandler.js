@@ -48,6 +48,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
                     marker = _this.addMarker(project);
                     _this._currentMarkers.push(marker);
                 });
+                var markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
                 if (data.length == 1) {
                     var coordinate = data[0];
                     _this._map.setZoom(15);
@@ -57,7 +58,6 @@ var ProjectsLocationHandler = /** @class */ (function () {
                     _this._map.fitBounds(_this._bounds);
                     _this._map.panToBounds(_this._bounds);
                 }
-                var markerCluster = new MarkerClusterer(_this._map, _this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
                 $("#" + _this._mapContent).unblock();
             }
         });
