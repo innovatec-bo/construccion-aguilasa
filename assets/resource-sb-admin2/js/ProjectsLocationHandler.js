@@ -55,11 +55,10 @@ var ProjectsLocationHandler = /** @class */ (function () {
                     _this._map.setZoom(15);
                     _this._map.panTo(marker.getPosition());
                 }
-                // else
-                // {
-                // _this._map.fitBounds(_this._bounds);
-                // _this._map.panToBounds(_this._bounds);    
-                // }
+                else {
+                    _this._map.fitBounds(_this._bounds);
+                    // _this._map.panToBounds(_this._bounds);    
+                }
                 _this._markerCluster.setMap(_this._map);
                 _this._markerCluster.addMarkers(_this._currentMarkers);
                 // _this._markerCluster.repaint();
