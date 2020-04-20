@@ -103,16 +103,16 @@ class Dashboard extends PrivateController
 
     public function productivityReport($builderId, $month, $year)
     {
-        $startDate = $year."-".$month."-01";
-        $endDate = date("Y-m-t", strtotime($startDate));
+        $startDate = $year."-".$month."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
         $test = new ExcelBuilderProductivityReport($this->sessionUser, $builderId, $startDate, $endDate);
         $test->getReport();
     }
 
     public function builderGeneralReport($month, $year)
     {
-        $startDate = $year."-".$month."-01";
-        $endDate = date("Y-m-t", strtotime($startDate));
+        $startDate = $year."-".$month."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
         $test = new ExcelBuildersGeneralReport($this->sessionUser, $startDate, $endDate);
         $test->getReport();
     }
