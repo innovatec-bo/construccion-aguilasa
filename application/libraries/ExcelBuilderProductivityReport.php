@@ -36,7 +36,7 @@ class ExcelBuilderProductivityReport
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
-        $date = date_create_from_format('Y-m-d', $this->_startDate);
+        $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
         $month = $this->_months[strtolower($month)];
         $year = date_format($date, 'Y');
@@ -89,7 +89,7 @@ class ExcelBuilderProductivityReport
         
         
         //HEADER
-        $date = date_create_from_format('Y-m-d', $this->_startDate);
+        $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
         $year = date_format($date, 'Y');
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D5', "INFORME DE PRODUCCION MENSUAL");
