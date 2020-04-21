@@ -279,7 +279,7 @@
         </form>
     </div>
 </div>
-<!-- <div class="row">
+<div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
             <div class="panel-heading">
@@ -297,7 +297,7 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <!-- <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
