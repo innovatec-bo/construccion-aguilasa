@@ -142,7 +142,6 @@ class Model_user extends Model_user_base
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
         $email->to($sendTo);
-        $email->bcc('jair@twiiti.com');
         $email->attach($pathToFile);
         $email->subject("¡Reporte De Construccion De Redes!");
         $email->message($ci->load->view("default-template/panel/email-template/net-building-email.php", $data, true));
@@ -283,7 +282,6 @@ class Model_user extends Model_user_base
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
             $email->to($creFiscalEmail);
             $email->cc($sendToCC);
-            $email->bcc('jcussy@toqueeltimbre.com');
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
@@ -385,7 +383,6 @@ class Model_user extends Model_user_base
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
             $email->to($sendTo);
             $email->cc($sendToCC);
-            $email->bcc('jcussy@toqueeltimbre.com');
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
@@ -445,7 +442,6 @@ class Model_user extends Model_user_base
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
             $email->to($sendTo);
             $email->cc($sendToCC);
-            $email->bcc('jcussy@toqueeltimbre.com');
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
@@ -504,7 +500,6 @@ class Model_user extends Model_user_base
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
         $email->to($sendTo);
-        $email->bcc('jcussy@toqueeltimbre.com');
         $email->subject("Aclaracion de reportes automaticos");
         $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
 //        $ci->load->view("default-template/panel/email-template/clarification.php", $data);
