@@ -127,6 +127,11 @@ class Model_user_base extends MY_Model
     {
         return $this->_email;
     }
+
+    public function getSupervisingId()
+	{
+		return $this->_supervisingUser;
+	}
     ################################################################################### end getters
 
     ################################################################################### begin setters
