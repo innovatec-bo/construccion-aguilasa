@@ -16,7 +16,6 @@ class NetBuildingReportPDF extends TCPDF
         $this->SetKeywords('PDF, resumen, totales, ejecutivo');
 
         // set default header data
-//        var_dump(FCPATH."/assets/images");exit;
         $this->SetHeaderData("logo.png", 46, 'SEREBO', 'REPORTE DE CONSTRUCCION DE REDES');
 
         // set header and footer fonts
@@ -59,6 +58,9 @@ class NetBuildingReportPDF extends TCPDF
         $this->SetFont('', 'B',20);
         $this->Cell("",6, $title,0,1,"C");
         $this->Ln();
+		$this->SetFont('', 'B',11);
+		$this->Cell("",6, html_entity_decode("Los montos con signo de admiraci&oacute;n(!) no son incluidos en la suma."),0,1,"L");
+		$this->Ln();
         $w = array(40, 17, 30, 30);
         $h = 7;
         // Colors, line width and bold font
@@ -78,8 +80,11 @@ class NetBuildingReportPDF extends TCPDF
         $this->SetTextColor(0);
         $this->SetFont('helvetica', '', 9);
         $fill = 0;
+
+        $statusToNotSum = array('ready_to_send','already_sent','canceled');
         foreach($data["list"] as $row)
         {
+        	$notSum = array_search($row['keyword'], $statusToNotSum) !== FALSE?" (!) ":"";
             //write text first
             $startX = $this->GetX();
             $startY = $this->GetY();
@@ -88,7 +93,7 @@ class NetBuildingReportPDF extends TCPDF
             //now do borders and fill
             $this->MultiCell($w[0],$h-2, $row["statusName"],'LR'.$marginBottom,'L',$fill,0);
             $this->MultiCell($w[1],$h-2, $row["totalProjects"],'LR'.$marginBottom,'C',$fill,0);
-            $this->MultiCell($w[2],$h-2, $row["approvedBudgets"],'LR'.$marginBottom,'R',$fill,0);
+            $this->MultiCell($w[2],$h-2, $notSum.$row["approvedBudgets"],'LR'.$marginBottom,'R',$fill,0);
             $this->MultiCell($w[3],$h-2, $row["realBudgets"],'LR'.$marginBottom,'R',$fill,0);
             $this->Ln();
             $fill=!$fill;
@@ -121,7 +126,8 @@ class NetBuildingReportPDF extends TCPDF
         $this->SetFont('helvetica', 'B', 12);
 
         $j = 0;
-        $this->SetXY(140, 45);
+        $this->Ln();
+        $this->SetXY(140, 56.6);
         $this->MultiCell($w[0],$h,"ETAPA",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"B");
         $this->MultiCell($w[1],$h,"TOTAL",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
         $this->MultiCell($w[2],$h,"%",'LTR','C',1,0,"","",TRUE,0,FALSE,TRUE,0,"M");
@@ -134,10 +140,12 @@ class NetBuildingReportPDF extends TCPDF
         $this->SetFont('helvetica', '', 12);
         $fill = 0;
         $startX = 140;
+		$statusToNotSum = array('alreadySent');
         foreach($data["list"] as $row)
         {
+			$notSum = array_search($row['section'], $statusToNotSum) !== FALSE?" (!) ":"";
             //write text first
-            $startY = $j == 0?53:$this->GetY();
+            $startY = $j == 0?65:$this->GetY();
             $this->SetXY($startX, $startY);
             $marginBottom = ($j+1) == count($data);
             //now do borders and fill
@@ -145,7 +153,7 @@ class NetBuildingReportPDF extends TCPDF
             $this->MultiCell($w[0], $h, $row["title"],'LR'.$marginBottom,'L', $fill,0);
             $this->MultiCell($w[1], $h,$row["totalProjectsBySection"],'LR'.$marginBottom,'C', $fill,0);
             $this->MultiCell($w[2], $h,$row["totalPercentageProjectsBySection"],'LR'.$marginBottom,'R', $fill,0);
-            $this->MultiCell($w[3], $h,$row["totalApprovedBudgetBySection"],'LR'.$marginBottom,'R', $fill,0);
+            $this->MultiCell($w[3], $h,$notSum.$row["totalApprovedBudgetBySection"],'LR'.$marginBottom,'R', $fill,0);
             $this->MultiCell($w[4], $h,$row["totalPercentageApprovedBudgetBySection"],'LR'.$marginBottom,'R', $fill,0);
             $this->MultiCell($w[5], $h,$row["contractAmountPercentageBySection"],'LR'.$marginBottom,'R', $fill,0);
             $this->Ln();
