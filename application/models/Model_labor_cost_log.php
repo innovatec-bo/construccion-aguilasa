@@ -113,10 +113,28 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         $ci->db->query($sql);
     }
 
-    public static function getLogByProjectId($projectId = NULL)
+    public static function getLogByProjectId($projectId = NULL, $builderId = NULL, $startDate = NULL, $endDate = NULL)
     {
         $ci = &get_instance();
         $ci->load->database();
+
+		$projectFilter = "";
+		if(!is_null($projectId))
+		{
+			$projectFilter = " and project_id_lad = ".$ci->db->escape($projectId)." ";
+		}
+
+        $builderFilter = "";
+        if(!is_null($builderId))
+		{
+			$builderFilter = "  and builders.id_usr = ".$ci->db->escape($builderId)." ";
+		}
+
+        $dateFilter = "";
+        if(!is_null($startDate) && !is_null($endDate))
+		{
+			$dateFilter = " and manual_entry_date_lal BETWEEN ".$ci->db->escape($startDate)." and ".$ci->db->escape($endDate)." ";
+		}
         $sql = "
         SELECT
             id_lal log_id,
@@ -158,7 +176,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         ) bui_labor_cost on id_lac = labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
         LEFT JOIN bui_building_points on id_bpo = point_id_lal
-        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 and project_id_lad = ".$ci->db->escape($projectId)."
+        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 ".$projectFilter."  ".$builderFilter." ".$dateFilter."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
         ";
@@ -168,9 +186,9 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         return $response;
     }
 
-    public static function prepareArrayLog($projectId = NULL)
+    public static function prepareArrayLog($projectId = NULL, $builderId = NULL)
     {
-        $laborCostLog = Model_labor_cost_log::getLogByProjectId($projectId);
+        $laborCostLog = Model_labor_cost_log::getLogByProjectId($projectId, $builderId);
         $singleList = array();
         $arrayLog = array();
         for ($i = 0; $i < count($laborCostLog); $i++)
