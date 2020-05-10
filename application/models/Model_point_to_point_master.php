@@ -32,8 +32,8 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
         previous_point_ptp
         FROM
         bui_point_to_point_master
-        LEFT JOIN wfl_projects on code_pro = project_code_ptp
-        WHERE id_pro = ".$ci->db->escape($projectId)." and deleted_ptp != 1
+        LEFT JOIN wfl_projects on code_pro = project_code_ptp and deleted_ptp != 1
+        WHERE id_pro = ".$ci->db->escape($projectId)."
         GROUP BY point_ptp
         ";
 
@@ -83,7 +83,7 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
         UPDATE bui_structure_by_points t1 
         LEFT JOIN bui_building_points t2 ON t1.label_sbp = t2.label_bpo and t1.project_id_sbp = t2.project_id_bpo
         SET t1.point_id_sbp = t2.id_bpo
-        WHERE t1.project_id_sbp = ".$ci->db->escape($projectId)."
+        WHERE t1.project_id_sbp = ".$ci->db->escape($projectId)." and t1.deleted_sbp != 1 and t2.deleted_bpo != 1
         ";
 
         $ci->db->query($sql);   

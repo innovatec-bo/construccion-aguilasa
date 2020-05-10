@@ -54,12 +54,12 @@ class Model_building_point extends Model_building_point_base
             SUM(IFNULL(worked_up_wus,0)) total_worked_up
         FROM
             bui_building_points
-        LEFT JOIN bui_structure_by_points on id_bpo = point_id_sbp
-        LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_sbp
+        LEFT JOIN bui_structure_by_points on id_bpo = point_id_sbp AND deleted_sbp != 1
+        LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_sbp and deleted_lac != 1
         LEFT JOIN bui_building_structures on id_bus = building_structure_id_lac
-        LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad             
+        LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad and deleted_lad != 1           
         LEFT JOIN bui_labor_cost_log on point_id_lal = point_id_sbp
-        LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus and deleted_wus !=1            
+        LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus and deleted_wus !=1                        
         WHERE project_id_lad = ".$ci->db->escape($projectId)." and deleted_bpo != 1 and deleted_sbp != 1
         GROUP BY id_sbp 
         ";
