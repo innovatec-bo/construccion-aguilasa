@@ -48,7 +48,7 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
         $sql = "
         INSERT into bui_structure_by_points(project_id_sbp, label_sbp, point_id_sbp, quantity_to_use_sbp, labor_cost_id_sbp)
         SELECT
-            project_id_lad,labor_cost_filtered.structure_code_bus,
+            project_id_lad,
             point_ptp,
             NULL 'PointId',
             quantity_ptp,
