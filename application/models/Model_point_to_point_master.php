@@ -61,7 +61,8 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
                 SELECT
                     id_lac,
                     structure_code_bus,
-                    activity_lac
+                    activity_lac,
+                    execution_lac
                 FROM
                     bui_labor_cost
                 LEFT JOIN bui_building_structures on id_bus = building_structure_id_lac
