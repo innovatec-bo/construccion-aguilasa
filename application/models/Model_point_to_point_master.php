@@ -48,7 +48,7 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
         $sql = "
         INSERT into bui_structure_by_points(project_id_sbp, label_sbp, point_id_sbp, quantity_to_use_sbp, labor_cost_id_sbp)
         SELECT
-            project_id_lad,
+            project_id_lad,labor_cost_filtered.structure_code_bus,
             point_ptp,
             NULL 'PointId',
             quantity_ptp,
@@ -56,7 +56,7 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
             From
             bui_point_to_point_master
             LEFT JOIN wfl_projects on code_pro = project_code_ptp and deleted_pro != 1
-            LEFT JOIN bui_labor_details on project_id_lad = id_pro
+            LEFT JOIN bui_labor_details on project_id_lad = id_pro and deleted_lad != 1
             LEFT JOIN (
                 SELECT
                     id_lac,
@@ -65,8 +65,8 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
                 FROM
                     bui_labor_cost
                 LEFT JOIN bui_building_structures on id_bus = building_structure_id_lac
-                LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
-                WHERE project_id_lad = ".$ci->db->escape($projectId)." -- labor_detail_id_lac = 130
+                LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac  and deleted_lad !=1
+                WHERE project_id_lad = ".$ci->db->escape($projectId)." and deleted_lac != 1 -- labor_detail_id_lac = 130
             ) labor_cost_filtered on labor_cost_filtered.activity_lac = activity_ptp and labor_cost_filtered.structure_code_bus = building_structure_code_ptp
             where project_id_lad = ".$ci->db->escape($projectId)." and deleted_ptp != 1
         ";
