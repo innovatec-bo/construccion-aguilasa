@@ -12,4 +12,12 @@ $(document).ready(function() {
 
     let laborCostLogHandler = new LaborCostLogHandler(projectId);
     laborCostLogHandler.loadEventHandler();
+
+	let pointsLocationHandler = new PointsLocationHandler("maps", projectId);
+	pointsLocationHandler.startMap();
+	pointsLocationHandler.loadEventHandlers();
+
+	$(document).on('shown.bs.tab', 'a[data-toggle="tab"][href="#point-locations"]', function (e) {
+		pointsLocationHandler.startPaginationJs();
+	})
 });

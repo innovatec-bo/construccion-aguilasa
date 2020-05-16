@@ -216,3 +216,34 @@ blockquote {
             padding: 10px 0px 9px;
         }
     }
+/****************************Map styles*/
+@media (min-width: 768px)
+{
+	#map-description-list
+	{
+		max-width: 242px;
+	}
+	#map-description-list dt
+	{
+		width: 100px
+	}
+	#map-description-list dd
+	{
+		margin-left: 108px;
+	}
+}
+
+#map-description-list .btn-whatsapp
+{
+	color: #ffffff;
+	background-color: #28AF17;
+	border-color: #28AF17;
+}
+@media (max-width: 370px)
+{
+	#map-section
+	{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+}

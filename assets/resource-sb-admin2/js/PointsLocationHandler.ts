@@ -20,31 +20,33 @@ class PointsLocationHandler
     private _currentMarkers : any;
     private _bounds : any;
     private _markerCluster : any;
+    private _projectId : number;
     
-    constructor(private divContent: string)
+    constructor(private divContent: string, private projectId: number)
     {
         moment.locale('es');
         this._mapContent = divContent;
         this._currentMarkers = [];
         this._bounds = new google.maps.LatLngBounds();
         this._markerCluster = new MarkerClusterer(this._map, this._currentMarkers,
-                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});    
+                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        this._projectId = projectId;
     }
 
-    public startPaginationJs(additionalParameter)
+    public startPaginationJs(additionalParameter?)
     {
         let _this = this;
 
         $('#pagination-content').pagination({
-            dataSource: base_url + 'panel/AjaxProject/paginationJs',
+            dataSource: base_url + 'panel/AjaxBuildingPoint/paginationJs',
             locator: 'resultArray',
             totalNumberLocator: function(response) {
                 // you can return totalNumber by analyzing response content
-                let text = "Se encontraron "+response.recordsFiltered+" proyectos";
+                let text = "Se encontraron "+response.recordsFiltered+" puntos";
                 if(response.recordsFiltered == 1)
-                    text = "Se encontro 1 proyecto";
+                    text = "Se encontro 1 punto";
                 else if(response.recordsFiltered == 0)
-                    text = "No se encontraron proyectos";
+                    text = "No se encontraron puntos";
                 $("#total-projects-found").text(text);
                 return response.recordsFiltered;
             },
@@ -55,7 +57,8 @@ class PointsLocationHandler
                 beforeSend: function(jqXHR) {
                     blockArea($("#"+_this._mapContent));
                     this.data += '&' + $.param({
-                                                    additionalParameters: additionalParameter.getList(),
+                                                    // additionalParameters: additionalParameter.getList(),
+													projectId:_this.projectId,
                                                     textToSearch: $("#text-to-search").val()
                                                 });
                     return true;
@@ -68,17 +71,17 @@ class PointsLocationHandler
                 });
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
-                _this._markerCluster.clearMarkers();
-                let marker = {};
-                $.each(data, function(index, project){
-                        let loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
+                // _this._markerCluster.clearMarkers();
+                let marker : any = {};
+                $.each(data, function(index, point){
+                        let loc = new google.maps.LatLng(parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")), parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")));
                         _this._bounds.extend(loc);
-                        marker = _this.addMarker(project);
+                        marker = _this.addMarker(point);
                         _this._currentMarkers.push(marker);
                     
                 });
-                _this._markerCluster.setMap(_this._map);
-                _this._markerCluster.addMarkers(_this._currentMarkers);
+                // _this._markerCluster.setMap(_this._map);
+                // _this._markerCluster.addMarkers(_this._currentMarkers);
                 
                 if(data.length == 1) 
                 {
@@ -92,7 +95,6 @@ class PointsLocationHandler
                     _this._map.panToBounds(_this._bounds);    
                 }
 
-                // _this._markerCluster.repaint();
                 $("#"+_this._mapContent).unblock();
             }
         });
@@ -101,18 +103,19 @@ class PointsLocationHandler
     public startMap()
     {
         this._map = new google.maps.Map(document.getElementById(this._mapContent), {
-          center: {lat: -17.784146, lng: -63.181738},
-          zoom: 12
+          	center: {lat: -17.784146, lng: -63.181738},
+          	zoom: 12,
+			mapTypeId: 'satellite'
         });
     }
 
-    public addMarker(project)
+    public addMarker(point)
     {
-        let _this : ProjectsLocationHandler = this;
-        let latitude = parseFloat(project.latitude_pro);
-        let longitude = parseFloat(project.longitude_pro);
+        let _this : PointsLocationHandler = this;
+        let latitude = parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1."));
+        let longitude = parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1."));
         let position = {lat: latitude, lng: longitude};
-        let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png', 35);
+        let markerImage = timbthumbImage(base_url+'assets/images/flaticon/electric-pole-2.png', 30);
         let marker = new google.maps.Marker({
             position: position,
             map: _this._map,
@@ -120,12 +123,11 @@ class PointsLocationHandler
             icon: markerImage
           });
 
-        let htmlSource = $("#location-info-window").html();
+        let htmlSource = $("#point-location-info-window").html();
         let template = Handlebars.compile(htmlSource);
-        let html = template({project:project});
+        let html = template({point:point});
 
         let infoWindow = new google.maps.InfoWindow({
-            // content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Enviar por Whatsapp</a>'
             content: html
         });
         

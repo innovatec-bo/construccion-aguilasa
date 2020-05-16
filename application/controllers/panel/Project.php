@@ -553,6 +553,11 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addViewComplement("pagination-js");
+		$this->complementHandler->addViewComplement("google.maps.api.cluster");
+		$this->complementHandler->addViewComplement("google.maps.api");
+//		$this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+		$this->complementHandler->addProjectJs('PointsLocationHandler', TRUE);
         $this->complementHandler->addProjectCss('project.building-points', TRUE);
         $this->complementHandler->addProjectJs('project.building-points', TRUE);
         $this->complementHandler->addProjectCss('PointToPointHandler', TRUE);

@@ -90,4 +90,116 @@ class Model_building_point_base extends MY_Model
         }
         return $response;
     }
+
+	################################################################################################# BEGIN - DATATABLE AJAX METHODS
+	/**
+	 * @return mixed
+	 */
+	public static function countAll($additionalParameters = array())
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = '
+                select count(' . static::TABLE_ID. ') as total
+                from ' . static::TABLE_NAME .' where '.static::notDeleted().' '.static::_additionalParameters($additionalParameters).' ';
+
+		$query = $ci->db->query($sql);
+		$totalCount = $query->row()->total;
+		return $totalCount;
+	}
+
+	/**
+	 * @param $limit
+	 * @param $offset
+	 * @param null $orderBy
+	 * @param string $orderType
+	 * @return mixed
+	 */
+	public static function getAll($limit, $offset, $orderBy = null, $orderType = 'asc', $additionalParameters = array())
+	{
+		if ($orderBy === null)
+		{
+			$orderBy = static::TABLE_ID;
+		}
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME . ' where '.static::notDeleted().'             
+                '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+		$query = $ci->db->query($sql);
+		$result = $query->result();
+		return $result;
+	}
+
+	public static function search($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
+	{
+		if ($orderBy === null)
+		{
+			$orderBy = static::TABLE_ID;
+		}
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
+		$sql .= ' where '.static::notDeleted().' and (';
+		foreach ($colsArray as $var)
+		{
+			$sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+		}
+
+		$sql = substr($sql, 0, -3);
+		$sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+
+		$query = $ci->db->query($sql);
+		return $query->result();
+	}
+
+	public static function searchTotalCount($text, $colsArray = null, $additionalParameters = array())
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
+		$sql .= ' where '.static::notDeleted().' and (';
+
+		foreach ($colsArray as $var)
+		{
+			$sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+		}
+
+		$sql = substr($sql, 0, -3);
+		$sql .= ') '.static::_additionalParameters($additionalParameters).' ';
+
+		$query = $ci->db->query($sql);
+		$totalCount = $query->row()->total;
+		return $totalCount;
+	}
+
+	private static function _dataTableColumns()
+	{
+		$columns = static::TABLE_NAME.".*";
+		return $columns;
+	}
+
+	private static function _additionalParameters($list = array())
+	{
+		$ci=&get_instance();
+		$ci->load->database();
+		$sql = "";
+		if(is_array($list) && count($list) >= 1)
+		{
+			foreach($list as $parameter => $value)
+			{
+				switch ($parameter)
+				{
+					case "project-id":
+						$sql .= " and project_id_bpo = ".$ci->db->escape($value)." ";
+						break;
+				}
+			}
+		}
+		return $sql;
+	}
+	################################################################################################# END - DATATABLE AJAX METHODS
 }
