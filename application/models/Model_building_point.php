@@ -42,6 +42,8 @@ class Model_building_point extends Model_building_point_base
             id_bpo point_id,
             id_sbp,
             label_bpo point_label,
+            latitude_bpo point_latitude,
+            longitude_bpo point_longitude,
             activity_lac labor_activity,
             unit_price_lac unit_price,
             quantity_to_use_sbp quantity_to_use,
@@ -81,7 +83,9 @@ class Model_building_point extends Model_building_point_base
                 $i = 1;
                 $arrayPoints[$pointId] = array(
                     "point_id" => $pointId,
-                    "point_label" => $row["point_label"]
+                    "point_label" => $row["point_label"],
+                    "point_latitude" => $row["point_latitude"],
+                    "point_longitude" => $row["point_longitude"]
                 );
             }
 

@@ -378,8 +378,8 @@ class ManpowerFileReader
                 $structureCode = $value[14];
                 $quantityToUse = $value[13];
                 $pointLabel = $value[1];
-                $latitude = $value[2];
-                $longitude = $value[3];
+                $latitude = $value[3];
+                $longitude = $value[2];
                 $previousPoint = $value[5];
                 $reg = $value[4];
                 $distanceAT = $value[6];
