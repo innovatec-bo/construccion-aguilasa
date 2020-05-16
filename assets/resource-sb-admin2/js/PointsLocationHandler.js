@@ -48,7 +48,10 @@ var PointsLocationHandler = /** @class */ (function () {
                 // _this._markerCluster.clearMarkers();
                 var marker = {};
                 $.each(data, function (index, point) {
-                    var loc = new google.maps.LatLng(parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")), parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")));
+                    point.latitude_bpo = point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.");
+                    point.longitude_bpo = point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.");
+                    var loc = new google.maps.LatLng(parseFloat(point.latitude_bpo), parseFloat(point.longitude_bpo));
+                    // let loc = new google.maps.LatLng(parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")), parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")));
                     _this._bounds.extend(loc);
                     marker = _this.addMarker(point);
                     _this._currentMarkers.push(marker);
@@ -77,8 +80,8 @@ var PointsLocationHandler = /** @class */ (function () {
     };
     PointsLocationHandler.prototype.addMarker = function (point) {
         var _this = this;
-        var latitude = parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1."));
-        var longitude = parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1."));
+        var latitude = parseFloat(point.latitude_bpo);
+        var longitude = parseFloat(point.longitude_bpo);
         var position = { lat: latitude, lng: longitude };
         var markerImage = timbthumbImage(base_url + 'assets/images/flaticon/electric-pole-2.png', 30);
         var marker = new google.maps.Marker({
