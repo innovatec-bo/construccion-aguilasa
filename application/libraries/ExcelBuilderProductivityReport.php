@@ -36,6 +36,7 @@ class ExcelBuilderProductivityReport
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
+		$individualProductivityLog = Model_project::getProductivityBaseReport($this->_startDate, $this->_endDate, $this->_builderId);
         $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
         $month = $this->_months[strtolower($month)];
@@ -48,12 +49,13 @@ class ExcelBuilderProductivityReport
             ->setDescription("Reporte de production de constructores")
             ->setKeywords("reporte Constructor constructores")
             ->setCategory("Reporte");
-        $worksheet1 = $spreadsheet->createSheet(0);
-        $worksheet1->setTitle('Resumen');
+//        $worksheet1 = $spreadsheet->createSheet(0);
+//        $worksheet1->setTitle('Resumen');
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
         $spreadsheet = $this->builder($spreadsheet, $projectProductivity);
-
+        $spreadsheet = $this->builderLog($spreadsheet, $individualProductivityLog);
+		$spreadsheet->setActiveSheetIndex(0);
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="'.$this->_userBuilder->getFullName().' - '.$month.' del '.$year.'.xls"');
@@ -86,8 +88,9 @@ class ExcelBuilderProductivityReport
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
             ]
         ];
-        
-        
+
+		$manPowerWorkSheet = $spreadsheet->createSheet(0);
+		$manPowerWorkSheet->setTitle('Resumen');
         //HEADER
         $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
@@ -264,6 +267,105 @@ class ExcelBuilderProductivityReport
         $drawing->setWorksheet($spreadsheet->getActiveSheet());
         return $spreadsheet;
     }
+
+    public function builderLog($spreadsheet, $individualProductivityLog)
+	{
+		$titleStyleArray = [
+			'font' => ['bold' => true],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'startColor' => ['argb' => 'BFBFBF']
+			]
+		];
+
+		$headerStyleArray = [
+			'font' => ['bold' => true],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'startColor' => ['argb' => 'BFBFBF']
+			]
+		];
+		$manPowerWorkSheet = $spreadsheet->createSheet(1);
+		$manPowerWorkSheet->setTitle('Log de trabajo');
+		$date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
+		$month = date_format($date, 'F');
+		$month = $this->_months[strtolower($month)];
+		$year = date_format($date, 'Y');
+		$spreadsheet->setActiveSheetIndex(1)->setCellValue('A1', "HISTORIAL DE TRABAJO DE ".strtoupper($this->_userBuilder->getFullName())." - ".strtoupper($month)." DEL ".$year);
+		$spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+		$spreadsheet->getActiveSheet()->getStyle('A1:M1')->applyFromArray($titleStyleArray);
+		$spreadsheet->getActiveSheet()->mergeCells('A1:M1');
+
+		$spreadsheet->setActiveSheetIndex(1)
+			->setCellValue('A2', "#")
+			->setCellValue('B2', "PROYECTO")
+			->setCellValue('C2', "FECHA")
+			->setCellValue('D2', "EJECUCION")
+			->setCellValue('E2', "ACTIVIDAD")
+			->setCellValue('F2', "ESTRUCTURA")
+			->setCellValue('G2', "DESCRIPCION")
+			->setCellValue('H2', "PUNTO")
+			->setCellValue('I2', "CANTIDAD\nTRABAJADA")
+			->setCellValue('J2', "UNIDAD")
+			->setCellValue('K2', "PRECIO\nUNITARIO")
+			->setCellValue('L2', "MONTO\nTRABAJADO")
+			->setCellValue('M2', "MONTO\nCONSIGNADO");
+		$spreadsheet->getActiveSheet()->getStyle('A2:M2')->applyFromArray($headerStyleArray);
+		$counter = 1;
+		$i = 2;
+		// $workflowDetail = array();
+		foreach ($individualProductivityLog as $row)
+		{
+//			$row = $row->toArray();
+			// echo"<pre>";var_dump($row);exit;
+			$spreadsheet->setActiveSheetIndex(1)
+				->setCellValue('A'.($i+1), $counter)
+				->setCellValue('B'.($i+1), $row["code_pro"])
+				->setCellValue('C'.($i+1), $row["manual_entry_date_lal"])
+				->setCellValue('D'.($i+1), $row["labor_cost_execution"])
+				->setCellValue('E'.($i+1), $row["labor_cost_activity"])
+				->setCellValue('F'.($i+1), $row["structure_code"])
+				->setCellValue('G'.($i+1), $row["structure_description"])
+				->setCellValue('H'.($i+1), $row["point_label"])
+				->setCellValue('I'.($i+1), $row["worked_up_wus"])
+				->setCellValue('J'.($i+1), $row["structure_unit_of_measurement"])
+				->setCellValue('K'.($i+1), $row["price_wus"])
+				->setCellValue('L'.($i+1), $row["total_amount_worked_to_split"])
+				->setCellValue('M'.($i+1), $row["total_amount_worked_by_builder"]);
+			$i++;
+			$counter++;
+
+		}
+		$spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getStyle('A1:M'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+		$spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+		$spreadsheet->getActiveSheet()->getStyle('C3:C'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
+		$spreadsheet->getActiveSheet()->getStyle('I3:I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$spreadsheet->getActiveSheet()->getStyle('K3:K'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$spreadsheet->getActiveSheet()->getStyle('L3:L'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$spreadsheet->getActiveSheet()->getStyle('M3:M'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		return $spreadsheet;
+	}
 
     public function prepareDataToPrint($projectProductivity)
     {

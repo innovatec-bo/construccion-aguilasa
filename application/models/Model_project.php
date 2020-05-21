@@ -2190,10 +2190,15 @@ class Model_project extends Model_project_base
         return $result;       
     }
 
-    public static function getProductivityBaseReport($startDate, $endDate)
+    public static function getProductivityBaseReport($startDate, $endDate, $builderId = NULL)
     {
         $ci = &get_instance();
         $ci->load->database();
+        $filterBuilder = "";
+        if(!is_null($builderId))
+		{
+			$filterBuilder = " and builders_in_manpower.builders like '%".$builderId."%' ";
+		}
         $sql = "
             SELECT
                 id_lad,
@@ -2213,12 +2218,21 @@ class Model_project extends Model_project_base
                 builders_in_manpower.total_builders,
                 ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split,
                 ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder,
+                id_bpo point_id,
+				label_bpo point_label,
+                structure_code_bus structure_code,
+                unit_of_measurement_bus structure_unit_of_measurement,
+				description_bus structure_description,
+				activity_lac labor_cost_activity,
+				execution_lac labor_cost_execution,
                 bui_worked_up_structures.*
             FROM
                 bui_worked_up_structures
             LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
+            LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
             LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
             LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
+            LEFT JOIN bui_building_points on point_id_lal = id_bpo
             LEFT JOIN wfl_projects on id_pro = project_id_lad
             LEFT JOIN(
                 select 
@@ -2293,6 +2307,7 @@ class Model_project extends Model_project_base
             and deleted_lal != 1
             and manual_entry_date_lal BETWEEN ".$ci->db->escape($startDate)." and ".$ci->db->escape($endDate)."
             -- and project_id_lad = 653
+            ".$filterBuilder."
             order by project_id_lad, manual_entry_date_lal
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
