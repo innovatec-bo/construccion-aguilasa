@@ -11,7 +11,7 @@ class CronJob extends PublicController
     {
         if($challenge == "nbreport2019")
         {
-            Model_user::netBuildingEmail();
+            // Model_user::netBuildingEmail();
         }
     }
 
