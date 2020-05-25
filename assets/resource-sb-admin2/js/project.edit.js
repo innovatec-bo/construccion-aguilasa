@@ -8,7 +8,8 @@ $(document).ready(function() {
 
     let mapsHandler = new MapsHandler("maps");
     mapsHandler.startMap();
-    mapsHandler.addUniqueMarker(latitude, longitude, true);
+    if(!isNaN(latitude) && !isNaN(longitude))
+        mapsHandler.addUniqueMarker(latitude, longitude, true);
     mapsHandler.loadEventHandlers();
     
     $("select[name=project-cre-fiscal]").select2();

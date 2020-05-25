@@ -188,11 +188,11 @@
                                 <label>Coordenadas del proyecto</label><br>
                                 <div class="form-group">
                                     <!-- <em>Latitud</em><br> -->
-                                    <input class="form-control" value="<?=set_value('latitude',$project["latitude_pro"])?>" required name="latitude" placeholder="-17.778556">
+                                    <input class="form-control" value="<?=set_value('latitude',$project["latitude_pro"])?>" name="latitude" placeholder="-17.778556">
                                 </div>
                                 <div class="form-group">
                                     <!-- <em>Longitud</em><br> -->
-                                    <input class="form-control" value="<?=set_value('longitude',$project["longitude_pro"])?>" required name="longitude" placeholder="-63.180389">
+                                    <input class="form-control" value="<?=set_value('longitude',$project["longitude_pro"])?>" name="longitude" placeholder="-63.180389">
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary search-coordinate-button" type="button">Buscar</button>
