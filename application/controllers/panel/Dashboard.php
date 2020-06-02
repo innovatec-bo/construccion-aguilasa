@@ -118,4 +118,10 @@ class Dashboard extends PrivateController
             $test->setBudgetExceeded($budgetExceeded);
         $test->getReport();
     }
+
+    public function projectBudgets($var)
+    {
+        $report = new ExcelProjectMasterDetail($this->sessionUser);
+        $report->getReport();
+    }
 }

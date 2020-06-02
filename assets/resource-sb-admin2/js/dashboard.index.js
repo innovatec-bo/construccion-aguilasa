@@ -189,6 +189,11 @@ $(document).ready(function() {
         }
         
     });
+
+    $(document).on("submit","form.projects-and-current-production", function(e){
+        e.preventDefault();
+        window.location.href = base_url+"panel/Dashboard/ProjectBudgets/asd";
+    });
 });
 
 function getUsersQuantity()

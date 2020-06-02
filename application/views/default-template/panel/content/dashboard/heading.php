@@ -221,7 +221,7 @@
             </div>
         </form>
     </div>
-    <div class="col-lg-5 col-md-6">
+    <div class="col-lg-6 col-md-6">
         <form class="form-inline builder-manpower-productivity-report" method="post">
             <div class="panel panel-primary" id="panel-days-progress-chart">
                 <div class="panel-heading">
@@ -269,6 +269,22 @@
                                     <option value="2020">2020</option>
                                 </select>    
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer p-0">
+                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <form class="form-inline projects-and-current-production" method="post">
+            <div class="panel panel-primary" id="panel-days-progress-chart">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            Reporte de proyectos, produccion actual, monto destinado y excedentes
                         </div>
                     </div>
                 </div>

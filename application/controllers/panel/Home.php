@@ -86,10 +86,4 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
-
-    public function test()
-	{
-	$report = new ExcelProjectMasterDetail($this->sessionUser);
-	$report->getReport();
-	}
 }

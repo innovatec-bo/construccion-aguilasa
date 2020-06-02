@@ -25,10 +25,10 @@ class ExcelProjectMasterDetail
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
-            ->setTitle("Formulario de registro de actividad")
-            ->setSubject("Registro de actividad en mano de obra")
-            ->setDescription("Ingrese las actividades en cada una de las hojas de este documento")
-            ->setKeywords("formulario registro actividad mano de obra")
+            ->setTitle("Reporte de importes")
+            ->setSubject("Importes y excedentes")
+            ->setDescription("Contiene una lista de proyectos con su detalle de produccion y presupuesto destinado")
+            ->setKeywords("reporte produccion proyectos")
             ->setCategory("Reporte");
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         
