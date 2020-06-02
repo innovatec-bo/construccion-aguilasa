@@ -2225,6 +2225,8 @@ class Model_project extends Model_project_base
 				description_bus structure_description,
 				activity_lac labor_cost_activity,
 				execution_lac labor_cost_execution,
+                building_prb building_budget_approved,
+                building_reb building_budget_real,  
                 bui_worked_up_structures.*
             FROM
                 bui_worked_up_structures
@@ -2302,6 +2304,10 @@ class Model_project extends Model_project_base
                         bui_builders_in_manpower where deleted_bim != 1
                         GROUP BY labor_cost_log_id_bim
                     ) builders_in_manpower on builders_in_manpower.labor_cost_log_id_bim = id_lal
+            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = project_id_lad and approved_budget.status_id_psl = 11
+			left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+			LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = project_id_lad and real_budget.status_id_psl = 45
+			left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             where 
             deleted_wus != 1
             and deleted_lal != 1
@@ -2459,5 +2465,39 @@ class Model_project extends Model_project_base
         }
 
         return $projectList;
+    }
+
+    public static function productionGeneralSummary()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            SELECT
+                code_pro codigo,
+                                status_name_pst estado,
+                sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual,
+                        (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
+                        (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real
+            FROM
+                bui_worked_up_structures
+            LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
+            LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+            LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
+            LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
+            LEFT JOIN bui_building_points on point_id_lal = id_bpo
+            LEFT JOIN wfl_projects on id_pro = project_id_lad
+                        LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = project_id_lad and approved_budget.status_id_psl = 11
+                        left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+                        LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = project_id_lad and real_budget.status_id_psl = 45
+                        left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
+                        left join wfl_project_status on status_pro = id_pst
+            where 
+                            deleted_wus != 1
+            and deleted_lal != 1
+            GROUP BY project_id_lad
+        ";
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
+        $result = $query->result_array();
+        return $result;
     }
 }

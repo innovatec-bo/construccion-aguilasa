@@ -443,6 +443,10 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     and manpower_file_id_prb is not null
                 ) manpower on manpower.project_id = id_pro
+                LEFT JOIN wfl_project_status_log approved_budget ON approved_budget.project_id_psl = id_pro AND approved_budget.status_id_psl = 11
+				LEFT JOIN wfl_project_budgets ON status_log_id_prb = approved_budget.id_psl
+				LEFT JOIN wfl_project_status_log real_budget ON real_budget.project_id_psl = id_pro AND real_budget.status_id_psl = 45
+				LEFT JOIN wfl_project_real_budgets ON status_log_id_reb = real_budget.id_psl 
                 WHERE
                     deleted_pro != 1
                     '.static::_additionalParameters($additionalParameters).'
@@ -570,6 +574,10 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     and manpower_file_id_prb is not null
                 ) manpower on manpower.project_id = id_pro
+                LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
+				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
+				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
                 WHERE
                     deleted_pro != 1
                     ".static::_additionalParameters($additionalParameters)."
@@ -712,7 +720,11 @@ class Model_project_base extends MY_Model
                 and deleted_pro != 1
                 and deleted_psl != 1
                 and manpower_file_id_prb is not null
-            ) manpower on manpower.project_id = id_pro            
+            ) manpower on manpower.project_id = id_pro
+            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
+				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
+				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl            
             WHERE
                 deleted_pro != 1
                 ".static::_additionalParameters($additionalParameters)."
@@ -851,6 +863,10 @@ class Model_project_base extends MY_Model
                 and deleted_psl != 1
                 and manpower_file_id_prb is not null
             ) manpower on manpower.project_id = id_pro
+            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
+				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
+				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             WHERE
                 deleted_pro != 1
                 ".static::_additionalParameters($additionalParameters)."
@@ -882,8 +898,20 @@ class Model_project_base extends MY_Model
                         status_log_manual_entry_date.builder_responsible,
                         status_log_manual_entry_date.builder_responsible_ids,
                         manpower.manpower_file_id,
-                        id_psl,
-                        id_war
+                        status_log_manual_entry_date.id_psl,
+                        id_war,
+                        design_prb design_budget,
+						building_prb building_budget,			
+						transportation_prb transportation_budget,
+						live_line_prb live_line_budget,
+						right_of_way_prb right_of_way_budget,
+						(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
+						design_reb design_real_budget,
+						building_reb building_real_budget,
+						transportation_reb transportation_real_budget,
+						live_line_reb live_line_real_budget,
+						right_of_way_reb right_of_way_real_budget,
+						(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
         ";
         return $columns;
     }

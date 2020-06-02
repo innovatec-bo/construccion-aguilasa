@@ -62,10 +62,7 @@ class Model_payment_order extends Model_payment_order_base
                 $responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
                 $responsibleList = array_column($responsibleList, "id");
                 //Saving real budget
-                $entryDate = strtotime('2018-10-01 12:27:40');
-                $entryDate = date('Y-m-d', $entryDate);
-                $entryDate = $entryDate." ".date("H:i:s");
-                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Proyecto asignado a un numero de orden", $entryDate, $responsibleList);
+                $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Proyecto asignado a un numero de orden", $this->_entryDate, $responsibleList);
             }
         }
         if(count($arrayToInsert) > 0)
@@ -79,13 +76,17 @@ class Model_payment_order extends Model_payment_order_base
 		$sql = "
 		UPDATE 
 			wfl_projects,
-			wfl_payment_orders_projects 
+			wfl_payment_orders_projects,
+            wfl_project_status_log 
 		SET 
-			status_pro = 39,
-			deleted_pop = 1
+			status_pro = 39, -- Go to previous status
+			deleted_pop = 1, -- deleted reference on payment orders project
+            deleted_psl = 1 -- deleted reference with status 45
 		WHERE
 			order_id_pop = ".$ci->db->escape($paymentOrderId)."
 			and project_id_pop = id_pro
+            and id_pro = project_id_psl
+            and status_id_psl = 45
 		";
 		$ci->db->query($sql);
 	}

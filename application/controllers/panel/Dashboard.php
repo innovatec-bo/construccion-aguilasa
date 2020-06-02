@@ -109,11 +109,13 @@ class Dashboard extends PrivateController
         $test->getReport();
     }
 
-    public function builderGeneralReport($month, $year)
+    public function builderGeneralReport($month, $year, $budgetExceeded = NULL)
     {
         $startDate = $year."-".$month."-01 00:00:00";
         $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
         $test = new ExcelBuildersGeneralReport($this->sessionUser, $startDate, $endDate);
+        if(!is_null($budgetExceeded))
+            $test->setBudgetExceeded($budgetExceeded);
         $test->getReport();
     }
 }

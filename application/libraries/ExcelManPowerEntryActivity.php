@@ -36,7 +36,6 @@ class ExcelManPowerEntryActivity
             ->setCategory("Reporte");
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         
-        
         // echo"<pre>";var_dump($laborCostMasterDetail);exit;
         $spreadsheet = $this->_manPower($spreadsheet, $laborCostMasterDetail, $project);
         $spreadsheet = $this->_builders($spreadsheet, $builders);
