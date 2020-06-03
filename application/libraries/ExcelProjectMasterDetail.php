@@ -105,8 +105,8 @@ class ExcelProjectMasterDetail
                 $projectDesign = $row['design_reb'];
             }
 
-            $currentProduction = $row['produccion_actual'] + $row['importe_real'];
-            $diff = $projectBudget - ($row['produccion_actual'] + $projectDesign);
+            $currentProduction = $row['produccion_actual'] + $projectDesign;
+            $diff = $projectBudget - $currentProduction;
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A'.($i+1), $counter)
                 ->setCellValue('B'.($i+1), $row["codigo"])
