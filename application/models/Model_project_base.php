@@ -443,10 +443,46 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     and manpower_file_id_prb is not null
                 ) manpower on manpower.project_id = id_pro
-                LEFT JOIN wfl_project_status_log approved_budget ON approved_budget.project_id_psl = id_pro AND approved_budget.status_id_psl = 11
-				LEFT JOIN wfl_project_budgets ON status_log_id_prb = approved_budget.id_psl
-				LEFT JOIN wfl_project_status_log real_budget ON real_budget.project_id_psl = id_pro AND real_budget.status_id_psl = 45
-				LEFT JOIN wfl_project_real_budgets ON status_log_id_reb = real_budget.id_psl 
+                LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE       
+                        1=1
+                        and status_id_psl = 11
+                        and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as approved_status 
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+            ) approved_budget on approved_budget.project_id_psl = id_pro
+            left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                            wfl_project_status_log
+                    WHERE       
+                    1=1
+                    and status_id_psl = 45
+                    and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as rb_status 
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+            ) real_budget on real_budget.project_id_psl = id_pro
+            left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
                 WHERE
                     deleted_pro != 1
                     '.static::_additionalParameters($additionalParameters).'
@@ -574,10 +610,46 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     and manpower_file_id_prb is not null
                 ) manpower on manpower.project_id = id_pro
-                LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
-				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
-				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
-				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
+                LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE       
+                        1=1
+                        and status_id_psl = 11
+                        and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as approved_status 
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+            ) approved_budget on approved_budget.project_id_psl = id_pro
+            left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                            wfl_project_status_log
+                    WHERE       
+                    1=1
+                    and status_id_psl = 45
+                    and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as rb_status 
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+            ) real_budget on real_budget.project_id_psl = id_pro
+            left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
                 WHERE
                     deleted_pro != 1
                     ".static::_additionalParameters($additionalParameters)."
@@ -721,10 +793,46 @@ class Model_project_base extends MY_Model
                 and deleted_psl != 1
                 and manpower_file_id_prb is not null
             ) manpower on manpower.project_id = id_pro
-            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
-				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
-				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
-				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl            
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE       
+                        1=1
+                        and status_id_psl = 11
+                        and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as approved_status 
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+            ) approved_budget on approved_budget.project_id_psl = id_pro
+            left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                            wfl_project_status_log
+                    WHERE       
+                    1=1
+                    and status_id_psl = 45
+                    and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as rb_status 
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+            ) real_budget on real_budget.project_id_psl = id_pro
+            left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             WHERE
                 deleted_pro != 1
                 ".static::_additionalParameters($additionalParameters)."
@@ -863,10 +971,46 @@ class Model_project_base extends MY_Model
                 and deleted_psl != 1
                 and manpower_file_id_prb is not null
             ) manpower on manpower.project_id = id_pro
-            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = id_pro and approved_budget.status_id_psl = 11
-				left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
-				LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = id_pro and real_budget.status_id_psl = 45
-				left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE       
+                        1=1
+                        and status_id_psl = 11
+                        and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as approved_status 
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+            ) approved_budget on approved_budget.project_id_psl = id_pro
+			left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+			LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                            wfl_project_status_log
+                    WHERE       
+                    1=1
+                    and status_id_psl = 45
+                    and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as rb_status 
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+            ) real_budget on real_budget.project_id_psl = id_pro
+			left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             WHERE
                 deleted_pro != 1
                 ".static::_additionalParameters($additionalParameters)."

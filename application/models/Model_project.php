@@ -2303,11 +2303,8 @@ class Model_project extends Model_project_base
                         from 
                         bui_builders_in_manpower where deleted_bim != 1
                         GROUP BY labor_cost_log_id_bim
-                    ) builders_in_manpower on builders_in_manpower.labor_cost_log_id_bim = id_lal
-            LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = project_id_lad and approved_budget.status_id_psl = 11
-			left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
-			LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = project_id_lad and real_budget.status_id_psl = 45
-			left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
+            ) builders_in_manpower on builders_in_manpower.labor_cost_log_id_bim = id_lal
+            
             where 
             deleted_wus != 1
             and deleted_lal != 1
