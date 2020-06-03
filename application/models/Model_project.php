@@ -2473,8 +2473,10 @@ class Model_project extends Model_project_base
                 code_pro codigo,
                                 status_name_pst estado,
                 sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual,
-                        (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
-                        (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real
+                IFNULL(design_prb,0) design_prb,
+                (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
+                IFNULL(design_reb,0) design_reb,
+                (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real
             FROM
                 bui_worked_up_structures
             LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus

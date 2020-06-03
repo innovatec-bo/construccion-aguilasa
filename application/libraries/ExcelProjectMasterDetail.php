@@ -98,15 +98,20 @@ class ExcelProjectMasterDetail
 			$row = (array) $row;
             // echo"<pre>";var_dump($row);exit;
 			$projectBudget = $row['importe_aprobado'];
+            $projectDesign = $row['design_prb'];
 			if(!is_null($row['importe_real']) && $row['importe_real'] > 0)
+            {
 				$projectBudget = $row['importe_real'];
+                $projectDesign = $row['design_reb'];
+            }
 
-            $diff = $projectBudget - $row['produccion_actual'];
+            $currentProduction = $row['produccion_actual'] + $row['importe_real'];
+            $diff = $projectBudget - ($row['produccion_actual'] + $projectDesign);
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A'.($i+1), $counter)
                 ->setCellValue('B'.($i+1), $row["codigo"])
                 ->setCellValue('C'.($i+1), $row["estado"])
-                ->setCellValue('D'.($i+1), $row["produccion_actual"])
+                ->setCellValue('D'.($i+1), $currentProduction)
                 ->setCellValue('E'.($i+1), $projectBudget)
                 ->setCellValue('F'.($i+1), $diff);
                 //Currency format
