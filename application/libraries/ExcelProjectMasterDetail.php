@@ -85,7 +85,7 @@ class ExcelProjectMasterDetail
             ->setCellValue('A2', "#")
             ->setCellValue('B2', "CODIGO")
             ->setCellValue('C2', "ESTADO")
-            ->setCellValue('D2', "PRODUCCION\nACTUAL.")
+            ->setCellValue('D2', "PRODUCCION\nACTUAL + ".html_entity_decode("DISE&Ntilde;O"))
             ->setCellValue('E2', "PROYECTO")
             ->setCellValue('F2', "DIFERENCIA")
 		;
