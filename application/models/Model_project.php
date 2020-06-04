@@ -2483,11 +2483,47 @@ class Model_project extends Model_project_base
             LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
             LEFT JOIN bui_building_points on point_id_lal = id_bpo
             LEFT JOIN wfl_projects on id_pro = project_id_lad
-                        LEFT JOIN wfl_project_status_log approved_budget on approved_budget.project_id_psl = project_id_lad and approved_budget.status_id_psl = 11
-                        left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
-                        LEFT JOIN wfl_project_status_log real_budget on real_budget.project_id_psl = project_id_lad and real_budget.status_id_psl = 45
-                        left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
-                        left join wfl_project_status on status_pro = id_pst
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                        wfl_project_status_log
+                    WHERE       
+                        1=1
+                        and status_id_psl = 11
+                        and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as approved_status 
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+            ) approved_budget on approved_budget.project_id_psl = id_pro
+            left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
+            LEFT JOIN (
+                select 
+                    wfl_project_status_log.* 
+                from 
+                (
+                    SELECT          
+                        project_id_psl project_id,
+                        status_id_psl,
+                        max(manual_entry_date_psl) entry_date
+                    FROM
+                            wfl_project_status_log
+                    WHERE       
+                    1=1
+                    and status_id_psl = 45
+                    and deleted_psl != 1
+                    GROUP BY project_id_psl
+                ) as rb_status 
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+            ) real_budget on real_budget.project_id_psl = id_pro
+            left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
+            left join wfl_project_status on status_pro = id_pst
             where 
                             deleted_wus != 1
             and deleted_lal != 1
