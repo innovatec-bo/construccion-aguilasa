@@ -2225,8 +2225,6 @@ class Model_project extends Model_project_base
 				description_bus structure_description,
 				activity_lac labor_cost_activity,
 				execution_lac labor_cost_execution,
-                building_prb building_budget_approved,
-                building_reb building_budget_real,  
                 bui_worked_up_structures.*
             FROM
                 bui_worked_up_structures
