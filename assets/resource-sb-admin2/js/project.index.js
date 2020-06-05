@@ -14,6 +14,16 @@ $(document).ready(function() {
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
 
+    var buttonProjectsLog = {
+        text: "Logs",
+        action: function ( e, dt, node, config )
+        {
+            var rowData = $('#project-index').DataTable().rows().data();
+            var codeList = "";
+            var $form = $("form[name=all-projects-log]");
+            $form.submit();
+        }
+    };
     var buttonWorkflow = {
         text: "Workflow",
         action: function ( e, dt, node, config )
@@ -51,7 +61,7 @@ $(document).ready(function() {
             $form.submit();
         }
     };
-    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport, buttonWorkflow];
+    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport, buttonWorkflow, buttonProjectsLog];
     if($("input[name=is-super-admin]").val() != 1)
     {
         buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport];

@@ -654,4 +654,10 @@ class Project extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $this->_loadPanelView("project/locations", $data);
     }
+
+    public function getAllProjectsLog()
+    {
+        $report = new ExcelAllProjectsLog($this->sessionUser);
+        $report->getReport();
+    }
 }

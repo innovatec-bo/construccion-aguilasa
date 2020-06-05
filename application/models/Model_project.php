@@ -2469,12 +2469,14 @@ class Model_project extends Model_project_base
         $sql = "
             SELECT
                 code_pro codigo,
-                                status_name_pst estado,
+                status_name_pst estado,
                 sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual,
                 IFNULL(design_prb,0) design_prb,
                 (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
                 IFNULL(design_reb,0) design_reb,
-                (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real
+                (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real,
+                in_progress_responsible.fiscal_responsible,
+                in_progress_responsible.builder_responsible
             FROM
                 bui_worked_up_structures
             LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
@@ -2522,15 +2524,140 @@ class Model_project extends Model_project_base
                 ) as rb_status 
                 LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
             ) real_budget on real_budget.project_id_psl = id_pro
+                        LEFT JOIN (
+                            select 
+                                id_psl,
+                                project_id_psl,
+                                filter.entry_date,
+                                GROUP_CONCAT(CONCAT(fiscal.fiscal_firstname,' ',fiscal.fiscal_lastname)) fiscal_responsible,
+                                GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible
+                            from 
+                                wfl_project_status_log
+                            RIGHT JOIN(
+                                            SELECT          
+                                                    project_id_psl project_id,
+                                                    max(manual_entry_date_psl) entry_date
+                                            FROM
+                                                    wfl_project_status_log
+                                            WHERE       
+                                            status_id_psl = 29
+                                            and deleted_psl != 1
+                                            
+                                            GROUP BY project_id_psl
+                            ) as filter on filter.entry_date = manual_entry_date_psl and filter.project_id = project_id_psl
+                            LEFT JOIN wfl_projects on id_pro = project_id_psl
+                            LEFT JOIN wfl_status_log_responsibles on wfl_status_log_responsibles.status_log_id_slr = id_psl
+                            LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre        
+                            LEFT JOIN sec_users responsible on user_id_sre = responsible.id_usr
+                            LEFT JOIN (
+                                                    SELECT
+                                                            id_usr builder_id,
+                                                            firstname_usr builder_firstname,
+                                                            lastname_usr builder_lastname
+                                                    FROM
+                                                            sec_users
+                                                    right JOIN sec_userroles on userid_uro = id_usr
+                                                    where 
+                                                            roleid_uro = 9
+                                                    and deleted_uro != 1
+                                            ) as builder on builder.builder_id = user_id_sre
+                            LEFT JOIN (
+                                                    SELECT
+                                                            id_usr fiscal_id,
+                                                            firstname_usr fiscal_firstname,
+                                                            lastname_usr fiscal_lastname
+                                                    FROM
+                                                            sec_users
+                                                    right JOIN sec_userroles on userid_uro = id_usr
+                                                    where 
+                                                            roleid_uro = 8
+                                                    and deleted_uro != 1
+                                            ) as fiscal on fiscal.fiscal_id = user_id_sre
+                            where deleted_pro != 1 and deleted_slr != 1
+                            GROUP BY id_psl
+                            ORDER BY project_id_psl
+                        ) as in_progress_responsible on in_progress_responsible.project_id_psl = id_pro
             left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             left join wfl_project_status on status_pro = id_pst
             where 
-                            deleted_wus != 1
+             deleted_wus != 1
             and deleted_lal != 1
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
         $result = $query->result_array();
         return $result;
+    }
+
+    public static function allProjectsLog()
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            SELECT
+                code_pro project_code,
+                DATE_FORMAT(manual_entry_date_psl,'%d-%m-%Y') log_entry_date,
+                status_name_pst status_name,
+                log_detail_psl log_detail
+            FROM
+                wfl_project_status_log
+            LEFT JOIN wfl_project_status ON status_id_psl = id_pst
+            LEFT JOIN wfl_project_points on id_psl = status_log_id_prp
+            LEFT JOIN wfl_projects on id_pro = project_id_psl
+            LEFT JOIN wfl_project_budgets on id_psl = status_log_id_prb
+            LEFT JOIN wfl_project_real_budgets on id_psl = status_log_id_reb
+            LEFT JOIN wfl_construction_assignments on id_psl = status_log_id_cas
+            LEFT JOIN sys_files mpf on manpower_file_id_prb = mpf.id_fil
+            LEFT JOIN (
+                SELECT
+                    status_log_id_psf,
+                    CONCAT('[',
+                            GROUP_CONCAT(
+                                CONCAT('{','\"fileName\":\"',uploadfilename_fil,'\",\"fileUrl\":\"',url_fil,'\",\"extension\":\"',extension_fil,'\"}')
+                            )
+                    ,']')
+                     images_list
+                FROM
+                    wfl_project_status_files
+                LEFT JOIN sys_files on id_fil = file_id_psf
+                where extension_fil != 'PDF'
+                GROUP BY status_log_id_psf
+                ) images on id_psl = images.status_log_id_psf
+            LEFT JOIN (
+                SELECT
+                    status_log_id_psf,
+                    CONCAT('[',
+                            GROUP_CONCAT(
+                                CONCAT('{','\"fileName\":\"',uploadfilename_fil,'\",\"fileUrl\":\"',url_fil,'\",\"extension\":\"',extension_fil,'\"}')
+                            )
+                    ,']')
+                     documents_list
+                FROM
+                    wfl_project_status_files
+                LEFT JOIN sys_files on id_fil = file_id_psf
+                where extension_fil = 'PDF'
+                GROUP BY status_log_id_psf
+                ) documents on id_psl = documents.status_log_id_psf
+            LEFT JOIN (
+                SELECT
+                    status_log_id_slr,
+                    firstname_usr,
+                    lastname_usr,
+                    CONCAT(firstname_usr,' ',lastname_usr) full_name
+                FROM
+                    wfl_status_log_responsibles
+                LEFT JOIN wfl_status_responsibles on responsible_id_slr = id_sre
+                LEFT JOIN sec_users on user_id_sre = id_usr 
+                and deleted_slr != 1
+            ) responsible on responsible.status_log_id_slr = id_psl
+            WHERE
+                1 = 1
+                and deleted_psl != 1 and keyword_pst not in ('approvement','schedule')
+            GROUP BY project_id_psl, log_entry_date, status_id_psl
+            ORDER BY project_id_psl, log_entry_date DESC, id_psl DESC
+        ";
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
+        $result = $query->result_array();
+        return $result;   
     }
 }
