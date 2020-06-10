@@ -189,13 +189,34 @@ function getProjectNetBuilding(year, keyword)
         type : "POST",
         data:{year:year, keyword:keyword},
         success:function(response){
+            let downloadables = [
+                                'countId',
+                                'countWithoutDigitizationPoints',
+                                'countAsBuiltPoints',
+                                'countWithoutAsBuiltPoints',
+                                'countWithoutBudgets',
+                                'countRealBudgets',
+                                'countWithoutRealBudgets'
+                                ];
 
+            $.each(response.data, function(index, value){
+                let rowKey = response.data[index].rowKey;
+                let isDownloadable = 0;
+                if(downloadables.find(element => element == rowKey) !== undefined)
+                {
+                    isDownloadable = 1;
+                }
+                response.data[index].downloadable = isDownloadable;
+            });
+            let html = "No se puede mostra la tabla";
             if(response.success === 1)
             {
-                var htmlSource   = $("#ht-report-net-building-table").html();
-                var template = Handlebars.compile(htmlSource);
-                var data = {projectTotalsList:response.data};
-                var html = template(data);
+                let row = $("#ht-report-net-building-table-row").html();
+                Handlebars.registerPartial("ht-report-net-building-table-row", row);
+                let htmlSource   = $("#ht-report-net-building-table").html();
+                let template = Handlebars.compile(htmlSource);
+                let data = {projectTotalsList:response.data};
+                html = template(data);
             }
             $content.html(html);
         }

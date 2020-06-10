@@ -31,22 +31,30 @@
             {{#each projectTotalsList}}
                 <tr class="{{rowKey}}">
                     <th>{{criteria}}</th>
-                    <td class="text-center"><a href="#" class="find-th">{{january}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{february}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{march}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{april}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{may}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{june}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{july}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{august}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{september}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{october}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{november}}</a></td>
-                    <td class="text-center"><a href="#" class="find-th">{{december}}</a></td>
-                    <td class="text-center">{{total}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=january}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=february}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=march}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=april}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=may}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=june}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=july}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=august}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=september}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=october}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=november}}</td>
+                        <td class="text-center">{{> ht-report-net-building-table-row data=december}}</td>
+                    <td class="text-center">{{> ht-report-net-building-table-row data=total}}</td>
                 </tr>
             {{/each}}
             </tbody>
         </table>
     </div>
+</script>
+<script id="ht-report-net-building-table-row" type="text/x-handlebars-template">
+    {{#ifCond downloadable "==" 1}}
+        <a href="#" class="find-th"><span class="badge">{{data}} <span class="glyphicon glyphicon-download"></span></span></a>
+    {{/ifCond}}
+    {{#ifCond downloadable "!=" 1}}
+        {{january}}
+    {{/ifCond}}
 </script>

@@ -785,13 +785,13 @@ class Model_project extends Model_project_base
         $ci = &get_instance();
         $ci->load->database();
 //        echo "<pre>";var_dump($filters);exit;
-        $keyword = isset($filters["keyword"]) && $filters["keyword"] != ""?$filters["keyword"]:"";
+        $keywordDateRange = isset($filters["keyword"]) && $filters["keyword"] != ""?$filters["keyword"]:"";
         $contractId = isset($filters["contract-id"]) && $filters["contract-id"] != ""?$filters["contract-id"]:"";
         $year = isset($filters["year"]) && $filters["year"] != ""?$filters["year"]:"";
         $rowKey = isset($filters["rowKey"]) && $filters["rowKey"] != ""?$filters["rowKey"]:"";
         $month = isset($filters["month"]) && $filters["month"] != ""?$filters["month"]:"";
         $sql = "";
-        switch ($keyword)
+        switch ($keywordDateRange)
         {
             case 'project_has_been_created':
                 $sql = " and entry_date_pro BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
@@ -801,6 +801,9 @@ class Model_project extends Model_project_base
                 break;
             case 'approved':
                 $sql = " and approved.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                break;
+            case 'completed':
+                $sql = " and completed.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
                 break;
             case 'as_built':
                 $sql = " and as_built.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
@@ -1979,7 +1982,8 @@ class Model_project extends Model_project_base
             'project_has_been_created' => 'INGRESADOS',
             'already_sent' => 'DISEÑADOS',
             'approved' => 'APROBADOS',
-            'as_built' => 'CONSTRUIDOS',
+            'completed' => 'CONSTRUIDOS', 
+            'as_built' => 'AS BUILT',
             'conciliation_shipment' => 'CONCILIADOS',
             'project_real_budget_confirmation' => 'CON # ORDEN');
         $projectTotalsList = array();

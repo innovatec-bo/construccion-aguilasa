@@ -176,7 +176,7 @@
             <div class="panel panel-primary" id="panel-report-project-totals-table">
                 <div class="panel-heading">
                     <i class="fa fa-table fa-fw"></i> Tabla de totales
-                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                    <input name="report-year" readonly="" class="form-control input-sm date-time" size="4" required="">
                     <select class="form-control input-sm" name="data-type">
                         <option value="countId">Unidades</option>
                         <option value="sumBudget">Montos aprobados</option>
@@ -218,11 +218,12 @@
                             <option value="project_has_been_created">Ingresados</option>
                             <option value="already_sent">Diseñados</option>
                             <option value="approved">Aprobados</option>
-                            <option value="as_built">Contruidos</option>
+                            <option value="completed">Construidos</option>
+                            <option value="as_built">As Built</option>
                             <option value="conciliation_shipment">Conciliados</option>
                             <option value="project_real_budget_confirmation">Con # orden</option>
                         </select>
-                        <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="1" required="">
+                        <input name="building-report-year" readonly="" class="form-control input-sm date-time" size="4" required="">
                         <div class="pull-right">
                             <div class="btn-group">
                                     <button type="submit" class="btn btn-default btn-xs">Descargar reporte</button>

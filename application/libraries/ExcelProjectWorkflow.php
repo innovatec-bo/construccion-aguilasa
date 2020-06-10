@@ -92,7 +92,7 @@ class ExcelProjectWorkflow
             $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
             $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
-            $projectDetail = $this->_getExcelColumnByDataKey("detail_pro");
+            $projectDetail = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
             $spreadsheet->getActiveSheet()->getStyle($contractNumber.'1')->applyFromArray($titleStyleArray);

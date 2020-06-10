@@ -1,5 +1,21 @@
 
 /********************** begin - net building report  */
+#net-building-report .badge
+{
+    color: #337ab7;
+    background-color: #fff;
+    font-size:10px;
+}
+#net-building-report .countAsBuiltPoints .badge, #net-building-report .countRealBudgets .badge
+{
+    color: #fff;
+    background-color: #337ab7;
+    font-size:10px;
+}
+#net-building-report td
+{
+    vertical-align: middle;
+}
 .countId
 {
     background-color: #88B2E4!important;

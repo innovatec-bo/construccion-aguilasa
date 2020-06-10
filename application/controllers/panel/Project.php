@@ -461,6 +461,12 @@ class Project extends PrivateController
     {
        set_time_limit(300);
         $additionalParameters = $this->input->post();
+        $additionalParameters['status-keyword'] = "";
+        $additionalParameters['keyword'] = "";
+        $additionalParameters['year'] = "20";
+        $additionalParameters['month'] = "";
+        $additionalParameters['rowKey'] = "";
+        $additionalParameters['contract-id'] = "";
         // echo"<pre>";var_dump($additionalParameters);exit;
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->setAdditionalParameters($additionalParameters);
