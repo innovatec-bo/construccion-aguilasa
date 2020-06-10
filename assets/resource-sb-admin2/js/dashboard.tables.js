@@ -191,6 +191,7 @@ function getProjectNetBuilding(year, keyword)
         success:function(response){
             let downloadables = [
                                 'countId',
+                                'countDigitizationPoints',
                                 'countWithoutDigitizationPoints',
                                 'countAsBuiltPoints',
                                 'countWithoutAsBuiltPoints',

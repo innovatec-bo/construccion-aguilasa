@@ -210,7 +210,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-primary" id="panel-production-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/networksBuilding")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Reporte de Construccion

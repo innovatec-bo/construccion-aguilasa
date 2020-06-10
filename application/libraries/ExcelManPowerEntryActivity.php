@@ -143,7 +143,7 @@ class ExcelManPowerEntryActivity
         $spreadsheet->getActiveSheet()->getStyle('F2:F'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(30);
         $spreadsheet->getActiveSheet()->getStyle('A1:L'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+        // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
 
@@ -207,7 +207,7 @@ class ExcelManPowerEntryActivity
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getStyle('A1:D'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+        // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
 

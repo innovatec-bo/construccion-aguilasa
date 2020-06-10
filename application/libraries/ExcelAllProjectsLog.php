@@ -103,7 +103,7 @@ class ExcelAllProjectsLog
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getStyle('A1:E'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+        // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
 }

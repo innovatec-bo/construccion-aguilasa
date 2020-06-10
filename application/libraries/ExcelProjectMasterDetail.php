@@ -141,7 +141,7 @@ class ExcelProjectMasterDetail
 //        $spreadsheet->getActiveSheet()->getStyle('F2:F'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 //        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(30);
         $spreadsheet->getActiveSheet()->getStyle('A1:H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+        // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
 }

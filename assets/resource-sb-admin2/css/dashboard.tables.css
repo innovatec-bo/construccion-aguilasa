@@ -6,7 +6,7 @@
     background-color: #fff;
     font-size:10px;
 }
-#net-building-report .countAsBuiltPoints .badge, #net-building-report .countRealBudgets .badge
+#net-building-report .countAsBuiltPoints .badge, #net-building-report .countDigitizationPoints .badge, #net-building-report .countRealBudgets .badge
 {
     color: #fff;
     background-color: #337ab7;

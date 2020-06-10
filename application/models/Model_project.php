@@ -790,34 +790,44 @@ class Model_project extends Model_project_base
         $year = isset($filters["year"]) && $filters["year"] != ""?$filters["year"]:"";
         $rowKey = isset($filters["rowKey"]) && $filters["rowKey"] != ""?$filters["rowKey"]:"";
         $month = isset($filters["month"]) && $filters["month"] != ""?$filters["month"]:"";
+        $startMonth = $month;
+        $endMonth = $month;
+        if($month == "")
+        {
+            $startMonth = "01";
+            $endMonth = "12";
+        }
         $sql = "";
         switch ($keywordDateRange)
         {
             case 'project_has_been_created':
-                $sql = " and entry_date_pro BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and entry_date_pro BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'already_sent':
-                $sql = " and already_sent.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and already_sent.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'approved':
-                $sql = " and approved.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and approved.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'completed':
-                $sql = " and completed.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and completed.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'as_built':
-                $sql = " and as_built.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and as_built.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'conciliation_shipment':
-                $sql = " and conciliation_shipment.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and conciliation_shipment.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
             case 'project_real_budget_confirmation':
-                $sql = " and payment_order_registered.entry_date BETWEEN '".$year."-".$month."-01 00:00:00' and '".$year."-".$month."-31 23:59:59' ";
+                $sql = " and payment_order_registered.entry_date BETWEEN '".$year."-".$startMonth."-01 00:00:00' and '".$year."-".$endMonth."-31 23:59:59' ";
                 break;
         }
 
         switch($rowKey)
         {
+            case "countId":
+                $sql .= "";
+                break;
             case "countDigitizationPoints":
                 $sql .= " and digitization.points_quantity_prp is not null and digitization.distance_prp is not null ";
                 break;

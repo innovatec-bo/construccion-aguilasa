@@ -358,7 +358,7 @@ class ExcelBuilderProductivityReport
 		$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getStyle('A1:M'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-		$spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+		// $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
 		$spreadsheet->getActiveSheet()->getStyle('C3:C'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
 		$spreadsheet->getActiveSheet()->getStyle('I3:I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$spreadsheet->getActiveSheet()->getStyle('K3:K'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);

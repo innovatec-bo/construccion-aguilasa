@@ -117,8 +117,8 @@ $(document).ready(function() {
         let $td = $(this).closest("td");
         let $th = $td.closest('table').find('th').eq($td.index());
 
-        let keyword = $td.closest(".panel.panel-default").find("select[name=keyword] option:selected").val();
-        let year = $td.closest(".panel.panel-default").find("input[name=building-report-year]").val();
+        let keyword = $("#panel-production-report").find("select[name=keyword] option:selected").val();
+        let year = $("#panel-production-report").find("input[name=building-report-year]").val();
         let month = $th.data("month");
         let rowKey = $td.closest("tr").attr("class");
         let $form = $("form[name=workflow-with-parameters]");

@@ -461,12 +461,12 @@ class Project extends PrivateController
     {
        set_time_limit(300);
         $additionalParameters = $this->input->post();
-        $additionalParameters['status-keyword'] = "";
-        $additionalParameters['keyword'] = "";
-        $additionalParameters['year'] = "20";
-        $additionalParameters['month'] = "";
-        $additionalParameters['rowKey'] = "";
-        $additionalParameters['contract-id'] = "";
+        // $additionalParameters['status-keyword'] = "";
+        // $additionalParameters['keyword'] = "project_has_been_created";
+        // $additionalParameters['year'] = "2020";
+        // $additionalParameters['month'] = "01";
+        // $additionalParameters['rowKey'] = "countWithoutDigitizationPoints";
+        // $additionalParameters['contract-id'] = "";
         // echo"<pre>";var_dump($additionalParameters);exit;
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->setAdditionalParameters($additionalParameters);
