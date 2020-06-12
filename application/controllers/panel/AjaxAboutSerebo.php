@@ -33,4 +33,36 @@ class AjaxAboutSerebo extends PrivateController
 //        echo"<pre>";var_dump($response);exit;
         echo json_encode($response);exit;
     }
+
+    public function getIssuesTodo()
+    {
+        $gitLabResponse = new GitLabHandler();
+        $response = $gitLabResponse->getIssuesTodo();
+        $response = json_decode($response,TRUE);
+
+        for($i = 0; $i <count($response);$i++)
+        {
+            $response[$i]['class'] = "";
+            if($i%2 != 0)
+                $response[$i]['class'] = "timeline-inverted";
+        }
+//        echo"<pre>";var_dump($response);exit;
+        echo json_encode($response);exit;
+    }
+
+    public function getIssuesInProgress()
+    {
+        $gitLabResponse = new GitLabHandler();
+        $response = $gitLabResponse->getIssuesInProgress();
+        $response = json_decode($response,TRUE);
+
+        for($i = 0; $i <count($response);$i++)
+        {
+            $response[$i]['class'] = "";
+            if($i%2 != 0)
+                $response[$i]['class'] = "timeline-inverted";
+        }
+//        echo"<pre>";var_dump($response);exit;
+        echo json_encode($response);exit;
+    }
 }

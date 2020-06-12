@@ -31,3 +31,10 @@
         </div>
     </li>
 </script>
+<script id="ht-to-do-list" type="text/x-handlebars-template">
+    {{#each issueList}}
+        <a href="#" class="list-group-item">
+            {{title}}
+        </a>
+    {{/each}}
+</script>
