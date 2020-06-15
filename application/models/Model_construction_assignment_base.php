@@ -19,8 +19,9 @@ class Model_construction_assignment_base extends MY_Model
     protected $_liveLine;
     protected $_powerDown;
     protected $_maneuver;
+    protected $_projectManager;
 
-    public function __construct($statusLogId = NULL, $startDate = "", $endDate = "", $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0)
+    public function __construct($statusLogId = NULL, $startDate = "", $endDate = "", $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0, $projectManager = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -30,6 +31,7 @@ class Model_construction_assignment_base extends MY_Model
         $this->_liveLine = $liveLine;
         $this->_powerDown = $powerDown;
         $this->_maneuver = $maneuver;
+        $this->_projectManager = $projectManager;
     }
 
     /**
@@ -47,6 +49,7 @@ class Model_construction_assignment_base extends MY_Model
             "live_line_cas" => $this->_liveLine,
             "power_down_cas" => $this->_powerDown,
             "maneuver_cas" => $this->_maneuver,
+            "project_manager_cas" => $this->_projectManager,
             "deleted_cas" => $this->_deleted,
             "createdon_cas" => $this->_createdOn,
             "createdby_cas" => $this->_createdBy,
@@ -77,7 +80,8 @@ class Model_construction_assignment_base extends MY_Model
                 $object->estimated_time_cas,
                 $object->live_line_cas,
                 $object->power_down_cas,
-                $object->maneuver_cas
+                $object->maneuver_cas,
+                $object->project_manager_cas
             );
             $instance->_id = $object->id_cas;
 

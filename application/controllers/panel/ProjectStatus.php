@@ -205,8 +205,6 @@ class ProjectStatus extends PrivateController
     {
         $this->_validateFeature('project_status_management');
         $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
-//        $project = $project->toArray();
-//        $keywordList = $this->_validateStatusSet($statusSet, $project);
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
@@ -227,23 +225,6 @@ class ProjectStatus extends PrivateController
 
         $this->complementHandler->addProjectJs('modify-log', TRUE);
 
-//        $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
-//        $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
-//        $statusList = Model_project_status::getByStatusKeywordList($keywordList);
-//        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
-//
-//        $data["project"] = $project;
-//        $data["statusList"] = $statusList;
-//        $data["projectSystems"] = $this->_projectSystems;
-//        $responsibleList = Model_status_responsible::getUsersResponsible();
-//        $data["responsibleList"] = json_encode($responsibleList);
-//        $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
-//        $data["responsibleListBuilder"] = json_encode($responsibleListBuilder);
-//        $data["statusSet"] = $statusSet;
-//        $projectLog = Model_project_status_log::getLogByProjectId($projectId);
-//        $data["projectLog"] = $projectLog;
-//        $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
-//        $data["projectFullDetail"] = $projectFullDetail;
         $data = array();
         $this->_loadPanelView("project-status/status-management", $data);
     }
@@ -308,6 +289,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addProjectCss('project-status.assign-project');
         $this->complementHandler->addProjectJs('project-status.assign-project');
+        $projectManagers = Model_user::getByRoleKeyword('project_manager');
         $responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
         $responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
@@ -315,6 +297,7 @@ class ProjectStatus extends PrivateController
         $data["previousEntry"] = $previousEntry;
         $data["responsibleListFiscal"] = $responsibleListFiscal;
         $data["responsibleListBuilder"] = $responsibleListBuilder;
+        $data['projectManagers'] = $projectManagers;
         $allIncidents = Model_incident::getAllByProjectId($projectId);
         $data["allIncidents"] = $allIncidents;
         if($this->form_validation->run() === FALSE)
@@ -324,7 +307,6 @@ class ProjectStatus extends PrivateController
         else
         {
             $previousEntryApproved = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "approved");
-//            echo"<pre>";var_dump($previousEntryApproved[0]["live_line_prb"]);exit;
 
             $formData = $this->input->post();
             $entryDate = $formData["entry-date"];
@@ -349,10 +331,11 @@ class ProjectStatus extends PrivateController
             $maneuver = isset($formData["maneuver"])?1:0;
             $statusId = 21;//assign_to
             $statusDetail = $formData["status-detail"];
+            $projectManager = $formData["project-manager"];
 
             $project->setStatus($statusId);
             $project->save();
-            $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList);
+            $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList, $projectManager);
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
             $this->session->set_flashdata("successMessage", "Asignacion realizada con exito!");

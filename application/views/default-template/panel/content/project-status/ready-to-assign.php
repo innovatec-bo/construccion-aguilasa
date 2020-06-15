@@ -131,6 +131,26 @@ foreach($responsibleListBuilder as $responsible)
                         <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
+                                    <label>Encargado del proyecto</label>
+                                    <div class="form-group">
+                                        <select name="project-manager" class="form-control" parsley-trigger="change" required="">
+                                            <option value="">----------</option>
+                                            <?php
+                                                $options = "";
+                                                foreach ($projectManagers as $user) 
+                                                {
+                                                    $options .= " <option value='".$user->getId()."'>".$user->getFullName()."</option> ";
+                                                }
+                                                echo $options;
+                                            ?>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <fieldset>
                                     <label>Fiscal(es)</label>
                                     <br><em>El constructor será asignado por el fiscal.</em>
                                     <div class="form-group">
