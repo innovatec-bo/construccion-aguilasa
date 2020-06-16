@@ -666,4 +666,13 @@ class Project extends PrivateController
         $report = new ExcelAllProjectsLog($this->sessionUser);
         $report->getReport();
     }
+
+    public function projectBudgets($month, $year)
+    {
+        $startDate = $year."-".$month."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
+        $logDateRange = array("from" => $startDate, "to" => $endDate);
+        $report = new ExcelProjectMasterDetail($this->sessionUser, $logDateRange);
+        $report->getReport();
+    }
 }

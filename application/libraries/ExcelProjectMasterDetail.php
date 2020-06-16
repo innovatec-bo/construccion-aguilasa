@@ -1,26 +1,45 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-// use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
-// use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExcelProjectMasterDetail
 {
     private $_sessionUser;
     private $_projectId;
+    private $_logDateRange;
+    private $_months;
 
     CONST FORM_QUANTITY = 25;
 
-    public function __construct($sessionUser)
+    public function __construct($sessionUser, $logDateRange = array())
     {
         $this->_sessionUser = $sessionUser;
+        $this->_logDateRange = $logDateRange;
+        $this->_months = array(
+                            "january" => "Enero",
+                            "february" => "Febrero",
+                            "march" => "Marzo",
+                            "april" => "Abril",
+                            "may" => "Mayo",
+                            "june" => "Junio",
+                            "july" => "Julio",
+                            "august" => "Agosto",
+                            "september" => "Septiembre",
+                            "october" => "Octubre",
+                            "november" => "Noviembre",
+                            "december" => "Diciembre"
+                        );
     }
 
     function getReport()
     {
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
-        $list = Model_project::productionGeneralSummary();
+        $list = Model_project::productionGeneralSummary($this->_logDateRange);
+
+        $date = date_create_from_format('Y-m-d H:i:s', $this->_logDateRange['from']);
+        $month = date_format($date, 'F');
+        $month = $this->_months[strtolower($month)];
+        $year = date_format($date, 'Y');
 
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
@@ -37,17 +56,14 @@ class ExcelProjectMasterDetail
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Costo y produccion actual - '.date("d.m.y h.i A").'.xls"');
+        header('Content-Disposition: attachment;filename="Costo y produccion actual - '.$month.' del '.$year.'.xls"');
         header('Cache-Control: max-age=0');
-
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save('php://output');
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
     }
 
-    private function _projects($spreadsheet, $workflowDetail)
+    private function _projects($spreadsheet, $list)
     {
         $titleStyleArray = [
             'font' => ['bold' => true],
@@ -73,10 +89,15 @@ class ExcelProjectMasterDetail
             ]
         ];
 
+        $date = date_create_from_format('Y-m-d H:i:s', $this->_logDateRange['from']);
+        $month = date_format($date, 'F');
+        $month = $this->_months[strtolower($month)];
+        $year = date_format($date, 'Y');
+
         $manPowerWorkSheet = $spreadsheet->createSheet(0);
         $manPowerWorkSheet->setTitle('PROYECTOS');
 
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'DETALLE MAESTRO DE IMPORTES');
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'DETALLE MAESTRO DE IMPORTES - '.strtoupper($month).' DEL '.$year);
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
         $spreadsheet->getActiveSheet()->getStyle('A1:H1')->applyFromArray($titleStyleArray);
         $spreadsheet->getActiveSheet()->mergeCells('A1:H1');
@@ -95,7 +116,7 @@ class ExcelProjectMasterDetail
         $counter = 1;
         $i = 2;
         // $workflowDetail = array();
-        foreach ($workflowDetail as $row)
+        foreach ($list as $row)
         {
 			$row = (array) $row;
             // echo"<pre>";var_dump($row);exit;
@@ -124,7 +145,6 @@ class ExcelProjectMasterDetail
            $spreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
             $i++;
             $counter++;
-            
         }
         
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -135,13 +155,8 @@ class ExcelProjectMasterDetail
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-//        $spreadsheet->getActiveSheet()->getStyle('E2:E'.$i)->getAlignment()->setWrapText(true);
-//        $spreadsheet->getActiveSheet()->getStyle('B2:B'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-//        $spreadsheet->getActiveSheet()->getStyle('D2:D'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-//        $spreadsheet->getActiveSheet()->getStyle('F2:F'.$i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-//        $spreadsheet->getActiveSheet()->getColumnDimension("E")->setWidth(30);
+
         $spreadsheet->getActiveSheet()->getStyle('A1:H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
 }

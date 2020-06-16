@@ -281,10 +281,38 @@
     <div class="col-lg-3 col-md-6">
         <form class="form-inline projects-and-current-production" method="post">
             <div class="panel panel-primary" id="panel-days-progress-chart">
+                <div class="panel-heading">
+                    Costo y producci&oacute;n
+                </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-12 text-center">
-                            Reporte de proyectos, produccion actual, monto destinado y excedentes
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="projects-and-current-production-month">
+                                    <option value="">Mes</option>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero</option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>    
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control input-sm" name="projects-and-current-production-year">
+                                    <option value="">A&ntilde;o</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>    
+                            </div>
                         </div>
                     </div>
                 </div>

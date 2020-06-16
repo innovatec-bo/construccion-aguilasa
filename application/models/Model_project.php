@@ -2479,10 +2479,17 @@ class Model_project extends Model_project_base
         return $projectList;
     }
 
-    public static function productionGeneralSummary()
+    public static function productionGeneralSummary($logDateRange = array())
     {
         $ci = &get_instance();
         $ci->load->database();
+        //log date filter
+        $filterLogDateFrom = "";
+        if(isset($logDateRange['from']))
+            $filterLogDateFrom = " and manual_entry_date_lal >= ".$ci->db->escape($logDateRange['from'])." ";
+        $filterLogDateTo = "";
+        if(isset($logDateRange['to']))
+            $filterLogDateTo = " and manual_entry_date_lal <= ".$ci->db->escape($logDateRange['to'])." ";
         $sql = "
             SELECT
                 code_pro codigo,
@@ -2599,6 +2606,8 @@ class Model_project extends Model_project_base
             where 
              deleted_wus != 1
             and deleted_lal != 1
+            ".$filterLogDateFrom."
+            ".$filterLogDateTo."
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;

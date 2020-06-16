@@ -192,7 +192,17 @@ $(document).ready(function() {
 
     $(document).on("submit","form.projects-and-current-production", function(e){
         e.preventDefault();
-        window.location.href = base_url+"panel/Dashboard/ProjectBudgets/asd";
+        let month = $("select[name=projects-and-current-production-month] option:selected").val();
+        let year = $("select[name=projects-and-current-production-year] option:selected").val();
+        if(month == "" || year == "")
+        {
+            toastr.error("Debe especificar un mes y a&ntilde;io para descargar el reporte", '', {'progressBar':true});
+        }
+        else
+        {
+            window.location.href = base_url+"panel/Project/ProjectBudgets/"+month+"/"+year;
+        }
+        
     });
 });
 
