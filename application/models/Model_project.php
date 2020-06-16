@@ -408,6 +408,7 @@ class Model_project extends Model_project_base
             assign_to.start_date_cas start_date_assigned,
             assign_to.end_date_cas end_date_assigned,
             assign_to.estimated_time_cas estimated_time_assigned,
+            assign_to.project_manager_full_name project_manager_assigned,
             in_progress.entry_date in_progress_date,
             completed.entry_date completed_date,
             paused.entry_date paused_date,
@@ -603,6 +604,7 @@ class Model_project extends Model_project_base
 			live_line_cas,
 			power_down_cas,
 			maneuver_cas,
+            CONCAT(project_manager.firstname_usr,' ',project_manager.lastname_usr) project_manager_full_name,
 			pauseOnIncident.percentage_inc percentage_paused,
 			stopOnIncident.percentage_inc percentage_stopped,
 			points_quantity_prp,
@@ -691,6 +693,7 @@ class Model_project extends Model_project_base
 		LEFT JOIN wfl_project_real_budgets on status_log_id_reb = id_psl
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		left join wfl_project_points on status_log_id_prp = id_psl
+        left join sec_users project_manager on project_manager_cas = project_manager.id_usr
 		where deleted_pro != 1 and deleted_slr != 1
 		GROUP BY id_psl
         ";

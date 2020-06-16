@@ -418,7 +418,8 @@ class PrivateController extends PublicController
             "payment_order_registered_total_real_budget" => "IMPORTE REAL - TOTAL",
             "payment_order_registered_invoice_number" => "NRO FACTURA",
             "payment_order_invoice_sent_date" => "FECHA DE ENVIO DE FACTURA",
-            "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION"
+            "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION",
+            "project_manager_assigned" => "ENCARGADO DEL PROYECTO"
         );
         return $columnList;
     }
