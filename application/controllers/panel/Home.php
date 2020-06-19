@@ -86,4 +86,11 @@ class Home extends PrivateController
 //        Model_project_budget::insertBatch($toInsert);
         echo"finished";exit;
     }
+
+    public function test()
+    {
+        $logDateRange = array('from' => '2020-04-01 00:00:00', 'to' => '2020-04-30 23:59:59');
+        $pdf = new ExcelDailyProductivityReport($this->sessionUser, $logDateRange);
+        $pdf->getReport();
+    }
 }

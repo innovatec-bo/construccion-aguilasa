@@ -36,7 +36,8 @@ class ExcelBuilderProductivityReport
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
-		$individualProductivityLog = Model_project::getProductivityBaseReport($this->_startDate, $this->_endDate, $this->_builderId);
+        $logDateRange = array('from' => $this->_startDate, 'to' => $this->_endDate);
+		$individualProductivityLog = Model_project::getProductivityBaseReport($logDateRange, $this->_builderId);
         $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
         $month = $this->_months[strtolower($month)];
