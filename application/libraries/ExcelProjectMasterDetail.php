@@ -99,8 +99,8 @@ class ExcelProjectMasterDetail
 
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'DETALLE MAESTRO DE IMPORTES - '.strtoupper($month).' DEL '.$year);
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('A1:H1');
+        $spreadsheet->getActiveSheet()->getStyle('A1:I1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
 
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A2', "#")
@@ -108,11 +108,12 @@ class ExcelProjectMasterDetail
             ->setCellValue('C2', "ESTADO")
             ->setCellValue('D2', "FISCAL\nRESPONSABLE")
             ->setCellValue('E2', "CONSTRUCTOR\nRESPONSABLE")
-            ->setCellValue('F2', "PRODUCCION\nACTUAL + ".html_entity_decode("DISE&Ntilde;O"))
-            ->setCellValue('G2', "PROYECTO")
-            ->setCellValue('H2', "DIFERENCIA")
-		;
-        $spreadsheet->getActiveSheet()->getStyle('A2:H2')->applyFromArray($headerStyleArray);
+            ->setCellValue('F2', "PRODUCTION\nACTUAL")
+            ->setCellValue('G2', "PRODUCCION\nACTUAL + ".html_entity_decode("DISE&Ntilde;O"))
+            ->setCellValue('H2', "PROYECTO")
+            ->setCellValue('I2', "DIFERENCIA\nH2 - G2");
+
+        $spreadsheet->getActiveSheet()->getStyle('A2:I2')->applyFromArray($headerStyleArray);
         $counter = 1;
         $i = 2;
         // $workflowDetail = array();
@@ -136,13 +137,15 @@ class ExcelProjectMasterDetail
                 ->setCellValue('C'.($i+1), $row["estado"])
                 ->setCellValue('D'.($i+1), $row["fiscal_responsible"])
                 ->setCellValue('E'.($i+1), $row["builder_responsible"])
-                ->setCellValue('F'.($i+1), $currentProduction)
-                ->setCellValue('G'.($i+1), $projectBudget)
-                ->setCellValue('H'.($i+1), $diff);
+                ->setCellValue('F'.($i+1), $row['produccion_actual'])
+                ->setCellValue('G'.($i+1), $currentProduction)
+                ->setCellValue('H'.($i+1), $projectBudget)
+                ->setCellValue('I'.($i+1), $diff);
                 //Currency format
            $spreadsheet->getActiveSheet()->getStyle('F'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
            $spreadsheet->getActiveSheet()->getStyle('G'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
            $spreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+           $spreadsheet->getActiveSheet()->getStyle('I'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
             $i++;
             $counter++;
         }
@@ -155,8 +158,9 @@ class ExcelProjectMasterDetail
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
 
-        $spreadsheet->getActiveSheet()->getStyle('A1:H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle('A1:I'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         return $spreadsheet;
     }
 }
