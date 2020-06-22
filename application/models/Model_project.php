@@ -2616,7 +2616,7 @@ class Model_project extends Model_project_base
             ) responsible on responsible.status_log_id_slr = id_psl
             WHERE
                 1 = 1
-                and deleted_psl != 1 and keyword_pst not in ('approvement','schedule')
+                and deleted_psl != 1 and keyword_pst not in ('approvement','schedule') and deleted_pro != 1
             GROUP BY project_id_psl, log_entry_date, status_id_psl
             ORDER BY project_id_psl, log_entry_date DESC, id_psl DESC
         ";
