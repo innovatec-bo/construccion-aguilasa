@@ -200,7 +200,22 @@ $(document).ready(function() {
         }
         else
         {
-            window.location.href = base_url+"panel/Project/ProjectBudgets/"+month+"/"+year;
+            window.location.href = base_url+"panel/Project/projectBudgets/"+month+"/"+year;
+        }
+        
+    });
+
+    $(document).on("submit","form.daily-production", function(e){
+        e.preventDefault();
+        let month = $("select[name=daily-production-month] option:selected").val();
+        let year = $("select[name=daily-production-year] option:selected").val();
+        if(month == "" || year == "")
+        {
+            toastr.error("Debe especificar un mes y a&ntilde;io para descargar el reporte", '', {'progressBar':true});
+        }
+        else
+        {
+            window.location.href = base_url+"panel/Project/dailyProductivityReport/"+month+"/"+year;
         }
         
     });

@@ -59,17 +59,13 @@ class ExcelDailyProductivityReport
         $writer->save('php://output');
 	}
 
-    private function _dailyLog($spreadsheet, $individualProductivityLog)
+    private function _dailyLog($spreadsheet, $data)
 	{
 		$titleStyleArray = [
-			'font' => ['bold' => true],
+			'font' => ['bold' => true, 'size' => 17, 'underline' => true],
 			'alignment' => [
 				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
 				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-			],
-			'fill' => [
-				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				'startColor' => ['argb' => 'BFBFBF']
 			]
 		];
 
@@ -78,10 +74,6 @@ class ExcelDailyProductivityReport
 			'alignment' => [
 				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
 				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
-			],
-			'fill' => [
-				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				'startColor' => ['argb' => 'BFBFBF']
 			]
 		];
 		$workSheet = $spreadsheet->createSheet(0);
@@ -90,73 +82,95 @@ class ExcelDailyProductivityReport
 		$month = date_format($date, 'F');
 		$month = $this->_months[strtolower($month)];
 		$year = date_format($date, 'Y');
-		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', "HISTORIAL DIARIO DE TRABAJO - ".strtoupper($month)." DEL ".$year);
-		$spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-		$spreadsheet->getActiveSheet()->getStyle('A1:M1')->applyFromArray($titleStyleArray);
-		$spreadsheet->getActiveSheet()->mergeCells('A1:M1');
-
-		$spreadsheet->setActiveSheetIndex(0)
-			->setCellValue('A2', "#")
-			->setCellValue('B2', "PROYECTO")
-			->setCellValue('C2', "FECHA")
-			->setCellValue('D2', "EJECUCION")
-			->setCellValue('E2', "ACTIVIDAD")
-			->setCellValue('F2', "ESTRUCTURA")
-			->setCellValue('G2', "DESCRIPCION")
-			->setCellValue('H2', "PUNTO")
-			->setCellValue('I2', "CANTIDAD\nTRABAJADA")
-			->setCellValue('J2', "UNIDAD")
-			->setCellValue('K2', "PRECIO\nUNITARIO")
-			->setCellValue('L2', "MONTO\nTRABAJADO")
-			->setCellValue('M2', "MONTO\nCONSIGNADO");
-		$spreadsheet->getActiveSheet()->getStyle('A2:M2')->applyFromArray($headerStyleArray);
+		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', "REPORTE DIARIO DE PRODUCCION\nCORRESPONDIENTE AL MES DE ".strtoupper($month)." DEL ".$year);
+		
 		$counter = 1;
 		$i = 2;
-		// $workflowDetail = array();
-        $individualProductivityLog = $this->_parepareDataToPrint($individualProductivityLog);
-		foreach ($individualProductivityLog as $row)
+        $arrayAlphabet = range("A","Z");
+        $headers = $this->_columnHeaders($data);
+        $data = $this->_parepareDataToPrint($data);
+        array_unshift($data, $headers);
+        // echo"<pre>";var_dump($data);exit;
+		foreach ($data as $rows)
 		{
-//			$row = $row->toArray();
-			echo"<pre>";var_dump($individualProductivityLog);exit;
-			$spreadsheet->setActiveSheetIndex(0)
-				->setCellValue('A'.($i+1), $counter)
-				->setCellValue('B'.($i+1), $row["code_pro"])
-				->setCellValue('C'.($i+1), $row["manual_entry_date_lal"])
-				->setCellValue('D'.($i+1), $row["labor_cost_execution"])
-				->setCellValue('E'.($i+1), $row["labor_cost_activity"])
-				->setCellValue('F'.($i+1), $row["structure_code"])
-				->setCellValue('G'.($i+1), $row["structure_description"])
-				->setCellValue('H'.($i+1), $row["point_label"])
-				->setCellValue('I'.($i+1), $row["worked_up_wus"])
-				->setCellValue('J'.($i+1), $row["structure_unit_of_measurement"])
-				->setCellValue('K'.($i+1), $row["price_wus"])
-				->setCellValue('L'.($i+1), $row["total_amount_worked_to_split"])
-				->setCellValue('M'.($i+1), $row["total_amount_worked_by_builder"]);
+            $j = 0;
+            foreach ($rows as $key => $value) 
+            {
+                $spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, $value);
+                
+                if($i>2 && $j>=2)
+                {
+                    $spreadsheet->getActiveSheet()->getStyle($arrayAlphabet[$j].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                    
+                }
+                if($j==0)
+                {
+                    $spreadsheet->getActiveSheet()->getColumnDimension($arrayAlphabet[$j])->setAutoSize(true);
+                }
+                if($j>=1)
+                {
+                    $spreadsheet->getActiveSheet()->getColumnDimension($arrayAlphabet[$j])->setWidth(12);
+                }
+                if($j>=2)
+                {
+                    $spreadsheet->getActiveSheet()->getStyle($arrayAlphabet[$j].$i)->getAlignment()->setWrapText(true);
+                }
+                if(($counter) == count($data) && $j > 1)
+                {
+                    //totales
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue(
+                        $arrayAlphabet[$j].($i+1), '=SUM('.$arrayAlphabet[$j].'3:'.$arrayAlphabet[$j].$i.')');
+                    $spreadsheet->getActiveSheet()->getStyle(
+                        $arrayAlphabet[$j].($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+                    $spreadsheet->getActiveSheet()->getStyle($arrayAlphabet[$j].($i+1))->getFont()->setBold(true);
+                    //dias trabajados
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue(
+                        $arrayAlphabet[$j].($i+2), '=COUNTIF('.$arrayAlphabet[$j].'3:'.$arrayAlphabet[$j].$i.',">0.00")');//=COUNTIF(C2:C8,">=5")
+                    //ubmo
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue(
+                        $arrayAlphabet[$j].($i+3), '='.$arrayAlphabet[$j].($i+1).'/187.3841667');
+                    $spreadsheet->getActiveSheet()->getStyle(
+                        $arrayAlphabet[$j].($i+3))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+
+                    
+                }
+                $j++;
+            }
 			$i++;
 			$counter++;
-
 		}
 
-		$spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getStyle('A1:M'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-		// $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
-		$spreadsheet->getActiveSheet()->getStyle('C3:C'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
-		$spreadsheet->getActiveSheet()->getStyle('I3:I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-		$spreadsheet->getActiveSheet()->getStyle('K3:K'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-		$spreadsheet->getActiveSheet()->getStyle('L3:L'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-		$spreadsheet->getActiveSheet()->getStyle('M3:M'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+        //footer - begin
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$i, 'TOTALES');
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->mergeCells('A'.$i.':B'.$i); 
+        $i++;
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$i, 'DIAS PROD.');
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->mergeCells('A'.$i.':B'.$i); 
+        $i++;
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$i, 'UBMO');
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->mergeCells('A'.$i.':B'.$i); 
+        $i++;
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$i, 'UBMO OPTIMO');
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->mergeCells('A'.$i.':B'.$i); 
+        $i++;
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A'.$i, '% LOGRADO');
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->mergeCells('A'.$i.':B'.$i); 
+        $i++;
+        
+        //footer - end
+
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(80);
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$arrayAlphabet[($j-1)].'1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('A1:'.$arrayAlphabet[($j-1)].'1');
+        $spreadsheet->getActiveSheet()->getStyle('A2:'.$arrayAlphabet[($j-1)].'2')->applyFromArray($headerStyleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A1:'.$arrayAlphabet[($j-1)].($i-1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+
 		return $spreadsheet;
 	}
 
@@ -177,7 +191,6 @@ class ExcelDailyProductivityReport
             $datesFromLog[] = $date->format('Y-m-d');
         }
         $buildersProductivity  = $this->_buildersProductivity($individualProductivityLog);
-        // echo"<pre>";var_dump($buildersProductivity);exit;
         $defaultRow = $this->_defaultRow($individualProductivityLog);
         foreach ($period as $key => $value) 
         {
@@ -195,8 +208,7 @@ class ExcelDailyProductivityReport
             
         }
         ksort($buildersProductivity);
-        echo"<pre>";var_dump($buildersProductivity);exit;
-        exit;
+        return $buildersProductivity;
     }
 
     private function _buildersProductivity($arrayLog)
@@ -248,6 +260,35 @@ class ExcelDailyProductivityReport
 
         $default = array('dateNumber' => '', 'dayOfWeek' => '', 'totalInDay' => 0);
         $default = array_replace($default, $idsAndDefaultValue);
+        return $default;
+    }
+
+    private function _columnHeaders($arrayLog)
+    {
+        //get the builders Id
+        $concatenatedIdList = array_column($arrayLog, 'builders');
+        $idList = array();
+        foreach ($concatenatedIdList as $value) 
+        {
+            $arrayId = explode(",", $value);
+            $idList = array_merge($idList, $arrayId);
+        }
+        $idList = array_unique($idList);
+
+        $defaultValues = array_fill(0, count($idList), 0);
+        $idsAndDefaultValue = array_combine($idList, $defaultValues);
+
+        $default = array('dateNumber' => 'DIA', 'dayOfWeek' => 'LITERAL', 'totalInDay' => 'TOTAL');
+        $default = array_replace($default, $idsAndDefaultValue);
+        foreach ($default as $key => $value) 
+        {
+            if(isset($this->_builders[$key]))
+            {
+                $builder = $this->_builders[$key];
+
+                $default[$key] = strtoupper($builder->getFullName());
+            }
+        }
         return $default;
     }
 }

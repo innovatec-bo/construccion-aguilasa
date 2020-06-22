@@ -89,7 +89,7 @@ class Home extends PrivateController
 
     public function test()
     {
-        $logDateRange = array('from' => '2020-04-01 00:00:00', 'to' => '2020-04-30 23:59:59');
+        $logDateRange = array('from' => '2020-03-01 00:00:00', 'to' => '2020-03-30 23:59:59');
         $pdf = new ExcelDailyProductivityReport($this->sessionUser, $logDateRange);
         $pdf->getReport();
     }

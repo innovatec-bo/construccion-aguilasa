@@ -675,4 +675,13 @@ class Project extends PrivateController
         $report = new ExcelProjectMasterDetail($this->sessionUser, $logDateRange);
         $report->getReport();
     }
+
+    public function dailyProductivityReport($month, $year)
+    {
+        $startDate = $year."-".$month."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
+        $logDateRange = array("from" => $startDate, "to" => $endDate);
+        $pdf = new ExcelDailyProductivityReport($this->sessionUser, $logDateRange);
+        $pdf->getReport();
+    }
 }
