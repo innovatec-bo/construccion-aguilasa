@@ -754,10 +754,12 @@ class StatusManagementHandler
         let projectStart = $("input[name=project-start]").val();
         let projectEnd = $("input[name=project-end]").val();
         let design = $("input[name=design]").val();
+		let tentativeTotalBudget = $("input[name=tentative-total-budget]").val();
         let schedule = {
             projectStart: projectStart,
             projectEnd: projectEnd,
-            design: design
+            design: design,
+			tentativeTotalBudget: tentativeTotalBudget
         };
         let dataResult = Object.assign(data, schedule);
         $.ajax({

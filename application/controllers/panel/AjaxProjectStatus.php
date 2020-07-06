@@ -272,13 +272,16 @@ class AjaxProjectStatus extends PrivateController
         $responsibleList = array_column($responsibleList,'id_sre');
         $design = $formData["design"];
         $design = str_replace(",","",$design);
+		$tentativeTotalBudget = $formData["tentativeTotalBudget"];
+		$tentativeTotalBudget = str_replace(",","",$tentativeTotalBudget);
+		/** @var Model_project $project */
         $project = Model_project::getById($projectId);
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
 
 //        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList); the schedule step now register the design budget
-        $project->saveBudget($design, 0, "", "", 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, 0, "", "", 0, 0, 0, $tentativeTotalBudget, $statusId, $statusDetail, $entryDate, $responsibleList);
         $approvementEntryDate = $entryDate;
         $seconds = 1;
         $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
@@ -404,7 +407,7 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->setSecondaryCode($secondaryCode);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId);
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay,0, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
@@ -483,10 +486,11 @@ class AjaxProjectStatus extends PrivateController
         $statusDetail = $formData["statusDetail"];
         $design = $formData["design"];
         $responsibleList = $formData["responsibleList"];
+        /** @var Model_project $project */
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveBudget($design, 0, 0, 0, 0, 0, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, 0, 0, 0, 0, 0, 0, 0,$statusId, $statusDetail, $entryDate, $responsibleList);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

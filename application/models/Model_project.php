@@ -32,29 +32,30 @@ class Model_project extends Model_project_base
         Model_project_status_file::addFiles($projectStatus->getId(), $fileIds, $this->_id, $statusId);
     }
 
-    /**
-     * @param $design
-     * @param $building
-     * @param $graphNumber
-     * @param $reservationNumber
-     * @param $transportation
-     * @param $liveLine
-     * @param $rightOfWay
-     * @param $statusId
-     * @param $statusDetail
-     * @param $manualEntryDate
-     * @param array $responsibleList
-     * @param null $manpowerFileId
-     * @param null $buildingStructureFileId
-     */
-    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL)
+	/**
+	 * @param $design
+	 * @param $building
+	 * @param $graphNumber
+	 * @param $reservationNumber
+	 * @param $transportation
+	 * @param $liveLine
+	 * @param $rightOfWay
+	 * @param $tentativeTotalBudget
+	 * @param $statusId
+	 * @param $statusDetail
+	 * @param $manualEntryDate
+	 * @param array $responsibleList
+	 * @param null $manpowerFileId
+	 * @param null $buildingStructureFileId
+	 */
+    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL)
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $manpowerFileId, $buildingStructureFileId);
+        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget,$manpowerFileId, $buildingStructureFileId);
         $projectBudget->save();
 
         //Each statusLog needs to have a o more responsible by log
@@ -301,7 +302,7 @@ class Model_project extends Model_project_base
         $this->setStatus($statusId);
         $this->_secondaryCode = $secondaryCode;
         $this->save();
-        $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $buildingStructureFileId);
+        $this->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, 0,$statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $buildingStructureFileId);
         $wareHouse = Model_warehouse::getByProjectId($this->_id);
         if(!$wareHouse instanceof Model_warehouse)
         {

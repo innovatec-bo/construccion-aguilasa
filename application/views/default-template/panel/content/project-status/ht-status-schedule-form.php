@@ -30,12 +30,18 @@
                                             <div id="error-schedule-entry-date"></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Importe diseño</label>
                                             <input required type="text" class="form-control input-masked" name="design" data-parsley-group="schedule"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
                                         </div>
                                     </div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<label>Imp. total tentativo</label>
+											<input required type="text" class="form-control input-masked" name="tentative-total-budget" data-parsley-group="schedule"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+										</div>
+									</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

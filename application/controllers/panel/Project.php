@@ -374,10 +374,11 @@ class Project extends PrivateController
         $rightOfWay = $formData["rightOfWay"];
         $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
+        /** @var Model_project $project */
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList);
+        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, 0, $statusId, $statusDetail, $entryDate, $responsibleList);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {

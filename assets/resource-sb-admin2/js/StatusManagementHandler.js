@@ -1,4 +1,4 @@
-var StatusManagementHandler = (function () {
+var StatusManagementHandler = /** @class */ (function () {
     function StatusManagementHandler(projectStatusSet, projectID) {
         this.projectStatusSet = projectStatusSet;
         this.projectID = projectID;
@@ -38,6 +38,7 @@ var StatusManagementHandler = (function () {
                     _this._defineNextStep();
                 }
                 else {
+                    // console.log("error: "+response.message);
                 }
             }
         });
@@ -169,6 +170,7 @@ var StatusManagementHandler = (function () {
         if (nextStepObjectArray.length > 1) {
             this.launchStepSelector(button, nextStepObjectArray);
         }
+        //if there is just one step then let's insert it in step list
         else {
             var step = nextStepObjectArray[0];
             this.insertStep(step);
@@ -628,10 +630,12 @@ var StatusManagementHandler = (function () {
         var projectStart = $("input[name=project-start]").val();
         var projectEnd = $("input[name=project-end]").val();
         var design = $("input[name=design]").val();
+        var tentativeTotalBudget = $("input[name=tentative-total-budget]").val();
         var schedule = {
             projectStart: projectStart,
             projectEnd: projectEnd,
-            design: design
+            design: design,
+            tentativeTotalBudget: tentativeTotalBudget
         };
         var dataResult = Object.assign(data, schedule);
         $.ajax({
