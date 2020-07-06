@@ -126,7 +126,6 @@ var ManpowerHandler = /** @class */ (function () {
         var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
-            defaultDate: date,
             format: 'DD-MM-YYYY',
             useCurrent: false,
             disabledDates: datesToBlock
