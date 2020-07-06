@@ -190,7 +190,7 @@ class AjaxProject extends PrivateController
                 $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
                 $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
             }
-            $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $builders = Model_user::getByRoleKeyword('builder');
             $arrayBuilder = array();
             foreach($builders as $builder)
@@ -206,6 +206,7 @@ class AjaxProject extends PrivateController
             $response["data"]["builders"] = $arrayBuilder;
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
+            $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
         }
         else
         {
@@ -266,6 +267,7 @@ class AjaxProject extends PrivateController
                     'lastName' => $builder['lastname_usr']
                 );
             }
+			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $buildingPoints = Model_building_point::getMasterDetail($projectId, $pointId);
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
@@ -273,6 +275,7 @@ class AjaxProject extends PrivateController
             $response["data"]["point"] = array_values($buildingPoints)[0];
             $response["data"]["structuresToUse"] = array_values($buildingPoints[$pointId]["structures"]);
             $response["data"]["templateName"] = "#ht-modal-form-add-point-to-point-progress";
+            $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
         }
         else
         {
@@ -321,7 +324,7 @@ class AjaxProject extends PrivateController
                 $laborCost['unit_price'] = number_format($laborCost['unit_price'], 2);
                 $laborCost['total_price_by_structure'] = number_format($laborCost['total_price_by_structure'], 2);
             }
-            $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
+//            $builders = Model_user::getBySupervisingUserId($this->sessionUser->id);
             $builders = Model_user::getByRoleKeyword('builder');
             $arrayBuilder = array();
             foreach($builders as $builder)
@@ -334,11 +337,13 @@ class AjaxProject extends PrivateController
                 );
             }
             $buildingPoints = Model_building_point::getMasterDetail($projectId);
+            $dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
             $response["data"]["template"] = $template;
             $response["data"]["points"] = array_values($buildingPoints);
             $response["data"]["templateName"] = "#ht-modal-form-add-several-point-to-point-progress";
+            $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
         }
         else
         {

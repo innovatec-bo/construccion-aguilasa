@@ -32,6 +32,7 @@ class AjaxLaborCostLog extends PrivateController
             $response = array("success" => 0, "message" => $validationErrors);
             $success = $validationErrors != "" ? 0 : 1;
 
+			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $logMasterDetail = Model_labor_cost_log::prepareArrayLogMasterDetal($laborCostLogId);
             $builders = Model_user::getByRoleKeyword('builder');
             $arrayBuilder = array();
@@ -52,6 +53,7 @@ class AjaxLaborCostLog extends PrivateController
             $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-edit-point-to-point-progress";
+            $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
         } 
         else
         {

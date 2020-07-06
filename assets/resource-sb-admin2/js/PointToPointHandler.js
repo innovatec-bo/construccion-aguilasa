@@ -118,7 +118,7 @@ var PointToPointHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=point-to-point-progress-form]");
@@ -126,10 +126,13 @@ var PointToPointHandler = /** @class */ (function () {
             }
         });
         var date = new Date();
+        var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
-            defaultDate: date,
-            format: 'DD-MM-YYYY'
+            locale: 'es',
+            format: 'DD-MM-YYYY',
+            useCurrent: false,
+            disabledDates: datesToBlock
         });
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
@@ -170,7 +173,7 @@ var PointToPointHandler = /** @class */ (function () {
                     $form.parsley().validate();
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=point-to-point-massive-progress-form]");
@@ -265,11 +268,11 @@ var PointToPointHandler = /** @class */ (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                }
+                },
             },
             escapeMarkup: function (markup) {
                 return markup;
-            }
+            },
         });
     };
     PointToPointHandler.prototype.loadManpowerLog = function () {
@@ -296,6 +299,19 @@ var PointToPointHandler = /** @class */ (function () {
                 $('[data-toggle="tooltip"]').tooltip();
             }
         });
+    };
+    PointToPointHandler.prototype._datesToBlock = function (list) {
+        var dates = [];
+        $.each(list, function (index, dateRange) {
+            var startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+            var endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+            var range = moment.range(startDate, endDate);
+            var arrayMoment = Array.from(range.by('day'));
+            $.each(arrayMoment, function (index, moment) {
+                dates.push(moment.format('YYYY-MM-DD'));
+            });
+        });
+        return dates;
     };
     PointToPointHandler.prototype.loadEventHandler = function () {
         var _this = this;

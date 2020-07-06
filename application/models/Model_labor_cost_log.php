@@ -154,7 +154,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             worked_up_wus worked_up,
             unit_of_measurement_bus unit_of_measurement,
             id_bpo point_id,
-            label_bpo point_label
+            label_bpo point_label,
+            IF(id_bld is null, 1 , 0) allow_edit_log
         FROM
             bui_labor_cost_log
         LEFT JOIN bui_builders_in_manpower on id_lal = labor_cost_log_id_bim
@@ -176,6 +177,14 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         ) bui_labor_cost on id_lac = labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
         LEFT JOIN bui_building_points on id_bpo = point_id_lal
+        left join (
+        	SELECT
+				* 
+			FROM
+				bui_blocked_log_date_ranges
+			WHERE deleted_bld != 1
+			GROUP BY from_bld, to_bld 
+        ) bui_blocked_log_date_ranges on manual_entry_date_lal between from_bld and to_bld 
         where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 ".$projectFilter."  ".$builderFilter." ".$dateFilter."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
@@ -207,6 +216,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                     $arrayLog[$logId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];
                     $arrayLog[$logId]['builders'] = $laborCostLog[$i]["builders"];
                     $arrayLog[$logId]['builderWithId'] = $laborCostLog[$i]["builder_with_id"];
+					$arrayLog[$logId]['allowEditLog'] = $laborCostLog[$i]["allow_edit_log"];
                     $arrayLog[$logId]['itemList'] = $singleList;
                     $singleList = array();
                 }
@@ -221,6 +231,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                 $arrayLog[$logId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];
                 $arrayLog[$logId]['builders'] = $laborCostLog[$i]["builders"];
                 $arrayLog[$logId]['builderWithId'] = $laborCostLog[$i]["builder_with_id"];
+				$arrayLog[$logId]['allowEditLog'] = $laborCostLog[$i]["allow_edit_log"];
                 $arrayLog[$logId]['itemList'] = $singleList;
             }
         }

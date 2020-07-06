@@ -162,10 +162,13 @@ class ManpowerHandler
             }
         });
         let date = new Date();
+		let datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             defaultDate: date,
-            format: 'DD-MM-YYYY'
+            format: 'DD-MM-YYYY',
+			useCurrent: false,
+			disabledDates: datesToBlock
         });
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         this._startSelect2();
@@ -459,54 +462,29 @@ class ManpowerHandler
                                 }
                             }
                         });
-        // Swal({
-        //     title: formTitle,
-        //     html: html,
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#E41C5E',
-        //     cancelButtonColor: '#DDDDDD',
-        //     confirmButtonText: 'Guardar',
-        //     allowOutsideClick:false,
-        //     showLoaderOnConfirm: true,
-        //     customClass:"modal-manpower-form",
-        //     width:'100%',
-        //     preConfirm: () => {
-        //         let $listContent = $("#structure-item-list-content");
-        //         let $form = $("form[name=manpower-progress-form]");
-        //         if(!$form.parsley().isValid())
-        //         {
-        //             $form.parsley().validate();
-        //             return false;
-        //         }
-        //         else if($listContent.children().length <= 0)
-        //         {
-        //             $(".table-error-message").removeClass("hide");
-        //             return false;
-        //         }
-        //     },
-        // }).then((result) => {
-        //     if (result.value)
-        //     {
-        //         let $form = $("form[name=manpower-progress-form]");
-        //         _this.add($form.serialize());
-        //     }
-        // });
-        // let date = new Date();
-        // $('.date-time-picker').datetimepicker({
-        //     ignoreReadonly: true,
-        //     defaultDate: date,
-        //     format: 'DD-MM-YYYY'
-        // });
-        // $(".select2-builders").select2();
-        // this._startSelect2();
+
         startSelect2LaborCost();
         let $inputMasked = $(".input-masked");
         if($inputMasked.length > 0)
         {
             $inputMasked.inputmask();
         }
-        // $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
     }
+
+	private _datesToBlock(list)
+	{
+		let dates = [];
+		$.each(list, function (index, dateRange) {
+			let startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+			let endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+			let range = moment.range(startDate, endDate);
+			let arrayMoment = Array.from(range.by('day'));
+			$.each(arrayMoment, function(index, moment){
+				dates.push(moment.format('YYYY-MM-DD'));
+			});
+		});
+		return dates;
+	}
 
     loadEventHandler()
     {

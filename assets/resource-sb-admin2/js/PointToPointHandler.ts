@@ -8,6 +8,7 @@ declare let window: any;
 declare let Swal: any;
 declare let bootbox: any;
 declare let toastr : any;
+declare let moment : any;
 
 class PointToPointHandler
 {
@@ -166,10 +167,13 @@ class PointToPointHandler
             }
         });
         let date = new Date();
+        let datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
-            defaultDate: date,
-            format: 'DD-MM-YYYY'
+			locale:'es',
+            format: 'DD-MM-YYYY',
+			useCurrent: false,
+			disabledDates: datesToBlock
         });
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         this._startSelect2();
@@ -357,6 +361,21 @@ class PointToPointHandler
         });
     }
 
+    private _datesToBlock(list)
+	{
+		let dates = [];
+		$.each(list, function (index, dateRange) {
+			let startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+			let endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+			let range = moment.range(startDate, endDate);
+			let arrayMoment = Array.from(range.by('day'));
+			$.each(arrayMoment, function(index, moment){
+				dates.push(moment.format('YYYY-MM-DD'));
+			});
+		});
+		return dates;
+	}
+    
     loadEventHandler()
     {
         let _this = this;

@@ -60,7 +60,7 @@ var WorkPlanHandler = /** @class */ (function () {
             }
         });
     };
-    WorkPlanHandler.prototype["delete"] = function () {
+    WorkPlanHandler.prototype.delete = function () {
         var _this = this;
         swal.fire({
             title: "Eliminar Plan de trabajo?",
@@ -127,7 +127,7 @@ var WorkPlanHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hidden");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=work-plan-form]");
@@ -365,7 +365,7 @@ var WorkPlanHandler = /** @class */ (function () {
             e.preventDefault();
             var workPlanId = $(this).data('work-plan-id');
             _this._workPlanId = parseInt(workPlanId);
-            _this["delete"]();
+            _this.delete();
         });
         $(document).on("click", "#download-work-plan-report", function (e) {
             $("form[name=work-plan-report]").submit();

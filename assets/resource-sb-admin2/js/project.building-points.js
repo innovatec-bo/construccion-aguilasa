@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function() {
+	window['moment-range'].extendMoment(moment);
     let url = $(location).attr('href').split("/");
     let projectId = parseInt(url[url.length - 1]);
     let pointToPointHandler = new PointToPointHandler(projectId);

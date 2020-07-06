@@ -1,4 +1,4 @@
-var EventCalendarHandler = (function () {
+var EventCalendarHandler = /** @class */ (function () {
     function EventCalendarHandler() {
         moment.locale('es');
         this._calendarElement = document.getElementById('calendar');

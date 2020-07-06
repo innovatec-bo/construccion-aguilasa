@@ -244,6 +244,7 @@ $projectSystems = array(
     {{/ifCond}}
     {{#each log}}
         <h6 class="quick-log-status-name">
+			{{#ifCond allowEditLog "==" 1}}
             <div class="dropdown" style='display:inline'>
               <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="caret"></span>
@@ -254,6 +255,7 @@ $projectSystems = array(
                 <li><a href="#" class='delete-log' data-log-id="{{logId}}"><i class='fa fa-trash fa-fw'></i> Eliminar</a></li>
               </ul>
             </div>
+			{{/ifCond}}
             {{fiscal}}
             {{#ifCond detail '!=' ''}}
                 <a href="#" data-original-title="{{detail}}" data-toggle="tooltip" data-placement="top"><span class="fa fa-comment fa-fw"></span></a>

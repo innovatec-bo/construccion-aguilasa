@@ -115,7 +115,7 @@ var ManpowerHandler = /** @class */ (function () {
                     $(".table-error-message").removeClass("hide");
                     return false;
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=manpower-progress-form]");
@@ -123,10 +123,13 @@ var ManpowerHandler = /** @class */ (function () {
             }
         });
         var date = new Date();
+        var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             defaultDate: date,
-            format: 'DD-MM-YYYY'
+            format: 'DD-MM-YYYY',
+            useCurrent: false,
+            disabledDates: datesToBlock
         });
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
@@ -244,11 +247,11 @@ var ManpowerHandler = /** @class */ (function () {
             language: {
                 noResults: function () {
                     return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
-                }
+                },
             },
             escapeMarkup: function (markup) {
                 return markup;
-            }
+            },
         });
     };
     ManpowerHandler.prototype.loadManpowerLog = function () {
@@ -388,52 +391,24 @@ var ManpowerHandler = /** @class */ (function () {
                 }
             }
         });
-        // Swal({
-        //     title: formTitle,
-        //     html: html,
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#E41C5E',
-        //     cancelButtonColor: '#DDDDDD',
-        //     confirmButtonText: 'Guardar',
-        //     allowOutsideClick:false,
-        //     showLoaderOnConfirm: true,
-        //     customClass:"modal-manpower-form",
-        //     width:'100%',
-        //     preConfirm: () => {
-        //         let $listContent = $("#structure-item-list-content");
-        //         let $form = $("form[name=manpower-progress-form]");
-        //         if(!$form.parsley().isValid())
-        //         {
-        //             $form.parsley().validate();
-        //             return false;
-        //         }
-        //         else if($listContent.children().length <= 0)
-        //         {
-        //             $(".table-error-message").removeClass("hide");
-        //             return false;
-        //         }
-        //     },
-        // }).then((result) => {
-        //     if (result.value)
-        //     {
-        //         let $form = $("form[name=manpower-progress-form]");
-        //         _this.add($form.serialize());
-        //     }
-        // });
-        // let date = new Date();
-        // $('.date-time-picker').datetimepicker({
-        //     ignoreReadonly: true,
-        //     defaultDate: date,
-        //     format: 'DD-MM-YYYY'
-        // });
-        // $(".select2-builders").select2();
-        // this._startSelect2();
         startSelect2LaborCost();
         var $inputMasked = $(".input-masked");
         if ($inputMasked.length > 0) {
             $inputMasked.inputmask();
         }
-        // $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
+    };
+    ManpowerHandler.prototype._datesToBlock = function (list) {
+        var dates = [];
+        $.each(list, function (index, dateRange) {
+            var startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+            var endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+            var range = moment.range(startDate, endDate);
+            var arrayMoment = Array.from(range.by('day'));
+            $.each(arrayMoment, function (index, moment) {
+                dates.push(moment.format('YYYY-MM-DD'));
+            });
+        });
+        return dates;
     };
     ManpowerHandler.prototype.loadEventHandler = function () {
         var _this = this;

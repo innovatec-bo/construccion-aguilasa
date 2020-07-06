@@ -536,6 +536,7 @@ class Project extends PrivateController
             redirect(base_url('panel/Project/buildingPoints/'.$projectId));
         }
         $this->complementHandler->addViewComplement("moment-with-locales");
+		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("parsley");
@@ -555,6 +556,7 @@ class Project extends PrivateController
         $this->_validateFeature('project_manpower');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
         $this->complementHandler->addViewComplement("moment-with-locales");
+		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("parsley");

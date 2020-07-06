@@ -138,7 +138,7 @@ var LaborCostLogHandler = /** @class */ (function () {
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                 }
-            }
+            },
         }).then(function (result) {
             if (result.value) {
                 var $form = $("form[name=point-to-point-progress-form]");
@@ -152,11 +152,13 @@ var LaborCostLogHandler = /** @class */ (function () {
             }
         });
         var date = new Date();
+        var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             // defaultDate: date,
             format: 'DD-MM-YYYY',
-            locale: 'es'
+            locale: 'es',
+            disabledDates: datesToBlock
         });
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         $(".input-masked").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
@@ -173,6 +175,19 @@ var LaborCostLogHandler = /** @class */ (function () {
             manpowerHandler.loadManpower();
             manpowerHandler.loadManpowerLog();
         }
+    };
+    LaborCostLogHandler.prototype._datesToBlock = function (list) {
+        var dates = [];
+        $.each(list, function (index, dateRange) {
+            var startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+            var endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+            var range = moment.range(startDate, endDate);
+            var arrayMoment = Array.from(range.by('day'));
+            $.each(arrayMoment, function (index, moment) {
+                dates.push(moment.format('YYYY-MM-DD'));
+            });
+        });
+        return dates;
     };
     LaborCostLogHandler.prototype.loadEventHandler = function () {
         var _this = this;
