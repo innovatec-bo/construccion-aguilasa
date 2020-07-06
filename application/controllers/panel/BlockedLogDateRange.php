@@ -17,7 +17,7 @@ class BlockedLogDateRange extends PrivateController
 
     public function index()
     {
-//        $this->_validateFeature('blocked_log_date_range_index');
+        $this->_validateFeature('blocked_log_date_range_index');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
@@ -37,7 +37,7 @@ class BlockedLogDateRange extends PrivateController
 
     public function delete($id = NULL)
     {
-//        $this->_validateFeature("delete_role");
+//        $this->_validateFeature("blocked_log_date_range_delete");
         $BlockedLogDateRange = $this->_validateObjectToEdit($id,"Model_blocked_log_date_range","panel/BlockedLogDateRange");
 		$BlockedLogDateRange->delete();
         $this->session->set_flashdata("successMessage", "Registro eliminado!");
