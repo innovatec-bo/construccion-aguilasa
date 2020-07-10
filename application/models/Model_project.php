@@ -425,6 +425,7 @@ class Model_project extends Model_project_base
             project_return_materials.entry_date project_return_materials_date,
             payment_order_registered.entry_date payment_order_registered_date,
             payment_order_registered.order_number_pao payment_order_registered_order_number,
+            if(payment_order_registered.order_number_pao != '','Pagado','Pendiente de pago') payment_status,
             conciliation_shipment.design_reb payment_order_registered_design_budget,
             conciliation_shipment.building_reb payment_order_registered_building_budget,
             conciliation_shipment.transportation_reb payment_order_registered_transportation_budget,
