@@ -6,7 +6,14 @@ $(document).ready(function() {
 	window['moment-range'].extendMoment(moment);
     let url = $(location).attr('href').split("/");
     let projectId = parseInt(url[url.length - 1]);
-    let pointToPointHandler = new PointToPointHandler(projectId);
+
+    let buildingPoint = new BuildingPointHandler(projectId);
+    buildingPoint.loadEventHandlers();
+
+    let manpowerHandler = new ManpowerHandler(projectId);
+	manpowerHandler.loadEventHandler();
+
+	let pointToPointHandler = new PointToPointHandler(projectId);
     pointToPointHandler.loadBuildingPoints();
     pointToPointHandler.loadManpowerLog();
     pointToPointHandler.loadEventHandler();

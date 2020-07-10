@@ -569,8 +569,12 @@ class Project extends PrivateController
 		$this->complementHandler->addProjectJs('PointsLocationHandler', TRUE);
         $this->complementHandler->addProjectCss('project.building-points', TRUE);
         $this->complementHandler->addProjectJs('project.building-points', TRUE);
+        $this->complementHandler->addProjectCss('BuildingPointHandler', TRUE);
+        $this->complementHandler->addProjectjs('BuildingPointHandler', TRUE);
         $this->complementHandler->addProjectCss('PointToPointHandler', TRUE);
         $this->complementHandler->addProjectJs('PointToPointHandler', TRUE);
+		$this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
+		$this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
         $data['project'] = $project->toArray();
         $this->_loadPanelView('project/building-points', $data);

@@ -348,7 +348,12 @@ var ManpowerHandler = /** @class */ (function () {
                     // $(newOption).attr("data-unit-of-measurement",structure.unit_of_measurement_bus);
                     // $(newOption).attr("data-quantity",laborCost.quantity_lac);
                     // $('.select2-structure-code').append(newOption).trigger('select2:select');
+                    toastr.success(response.message, '', { 'progressBar': true });
                     console.log(response);
+                }
+                else {
+                    bootbox.hideAll();
+                    bootbox.alert(response.message);
                 }
             }
         });

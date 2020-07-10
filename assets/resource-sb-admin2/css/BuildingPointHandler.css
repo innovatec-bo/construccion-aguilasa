@@ -1,0 +1,17 @@
+/*####################################################################*/
+.vertical-align
+{
+    vertical-align: middle!important;
+}
+.width-30
+{
+    width: 30px!important;
+}
+
+#swal2-content {
+    text-align: initial!important;
+}
+.modal-building-point-form
+{
+    max-width:1000px;
+}

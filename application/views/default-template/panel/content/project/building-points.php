@@ -23,13 +23,13 @@
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#home" data-toggle="tab" aria-expanded="true">Datos t&eacute;cnicos</a>
+				<li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="true">Datos t&eacute;cnicos</a>
 				</li>
 				<li class=""><a href="#point-locations" data-toggle="tab" aria-expanded="false">Mapa</a>
 				</li>
 			</ul>
 			<div class="tab-content">
-				<div class="tab-pane fade active in" id="home">
+				<div class="tab-pane fade active in" id="tab1">
 					<div class="col-md-12">
 						<p>
 						<div class="alert alert-info">
@@ -37,6 +37,10 @@
 						</div>
 						<button type="button" class="btn btn-info add-massive-point-to-point-progress hide">Completar puntos</button>
 						</p>
+					</div>
+					<div class="col-md-12">
+						<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>">Agregar estrucura al proyecto</button>
+						<button type="button" class="btn btn-danger btn-sm add-building-point mb-1">Crear punto</button>
 					</div>
 					<div id="building-points">
 						<div class="col-md-9"></div>
