@@ -38,10 +38,11 @@ class Model_project_base extends MY_Model
     protected $_longitude;
     protected $_workArea;
     protected $_projectYear;
+    protected $_endContract;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
                                 $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0, $projectPercentage = 0, $latitude = "",
-                                $longitude = "", $workArea = "", $projectYear = "")
+                                $longitude = "", $workArea = "", $projectYear = "", $endContract = NULL)
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -70,6 +71,7 @@ class Model_project_base extends MY_Model
         $this->_longitude = $longitude;
         $this->_workArea = $workArea;
         $this->_projectYear = $projectYear;
+        $this->_endContract = $endContract;
     }
 
     /**
@@ -106,6 +108,7 @@ class Model_project_base extends MY_Model
             "longitude_pro" => $this->_longitude,
             "work_area_pro" => $this->_workArea,
             "project_year_pro" => $this->_projectYear,
+            "end_contract_pro" => $this->_endContract,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -155,7 +158,8 @@ class Model_project_base extends MY_Model
                 $object->latitude_pro,
                 $object->longitude_pro,
                 $object->work_area_pro,
-                $object->project_year_pro
+                $object->project_year_pro,
+                $object->end_contract_pro
             );
             $instance->_id = $object->id_pro;
 
@@ -284,6 +288,11 @@ class Model_project_base extends MY_Model
         $this->_projectYear = $projectYear;
     }
 
+    public function setEndContract($endContract)
+	{
+		$this->_endContract = $endContract;
+	}
+
     public function getCode()
     {
         return $this->_projectCode;
@@ -333,6 +342,12 @@ class Model_project_base extends MY_Model
     {
         return $this->_projectYear;
     }
+
+    public function getEndContract()
+	{
+		return $this->_endContract;
+	}
+
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
 
     /**

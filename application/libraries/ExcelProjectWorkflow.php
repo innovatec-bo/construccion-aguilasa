@@ -257,6 +257,12 @@ class ExcelProjectWorkflow
                 else
                 {
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $rowData[$arrayKeys[$i]]);
+					if($arrayKeys[$i] == "payment_status" && $rowData[$arrayKeys[$i]] == "Pagado")
+					{
+						$spreadsheet->getActiveSheet()->getStyle('A'.$rowNumber.':'.$round . $char . $rowNumber)->getFill()
+							->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+							->getStartColor()->setRGB('fb9901');
+					}
 
                     if ($rowNumber == ($this->startDataRow() + 1))
                     {
