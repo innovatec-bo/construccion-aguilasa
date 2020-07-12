@@ -137,27 +137,44 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Fiscal de CRE</label>
-<!--                                    <input class="form-control" value="--><?//=set_value('project-cre-fiscal', $project["cre_fiscal_pro"])?><!--" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">-->
-                                    <select  class="form-control" name="project-cre-fiscal" required>
-                                        <option value="">Elija un Fiscal</option>
-                                        <?php
-                                        $html = "";
-                                        foreach ($creFiscalList as $fiscal)
-                                        {
-                                            $fiscal = $fiscal->toArray();
-                                            $selected = $project["cre_fiscal_pro"] == $fiscal["id_usr"]?" selected ":"";
-                                            $html .= '<option '.$selected.' value="'.$fiscal["id_usr"].'" >'.$fiscal["firstname_usr"].' '.$fiscal["lastname_usr"].'</option>';
-                                        }
-                                        echo $html;
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Contrato final</label>
+									<select  class="form-control" name="project-end-contract-id">
+										<option value="">Elija un contrato</option>
+										<?php
+										$html = "";
+										foreach ($contractList as $contract)
+										{
+											$selected = $project["end_contract_pro"] == $contract->id_con?" selected ":"";
+											$html .= '<option '.$selected.' value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+										}
+										echo $html;
+										?>
+									</select>
+								</div>
+							</div>
                         </div>
                         <div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Fiscal de CRE</label>
+									<!--                                    <input class="form-control" value="--><?//=set_value('project-cre-fiscal', $project["cre_fiscal_pro"])?><!--" required name="project-cre-fiscal" placeholder="Fecha de ingreso del proyecto">-->
+									<select  class="form-control" name="project-cre-fiscal" required>
+										<option value="">Elija un Fiscal</option>
+										<?php
+										$html = "";
+										foreach ($creFiscalList as $fiscal)
+										{
+											$fiscal = $fiscal->toArray();
+											$selected = $project["cre_fiscal_pro"] == $fiscal["id_usr"]?" selected ":"";
+											$html .= '<option '.$selected.' value="'.$fiscal["id_usr"].'" >'.$fiscal["firstname_usr"].' '.$fiscal["lastname_usr"].'</option>';
+										}
+										echo $html;
+										?>
+									</select>
+								</div>
+							</div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Sistema</label>
@@ -176,7 +193,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Direccion</label>
                                     <input class="form-control" value="<?=set_value('project-address', $project["address_pro"])?>" required name="project-address" placeholder="Ubicación/dirección del proyecto">

@@ -177,6 +177,7 @@ class Project extends PrivateController
     public function edit($projectId = NULL)
     {
         $this->_validateFeature('project_edit');
+        /** @var Model_project $project */
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
 
         /** View complements */
@@ -201,6 +202,7 @@ class Project extends PrivateController
         $this->form_validation->set_rules('project-status', 'Estado', 'trim|numeric');
         $this->form_validation->set_rules('project-budgetary-position', 'Posicion presupuestaria', 'trim|numeric');
         $this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
+        $this->form_validation->set_rules('project-end-contract-id', 'End contract ID', 'trim|numeric');
         $this->form_validation->set_rules('project-detail', 'Detalle', 'trim|required');
 
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
@@ -262,6 +264,7 @@ class Project extends PrivateController
 
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
+            $endContractId = $formData["project-end-contract-id"];
             $detail = $formData["project-detail"];
             $latitude = $formData["latitude"];
             $longitude = $formData["longitude"];
@@ -285,6 +288,7 @@ class Project extends PrivateController
             $project->setCreBuildingCompletionDate($creBuildingCompletionDate);
             $project->setBudgetaryPosition($budgetaryPosition);
             $project->setContractId($contractId);
+            $project->setEndContract($endContractId);
             $project->setDetail($detail);
             $project->setWorkArea($workArea);
             $project->setProjectYear($projectYear);
