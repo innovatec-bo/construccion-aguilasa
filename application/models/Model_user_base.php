@@ -25,9 +25,10 @@ class Model_user_base extends MY_Model
     protected $_taxDeductible;
     protected $_googleId;
     protected $_supervisingUser;
+    protected $_umbo;
 
     public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar = NULL, $passwordHash = "", $activationHash = "", $status = 1,
-                                $taxDeductible = "", $googleId = "", $supervisingUser = NULL)
+                                $taxDeductible = "", $googleId = "", $supervisingUser = NULL, $umbo = 0)
     {
         parent::__construct();
         $this->_firstName = $firstName;
@@ -43,6 +44,7 @@ class Model_user_base extends MY_Model
         $this->_taxDeductible = $taxDeductible;
         $this->_googleId = $googleId;
         $this->_supervisingUser = $supervisingUser;
+        $this->_umbo = $umbo;
     }
 
     /**
@@ -66,6 +68,7 @@ class Model_user_base extends MY_Model
             "tax_deductible_usr" => $this->_taxDeductible,
             "googleid_usr" => $this->_googleId,
             "supervising_user_usr" => $this->_supervisingUser,
+            "umbo_usr" => $this->_umbo,
             "deleted_usr" => $this->_deleted,
             "createdon_usr" => $this->_createdOn,
             "createdby_usr" => $this->_createdBy,
@@ -103,7 +106,8 @@ class Model_user_base extends MY_Model
                 $object->status_usr,
                 $object->tax_deductible_usr,
                 $object->googleid_usr,
-                $object->supervising_user_usr
+                $object->supervising_user_usr,
+                $object->umbo_usr
             );
             $instance->_id = $object->id_usr;
 
@@ -132,6 +136,11 @@ class Model_user_base extends MY_Model
 	{
 		return $this->_supervisingUser;
 	}
+
+	public function getUMBO()
+	{
+		return $this->_umbo;
+	}
     ################################################################################### end getters
 
     ################################################################################### begin setters
@@ -154,6 +163,11 @@ class Model_user_base extends MY_Model
     {
         $this->_googleId = $googleId;
     }
+
+    public function setUMBO($umbo)
+	{
+		$this->_umbo = $umbo;
+	}
     ################################################################################### end setters
 
 }

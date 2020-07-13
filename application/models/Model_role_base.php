@@ -76,4 +76,8 @@ class Model_role_base extends MY_Model
         $this->_roleName = $roleName;
     }
 
+    public function getKeyword()
+	{
+		return $this->_keyWord;
+	}
 }

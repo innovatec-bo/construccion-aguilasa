@@ -97,9 +97,12 @@ class User extends PrivateController
 
     private function _formEditUser($userId = NULL)
     {
+    	/** @var Model_user $user */
         $user = $this->_validateObjectToEdit($userId,"Model_user","panel/User");
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");
+		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
+		$this->complementHandler->addProjectJs("user.edit");
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
@@ -124,10 +127,12 @@ class User extends PrivateController
             $formData = $this->input->post();
             $firstName = $formData["first-name"];
             $lastName = $formData["last-name"];
+            $umbo = str_replace(",","",$formData["umbo"]);
             $roleListToSave = $formData["roles"];
 
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
+            $user->setUMBO($umbo);
             if(isset($formData["update-password"]))
             {
                 $password = $formData["password"];
@@ -141,9 +146,10 @@ class User extends PrivateController
             }
             $this->session->set_flashdata("successMessage", "User was updated successfully.");
             if($userId === NULL)
-                redirect(base_url("panel/User/edit/".$user->getId()));
+				redirect(base_url("panel/User/myProfile"));
             else
-                redirect(base_url("panel/User/myProfile"));
+				redirect(base_url("panel/User/edit/".$user->getId()));
+
         }
     }
 

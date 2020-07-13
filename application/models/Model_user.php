@@ -8,9 +8,9 @@
 
 class Model_user extends Model_user_base
 {
-    public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar = NULL, $passwordHash = "", $activationHash = "", $status = 1, $taxDeductible = "", $googleId = "", $supervisingUser = NULL)
+    public function __construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar = NULL, $passwordHash = "", $activationHash = "", $status = 1, $taxDeductible = "", $googleId = "", $supervisingUser = NULL, $umbo = 0)
 	{
-		parent::__construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar, $passwordHash, $activationHash, $status, $taxDeductible, $googleId, $supervisingUser);
+		parent::__construct($firstName, $lastName, $email, $facebookId, $phone, $password, $avatar, $passwordHash, $activationHash, $status, $taxDeductible, $googleId, $supervisingUser, $umbo);
 	}
 
 	public static function login($email, $password)

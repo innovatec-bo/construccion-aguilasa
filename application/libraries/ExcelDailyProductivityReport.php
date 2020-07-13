@@ -7,6 +7,7 @@ class ExcelDailyProductivityReport
     private $_logDateRange;
     private $_months;
     private $_builders;
+    private $_daysOfWeek;
 	public function __construct($sessionUser, $logDateRange)
 	{
         $this->_sessionUser = $sessionUser;
@@ -25,6 +26,15 @@ class ExcelDailyProductivityReport
                             "november" => "Noviembre",
                             "december" => "Diciembre"
                         );
+        $this->_daysOfWeek = array(
+        			"monday" => "Lunes",
+					"tuesday" => "Martes",
+					"wednesday" => "Miercoles",
+					"thursday" => "Jueves",
+					"friday" => "Viernes",
+					"saturday" => "Sabado",
+					"sunday" => "Domingo"
+		);
         $this->_builders = Model_user::getByRoleKeyword('builder');
 	}
 
@@ -88,7 +98,8 @@ class ExcelDailyProductivityReport
 		$i = 2;
         $arrayAlphabet = range("A","Z");
         $headers = $this->_columnHeaders($data);
-        $data = $this->_parepareDataToPrint($data);
+		$optimumUMBO = $this->_builderUMBO($data);
+        $data = $this->_prepareDataToPrint($data);
         array_unshift($data, $headers);
         // echo"<pre>";var_dump($data);exit;
 		foreach ($data as $rows)
@@ -115,6 +126,7 @@ class ExcelDailyProductivityReport
                 {
                     $spreadsheet->getActiveSheet()->getStyle($arrayAlphabet[$j].$i)->getAlignment()->setWrapText(true);
                 }
+                //If this is the last iteration then add the footer data
                 if(($counter) == count($data) && $j > 1)
                 {
                     //totales
@@ -128,9 +140,20 @@ class ExcelDailyProductivityReport
                         $arrayAlphabet[$j].($i+2), '=COUNTIF('.$arrayAlphabet[$j].'3:'.$arrayAlphabet[$j].$i.',">0.00")');//=COUNTIF(C2:C8,">=5")
                     //ubmo
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue(
-                        $arrayAlphabet[$j].($i+3), '='.$arrayAlphabet[$j].($i+1).'/187.3841667');
+                        $arrayAlphabet[$j].($i+3), '='.$arrayAlphabet[$j].($i+1).'/187.38');
                     $spreadsheet->getActiveSheet()->getStyle(
                         $arrayAlphabet[$j].($i+3))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+					//umbo optimo
+					$spreadsheet->setActiveSheetIndex(0)->setCellValue(
+						$arrayAlphabet[$j].($i+4), $optimumUMBO[($j-2)]);
+					$spreadsheet->getActiveSheet()->getStyle(
+						$arrayAlphabet[$j].($i+4))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+					//% logrado
+					$spreadsheet->setActiveSheetIndex(0)->setCellValue(
+						$arrayAlphabet[$j].($i+5), '='.$arrayAlphabet[$j].($i+3).'/'.$arrayAlphabet[$j].($i+4));
+					$spreadsheet->getActiveSheet()->getStyle(
+						$arrayAlphabet[$j].($i+5))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_PERCENTAGE_00);
+
 
                     
                 }
@@ -174,7 +197,7 @@ class ExcelDailyProductivityReport
 		return $spreadsheet;
 	}
 
-    private function _parepareDataToPrint($individualProductivityLog)
+    private function _prepareDataToPrint($individualProductivityLog)
     {
         $period = new DatePeriod(
              new DateTime($this->_logDateRange['from']),
@@ -197,7 +220,7 @@ class ExcelDailyProductivityReport
             $date = $value->format("Y-m-d");
             $dateNumber = $value->format("d");
             $dateNumberAsKey = $value->format("j");
-            $dayOfWeek = $value->format("l");
+            $dayOfWeek = $this->_daysOfWeek[strtolower($value->format("l"))];
             if(!isset($buildersProductivity[$dateNumberAsKey]))
             {
                 $buildersProductivity[$dateNumberAsKey] = $defaultRow;
@@ -222,7 +245,7 @@ class ExcelDailyProductivityReport
             $date = new DateTime($value['manual_entry_date_lal']);
             $dateNumber = $date->format("d");
             $dateNumberAsKey = $date->format("j");
-            $dayOfWeek = $date->format("l");
+			$dayOfWeek = $this->_daysOfWeek[strtolower($date->format("l"))];
 
             if(!isset($buildersProductivity[$dateNumberAsKey]))
             {
@@ -291,4 +314,38 @@ class ExcelDailyProductivityReport
         }
         return $default;
     }
+
+	private function _builderUMBO($arrayLog)
+	{
+		//get the builders Id
+		$concatenatedIdList = array_column($arrayLog, 'builders');
+		$idList = array();
+		foreach ($concatenatedIdList as $value)
+		{
+			$arrayId = explode(",", $value);
+			$idList = array_merge($idList, $arrayId);
+		}
+		$idList = array_unique($idList);
+
+		$defaultValues = array_fill(0, count($idList), 0);
+		$idsAndDefaultValue = array_combine($idList, $defaultValues);
+
+//		$default = array('dateNumber' => '', 'dayOfWeek' => 'LITERAL', 'totalInDay' => 'TOTAL');
+		$default = array();
+		$default = array_replace($default, $idsAndDefaultValue);
+		foreach ($default as $key => $value)
+		{
+			if(isset($this->_builders[$key]))
+			{
+				/** @var Model_user $builder */
+				$builder = $this->_builders[$key];
+
+				$default[$key] = floatval($builder->getUMBO());
+			}
+		}
+		$default = array_values($default);
+		$total = array_sum($default);
+		array_unshift($default, $total);
+		return $default;
+	}
 }
