@@ -59,7 +59,9 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addProjectCss('payment-management.create-payment-order', TRUE);
         $this->complementHandler->addProjectJs('payment-management.create-payment-order', TRUE);
         $this->_validateFeature('payment_management_add');
-        $this->_loadPanelView("payment-management/add");
+		$contractList = Model_contract::getAll(100, 0);
+		$data['contractList'] = $contractList;
+        $this->_loadPanelView("payment-management/add", $data);
     }
 
 	public function editPaymentOrder($paymentOrderId)
@@ -77,7 +79,9 @@ class PaymentManagement extends PrivateController
 		$this->_validateFeature('payment_management_add');
 
 		$paymentOrder = Model_payment_order::getById($paymentOrderId);
+		$contractList = Model_contract::getAll(100, 0);
 		$data["paymentOrder"] = $paymentOrder->toArray();
+		$data["contractList"] = $contractList;
 
 		$this->_loadPanelView("payment-management/edit", $data);
 	}

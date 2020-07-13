@@ -18,8 +18,9 @@ class Model_payment_order_base extends MY_Model
     protected $_entryDate;
     protected $_detail;
     protected $_invoiceDate;
+    protected $_endContractId;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL)
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL, $endContractId = NULL)
     {
         parent::__construct();
         $this->_orderNumber = $orderNumber;
@@ -28,6 +29,7 @@ class Model_payment_order_base extends MY_Model
         $this->_entryDate = $entryDate;
         $this->_detail = $detail;
         $this->_invoiceDate = $invoiceDate;
+        $this->_endContractId = $endContractId;
     }
 
     /**
@@ -45,6 +47,7 @@ class Model_payment_order_base extends MY_Model
             "detail_pao" => $this->_detail,
             "invoice_date_pao" => $this->_invoiceDate,
             "deleted_pao" => $this->_deleted,
+            "end_contract_id_pao" => $this->_endContractId,
             "createdon_pao" => $this->_createdOn,
             "createdby_pao" => $this->_createdBy,
             "editedon_pao" => $this->_editedOn,
@@ -73,7 +76,8 @@ class Model_payment_order_base extends MY_Model
                 $object->invoice_number_pao,
                 $object->entry_date_pao,
                 $object->detail_pao,
-                $object->invoice_date_pao
+                $object->invoice_date_pao,
+                $object->end_contract_id_pao
             );
             $instance->_id = $object->id_pao;
 
@@ -101,6 +105,11 @@ class Model_payment_order_base extends MY_Model
     {
         $this->_invoiceDate = $invoiceDate;
     }
+
+    public function setEndContractId($endContractId)
+	{
+		$this->_endContractId = $endContractId;
+	}
 
     public function getInvoiceNumber()
 	{

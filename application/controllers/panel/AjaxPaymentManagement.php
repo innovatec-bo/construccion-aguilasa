@@ -158,13 +158,14 @@ class AjaxPaymentManagement extends PrivateController
         {
             $formData = $this->input->post();
             $orderNumber = $formData["orderNumber"];
+			$endContractId = $formData["endContractId"];
             $entryDate = $formData["entryDate"];
             $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
             $entryDate = date_format($entryDate, 'Y-m-d');
             $entryDate = $entryDate." ".date("H:i:s");
             $detail = $formData["detail"];
             $statusId = 42;//payment_order_registered
-            $paymentOrder = new Model_payment_order($orderNumber, $statusId, NULL, $entryDate, $detail);
+            $paymentOrder = new Model_payment_order($orderNumber, $statusId, NULL, $entryDate, $detail, NULL, $endContractId);
             $paymentOrder->save();
             $paymentOrder->addStatusToLog($statusId, $detail, $entryDate);
             $paymentOrder->saveProjects($formData["projectList"]);
@@ -196,14 +197,17 @@ class AjaxPaymentManagement extends PrivateController
 			$formData = $this->input->post();
 			$paymentOrderId = $formData["paymentOrderId"];
 			$orderNumber = $formData["orderNumber"];
+			$endContractId = $formData["endContractId"];
 			$entryDate = $formData["entryDate"];
 			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
 			$entryDate = date_format($entryDate, 'Y-m-d');
 			$entryDate = $entryDate." ".date("H:i:s");
 			$detail = $formData["detail"];
 			$statusId = 42;//payment_order_registered
+			/** @var Model_payment_order $paymentOrder */
 			$paymentOrder = Model_payment_order::getById($paymentOrderId);
-//			$paymentOrder->save();
+			$paymentOrder->setEndContractId($endContractId);
+			$paymentOrder->save();
 			$paymentOrder->saveProjects($formData["projectList"]);
 			$response = array("success" => 1, "message" => "Orden de pago actualizada correctamente!", "paymentOrderId" => $paymentOrder->getId());
 			$this->session->set_flashdata("successMessage", "Orden de pago actualizada correctamente!");

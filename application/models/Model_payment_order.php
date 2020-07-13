@@ -12,12 +12,12 @@ class Model_payment_order extends Model_payment_order_base
     const PAYMENT_ORDER_INVOICED_AND_SEND = 2;
     const PAYMENT_ORDER_HAS_BEEN_SETTLED = 3;
 
-    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL)
-    {
-        parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate);
-    }
+    public function __construct($orderNumber = "", $status = 1, $invoiceNumber = NULL, $entryDate = "", $detail = "", $invoiceDate = NULL, $endContractId = NULL)
+	{
+		parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate, $endContractId);
+	}
 
-    public function saveProjects($projectList = array())
+	public function saveProjects($projectList = array())
     {
     	static::deleteProjectsFromPaymentOrder($this->_id);
         $arrayToInsert = array();
@@ -52,10 +52,12 @@ class Model_payment_order extends Model_payment_order_base
                     "createdby_pop" => $currentUserId
                 );
                 //Getting the object form list using the projectId
+				/** @var Model_project $projectObject */
                 $projectObject = $projectObjectList[$projectId];
                 //Save the real budget and status
                 $status = 45;//defined real budget confirmation
                 $projectObject->setStatus($status);
+                $projectObject->setEndContract($this->_endContractId);
                 $projectObject->save();
                 //Getting responsible list
                 $responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
@@ -66,7 +68,10 @@ class Model_payment_order extends Model_payment_order_base
             }
         }
         if(count($arrayToInsert) > 0)
-            Model_payment_order_project::insertBatch($arrayToInsert);
+		{
+			Model_payment_order_project::insertBatch($arrayToInsert);
+		}
+
     }
 
     public static function deleteProjectsFromPaymentOrder($paymentOrderId)

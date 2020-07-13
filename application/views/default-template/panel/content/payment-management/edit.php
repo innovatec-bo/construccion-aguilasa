@@ -86,6 +86,25 @@
                                 </div>
                             </div>
                         </div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Contrato</label>
+									<select  class="form-control" name="end-contract-id">
+										<option value="">Elija un contrato</option>
+										<?php
+										$html = "";
+										foreach ($contractList as $contract)
+										{
+											$selected = $paymentOrder["end_contract_id_pao"] == $contract->id_con?" selected ":"";
+											$html .= '<option '.$selected.' value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
+										}
+										echo $html;
+										?>
+									</select>
+								</div>
+							</div>
+						</div>
                         <div class="form-group">
                             <label>Observaciones</label>
                             <textarea class="form-control" name="detail" rows="2" placeholder=""><?=$paymentOrder["detail_pao"]?></textarea>
