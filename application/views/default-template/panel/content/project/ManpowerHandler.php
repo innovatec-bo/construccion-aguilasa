@@ -258,6 +258,13 @@ $projectSystems = array(
               </ul>
             </div>
 			{{/ifCond}}
+			{{#ifCond allowEditLog "!=" 1}}
+				<div class="dropdown" style='display:inline'>
+					<button class="btn btn-default btn-xs dropdown-toggle disabled"  data-original-title="Mes cerrado por el administrador" data-toggle="tooltip" data-placement="right" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span class="caret"></span>
+					</button>
+				</div>
+			{{/ifCond}}
             {{fiscal}}
             {{#ifCond detail '!=' ''}}
                 <a href="#" data-original-title="{{detail}}" data-toggle="tooltip" data-placement="top"><span class="fa fa-comment fa-fw"></span></a>
