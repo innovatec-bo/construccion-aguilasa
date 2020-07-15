@@ -25,7 +25,7 @@ var StructureUsageValidator = /** @class */ (function () {
                 var maxQuantityToUse = (quantityToUse + (quantityToUse * 0.5)) - totalWorkedUp;
                 maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
                 //success
-                if ((currentValue + totalWorkedUp) <= quantityToUse) {
+                if (currentValue == 0 || (currentValue + totalWorkedUp) <= quantityToUse) {
                     $(e.element).closest('tr')
                         .css('background', '')
                         .css('color', '');

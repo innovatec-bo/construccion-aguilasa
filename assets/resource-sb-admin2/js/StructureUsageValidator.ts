@@ -55,7 +55,7 @@ class StructureUsageValidator
 				maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;
 
 				//success
-				if( (currentValue + totalWorkedUp) <= quantityToUse)
+				if(currentValue == 0 || (currentValue + totalWorkedUp) <= quantityToUse)
 				{
 					$(e.element).closest('tr')
 						.css('background','')
