@@ -10,14 +10,22 @@ declare let toastr : any;
 declare let moment : any;
 declare let PointToPointHandler : any;
 declare let ManpowerHandler : any;
+declare let StructureUsageValidator : any;
+
 class LaborCostLogHandler
 {
     private _laborCostLogId;
     private _projectId: number;
+    private _structureUsageValidator : any;
     constructor(private projectID: number)
     {
         this._projectId = projectID;
     }
+
+    public setStructureUsageValidator(structureUsageValidator)
+	{
+		this._structureUsageValidator = structureUsageValidator
+	}
 
     private _edit(formData?)
     {
@@ -169,16 +177,17 @@ class LaborCostLogHandler
             customClass:"modal-manpower-form",
             width:'100%',
             preConfirm: () => {
-                let $form = $("form[name=point-to-point-progress-form]");
+                let $form = $("form[name=edit-labor-cost-log-form]");
                 if(!$form.parsley().isValid())
                 {
                     $form.parsley().validate();
+                    return false;
                 }
             },
         }).then((result) => {
             if (result.value)
             {
-                let $form = $("form[name=point-to-point-progress-form]");
+                let $form = $("form[name=edit-labor-cost-log-form]");
                 let laborCostLogId = parseInt($form.find("input[name=labor-cost-log-id]").val());
                 if(isNaN(laborCostLogId))
                 {
@@ -200,6 +209,7 @@ class LaborCostLogHandler
             locale:'es',
 			disabledDates: datesToBlock
         });
+		this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         $(".input-masked").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
         $(".input-masked-price").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
@@ -239,6 +249,7 @@ class LaborCostLogHandler
     public loadEventHandler()
     {
         let _this = this;
+		this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".delete-log", function(e){
             e.preventDefault();
             let id = $(this).data("log-id");

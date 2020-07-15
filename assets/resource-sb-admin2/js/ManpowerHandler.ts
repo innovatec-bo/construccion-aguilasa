@@ -8,6 +8,7 @@ declare let window: any;
 declare let Swal: any;
 declare let bootbox: any;
 declare let toastr: any;
+declare let StructureUsageValidator: any;
 
 class ManpowerHandler
 {
@@ -18,12 +19,19 @@ class ManpowerHandler
     private stopTreeLoop: boolean;
     private _breadCrumb : any;
     private _laborCostMasterDetail: any;
+	private _structureUsageValidator : any;
 
     public constructor(private projectID: number)
     {
+    	this._structureUsageValidator = null;
         this._projectId = projectID;
         this.viewData = {};
     }
+
+	public setStructureUsageValidator(structureUsageValidator)
+	{
+		this._structureUsageValidator = structureUsageValidator
+	}
 
     private add(formData?)
     {
@@ -56,7 +64,8 @@ class ManpowerHandler
                 }
                 else if(response.success === 1 && formData)
                 {
-                    Swal({ title:'', html:response.message, type:"success"});
+					Swal.close();
+					toastr.success(response.message, '', {'progressBar':true});
                     _this.loadManpower();
                     _this.loadManpowerLog();
                 }
@@ -170,6 +179,8 @@ class ManpowerHandler
 			useCurrent: false,
 			disabledDates: datesToBlock
         });
+		if(this._structureUsageValidator !== null)
+			this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         this._startSelect2();
         $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
@@ -252,6 +263,11 @@ class ManpowerHandler
         let selectorSelect2 = "[data-row-index='"+index+"'] select";
         this._startSelect2(selectorSelect2);
         $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
+		$(".input-masked-price").inputmask('decimal',{min:0, max:999999, groupSeparator: ',', autoGroup: true});
+		let $form = $("form[name=manpower-progress-form]");
+		$form.parsley()._refreshFields();
+		// $form.parsley('addItem',$(html).find('input.quantity-to-use'));
+		// this._structureUsageValidator.loadFieldEvents();
     }
 
     private _removeRow()
@@ -495,7 +511,8 @@ class ManpowerHandler
     loadEventHandler()
     {
         let _this = this;
-
+        if(this._structureUsageValidator !== null)
+			this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".add-manpower-progress", function(e){
             e.preventDefault();
             _this.add();
@@ -508,7 +525,10 @@ class ManpowerHandler
 
         $(document).on('select2:select','.select2-structure-code', function(e){
             $(this).parsley().validate();
-            $(".table-error-message").addClass("hide");
+			let $tr = $(this).closest('tr');
+
+			$(".table-error-message").addClass("hide");
+
             let $optionElement = $(e.params.data.element);
             let unitOfMeasurement = $optionElement.data('unit-of-measurement');
             let activity = $optionElement.data('activity');
@@ -516,6 +536,9 @@ class ManpowerHandler
             let description = $optionElement.data('description');
             let unitPrice = $optionElement.data('unit-price');
             let quantity = $optionElement.data('quantity');
+			$tr.attr('data-quantity-to-use', quantity);
+			$tr.attr('data-total-worked-up', $optionElement.data('workedUp'));
+			$tr.attr('data-unit-of-measurement', unitOfMeasurement);
             $optionElement.closest('tr').find('.activity').text(activity);
             $optionElement.closest('tr').find('.execution').text(execution);
             $optionElement.closest('tr').find('.description').text(description);
@@ -545,7 +568,10 @@ class ManpowerHandler
         $(document).on("select2:select",'select.select2-labor-cost',function(e){
                console.log(e);
                let data = e.params.data;
+
                let $form = $("form[name=add-existing-structure]");
+
+
 
                $form.find("select[name=activity]").val(data.structure_activity);
                $form.find("select[name=execution]").val(data.structure_execution);

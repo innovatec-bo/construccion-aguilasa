@@ -3,6 +3,9 @@ var LaborCostLogHandler = /** @class */ (function () {
         this.projectID = projectID;
         this._projectId = projectID;
     }
+    LaborCostLogHandler.prototype.setStructureUsageValidator = function (structureUsageValidator) {
+        this._structureUsageValidator = structureUsageValidator;
+    };
     LaborCostLogHandler.prototype._edit = function (formData) {
         var _this = this;
         var method = !formData ? "GET" : "POST";
@@ -134,14 +137,15 @@ var LaborCostLogHandler = /** @class */ (function () {
             customClass: "modal-manpower-form",
             width: '100%',
             preConfirm: function () {
-                var $form = $("form[name=point-to-point-progress-form]");
+                var $form = $("form[name=edit-labor-cost-log-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
+                    return false;
                 }
             },
         }).then(function (result) {
             if (result.value) {
-                var $form = $("form[name=point-to-point-progress-form]");
+                var $form = $("form[name=edit-labor-cost-log-form]");
                 var laborCostLogId = parseInt($form.find("input[name=labor-cost-log-id]").val());
                 if (isNaN(laborCostLogId)) {
                     // _this.add($form.serialize());
@@ -160,6 +164,7 @@ var LaborCostLogHandler = /** @class */ (function () {
             locale: 'es',
             disabledDates: datesToBlock
         });
+        this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         $(".input-masked").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
         $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
@@ -191,6 +196,7 @@ var LaborCostLogHandler = /** @class */ (function () {
     };
     LaborCostLogHandler.prototype.loadEventHandler = function () {
         var _this = this;
+        this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".delete-log", function (e) {
             e.preventDefault();
             var id = $(this).data("log-id");

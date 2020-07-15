@@ -4,6 +4,9 @@ var PointToPointHandler = /** @class */ (function () {
         this._projectId = projectID;
         this.viewData = {};
     }
+    PointToPointHandler.prototype.setStructureUsageValidator = function (structureUsageValidator) {
+        this._structureUsageValidator = structureUsageValidator;
+    };
     PointToPointHandler.prototype.add = function (formData) {
         var _this = this;
         var method = !formData ? "GET" : "POST";
@@ -134,6 +137,7 @@ var PointToPointHandler = /** @class */ (function () {
             useCurrent: false,
             disabledDates: datesToBlock
         });
+        this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
@@ -315,6 +319,7 @@ var PointToPointHandler = /** @class */ (function () {
     };
     PointToPointHandler.prototype.loadEventHandler = function () {
         var _this = this;
+        this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".add-point-to-point-progress", function (e) {
             e.preventDefault();
             _this._pointId = parseInt($(this).data("point-id"));

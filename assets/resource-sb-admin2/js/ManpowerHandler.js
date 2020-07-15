@@ -1,9 +1,13 @@
 var ManpowerHandler = /** @class */ (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;
+        this._structureUsageValidator = null;
         this._projectId = projectID;
         this.viewData = {};
     }
+    ManpowerHandler.prototype.setStructureUsageValidator = function (structureUsageValidator) {
+        this._structureUsageValidator = structureUsageValidator;
+    };
     ManpowerHandler.prototype.add = function (formData) {
         var _this = this;
         var method = !formData ? "GET" : "POST";
@@ -30,7 +34,8 @@ var ManpowerHandler = /** @class */ (function () {
                     _this.launchForm(response, "Registrar avance");
                 }
                 else if (response.success === 1 && formData) {
-                    Swal({ title: '', html: response.message, type: "success" });
+                    Swal.close();
+                    toastr.success(response.message, '', { 'progressBar': true });
                     _this.loadManpower();
                     _this.loadManpowerLog();
                 }
@@ -130,6 +135,8 @@ var ManpowerHandler = /** @class */ (function () {
             useCurrent: false,
             disabledDates: datesToBlock
         });
+        if (this._structureUsageValidator !== null)
+            this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
@@ -203,6 +210,11 @@ var ManpowerHandler = /** @class */ (function () {
         var selectorSelect2 = "[data-row-index='" + index + "'] select";
         this._startSelect2(selectorSelect2);
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
+        $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
+        var $form = $("form[name=manpower-progress-form]");
+        $form.parsley()._refreshFields();
+        // $form.parsley('addItem',$(html).find('input.quantity-to-use'));
+        // this._structureUsageValidator.loadFieldEvents();
     };
     ManpowerHandler.prototype._removeRow = function () {
     };
@@ -416,6 +428,8 @@ var ManpowerHandler = /** @class */ (function () {
     };
     ManpowerHandler.prototype.loadEventHandler = function () {
         var _this = this;
+        if (this._structureUsageValidator !== null)
+            this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".add-manpower-progress", function (e) {
             e.preventDefault();
             _this.add();
@@ -426,6 +440,7 @@ var ManpowerHandler = /** @class */ (function () {
         });
         $(document).on('select2:select', '.select2-structure-code', function (e) {
             $(this).parsley().validate();
+            var $tr = $(this).closest('tr');
             $(".table-error-message").addClass("hide");
             var $optionElement = $(e.params.data.element);
             var unitOfMeasurement = $optionElement.data('unit-of-measurement');
@@ -434,6 +449,9 @@ var ManpowerHandler = /** @class */ (function () {
             var description = $optionElement.data('description');
             var unitPrice = $optionElement.data('unit-price');
             var quantity = $optionElement.data('quantity');
+            $tr.attr('data-quantity-to-use', quantity);
+            $tr.attr('data-total-worked-up', $optionElement.data('workedUp'));
+            $tr.attr('data-unit-of-measurement', unitOfMeasurement);
             $optionElement.closest('tr').find('.activity').text(activity);
             $optionElement.closest('tr').find('.execution').text(execution);
             $optionElement.closest('tr').find('.description').text(description);

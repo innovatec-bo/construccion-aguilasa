@@ -216,3 +216,16 @@
     Handlebars.registerHelper('base_url',function(value, context){
         return base_url;
     });
+
+	Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+		lvalue = parseFloat(lvalue);
+		rvalue = parseFloat(rvalue);
+
+		return {
+			"+": lvalue + rvalue,
+			"-": lvalue - rvalue,
+			"*": lvalue * rvalue,
+			"/": lvalue / rvalue,
+			"%": lvalue % rvalue
+		}[operator];
+	});

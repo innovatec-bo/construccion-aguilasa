@@ -9,6 +9,7 @@ declare let Swal: any;
 declare let bootbox: any;
 declare let toastr : any;
 declare let moment : any;
+declare let StructureUsageValidator : any;
 
 class PointToPointHandler
 {
@@ -20,12 +21,18 @@ class PointToPointHandler
     private stopTreeLoop: boolean;
     private _breadCrumb : any;
     private _laborCostMasterDetail: any;
+    private _structureUsageValidator : any;
 
     public constructor(private projectID: number)
     {
         this._projectId = projectID;
         this.viewData = {};
     }
+
+    public setStructureUsageValidator(structureUsageValidator)
+	{
+		this._structureUsageValidator = structureUsageValidator
+	}
 
     private add(formData?)
     {
@@ -175,6 +182,7 @@ class PointToPointHandler
 			useCurrent: false,
 			disabledDates: datesToBlock
         });
+		this._structureUsageValidator.loadFieldEvents();
         $(".select2-builders").select2({dropdownCssClass: "dd-select2-builders"});
         this._startSelect2();
         $(".input-masked").inputmask('decimal',{min:1, max:999999, groupSeparator: ',', autoGroup: true});
@@ -379,6 +387,8 @@ class PointToPointHandler
     loadEventHandler()
     {
         let _this = this;
+
+        this._structureUsageValidator.loadEventHandlers();
 
         $(document).on("click", ".add-point-to-point-progress", function(e){
             e.preventDefault();

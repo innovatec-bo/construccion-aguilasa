@@ -162,7 +162,9 @@ $projectSystems = array(
                 <div class="form-group">
                     <div class="table-responsive">
                         <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
-                        <table class="table table-striped table-bordered table-hover">
+						<span class="label label-warning">..</span> Sobre uso de materiales: Se permite guardar el avance.<br>
+						<span class="label label-danger">..</span> Uso excesivo de materiales: No se permite guardar el avance.<br><br>
+                        <table class="table table-striped table-bordered table-hover structure-list-entry-progress">
                             <thead class="thead-inverse">
                                 <tr>
                                     <th class="hide">#</th>
@@ -205,7 +207,7 @@ $projectSystems = array(
                 {{#each laborCostList}}
                     <option value="{{labor_cost_id}}" data-activity="{{activity}}" data-execution="{{execution}}" data-description="{{description}}" data-quantity="{{quantity}}" 
                     data-unit-price="{{unit_price}}" 
-                    data-unit-of-measurement="{{unit_of_measurement}}">{{structure_code}}</option>
+                    data-unit-of-measurement="{{unit_of_measurement}}" data-worked-up="{{worked_up}}">{{structure_code}}</option>
                 {{/each}}
             </select>
         </td>
@@ -215,7 +217,7 @@ $projectSystems = array(
         <td class="text-center"><span class="unit-of-measurement"></span></td>
         <td class="text-right"><span class="quantity"></span></td>
         <td class="text-center" style="padding:1px">
-            <input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
+            <input class="input-masked quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
         </td>
         <td class="text-center" style="padding:1px">
             <input class="input-masked-price unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
@@ -516,8 +518,11 @@ $projectSystems = array(
                 </div>
                 <div class="form-group">
                     <div class="table-responsive">
+
                         <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
-                        <table class="table table-striped table-bordered table-hover table-minimum-padding">
+						<span class="label label-warning">..</span> Sobre uso de materiales: Se permite guardar el avance.<br>
+						<span class="label label-danger">..</span> Uso excesivo de materiales: No se permite guardar el avance.<br><br>
+                        <table class="table table-striped table-bordered table-hover table-minimum-padding structure-list-entry-progress">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -534,7 +539,7 @@ $projectSystems = array(
                             </thead>
                             <tbody id="structure-item-list-content">
                                 {{#each point.structures}}
-                                <tr>
+                                <tr data-quantity-to-use="{{quantity_to_use}}" data-total-worked-up="{{total_worked_up}}" data-unit-of-measurement="{{unit_of_measurement}}">
                                     <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
                                     <td class="text-center">{{index}}</td>
                                     <td class="text-center">{{labor_activity}}</td>
@@ -544,7 +549,7 @@ $projectSystems = array(
                                     <td class="text-center">{{unit_of_measurement}}</td>
                                     <td>{{description}}</td>
                                     <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
-                                    <td class="text-center"><input class="input-masked" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
+                                    <td class="text-center"><input class="input-masked quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
                                     <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
                                 </tr>
                                 {{/each}}
@@ -557,7 +562,7 @@ $projectSystems = array(
     </form>
 </script>
 <script id="ht-modal-form-edit-point-to-point-progress" type="text/x-handlebars-template">
-    <form name="point-to-point-progress-form" data-parsley-validate>
+    <form name="edit-labor-cost-log-form" data-parsley-validate>
         <input type="hidden" name="labor-cost-log-id" value="{{data.logMasterDetail.logId}}">
         <div class="row">
             <div class="col-md-4">
@@ -603,7 +608,7 @@ $projectSystems = array(
                 <div class="form-group">
                     <div class="table-responsive">
                         <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
-                        <table class="table table-striped table-bordered table-hover table-minimum-padding">
+                        <table class="table table-striped table-bordered table-hover table-minimum-padding structure-list-entry-progress">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -618,7 +623,7 @@ $projectSystems = array(
                             </thead>
                             <tbody id="structure-item-list-content">
                                 {{#each data.logMasterDetail.itemList}}
-                                <tr>
+                                <tr data-quantity-to-use="{{quantity}}" data-total-worked-up="{{math total_worked_up "-" worked_up}}" data-unit-of-measurement="{{unit_of_measurement}}">
                                     <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
                                     <td class="text-center">{{index}}</td>
                                     <td class="text-center">{{activity}}</td>
@@ -626,7 +631,7 @@ $projectSystems = array(
                                     <td class="text-center">{{execution}}</td>
                                     <td class="text-center">{{unit_of_measurement}}</td>
                                     <td>{{description}}</td>
-                                    <td class="text-center"><input class="input-masked" value="{{worked_up}}" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
+                                    <td class="text-center"><input class="input-masked quantity-to-use" value="{{worked_up}}" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
                                     <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{worked_up_price}}"></td>
                                 </tr>
                                 {{/each}}

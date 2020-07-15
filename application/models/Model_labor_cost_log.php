@@ -345,17 +345,18 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             quantity_lac quantity,
             structure_code_bus structure_code,
             description_bus description,
-            worked_up_wus worked_up,
-            price_wus worked_up_price,
+            wus.worked_up_wus worked_up,
+            wus.price_wus worked_up_price,
             unit_of_measurement_bus unit_of_measurement,
             id_bpo point_id,
-            label_bpo point_label
+            label_bpo point_label,
+            IFNULL(bui_worked_up_structures.worked_up_wus,0) total_worked_up
         FROM
             bui_labor_cost_log
         LEFT JOIN bui_builders_in_manpower on id_lal = labor_cost_log_id_bim
         LEFT JOIN sec_users builders on builders.id_usr = user_id_bim
         LEFT JOIN sec_users fiscals on fiscals.id_usr = user_id_lal
-        LEFT JOIN bui_worked_up_structures on id_lal = labor_cost_log_id_wus
+        LEFT JOIN bui_worked_up_structures wus on id_lal = wus.labor_cost_log_id_wus
         LEFT JOIN (
             select 
                 id_lac,
@@ -369,10 +370,21 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             from bui_labor_cost 
             LEFT JOIN bui_building_structures on bui_labor_cost.building_structure_id_lac = id_bus
             where deleted_lac !=1 and deleted_bus != 1
-        ) bui_labor_cost on id_lac = labor_cost_id_wus
+        ) bui_labor_cost on id_lac = wus.labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
         LEFT JOIN bui_building_points on id_bpo = point_id_lal
-        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 and id_lal = ".$ci->db->escape($logId)."
+        LEFT JOIN (
+			SELECT
+				labor_cost_id_wus,
+				SUM(worked_up_wus) worked_up_wus
+			FROM
+				bui_labor_cost_log
+				LEFT JOIN bui_worked_up_structures on labor_cost_log_id_wus = id_lal
+			where 
+				deleted_lal != 1
+				and deleted_wus != 1
+				GROUP BY labor_cost_id_wus) bui_worked_up_structures on id_lac = bui_worked_up_structures.labor_cost_id_wus
+        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and wus.deleted_wus != 1 and id_lal = ".$ci->db->escape($logId)."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
         ";

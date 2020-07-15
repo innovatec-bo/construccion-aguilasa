@@ -546,6 +546,7 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addProjectJs('StructureUsageValidator', TRUE);
         $this->complementHandler->addProjectCss('project.manpower', TRUE);
         $this->complementHandler->addProjectJs('project.manpower', TRUE);
         $this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
@@ -571,6 +572,7 @@ class Project extends PrivateController
 		$this->complementHandler->addViewComplement("google.maps.api");
 //		$this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
 		$this->complementHandler->addProjectJs('PointsLocationHandler', TRUE);
+		$this->complementHandler->addProjectJs('StructureUsageValidator', TRUE);
         $this->complementHandler->addProjectCss('project.building-points', TRUE);
         $this->complementHandler->addProjectJs('project.building-points', TRUE);
         $this->complementHandler->addProjectCss('BuildingPointHandler', TRUE);
