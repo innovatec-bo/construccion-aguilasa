@@ -350,7 +350,9 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             unit_of_measurement_bus unit_of_measurement,
             id_bpo point_id,
             label_bpo point_label,
-            IFNULL(bui_worked_up_structures.worked_up_wus,0) total_worked_up
+            IFNULL(bui_worked_up_structures.worked_up_wus,0) total_worked_up,
+            IFNULL(bui_worked_up_structures_by_point.worked_up_wus,0) total_worked_up_by_point,
+            quantity_to_use_sbp quantity_to_use_in_point 
         FROM
             bui_labor_cost_log
         LEFT JOIN bui_builders_in_manpower on id_lal = labor_cost_log_id_bim
@@ -373,6 +375,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         ) bui_labor_cost on id_lac = wus.labor_cost_id_wus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
         LEFT JOIN bui_building_points on id_bpo = point_id_lal
+        LEFT JOIN bui_structure_by_points on point_id_sbp = point_id_lal 
         LEFT JOIN (
 			SELECT
 				labor_cost_id_wus,
@@ -383,7 +386,20 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 			where 
 				deleted_lal != 1
 				and deleted_wus != 1
-				GROUP BY labor_cost_id_wus) bui_worked_up_structures on id_lac = bui_worked_up_structures.labor_cost_id_wus
+				GROUP BY labor_cost_id_wus
+		) bui_worked_up_structures on id_lac = bui_worked_up_structures.labor_cost_id_wus
+		LEFT JOIN (
+			SELECT
+				labor_cost_id_wus,
+				SUM(worked_up_wus) worked_up_wus
+			FROM
+				bui_labor_cost_log
+				LEFT JOIN bui_worked_up_structures on labor_cost_log_id_wus = id_lal
+			where 
+				deleted_lal != 1
+				and deleted_wus != 1
+				GROUP BY labor_cost_id_wus, point_id_lal
+		) bui_worked_up_structures_by_point on id_lac = bui_worked_up_structures_by_point.labor_cost_id_wus
         where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and wus.deleted_wus != 1 and id_lal = ".$ci->db->escape($logId)."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc

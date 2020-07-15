@@ -527,11 +527,12 @@ $projectSystems = array(
                                 <tr>
                                     <th>#</th>
                                     <th>ACTIV.</th>
-                                    <th>CANTIDAD<br>A USAR</th>
+
                                     <th>ESTRUCTURA</th>
                                     <th>EJEC.</th>
                                     <th>UNIDAD</th>
                                     <th>DESCRIPCION</th>
+									<th>CANTIDAD<br>A USAR</th>
                                     <th>CANTIDAD<br>UTILIZADA</th>
                                     <th>NUEVO<br>REGISTRO</th>
                                     <th>PRECIO<br>UNITARIO</th>
@@ -543,11 +544,11 @@ $projectSystems = array(
                                     <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
                                     <td class="text-center">{{index}}</td>
                                     <td class="text-center">{{labor_activity}}</td>
-                                    <td class="text-right">{{quantity_to_use}}</td>
                                     <td>{{structure_code}}</td>
                                     <td class="text-center">{{execution}}</td>
                                     <td class="text-center">{{unit_of_measurement}}</td>
                                     <td>{{description}}</td>
+									<td class="text-right">{{quantity_to_use}}</td>
                                     <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
                                     <td class="text-center"><input class="input-masked quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
                                     <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
@@ -617,13 +618,15 @@ $projectSystems = array(
                                     <th>EJEC.</th>
                                     <th>UNIDAD</th>
                                     <th>DESCRIPCION</th>
+                                    <th>CANT.<BR>ASIGNADA</th>
+                                    <th>CANT.<BR>UTILIZADA</th>
                                     <th>REGISTRO<br>DEL LOG</th>
                                     <th>PRECIO<br>UNITARIO</th>
                                 </tr>
                             </thead>
                             <tbody id="structure-item-list-content">
                                 {{#each data.logMasterDetail.itemList}}
-                                <tr data-quantity-to-use="{{quantity}}" data-total-worked-up="{{math total_worked_up "-" worked_up}}" data-unit-of-measurement="{{unit_of_measurement}}">
+                                <tr data-quantity-to-use="{{quantity_to_use_in_point}}" data-total-worked-up="{{math total_worked_up_by_point "-" worked_up}}" data-unit-of-measurement="{{unit_of_measurement}}">
                                     <input type="hidden" value="{{labor_cost_id}}" name="worked-up[{{index}}][labor-cost-id]">
                                     <td class="text-center">{{index}}</td>
                                     <td class="text-center">{{activity}}</td>
@@ -631,6 +634,8 @@ $projectSystems = array(
                                     <td class="text-center">{{execution}}</td>
                                     <td class="text-center">{{unit_of_measurement}}</td>
                                     <td>{{description}}</td>
+                                    <td class="text-center">{{quantity_to_use_in_point}}</td>
+                                    <td class="text-center">{{total_worked_up_by_point}}</td>
                                     <td class="text-center"><input class="input-masked quantity-to-use" value="{{worked_up}}" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
                                     <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{worked_up_price}}"></td>
                                 </tr>

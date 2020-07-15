@@ -21,7 +21,6 @@ var StructureUsageValidator = /** @class */ (function () {
                 var $tr = $(e.element).closest('tr');
                 var quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
                 var totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
-                var unitOfMeasurement = $tr.attr('data-unit-of-measurement');
                 var maxQuantityToUse = (quantityToUse + (quantityToUse * 0.5)) - totalWorkedUp;
                 maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
                 //success
