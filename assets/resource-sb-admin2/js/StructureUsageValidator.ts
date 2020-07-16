@@ -48,8 +48,12 @@ class StructureUsageValidator
 				currentValue = currentValue.replace(',','');
 				currentValue = parseFloat(currentValue;
 				let $tr = $(e.element).closest('tr');
-				let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-				let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+				let quantityToUse = $tr.attr('data-quantity-to-use');
+				quantityToUse = quantityToUse.replace(',','');
+				quantityToUse = parseFloat(quantityToUse);
+				let totalWorkedUp = $tr.attr('data-total-worked-up');
+				totalWorkedUp = totalWorkedUp.replace(',','');
+				totalWorkedUp = parseFloat(totalWorkedUp);
 				let maxQuantityToUse = (quantityToUse + (quantityToUse*0.5)) - totalWorkedUp;
 				maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;
 
@@ -103,8 +107,14 @@ class StructureUsageValidator
 
         $(document).on("keyup", '.structure-list-entry-progress input.quantity-to-use', function(){
         	let $tr = $(this).closest('tr');
-        	let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-        	let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+        	// let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
+        	// let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+			let quantityToUse = $tr.attr('data-quantity-to-use');
+			quantityToUse = quantityToUse.replace(',','');
+			quantityToUse = parseFloat(quantityToUse);
+			let totalWorkedUp = $tr.attr('data-total-worked-up');
+			totalWorkedUp = totalWorkedUp.replace(',','');
+			totalWorkedUp = parseFloat(totalWorkedUp);
         	let unitOfMeasurement = $tr.attr('data-unit-of-measurement');
         	let maxQuantityToUse = (quantityToUse + (quantityToUse*0.5)) - totalWorkedUp;
         	maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;

@@ -19,8 +19,12 @@ var StructureUsageValidator = /** @class */ (function () {
                 currentValue = currentValue.replace(',', '');
                 currentValue = parseFloat(currentValue);
                 var $tr = $(e.element).closest('tr');
-                var quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-                var totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+                var quantityToUse = $tr.attr('data-quantity-to-use');
+                quantityToUse = quantityToUse.replace(',', '');
+                quantityToUse = parseFloat(quantityToUse);
+                var totalWorkedUp = $tr.attr('data-total-worked-up');
+                totalWorkedUp = totalWorkedUp.replace(',', '');
+                totalWorkedUp = parseFloat(totalWorkedUp);
                 var maxQuantityToUse = (quantityToUse + (quantityToUse * 0.5)) - totalWorkedUp;
                 maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
                 //success
@@ -66,8 +70,14 @@ var StructureUsageValidator = /** @class */ (function () {
         });
         $(document).on("keyup", '.structure-list-entry-progress input.quantity-to-use', function () {
             var $tr = $(this).closest('tr');
-            var quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-            var totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+            // let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
+            // let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+            var quantityToUse = $tr.attr('data-quantity-to-use');
+            quantityToUse = quantityToUse.replace(',', '');
+            quantityToUse = parseFloat(quantityToUse);
+            var totalWorkedUp = $tr.attr('data-total-worked-up');
+            totalWorkedUp = totalWorkedUp.replace(',', '');
+            totalWorkedUp = parseFloat(totalWorkedUp);
             var unitOfMeasurement = $tr.attr('data-unit-of-measurement');
             var maxQuantityToUse = (quantityToUse + (quantityToUse * 0.5)) - totalWorkedUp;
             maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
