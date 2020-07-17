@@ -101,14 +101,14 @@ class ExcelDailyProductivityReport
 		$optimumUMBO = $this->_builderUMBO($data);
         $data = $this->_prepareDataToPrint($data);
         array_unshift($data, $headers);
-        // echo"<pre>";var_dump($data);exit;
+//        echo"<pre>";var_dump($data);exit;
 		foreach ($data as $rows)
 		{
             $j = 0;
             foreach ($rows as $key => $value) 
             {
-                $spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, $value);
-                
+				$spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, $value);
+
                 if($i>2 && $j>=2)
                 {
                     $spreadsheet->getActiveSheet()->getStyle($arrayAlphabet[$j].$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -153,14 +153,18 @@ class ExcelDailyProductivityReport
 						$arrayAlphabet[$j].($i+5), '='.$arrayAlphabet[$j].($i+3).'/'.$arrayAlphabet[$j].($i+4));
 					$spreadsheet->getActiveSheet()->getStyle(
 						$arrayAlphabet[$j].($i+5))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_PERCENTAGE_00);
-
-
-                    
                 }
                 $j++;
             }
+
 			$i++;
 			$counter++;
+		}
+		if($i > 2)
+		{
+//			echo"<pre>";var_dump($arrayAlphabet[2].($i), '=SUM('.$arrayAlphabet[3].$i.':'.$arrayAlphabet[count($rows)-1].$i.')');exit;
+			$spreadsheet->setActiveSheetIndex(0)->setCellValue(
+				$arrayAlphabet[2].($i), '=SUM('.$arrayAlphabet[3].$i.':'.$arrayAlphabet[count($rows)-1].$i.')');
 		}
 
         //footer - begin
