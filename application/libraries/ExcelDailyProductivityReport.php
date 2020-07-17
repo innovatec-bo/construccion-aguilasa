@@ -107,7 +107,17 @@ class ExcelDailyProductivityReport
             $j = 0;
             foreach ($rows as $key => $value) 
             {
-				$spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, $value);
+
+				if($i>2 && $j == 2)
+				{
+//					echo"<pre>";var_dump($arrayAlphabet[$j].$i, '=SUM('.$arrayAlphabet[$j+1].'3:'.$arrayAlphabet[count($rows)-1].$i.')');exit;
+					$spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, '=SUM('.$arrayAlphabet[$j+1].$i.':'.$arrayAlphabet[count($rows)-1].$i.')');
+
+				}
+				else
+				{
+					$spreadsheet->setActiveSheetIndex(0)->setCellValue($arrayAlphabet[$j].$i, $value);
+				}
 
                 if($i>2 && $j>=2)
                 {
@@ -156,7 +166,12 @@ class ExcelDailyProductivityReport
                 }
                 $j++;
             }
-
+			if($i > 2)
+			{
+//			echo"<pre>";var_dump($arrayAlphabet[2].($i), '=SUM('.$arrayAlphabet[3].$i.':'.$arrayAlphabet[count($rows)-1].$i.')');exit;
+				$spreadsheet->setActiveSheetIndex(0)->setCellValue(
+					$arrayAlphabet[2].($i), '=SUM('.$arrayAlphabet[3].$i.':'.$arrayAlphabet[count($rows)-1].$i.')');
+			}
 			$i++;
 			$counter++;
 		}
