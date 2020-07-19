@@ -8,12 +8,12 @@
 
 class Model_labor_cost extends Model_labor_cost_base
 {
-    public function __construct($laborDetailId = NULL, $buildingStructureId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0)
-    {
-        parent::__construct($laborDetailId, $buildingStructureId, $activity, $execution, $quantity, $unitPrice);
-    }
+    public function __construct($laborDetailId = NULL, $buildingStructureId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0, $isAdditional = 0)
+	{
+		parent::__construct($laborDetailId, $buildingStructureId, $activity, $execution, $quantity, $unitPrice, $isAdditional);
+	}
 
-    public static function getMasterDetailByProjectId($projectId)
+	public static function getMasterDetailByProjectId($projectId)
     {
         $ci = &get_instance();
         $ci->load->database();

@@ -62,8 +62,8 @@ class Model_building_point extends Model_building_point_base
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad and deleted_lad != 1           
         LEFT JOIN bui_labor_cost_log on point_id_lal = point_id_sbp
         LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus and deleted_wus !=1                        
-        WHERE project_id_lad = ".$ci->db->escape($projectId)." and deleted_bpo != 1 and deleted_sbp != 1
-        GROUP BY id_sbp 
+        WHERE project_id_bpo = ".$ci->db->escape($projectId)." and deleted_bpo != 1
+        GROUP BY id_bpo, id_sbp 
         ";
 
         $query = $ci->db->query($sql);
@@ -88,19 +88,25 @@ class Model_building_point extends Model_building_point_base
                     "point_longitude" => $row["point_longitude"]
                 );
             }
-
-            $arrayPoints[$pointId]["structures"][] = array(
-                                                        "index" => $i,
-                                                        "labor_activity" => $row["labor_activity"],
-                                                        "quantity_to_use" => $row["quantity_to_use"],
-                                                        "unit_price" => $row["unit_price"],
-                                                        "structure_code" => $row["structure_code"],
-                                                        "execution" => $row["execution"],
-                                                        "unit_of_measurement" => $row["unit_of_measurement"],
-                                                        "description" => $row["description"],
-                                                        "labor_cost_id" => $row["labor_cost_id"],
-                                                        "total_worked_up" => $row["total_worked_up"]
-                                                    );
+            if(!isset($arrayPoints[$pointId]["structures"]))
+			{
+				$arrayPoints[$pointId]["structures"] = array();
+			}
+			if(!is_null($row['id_sbp']))
+			{
+				$arrayPoints[$pointId]["structures"][] = array(
+					"index" => $i,
+					"labor_activity" => $row["labor_activity"],
+					"quantity_to_use" => $row["quantity_to_use"],
+					"unit_price" => $row["unit_price"],
+					"structure_code" => $row["structure_code"],
+					"execution" => $row["execution"],
+					"unit_of_measurement" => $row["unit_of_measurement"],
+					"description" => $row["description"],
+					"labor_cost_id" => $row["labor_cost_id"],
+					"total_worked_up" => $row["total_worked_up"]
+				);
+			}
             $i++;
         }
 

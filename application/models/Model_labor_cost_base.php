@@ -18,8 +18,9 @@ class Model_labor_cost_base extends MY_Model
     protected $_execution;
     protected $_quantity;
     protected $_unitPrice;
+    protected $_isAdditional;
 
-    public function __construct($laborDetailId = NULL, $buildingStructureId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0)
+    public function __construct($laborDetailId = NULL, $buildingStructureId = NULL, $activity = "", $execution = "", $quantity = "", $unitPrice = 0, $isAdditional = 0)
     {
         parent::__construct();
         $this->_laborDetailId = $laborDetailId;
@@ -28,6 +29,7 @@ class Model_labor_cost_base extends MY_Model
         $this->_execution = $execution;
         $this->_quantity = $quantity;
         $this->_unitPrice = $unitPrice;
+        $this->_isAdditional = $isAdditional;
     }
 
     /**
@@ -44,6 +46,7 @@ class Model_labor_cost_base extends MY_Model
             "execution_lac" => $this->_execution,
             "quantity_lac" => $this->_quantity,
             "unit_price_lac" => $this->_unitPrice,
+            "is_additional_lac" => $this->_isAdditional,
             "deleted_lac" => $this->_deleted,
             "createdon_lac" => $this->_createdOn,
             "createdby_lac" => $this->_createdBy,
@@ -73,7 +76,8 @@ class Model_labor_cost_base extends MY_Model
                 $object->activity_lac,
                 $object->execution_lac,
                 $object->quantity_lac,
-                $object->unit_price_lac
+                $object->unit_price_lac,
+				$object->is_additional_lac
             );
             $instance->_id = $object->id_lac;
 
