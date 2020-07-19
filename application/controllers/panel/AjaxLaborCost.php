@@ -87,7 +87,7 @@ class AjaxLaborCost extends PrivateController
 				if(array_search($structureId,array_column($laborCostList, 'structure_id')) === FALSE)
 				{
 					$structure = Model_building_structure::getById($structureId);
-					$laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice);
+					$laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice, 1);
 					$laborCost->save();
 
 					$response["success"] = 1;
