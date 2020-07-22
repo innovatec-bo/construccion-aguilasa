@@ -30,6 +30,7 @@ class Model_building_point extends Model_building_point_base
                     "point_id_sbp" => $this->_id,
                     "quantity_to_use_sbp" => $structure["quantity"],
                     "labor_cost_id_sbp" => $structure["labor-cost-id"],
+					'is_additional_sbp' => 1,
 					'deleted_sbp' => 0,
 					'createdon_sbp' => date('Y-m-d H:i:s'),
 					'createdby_sbp' => $currentUserId

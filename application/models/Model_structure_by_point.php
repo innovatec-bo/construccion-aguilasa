@@ -8,9 +8,9 @@
 
 class Model_structure_by_point extends Model_structure_by_point_base
 {
-    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
+    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL, $isAdditional = 0)
 	{
-		parent::__construct($projectId, $label, $pointId, $quantityToUse, $laborCostId);
+		parent::__construct($projectId, $label, $pointId, $quantityToUse, $laborCostId, $isAdditional);
 	}
 
 	public static function getByProjectId($projectId)

@@ -17,8 +17,9 @@ class Model_structure_by_point_base extends MY_Model
     protected $_pointId;
     protected $_quantityToUse;
     protected $_laborCostId;
+	protected $_isAdditional;
 
-    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
+    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL, $isAdditional = 0)
     {
         parent::__construct();
         $this->_projectId = $projectId;
@@ -26,6 +27,7 @@ class Model_structure_by_point_base extends MY_Model
         $this->_pointId = $pointId;
         $this->_quantityToUse = $quantityToUse;
         $this->_laborCostId = $laborCostId;
+        $this->_isAdditional = $isAdditional;
     }
 
     /**
@@ -41,6 +43,7 @@ class Model_structure_by_point_base extends MY_Model
             "point_id_sbp" => $this->_pointId,
             "quantity_to_use_sbp" => $this->_quantityToUse,
             "labor_cost_id_sbp" => $this->_laborCostId,
+            "is_additional_sbp" => $this->_isAdditional,
             "deleted_sbp" => $this->_deleted,
             "createdon_sbp" => $this->_createdOn,
             "createdby_sbp" => $this->_createdBy,
@@ -69,7 +72,8 @@ class Model_structure_by_point_base extends MY_Model
                 $object->label_sbp,
                 $object->point_id_sbp,
                 $object->quantity_to_use_sbp,
-                $object->labor_cost_id_sbp
+                $object->labor_cost_id_sbp,
+                $object->is_additional_sbp
             );
             $instance->_id = $object->id_sbp;
 
