@@ -9,8 +9,7 @@ $(document).ready(function() {
 
 
 
-    let buildingPoint = new BuildingPointHandler(projectId);
-    buildingPoint.loadEventHandlers();
+
 
     let manpowerHandler = new ManpowerHandler(projectId);
 	manpowerHandler.loadEventHandler();
@@ -22,6 +21,10 @@ $(document).ready(function() {
     pointToPointHandler.loadBuildingPoints();
     pointToPointHandler.loadManpowerLog();
     pointToPointHandler.loadEventHandler();
+
+	let buildingPoint = new BuildingPointHandler(projectId);
+	buildingPoint.setPointToPointHandler(pointToPointHandler);
+	buildingPoint.loadEventHandlers();
 
 	let structureUsageValidator2 = new StructureUsageValidator('edit-labor-cost-log-form');
     let laborCostLogHandler = new LaborCostLogHandler(projectId);

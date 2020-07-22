@@ -83,4 +83,59 @@ class AjaxBuildingPoint extends PrivateController
 		}
 		echo json_encode($response);exit;
 	}
+
+	public function addStructureToPoint($buildingPointId)
+	{
+		// $this->_validateFeature('role_edit');
+
+		/** Server Side Validations **/
+		$this->form_validation->set_rules('quantity-to-use', 'Cantidad a usar', 'trim');
+		$this->form_validation->set_rules('labor-cost-id', 'Labor cost ID', 'trim');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$validationErrors = validation_errors();
+			$validationErrors = str_replace("<p>","",$validationErrors);
+			$validationErrors = str_replace("</p>","<br>",$validationErrors);
+			$response = array("success" => 0, "message" => $validationErrors);
+			$success = $validationErrors != ""?0:1;
+			/** @var Model_building_point $buildingPoint */
+			$buildingPoint = Model_building_point::getById($buildingPointId);
+			$structuresInPoint = Model_structure_by_point::getByPointId($buildingPointId);
+			$arrayStructuresInPoint = array();
+			/** @var Model_structure_by_point $structureByPoint */
+			foreach ($structuresInPoint as $structureByPoint)
+			{
+				$arrayStructuresInPoint[] = array(
+					"id" => $structureByPoint->getId(),
+					"laborCostId" => $structureByPoint->getLaborCostId(),
+					"label" => $structureByPoint->getLabel()
+				);
+			}
+			$response["success"] = $success;
+			$response["message"] = $validationErrors;
+			$response["data"]["buildingPoint"]['id'] = $buildingPoint->getId();
+			$response["data"]["buildingPoint"]['label'] = $buildingPoint->getLabel();
+			$response["data"]["buildingPoint"]['project']['id'] = $buildingPoint->getProjectId();
+			$response["data"]["buildingPoint"]['structureList'] = $arrayStructuresInPoint;
+			$response['data']["template"] = $this->loadView("panel/content/building-point/BuildingPointHandler", array(),true);
+			$response['data']["templateName"] = '#building-point-structure-add-form';
+		}
+		else
+		{
+			$formData = $this->input->post();
+//			echo"<pre>";var_dump($formData);exit;
+			/** @var Model_building_point $buildingPoint */
+			$buildingPoint = Model_building_point::getById($buildingPointId);
+			$buildingPoint->addStructuresToUse($formData['additional-structures']);
+			$listSize = count($formData['additional-structures']);
+			$message = "Se agreg&oacute; ".$listSize." estructrua al punto ".$buildingPoint->getLabel();
+			if($listSize > 1)
+				$message = "Se agregaron ".$listSize." estructuras al punto ".$buildingPoint->getLabel();
+			$response["success"] = 1;
+			$response["message"] = $message;
+
+		}
+		echo json_encode($response);exit;
+	}
 }

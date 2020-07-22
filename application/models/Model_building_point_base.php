@@ -91,6 +91,52 @@ class Model_building_point_base extends MY_Model
         return $response;
     }
 
+    public function setProjectId($projectId)
+	{
+		$this->_projectId = $projectId;
+	}
+
+	public function setLabel($label)
+	{
+		$this->_label = $label;
+	}
+
+	public function setLatitude($latitude)
+	{
+		$this->_latitude = $latitude;
+	}
+
+	public function setLongitude($longitude)
+	{
+		$this->_longitude = $longitude;
+	}
+
+	public function setPreviousPoint($previousPoint)
+	{
+		$this->_previousPoint = $previousPoint;
+	}
+
+	public function setDistance($distance)
+	{
+		$this->_distance = $distance;
+	}
+
+	public function setAngle($angle)
+	{
+		$this->_angle = $angle;
+	}
+
+
+	public function getProjectId()
+	{
+		return $this->_projectId;
+	}
+
+	public function getLabel()
+	{
+		return $this->_label;
+	}
+
 	################################################################################################# BEGIN - DATATABLE AJAX METHODS
 	/**
 	 * @return mixed

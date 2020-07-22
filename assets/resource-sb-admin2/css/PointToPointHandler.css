@@ -81,3 +81,15 @@ select.form-control:not([size]):not([multiple]).input-sm, input.form-control.inp
     text-transform: uppercase;
     font-weight: 600;
 }
+
+/********************************************** start - input group */
+.form-group-sm .form-control+.form-control-feedback, .input-group-sm+.form-control-feedback, .input-sm+.form-control-feedback
+{
+	line-height: 15px;
+}
+select.form-control:not([size]):not([multiple]).input-sm, input.form-control.input-sm
+{
+	font-size: 11px;
+}
+
+/********************************************** end - input group */

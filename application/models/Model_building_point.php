@@ -20,12 +20,19 @@ class Model_building_point extends Model_building_point_base
     public function addStructuresToUse($structures = array())
     {
         $dataToSave = array();
+		$currentUser = PrivateController::getSessionUser();
+		$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         foreach ($structures as $structure)
         {
             $dataToSave[] = array(
+            		"project_id_sbp" => $this->_projectId,
+            		"label_sbp" => $this->_label,
                     "point_id_sbp" => $this->_id,
-                    "quantity_to_use_sbp" => $structure["quantity_to_use"],
-                    "labor_cost_id_sbp" => $structure["labor_cost_id"]
+                    "quantity_to_use_sbp" => $structure["quantity"],
+                    "labor_cost_id_sbp" => $structure["labor-cost-id"],
+					'deleted_sbp' => 0,
+					'createdon_sbp' => date('Y-m-d H:i:s'),
+					'createdby_sbp' => $currentUserId
             );
         }
         if(count($dataToSave) > 0)

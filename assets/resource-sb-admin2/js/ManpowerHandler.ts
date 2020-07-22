@@ -568,11 +568,7 @@ class ManpowerHandler
         $(document).on("select2:select",'select.select2-labor-cost',function(e){
                console.log(e);
                let data = e.params.data;
-
                let $form = $("form[name=add-existing-structure]");
-
-
-
                $form.find("select[name=activity]").val(data.structure_activity);
                $form.find("select[name=execution]").val(data.structure_execution);
                // $form.find("input[name=quantity]").val(data.structure_quantity);

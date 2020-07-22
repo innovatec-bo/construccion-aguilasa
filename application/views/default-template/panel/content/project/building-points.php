@@ -39,8 +39,8 @@
 						</p>
 					</div>
 					<div class="col-md-12">
-						<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>">Agregar estrucura al proyecto</button>
-						<button type="button" class="btn btn-danger btn-sm add-building-point mb-1">Crear punto</button>
+						<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
+						<button type="button" class="btn btn-danger btn-sm add-building-point mb-1" data-original-title="Agregue un nuevo punto al proyecto" data-toggle="tooltip" data-placement="top">Crear punto</button>
 					</div>
 					<div id="building-points">
 						<div class="col-md-9"></div>

@@ -12,13 +12,17 @@ class Model_structure_by_point_base extends MY_Model
     const TABLE_ID = "id_sbp";
     const ATTRIB_SUFIX = "_sbp";
 
+    protected $_projectId;
+    protected $_label;
     protected $_pointId;
     protected $_quantityToUse;
     protected $_laborCostId;
 
-    public function __construct($pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
+    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
     {
         parent::__construct();
+        $this->_projectId = $projectId;
+        $this->_label = $label;
         $this->_pointId = $pointId;
         $this->_quantityToUse = $quantityToUse;
         $this->_laborCostId = $laborCostId;
@@ -32,6 +36,8 @@ class Model_structure_by_point_base extends MY_Model
     {
         $tableAttributes = array(
             "id_sbp" => $this->_id,
+            "project_id_sbp" => $this->_projectId,
+            "label_sbp" => $this->_label,
             "point_id_sbp" => $this->_pointId,
             "quantity_to_use_sbp" => $this->_quantityToUse,
             "labor_cost_id_sbp" => $this->_laborCostId,
@@ -59,6 +65,8 @@ class Model_structure_by_point_base extends MY_Model
 
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
+                $object->project_id_sbp,
+                $object->label_sbp,
                 $object->point_id_sbp,
                 $object->quantity_to_use_sbp,
                 $object->labor_cost_id_sbp
@@ -74,4 +82,14 @@ class Model_structure_by_point_base extends MY_Model
         }
         return $response;
     }
+
+    public function getLaborCostId()
+	{
+		return $this->_laborCostId;
+	}
+
+	public function getLabel()
+	{
+		return $this->_label;
+	}
 }

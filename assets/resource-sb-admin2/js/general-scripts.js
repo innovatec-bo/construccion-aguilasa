@@ -221,11 +221,21 @@ function startSelect2LaborCost(containerCssClass, size)
 {
     containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
     size = size === undefined?"":size;
+	let $content = $(document.body);
+    if($('.modal-content').length > 0)
+	{
+		$content = $('.modal-content');
+	}
+    else if($('.swal2-content').length > 0)
+	{
+		$content = $('.swal2-content');
+	}
+
     $(containerCssClass).select2({
         placeholder: "Buscar estructura",
         containerCssClass: size,
         dropdownCssClass: "dd-select2-labor-cost",
-        dropdownParent: $('.modal-content'),
+        dropdownParent: $content,
         // allowClear : true,
         ajax : {
             url : base_url + 'panel/AjaxLaborCost/select2',
@@ -241,13 +251,19 @@ function startSelect2LaborCost(containerCssClass, size)
                 let $selectManagement = $("select[name=management-by]");
                 let management = "";
                 if($selectManagement.length > 0)
-                    management = $selectManagement.val();                
+                    management = $selectManagement.val();
+
+                let $inputProjectId = $("input[name=project-id]");
+				let projectId = "";
+				if($inputProjectId.length > 0)
+					projectId = $inputProjectId.val();
                 return {
                     term : params.term || "",//search term
                     limit : 5,// page size
                     page: params.page || 1,
                     budgetaryPosition:budgetaryPosition,
-                    management:management
+                    management:management,
+                    projectId:projectId
                 };
             },
             processResults: function (data) {

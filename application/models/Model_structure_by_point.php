@@ -8,12 +8,12 @@
 
 class Model_structure_by_point extends Model_structure_by_point_base
 {
-    public function __construct($pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
-    {
-        parent::__construct($pointId, $quantityToUse, $laborCostId);
-    }
+    public function __construct($projectId = NULL, $label = "", $pointId = NULL, $quantityToUse = 0, $laborCostId = NULL)
+	{
+		parent::__construct($projectId, $label, $pointId, $quantityToUse, $laborCostId);
+	}
 
-    public static function getByProjectId($projectId)
+	public static function getByProjectId($projectId)
     {
     	$ci = &get_instance();
     	$ci->load->database();
@@ -25,4 +25,19 @@ class Model_structure_by_point extends Model_structure_by_point_base
     	$response = static::recastArray(get_called_class(), $query->result());
     	return $response;
     }
+
+	public static function getByPointId($pointId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+			select * from ".static::TABLE_NAME." where point_id_sbp = ".$ci->db->escape($pointId)." and deleted_sbp != 1
+    	";
+
+		$query = $ci->db->query($sql);
+		$response = static::recastArray(get_called_class(), $query->result());
+		return $response;
+	}
+
+
 }

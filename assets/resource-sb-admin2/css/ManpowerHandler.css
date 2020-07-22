@@ -21,11 +21,11 @@
 .select2-container--classic .select-xs.select2-selection--single .select2-selection__rendered, .select2-container--default .select-xs.select2-selection--single .select2-selection__rendered {
     padding-right : 3rem;
 }
-select.form-control:not([size]):not([multiple]).input-sm, input.form-control.input-sm {
-    height: 1.525rem;
-    font-size: 0.75rem;
-    padding: 0.075rem 0.3rem;
-}
+/*select.form-control:not([size]):not([multiple]).input-sm, input.form-control.input-sm {*/
+/*    height: 1.525rem;*/
+/*    font-size: 0.75rem;*/
+/*    padding: 0.075rem 0.3rem;*/
+/*}*/
 .select2-results
 {
     min-width: 200px;

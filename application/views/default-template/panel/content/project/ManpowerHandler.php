@@ -28,7 +28,8 @@ $projectSystems = array(
                         </a>
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-default btn-xs add-point-to-point-progress" data-point-id="{{point_id}}"><span class="fa fa-plus"></span></button>
+                                <button type="submit" class="btn btn-default btn-xs add-point-to-point-progress" data-point-id="{{point_id}}">Registrar avance</button>
+                                <button type="submit" class="btn btn-info btn-xs add-structure-to-point" data-point-id="{{point_id}}" data-original-title="Incluya en &eacute;ste punto una estructura que ya est&eacute; en el proyecto." data-toggle="tooltip" data-placement="top">Incluir estructura</button>
                             </div>
                         </div>
                     </h4>

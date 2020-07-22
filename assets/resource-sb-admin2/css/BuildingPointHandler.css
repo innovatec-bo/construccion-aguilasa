@@ -11,6 +11,10 @@
 #swal2-content {
     text-align: initial!important;
 }
+.modal-building-point-form .swal2-actions
+{
+	z-index: 0;
+}
 .modal-building-point-form
 {
     max-width:1000px;

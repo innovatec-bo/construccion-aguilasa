@@ -137,9 +137,15 @@ class AjaxLaborCost extends PrivateController
         $page = $this->input->post("page");
         $budgetaryPosition = $this->input->post("budgetaryPosition");
         $managementBy = $this->input->post("management");
+        $projectId = $this->input->post("projectId");
+        $additionalParameters = array(
+        	"budgetary-position" => $budgetaryPosition,
+        	"management-by"	=> $managementBy,
+			"project-id" => $projectId
+		);
         $offset = ($page-1)*$limit;
-        $records = Model_labor_cost::searchLaborCost($budgetaryPosition, $managementBy, $term, $limit, $offset, NULL, 'desc', array('structure_code_bus','description_bus', 'code_pro'));
-        $recordsFiltered = Model_labor_cost::searchTotalCountLaborCost($budgetaryPosition, $managementBy, $term, array('structure_code_bus','description_bus', 'code_pro'));
+        $records = Model_labor_cost::searchLaborCost($term, $limit, $offset, NULL, 'desc', array('structure_code_bus','description_bus', 'code_pro'), $additionalParameters);
+        $recordsFiltered = Model_labor_cost::searchTotalCountLaborCost($term, array('structure_code_bus','description_bus', 'code_pro'), $additionalParameters);
 
         $resultArray = array();
         $list = array();
@@ -149,14 +155,17 @@ class AjaxLaborCost extends PrivateController
                 $list[] = array(
                     "id" => $row->id_bus,
                     "text" => $row->structure_code_bus,
+                    "labor_cost_id" => $row->id_lac,
                     "structure_code" => $row->structure_code_bus,
                     "structure_detail" => $row->description_bus,
                     "structure_unit_price" => $row->unit_price_lac,
                     "structure_activity" => $row->activity_lac,
                     "structure_execution" => $row->execution_lac,
                     "structure_quantity" => $row->quantity_lac,
-                    "management_by" => $row->management_by_pro,
+					"structure_unit_of_measurement" => $row->unit_of_measurement_bus,
+					"management_by" => $row->management_by_pro,
                     "budgetary_position" => $row->budgetary_position_pro,
+
                     "project_code" => $row->code_pro
 
                 );

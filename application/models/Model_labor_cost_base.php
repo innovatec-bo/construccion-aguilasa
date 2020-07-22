@@ -140,7 +140,7 @@ class Model_labor_cost_base extends MY_Model
         return $result;
     }
 
-    public static function searchLaborCost($budgetaryPosition = "", $managementBy = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchLaborCost($text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null, $additionalParameters = array())
     {
         if ($orderBy === null)
         {
@@ -148,9 +148,6 @@ class Model_labor_cost_base extends MY_Model
         }
         $ci = &get_instance();
         $ci->load->database();
-
-        $budgetaryPositionFilter = $budgetaryPosition == ""?"":" and budgetary_position_pro = ".$ci->db->escape($budgetaryPosition)." ";
-        $managementBy = $managementBy == ""? "": " and management_by_pro = ".$ci->db->escape($managementBy)." ";
 
         $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME.' 
                 LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
@@ -164,19 +161,16 @@ class Model_labor_cost_base extends MY_Model
         }
 
         $sql = substr($sql, 0, -3);
-        $sql .= ') '.$budgetaryPositionFilter.' '.$managementBy.' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
 
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
         return $query->result();
     }
 
-    public static function searchTotalCountLaborCost($budgetaryPosition = "", $managementBy = "", $text, $colsArray = null)
+    public static function searchTotalCountLaborCost($text, $colsArray = null, $additionalParameters = array())
     {
         $ci = &get_instance();
         $ci->load->database();
-
-        $budgetaryPositionFilter = $budgetaryPosition == ""?"":" and budgetary_position_pro = ".$ci->db->escape($budgetaryPosition)." ";
-        $managementBy = $managementBy == ""? "": " and management_by_pro = ".$ci->db->escape($managementBy)." ";
 
         $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
         $sql .= '
@@ -191,7 +185,7 @@ class Model_labor_cost_base extends MY_Model
         }
 
         $sql = substr($sql, 0, -3);
-        $sql .= ') '.$budgetaryPositionFilter.' '.$managementBy.' ';
+        $sql .= ') '.static::_additionalParameters($additionalParameters).' ';
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -200,7 +194,7 @@ class Model_labor_cost_base extends MY_Model
 
     private static function _dataTableColumns()
     {
-        $columns = static::TABLE_NAME.".*,id_bus, structure_code_bus, description_bus, budgetary_position_pro,CASE
+        $columns = static::TABLE_NAME.".*,id_bus, structure_code_bus, description_bus, unit_of_measurement_bus, budgetary_position_pro,CASE
                 WHEN management_by_pro = 1 then 'Sistema Santa Cruz'
                 WHEN management_by_pro = 2 then 'Sistema Velasco'
                 WHEN management_by_pro = 3 then 'Sistema Misiones'
@@ -208,8 +202,38 @@ class Model_labor_cost_base extends MY_Model
                 WHEN management_by_pro = 5 then 'Sistema German bush'
                 WHEN management_by_pro = 6 then 'Sistema Robore'
                 WHEN management_by_pro = 7 then 'Sistema Valles'
-            END management_by_pro, code_pro";
+            END management_by_pro, code_pro, id_pro";
         return $columns;
     }
+
+	private static function _additionalParameters($list = array())
+	{
+		$ci=&get_instance();
+		$ci->load->database();
+		$sql = "";
+		if(is_array($list) && count($list) >= 1)
+		{
+			foreach($list as $parameter => $value)
+			{
+				switch ($parameter)
+				{
+					//For this parameter the ids are separated by comma
+					case "budgetary-position":
+						if($value != "")
+							$sql .= " and budgetary_position_pro = ".$ci->db->escape($value)." ";
+						break;
+					case "management-by":
+						if($value != "")
+							$sql .= " and management_by_pro = ".$ci->db->escape($value)." ";
+						break;
+					case "project-id":
+						if($value != "")
+							$sql .= " and id_pro = ".$ci->db->escape($value)." ";
+						break;
+				}
+			}
+		}//var_dump($list, $sql);exit;
+		return $sql;
+	}
     ################################################################################################# END - DATATABLE AJAX METHODS
 }
