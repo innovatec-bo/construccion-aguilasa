@@ -392,8 +392,8 @@ $projectSystems = array(
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0" readonly>
-                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>
+                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0">
+<!--                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>-->
                                 </div>
                             </div>
                             <div class='col-md-6'>
@@ -463,8 +463,8 @@ $projectSystems = array(
                             <div class='col-md-6'>
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0" readonly>
-                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>
+                                    <input class="form-control input-masked" name='quantity' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true" value="0">
+<!--                                    <p class="help-block">La cantidad por defecto es 0 ya que no ha sido provisto por CRE</p>-->
                                 </div>
                             </div>
                             <div class='col-md-6'>

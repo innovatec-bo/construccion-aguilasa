@@ -69,7 +69,7 @@ class AjaxLaborCost extends PrivateController
             $laborDetail = Model_labor_detail::getByProjectId($projectId);
             $activity = $formData["activity"];
             $execution = $formData["execution"];
-            $quantity = 0;
+            $quantity = str_replace(",","", $formData["quantity"]);
             $unitPrice = str_replace(",","", $formData["price"]);
             //If the data to create a new structure is settled then this code block will be executed
             if(isset($formData["structure-code"]) && $formData["structure-code"] != "")
