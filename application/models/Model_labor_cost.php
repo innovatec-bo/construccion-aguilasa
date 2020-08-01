@@ -33,7 +33,8 @@ class Model_labor_cost extends Model_labor_cost_base
             unit_of_measurement_bus unit_of_measurement,
             round(unit_price_lac * quantity_lac,2) total_price_by_structure,
             IFNULL(bui_worked_up_structures.worked_up_wus,0) worked_up,
-            (quantity_lac - IFNULL(bui_worked_up_structures.worked_up_wus,0)) diff
+            (quantity_lac - IFNULL(bui_worked_up_structures.worked_up_wus,0)) diff,
+            CONCAT(id_bus,'-',activity_lac,'-',execution_lac) labor_cost_unique
         FROM
             bui_labor_cost
         LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus

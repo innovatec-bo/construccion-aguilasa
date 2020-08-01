@@ -299,11 +299,6 @@ function formatRepo (response)
     return template(data);
 }
 
-function openProyect()
-{
-
-}
-
 function timbthumbImage(url, width, height)
 {
     width = width == "" || width == undefined?"":"&w="+width;

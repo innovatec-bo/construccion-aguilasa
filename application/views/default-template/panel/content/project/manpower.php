@@ -39,6 +39,11 @@
         </form>
         <br>
     </div>
+	<div class="col-md-12">
+		<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto tomando en cuenta su actividad y ejecucion." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
+		<br><em class="block">Puede agregar una estructura sin repetir la actividad y ejecucion de otra existente. Ejem: Si el proyecto ya posee la estructura PH11B para retiro en linea muerta, puede volver a agregar la estructura
+			PH11B pero sin repetir la atividad y ejecucion de la estructrua ya existente.</em>
+	</div>
     <div class="col-md-9">
         <p id="builder-list"></p>
         <div class="table-responsive" id="manpower-table">

@@ -14,10 +14,12 @@
                     <h2 class="title">{{laborCost.structure_code}}</h2>
                     <p class="desc">{{laborCost.structure_detail}}</p>
                     <ul>
-                        <li class='col-md-5'><span class="fa fa-user"></span> {{laborCost.management_by}}</li>
-                        <li class='col-md-2'><span class="fa fa-money"></span> {{laborCost.structure_unit_price}}</li>
-                        <li class='col-md-2'><span class="fa fa-long-arrow-up"></span> {{laborCost.budgetary_position}}</li>
-                        <li class='col-md-3'><span class="fa fa-folder"></span> {{laborCost.project_code}}</li>
+                        <li class='col-md-4'><span class="fa fa-user"></span>{{laborCost.management_by}}</li>
+                        <li class='col-md-2'><span class="fa fa-money"></span>{{laborCost.structure_unit_price}}</li>
+                        <li class='col-md-1'><span class="fa fa-long-arrow-up"></span>{{laborCost.budgetary_position}}</li>
+                        <li class='col-md-3'><span class="fa fa-folder"></span>{{laborCost.project_code}}</li>
+                        <li class='col-md-1'><span class="fa fa-wrench"></span>{{laborCost.structure_activity}}</li>
+                        <li class='col-md-1'><span class="fa fa-bolt"></span>{{laborCost.structure_execution}}</li>
                     </ul>
                 </div>
             </li>

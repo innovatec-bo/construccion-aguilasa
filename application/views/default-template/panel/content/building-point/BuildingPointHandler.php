@@ -37,6 +37,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>Buscar y agregar estructura existente en el proyecto</label>
+					<p class="help-block">La presente lista es toda la mano de obra del proyecto, si necesita agregar una estructura y no encuentra la activdad o ejecucion que necesita, entonces utilice el formulario para agregar una estructura al proyecto. </p>
 					<select class='select2-search-labor-cost' name="labor-cost-structure-id"></select>
 				</div>
 			</div>

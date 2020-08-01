@@ -35,9 +35,9 @@ var ManpowerHandler = /** @class */ (function () {
                 }
                 else if (response.success === 1 && formData) {
                     Swal.close();
-                    toastr.success(response.message, '', { 'progressBar': true });
                     _this.loadManpower();
                     _this.loadManpowerLog();
+                    toastr.success(response.message, '', { 'progressBar': true, "timeOut": 15000 });
                 }
                 else {
                     Swal({ title: '', html: response.message, type: "error" });
@@ -164,6 +164,10 @@ var ManpowerHandler = /** @class */ (function () {
                 var template = Handlebars.compile(htmlSource);
                 var html = template({ laborCostMasterDetail: response.data.laborCostMasterDetail });
                 $("#manpower-table").html(html);
+                if (response.data.laborCostMasterDetail.length > 10) {
+                    $('#manpower-table table').DataTable();
+                }
+                console.log('loaded manpower list');
             }
         });
     };
@@ -257,7 +261,7 @@ var ManpowerHandler = /** @class */ (function () {
             },
             language: {
                 noResults: function () {
-                    return '<a href="#" class="btn btn-default btn-block add-building-structure" data-project-id="' + _this._projectId + '">Agregar estructura</a>';
+                    return 'No se encontraron resultados';
                 },
             },
             escapeMarkup: function (markup) {
@@ -346,26 +350,14 @@ var ManpowerHandler = /** @class */ (function () {
                     _this.launchFormBuildingStructureForm(response, "Agregar Estructura");
                 }
                 else if (response.success === 1 && formData) {
-                    // let laborCost = response.data.laborCost;
-                    // let structure = response.data.structure;
-                    // let data = {
-                    //     id: laborCost.id_lac,
-                    //     text: structure.structure_code_bus
-                    // };
-                    //
-                    // let newOption = new Option(data.text, data.id, false, true);
-                    // $(newOption).attr("data-activity",laborCost.activity_lac);
-                    // $(newOption).attr("data-execution",laborCost.execution_lac);
-                    // $(newOption).attr("data-description",structure.description_bus);
-                    // $(newOption).attr("data-unit-of-measurement",structure.unit_of_measurement_bus);
-                    // $(newOption).attr("data-quantity",laborCost.quantity_lac);
-                    // $('.select2-structure-code').append(newOption).trigger('select2:select');
-                    toastr.success(response.message, '', { 'progressBar': true });
+                    toastr.success(response.message, '', { 'progressBar': true, "timeOut": 15000 });
+                    _this.loadManpower();
                     console.log(response);
                 }
                 else {
                     bootbox.hideAll();
-                    bootbox.alert(response.message);
+                    toastr.error(response.message, '', { 'progressBar': true, "timeOut": 15000 });
+                    // bootbox.alert(response.message);
                 }
             }
         });

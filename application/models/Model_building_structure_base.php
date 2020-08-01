@@ -78,4 +78,10 @@ class Model_building_structure_base extends MY_Model
         }
         return $response;
     }
+
+    //getters
+	public function getCode()
+	{
+		return $this->_structureCode;
+	}
 }

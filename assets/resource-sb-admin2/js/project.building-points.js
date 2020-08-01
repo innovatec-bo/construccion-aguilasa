@@ -12,7 +12,8 @@ $(document).ready(function() {
 
 
     let manpowerHandler = new ManpowerHandler(projectId);
-	manpowerHandler.loadEventHandler();
+	manpowerHandler.loadManpower();
+    manpowerHandler.loadEventHandler();
 
 	let structureUsageValidator = new StructureUsageValidator('point-to-point-progress-form');
 

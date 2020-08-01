@@ -539,6 +539,8 @@ class Project extends PrivateController
         {
             redirect(base_url('panel/Project/buildingPoints/'.$projectId));
         }
+		$this->complementHandler->addViewComplement("jquery.datatables");
+		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
@@ -560,6 +562,8 @@ class Project extends PrivateController
     {
         $this->_validateFeature('project_manpower');
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+		$this->complementHandler->addViewComplement("jquery.datatables");
+		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
         $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");

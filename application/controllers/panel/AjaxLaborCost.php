@@ -42,6 +42,7 @@ class AjaxLaborCost extends PrivateController
         //$this->_validateFeature('qb_create_invoice');
         /** Server Side Validations **/
         $this->form_validation->set_rules('structure-code', 'Codigo de estructura', 'trim|callback_validate_unique_structure_code');
+        $this->form_validation->set_rules('structure-id', 'Structure ID ', 'trim|callback_validate_execution_and_activity['.$projectId.']');
 
         if ($this->form_validation->run() === FALSE) 
         {
@@ -63,6 +64,8 @@ class AjaxLaborCost extends PrivateController
         else
         {
             $formData = $this->input->post();
+			$activityString = array('i' => 'instalacion','r' => 'retiro','m' => 'movimiento');
+			$executionString = array('lv' => 'linea viva','lm' => 'linea muerta');
 //            echo"<pre>";var_dump($formData);exit;
 //            $currentLaborCost = Model_labor_cost::getMasterDetailByProjectId($projectId);
             /** @var Model_labor_detail $laborDetail */
@@ -72,38 +75,28 @@ class AjaxLaborCost extends PrivateController
             $quantity = str_replace(",","", $formData["quantity"]);
             $unitPrice = str_replace(",","", $formData["price"]);
             //If the data to create a new structure is settled then this code block will be executed
+			//This section is validate in callback to prevent duplicated structure code
             if(isset($formData["structure-code"]) && $formData["structure-code"] != "")
             {
                 $structureCode = $formData["structure-code"];
-                $detail = $formData["structure-detail"];
-                $unitOfMeasurement = $formData["structure-unit-of-measurement"];
+				$detail = $formData["structure-detail"];
+				$unitOfMeasurement = $formData["structure-unit-of-measurement"];
 				$structure = new Model_building_structure($structureCode, $detail, $unitOfMeasurement);
 				$structure->save();
             }
+            //This section is validated in callback to prevent duplicated structure, activity and execution
             else
             {
             	$structureId = $formData["structure-id"];
-				$laborCostList = Model_labor_cost::getMasterDetailByProjectId($projectId);
-				if(array_search($structureId,array_column($laborCostList, 'structure_id')) === FALSE)
-				{
-					$structure = Model_building_structure::getById($structureId);
-					$laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice, 1);
-					$laborCost->save();
+				/** @var Model_building_structure $structure */
+				$structure = Model_building_structure::getById($structureId);
+				$laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice, 1);
+				$laborCost->save();
 
-					$response["success"] = 1;
-					$response["message"] = "Estructura registrada correctamente.";
-					$response["data"]["laborCost"] = $laborCost->toArray();
-					$response["data"]["structure"] = $structure->toArray();
-				}
-				else
-				{
-					$response["success"] = 0;
-					$response["message"] = "La estructura ya exite en el proyecto.";
-					$response["data"]["laborCost"] = array();
-					$response["data"]["structure"] = array();
-//					echo json_encode($response);
-//					exit;
-				}
+				$response["success"] = 1;
+				$response["message"] = "La estructura ".$structure->getCode()." se agreg&oacute; para ".$activityString[strtolower($activity)]." en ".$executionString[strtolower($execution)];
+				$response["data"]["laborCost"] = $laborCost->toArray();
+				$response["data"]["structure"] = $structure->toArray();
             }
 
         }
@@ -122,9 +115,40 @@ class AjaxLaborCost extends PrivateController
 			//If the structure code already exist then trow a error message.
 			if($structure instanceof Model_building_structure)
 			{
-				$this->form_validation->set_message('validate_unique_structure_code', "El codigo ".$structureCode." ya esta registrado en el sistema.");
+				$this->form_validation->set_message('validate_unique_structure_code', "La estructura ".strtoupper($structureCode)." ya esta registrado en el sistema.");
 				$response = FALSE;
 			}
+		}
+
+		return $response;
+	}
+
+	/**
+	 * If the user choose an existing structure then let's check if the activity and execution isn't in current manpower
+	 * @param $structureId
+	 * @param $projectId
+	 * @return bool
+	 */
+	public function validate_execution_and_activity($structureId, $projectId)
+	{
+		$formData = $this->input->post();
+		$activityString = array('i' => 'instalacion','r' => 'retiro','m' => 'movimiento');
+		$executionString = array('lv' => 'linea viva','lm' => 'linea muerta');
+		$incomingActivity = $formData['activity'];
+		$incomingExecution = $formData['execution'];
+		$laborCostList = Model_labor_cost::getMasterDetailByProjectId($projectId);
+		$incomingLaborCostUnique = $structureId.'-'.$incomingActivity.'-'.$incomingExecution;
+		$laborCostFound = array_search($incomingLaborCostUnique, array_column($laborCostList,'labor_cost_unique'));
+		$response = TRUE;
+		//If it is distinct to FALSE then the labor cost already exist in manpower
+		if($laborCostFound !== FALSE)
+		{
+			$laborCost = $laborCostList[$laborCostFound];
+			$structureCode = $laborCost['structure_code'];
+			$activity = $activityString[strtolower($laborCost['activity'])];
+			$execution = $executionString[strtolower($laborCost['execution'])];
+			$this->form_validation->set_message('validate_execution_and_activity', "La estructura ".$structureCode." ya esta registrado para ".$activity." en ".$execution.". Revise el item #".($laborCostFound+1));
+			$response = FALSE;
 		}
 
 		return $response;

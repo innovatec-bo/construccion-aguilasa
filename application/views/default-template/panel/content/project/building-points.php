@@ -27,6 +27,8 @@
 				</li>
 				<li class=""><a href="#point-locations" data-toggle="tab" aria-expanded="false">Mapa</a>
 				</li>
+				<li class=""><a href="#manpower" data-toggle="tab" aria-expanded="false">Mano de obra</a>
+				</li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane fade active in" id="tab1">
@@ -41,6 +43,8 @@
 					<div class="col-md-12">
 						<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
 						<button type="button" class="btn btn-danger btn-sm add-building-point mb-1" data-original-title="Agregue un nuevo punto al proyecto" data-toggle="tooltip" data-placement="top">Crear punto</button>
+						<br><em class="block">Puede agregar una estructura sin repetir la actividad y ejecucion de otra existente. Ejem: Si el proyecto ya posee la estructura PH11B para retiro en linea muerta, puede volver a agregar la estructura
+							PH11B pero sin repetir la atividad y ejecucion de la estructrua ya existente.</em>
 					</div>
 					<div id="building-points">
 						<div class="col-md-9"></div>
@@ -73,6 +77,14 @@
 								<div id="maps" style="height: 500px;width: auto;position: relative;">
 								</div>
 								<em class="map-search-message"></em>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="manpower">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive" id="manpower-table">
 							</div>
 						</div>
 					</div>
