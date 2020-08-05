@@ -266,4 +266,17 @@ class MY_Model
         $result = static::recastArray(get_called_class(), $query->result());
         return $result;
     }
+
+	public static function getTableDefinition($tableName)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$sql = "
+            DESCRIBE ".$tableName."
+        ";
+		$query = $ci->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
 }
