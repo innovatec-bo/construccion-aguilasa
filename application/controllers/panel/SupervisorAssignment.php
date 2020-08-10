@@ -14,7 +14,7 @@ class SupervisorAssignment extends PrivateController
 
     public function index()
     {
-//        $this->_validateFeature("home");
+        $this->_validateFeature("supervisor_assigment_index");
         $this->complementHandler->addViewComplement("dragula");
         $this->complementHandler->addViewComplement("perfect-scrollbar");
         $this->complementHandler->addProjectJs('SupervisorAssignmentHandler', TRUE);
