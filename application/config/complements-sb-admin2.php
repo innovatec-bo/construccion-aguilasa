@@ -120,3 +120,6 @@ $config['complements']['toastr']['js'] = 'https://cdnjs.cloudflare.com/ajax/libs
 
 $config['complements']['pagination-js']['css'] = assets_url('resource-sb-admin2/plugins/paginationjs/dist/pagination.css');
 $config['complements']['pagination-js']['js'] = assets_url('resource-sb-admin2/plugins/paginationjs/dist/pagination.min.js');
+
+$config['complements']['dragula']['css'] = assets_url('resource-sb-admin2/plugins/dragula-master/dist/dragula.min.css');
+$config['complements']['dragula']['js'] = assets_url('resource-sb-admin2/plugins/dragula-master/dist/dragula.min.js');

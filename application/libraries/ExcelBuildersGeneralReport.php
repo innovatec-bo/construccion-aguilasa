@@ -9,6 +9,7 @@ class ExcelBuildersGeneralReport
     private $_months;
     private $_fiscalList;
     private $_builderList;
+    private $_fiscalAssignments;
 	public function __construct($sessionUser, $startDate, $endDate)
 	{
         $this->_sessionUser = $sessionUser;
@@ -35,7 +36,7 @@ class ExcelBuildersGeneralReport
 	function getReport()
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
-
+		$this->_fiscalAssignments = Model_user_supervisor_by_period::getAssignmentByDateRange(array('from' =>$this->_startDate, 'to'=>$this->_endDate));
         $projectProductivity = Model_project::getBuilderIndividualReport($this->_startDate, $this->_endDate);
         $date = date_create_from_format('Y-m-d H:i:s', $this->_startDate);
         $month = date_format($date, 'F');
@@ -369,6 +370,7 @@ class ExcelBuildersGeneralReport
         $buildersAndProductivity = array();
         $fiscalsAndBuildersProductivity = array();
         $buildersAndSupervising = array();
+
         foreach ($projectProductivity as $row)
         {
             $fiscalAssignedId = $row['fiscalIdAssigned'];
@@ -380,10 +382,17 @@ class ExcelBuildersGeneralReport
                 $generalProduction = floatval($builder['totalWorkedAsSupport']) + floatval($builder['totalWorked']);
                 if(!isset($buildersAndProductivity[$key]))
                 {
+                	$supervisorId = $this->_getSupervisorId($builderObject->getId());
+//                	if($builderObject->getId() == 16)
+//					{
+//						$supervisorId = $this->_getSupervisorId($builderObject->getId());
+//						echo"<pre>";var_dump($supervisorId, $builderObject->getId(), $this->_fiscalAssignments);exit;
+//					}
+
                     $buildersAndProductivity[$key] = array(
                                     "builderId"=> $builderObject->getId(),
                                     "builderFullName" => $builderObject->getFullName(),
-                                    "supervisingId" => $builderObject->getSupervisingId(),
+                                    "supervisingId" => $supervisorId,//$builderObject->getSupervisingId(),
                                     "production" => 0
                                 );
                 }
@@ -438,4 +447,27 @@ class ExcelBuildersGeneralReport
 		$arrayPerformanceList['buildersAndSupervising'] = $buildersAndSupervising;
         return $arrayPerformanceList;
     }
+
+    private function _getSupervisorId($builderIdToFind)
+	{
+		$supervisorId = NULL;
+		foreach ($this->_fiscalAssignments as $fiscal)
+		{
+			$fiscalId = $fiscal['id'];
+			$builders = $fiscal['builders'];
+			foreach ($builders as $builder)
+			{
+				if($builder['id'] == $builderIdToFind)
+				{
+					$supervisorId = $fiscalId;
+					break;
+				}
+				if(!is_null($supervisorId))
+				{
+					break;
+				}
+			}
+		}
+		return $supervisorId;
+	}
 }

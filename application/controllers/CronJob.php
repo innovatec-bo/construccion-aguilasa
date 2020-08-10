@@ -84,4 +84,17 @@ class CronJob extends PublicController
             Model_user::notifyProjectByStatusToSereboMembers($projectListFiltered);
         }
     }
+
+    public function fillDistribution($challenge)
+	{
+		if($challenge == 'fillDistribution2020')
+		{
+			$d = new DateTime( );
+			$d->modify( 'first day of previous month' );
+			$from = $d->format( 'Y-m-01' );
+			$to = $d->format( 'Y-m-t' );
+			$dateRange = array('from' => $from, 'to' => $to);
+			$assignment = Model_user_supervisor_by_period::getAssignmentByDateRange($dateRange);
+		}
+	}
 }
