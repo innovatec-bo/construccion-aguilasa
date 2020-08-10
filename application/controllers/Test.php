@@ -52,13 +52,13 @@ class Test extends PublicController
 				);
 			}
 		}
-//		Model_user_supervisor_by_period::insertBatch($dataToSave);
-		$d = new DateTime( );
-		$d->modify( 'first day of previous month' );
-		$from = $d->format( 'Y-m-01' );
-		$to = $d->format( 'Y-m-t' );
-		$dateRange = array('from' => $from, 'to' => $to);
-		$assignment = Model_user_supervisor_by_period::getAssignmentByDateRange($dateRange);
-		echo "<pre>";var_dump($assignment);exit;
+		Model_user_supervisor_by_period::insertBatch($dataToSave);
+//		$d = new DateTime( );
+//		$d->modify( 'first day of previous month' );
+//		$from = $d->format( 'Y-m-01' );
+//		$to = $d->format( 'Y-m-t' );
+//		$dateRange = array('from' => $from, 'to' => $to);
+//		$assignment = Model_user_supervisor_by_period::getAssignmentByDateRange($dateRange);
+//		echo "<pre>";var_dump($assignment);exit;
 	}
 }
