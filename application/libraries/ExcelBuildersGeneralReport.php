@@ -396,7 +396,7 @@ class ExcelBuildersGeneralReport
                 $fiscalObject = $this->_fiscalList[$fiscalAssignedId];
                 if(!$fiscalObject instanceof Model_user)
 				{
-					echo "El proyecto ".$row['code'].' no tiene fiscal asignado.';exit;
+					echo '<pre>';var_dump($row);exit;
 				}
                 if(!isset($fiscalsAndBuildersProductivity[$fiscalAssignedId]))
 				{
