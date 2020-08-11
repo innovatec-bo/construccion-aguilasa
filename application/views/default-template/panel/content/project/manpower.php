@@ -18,8 +18,39 @@
     <div class="col-md-12">
         <?php
         $this->load->view("default-template/flash-data-basic-messages");
-        ?>
+		$approvedBudget = number_format(0, 2);
+		$currentProductivity = number_format(0, 2);
+		$balance = number_format(0, 2);
+		if(isset($productionGeneralSummary['importe_aprobado']))
+		{
+			$approvedBudget = number_format($productionGeneralSummary['importe_aprobado'], 2);
+			$currentProductivity = number_format(($productionGeneralSummary['produccion_actual'] + $productionGeneralSummary['design_prb']), 2);
+			$balance = number_format($productionGeneralSummary['importe_aprobado'] - ($productionGeneralSummary['produccion_actual'] + $productionGeneralSummary['design_prb']), 2);
+		}
+		?>
     </div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-condensed">
+				<tbody>
+				<tr>
+					<td class="text-center text-info"><h3 class="m-0">APROBADO</h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=$total?></h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=$currentProductivity?></h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=$balance?></h3></td>
+				</tr>
+				</tbody>
+				<tfoot>
+				<tr>
+					<th class="text-center" style="width: 200px">Tipo de importe</th>
+					<th class="text-center">Total</th>
+					<th class="text-center">Producido</th>
+					<th class="text-center">Saldo</th>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
     <div class="col-md-6">
         <form class="form-inline" action="<?=base_url("panel/Project/uploadActivityByExcelFile/".$project['id_pro'])?>" method='post' enctype="multipart/form-data">
             <div class="form-group">
@@ -56,8 +87,15 @@
                 Hist. de avance
                 <div class="pull-right">
                     <div class="btn-group">
-                        <a href="<?=base_url()?>" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>
-                        <button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>
+<!--                        <a href="--><?//=base_url()?><!--" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>-->
+						<?php
+						$allowedStatusToRegisterActivity = array(29);
+						if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
+							echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en etapa de construccion." data-toggle="tooltip" data-placement="right"><i class="fa fa-plus fa-fw"></i></button>';
+						else
+							echo
+								'<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
+						?>
                     </div>
                 </div>
             </div>

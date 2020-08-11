@@ -383,12 +383,6 @@ class ExcelBuildersGeneralReport
                 if(!isset($buildersAndProductivity[$key]))
                 {
                 	$supervisorId = $this->_getSupervisorId($builderObject->getId());
-//                	if($builderObject->getId() == 16)
-//					{
-//						$supervisorId = $this->_getSupervisorId($builderObject->getId());
-//						echo"<pre>";var_dump($supervisorId, $builderObject->getId(), $this->_fiscalAssignments);exit;
-//					}
-
                     $buildersAndProductivity[$key] = array(
                                     "builderId"=> $builderObject->getId(),
                                     "builderFullName" => $builderObject->getFullName(),
@@ -400,6 +394,10 @@ class ExcelBuildersGeneralReport
 
                 //**************** Group by fiscal and builder
                 $fiscalObject = $this->_fiscalList[$fiscalAssignedId];
+                if(!$fiscalObject instanceof Model_user)
+				{
+					echo "El proyecto ".$row['code'].' no tiene fiscal asignado.';exit;
+				}
                 if(!isset($fiscalsAndBuildersProductivity[$fiscalAssignedId]))
 				{
 					$fiscalsAndBuildersProductivity[$fiscalAssignedId]['fiscalId'] = $fiscalObject->getId();

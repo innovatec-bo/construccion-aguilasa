@@ -2418,7 +2418,7 @@ class Model_project extends Model_project_base
         return $projectList;
     }    
 
-    public static function productionGeneralSummary($logDateRange = array())
+    public static function productionGeneralSummary($logDateRange = array(), $projectId = NULL)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -2429,6 +2429,12 @@ class Model_project extends Model_project_base
         $filterLogDateTo = "";
         if(isset($logDateRange['to']))
             $filterLogDateTo = " and manual_entry_date_lal <= ".$ci->db->escape($logDateRange['to'])." ";
+
+        $filterProjectId = "";
+        if(!is_null($projectId))
+		{
+			$filterProjectId = " and id_pro = ".$ci->db->escape($projectId)." ";
+		}
         $sql = "
             SELECT
                 code_pro codigo,
@@ -2547,6 +2553,7 @@ class Model_project extends Model_project_base
             and deleted_lal != 1
             ".$filterLogDateFrom."
             ".$filterLogDateTo."
+            ".$filterProjectId."
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
