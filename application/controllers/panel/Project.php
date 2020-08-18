@@ -541,6 +541,14 @@ class Project extends PrivateController
         }
 		$this->complementHandler->addViewComplement("jquery.datatables");
 		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+		$this->complementHandler->addViewComplement("jquery.datatables.jszip");
+		$this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+		$this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
@@ -580,6 +588,14 @@ class Project extends PrivateController
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
 		$this->complementHandler->addViewComplement("jquery.datatables");
 		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+		$this->complementHandler->addViewComplement("jquery.datatables.jszip");
+		$this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+		$this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");

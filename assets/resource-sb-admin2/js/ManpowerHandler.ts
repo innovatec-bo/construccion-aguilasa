@@ -214,7 +214,8 @@ class ManpowerHandler
                 $("#manpower-table").html(html);
                 if(response.data.laborCostMasterDetail.length > 10)
 				{
-					$('#manpower-table table').DataTable();
+					let buttons = ['excel', 'csv','pdf','print'];
+					$('#manpower-table table').DataTable({"buttons": buttons});
 				}
                 console.log('loaded manpower list');
             }

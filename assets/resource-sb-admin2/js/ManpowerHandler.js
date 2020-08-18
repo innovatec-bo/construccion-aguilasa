@@ -165,7 +165,8 @@ var ManpowerHandler = /** @class */ (function () {
                 var html = template({ laborCostMasterDetail: response.data.laborCostMasterDetail });
                 $("#manpower-table").html(html);
                 if (response.data.laborCostMasterDetail.length > 10) {
-                    $('#manpower-table table').DataTable();
+                    var buttons = ['excel', 'csv', 'pdf', 'print'];
+                    $('#manpower-table table').DataTable({ "buttons": buttons });
                 }
                 console.log('loaded manpower list');
             }
