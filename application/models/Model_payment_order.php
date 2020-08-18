@@ -54,15 +54,17 @@ class Model_payment_order extends Model_payment_order_base
                 //Getting the object form list using the projectId
 				/** @var Model_project $projectObject */
                 $projectObject = $projectObjectList[$projectId];
+				//Getting responsible list
+				$statusToGetResponsible = $projectObject->getStatus() == 12?"canceled":"assign_to";
+				$responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusToGetResponsible);
+				$responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
+				$responsibleList = array_column($responsibleList, "id");
                 //Save the real budget and status
                 $status = 45;//defined real budget confirmation
                 $projectObject->setStatus($status);
                 $projectObject->setEndContract($this->_endContractId);
                 $projectObject->save();
-                //Getting responsible list
-                $responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "assign_to");
-                $responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
-                $responsibleList = array_column($responsibleList, "id");
+
                 //Saving real budget
                 $projectObject->saveRealBudget($designBudget, $buildingBudget, $transportationBudget, $liveLineBudget, $rightOfWayBudget, $status, "Proyecto asignado a un numero de orden", $this->_entryDate, $responsibleList);
             }

@@ -120,21 +120,34 @@ class AjaxPaymentManagement extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "conciliation_shipment");
-        $response = array("design" => 0, "transportation" => 0, "building" => 0, "liveLine" => 0);
-        if(count($originalBudgets) > 0)
-        {
-            $response["design"] = $originalBudgets[0]["design_prb"];
-            $response["transportation"] = $originalBudgets[0]["transportation_prb"];
-            $response["building"] = $originalBudgets[0]["building_prb"];
-            $response["liveLine"] = $originalBudgets[0]["live_line_prb"];
-            $response["rightOfWay"] = $originalBudgets[0]["right_of_way_prb"];
-            $response["rbDesign"] = $originalBudgets[0]["design_reb"];
-            $response["rbTransportation"] = $originalBudgets[0]["transportation_reb"];
-            $response["rbBuilding"] = $originalBudgets[0]["building_reb"];
-            $response["rbLiveLine"] = $originalBudgets[0]["live_line_reb"];
-            $response["rbRightOfWay"] = $originalBudgets[0]["right_of_way_reb"];
-        }
+        /** @var Model_project $project */
+        $project = Model_project::getById($projectId);
+
+		$response = array("design" => 0, "transportation" => 0, "building" => 0, "liveLine" => 0, "rightOfWay" => 0, "rbDesign" => 0, "rbTransportation" => 0, "rbBuilding" => 0, "rbLiveLine" => 0, "rbRightOfWay" => 0);
+		if($project->getStatus() == 12)
+		{
+			$canceledBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "canceled");
+			$response["rbDesign"] = $canceledBudgets[0]["design_prb"];;
+		}
+        else
+		{
+			$originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "conciliation_shipment");
+			if(count($originalBudgets) > 0)
+			{
+
+				$response["design"] = $originalBudgets[0]["design_prb"];
+				$response["transportation"] = $originalBudgets[0]["transportation_prb"];
+				$response["building"] = $originalBudgets[0]["building_prb"];
+				$response["liveLine"] = $originalBudgets[0]["live_line_prb"];
+				$response["rightOfWay"] = $originalBudgets[0]["right_of_way_prb"];
+				$response["rbDesign"] = $originalBudgets[0]["design_reb"];
+				$response["rbTransportation"] = $originalBudgets[0]["transportation_reb"];
+				$response["rbBuilding"] = $originalBudgets[0]["building_reb"];
+				$response["rbLiveLine"] = $originalBudgets[0]["live_line_reb"];
+				$response["rbRightOfWay"] = $originalBudgets[0]["right_of_way_reb"];
+			}
+		}
+
         echo json_encode($response);exit;
     }
 
@@ -263,7 +276,7 @@ class AjaxPaymentManagement extends PrivateController
         foreach ($projectObjectList as $project)
         {
             $projectStatus = $project->getStatus();
-            if($projectStatus != 39)
+            if($projectStatus != 39 && $projectStatus != 12)
             {
                 $notReadyToRealBudgets .= $project->getCode().", ";
             }
@@ -276,7 +289,7 @@ class AjaxPaymentManagement extends PrivateController
         }
         elseif ($notReadyToRealBudgets != "")
         {
-            $this->form_validation->set_message('validate_project_list', 'Estos proyecto no estan en estado de "Materiales devueltos a CRE" ('.$notReadyToRealBudgets.')');
+            $this->form_validation->set_message('validate_project_list', 'Estos proyecto deben estar en estado de "Cancelado" o "Materiales devueltos a CRE" ('.$notReadyToRealBudgets.')');
             $response = FALSE;
         }
         return $response;

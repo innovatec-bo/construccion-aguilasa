@@ -295,21 +295,22 @@ function savePaymentOrder()
         data : data,
         success:function(response){
             var paymentOrderId = response.paymentOrderId;
-            window.location.href = base_url + "panel/PaymentManagement/editPaymentOrder/"+paymentOrderId;
-            // if(response.success == 1)
-            // {
-            //     loadTable();
-            //     bootbox.alert({
-            //         title: "",
-            //         message: "This is the small alert!",
-            //         size: 'small'
-            //     });
-            //     swal({ html:true, title:'Good job', text:response.message,type:"success"});
-            // }
-            // else
-            // {
-            //     swal({ html:true, title:'Something went wrong!', text:response.message,type:"error"});
-            // }
+            if(response.success == 1)
+            {
+                // loadTable();
+                // bootbox.alert({
+                //     title: "",
+                //     message: "This is the small alert!",
+                //     size: 'small'
+                // });
+				window.location.href = base_url + "panel/PaymentManagement/editPaymentOrder/"+paymentOrderId;
+                // swal({ html:true, title:'Good job', text:response.message,type:"success"});
+            }
+            else
+            {
+                swal({ html:response.message, title:'Error!', type:"error"});
+				$formContent.unblock();
+            }
 
         }
     });

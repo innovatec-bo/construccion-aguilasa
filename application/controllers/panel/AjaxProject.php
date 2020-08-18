@@ -97,7 +97,7 @@ class AjaxProject extends PrivateController
         $limit = $this->input->post("limit");
         $page = $this->input->post("page");
         $offset = ($page-1)*$limit;
-        $additionalParameters['status'] = "39";
+        $additionalParameters['status'] = "39,12";
         $projects = Model_project::search($term, $limit, $offset, 'code_pro', 'asc', array('code_pro'), $additionalParameters);
         $recordsFiltered = Model_project::searchTotalCount($term, array('code_pro'), $additionalParameters);
 
