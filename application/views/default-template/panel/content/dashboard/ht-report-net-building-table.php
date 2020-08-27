@@ -55,6 +55,6 @@
         <a href="#" class="find-th"><span class="badge">{{data}} <span class="glyphicon glyphicon-download"></span></span></a>
     {{/ifCond}}
     {{#ifCond downloadable "!=" 1}}
-        {{january}}
+        {{data}}
     {{/ifCond}}
 </script>
