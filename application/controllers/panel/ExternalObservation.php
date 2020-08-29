@@ -9,7 +9,7 @@ class ExternalObservation extends PrivateController
 
     public function index()
     {
-//        $this->_validateFeature('blocked_log_date_range_index');
+        $this->_validateFeature('external_observation_index');
 		$this->complementHandler->addViewComplement("parsley");
 		$this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("jquery.datatables");
