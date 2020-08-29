@@ -39,6 +39,5 @@
 </div>
 <!-- /.container-fluid -->
 <?php
-    // $this->load->view("default-template/panel/content/work-plan/WorkPlanHandler");
-    $this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
+
 ?>

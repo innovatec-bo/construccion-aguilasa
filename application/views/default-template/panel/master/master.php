@@ -14,5 +14,6 @@
 <!-- /#wrapper -->
 <?php 
 $this->load->view('default-template/panel/footer/footer', $contentData); 
-$this->load->view('default-template/panel/content/project/ht-datatable-dropdown-menu'); 
+$this->load->view('default-template/panel/content/project/ht-datatable-dropdown-menu');
+$this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
 ?>

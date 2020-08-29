@@ -141,7 +141,7 @@ class Model_user extends Model_user_base
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to($sendTo);
+        $email->to($emailHandler->getEmailByEnvironment($sendTo));
         $email->attach($pathToFile);
         $email->subject("¡Reporte De Construccion De Redes!");
         $email->message($ci->load->view("default-template/panel/email-template/net-building-email.php", $data, true));
@@ -209,7 +209,8 @@ class Model_user extends Model_user_base
         $supervisionList = PublicController::creFiscalSupervisingList($creFiscalEmail);
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@serebo.com",
+            "gilbertof@serebo.com",
+			"vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
             "pmendoza@serebo.com"
@@ -280,8 +281,8 @@ class Model_user extends Model_user_base
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-            $email->to($creFiscalEmail);
-            $email->cc($sendToCC);
+			$email->to($emailHandler->getEmailByEnvironment($creFiscalEmail));
+            $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
@@ -381,8 +382,8 @@ class Model_user extends Model_user_base
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-            $email->to($sendTo);
-            $email->cc($sendToCC);
+            $email->to($emailHandler->getEmailByEnvironment($sendTo));
+            $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
@@ -440,8 +441,8 @@ class Model_user extends Model_user_base
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-            $email->to($sendTo);
-            $email->cc($sendToCC);
+            $email->to($emailHandler->getEmailByEnvironment($sendTo));
+            $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
@@ -489,7 +490,8 @@ class Model_user extends Model_user_base
         $data = array();
         $sendTo = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@serebo.com",
+            "gilbertof@serebo.com",
+			"vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
             "pmendoza@serebo.com"
@@ -499,8 +501,8 @@ class Model_user extends Model_user_base
         $email = $emailHandler->initialize();
         $email->from(EmailHandler::getSender(), 'Serebo.Admin');
         $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-        $email->to($sendTo);
-        $email->subject("Aclaracion de reportes automaticos");
+        $email->to($emailHandler->getEmailByEnvironment($sendTo));
+        $email->subject("Aclaraci&oacute;n de reportes autom&aacute;ticos");
         $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
 //        $ci->load->view("default-template/panel/email-template/clarification.php", $data);
         try

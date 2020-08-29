@@ -2088,16 +2088,19 @@ class Model_project extends Model_project_base
         $statusList = array("already_sent", "as_built", "conciliation_shipment");
         $workFlowDetail = Model_project::getWorkflowDetail();
         $creFiscalList = Model_user::getByRoleKeyword('cre_fiscal');
-
-
+        $externalObservations = Model_external_fiscal_observations::getMasterDetail();
+		$projectIdsObserved = array_column($externalObservations,"project_id_efo");
         $reminderList = array();
         foreach ($workFlowDetail as $row)
         {
+			if(array_search($row['id_pro'],$projectIdsObserved) !== FALSE)
+			{
+				continue;
+			}
             $isInArray = array_search($row["keyword_pst"], $statusList);
 
             if($isInArray !== FALSE)
             {
-//                            echo"<pre>";var_dump($isInArray);exit;
                 foreach ($creFiscalList as $user)
                 {
                     /** @var  $user Model_user */

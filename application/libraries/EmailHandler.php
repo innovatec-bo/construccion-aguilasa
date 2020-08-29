@@ -3,6 +3,7 @@ class EmailHandler
 {
 	private $_api;
 	private $ci;
+	private $_config;
 
 	public function __construct()
 	{
@@ -53,6 +54,7 @@ class EmailHandler
                 }
 
 		}
+		$this->_config = $config;
 		$this->ci->email->initialize($config);
 		return $this->ci->email;
 
@@ -103,4 +105,40 @@ class EmailHandler
         }
         return $emails[$emailType];
     }
+
+	public function getConfig()
+	{
+		return $this->_config;
+	}
+
+	public function getEmailByEnvironment($email)
+	{
+		switch(ENVIRONMENT)
+		{
+			CASE "development":
+			CASE "testing":
+				if(is_array($email))
+				{
+					foreach ($email as &$row)
+					{
+						$emailSegment = explode("@", $row);
+						$userName = $emailSegment[0];
+						$userName = $userName."_".ENVIRONMENT;
+						$domain = "mailinator.com";
+						$row = $userName."@".$domain;
+					}
+				}
+				else
+				{
+					$emailSegment = explode("@", $email);
+					$userName = $emailSegment[0];
+					$userName = $userName."_".ENVIRONMENT;
+					$domain = "mailinator.com";
+					$email = $userName."@".$domain;
+				}
+
+				break;
+		}
+		return $email;
+	}
 }

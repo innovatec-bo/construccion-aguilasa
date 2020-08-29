@@ -7,7 +7,7 @@
  */
 ?>
 <script id="ht-select2-project-response" type="text/x-handlebars-template">
-    <address>
+    <address class="mb-0">
         <strong>{{project.text}}</strong>
         <br>{{project.responsible}}<br>
         {{project.points}}p / {{project.distance}}Km

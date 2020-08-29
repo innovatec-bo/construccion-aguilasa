@@ -43,7 +43,6 @@ class CronJob extends PublicController
                 if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
                 {
                     $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
-//            echo'<pre>';var_dump($response);exit;
                 }
             }
         }

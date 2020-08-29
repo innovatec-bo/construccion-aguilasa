@@ -424,5 +424,45 @@ class PrivateController extends PublicController
         );
         return $columnList;
     }
+
+	public function testMailServer($to = 'jair@twiiti.com')
+	{
+		$ci = &get_instance();
+		$ci->load->library('encrypt');
+		$emailHandler = new EmailHandler();
+		$email = $emailHandler->initialize();
+		$config = $emailHandler->getConfig();
+		$email->from(EmailHandler::getSender(), 'Serebo admin');
+		$email->reply_to('info@serebo.com', 'Serebo admin');
+		$email->to($emailHandler->getEmailByEnvironment($to));
+		$email->subject("Prueba de servidor de correos");
+//		$message = json_encode($config);
+		$data['config'] = $config;
+		$data['emailFrom'] = EmailHandler::getSender();
+		$message = $ci->load->view("default-template/panel/email-template/test-mail-server", $data, true);
+		$email->message($message);
+//		$ci->load->view("public/t1/email-template/test-mail-server", $data);
+		try
+		{
+			if($email->Send())
+			{
+				$sendMessageResponse['success'] = 1;
+				$sendMessageResponse['message'] = "Notice sent successfully.";
+			}
+			else
+			{
+				$sendMessageResponse['success'] = 0;
+				$sendMessageResponse['message'] = "Something went wrong!";
+			}
+		}
+		catch (Exception $e)
+		{
+			$sendMessageResponse['success'] = 0;
+			$sendMessageResponse['message'] = "Internal server error, please try again.";
+		}
+		$data['sendMessageResponse'] = $sendMessageResponse;
+		$ci->load->view("default-template/panel/email-template/test-mail-server", $data);
+//		echo "<pre>"; $sendMessageResponse;exit;
+	}
 }
 

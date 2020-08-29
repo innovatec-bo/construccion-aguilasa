@@ -102,5 +102,4 @@
 <!-- /.container-fluid -->
 <?php
 $this->load->view("default-template/panel/content/payment-management/ht-payment-orders-projects");
-$this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
 ?>

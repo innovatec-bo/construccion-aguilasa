@@ -341,7 +341,7 @@ function select2ProjectGeneralList(selector)
                 };
             }
         },
-        width : "100px",
+        width : "100%",
         escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         templateResult: select2ProjectGeneralListFormatResponse
     });

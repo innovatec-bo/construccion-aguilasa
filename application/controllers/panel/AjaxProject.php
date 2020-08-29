@@ -450,7 +450,8 @@ class AjaxProject extends PrivateController
                     "address"=> $row->address_pro,
                     "responsible" => $row->responsible,
                     "points" => $row->points_pro,
-                    "distance" => $row->distance_pro
+                    "distance" => $row->distance_pro,
+                    "status" => $row->status_name_pst
                 );
             }
         }
