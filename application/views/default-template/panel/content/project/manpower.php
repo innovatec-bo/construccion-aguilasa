@@ -89,7 +89,7 @@
                     <div class="btn-group">
 <!--                        <a href="--><?//=base_url()?><!--" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>-->
 						<?php
-						$allowedStatusToRegisterActivity = array(29,33);
+						$allowedStatusToRegisterActivity = array(29);
 						if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
 							echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en etapa de construccion." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
 						else

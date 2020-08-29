@@ -72,6 +72,13 @@ body{
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
     background-color: #f7c12b;
 }
+.new-menu
+{
+	background-image: url('../../images/new-feature.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: right;
+}
 /****************************** end - menu settings*/
 
 /****************************** begin - table settings*/

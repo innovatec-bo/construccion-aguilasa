@@ -61,9 +61,6 @@ class Model_user extends Model_user_base
         return $result;
     }
 
-
-
-
     public function startSession()
     {
         $ci = &get_instance();

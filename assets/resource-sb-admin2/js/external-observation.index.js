@@ -98,7 +98,7 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-            	var html = '';
+            	var html = '<span class="label label-success">Resuelto</span>';
             	if(row.fixed_efo != 1)
 				{
 					html = '<button type="button" data-original-title="Marcar como resuelto"  data-toggle="tooltip" data-placement="top" class="btn btn-primary mark-as-fixed btn-xs" data-entry-date="'+row.entry_date_efo+'" data-external-observation-id="'+row.id_efo+'">' +

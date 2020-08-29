@@ -59,9 +59,11 @@ class Model_feature extends Model_feature_base
             f.id_fes feature_id,
             f.featurename_fes feature_name,
             f.featureicon_fes icon,
+            f.createdon_fes feature_created_on,
             pf.id_fes parent_id,
             pf.featurename_fes parent_name,
-            pf.featureicon_fes parent_icon
+            pf.featureicon_fes parent_icon,
+            pf.createdon_fes parent_created_on
         FROM
                 sec_features f
         LEFT JOIN sec_features pf on f.parent_feature_id_fes = pf.id_fes
@@ -267,6 +269,20 @@ class Model_feature extends Model_feature_base
 
             if($feature["is_menu_fes"] == 1)
             {
+				$cssNewMenu = "";
+            	if($feature["createdon_fes"] != NULL && $feature["createdon_fes"] != "")
+				{
+					$datetime1 = DateTime::createFromFormat("Y-m-d H:i:s", $feature["createdon_fes"]);
+					$datetime2 = new DateTime();
+					$interval = $datetime1->diff($datetime2);
+					$totalDays = $interval->format('%a');
+					if($totalDays < 8)
+					{
+						$cssNewMenu = 'new-menu';
+					}
+				}
+
+
                 if($childrenTreeHtml != "")
                 {
                     $childrenTreeHtml = '
@@ -276,7 +292,7 @@ class Model_feature extends Model_feature_base
                 ';
                     $treeHtml .= '
                     <li>
-                        <a href="#"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'<span class="fa arrow"></span></a>
+                        <a href="#" class="'.$cssNewMenu.'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].' <span class="fa arrow pull-right"></span></a>
                         '.$childrenTreeHtml.'
                     </li>
                 ';
@@ -285,7 +301,7 @@ class Model_feature extends Model_feature_base
                 {
                     $treeHtml .= '
                     <li>
-                        <a href="'.base_url($feature["link_fes"]).'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'</a>
+                        <a href="'.base_url($feature["link_fes"]).'" class="'.$cssNewMenu.'"><i class="'.$feature["featureicon_fes"].' fa-fw"></i> '.$feature["feature_name"].'</a>
                     </li>
                 ';
                 }
