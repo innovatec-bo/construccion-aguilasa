@@ -1,6 +1,7 @@
 <?php
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class ExcelStakesReport
 {
     private $_sessionUser;
@@ -38,11 +39,13 @@ class ExcelStakesReport
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="reporte_estaquedores.xlsx"');
+        header('Content-Disposition: attachment;filename="reporte_estaquedores.xls"');
         header('Cache-Control: max-age=0');
 
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('php://output');
+//        $writer = new Xlsx($spreadsheet);
+//        $writer->save('php://output');
+		$writer = IOFactory::createWriter($spreadsheet, 'Xls');
+		$writer->save('php://output');
 	}
 
 	public function stakes($spreadsheet, $workflowDetail)
@@ -117,6 +120,7 @@ class ExcelStakesReport
             $borderCoordinate2 = $data['cols'][7].($i+1);
             $spreadsheet->getActiveSheet()->getStyle($data['cols'][0].'3:'.$data['cols'][7].'3')->getAlignment()->setWrapText(true);
             $spreadsheet->getActiveSheet()->getStyle($borderCoordinate1.':'.$borderCoordinate2)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
         }
         return $spreadsheet;
     }
@@ -234,7 +238,7 @@ class ExcelStakesReport
                     $responsibleListIds = explode(",", $row["stake_responsible_user_id"]);
                     if(array_search($user->getId(), $responsibleListIds) !== FALSE)
                     {
-                        $cols = array_chunk(range("A", "Z"),9);
+                        $cols = array_chunk($this->getColumns(),9);
                         $arrayPerformanceList[$user->getId()]['workflow'][] = $row;
                         $arrayPerformanceList[$user->getId()]['cols'] = $cols[$userCounter];
                         $arrayPerformanceList[$user->getId()]['stakerFullName'] = $user->getFullName();
@@ -245,4 +249,21 @@ class ExcelStakesReport
         }
         return $arrayPerformanceList;
     }
+
+	public function getColumns()
+	{
+		$arrayRounds = array("","A","B", "C");
+		$arrayAlphabet = range("A","Z");
+		$columns = array();
+		$i = 0;
+		foreach ($arrayRounds as $round)
+		{
+			foreach ($arrayAlphabet as $char)
+			{
+				$excelColumn = $round.$char;
+				$columns[] = $excelColumn;
+			}
+		}
+		return $columns;
+	}
 }
