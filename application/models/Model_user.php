@@ -280,7 +280,6 @@ class Model_user extends Model_user_base
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 			$email->to($emailHandler->getEmailByEnvironment($creFiscalEmail));
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
-            $email->bcc('jair@twiti.com');
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
