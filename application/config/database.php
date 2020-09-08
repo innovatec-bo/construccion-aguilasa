@@ -95,7 +95,7 @@ $db['development'] = array(
 	'save_queries' => TRUE
 );
 
-$db['testing'] = array(
+$db['production'] = array(
     'dsn'	=> '',
     'hostname' => 'localhost',
     'username' => 'toqueelt_serebo',
