@@ -94,10 +94,10 @@
 										<?php
 										$allowedStatusToRegisterActivity = array(29,30,31,32,33,47,34,35,38,39);
 										if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
-											echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en etapa de construccion." data-toggle="tooltip" data-placement="right"><i class="fa fa-plus fa-fw"></i></button>';
+											echo '<button type="button" class="btn btn-default btn-xs disabled hidden"  data-original-title="El proyecto no esta en etapa de construccion." data-toggle="tooltip" data-placement="right"><i class="fa fa-plus fa-fw"></i></button>';
 										else
 											echo
-											'<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
+											'<button type="button" class="btn btn-default btn-xs add-manpower-progress hidden"><i class="fa fa-plus fa-fw"></i></button>';
 										?>
 									</div>
 								</div>
