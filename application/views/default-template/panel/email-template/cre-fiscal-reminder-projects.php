@@ -55,6 +55,7 @@
                                     });
                                     foreach ($projectList as $project)
                                     {
+//                                    	echo"<pre>";var_dump($project);exit;
                                         //#ff0000 danger
                                         //#FFA87D warning
                                         //#404E67 default
@@ -67,6 +68,7 @@
                                             $color = "#ff0000";
                                         $date = new DateTime($project[$shipmentDate]);
                                         $date = $date->format("d-m-Y");
+                                        $sereboFiscal = $project['fiscal_responsible']==""?"Sin asignar":$project['fiscal_responsible'];
                                         $row .= '
                                                                         <tr style="font-size: 12px; color:'.$color.'">
                                                                             <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
@@ -91,10 +93,10 @@
                                                                                 '.$project["cre_fiscal_pro"].'
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                '.$project['system_pro'].'
+                                                                                '.$project['address_pro'].'
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                '.$project['management_by_pro'].'
+                                                                                '.$sereboFiscal.'
                                                                             </td>
                                                                         </tr>
                                                                     ';
@@ -129,8 +131,8 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">SISTEMA</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">ADMINISTRADO<br>POR</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCI&OACUTE;N</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
