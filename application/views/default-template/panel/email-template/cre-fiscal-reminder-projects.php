@@ -131,7 +131,7 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FECHA</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCI&OACUTE;N</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCIÓN</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
                                                 </tr>
                                                 </thead>
