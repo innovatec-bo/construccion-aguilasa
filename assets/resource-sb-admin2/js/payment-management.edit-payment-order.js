@@ -7,7 +7,7 @@ $(document).ready(function() {
     var date = new Date();
     $('input[name=entry-date]').datetimepicker({
         ignoreReadonly: true,
-        defaultDate: date,
+        // defaultDate: date,
         format: 'DD-MM-YYYY'
     });
     $(".add-payment-order-project").on("click",function(e){

@@ -46,7 +46,7 @@
                                             $entryDate = date_format($entryDate, 'd-m-Y');
                                         }
                                         ?>
-                                        <input name="entry-date" readonly="" <?=$entryDate?> class="form-control" required="" data-parsley-errors-container="#error-entry-date">
+                                        <input name="entry-date" readonly="" value="<?=$entryDate?>" class="form-control" required="" data-parsley-errors-container="#error-entry-date">
                                         <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
