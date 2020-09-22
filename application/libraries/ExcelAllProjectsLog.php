@@ -87,6 +87,7 @@ class ExcelAllProjectsLog
                 ->setCellValue('C'.($i+1), $row["log_entry_date"])
                 ->setCellValue('D'.($i+1), $row['status_name'])
                 ->setCellValue('E'.($i+1), $row['log_detail']);
+
                 //Currency format
            // $spreadsheet->getActiveSheet()->getStyle('D'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
            // $spreadsheet->getActiveSheet()->getStyle('E'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
