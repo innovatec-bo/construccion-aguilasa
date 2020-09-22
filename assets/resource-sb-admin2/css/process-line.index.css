@@ -1,0 +1,8 @@
+div.dt-buttons {
+    margin-bottom: 5px;
+}
+.select2-results {
+	min-width: 200px;
+	background: #eceff1;
+	border: 1px solid #aaaaaa;
+}

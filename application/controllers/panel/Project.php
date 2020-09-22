@@ -402,6 +402,7 @@ class Project extends PrivateController
     public function getProjectWorkFlowReport()
     {
         set_time_limit(300);
+		ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $codeList = $formData["code-list"];
         $specialColumns = isset($formData["columns-to-download"])?$formData["columns-to-download"]:array();
@@ -464,7 +465,8 @@ class Project extends PrivateController
 
     public function downloadWorkflowWithParameters()
     {
-       set_time_limit(300);
+       	set_time_limit(300);
+		ini_set('memory_limit','256M');
         $additionalParameters = $this->input->post();
         // $additionalParameters['status-keyword'] = "";
         // $additionalParameters['keyword'] = "project_has_been_created";

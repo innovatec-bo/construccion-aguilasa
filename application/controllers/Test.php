@@ -14,9 +14,21 @@ class Test extends PublicController
 
     public function codegen()
     {
-//    	$codeGen = new CodeGenHandler('wfl_external_fiscal_observations', 'external_fiscal_observations');
+//    	$codeGen = new CodeGenHandler('wfl_process_line', 'process_line');
 //    	$codeGen->generateModelFiles();
     }
+
+    public function responsibleList()
+	{
+		/** @var Model_project $project */
+		$project = Model_project::getByCode('RD.16.0970');
+		//Getting responsible list
+		$statusToGetResponsible = $project->getStatus() == 12?"canceled":"assign_to";
+		$responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), $statusToGetResponsible);
+		$responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
+		$responsibleList = array_column($responsibleList, "id");
+		echo"<pre>";var_dump($responsibleList);exit;
+	}
 
 	public function observations()
 	{
