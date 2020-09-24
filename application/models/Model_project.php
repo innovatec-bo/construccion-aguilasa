@@ -2573,7 +2573,8 @@ class Model_project extends Model_project_base
                 code_pro project_code,
                 DATE_FORMAT(manual_entry_date_psl,'%d-%m-%Y') log_entry_date,
                 status_name_pst status_name,
-                log_detail_psl log_detail
+                log_detail_psl log_detail,
+                responsible.full_name responsible_full_name
             FROM
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON status_id_psl = id_pst

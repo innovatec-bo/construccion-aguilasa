@@ -67,16 +67,17 @@ class ExcelAllProjectsLog
 
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'Log de Proyectos');
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-        $spreadsheet->getActiveSheet()->getStyle('A1:E1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('A1:E1');
+        $spreadsheet->getActiveSheet()->getStyle('A1:F1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
 
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A2', "#")
             ->setCellValue('B2', "CODIGO")
             ->setCellValue('C2', "FECHA")
             ->setCellValue('D2', "ESTADO")
-            ->setCellValue('E2', "DETALLE");
-        $spreadsheet->getActiveSheet()->getStyle('A2:E2')->applyFromArray($headerStyleArray);
+            ->setCellValue('E2', "RESPONSABLE")
+            ->setCellValue('F2', "DETALLE");
+        $spreadsheet->getActiveSheet()->getStyle('A2:F2')->applyFromArray($headerStyleArray);
         $counter = 1;
         $i = 2;
         foreach ($workflowDetail as $row)
@@ -86,12 +87,9 @@ class ExcelAllProjectsLog
                 ->setCellValue('B'.($i+1), $row["project_code"])
                 ->setCellValue('C'.($i+1), $row["log_entry_date"])
                 ->setCellValue('D'.($i+1), $row['status_name'])
-                ->setCellValue('E'.($i+1), $row['log_detail']);
+                ->setCellValue('E'.($i+1), $row['responsible_full_name'])
+                ->setCellValue('F'.($i+1), $row['log_detail']);
 
-                //Currency format
-           // $spreadsheet->getActiveSheet()->getStyle('D'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-           // $spreadsheet->getActiveSheet()->getStyle('E'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
-           // $spreadsheet->getActiveSheet()->getStyle('F'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
             $spreadsheet->getActiveSheet()->getStyle('C'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
             $i++;
             $counter++;
@@ -103,7 +101,8 @@ class ExcelAllProjectsLog
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getStyle('A1:E'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getStyle('A1:F'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         // $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         return $spreadsheet;
     }
