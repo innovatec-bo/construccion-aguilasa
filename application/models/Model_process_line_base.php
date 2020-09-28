@@ -18,7 +18,7 @@ class Model_process_line_base extends MY_Model
 	protected $_dueDate;
 	protected $_detail;
 
-    public function __construct($projectId = "", $userId = "", $startDate = "", $dueDate = "", $detail = "")
+    public function __construct($projectId = NULL, $userId = NULL, $startDate = "", $dueDate = "", $detail = "")
     {
         parent::__construct();
         $this->_projectId = $projectId;
@@ -147,11 +147,9 @@ class Model_process_line_base extends MY_Model
 		$sql = '
                 select count(' . static::TABLE_ID. ') as total
                 from ' . static::TABLE_NAME .' 
-                left join wfl_projects on id_pro = project_id_efo
-                left join wfl_project_status on status_id_efo = id_pst
-                left join sec_users external_fiscal on external_fiscal.id_usr = fiscal_id_efo
-				left join sec_users created_by on created_by.id_usr = createdby_efo
-				left join sec_users fixed_by on fixed_by.id_usr = fixed_by_efo
+                left join wfl_projects on id_pro = project_id_prl 
+				left join sec_users external_fiscal on external_fiscal.id_usr = user_id_prl
+				left join sec_users created_by on created_by.id_usr = createdby_prl
                 where '.static::notDeleted();
 
 		$query = $ci->db->query($sql);
@@ -177,14 +175,12 @@ class Model_process_line_base extends MY_Model
 
 		$sql = 'select '.static::_dataTableColumns().' 
 				from ' . static::TABLE_NAME . '
-				left join wfl_projects on id_pro = project_id_efo 
-				left join wfl_project_status on status_id_efo = id_pst
-				left join sec_users external_fiscal on external_fiscal.id_usr = fiscal_id_efo
-				left join sec_users created_by on created_by.id_usr = createdby_efo
-				left join sec_users fixed_by on fixed_by.id_usr = fixed_by_efo 
+				left join wfl_projects on id_pro = project_id_prl 
+				left join sec_users external_fiscal on external_fiscal.id_usr = user_id_prl
+				left join sec_users created_by on created_by.id_usr = createdby_prl
 				where '.static::notDeleted().'             
                 group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
-		$query = $ci->db->query($sql);
+		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
 		$result = $query->result();
 		return $result;
 	}
@@ -200,11 +196,9 @@ class Model_process_line_base extends MY_Model
 
 		$sql = 'select '.static::_dataTableColumns().' 
 		from ' . static::TABLE_NAME.' 
-		left join wfl_projects on id_pro = project_id_efo
-		left join wfl_project_status on status_id_efo = id_pst
-		left join sec_users external_fiscal on external_fiscal.id_usr = fiscal_id_efo
-		left join sec_users created_by on created_by.id_usr = createdby_efo
-		left join sec_users fixed_by on fixed_by.id_usr = fixed_by_efo
+		left join wfl_projects on id_pro = project_id_prl 
+		left join sec_users external_fiscal on external_fiscal.id_usr = user_id_prl
+		left join sec_users created_by on created_by.id_usr = createdby_prl
 		';
 		$sql .= ' where '.static::notDeleted().' and (';
 		foreach ($colsArray as $var)
@@ -216,10 +210,6 @@ class Model_process_line_base extends MY_Model
 			elseif($var == "created_by_fullname")
 			{
 				$sql .= ' concat( created_by.firstname_usr, \' \', created_by.lastname_usr ) like \'%' . $text . '%\' or ';
-			}
-			elseif($var == "fixed_by_fullname")
-			{
-				$sql .= ' concat( fixed_by.firstname_usr, \' \', fixed_by.lastname_usr ) like \'%' . $text . '%\' or ';
 			}
 			else
 			{
@@ -240,11 +230,9 @@ class Model_process_line_base extends MY_Model
 
 		$sql = 'select count(' . static::TABLE_ID . ') as total 
 		from ' . static::TABLE_NAME.' 
-		left join wfl_projects on id_pro = project_id_efo
-		left join wfl_project_status on status_id_efo = id_pst
-		left join sec_users external_fiscal on external_fiscal.id_usr = fiscal_id_efo
-		left join sec_users created_by on created_by.id_usr = createdby_efo
-		left join sec_users fixed_by on fixed_by.id_usr = fixed_by_efo
+		left join wfl_projects on id_pro = project_id_prl 
+		left join sec_users external_fiscal on external_fiscal.id_usr = user_id_prl
+		left join sec_users created_by on created_by.id_usr = createdby_prl
 		';
 		$sql .= ' where '.static::notDeleted().' and (';
 
@@ -257,10 +245,6 @@ class Model_process_line_base extends MY_Model
 			elseif($var == "created_by_fullname")
 			{
 				$sql .= ' concat( created_by.firstname_usr, \' \', created_by.lastname_usr ) like \'%' . $text . '%\' or ';
-			}
-			elseif($var == "fixed_by_fullname")
-			{
-				$sql .= ' concat( fixed_by.firstname_usr, \' \', fixed_by.lastname_usr ) like \'%' . $text . '%\' or ';
 			}
 			else
 			{
@@ -280,16 +264,12 @@ class Model_process_line_base extends MY_Model
 	{
 		$columns = static::TABLE_NAME.".*, 
 		code_pro, 
-		status_name_pst,
 		concat(external_fiscal.firstname_usr,' ',external_fiscal.lastname_usr) fiscal_fullname,
 		external_fiscal.firstname_usr fiscal_firstname,
 		external_fiscal.lastname_usr fiscal_lastname,
 		concat(created_by.firstname_usr,' ',created_by.lastname_usr) created_by_fullname,
 		created_by.firstname_usr created_by_firstname,
-		created_by.lastname_usr created_by_lastname,
-		concat(fixed_by.firstname_usr,' ',fixed_by.lastname_usr) fixed_by_fullname,
-		fixed_by.firstname_usr fixed_by_firstname,
-		fixed_by.lastname_usr fixed_by_lastname
+		created_by.lastname_usr created_by_lastname
 		";
 		return $columns;
 	}

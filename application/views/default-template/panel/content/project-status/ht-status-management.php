@@ -5,22 +5,6 @@
  * Date: 06/06/2018
  * Time: 10:23 AM
  */
-// $statusName = "Este proyecto no esta etapa";
-// $projectOnCurrentStage = FALSE;
-// $disableStatus = FALSE;
-// if($project["status_pro"] == 20)
-// {
-//     $statusName = "Este proyecto ha sido devuelto a CRE";
-//     $disableStatus = TRUE;
-// }
-// elseif(isset($statusList[$project["status_pro"]]))
-// {
-//     $projectOnCurrentStage = TRUE;
-//     $statusName = $statusList[$project["status_pro"]]->getName();
-// }
-// $projectSystem = $projectSystems[$project["system_pro"]];
-// $entryDate = DateTime::createFromFormat('Y-m-d H:i:s', $project["entry_date_pro"]);
-// $entryDate = date_format($entryDate, 'd-m-Y');
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
@@ -157,7 +141,7 @@
         <div class="tabbable">
             <ul class="nav nav-tabs wizard step-list">
                 {{#each viewData.stepList}}
-                    {{> ht-wizard-step}}
+                    {{> ht-wizard-step allowBackSteps=../viewData.allowBackSteps}}
                 {{/each}}
             </ul>
         </div>
@@ -193,14 +177,23 @@
     <!-- /.col-lg-12 -->
 </script>
 <script id="ht-wizard-step" type="text/x-handlebars-template">
-    <li class="{{stepStatus}}">
-        {{#ifCond stepId "==" null}}
-            <a href="#none" class="add-step" data-toggle="" aria-expanded="false"><span class="step-icon-add"><i class="fa fa-plus fa-fw"></i></span></a>
-        {{/ifCond}}
-        {{#ifCond stepId "!=" null}}
-            <a href="#{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}" data-icon="{{stepIcon}}"><span class="step-icon"><span class="{{stepIcon}}"></span> </span> <span class="step-name">{{stepName}}</span></a>
-        {{/ifCond}}
-    </li>
+	{{#ifCond stepId "==" null}}
+		<li class="{{stepStatus}}">
+			<a href="#none" class="add-step" data-toggle="" aria-expanded="false"><span class="step-icon-add"><i class="fa fa-plus fa-fw"></i></span></a>
+		</li>
+	{{/ifCond}}
+	{{#ifCond stepId "!=" null}}
+		{{#ifCond allowBackSteps "==" 1}}
+			<li class="{{stepStatus}}">
+				<a href="{{stepKeyword}}" data-toggle="tab" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}" data-icon="{{stepIcon}}"><span class="step-icon"><span class="{{stepIcon}}"></span> </span> <span class="step-name">{{stepName}}</span></a>
+			</li>
+		{{/ifCond}}
+		{{#ifCond allowBackSteps "!=" 1}}
+			<li class="{{stepStatus}} disabled">
+				<a href="javascript: void(0)" data-toggle="tabb" aria-expanded="false" data-status-id="{{stepId}}" id="{{stepKeyword}}" data-icon="{{stepIcon}}"><span class="step-icon"><span class="{{stepIcon}}"></span> </span> <span class="step-name">{{stepName}}</span></a>
+			</li>
+		{{/ifCond}}
+	{{/ifCond}}
 </script>
 <script id="ht-select-next-step" type="text/x-handlebars-template">
     {{#each nextStepObjectArray}}

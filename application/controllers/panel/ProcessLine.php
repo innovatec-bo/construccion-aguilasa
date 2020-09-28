@@ -27,7 +27,7 @@ class ProcessLine extends PrivateController
 		$this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectCss('process-line.index');
         $this->complementHandler->addProjectJs('process-line.index');
-        $fiscals = Model_user::getByRoleKeyword("cre_fiscal");
+        $fiscals = Model_user::getByRoleKeyword("fiscal");
         $data['fiscals'] = $fiscals;
         $this->_loadPanelView("process-line/index", $data);
     }

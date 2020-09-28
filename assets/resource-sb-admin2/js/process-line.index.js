@@ -5,35 +5,22 @@
 $(document).ready(function() {
 
 	select2ProjectGeneralList();
-    $(document).on("submit","form[name=external-observations-form]",function(e){
+    $(document).on("submit","form[name=process-line-form]",function(e){
         e.preventDefault();
         let formData = $(this).serialize();
-        addExternalObservation(formData);
+        enableProcessLine(formData);
     });
-
-	$(document).on("submit","form[name=fix-external-observation]",function(e){
-		e.preventDefault();
-		let formData = $("form[name=fix-external-observation]").serialize();
-		markAsFixed(formData);
-	});
-
-	$(document).on("click",".mark-as-fixed",function(e){
-		e.preventDefault();
-		let $button = $(this);
-		launchPopover($button);
-	});
 
 	$(document).on("click",".close-popover",function(e){
 		e.preventDefault();
 		$('.popover').popover('destroy');
 	});
 
-	let date = new Date();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,
-		defaultDate: date,
+		defaultDate: moment(),
 		format: 'DD-MM-YYYY',
-		maxDate: moment(),
+		minDate: moment(),
 		locale:'es'
 	});
 
@@ -42,12 +29,12 @@ $(document).ready(function() {
 	});
 
     //Horizontal Icons dataTable
-    var oTable = $('#external-observation-index').dataTable({
-		"order": [[ 9, "asc" ], [ 4, "desc" ]],
+    var oTable = $('#process-lines-enabled-index').dataTable({
+		// "order": [[ 9, "asc" ], [ 4, "desc" ]],
         "processing" : true,
         "serverSide" : true,
         "ajax" : {
-            url : base_url + 'panel/AjaxExternalObservation/ajaxDtAllExternalObservations',
+            url : base_url + 'panel/AjaxProcessLine/ajaxDtAllProcessLines',
             type : 'POST'
         },
         "language": {
@@ -56,20 +43,18 @@ $(document).ready(function() {
         "dom": "<'row'<'col-sm-6'Bl><'col-sm-6 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
         "columns" : [{
-            "data" : "id_efo"
+            "data" : "id_prl"
         }, {
             "data" : "code_pro"
         }, {
-            "data" : "status_name_pst"
+            "data" : "detail_prl"
         }, {
-            "data" : "observation_efo"
-        }, {
-            "data" : "entry_date_efo",
+            "data" : "due_date_prl",
 			"render" : function(data, type, row, meta) {
             	let render = "";
-            	if(row.entry_date_efo !== null)
+            	if(row.due_date_prl !== null)
 				{
-					render = moment(row.entry_date_efo,"YYYY-MM-DD").format('DD-MM-YYYY');
+					render = moment(row.due_date_prl,"YYYY-MM-DD").format('DD-MM-YYYY');
 				}
 				return render;
 			}
@@ -78,41 +63,25 @@ $(document).ready(function() {
         }, {
             "data" : "created_by_fullname"
         }, {
-            "data" : "fixed_by_fullname"
-        }, {
-            "data" : "fix_detail_efo"
-        }, {
-            "data" : "fixed_efo"
-        }, {
-            "data" : "fixed_date_efo",
-			"render" : function(data, type, row, meta) {
-				let render = "";
-				if(row.fixed_date_efo !== null)
-				{
-					render = moment(row.fixed_date_efo,"YYYY-MM-DD").format('DD-MM-YYYY');
-				}
-				return render;
-			}
-        }, {
             "defaultContent" : " ",
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-            	var html = '<span class="label label-success">Resuelto</span>';
-            	if(row.fixed_efo != 1)
-				{
-					html = '<button type="button" data-original-title="Marcar como resuelto"  data-toggle="tooltip" data-placement="top" class="btn btn-primary mark-as-fixed btn-xs" data-entry-date="'+row.entry_date_efo+'" data-external-observation-id="'+row.id_efo+'">' +
-							' <i class="fa fa-check"></i> ' +
-							'</button>';
-				}
-                return html;
+            	// var html = '<span class="label label-success">Resuelto</span>';
+            	// if(row.fixed_efo != 1)
+				// {
+				// 	html = '<button type="button" data-original-title="Marcar como resuelto"  data-toggle="tooltip" data-placement="top" class="btn btn-primary mark-as-fixed btn-xs" data-entry-date="'+row.entry_date_efo+'" data-external-observation-id="'+row.id_efo+'">' +
+				// 			' <i class="fa fa-check"></i> ' +
+				// 			'</button>';
+				// }
+                return "html";
             }
         }],
         "drawCallback" : function(object) {
             $('[data-toggle="tooltip"]').tooltip();
             $('[data-toggle="popover"]').popover();
             this.api().column(0).visible(false);
-            this.api().column(9).visible(false);
+            this.api().column(6).visible(false);
         },
         "buttons": ['excel', 'csv','pdf','print']
     });
@@ -121,10 +90,10 @@ $(document).ready(function() {
     oTable.fnSetFilteringDelay(1000);
 });
 
-function addExternalObservation(formData)
+function enableProcessLine(formData)
 {
     $.ajax({
-        url : base_url + 'panel/AjaxExternalObservation/add',
+        url : base_url + 'panel/AjaxProcessLine/add',
         dataType  :"json",
         type : "POST",
         data:formData,
@@ -142,57 +111,7 @@ function addExternalObservation(formData)
     });
 }
 
-function markAsFixed(formData)
-{
-    $.ajax({
-        url : base_url + 'panel/AjaxExternalObservation/edit',
-        dataType  :"json",
-        type : "POST",
-        data:formData,
-        success:function(response){
-            if(response.success === 1)
-            {
-				$('.popover').popover('destroy');
-				sendFormResponse(response);
-				toastr.success(response.message, '', {'progressBar':true});
-            }
-            else
-            {
-				toastr.error(response.message, '', {'progressBar':true,"timeOut":15000});
-            }
-        }
-    });
-}
-
-function launchPopover(DOMObject)
-{
-	let htmlSource = $("#ht-fix-external-observation").html();
-	let template = Handlebars.compile(htmlSource);
-	let entryDate = DOMObject.data('entry-date');
-	let externalObservationId = DOMObject.data('external-observation-id');
-	let html = template({externalObservationId:externalObservationId});
-	DOMObject.popover({
-		title: "Cerrar observaci&oacute;n",
-		content: html,
-		placement: 'left',
-		html: true,
-		trigger: 'click',
-		animation: true,
-		container: 'body',
-		template:'<div class="popover box-shadow-3 no-border" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-	}).popover('show');
-	let date = new Date();
-	$('.date-time-picker-popover').datetimepicker({
-		ignoreReadonly: true,
-		defaultDate: date,
-		format: 'DD-MM-YYYY',
-		maxDate: moment(),
-		minDate: moment(entryDate).format('YYYY-MM-DD'),
-		locale:'es'
-	});
-	$('form[name=fix-external-observation]').parsley();
-}
 function sendFormResponse()
 {
-    $("#external-observation-index").DataTable().ajax.reload();
+    $("#process-lines-enabled-index").DataTable().ajax.reload();
 }

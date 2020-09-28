@@ -35,9 +35,9 @@ class AjaxProcessLine extends PrivateController
 //        $this->_validateFeature('role_add');
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-id', 'Proyecto', 'trim|required');
-        $this->form_validation->set_rules('cre-fiscal-id', 'Fiscal', 'trim|required');
-        $this->form_validation->set_rules('observation', 'Observacion', 'trim|required');
-        $this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
+        $this->form_validation->set_rules('fiscal-id', 'Fiscal', 'trim|required');
+        $this->form_validation->set_rules('detail', 'Detalle', 'trim|required');
+        $this->form_validation->set_rules('due-date', 'Fecha de expiracion', 'trim|required');
 
         if($this->input->post())
         {
@@ -45,53 +45,16 @@ class AjaxProcessLine extends PrivateController
             $projectId = $formData["project-id"];
             /** @var Model_project $project */
             $project = Model_project::getById($projectId);
-            $fiscalId = $formData["cre-fiscal-id"];
-            $observation = $formData['observation'];
-			$entryDate = DateTime::createFromFormat("d-m-Y", $formData['entry-date']);
-			$entryDate = $entryDate->format("Y-m-d H:i:s");
-            $externalObservations = new Model_external_fiscal_observations($project->getId(), $fiscalId, $observation, NULL, "", NULL, $project->getStatus(), $entryDate);
-			$externalObservations->save();
+            $fiscalId = $formData["fiscal-id"];
+            $detail = $formData['detail'];
+			$startDate = date("Y-m-d H:i:s");
+			$dueDate = DateTime::createFromFormat("d-m-Y", $formData['due-date']);
+			$dueDate = $dueDate->format("Y-m-d 23:59:59");
+            $processLine = new Model_process_line($project->getId(), $fiscalId, $startDate, $dueDate, $detail);
+			$processLine->save();
             $response["success"] = 1;
             $response["message"] = "Registro guardado correctamente.";
         }
-        echo json_encode($response);exit;
-    }
-
-    public function edit()
-    {
-//        $this->_validateFeature('role_edit');
-
-        /** Server Side Validations **/
-        $this->form_validation->set_rules('fixed-date', 'Fecha de correcci&oacute;n', 'trim|required');
-        $this->form_validation->set_rules('fix-detail', 'Detalle de correcci&oacute;n', 'trim|required');
-
-		if($this->input->post())
-        {
-            $formData = $this->input->post();
-            $externalObservationId = $formData["external-observation-id"];
-            $fixDetail = $formData["fix-detail"];
-            $fixedDate = $formData["fixed-date"];
-            $fixedDate = DateTime::createFromFormat("d-m-Y", $fixedDate);
-            $fixedDate = $fixedDate->format('Y-m-d H:i:s');
-            /** @var Model_external_fiscal_observations $externalObservation */
-            $externalObservation = Model_external_fiscal_observations::getById($externalObservationId);
-            $externalObservation->setFixedDate($fixedDate);
-			$currentUser = PrivateController::getSessionUser();
-			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
-            $externalObservation->setFixedBy($currentUserId);
-            $externalObservation->setFixDetail($fixDetail);
-            $externalObservation->setFixed(1);
-			$externalObservation->save();
-            $response["success"] = 1;
-            $response["message"] = "Obsevacion solucionada.";
-        }
-        echo json_encode($response);exit;
-    }
-
-    public function getTotalRoles()
-    {
-        $recordsTotal = Model_role::countAll();
-        $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }
 }

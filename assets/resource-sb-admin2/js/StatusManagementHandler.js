@@ -46,6 +46,7 @@ var StatusManagementHandler = /** @class */ (function () {
     StatusManagementHandler.prototype.prepareViewData = function () {
         var project = this.loadViewResponse.data.projectFullDetail;
         var projectLog = this.loadViewResponse.data.projectLog;
+        var allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         var allowUpdateHistory = this.loadViewResponse.data.updateHistory;
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
@@ -71,6 +72,7 @@ var StatusManagementHandler = /** @class */ (function () {
         this.viewData.project = project;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
+        this.viewData.allowBackSteps = allowBackSteps;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
         this.viewData.responsibleList = responsibleList;
@@ -193,7 +195,7 @@ var StatusManagementHandler = /** @class */ (function () {
             case 'addStep':
                 button.parent().removeClass("li-add-step").addClass("li-remove-step");
                 $liStep.removeClass("active").addClass("completed");
-                button.parent().prev().removeClass("completed").addClass("active");
+                button.parent().prev().removeClass("viewData").addClass("active");
                 button.removeClass("add-step").addClass("remove-step");
                 button.find("i").removeClass("fa-plus").addClass("fa-minus");
                 break;

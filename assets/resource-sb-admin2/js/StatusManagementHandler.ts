@@ -76,6 +76,7 @@ class StatusManagementHandler
     {
         let project = this.loadViewResponse.data.projectFullDetail;
         let projectLog = this.loadViewResponse.data.projectLog;
+		let allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         let allowUpdateHistory = this.loadViewResponse.data.updateHistory;
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
@@ -106,6 +107,7 @@ class StatusManagementHandler
         this.viewData.project = project;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
+        this.viewData.allowBackSteps = allowBackSteps;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
         this.viewData.responsibleList = responsibleList;
@@ -253,7 +255,7 @@ class StatusManagementHandler
             case 'addStep':
                 button.parent().removeClass("li-add-step").addClass("li-remove-step");
                 $liStep.removeClass("active").addClass("completed");
-                button.parent().prev().removeClass("completed").addClass("active");
+                button.parent().prev().removeClass("viewData").addClass("active");
                 button.removeClass("add-step").addClass("remove-step");
                 button.find("i").removeClass("fa-plus").addClass("fa-minus");
                 break;
