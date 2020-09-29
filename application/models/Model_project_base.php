@@ -475,7 +475,7 @@ class Model_project_base extends MY_Model
                         and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as approved_status 
-                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl and deleted_psl != 1
             ) approved_budget on approved_budget.project_id_psl = id_pro
             left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
             LEFT JOIN (
@@ -495,7 +495,7 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as rb_status 
-                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl and deleted_psl != 1                   
             ) real_budget on real_budget.project_id_psl = id_pro
             left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
                 WHERE
@@ -642,7 +642,7 @@ class Model_project_base extends MY_Model
                         and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as approved_status 
-                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl and deleted_psl != 1
             ) approved_budget on approved_budget.project_id_psl = id_pro
             left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
             LEFT JOIN (
@@ -662,7 +662,7 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as rb_status 
-                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl and deleted_psl != 1                   
             ) real_budget on real_budget.project_id_psl = id_pro
             left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
                 WHERE
@@ -825,7 +825,7 @@ class Model_project_base extends MY_Model
                         and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as approved_status 
-                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl and deleted_psl != 1
             ) approved_budget on approved_budget.project_id_psl = id_pro
             left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
             LEFT JOIN (
@@ -845,7 +845,7 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as rb_status 
-                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl and deleted_psl != 1                   
             ) real_budget on real_budget.project_id_psl = id_pro
             left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             WHERE
@@ -1003,7 +1003,7 @@ class Model_project_base extends MY_Model
                         and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as approved_status 
-                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl
+                LEFT JOIN wfl_project_status_log on approved_status.entry_date = manual_entry_date_psl and approved_status.project_id = project_id_psl  and deleted_psl != 1
             ) approved_budget on approved_budget.project_id_psl = id_pro
 			left join wfl_project_budgets on status_log_id_prb = approved_budget.id_psl
 			LEFT JOIN (
@@ -1023,7 +1023,7 @@ class Model_project_base extends MY_Model
                     and deleted_psl != 1
                     GROUP BY project_id_psl
                 ) as rb_status 
-                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl                   
+                LEFT JOIN wfl_project_status_log on rb_status.entry_date = manual_entry_date_psl and rb_status.project_id = project_id_psl and deleted_psl != 1                   
             ) real_budget on real_budget.project_id_psl = id_pro
 			left join wfl_project_real_budgets on status_log_id_reb = real_budget.id_psl
             WHERE
