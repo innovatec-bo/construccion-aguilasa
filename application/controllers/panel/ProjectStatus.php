@@ -250,7 +250,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectCss('project.index');
         $this->complementHandler->addProjectJs('project.index');
         $data["viewTitle"] = "Listos para definir parametros de inicio de construccion";
-        $data["status"] = "11,31";
+        $data["status"] = "11";
         $data["statusSet"] = "";
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
