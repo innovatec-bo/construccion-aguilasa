@@ -2574,7 +2574,10 @@ class Model_project extends Model_project_base
                 DATE_FORMAT(manual_entry_date_psl,'%d-%m-%Y') log_entry_date,
                 status_name_pst status_name,
                 log_detail_psl log_detail,
-                responsible.full_name responsible_full_name
+                responsible.full_name responsible_full_name,
+                createdBy.id_usr created_by_id,
+                concat(createdBy.firstname_usr,' ',createdBy.lastname_usr) created_by_fullname,
+                createdon_psl log_system_date
             FROM
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON status_id_psl = id_pst
@@ -2626,6 +2629,7 @@ class Model_project extends Model_project_base
                 LEFT JOIN sec_users on user_id_sre = id_usr 
                 and deleted_slr != 1
             ) responsible on responsible.status_log_id_slr = id_psl
+            LEFT JOIN sec_users as createdBy on createdby_psl = createdBy.id_usr
             WHERE
                 1 = 1
                 and deleted_psl != 1 and keyword_pst not in ('approvement','schedule') and deleted_pro != 1
