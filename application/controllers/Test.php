@@ -5,7 +5,7 @@
  * Date: 12/4/2018
  * Time: 21:25
  */
-class Test extends PublicController
+class Test extends PrivateController
 {
     public function __construct()
     {
@@ -18,19 +18,13 @@ class Test extends PublicController
 //    	$codeGen->generateModelFiles();
     }
 
-    public function responsibleList()
+    public function excel()
 	{
-		/** @var Model_project $project */
-		$project = Model_project::getByCode('RD.16.0970');
-		//Getting responsible list
-		$statusToGetResponsible = $project->getStatus() == 12?"canceled":"assign_to";
-		$responsibleList =  Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), $statusToGetResponsible);
-		$responsibleList = json_decode("[".$responsibleList[0]["jsonResponsible"]."]",TRUE);
-		$responsibleList = array_column($responsibleList, "id");
-		echo"<pre>";var_dump($responsibleList);exit;
+		$report = new ExcelExecutiveReport($this->sessionUser);
+		$report->getReport();
 	}
 
-	public function observations()
+	private function observations()
 	{
 		$projectList = "
 		RA.17.1706	Con Nro. de orden	1/10/18	10/12/18
@@ -351,9 +345,6 @@ class Test extends PublicController
 				$row = trim($row);
 				$row = explode("Con Nro. de orden", $row);
 				$code = trim($row[0]);
-				$dates = explode('     ',trim($row[1]));
-//				echo"<pre>";var_dump($code, trim($row[1]), $dates);exit;
-//				echo"<pre>";var_dump($code);
 				$codeList .= '"'.$code.'",';
 			}
 			$i++;
