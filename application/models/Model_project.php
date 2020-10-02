@@ -2578,7 +2578,7 @@ class Model_project extends Model_project_base
                 responsible.full_name responsible_full_name,
                 createdBy.id_usr created_by_id,
                 concat(createdBy.firstname_usr,' ',createdBy.lastname_usr) created_by_fullname,
-                createdon_psl cre_fiscal_id
+                createdon_psl log_system_date
             FROM
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON status_id_psl = id_pst
