@@ -12,6 +12,7 @@ class ExcelExecutiveReport
     private array $_generalExecutiveReportToPrint;
     private Spreadsheet $_phpSpreadsheet;
     private array $_dependency;
+    private array $_externalObservations;
 
     public function __construct(object $sessionUser)
     {
@@ -47,6 +48,8 @@ class ExcelExecutiveReport
     {
     	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment');
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
+		$this->_externalObservations = Model_external_fiscal_observations::getMasterDetail();
+		$this->_removeObservedProjects();
 		$this->_phpSpreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
             ->setTitle("Informe Ejecutivo")
@@ -58,6 +61,10 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->removeSheetByIndex(0);
         $this->_generalDetail();
 		$this->_generalExecutiveReport();
+		$this->_generalDetail('Detalle-Ruddy_Peredo','Rudy Peredo');
+		$this->_generalExecutiveReport('Informe Ejecutivo-Ruddy_Peredo','Rudy Peredo');
+		$this->_generalDetail('Detalle-Alberto_Lobera','Alberto Lobera');
+		$this->_generalExecutiveReport('Informe Ejecutivo-Alberto_Lober','Alberto Lobera');
 		$this->_phpSpreadsheet->setActiveSheetIndex(0);
 
 		// redirect output to client browser
@@ -76,7 +83,7 @@ class ExcelExecutiveReport
 		}
     }
 
-    private function _generalDetail($sheetTitle = 'DETALLE GENERAL') : void
+    private function _generalDetail($sheetTitle = 'Detalle General', $filterBy = "") : void
     {
         $titleStyleArray = [
             'font' => ['bold' => true],
@@ -127,6 +134,12 @@ class ExcelExecutiveReport
         $totalTotalBudget = 0;
         foreach ($this->_workflowDetail as $row)
         {
+			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
+        	if($filterBy != "")
+			{
+				if($filterBy != $dependency)
+					continue;
+			}
         	switch ($row['keyword_pst'])
 			{
 				case "already_sent":
@@ -139,9 +152,8 @@ class ExcelExecutiveReport
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					break;
 			}
-			//TODO: put summary about total at footer.
 			$totalTotalBudget += $totalBudget;
-        	$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
+
 			$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
                 ->setCellValue('A'.($i+1), $counter)
                 ->setCellValue('B'.($i+1), $row["code_pro"])
@@ -177,7 +189,7 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:J'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
     }
 
-	private function _generalExecutiveReport($sheetTitle = "Informe Ejecutivo General") : void
+	private function _generalExecutiveReport($sheetTitle = "Informe Ejecutivo General", $filterBy = "") : void
 	{
 		$titleStyleArray = [
 			'font' => ['bold' => true],
@@ -203,12 +215,12 @@ class ExcelExecutiveReport
 			]
 		];
 
-		$this->_prepareGeneralExecutiveReport();
+		$generalExecutiveReportToPrint = $this->_prepareGeneralExecutiveReport($filterBy);
 
 		$sheet2 = $this->_phpSpreadsheet->createSheet();
 		$sheet2->setTitle($sheetTitle);
 
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('A1', 'INFORME GENERAL');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('A1', 'INFORME EJECUTIVO GENERAL');
 		$this->_phpSpreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:N1')->applyFromArray($titleStyleArray);
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('A1:N1');
@@ -239,7 +251,11 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A3:N3')->applyFromArray($headerStyleArray);
 		$counter = 1;
 		$i = 3;
-		foreach ($this->_generalExecutiveReportToPrint as $row)
+//		if($filterBy != "")
+//		{
+//			echo"<pre>";var_dump($filterBy, $this->_generalExecutiveReportToPrint);exit;
+//		}
+		foreach ($generalExecutiveReportToPrint as $row)
 		{
 			$staticDays1 = "";
 			if(isset($row["already_sent"]))
@@ -315,10 +331,21 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:N'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 	}
 
-	private function _prepareGeneralExecutiveReport() : void
+	private function _prepareGeneralExecutiveReport($filterBy = "") : array
 	{
+		$generalExecutiveReportToPrint = array();
 		foreach ($this->_workflowDetail as $row)
 		{
+			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
+			if($filterBy != "")
+			{
+				if($filterBy != $dependency)
+				{
+
+					continue;
+				}
+
+			}
 			$creFiscalId = $row['cre_fiscal_id'];
 			$statusKeyword = $row['keyword_pst'];
 			switch ($statusKeyword)
@@ -333,31 +360,48 @@ class ExcelExecutiveReport
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					break;
 			}
-			if(!isset($this->_generalExecutiveReportToPrint[$creFiscalId]))
+			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
 			{
-				$this->_generalExecutiveReportToPrint[$creFiscalId]['fullName'] = $row['cre_fiscal_pro'];
+				$generalExecutiveReportToPrint[$creFiscalId]['fullName'] = $row['cre_fiscal_pro'];
 			}
-			if(!isset($this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]))
+			if(!isset($generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]))
 			{
-				$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['quantity'] = 0;
-				$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['staticDays'] = 0;
-				$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['totalBudget'] = 0;
-			}
-
-			$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['quantity'] ++;
-			$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['staticDays'] += $row['static_days'];
-			$this->_generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['totalBudget'] += $totalBudget;
-
-			if(!isset($this->_generalExecutiveReportToPrint[$creFiscalId]['total']))
-			{
-				$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['quantity'] = 0;
-				$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['staticDays'] = 0;
-				$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['totalBudget'] = 0;
+				$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['quantity'] = 0;
+				$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['staticDays'] = 0;
+				$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['totalBudget'] = 0;
 			}
 
-			$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['quantity'] ++;
-			$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['staticDays'] += $row['static_days'];
-			$this->_generalExecutiveReportToPrint[$creFiscalId]['total']['totalBudget'] += $totalBudget;
+			$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['quantity'] ++;
+			$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['staticDays'] += $row['static_days'];
+			$generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]['totalBudget'] += $totalBudget;
+
+			if(!isset($generalExecutiveReportToPrint[$creFiscalId]['total']))
+			{
+				$generalExecutiveReportToPrint[$creFiscalId]['total']['quantity'] = 0;
+				$generalExecutiveReportToPrint[$creFiscalId]['total']['staticDays'] = 0;
+				$generalExecutiveReportToPrint[$creFiscalId]['total']['totalBudget'] = 0;
+			}
+
+			$generalExecutiveReportToPrint[$creFiscalId]['total']['quantity'] ++;
+			$generalExecutiveReportToPrint[$creFiscalId]['total']['staticDays'] += $row['static_days'];
+			$generalExecutiveReportToPrint[$creFiscalId]['total']['totalBudget'] += $totalBudget;
+		}
+		return $generalExecutiveReportToPrint;
+	}
+
+	private function _removeObservedProjects()
+	{
+		$observedProjectIds = array_column($this->_externalObservations,'project_id_efo');
+		$observedProjectIds = array_unique($observedProjectIds);
+		$i = 0;
+		foreach ($this->_workflowDetail as $row)
+		{
+			$workflowProjectId = $row['id_pro'];
+			if(array_search($workflowProjectId,$observedProjectIds) !== FALSE)
+			{
+				unset($this->_workflowDetail[$i]);
+			}
+			$i++;
 		}
 	}
 }
