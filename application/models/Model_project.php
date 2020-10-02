@@ -341,6 +341,7 @@ class Model_project extends Model_project_base
             folder_date_pro,
             concat(firstname_usr,' ', lastname_usr) cre_fiscal_pro,
             id_usr cre_fiscal_id,
+            email_usr cre_fiscal_email,
             CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'
@@ -2577,7 +2578,7 @@ class Model_project extends Model_project_base
                 responsible.full_name responsible_full_name,
                 createdBy.id_usr created_by_id,
                 concat(createdBy.firstname_usr,' ',createdBy.lastname_usr) created_by_fullname,
-                createdon_psl log_system_date
+                createdon_psl cre_fiscal_id
             FROM
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON status_id_psl = id_pst
