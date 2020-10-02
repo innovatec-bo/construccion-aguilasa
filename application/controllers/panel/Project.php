@@ -753,4 +753,10 @@ class Project extends PrivateController
         $pdf = new ExcelDailyProductivityReport($this->sessionUser, $logDateRange);
         $pdf->getReport();
     }
+
+	public function executiveReport()
+	{
+		$report = new ExcelExecutiveReport($this->sessionUser);
+		$report->getReport();
+	}
 }

@@ -219,6 +219,11 @@ $(document).ready(function() {
         }
         
     });
+
+	$(document).on("submit","form.executive-report", function(e){
+		e.preventDefault();
+		window.location.href = base_url+"panel/Project/executiveReport/";
+	});
 });
 
 function getUsersQuantity()

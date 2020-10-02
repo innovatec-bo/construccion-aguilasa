@@ -18,12 +18,6 @@ class Test extends PrivateController
 //    	$codeGen->generateModelFiles();
     }
 
-    public function excel()
-	{
-		$report = new ExcelExecutiveReport($this->sessionUser);
-		$report->getReport();
-	}
-
 	private function observations()
 	{
 		$projectList = "

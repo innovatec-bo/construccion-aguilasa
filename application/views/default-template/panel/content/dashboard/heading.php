@@ -366,6 +366,18 @@
             </div>
         </form>
     </div>
+	<div class="col-lg-3 col-md-6">
+		<form class="form-inline executive-report" method="post">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Informe Ejecutivo
+				</div>
+				<div class="panel-footer p-0">
+					<button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 <div class="row">
     <div class="col-md-12">
