@@ -97,13 +97,17 @@ class CronJob extends PublicController
 		}
 	}
 
-	public function sendExecutiveReport()
+	public function sendExecutiveReport($challenge)
 	{
-//		$sessionUser = new \stdClass();
-//		$sessionUser->fullName = "Generado Automaticamente";
-//		$report = new ExcelExecutiveReport($sessionUser);
-//		$report->getReport();
-
-		Model_user::sendExecutiveReport();
+		if($challenge == 'sendExecutiveReport2020')
+		{
+			$response = Model_user::sendExecutiveReport();
+			if($response['success'] == 1)
+			{
+				/** @var ExcelExecutiveReport $report */
+				$report = $response['report'];
+				$report->removeFile();
+			}
+		}
 	}
 }

@@ -542,10 +542,11 @@ class Model_user extends Model_user_base
 		$report = new ExcelExecutiveReport();
 		$report->getReport(TRUE);
 		$data = array();
-		$sendTo = array(
-			"gilbertof@mailinator.com",
-			"vh.suarez@mailinator.com"
-		);
+		$sendTo = array("jair@twiiti.com");
+//		$sendTo = array(
+//			"gilbertof@mailinator.com",
+//			"vh.suarez@mailinator.com"
+//		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
@@ -562,7 +563,7 @@ class Model_user extends Model_user_base
 			{
 				$sendMessageResponse['success'] = 1;
 				$sendMessageResponse['message'] = "Notice sent successfully.";
-				$report->removeFile();
+				$sendMessageResponse['report'] = $report;
 			}
 			else
 			{
