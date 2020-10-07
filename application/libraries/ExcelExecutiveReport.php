@@ -13,9 +13,15 @@ class ExcelExecutiveReport
     private Spreadsheet $_phpSpreadsheet;
     private array $_dependency;
     private array $_externalObservations;
+    private string $_fileName;
 
-    public function __construct(object $sessionUser)
+    public function __construct(object $sessionUser = NULL)
     {
+    	if(is_null($sessionUser))
+		{
+			$sessionUser = new \stdClass();
+			$sessionUser->fullName = "Generado Automaticamente";
+		}
         $this->_sessionUser = $sessionUser;
         $this->_workflowDetail = array();
         $this->_generalExecutiveReportToPrint = array();
@@ -42,9 +48,10 @@ class ExcelExecutiveReport
 			'miltonmr@cre.com.bo' => 'Alberto Lobera',
 			'jhonyvv@cre.com.bo' => 'Alberto Lobera'
 		);
+        $this->_fileName = 'Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx';
     }
 
-    function getReport() : void
+    function getReport($save = FALSE) : void
     {
     	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment');
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
@@ -70,22 +77,35 @@ class ExcelExecutiveReport
 		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIR','Alberto Lobera');
 		$this->_phpSpreadsheet->setActiveSheetIndex(0);
 
-		// redirect output to client browser
-//        header('Content-Type: application/vnd.ms-excel');
-//        header('Content-Disposition: attachment;filename="Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx"');
-//        header('Cache-Control: max-age=0');
-
-		try
+		if($save)
 		{
-			$writer = IOFactory::createWriter($this->_phpSpreadsheet, 'Xlsx');
-//			$writer->save('php://output');
-			$writer->save(FCPATH.'assets/Informe-Ejecutivo-'.date("d.m.y").'.xlsx');
+			try
+			{
+				$writer = IOFactory::createWriter($this->_phpSpreadsheet, 'Xlsx');
+				$writer->save(FCPATH.'assets/'.$this->_fileName);
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
 		}
-		catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+		else
 		{
-			exit($e->getMessage());
-		}
+			// redirect output to client browser
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="'.$this->_fileName.'"');
+			header('Cache-Control: max-age=0');
 
+			try
+			{
+				$writer = IOFactory::createWriter($this->_phpSpreadsheet, 'Xlsx');
+				$writer->save('php://output');
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
+		}
     }
 
     private function _generalDetail($sheetTitle = 'Detalle General', $filterBy = "") : void
@@ -408,5 +428,18 @@ class ExcelExecutiveReport
 			}
 			$i++;
 		}
+	}
+
+	public function removeFile()
+	{
+		if(file_exists($this->getFilePath()))
+		{
+			unlink($this->getFilePath());
+		}
+	}
+
+	public function getFilePath()
+	{
+		return FCPATH.'assets/'.$this->_fileName;
 	}
 }

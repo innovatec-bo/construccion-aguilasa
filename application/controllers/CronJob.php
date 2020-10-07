@@ -99,9 +99,11 @@ class CronJob extends PublicController
 
 	public function sendExecutiveReport()
 	{
-		$sessionUser = new \stdClass();
-		$sessionUser->fullName = "Generado Automaticamente";
-		$report = new ExcelExecutiveReport($sessionUser);
-		$report->getReport();
+//		$sessionUser = new \stdClass();
+//		$sessionUser->fullName = "Generado Automaticamente";
+//		$report = new ExcelExecutiveReport($sessionUser);
+//		$report->getReport();
+
+		Model_user::sendExecutiveReport();
 	}
 }
