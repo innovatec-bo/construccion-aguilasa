@@ -48,6 +48,9 @@ class ExcelExecutiveReport
     {
     	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment');
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
+		usort($this->_workflowDetail, function($a, $b) {
+			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
+		});
 		$this->_externalObservations = Model_external_fiscal_observations::getMasterDetail();
 		$this->_removeObservedProjects();
 		$this->_phpSpreadsheet->getProperties()
@@ -61,26 +64,28 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->removeSheetByIndex(0);
         $this->_generalDetail();
 		$this->_generalExecutiveReport();
-		$this->_generalDetail('Detalle-Ruddy_Peredo','Rudy Peredo');
-		$this->_generalExecutiveReport('Informe Ejecutivo-Ruddy_Peredo','Rudy Peredo');
-		$this->_generalDetail('Detalle-Alberto_Lobera','Alberto Lobera');
-		$this->_generalExecutiveReport('Informe Ejecutivo-Alberto_Lober','Alberto Lobera');
+		$this->_generalDetail('Detalle-AREA GIS','Rudy Peredo');
+		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIS','Rudy Peredo');
+		$this->_generalDetail('Detalle-AREA GIR','Alberto Lobera');
+		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIR','Alberto Lobera');
 		$this->_phpSpreadsheet->setActiveSheetIndex(0);
 
 		// redirect output to client browser
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx"');
-        header('Cache-Control: max-age=0');
+//        header('Content-Type: application/vnd.ms-excel');
+//        header('Content-Disposition: attachment;filename="Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx"');
+//        header('Cache-Control: max-age=0');
 
 		try
 		{
 			$writer = IOFactory::createWriter($this->_phpSpreadsheet, 'Xlsx');
-			$writer->save('php://output');
+//			$writer->save('php://output');
+			$writer->save(FCPATH.'assets/Informe-Ejecutivo-'.date("d.m.y").'.xlsx');
 		}
 		catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
 		{
 			exit($e->getMessage());
 		}
+
     }
 
     private function _generalDetail($sheetTitle = 'Detalle General', $filterBy = "") : void

@@ -28,7 +28,7 @@ class CronJob extends PublicController
     {
         if($challenge == 'clarificationEmail2019')
         {
-            Model_user::emailClarification();
+//            Model_user::emailClarification();
         }
     }
 
@@ -95,5 +95,13 @@ class CronJob extends PublicController
 			$dateRange = array('from' => $from, 'to' => $to);
 			$assignment = Model_user_supervisor_by_period::getAssignmentByDateRange($dateRange);
 		}
+	}
+
+	public function sendExecutiveReport()
+	{
+		$sessionUser = new \stdClass();
+		$sessionUser->fullName = "Generado Automaticamente";
+		$report = new ExcelExecutiveReport($sessionUser);
+		$report->getReport();
 	}
 }
