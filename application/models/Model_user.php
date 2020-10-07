@@ -542,11 +542,10 @@ class Model_user extends Model_user_base
 		$report = new ExcelExecutiveReport();
 		$report->getReport(TRUE);
 		$data = array();
-		$sendTo = array("jair@twiiti.com");
-//		$sendTo = array(
-//			"gilbertof@mailinator.com",
-//			"vh.suarez@mailinator.com"
-//		);
+		$sendTo = array(
+			"gilbertof@serebo.com",
+			"vh.suarez@serebo.com"
+		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
@@ -556,7 +555,6 @@ class Model_user extends Model_user_base
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
 //        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
-
 		try
 		{
 			if($email->Send())
