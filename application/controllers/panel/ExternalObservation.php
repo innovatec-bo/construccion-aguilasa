@@ -28,6 +28,8 @@ class ExternalObservation extends PrivateController
         $this->complementHandler->addProjectCss('external-observation.index');
         $this->complementHandler->addProjectJs('external-observation.index');
         $fiscals = Model_user::getByRoleKeyword("cre_fiscal");
+        $designers = Model_user::getByRoleKeyword("designer");
+        $fiscals = array_merge($fiscals, $designers);
         $data['fiscals'] = $fiscals;
         $this->_loadPanelView("external-observation/index", $data);
     }
