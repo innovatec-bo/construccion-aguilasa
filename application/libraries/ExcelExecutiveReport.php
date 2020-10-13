@@ -37,6 +37,8 @@ class ExcelExecutiveReport
 			'diegoasr@cre.com.bo' => 'Rudy Peredo',
 			'dariojfm@cre.com.bo' => 'Rudy Peredo',
 			'paulrs@cre.com.bo' => 'Rudy Peredo',
+			'robertomm@cre.com.bo' => 'Rudy Peredo',
+			'christianvr@cre.com.bo' => 'Rudy Peredo',
 			'luisdf@cre.com.bo' => 'Alberto Lobera',
 			'salviocm@cre.com.bo' => 'Alberto Lobera',
 			'rolandodc@cre.com.bo' => 'Alberto Lobera',
@@ -46,7 +48,8 @@ class ExcelExecutiveReport
 			'josers@cre.com.bo' => 'Alberto Lobera',
 			'javiervm@cre.com.bo' => 'Alberto Lobera',
 			'miltonmr@cre.com.bo' => 'Alberto Lobera',
-			'jhonyvv@cre.com.bo' => 'Alberto Lobera'
+			'jhonyvv@cre.com.bo' => 'Alberto Lobera',
+			'reneoom@cre.com.bo' => 'Alberto Lobera'
 		);
         $this->_fileName = 'Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx';
     }
