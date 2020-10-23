@@ -1,3 +1,22 @@
+
+#work-plan-summary-table tbody, #work-plan-summary-table thead {
+	display: block;
+	/*width: 600px;*/
+}
+
+#work-plan-summary-table tbody {
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	position: relative;
+}
+
+/*#work-plan-summary-table tbody td {*/
+/*	display: block;*/
+/*	width: 200px;*/
+/*	float: left;*/
+
+/*}*/
 .ps > .ps__rail-x, .ps > .ps__rail-y {
     opacity: 0.4;
 }

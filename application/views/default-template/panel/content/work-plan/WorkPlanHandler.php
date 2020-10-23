@@ -143,12 +143,12 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <td rowspan="2" width="150px">
+                <td rowspan="2" width="99px">
                      <button type="button" class="btn btn-default btn-xs" id="download-work-plan-report">Descargar <i class='fa fa-download'></i></button>
                 </td>
-                {{#each arrayMoment}}
-                    <td class="width-30 text-center table-days" width="30px"></td>
-                {{/each}}
+<!--                {{#each arrayMoment}}-->
+<!--                    <td class="width-30 text-center table-days" width="30px"></td>-->
+<!--                {{/each}}-->
             </tr>
             <tr>
                 {{#each arrayMoment}}
@@ -156,7 +156,7 @@
                 {{/each}}
             </tr>
             </thead>
-            <tbody>
+            <tbody class="" style="">
             {{#each workPlanSummary}}
                 <tr class="success" data-fiscal-id="{{id}}">
                     <td colspan="{{../totalDays}}" class=""><strong>{{fullName}}</strong></td>
@@ -169,9 +169,9 @@
                     </tr>
                     {{#each projectList}}
                         <tr  data-fiscal-id="{{../../id}}" data-builder-id="{{../id}}" data-project-id="{{id}}">
-                            <td>&nbsp&nbsp&nbsp&nbsp&nbsp{{code}}</td>
+                            <td width="99px">&nbsp&nbsp&nbsp&nbsp&nbsp{{code}}</td>
                             {{#each ../../../arrayMoment}}
-                                <td class="width-30 work-date"></td>
+                                <td width="30px" class="width-30 work-date"></td>
                             {{/each}}
                         </tr>
                     {{/each}}

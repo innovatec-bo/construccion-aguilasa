@@ -209,6 +209,11 @@ var WorkPlanHandler = /** @class */ (function () {
                 if (response.success === 1) {
                     _this._masterTemplate = $("<div>" + response.data.template + "</div>");
                     _this._printSummaryWeek(response, startDate, endDate);
+                    new PerfectScrollbar('#work-plan-summary-table tbody', {
+                        wheelSpeed: 2,
+                        wheelPropagation: true,
+                        minScrollbarLength: 50
+                    });
                     // console.log(response);
                 }
                 else {

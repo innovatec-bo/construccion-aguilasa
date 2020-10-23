@@ -10,6 +10,7 @@ declare let swal: any;
 declare let window: any;
 declare let moment: any;
 declare let select2ProjectGeneralList : any;
+declare let PerfectScrollbar : any;
 
 class WorkPlanHandler
 {
@@ -264,6 +265,11 @@ class WorkPlanHandler
                 {
                     _this._masterTemplate = $("<div>"+response.data.template+"</div>");
                     _this._printSummaryWeek(response, startDate, endDate);
+					new PerfectScrollbar('#work-plan-summary-table tbody', {
+						wheelSpeed: 2,
+						wheelPropagation: true,
+						minScrollbarLength: 50
+					});
                     // console.log(response);
                 }
                 else
