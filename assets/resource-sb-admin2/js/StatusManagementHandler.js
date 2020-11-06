@@ -48,6 +48,7 @@ var StatusManagementHandler = /** @class */ (function () {
         var projectLog = this.loadViewResponse.data.projectLog;
         var allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         var allowUpdateHistory = this.loadViewResponse.data.updateHistory;
+        var allowDeleteStatusLog = this.loadViewResponse.data.deleteStatusLog;
         var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusArray = this.loadViewResponse.data.statusArray;
@@ -72,6 +73,7 @@ var StatusManagementHandler = /** @class */ (function () {
         this.viewData.project = project;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
+        this.viewData.allowDeleteStatusLog = allowDeleteStatusLog;
         this.viewData.allowBackSteps = allowBackSteps;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
@@ -132,7 +134,8 @@ var StatusManagementHandler = /** @class */ (function () {
             data: { projectId: _this.projectId },
             success: function (response) {
                 var allowUpdateHistory = viewData.allowUpdateHistory;
-                var data = { projectLog: response, allowUpdateHistory: allowUpdateHistory };
+                var allowDeleteStatusLog = viewData.allowDeleteStatusLog;
+                var data = { projectLog: response, allowUpdateHistory: allowUpdateHistory, allowDeleteStatusLog: allowDeleteStatusLog };
                 var html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
                 initPhotoSwipeFromDOM('.my-gallery');
@@ -936,7 +939,7 @@ var StatusManagementHandler = /** @class */ (function () {
                     if (response.success == 1) {
                         var projectBudgetId = $("input[name=project-budget-id]").val();
                         if (projectBudgetId != "") {
-                            _this.projectLog();
+                            _this.getProjectLog();
                             _this.loadStatusForm('approved', 0);
                         }
                         else {

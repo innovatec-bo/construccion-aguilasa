@@ -78,6 +78,7 @@ class StatusManagementHandler
         let projectLog = this.loadViewResponse.data.projectLog;
 		let allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         let allowUpdateHistory = this.loadViewResponse.data.updateHistory;
+        let allowDeleteStatusLog = this.loadViewResponse.data.deleteStatusLog;
         let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusArray = this.loadViewResponse.data.statusArray;
@@ -107,6 +108,7 @@ class StatusManagementHandler
         this.viewData.project = project;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
+        this.viewData.allowDeleteStatusLog = allowDeleteStatusLog;
         this.viewData.allowBackSteps = allowBackSteps;
         this.viewData.statusSet = statusSet;
         this.viewData.updateHistory = updateHistory;
@@ -174,7 +176,8 @@ class StatusManagementHandler
             data : {projectId:_this.projectId},
             success:function(response){
                 let allowUpdateHistory = viewData.allowUpdateHistory;
-                let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory};
+                let allowDeleteStatusLog = viewData.allowDeleteStatusLog;
+                let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory, allowDeleteStatusLog:allowDeleteStatusLog};
                 let html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
                 initPhotoSwipeFromDOM('.my-gallery');
@@ -1113,7 +1116,7 @@ class StatusManagementHandler
                         let projectBudgetId = $("input[name=project-budget-id]").val();
                         if(projectBudgetId != "")
                         {
-                            _this.projectLog();
+                            _this.getProjectLog();
                             _this.loadStatusForm('approved', 0);
                         }
                         else

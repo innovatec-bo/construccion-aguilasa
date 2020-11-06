@@ -12,7 +12,15 @@
     </div>
     <!-- /.row -->
 </div>
-<script id="ht-image-slide" type="text/x-handlebars-template">    
+<script id="ht-delete-project-log" type="text/x-handlebars-template">
+	<form name='delete-status-log' role="form" data-parsley-validate>
+		<input type="hidden" name="project-status-log-id" value="{{logId}}">
+		<div class="form-group">
+			<textarea name="detail" required class="form-control" rows="3"></textarea>
+		</div>
+	</form>
+</script>
+<script id="ht-image-slide" type="text/x-handlebars-template">
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
         <a href="{{base_url}}{{fileUrl}}" itemprop="contentUrl" data-size="1000x1000"  title="{{fileName}}">
             <img src="{{base_url}}{{fileUrl}}" itemprop="thumbnail" alt="{{fileName}}" />

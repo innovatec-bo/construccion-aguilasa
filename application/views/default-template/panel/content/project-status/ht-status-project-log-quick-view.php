@@ -18,6 +18,12 @@
                 {{/ifCond}}
                 <h6 class="quick-log-status-name">{{status_name_pst}} <span class="pull-right {{className}}" data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}">{{formatDate manual_entry_date_psl "short"}}</span></h6>
                 <blockquote>
+					{{#ifCond ../allowDeleteStatusLog "==" 1}}
+						{{#ifCond keyword_pst "!=" "approved"}}
+							<button type="button" class="btn btn-danger btn-xs delete-status-from-log" data-log-id="{{id_psl}}" style="position: absolute;left: 0px;padding: 0px 5px;"><i class="fa fa-times"></i></button>
+						{{/ifCond}}
+					{{/ifCond}}
+
                     <dl>
                         <dt>Responsable(s)</dt>
                         <dd>{{responsible_user}}</dd>

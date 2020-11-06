@@ -29,49 +29,62 @@ $(function() {
         $("#history-content").slideUp();
         $("#help-content").animate({width:'toggle'}, 350);
     });
-
-    // let myDropzone = new Dropzone("#dropzone",{
-    //     url: base_url + "panel/Settings/mainSlider",
-    //     paramName: "file",
-    //     maxFilesize: 30,
-    //     acceptedFiles: "image/*",
-    //     autoProcessQueue:false
-    //     });
-
-    // myDropzone.on("addedfile", function(file) {
-    //     /* Maybe display some more file information on your page */
-    //     let removeButton = Dropzone.createElement('<a class="btn btn-danger btn-xs dropzone-remove" href="#" title="" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>');
-    //     let _this = this;
-    //     removeButton.addEventListener("click", function (e) {
-    //         // Make sure the button click doesn't submit the form:
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         // Remove the file preview.
-    //         _this.removeFile(file);
-    //     });
-    //     // Now attach this new element some where in your page
-    //     $("#dropzone").append(file.previewElement);
-    //     // Add the button to the file preview element.
-    //     file.previewElement.appendChild(removeButton);
-    // });
-    // myDropzone.on("success", function(file, responseText) {
-    //     let item = jQuery.parseJSON(responseText);
-    //     addItem(item);
-    //     this.removeFile(file);
-    // });
-    // getImages();
-
-    // $(document).on("click",".dropzone-process-queue",function(e){
-    //     e.preventDefault();
-    //     Dropzone.instances[0].processQueue();
-    // });
-
-    // $(document).on("click",".btn-delete",function(e){
-    //     e.preventDefault();
-    //     var mainSliderItemId = $(this).closest("[data-main-slider-item-id]").data("main-slider-item-id");
-    //     console.log(mainSliderItemId);
-    // });
+    $(document).on('click','.delete-status-from-log',function(){
+    	let logId = $(this).data('log-id');
+		deleteLog(logId);
+	});
 });
+
+function deleteLog(logId)
+{
+	let htmlSource   = $("#ht-delete-project-log").html();
+	let template = Handlebars.compile(htmlSource);
+	let data = {logId: logId};
+	let html = template(data);
+	Swal.fire({
+		title: 'Por favor ingrese un detalle antes de eliminar el estado',
+		html:html,
+		showCancelButton: true,
+		confirmButtonText: 'Eliminar',
+		CancelButtonText: 'cancelar',
+		allowOutsideClick:false,
+		showLoaderOnConfirm:true,
+		preConfirm: () => {
+			let $form = $('form[name=delete-status-log]');
+			if(!$form.parsley().isValid())
+			{
+				$form.parsley().validate();
+				return false;
+			}
+		}
+	}).then((result) => {
+		if (result)
+		{
+			let formData = $('form[name=delete-status-log]').serialize();
+			$.ajax({
+				url : base_url + 'panel/AjaxDeletedStatusLog/add/',
+				dataType  :"json",
+				method : 'post',
+				data:formData,
+				success:function(response){
+					if(response.success === 1)
+					{
+						let url = $(location).attr('href').split("/");
+						let statusSet = url[url.length - 2];
+						let projectId = url[url.length - 1];
+						let statusManagementHandler = new StatusManagementHandler(statusSet, projectId);
+						statusManagementHandler.loadView();
+						toastr.success(response.message, '', {"progressBar": true});
+					}
+					else
+					{
+						toastr.error(response.message, '', {"progressBar": true});
+					}
+				}
+			});
+		}
+	});
+}
 
 function addItem(item, replace)
 {
@@ -87,8 +100,6 @@ function addItem(item, replace)
     {
         $(".list-group").append(html);
     }
-    // loadEventListener(item.proy_fot_id);
-    // startImageThumbnailComponent(item.proy_fot_id);
 }
 
 function getImages()

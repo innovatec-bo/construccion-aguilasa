@@ -14,7 +14,7 @@ class Test extends PrivateController
 
     public function codegen()
     {
-//    	$codeGen = new CodeGenHandler('wfl_process_line', 'process_line');
+//    	$codeGen = new CodeGenHandler('sec_deleted_status_logs', 'deleted_status_log');
 //    	$codeGen->generateModelFiles();
     }
 

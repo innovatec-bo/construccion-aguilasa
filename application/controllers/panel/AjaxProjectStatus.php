@@ -838,6 +838,7 @@ class AjaxProjectStatus extends PrivateController
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
         $data["projectLog"] = $projectLog;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
+        $data["deleteStatusLog"] = $this->_validateFeature("deleted_status_log_add",TRUE);
         $processLinesEnabled = Model_process_line::getByUserIdAndProjectId($this->sessionUser->id, $projectId);
         $data["allowBackSteps"] = count($processLinesEnabled) > 0? 1:0;
         $data["projectFullDetail"] = $projectFullDetail;
