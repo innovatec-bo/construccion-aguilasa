@@ -45,8 +45,7 @@ class PublicController extends CI_Controller
     protected function _encryptPassword($password)
     {
         $options = [
-            'cost' => 10,
-            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+            'cost' => 10
         ];
         $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options);
         return $passwordHash;
