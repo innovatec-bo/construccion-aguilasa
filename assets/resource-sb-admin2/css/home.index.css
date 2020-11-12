@@ -24,3 +24,7 @@
 {
 	width:8px
 }
+.border-left
+{
+	border-left: 1px solid #ddd;
+}
