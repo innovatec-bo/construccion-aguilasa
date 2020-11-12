@@ -13,6 +13,7 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+
     <div class="col-md-12">
         <?php
         $this->load->view("default-template/flash-data-basic-messages");
@@ -60,7 +61,37 @@
     </div>
 
     <div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				Todos los incidentes
+				<small><span id="days-without-incidents">...</span> sin incidentes</small>
+			</div>
 
+			<div class="panel-body" id="incident-content">
+
+			<ul class="list-group">
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col-md-6">
+							<strong>title:</strong> Detail of title<br>
+							<strong>title2:</strong> Detail of title2
+						</div>
+						<div class="col-md-6 border-left">
+							<p class="list-group-item-text">Estimado Mario: Favor corregir las siguientes observaciones de Contruccion del proyecto de referencia (RO.19.0201): 1) Punto 4: Corregir Empalme de 1 Fase de MT.(Instalar Cable del Proyecto) No se acepta MRT 2) Punto 8: Corregir Informe de Equipo instalado en la Red. AS BUILT.</p>
+						</div>
+					</div>
+
+
+				</li>
+				<li href="#" class="list-group-item">
+					<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+					<span class="pull-right text-muted small"><em>12 minutes ago</em>
+                                    </span>
+				</li>
+			</ul>
+			<!-- /.list-group -->
+		   </div>
+		</div>
     </div>
 </div>
 <!-- /.container-fluid -->
