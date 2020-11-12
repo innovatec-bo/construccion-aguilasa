@@ -16,6 +16,7 @@ class Home extends PrivateController
     public function index()
     {
         $this->_validateFeature("home");
+        $this->complementHandler->addViewComplement("swiper");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");
@@ -30,7 +31,10 @@ class Home extends PrivateController
         $this->complementHandler->addProjectCss('home.index', TRUE);
         $this->complementHandler->addProjectJs('home.index', TRUE);
 
-        $this->_loadPanelView('home/index');
+        $externalObservations = Model_external_fiscal_observations::getMasterDetail();
+        $data['externalObservations'] = $externalObservations;
+        $data['isAdmin'] = $this->_is('super_admin');
+        $this->_loadPanelView('home/index', $data);
     }
 
     public function updateAmounts2()

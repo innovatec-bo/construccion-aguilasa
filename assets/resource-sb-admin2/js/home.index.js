@@ -32,6 +32,18 @@ $(function() {
         locale:'es',
         useCurrent: false
     });
+	let swiper = new Swiper('.swiper-container', {
+		pagination: {
+			el: '.swiper-pagination',
+
+			clickable: true,
+			renderBullet: function (index, className) {
+				let projectCode = $($('.list-group-item.swiper-slide')[index]).data('project-code');
+				// return '<span class="' + className + '">RD.20.0098</span>';
+				return '<span class="label-default ' + className + '">'+projectCode+'</span>';
+			},
+		},
+	});
 });
 
 // function daysWithoutIncidents()

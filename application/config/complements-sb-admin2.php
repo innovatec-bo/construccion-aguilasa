@@ -123,3 +123,6 @@ $config['complements']['pagination-js']['js'] = assets_url('resource-sb-admin2/p
 
 $config['complements']['dragula']['css'] = assets_url('resource-sb-admin2/plugins/dragula-master/dist/dragula.min.css');
 $config['complements']['dragula']['js'] = assets_url('resource-sb-admin2/plugins/dragula-master/dist/dragula.min.js');
+
+$config['complements']['swiper']['css'] = assets_url('resource-sb-admin2/plugins/swiper/swiper-bundle.css');
+$config['complements']['swiper']['js'] = assets_url('resource-sb-admin2/plugins/swiper/swiper-bundle.js');

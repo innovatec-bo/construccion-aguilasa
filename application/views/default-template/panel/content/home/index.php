@@ -19,6 +19,50 @@
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
+	<?php
+	if($isAdmin == 1)
+	{
+	?>
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				Observaciones externas sin resolver
+			</div>
+
+			<div class="panel-body swiper-container">
+
+				<ul class="list-group swiper-wrapper">
+					<?php
+					foreach ($externalObservations as $row)
+					{
+						$observationDate = DateTime::createFromFormat("Y-m-d H:i:s",$row['entry_date_efo']);
+						?>
+						<li class="list-group-item swiper-slide" data-project-code="<?=$row['code_pro']?>">
+							<div class="row">
+								<div class="col-md-5">
+									<strong>Proyecto:</strong> <?=$row['code_pro']?><br>
+									<strong>Estado en observacion:</strong> <?=$row['status_name_pst']?><br>
+									<strong>Fecha de observacion:</strong> <?=$observationDate->format("d-m-Y H:i:s")?><br>
+									<strong>Fiscal externo:</strong> <?=$row['fiscal_fullname']?><br>
+									<strong>Registrado por:</strong> <?=$row['user_fullname']?>
+								</div>
+								<div class="col-md-7">
+									<p class="list-group-item-text well p-1 m-0"><?=$row['observation_efo']?></p>
+								</div>
+							</div>
+						</li>
+						<?php
+					}
+					?>
+				</ul>
+				<div class="swiper-pagination"></div>
+				<!-- /.list-group -->
+			</div>
+		</div>
+	</div>
+	<?php
+	}
+	?>
     <!-- /.row -->
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -60,39 +104,7 @@
         <!-- /.panel -->
     </div>
 
-    <div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				Todos los incidentes
-				<small><span id="days-without-incidents">...</span> sin incidentes</small>
-			</div>
 
-			<div class="panel-body" id="incident-content">
-
-			<ul class="list-group">
-				<li class="list-group-item">
-					<div class="row">
-						<div class="col-md-6">
-							<strong>title:</strong> Detail of title<br>
-							<strong>title2:</strong> Detail of title2
-						</div>
-						<div class="col-md-6 border-left">
-							<p class="list-group-item-text">Estimado Mario: Favor corregir las siguientes observaciones de Contruccion del proyecto de referencia (RO.19.0201): 1) Punto 4: Corregir Empalme de 1 Fase de MT.(Instalar Cable del Proyecto) No se acepta MRT 2) Punto 8: Corregir Informe de Equipo instalado en la Red. AS BUILT.</p>
-						</div>
-					</div>
-
-
-				</li>
-				<li href="#" class="list-group-item">
-					<i class="fa fa-twitter fa-fw"></i> 3 New Followers
-					<span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                    </span>
-				</li>
-			</ul>
-			<!-- /.list-group -->
-		   </div>
-		</div>
-    </div>
 </div>
 <!-- /.container-fluid -->
 <?php
