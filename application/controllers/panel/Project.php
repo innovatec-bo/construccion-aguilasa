@@ -44,6 +44,7 @@ class Project extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         // echo"<pre>";var_dump($data['builderList']);exit;
         $projectStatus = Model_project_status::getAll(100,0);
+        $statusInLog = Model_project_status::getAllInLog();
         $arrayStatus = array();
         foreach ($projectStatus as $status)
         {
@@ -51,6 +52,7 @@ class Project extends PrivateController
             $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
         }
         $data["projectStatusJson"] = json_encode($arrayStatus);
+        $data["statusInLog"] = $statusInLog;
         $this->_loadPanelView("project/index", $data);
     }
 
@@ -723,8 +725,10 @@ class Project extends PrivateController
         $this->complementHandler->addProjectCss('project.locations',TRUE);
         $this->complementHandler->addProjectJs('project.locations', TRUE);       
         $data = array();
+		$statusInLog = Model_project_status::getAllInLog();
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+        $data['statusInLog'] = $statusInLog;
         $this->_loadPanelView("project/locations", $data);
     }
 

@@ -64,7 +64,7 @@ class BasePaginationHandler
 
 		$sql = '
                 select count(' . static::TABLE_ID. ') as total
-                from ' . $this->_coreQuery() .' where '.static::notDeleted();
+                from ' . $this->_coreQuery() .' where 1=1 '.$this->_additionalParameters();//echo"<pre>";var_dump($sql);exit;
 
 		$query = $ci->db->query($sql);
 		return $query->row()->total;

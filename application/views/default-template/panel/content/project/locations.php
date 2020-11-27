@@ -31,7 +31,7 @@
                 <input type="hidden" name="status" value="">
                 <fieldset class="custom-border">
                     <legend class="custom-border">Filtros</legend>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Area de trabajo</label>
                             <select class="form-control" name="work-area">
@@ -45,7 +45,7 @@
                     if($isSuperAdmin == 1)
                     {
                     ?>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Fiscales</label>
                             <select class="form-control" name="fiscal-responsible-id">
@@ -64,7 +64,7 @@
                     <?php
                     }
                     ?>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Constructores</label>
                             <select class="form-control" name="builder-responsible-id">
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Mano de obra</label>
                             <select class="form-control" name="manpower-uploaded">
@@ -90,6 +90,26 @@
                             </select>
                         </div>
                     </div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label>Estado</label>
+							<select class="form-control" name="status">
+								<option value="">--Todos--</option>
+								<?php
+								$excludedStatusId = array(1,8,13,22);
+								$html = '';
+								/** @var Model_project_status $status */
+								foreach ($statusInLog as $status)
+								{
+									if(array_search($status->getId(),$excludedStatusId) !== FALSE)
+										continue;
+									$html .= '<option value="'.$status->getId().'">'.$status->getName().'</option>';
+								}
+								echo $html;
+								?>
+							</select>
+						</div>
+					</div>
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>

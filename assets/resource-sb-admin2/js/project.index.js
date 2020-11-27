@@ -10,6 +10,7 @@ $(document).ready(function() {
     additionalParameter.addParameterObject('fiscal-responsible-id','select');
     additionalParameter.addParameterObject('builder-responsible-id','select');
     additionalParameter.addParameterObject('manpower-uploaded','select');
+    additionalParameter.addParameterObject('status','select');
     additionalParameter.setButtonFilter('#send-filters');
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();

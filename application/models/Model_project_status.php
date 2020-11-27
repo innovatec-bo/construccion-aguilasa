@@ -203,4 +203,24 @@ class Model_project_status extends Model_project_status_base
         $result = static::recast(get_called_class(),$query->row());
         return $result;
     }
+
+	/**
+	 * @return array
+	 */
+    public static function getAllInLog() : array
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+        select wfl_project_status.* from wfl_project_status where id_pst in (
+			SELECT
+				status_id_psl
+			FROM
+				wfl_project_status_log
+				GROUP BY status_id_psl
+		);
+        ";
+		$query = $ci->db->query($sql);
+		return static::recastArray(get_called_class(),$query->result());
+	}
 }
