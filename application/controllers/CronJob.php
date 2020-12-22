@@ -33,7 +33,7 @@ class CronJob extends PublicController
     }
 
     public function notifyProjectStatusToCreFiscal($challenge)
-    {
+    {exit('temporary out off service');
         if($challenge == 'notifyProjectStatusToCreFiscal2019')
         {
             $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
@@ -49,7 +49,7 @@ class CronJob extends PublicController
     }
 
     public function notifyProjectStatusToSereboFiscal($challenge)
-    {
+    {exit('temporary out off service');
         if($challenge == 'notifyProjectStatusToSereboFiscal2019')
         {
             $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
@@ -66,7 +66,7 @@ class CronJob extends PublicController
     }
 
     public function notifyProjectsByStatusToInternalMembers($challenge)
-    {
+    {exit('temporary out off service');
         if($challenge == 'notifyProjectsByStatusToInternalMembers2019')
         {
             $statusToNotify = array("approved");
@@ -98,7 +98,7 @@ class CronJob extends PublicController
 	}
 
 	public function sendExecutiveReport($challenge)
-	{
+	{exit('temporary out off service');
 		if($challenge == 'sendExecutiveReport2020')
 		{
 			$response = Model_user::sendExecutiveReport();
