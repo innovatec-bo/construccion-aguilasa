@@ -6,6 +6,8 @@
  * Time: 10:34 AM
  */
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Project extends PrivateController
 {
@@ -762,5 +764,112 @@ class Project extends PrivateController
 	{
 		$report = new ExcelExecutiveReport($this->sessionUser);
 		$report->getReport();
+	}
+
+	public function importItems()
+	{
+		set_time_limit(240);
+		ini_set('memory_limit','512M');
+		require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+		$currentMaterials = Model_material::getAll(2000,0);
+		$currentCodes = array();
+		foreach ($currentMaterials as $material)
+		{
+			$currentCodes[] = $material->code_mat;
+		}
+
+//		echo"<pre>";var_dump($currentCodes);exit;
+		$inputFileName = FCPATH.'assets/MATERIALES-2019-CRE.xlsx';
+		/** Load $inputFileName to a Spreadsheet Object  **/
+		$spreadsheet = IOFactory::load($inputFileName);
+		$items = $spreadsheet->getSheet(0);
+		$arrayItems = $items->toArray();
+		$itemsToSave = array();
+		$i = 0;
+
+		foreach ($arrayItems as $row)
+		{
+			if($i > 0)
+			{
+				$code = $row[0];
+				$description = $row[1];
+				if(array_search($code,$currentCodes) === FALSE)
+				{
+					$itemsToSave[] = array(
+						'code_mat' => $row[0],
+						'description_mat' => $row[1]
+					);
+				}
+			}
+			$i++;
+		}
+//		echo"<pre>";var_dump($itemsToSave);exit;
+		if(count($itemsToSave) > 0)
+			Model_material::insertBatch($itemsToSave);
+	}
+
+	public function assignItemsToBuildingStructures()
+	{
+		set_time_limit(240);
+		ini_set('memory_limit','512M');
+		require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+		$buildingStructures = Model_building_structure::getAll(2000,0);
+		$arrayBuildingStructures = array();
+		foreach ($buildingStructures as $row)
+		{
+			$arrayBuildingStructures[$row->structure_code_bus] = (array)$row;
+		}
+
+		$currentMaterials = Model_material::getAll(2000,0);
+		$arrayMaterials = array();
+		foreach ($currentMaterials as $material)
+		{
+			$arrayMaterials[$material->code_mat] = (array)$material;
+		}
+//		echo"<pre>";var_dump($arrayMaterials, $arrayBuildingStructures);exit;
+		$inputFileName = FCPATH.'assets/MATERIALES-2019-CRE.xlsx';
+		/** Load $inputFileName to a Spreadsheet Object  **/
+		$spreadsheet = IOFactory::load($inputFileName);
+		$items = $spreadsheet->getSheet(2);
+		$arrayItemsBuildingStructures = $items->toArray();
+		$dataToSave = array();
+
+		$i = 0;
+		$notFoundStructures = array();
+		foreach ($arrayItemsBuildingStructures as $row)
+		{
+			if($i > 0)
+			{
+				$structureCode = $row[0];
+				$materialCode = $row[2];
+				$quantity = $row[3];
+
+				$structureId = NULL;
+				if(isset($arrayBuildingStructures[$structureCode]))
+				{
+					$structureId = $arrayBuildingStructures[$structureCode];
+				}
+				else
+				{
+					$notFoundStructures[] = $row[0];
+				}
+
+				$materialId = NULL;
+				if(isset($arrayMaterials[$materialCode]))
+				{
+					$materialId = $arrayMaterials[$materialCode];
+				}
+
+				$dataToSave[] = [
+					'structure_id_dsm' => $structureId,
+					'material_id_dsm' => $materialId,
+					'quantity_dsm' => $quantity
+				];
+			}
+			$i++;
+		}
+		echo"<pre>";var_dump($notFoundStructures,$dataToSave);exit;
+		if(count($dataToSave) > 0)
+			Model_default_structure_material::insertBatch($dataToSave);
 	}
 }

@@ -3,7 +3,6 @@
  * Created by PhpStorm.
  * User: Jair
  * Date: 12/4/2018
- * Time: 21:25
  */
 class Test extends PrivateController
 {
@@ -14,7 +13,7 @@ class Test extends PrivateController
 
     public function codegen()
     {
-//    	$codeGen = new CodeGenHandler('sec_deleted_status_logs', 'deleted_status_log');
+//    	$codeGen = new CodeGenHandler('bui_materials', 'material');
 //    	$codeGen->generateModelFiles();
     }
 

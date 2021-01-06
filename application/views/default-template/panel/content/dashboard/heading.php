@@ -5,6 +5,20 @@
  * Date: 12/4/2018
  * Time: 22:33
  */
+$monthList = array(
+		"01" => "Enero",
+		"02" => "Febrero",
+		"03" => "Marzo",
+		"04" => "Abril",
+		"05" => "Mayo",
+		"06" => "Junio",
+		"07" => "Julio",
+		"08" => "Agosto",
+		"09" => "Septiembre",
+		"10" => "Octubre",
+		"11" => "Noviembre",
+		"12" => "Diciembre"
+);
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -188,28 +202,29 @@
                         <div class="col-xs-12 text-center">
                             <div class="form-group">
                                 <select class="form-control input-sm" name="builder-general-report-month">
-                                    <option value="">Mes</option>
-                                    <option value="01">Enero</option>
-                                    <option value="02">Febrero</option>
-                                    <option value="03">Marzo</option>
-                                    <option value="04">Abril</option>
-                                    <option value="05">Mayo</option>
-                                    <option value="06">Junio</option>
-                                    <option value="07">Julio</option>
-                                    <option value="08">Agosto</option>
-                                    <option value="09">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
+									<?php
+									$html = '';
+									foreach($monthList as $key => $value)
+									{
+										$selected = '';
+										if($key == date('m'))
+											$selected = ' selected ';
+										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                             <div class="form-group">
                                 <select class="form-control input-sm" name="builder-general-report-year">
-                                    <option value="">A&ntilde;o</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
+									<?php
+									$html = '';
+									foreach(range(date("Y"), 2017) as $year)
+									{
+										$html .= '<option value="'.$year.'">'.$year.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                         </div>
@@ -245,28 +260,29 @@
                             </div>
                             <div class="form-group">
                                 <select class="form-control input-sm" name="builder-productivity-report-month">
-                                    <option value="">Mes</option>
-                                    <option value="01">Enero</option>
-                                    <option value="02">Febrero</option>
-                                    <option value="03">Marzo</option>
-                                    <option value="04">Abril</option>
-                                    <option value="05">Mayo</option>
-                                    <option value="06">Junio</option>
-                                    <option value="07">Julio</option>
-                                    <option value="08">Agosto</option>
-                                    <option value="09">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
+									<?php
+									$html = '';
+									foreach($monthList as $key => $value)
+									{
+										$selected = '';
+										if($key == date('m'))
+											$selected = ' selected ';
+										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                             <div class="form-group">
                                 <select class="form-control input-sm" name="builder-productivity-report-year">
-                                    <option value="">A&ntilde;o</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
+									<?php
+									$html = '';
+									foreach(range(date("Y"), 2017) as $year)
+									{
+										$html .= '<option value="'.$year.'">'.$year.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                         </div>
@@ -289,28 +305,29 @@
                         <div class="col-xs-12 text-center">
                             <div class="form-group">
                                 <select class="form-control input-sm" name="projects-and-current-production-month">
-                                    <option value="">Mes</option>
-                                    <option value="01">Enero</option>
-                                    <option value="02">Febrero</option>
-                                    <option value="03">Marzo</option>
-                                    <option value="04">Abril</option>
-                                    <option value="05">Mayo</option>
-                                    <option value="06">Junio</option>
-                                    <option value="07">Julio</option>
-                                    <option value="08">Agosto</option>
-                                    <option value="09">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
+									<?php
+									$html = '';
+									foreach($monthList as $key => $value)
+									{
+										$selected = '';
+										if($key == date('m'))
+											$selected = ' selected ';
+										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                             <div class="form-group">
                                 <select class="form-control input-sm" name="projects-and-current-production-year">
-                                    <option value="">A&ntilde;o</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
+									<?php
+									$html = '';
+									foreach(range(date("Y"), 2017) as $year)
+									{
+										$html .= '<option value="'.$year.'">'.$year.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                         </div>
@@ -333,28 +350,29 @@
                         <div class="col-xs-12 text-center">
                             <div class="form-group">
                                 <select class="form-control input-sm" name="daily-production-month">
-                                    <option value="">Mes</option>
-                                    <option value="01">Enero</option>
-                                    <option value="02">Febrero</option>
-                                    <option value="03">Marzo</option>
-                                    <option value="04">Abril</option>
-                                    <option value="05">Mayo</option>
-                                    <option value="06">Junio</option>
-                                    <option value="07">Julio</option>
-                                    <option value="08">Agosto</option>
-                                    <option value="09">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
+									<?php
+									$html = '';
+									foreach($monthList as $key => $value)
+									{
+										$selected = '';
+										if($key == date('m'))
+											$selected = ' selected ';
+										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                             <div class="form-group">
                                 <select class="form-control input-sm" name="daily-production-year">
-                                    <option value="">A&ntilde;o</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
+									<?php
+									$html = '';
+									foreach(range(date("Y"), 2017) as $year)
+									{
+										$html .= '<option value="'.$year.'">'.$year.'</option>';
+									}
+									echo $html;
+									?>
                                 </select>    
                             </div>
                         </div>
