@@ -826,49 +826,70 @@ class Project extends PrivateController
 		{
 			$arrayMaterials[$material->code_mat] = (array)$material;
 		}
-//		echo"<pre>";var_dump($arrayMaterials, $arrayBuildingStructures);exit;
-		$inputFileName = FCPATH.'assets/MATERIALES-2019-CRE.xlsx';
-		/** Load $inputFileName to a Spreadsheet Object  **/
+
+		$currentDefaultStructureMaterials = Model_default_structure_material::getAll(10000,0);
+		$arrayCurrentDefaultStructureMaterials = array();
+		foreach ($currentDefaultStructureMaterials as $row)
+		{
+			$arrayCurrentDefaultStructureMaterials[$row->structure_id_dsm] = (array)$row;
+		}
+//		echo"<pre>";var_dump($arrayCurrentDefaultStructureMaterials);exit;
+		$inputFileName = FCPATH.'assets/Materiales-x-Estructuras-2020-01-07.xlsx';
+		/** Load $inputFileName to a Spreadsheet Obj, kmijuect  **/
 		$spreadsheet = IOFactory::load($inputFileName);
-		$items = $spreadsheet->getSheet(2);
+		$items = $spreadsheet->getSheet(1);
 		$arrayItemsBuildingStructures = $items->toArray();
 		$dataToSave = array();
 
 		$i = 0;
 		$notFoundStructures = array();
+		$newMaterialsToSave = array();
 		foreach ($arrayItemsBuildingStructures as $row)
 		{
-			if($i > 0)
+			if($i > 1)
 			{
 				$structureCode = $row[0];
-				$materialCode = $row[2];
-				$quantity = $row[3];
-
+				$materialCode = $row[3];
+				$quantity = $row[4];
+				$description = $row[5];
+				$completedData = TRUE;
 				$structureId = NULL;
 				if(isset($arrayBuildingStructures[$structureCode]))
 				{
-					$structureId = $arrayBuildingStructures[$structureCode];
+					$structureId = $arrayBuildingStructures[$structureCode]['id_bus'];
 				}
 				else
 				{
+					$completedData = FALSE;
 					$notFoundStructures[] = $row[0];
 				}
 
 				$materialId = NULL;
+
 				if(isset($arrayMaterials[$materialCode]))
 				{
-					$materialId = $arrayMaterials[$materialCode];
+					$materialId = $arrayMaterials[$materialCode]['id_mat'];
+				}
+				else
+				{
+					$completedData = FALSE;
+					$newMaterialsToSave[$materialCode] = array(
+						'code_mat' => $materialCode,
+						'description_mat' => $description
+					);
 				}
 
-				$dataToSave[] = [
-					'structure_id_dsm' => $structureId,
-					'material_id_dsm' => $materialId,
-					'quantity_dsm' => $quantity
-				];
+				if($completedData && !isset($arrayCurrentDefaultStructureMaterials[$structureId]))
+				{
+					$dataToSave[] = [
+						'structure_id_dsm' => $structureId,
+						'material_id_dsm' => $materialId,
+						'quantity_dsm' => $quantity
+					];
+				}
 			}
 			$i++;
 		}
-		echo"<pre>";var_dump($notFoundStructures,$dataToSave);exit;
 		if(count($dataToSave) > 0)
 			Model_default_structure_material::insertBatch($dataToSave);
 	}
