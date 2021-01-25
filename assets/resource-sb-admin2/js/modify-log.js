@@ -108,7 +108,7 @@ $(document).ready(function() {
                     $.each(select2Data1, function(index, value){
                         responsibleList.push(value.id);
                     });
-                    console.log(responsibleList);
+                    // console.log(responsibleList);
                     var responsibleList = responsibleList;
                     var data = {
                         projectId: projectId,

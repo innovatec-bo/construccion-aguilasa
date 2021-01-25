@@ -893,4 +893,95 @@ class Project extends PrivateController
 		if(count($dataToSave) > 0)
 			Model_default_structure_material::insertBatch($dataToSave);
 	}
+
+	public function quickSetup($projectId)
+	{
+		$this->_validateFeature('project_edit');
+		/** @var Model_project $project */
+		$project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
+
+		/** View complements */
+		$this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addViewComplement("parsley");
+		$this->complementHandler->addProjectCss('project.quick-setup',TRUE);
+		$this->complementHandler->addProjectJs('project.quick-setup', TRUE);
+
+		/** Server Side Validations **/
+		$this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
+		$this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
+		$this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
+		$this->form_validation->set_rules('work-area', 'Work area', 'trim|required');
+
+		$projectFullDetail = Model_project::getProjectFullDetail($projectId);
+		$projectLog = Model_project_status_log::getLogByProjectId($projectId);
+		$workFlow = Model_project::getWorkflowDetail(array('code-list'=>$projectFullDetail['code_pro']));
+		$workFlow = $workFlow[0];
+		$projectManagers = Model_user::getByRoleKeyword('project_manager');
+		$responsibleListStacker = Model_status_responsible::getResponsibleDetailListByStatusKeyword("stakes", array('stacker'));
+		$responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
+		$responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
+//		echo"<pre>";var_dump($projectLog);exit;
+		$getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
+		$creFiscalList = Model_user::getByRoleKeyword("cre_fiscal");
+		$contractList = Model_contract::getAll(100, 0);
+		$data["lastProjectStatus"] = $getLastProjectStatus;
+		$data["project"] = $project->toArray();
+		$data["projectFullDetail"] = $projectFullDetail;
+		$data["contractList"] = $contractList;
+		$data["creFiscalList"] = $creFiscalList;
+		$data["workFlow"] = $workFlow;
+		$data["projectManagers"] = $projectManagers;
+		$data["responsibleListFiscal"] = $responsibleListFiscal;
+		$data["responsibleListBuilder"] = $responsibleListBuilder;
+		$data["responsibleListStacker"] = $responsibleListStacker;
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->_loadPanelView("project/quick-setup", $data);
+		}
+		else
+		{
+			$formData = $this->input->post();
+//			$projectCode = $formData["project-code"];
+			$projectManager = $formData['project-manager']??NULL;
+
+			$responsibleIds = $formData["responsible-ids"]??NULL;
+			$staker = $formData['staker']??NULL;
+			$projectCreFiscal = $formData["project-cre-fiscal"];
+//			echo"<pre>";var_dump($projectCreFiscal);exit;
+			$contractId = $formData["project-contract-id"];
+			$workArea = $formData['work-area'];
+			$project->setCREFiscal($projectCreFiscal);
+			$project->setContractId($contractId);
+			$project->setWorkArea($workArea);
+			$project->save();
+			$assignmentRecords = Model_construction_assignment::getAssignmentRecords($project->getId());
+			//Change manager
+			/** @var Model_construction_assignment $row */
+			foreach ($assignmentRecords as $row)
+			{
+				if(!is_null($projectManager))
+				$row->setProjectManager($projectManager);
+				$row->save();
+			}
+			//Change stacker
+			foreach ($projectLog as $log)
+			{
+				if($log['keyword_pst'] == 'stakes' || $log['keyword_pst'] == 'rd_stakes')
+				{
+					/** @var Model_status_log_responsible $statusLogResponsible */
+					$statusLogResponsibleList = Model_status_log_responsible::getObjectsByStatusLogId($log['id_psl']);
+					foreach ($statusLogResponsibleList as $responsible)
+					{
+						$responsible->setResponsibleId($staker);
+						$responsible->save();
+					}
+				}
+			}
+			//change responsible list in building process
+			if(!is_null($responsibleIds))
+				Model_status_log_responsible::reAssignResponsibleIds($responsibleIds, $project->getId());
+			$this->session->set_flashdata("successMessage", "Proyecto modificado correctamente!");
+			redirect(base_url("panel/Project/quickSetup/".$project->getId()));
+		}
+	}
 }

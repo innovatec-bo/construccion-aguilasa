@@ -6,19 +6,6 @@
  * Time: 2:45 PM
  */
 ?>
-<!-- <div class="btn-group">
-        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-cogs"></i>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <a href="#" class="dropdown-item clone-team" data-team-id="{{team.id_tea}}"><i class="fa fa-eye fa-fw"></i> Aministracion de estados</a>
-            <a href="#" class="dropdown-item clone-team" data-team-id="{{team.id_tea}}"><i class="fa fa-flag-o"></i> Nuevo incidente</a>
-            <a href="#" class="dropdown-item clone-team" data-team-id="{{team.id_tea}}"><i class="fa fa-table"></i> Mano de obra</a>
-            <a href="#" class="dropdown-item share-team-progress" data-team-id="{{team.id_tea}}"><i class="fa fa-pencil"></i> Editar</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item delete-team" data-team-id="{{team.id_tea}}"><i class="fa fa-times fa-fw"></i> Eliminar</a>
-        </div>
-    </div> -->
 <script id="ht-datatable-dropdown-menu" type="text/x-handlebars-template">
     
     <div class="dropdown">
@@ -49,6 +36,7 @@
             {{/ifCond}}
             {{#ifCond visibility.showEditProjectBtn "==" 1}}
                 <li><a href="{{base_url}}panel/Project/edit/{{row.id_pro}}" class="pl-1"><i class="fa fa-pencil fa-fw"></i> Editar</a></li>
+				<li><a href="{{base_url}}panel/Project/quickSetup/{{row.id_pro}}" class="pl-1 btn-warning"><i class="fa fa-bolt fa-fw"></i> Quick setup</a></li>
             {{/ifCond}}
             {{#ifCond visibility.showAssignProjectBtn "==" 1}}
                 <li>

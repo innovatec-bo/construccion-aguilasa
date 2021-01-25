@@ -94,4 +94,12 @@ class Model_construction_assignment_base extends MY_Model
         }
         return $response;
     }
+
+	/**
+	 * @param int $projectManagerId
+	 */
+    public function setProjectManager(int $projectManagerId) : void
+	{
+		$this->_projectManager = $projectManagerId;
+	}
 }

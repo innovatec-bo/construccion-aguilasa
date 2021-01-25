@@ -226,7 +226,7 @@ class ProjectStatus extends PrivateController
         $this->complementHandler->addProjectJs('modify-log', TRUE);
 
         $data = array();
-        $this->_loadPanelView("project-status/status-management", $data);
+			$this->_loadPanelView("project-status/status-management", $data);
     }
 
 

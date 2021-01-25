@@ -70,4 +70,12 @@ class Model_status_log_responsible_base extends MY_Model
         }
         return $response;
     }
+
+	/**
+	 * @param int $responsibleId
+	 */
+    public function setResponsibleId(int $responsibleId) : void
+	{
+		$this->_responsibleId = $responsibleId;
+	}
 }

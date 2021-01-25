@@ -76,7 +76,7 @@ class Model_status_responsible extends Model_status_responsible_base
         ) role on role.userid_uro = id_usr
         where keyword_pst = ".$ci->db->escape($statusKeyword)." and role.keyword_rol is not null
         ";
-
+//echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
         $result = $query->result_array();
         return $result;

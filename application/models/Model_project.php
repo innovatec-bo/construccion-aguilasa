@@ -399,6 +399,7 @@ class Model_project extends Model_project_base
             assign_to.entry_date assign_to_date,
             assign_to.responsible assign_to_responsible,
             in_progress.builder_responsible builder_responsible,
+            in_progress.builder_responsible_id builder_responsible_id,
             in_progress.responsible_user_id builder_responsible_user_id,
             assign_to.fiscal_responsible_id fiscal_responsible_id,
             assign_to.fiscal_responsible fiscal_responsible,
@@ -409,6 +410,7 @@ class Model_project extends Model_project_base
             assign_to.start_date_cas start_date_assigned,
             assign_to.end_date_cas end_date_assigned,
             assign_to.estimated_time_cas estimated_time_assigned,
+            assign_to.project_manager_id project_manager_user_id,
             assign_to.project_manager_full_name project_manager_assigned,
             in_progress.entry_date in_progress_date,
             completed.entry_date completed_date,
@@ -584,6 +586,7 @@ class Model_project extends Model_project_base
 			filter.entry_date,
 			GROUP_CONCAT(CONCAT(responsible.id_usr)) responsible_user_id,
 			GROUP_CONCAT(CONCAT(responsible.firstname_usr,' ',responsible.lastname_usr)) responsible,
+			GROUP_CONCAT(CONCAT(builder.builder_id)) builder_responsible_id,
 			GROUP_CONCAT(CONCAT(builder.builder_firstname,' ',builder.builder_lastname)) builder_responsible,
 			-- fiscal.fiscal_id fiscal_responsible_id,
 			GROUP_CONCAT(CONCAT(fiscal.fiscal_id)) fiscal_responsible_id,
@@ -606,6 +609,7 @@ class Model_project extends Model_project_base
 			live_line_cas,
 			power_down_cas,
 			maneuver_cas,
+            project_manager.id_usr project_manager_id,
             CONCAT(project_manager.firstname_usr,' ',project_manager.lastname_usr) project_manager_full_name,
 			pauseOnIncident.percentage_inc percentage_paused,
 			stopOnIncident.percentage_inc percentage_stopped,
@@ -1819,7 +1823,8 @@ class Model_project extends Model_project_base
             select 
               ".static::TABLE_NAME.".*,
               cre_fiscal.*,
-              keyword_pst
+              keyword_pst,
+              status_name_pst
             from
               ".static::TABLE_NAME."
             left join sec_users cre_fiscal on id_usr = cre_fiscal_pro
