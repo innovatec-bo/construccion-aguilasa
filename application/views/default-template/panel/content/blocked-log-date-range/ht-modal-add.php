@@ -14,10 +14,18 @@
                 <div class="form-group">
                     <label>A&ntilde;o</label>
 					<select class="form-control input-sm" name="year">
-						<option value="2020">2020</option>
-						<option value="2019">2019</option>
-						<option value="2018">2018</option>
-						<option value="2017">2017</option>
+						<?php
+						$html = '';
+						foreach(range(date("Y"), 2017) as $year)
+						{
+							$html .= '<option value="'.$year.'">'.$year.'</option>';
+						}
+						echo $html;
+						?>
+<!--						<option value="2020">2020</option>-->
+<!--						<option value="2019">2019</option>-->
+<!--						<option value="2018">2018</option>-->
+<!--						<option value="2017">2017</option>-->
 					</select>
                 </div>
             </div>
