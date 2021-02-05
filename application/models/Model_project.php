@@ -2091,7 +2091,7 @@ class Model_project extends Model_project_base
 
     public static function creFiscalProjectStatusReminder()
     {
-        $statusList = array("already_sent", "as_built", "conciliation_shipment");
+        $statusList = array("already_sent", "as_built", "conciliation_shipment","project_return_materials");
         $workFlowDetail = Model_project::getWorkflowDetail();
         $creFiscalList = Model_user::getByRoleKeyword('cre_fiscal');
         $externalObservations = Model_external_fiscal_observations::getMasterDetail();
@@ -2107,16 +2107,30 @@ class Model_project extends Model_project_base
 
             if($isInArray !== FALSE)
             {
-                foreach ($creFiscalList as $user)
-                {
-                    /** @var  $user Model_user */
-                    if ($user->getId() == $row["cre_fiscal_id"])
-                    {
-                        $reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
-                        $reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
-                        $reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
-                    }
-                }
+            	//Returns materials has a special validation.
+            	if($row['keyword_pst'] != "project_return_materials")
+				{
+					foreach ($creFiscalList as $user)
+					{
+						/** @var  $user Model_user */
+						if ($user->getId() == $row["cre_fiscal_id"])
+						{
+							$reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
+							$reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
+							$reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
+						}
+					}
+				}
+                else
+				{
+					$reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
+					$reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
+					$reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
+
+					$reminderList[1001]['creFiscalFullName'] = "Martin A. Lopez P.";
+					$reminderList[1001]['creFiscalEmail'] = "martinlp@cre.com.bo";
+					$reminderList[1001]['statusListToNotify'][$row['keyword_pst']][] = $row;
+				}
             }
         }
         return $reminderList;

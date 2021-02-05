@@ -107,7 +107,7 @@
                                         <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                             <multiline label="ab5">
                                                 Estimado <?=$creFiscalFullName?>,<br>
-                                                SEREBO le detalla los <?=strtolower($subject)?>.
+                                                <?=$reference?>
                                             </multiline>
                                         </td>
                                     </tr>

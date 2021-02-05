@@ -56,7 +56,7 @@ class ExcelExecutiveReport
 
     function getReport($save = FALSE) : void
     {
-    	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment');
+    	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
@@ -168,6 +168,7 @@ class ExcelExecutiveReport
 				if($filterBy != $dependency)
 					continue;
 			}
+        	$creFiscal = $row['cre_fiscal_pro'];
         	switch ($row['keyword_pst'])
 			{
 				case "already_sent":
@@ -176,8 +177,12 @@ class ExcelExecutiveReport
 				case "as_built":
 					$totalBudget = floatval($row['total_approved']);
 					break;
-				default://case "conciliation_shipment":
+				case "conciliation_shipment":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
+					break;
+				default: //case "project_return_materials":
+					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
+					$creFiscal = "Victor Miranda / Martin Lopez";
 					break;
 			}
 			$totalTotalBudget += $totalBudget;
@@ -188,7 +193,7 @@ class ExcelExecutiveReport
                 ->setCellValue('C'.($i+1), $row["status_name_pst"])
                 ->setCellValue('D'.($i+1), $row['status_log_manual_entry_date'])
                 ->setCellValue('E'.($i+1), $row['static_days'])
-                ->setCellValue('F'.($i+1), $row['cre_fiscal_pro'])
+                ->setCellValue('F'.($i+1), $creFiscal)
                 ->setCellValue('G'.($i+1), $row['fiscal_responsible']??"Sin Asignar")
                 ->setCellValue('H'.($i+1), $row['address_pro'])
                 ->setCellValue('I'.($i+1), $totalBudget)
@@ -250,17 +255,19 @@ class ExcelExecutiveReport
 
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('A1', 'INFORME EJECUTIVO GENERAL');
 		$this->_phpSpreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:N1')->applyFromArray($titleStyleArray);
-		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('A1:N1');
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:Q1')->applyFromArray($titleStyleArray);
+		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('A1:Q1');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('C2', "ENVIADO");
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('F2', "AS BUILT");
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('I2', "ENVIO DE CONCIL.");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('L2', "TOTALES");
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A2:N2')->applyFromArray($titleStyleArray);
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('L2', "MATERIAL DEVUELTO A CRE");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('O2', "TOTALES");
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($titleStyleArray);
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('C2:E2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('F2:H2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('I2:K2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('L2:N2');
+		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('O2:Q2');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
 			->setCellValue('A3', "#")
 			->setCellValue('B3', "FISCAL CRE")
@@ -275,8 +282,11 @@ class ExcelExecutiveReport
 			->setCellValue('K3', "Importe")
 			->setCellValue('L3', "Cant.\nProyectos")
 			->setCellValue('M3', "Tiempo Prome.\nDias")
-			->setCellValue('N3', "Importe");
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A3:N3')->applyFromArray($headerStyleArray);
+			->setCellValue('N3', "Importe")
+			->setCellValue('O3', "Cant.\nProyectos")
+			->setCellValue('P3', "Tiempo Prome.\nDias")
+			->setCellValue('Q3', "Importe");
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A3:Q3')->applyFromArray($headerStyleArray);
 		$counter = 1;
 		$i = 3;
 //		if($filterBy != "")
@@ -298,8 +308,12 @@ class ExcelExecutiveReport
 				$staticDays3 = round($row["conciliation_shipment"]['staticDays']/$row["conciliation_shipment"]['quantity'],2);
 
 			$staticDays4 = "";
+			if(isset($row["project_return_materials"]))
+				$staticDays4 = round($row["project_return_materials"]['staticDays']/$row["project_return_materials"]['quantity'],2);
+
+			$staticDays5 = "";
 			if(isset($row["total"]))
-				$staticDays4 = round($row["total"]['staticDays']/$row["total"]['quantity'],2);
+				$staticDays5 = round($row["total"]['staticDays']/$row["total"]['quantity'],2);
 			$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
 				->setCellValue('A'.($i+1), $counter)
 				->setCellValue('B'.($i+1), $row["fullName"])
@@ -312,14 +326,18 @@ class ExcelExecutiveReport
 				->setCellValue('I'.($i+1), $row["conciliation_shipment"]['quantity']??"")
 				->setCellValue('J'.($i+1), $staticDays3)
 				->setCellValue('K'.($i+1), $row["conciliation_shipment"]['totalBudget']??"")
-				->setCellValue('L'.($i+1), $row["total"]['quantity']??"")
+				->setCellValue('L'.($i+1), $row["project_return_materials"]['quantity']??"")
 				->setCellValue('M'.($i+1), $staticDays4)
-				->setCellValue('N'.($i+1), $row["total"]['totalBudget']??"");
+				->setCellValue('N'.($i+1), $row["project_return_materials"]['totalBudget']??"")
+				->setCellValue('O'.($i+1), $row["total"]['quantity']??"")
+				->setCellValue('P'.($i+1), $staticDays5)
+				->setCellValue('Q'.($i+1), $row["total"]['totalBudget']??"");
 
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('K'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('N'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+			$this->_phpSpreadsheet->getActiveSheet()->getStyle('Q'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$i++;
 			$counter++;
 		}
@@ -333,6 +351,8 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("K".($i+1), '=SUM(K4:K'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("L".($i+1), '=SUM(L4:L'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("N".($i+1), '=SUM(N4:N'.$i.')');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("O".($i+1), '=SUM(O4:O'.$i.')');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("Q".($i+1), '=SUM(Q4:O'.$i.')');
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('C'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('F'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -341,6 +361,8 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('K'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('L'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('N'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('O'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('Q'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -356,7 +378,10 @@ class ExcelExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:N'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:Q'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 	}
 
 	private function _prepareGeneralExecutiveReport($filterBy = "") : array
@@ -369,12 +394,12 @@ class ExcelExecutiveReport
 			{
 				if($filterBy != $dependency)
 				{
-
 					continue;
 				}
 
 			}
 			$creFiscalId = $row['cre_fiscal_id'];
+			$creFiscalName = $row['cre_fiscal_pro'];
 			$statusKeyword = $row['keyword_pst'];
 			switch ($statusKeyword)
 			{
@@ -384,13 +409,18 @@ class ExcelExecutiveReport
 				case "as_built":
 					$totalBudget = floatval($row['total_approved']);
 					break;
-				default://case "conciliation_shipment":
+				case "conciliation_shipment":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
+					break;
+				default: //case "project_return_materials":
+					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
+					$creFiscalId = 1000;
+					$creFiscalName = "Victor Miranda / Martin Lopez";
 					break;
 			}
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
 			{
-				$generalExecutiveReportToPrint[$creFiscalId]['fullName'] = $row['cre_fiscal_pro'];
+				$generalExecutiveReportToPrint[$creFiscalId]['fullName'] = $creFiscalName;
 			}
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId][$statusKeyword]))
 			{

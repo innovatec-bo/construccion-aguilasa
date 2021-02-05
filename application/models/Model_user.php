@@ -215,15 +215,24 @@ class Model_user extends Model_user_base
 
         $sendToCC = array_merge($sendToCC, $supervisionList);
 
-        $subjectList = array(
-            "already_sent" => "PROYECTOS PENDIENTES DE APROBACION",
-            "as_built" => "PROYECTOS POR CONCILIAR" ,
-            "conciliation_shipment" => "PROYECTOS PENDIENTES DE ORDEN DE DEVOLUCION"
+		$subjectList = array(
+			"already_sent" => "PROYECTOS PENDIENTES DE APROBACION",
+			"as_built" => "PROYECTOS POR CONCILIAR" ,
+			"conciliation_shipment" => "PROYECTOS PENDIENTES DE ORDEN DE DEVOLUCION",
+			"project_return_materials" => "MATERIAL DEVUELTO A CRE"
+		);
+
+        $referenceList = array(
+            "already_sent" => "SEREBO le detalla los proyectos pendientes de aprobaci&oacute;n.",
+            "as_built" => "SEREBO le detalla los proyectos por conciliar.",
+            "conciliation_shipment" => "SEREBO le detalla los proyectos pendientes de orden de devoluci&oacute;n.",
+            "project_return_materials" => "Realizar procesos de Pago."
         );
         $shipmentDateList = array(
             "already_sent" => "already_sent_date",
-            "as_built" => "as_built_date" ,
-            "conciliation_shipment" => "conciliation_shipment_date"
+            "as_built" => "as_built_date",
+            "conciliation_shipment" => "conciliation_shipment_date",
+			"project_return_materials" => "project_return_materials_date"
         );
         $creFiscalFullName = $dataToSend['creFiscalFullName'];
         $statusListToNotify = $dataToSend['statusListToNotify'];
@@ -269,6 +278,7 @@ class Model_user extends Model_user_base
 
             $data['creFiscalFullName'] = $creFiscalFullName;
             $data['subject'] = $subjectList[$status];
+            $data['reference'] = $referenceList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
             $listManagementBy = array_column($projectList, 'management_by_pro');

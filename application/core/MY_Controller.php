@@ -144,6 +144,8 @@ class PublicController extends CI_Controller
             'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
             'reneoom@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
             'christianvr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
+			'victormg@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
+			'martinlp@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             'juancgh@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
             'joseeba@cre.com.bo' => array('rudypb@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),

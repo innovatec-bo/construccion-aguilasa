@@ -37,6 +37,9 @@ class CronJob extends PublicController
         if($challenge == 'notifyProjectStatusToCreFiscal2019')
         {
             $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
+//            $codeList = array_column($fiscalListToNotify[1000]['statusListToNotify']['project_return_materials'],'code_pro');
+//			asort($codeList);
+//            echo"<pre>";var_dump($fiscalListToNotify);exit;
             foreach ($fiscalListToNotify as $fiscalData)
             {
                 //Let's make sure that the fiscal have not mailinator.com email
