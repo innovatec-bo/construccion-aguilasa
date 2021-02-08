@@ -2126,10 +2126,6 @@ class Model_project extends Model_project_base
 					$reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
 					$reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
 					$reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
-
-					$reminderList[1001]['creFiscalFullName'] = "Martin A. Lopez P.";
-					$reminderList[1001]['creFiscalEmail'] = "martinlp@cre.com.bo";
-					$reminderList[1001]['statusListToNotify'][$row['keyword_pst']][] = $row;
 				}
             }
         }

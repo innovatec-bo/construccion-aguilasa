@@ -182,7 +182,7 @@ class ExcelExecutiveReport
 					break;
 				default: //case "project_return_materials":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
-					$creFiscal = "Victor Miranda / Martin Lopez";
+					$creFiscal = "Victor Miranda";
 					break;
 			}
 			$totalTotalBudget += $totalBudget;
@@ -415,7 +415,7 @@ class ExcelExecutiveReport
 				default: //case "project_return_materials":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					$creFiscalId = 1000;
-					$creFiscalName = "Victor Miranda / Martin Lopez";
+					$creFiscalName = "Victor Miranda";
 					break;
 			}
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
