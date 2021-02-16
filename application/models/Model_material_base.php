@@ -6,7 +6,7 @@
 
 class Model_material_base extends MY_Model
 {
-    const TABLE_NAME = "bui_materials";
+    const TABLE_NAME = "mat_materials";
     const TABLE_ID = "id_mat";
     const ATTRIB_SUFIX = "_mat";
 
@@ -28,8 +28,8 @@ class Model_material_base extends MY_Model
      */
     public function toArray()
     {
-        $tableAttributes = array(
-            "id_mat" => $this->_id,
+		return array(
+			"id_mat" => $this->_id,
 			"code_mat" => $this->_code,
 			"name_mat" => $this->_name,
 			"description_mat" => $this->_description,
@@ -38,8 +38,7 @@ class Model_material_base extends MY_Model
 			"createdby_mat" => $this->_createdBy,
 			"editedon_mat" => $this->_editedOn,
 			"editedby_mat" => $this->_editedBy
-        );
-        return $tableAttributes;
+		);
     }
 
     /**

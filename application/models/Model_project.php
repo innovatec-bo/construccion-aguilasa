@@ -13,7 +13,17 @@ class Model_project extends Model_project_base
 		parent::__construct($projectCode, $projectName, $system, $address, $entryDate, $creFiscal, $status, $projectStart, $projectEnd, $points, $distance, $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $secondaryCode, $folderDate, $contractId, $detail, $energized, $projectPercentage, $latitude, $longitude, $workArea, $projectYear, $endContract);
 	}
 
-	public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array())
+	/**
+	 * Save the points to log.
+	 * @param $points
+	 * @param $metersDistance
+	 * @param $statusId
+	 * @param $statusDetail
+	 * @param $manualEntryDate
+	 * @param array $responsibleList
+	 * @param array $fileIds
+	 */
+	public function savePoints($points, $metersDistance, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array()) : void
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
@@ -32,6 +42,7 @@ class Model_project extends Model_project_base
     }
 
 	/**
+	 * Save the budgets details
 	 * @param $design
 	 * @param $building
 	 * @param $graphNumber
@@ -46,22 +57,38 @@ class Model_project extends Model_project_base
 	 * @param array $responsibleList
 	 * @param null $manpowerFileId
 	 * @param null $buildingStructureFileId
+	 * @param null $materialsFileId
+	 * @return int
 	 */
-    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL)
+    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL) : int
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget,$manpowerFileId, $buildingStructureFileId);
+        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget,$manpowerFileId, $buildingStructureFileId, $materialsFileId);
         $projectBudget->save();
 
         //Each statusLog needs to have a o more responsible by log
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
+        return $projectStatus->getId();
     }
 
-    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array())
+	/**
+	 * Save details about real budgets
+	 * @param $design
+	 * @param $building
+	 * @param $transportation
+	 * @param $liveLine
+	 * @param $rightOfWay
+	 * @param $statusId
+	 * @param $statusDetail
+	 * @param $manualEntryDate
+	 * @param array $responsibleList
+	 * @param array $fileIds
+	 */
+    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array()) : void
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
@@ -78,7 +105,21 @@ class Model_project extends Model_project_base
         Model_project_status_file::addFiles($projectStatus->getId(), $fileIds, $this->_id, $statusId);
     }
 
-    public function saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $projectManager = NULL)
+	/**
+	 * Save details about constructions assignment
+	 * @param $startDate
+	 * @param $endDate
+	 * @param $estimatedTime
+	 * @param $liveLine
+	 * @param $powerDown
+	 * @param $maneuver
+	 * @param $statusId
+	 * @param $statusDetail
+	 * @param $manualEntryDate
+	 * @param array $responsibleList
+	 * @param null $projectManager
+	 */
+    public function saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $projectManager = NULL) : void
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
@@ -92,13 +133,14 @@ class Model_project extends Model_project_base
         Model_status_log_responsible::addResponsible($projectStatus->getId(), $responsibleList);
     }
 
-    /**
-     * @param $statusId
-     * @param string $detail
-     * @param string $manualEntryDate
-     * @param array $responsibleList array list ids
-     */
-    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array(), $fileIds = array())
+	/**
+	 * @param $statusId
+	 * @param string $detail
+	 * @param string $manualEntryDate
+	 * @param array $responsibleList array list ids
+	 * @param array $fileIds
+	 */
+    public function addStatusToLog($statusId, $detail = "", $manualEntryDate = "", $responsibleList = array(), $fileIds = array()) : void
     {
         $getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($this->_id);
         $currentResponsibleList = Model_status_log_responsible::getByStatusLogId($statusId);
@@ -139,8 +181,8 @@ class Model_project extends Model_project_base
                             pp1.project_id_prp,
                             pp1.points_quantity_prp,
                             pp1.meters_distance_prp
-                        from wfl_project_points pp1
-                        LEFT JOIN wfl_project_points pp2 on pp1.project_id_prp = pp2.project_id_prp and pp1.id_prp < pp2.id_prp
+                        from wfl_project_points as pp1
+                        LEFT JOIN wfl_project_points as pp2 on pp1.project_id_prp = pp2.project_id_prp and pp1.id_prp < pp2.id_prp
                         WHERE
                         pp1.deleted_prp != 1			
                         and pp2.id_prp is null

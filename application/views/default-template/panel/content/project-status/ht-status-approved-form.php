@@ -69,6 +69,19 @@
                                     </div>
                                 {{/ifCond}}
                                 {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
+                                    {{var "buttonText" "Cargar materiales"}}
+                                    {{#ifCond previousEntry.id_prb "==" null}}
+                                        {{var "buttonText" "Revisar materiales"}}
+                                    {{/ifCond}}
+                                    <div class="form-group input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary extract-approved-materials btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
+                                            </button>
+                                        </span>
+                                        <input type="file" name="materials-file" accept=".xlsx, .xls, .csv">
+                                    </div>
+                                {{/ifCond}}
+                                {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
                                     {{var "buttonTextPointToPoint" "Cargar punto a punto"}}
                                     {{#ifCond previousEntry.building_structure_file_id_prb "==" null}}
                                         {{var "buttonTextPointToPoint" "Revisar punto a punto"}}
@@ -83,6 +96,7 @@
                                 {{/ifCond}}
                                 <input type="hidden" name="project-budget-id" value="{{previousEntry.id_prb}}">
                                 <input type="hidden" name="manpower-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                <input type="hidden" name="materials-file-id" value="{{previousEntry.materials_file_id_prb}}">
                                 <input type="hidden" name="point-to-point-file-id" value="{{previousEntry.building_structure_file_id_prb}}">
                                 {{var "readonly" "Cargar mano de obra"}}
                                 {{#ifCond previousEntry.id_prb "==" null}}

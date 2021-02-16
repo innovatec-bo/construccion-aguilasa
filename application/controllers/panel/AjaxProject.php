@@ -62,6 +62,9 @@ class AjaxProject extends PrivateController
         exit;
     }
 
+	/**
+	 * @deprecated
+	 */
     public function getStakesLeaderProjects()
     {
         $stakesLeaderProject = Model_project::getStakesLeaderProjects();

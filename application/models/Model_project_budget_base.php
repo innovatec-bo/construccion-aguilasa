@@ -12,19 +12,20 @@ class Model_project_budget_base extends MY_Model
     const TABLE_ID = "id_prb";
     const ATTRIB_SUFIX = "_prb";
 
-    protected $_statusLogId;
-    protected $_design;
-    protected $_building;
-    protected $_graphNumber;
-    protected $_reservationNumber;
-    protected $_transportation;
-    protected $_liveLine;
-    protected $_rightOfWay;
-    protected $_tentativeTotalBudget;
-    protected $_manpowerFileId;
-    protected $_buildingStructureFileId;
+    protected ?int $_statusLogId;
+    protected float $_design;
+    protected float $_building;
+    protected string $_graphNumber;
+    protected string $_reservationNumber;
+    protected float $_transportation;
+    protected float $_liveLine;
+    protected float $_rightOfWay;
+    protected float $_tentativeTotalBudget;
+    protected ?int $_manpowerFileId;
+    protected ?int $_buildingStructureFileId;
+	protected ?int $_materialsFileId;
 
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL)
+    public function __construct($statusLogId = NULL, $design = 0.0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -38,6 +39,7 @@ class Model_project_budget_base extends MY_Model
         $this->_tentativeTotalBudget = $tentativeTotalBudget;
         $this->_manpowerFileId = $manpowerFileId;
         $this->_buildingStructureFileId = $buildingStructureFileId;
+        $this->_materialsFileId = $materialsFileId;
     }
 
     /**
@@ -59,6 +61,7 @@ class Model_project_budget_base extends MY_Model
             "tentative_total_budget_prb" => $this->_tentativeTotalBudget,
             "manpower_file_id_prb" => $this->_manpowerFileId,
             "building_structure_file_id_prb" => $this->_buildingStructureFileId,
+            "materials_file_id_prb" => $this->_materialsFileId,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -93,7 +96,8 @@ class Model_project_budget_base extends MY_Model
                 $object->right_of_way_prb,
                 $object->tentative_total_budget_prb,
                 $object->manpower_file_id_prb,
-                $object->building_structure_file_id_prb
+                $object->building_structure_file_id_prb,
+				$object->materials_file_id_prb
             );
             $instance->_id = $object->id_prb;
 
@@ -116,4 +120,9 @@ class Model_project_budget_base extends MY_Model
     {
         $this->_buildingStructureFileId = $buildingStructureFileId;
     }
+
+    public function setMaterialFileId($materialFileId)
+	{
+		$this->_materialsFileId = $materialFileId;
+	}
 }

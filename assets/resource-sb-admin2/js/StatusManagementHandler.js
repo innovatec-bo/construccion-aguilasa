@@ -692,6 +692,7 @@ var StatusManagementHandler = /** @class */ (function () {
         var secondaryCode = $("input[name=secondary-code]").val();
         var manpowerFileId = $("input[name=manpower-file-id]").val();
         var pointToPointFileId = $("input[name=point-to-point-file-id]").val();
+        var materialsFileId = $("input[name=materials-file-id]").val();
         var approved = {
             design: design,
             building: building,
@@ -702,7 +703,8 @@ var StatusManagementHandler = /** @class */ (function () {
             rightOfWay: rightOfWay,
             secondaryCode: secondaryCode,
             manpowerFileId: manpowerFileId,
-            pointToPointFileId: pointToPointFileId
+            pointToPointFileId: pointToPointFileId,
+            materialsFileId: materialsFileId
         };
         var dataResult = Object.assign(data, approved);
         $.ajax({
@@ -1006,6 +1008,56 @@ var StatusManagementHandler = /** @class */ (function () {
                             $form_1.find("input[name=building-budget]").val(budget.building);
                             StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            html: response.message
+                        });
+                        console.log(response.message);
+                    }
+                }
+            });
+        });
+        $(document).on("click", ".extract-approved-materials", function () {
+            var formName = $(this).data('form-name');
+            var saveInSystem = $(this).data('save-in-system');
+            var form = $('form[name=' + formName + ']')[0];
+            var data = new FormData(form);
+            var $form = $("#status-form-content");
+            var manpowerFileId = $form.find("input[name=manpower-file-id]").val();
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readMaterialsFile/" + saveInSystem + "/" + manpowerFileId,
+                data: data,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function () {
+                    blockArea($(form));
+                },
+                success: function (response) {
+                    $(form).unblock();
+                    if (response.success == 1) {
+                        var projectBudgetId = $("input[name=project-budget-id]").val();
+                        // let materialsFileId = $("input[name=materials-file-id]").val();
+                        if (projectBudgetId != "" && saveInSystem == 1) {
+                            _this.projectLog();
+                            _this.loadStatusForm('approved', 0);
+                        }
+                        else {
+                            var file = response.data.file;
+                            // let budget = response.data.budget;
+                            var $form_2 = $("#status-form-content");
+                            $form_2.find("input[name=materials-file-id]").val(file.id);
+                            // $form.find("input[name=building-budget]").val(budget.building);
+                            // StatusManagementHandler.updateTotalOnApprovedForm();
+                            // console.log(response.data);
                         }
                     }
                     else {

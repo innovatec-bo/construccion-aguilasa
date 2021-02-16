@@ -13,7 +13,7 @@ class Test extends PrivateController
 
     public function codegen()
     {
-//    	$codeGen = new CodeGenHandler('bui_materials', 'material');
+//    	$codeGen = new CodeGenHandler('mat_materials_summary_types', 'material_summary_type');
 //    	$codeGen->generateModelFiles();
     }
 

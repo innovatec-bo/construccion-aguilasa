@@ -19,10 +19,10 @@ $(document).ready(function() {
         e.preventDefault();
         $("ul.wizard li.active").next().find("a").trigger("click");
     });
-    $(document).on("click", ".check-stakes-team",function(e){
-        e.preventDefault();
-        getStakesLeaderProjects();
-    });
+    // $(document).on("click", ".check-stakes-team",function(e){
+    //     e.preventDefault();
+    //     getStakesLeaderProjects();
+    // });
 
     $(document).on("click",".save-status",function(e){
         e.preventDefault();

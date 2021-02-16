@@ -15,6 +15,12 @@ class Warehouse extends PrivateController
     }
 
     public function index()
+	{
+		$data = array();
+		$this->_loadPanelView("warehouse/index",$data);
+	}
+
+    public function index_old()
     {
         $this->_validateFeature('warehouse_index');
         $this->complementHandler->addViewComplement("bootbox");
@@ -46,7 +52,7 @@ class Warehouse extends PrivateController
             $arrayStatus[$status['id_pst']] = $status["status_name_pst"];
         }
         $data["projectStatusJson"] = json_encode($arrayStatus);
-        $this->_loadPanelView("project/index",$data);
+        $this->_loadPanelView("warehouse/index",$data);
     }
 
     public function recordBuildingMaterials()

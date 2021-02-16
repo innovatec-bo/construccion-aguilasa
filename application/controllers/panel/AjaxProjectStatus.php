@@ -57,7 +57,7 @@ class AjaxProjectStatus extends PrivateController
             $formData = $this->input->post();
             $roleName = $formData["role-name"];
             $roleKeyword = $formData["role-keyword"];
-            $role = new Model_role($roleName, $roleKeyword);
+            $role = new Model_saveStructuresInDataBaserole($roleName, $roleKeyword);
             $role->save();
             $response["success"] = 1;
             $response["message"] = "User was added successfully";
@@ -377,7 +377,7 @@ class AjaxProjectStatus extends PrivateController
     public function saveApproved()
     {
         set_time_limit(240);
-       ini_set('memory_limit','256M');
+       	ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $entryDate = $formData["entryDate"];
@@ -402,19 +402,38 @@ class AjaxProjectStatus extends PrivateController
         $secondaryCode = $formData["secondaryCode"];
         $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
         $pointToPointFileId = $formData["pointToPointFileId"] == ''?NULL:$formData["pointToPointFileId"];
+        $materialsFileId = $formData["materialsFileId"] == ''?NULL:$formData["materialsFileId"];
         /** @var $project Model_project*/
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->setSecondaryCode($secondaryCode);
         $project->save();
-        $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay,0, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId);
+        $statusLogId = $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay,0, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId, $materialsFileId);
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {
             $project->startWarehouseProcess($entryDate);
         }
+
+        //The manpower file is the main document
         if(is_numeric($manpowerFileId))
         {
+        	//Validating materials file
+			if(is_numeric($materialsFileId))
+			{
+				$materialsFile = Model_file::getById($materialsFileId);
+				if($materialsFile instanceof Model_file)
+				{
+					$currentUser = PrivateController::getSessionUser();
+					$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+					$initialMaterials = Model_material_summary_type::getByKeyword(array('materials_initial_list'));
+					$initialMaterials = array_values($initialMaterials);
+					$initialMaterialType = $initialMaterials[0];
+					$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
+					$materialsFileReader->saveMaterialsInDataBase();
+					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), "Lista inicial de materiales");
+				}
+			}
             //Validating point to point file
             $pointToPointFile = NULL;
             if(is_numeric($pointToPointFileId))
@@ -825,6 +844,7 @@ class AjaxProjectStatus extends PrivateController
     public function readManpowerFile($registerManpowerInSystem = 0)
     {
         $this->_validateFeature('project_upload_manpower');
+//        echo"<pre>";var_dump($_FILES);exit;
         if (!empty($_FILES['manpower-file']['name']))
         {
             try
@@ -866,7 +886,7 @@ class AjaxProjectStatus extends PrivateController
         else
         {
             $response['success'] = 0;
-            $response['message'] = 'No se selecciono ningun archivo para revisar.';
+            $response['message'] = 'No se selecciono ningun archivo de mano de obra para revisar.';
             $response['data']['file'] = array();
         }
         echo json_encode($response);exit;
@@ -921,9 +941,55 @@ class AjaxProjectStatus extends PrivateController
         else
         {
             $response['success'] = 0;
-            $response['message'] = 'No se selecciono ningun archivo para revisar.';
+            $response['message'] = 'No se selecciono ningun archivo de punto a punto para revisar.';
             $response['data']['file'] = array();
         }
         echo json_encode($response);exit;
     }
+
+	public function readMaterialsFile($registerMaterialsInSystem = 0, $materialFileId = NULL)
+	{
+		$this->_validateFeature('project_upload_manpower');
+		if(is_null($materialFileId))
+		{
+			$response['success'] = 0;
+			$response['message'] = 'Primero ejecute la revision de un archivo de <strong>Mano De Obra</strong> antes de revisar un archivo de <strong>materiales</strong>.';
+			$response['data']['file'] = array();
+		}
+		else if (!empty($_FILES['materials-file']['name']))
+		{
+			try
+			{
+				$formData = $this->input->post();
+				$projectId = $formData['project-id'];
+				$fileHandler = new FileHandler();
+				$materialsFile = $fileHandler->fileUpload($_FILES['materials-file'], "materials_doc", "documents", "document");
+				$materialsFile->save();
+				$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
+				$materialsFileReader->saveMaterialsInDataBase();
+				if($registerMaterialsInSystem == 1)
+				{
+					$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
+					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl']);
+				}
+
+				$response['success'] = 1;
+				$response['message'] = '';
+				$response['data']['file']['id'] = $materialsFile->getId();
+			}
+			catch (Exception $e)
+			{
+				$response['success'] = 0;
+				$response['message'] = $e->getMessage();
+				$response['data'] = array();
+			}
+		}
+		else
+		{
+			$response['success'] = 0;
+			$response['message'] = 'No se selecciono ningun archivo de materiales para revisar.';
+			$response['data']['file'] = array();
+		}
+		echo json_encode($response);exit;
+	}
 }
