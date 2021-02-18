@@ -209,6 +209,7 @@ class ExcelExecutiveReport
 				default:
 					$totalBudget = floatval($row['total_approved']);
 			}
+			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
 			$totalTotalBudget += $totalBudget;
 
 			$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
@@ -447,6 +448,7 @@ class ExcelExecutiveReport
 				default:
 					$totalBudget = floatval($row['total_approved']);
 			}
+			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
 			{
 				$generalExecutiveReportToPrint[$creFiscalId]['fullName'] = $creFiscalName;
@@ -504,4 +506,6 @@ class ExcelExecutiveReport
 	{
 		return FCPATH.'assets/'.$this->_fileName;
 	}
+
+
 }
