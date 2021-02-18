@@ -199,14 +199,15 @@ class ExcelExecutiveReport
 				case "conciliation_shipment":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					break;
-				default: //case "project_return_materials":
+				case "project_return_materials":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					if($this->_type == static::TYPE_EXTERNAL)
 					{
 						$creFiscal = "Victor Miranda";
 					}
-
 					break;
+				default:
+					$totalBudget = floatval($row['total_approved']);
 			}
 			$totalTotalBudget += $totalBudget;
 
@@ -435,7 +436,7 @@ class ExcelExecutiveReport
 				case "conciliation_shipment":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					break;
-				default: //case "project_return_materials":
+				case "project_return_materials":
 					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
 					if($this->_type == static::TYPE_EXTERNAL)
 					{
@@ -443,6 +444,8 @@ class ExcelExecutiveReport
 						$creFiscalName = "Victor Miranda";
 					}
 					break;
+				default:
+					$totalBudget = floatval($row['total_approved']);
 			}
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
 			{

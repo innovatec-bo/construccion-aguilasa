@@ -73,7 +73,7 @@
 
                                                 $amountColumn = number_format($project["total_approved"],2,",",".");
                                                 if($project["keyword_pst"] == "project_return_materials")
-                                                    $amountColumn = number_format($project["payment_order_registered_total_real_budget"]);
+                                                    $amountColumn = number_format($project["payment_order_registered_total_real_budget"],2,",",".");
 
                                                 $row .= '
                                                     <tr style="font-size: 12px; color:'.$color.'">
