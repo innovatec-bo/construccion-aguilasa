@@ -72,7 +72,7 @@ class ExcelExecutiveReport
 		$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
     	if($this->_type == static::TYPE_INTERNAL)
 		{
-			$additionalParameters = array("assign_to","in_progress","paused","completed", "project_energized","cre_return_order","project_return_materials","conciliation_reception");
+			$additionalParameters = array('status-keyword' => "assign_to,in_progress,paused,completed,project_energized,cre_return_order,project_return_materials,conciliation_reception");
 			$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
 		}
 
