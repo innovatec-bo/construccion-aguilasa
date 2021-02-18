@@ -94,7 +94,7 @@ class Model_material_summary_base extends MY_Model
 				$object->entry_date_msu,
 				$object->detail_msu,
 				$object->user_responsible_msu,
-				$object->summary_id_type_msu,
+				$object->summary_type_id_msu,
 				$object->file_id_msu,
 				$object->parent_summary_id_msu
             );

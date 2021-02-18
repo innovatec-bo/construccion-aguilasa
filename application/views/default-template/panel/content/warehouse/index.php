@@ -40,7 +40,7 @@
 			<h4>Operaciones de almacen</h4>
 		</div>
 		<div class="col-sm-6 col-md-3">
-			<a href="#" class="thumbnail">
+			<a href="<?=base_url('panel/Warehouse/entry')?>" class="thumbnail">
 				<div class="thumbnail p-0 m-0">
 					<?php
 					$timthumb = base_url('timthumb/timthumb.php');

@@ -1,5 +1,5 @@
 <?php
-class DemoPaginationHandler extends BasePaginationHandler
+class SummaryPaginationHandler extends BasePaginationHandler
 {
 	const TABLE_NAME = "";
 	const TABLE_ID = "";

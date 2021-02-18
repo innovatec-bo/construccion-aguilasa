@@ -13,7 +13,12 @@ class Model_material_summary extends Model_material_summary_base
 		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $userResponsible, $summaryTypeId, $fileId, $parentSummaryId);
 	}
 
-	public static function getByProjectId($projectId)
+	/**
+	 * Return an object list
+	 * @param int $projectId
+	 * @return array
+	 */
+	public static function getByProjectId(int $projectId) : array
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -23,11 +28,24 @@ class Model_material_summary extends Model_material_summary_base
         ";
 
 		$query = $ci->db->query($sql);
-		return static::recast(get_called_class(), $query->row());
+		return static::recastArray(get_called_class(), $query->result());
 	}
 
-	public function getMasterDetailByProjectIdAndTypeKeyword($projectId)
+	/**
+	 * Return an array
+	 * @param int $listId
+	 * @return array
+	 */
+	public function getMasterDetailByListId(int $listId) : array
 	{
+		$ci = &get_instance();
+		$ci->load->database();
 
+		$sql = "
+            select * from ".static::TABLE_NAME." where project_id_msu = ".$ci->db->escape($listId)." and ".static::notDeleted()."
+        ";
+
+		$query = $ci->db->query($sql);
+		return $query->result_array();
 	}
 }

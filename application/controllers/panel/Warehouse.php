@@ -20,6 +20,33 @@ class Warehouse extends PrivateController
 		$this->_loadPanelView("warehouse/index",$data);
 	}
 
+	public function entry()
+	{
+		$data = array();
+		$projectCode = $_GET['project-code']??NULL;
+		$data['summaryList'] = array();
+		$data['materialList'] = array();
+		if(!is_null($projectCode))
+		{
+			$project = Model_project::getByCode($projectCode);
+			if($project instanceof Model_project)
+			{
+				$data['summaryList'] = Model_material_summary::getByProjectId($project->getId());
+				$data['project'] = $project->toArray();
+
+				$summaryId = $_GET['summary-id']??NULL;
+				if(!is_null($summaryId))
+				{
+					$summary = Model_material_summary::getById($summaryId);
+					$data['materialList'] = array(1,2,3);
+				}
+
+			}
+		}
+//		echo"<pre>";var_dump($data);exit;
+		$this->_loadPanelView("warehouse/entry",$data);
+	}
+
     public function index_old()
     {
         $this->_validateFeature('warehouse_index');
