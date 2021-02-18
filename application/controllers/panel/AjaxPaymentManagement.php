@@ -220,6 +220,7 @@ class AjaxPaymentManagement extends PrivateController
 			/** @var Model_payment_order $paymentOrder */
 			$paymentOrder = Model_payment_order::getById($paymentOrderId);
 			$paymentOrder->setEndContractId($endContractId);
+			$paymentOrder->setEntryDate($entryDate);
 			$paymentOrder->save();
 			$paymentOrder->saveProjects($formData["projectList"]);
 			$response = array("success" => 1, "message" => "Orden de pago actualizada correctamente!", "paymentOrderId" => $paymentOrder->getId());
