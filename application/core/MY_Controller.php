@@ -409,7 +409,7 @@ class PrivateController extends PublicController
             "conciliation_shipment_date" => "FECHA ENVIO DE CONCILIACION",
             "cre_return_order_date" => "ORDEN DE DEVOLUCION DE MATERIALES",
             "project_return_materials_date" => "CONFIRMACION DE DEVOLUCION DE MATERIALES",
-            "payment_order_registered_date" => "FECHA DE REGSITRO DE ORDEN DE PAGO",
+            "payment_order_registered_date" => "FECHA DE REGISTRO DE ORDEN DE PAGO",
             "payment_order_registered_order_number" => "NRO ORDEN DE PAGO",
             "payment_order_registered_design_budget" => "IMPORTE REAL - DISEÑO",
             "payment_order_registered_transportation_budget" => "IMPORTE REAL - TRANSPORTE",

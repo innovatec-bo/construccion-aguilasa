@@ -14,6 +14,10 @@ class ExcelExecutiveReport
     private array $_dependency;
     private array $_externalObservations;
     private string $_fileName;
+    private string $_type;
+
+    CONST TYPE_EXTERNAL = 1;
+    CONST TYPE_INTERNAL = 2;
 
     public function __construct(object $sessionUser = NULL)
     {
@@ -51,12 +55,27 @@ class ExcelExecutiveReport
 			'jhonyvv@cre.com.bo' => 'Alberto Lobera',
 			'reneoom@cre.com.bo' => 'Alberto Lobera'
 		);
-        $this->_fileName = 'Informe Ejecutivo - '.date("d.m.y h.i A").'.xlsx';
+		$this->_type = static::TYPE_EXTERNAL;
+		$this->_fileName = 'Informe Ejecutivo Externo - '.date("d.m.y h.i A").'.xlsx';
     }
+
+	/**
+	 * @param int $type
+	 */
+    public function setType(int $type) : void
+	{
+		$this->_type = $type;
+	}
 
     function getReport($save = FALSE) : void
     {
-    	$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
+		$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
+    	if($this->_type == static::TYPE_INTERNAL)
+		{
+			$additionalParameters = array("assign_to","in_progress","paused","completed", "project_energized","cre_return_order","project_return_materials","conciliation_reception");
+			$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
+		}
+
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];

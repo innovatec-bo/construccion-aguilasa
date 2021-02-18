@@ -760,9 +760,10 @@ class Project extends PrivateController
         $pdf->getReport();
     }
 
-	public function executiveReport()
+	public function executiveReport($reportType)
 	{
 		$report = new ExcelExecutiveReport($this->sessionUser);
+		$report->setType($reportType);
 		$report->getReport();
 	}
 
