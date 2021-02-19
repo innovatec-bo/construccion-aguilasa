@@ -222,7 +222,8 @@ $(document).ready(function() {
 
 	$(document).on("submit","form.executive-report", function(e){
 		e.preventDefault();
-		window.location.href = base_url+"panel/Project/executiveReport/";
+		let type = $('form.executive-report').find('select[name=executive-report-type] option:selected').val();
+		window.location.href = base_url+"panel/Project/executiveReport/"+type;
 	});
 });
 

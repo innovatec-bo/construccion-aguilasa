@@ -190,6 +190,48 @@ class PublicController extends CI_Controller
         );
         return $statusList[$status];
     }
+
+	public static function getPaymentByStatusFromWorkflow($row)
+	{
+		switch($row['keyword_pst'])
+		{
+			//First budget stage
+			case 'schedule':
+			case "ready_to_send":
+			case "already_sent":
+			case "rectify_design":
+			case "rectify_illustration":
+			case "rd_stakes":
+			case "rd_digitization":
+			case "rd_drawing":
+			case "ri_digitization":
+			case "ri_drawing":
+				$budget = $row['schedule_design_budget'];
+				break;
+			//Second budget stage
+			case 'approved':
+			case "assign_to":
+			case "in_progress":
+			case "paused":
+			case "stopped":
+			case "completed":
+			case "project_energized":
+			case "as_built":
+			case "conciliation_reception":
+				$budget = $row['total_approved'];
+				break;
+			//Third budget stage - This stage search budgets in payments orders, then if does not exist use get the budgets from conciliation shipments
+			case 'conciliation_shipment':
+			case "cre_return_order":
+			case "project_return_materials":
+			case "project_real_budget_confirmation":
+				$budget = $row['payment_order_registered_total_real_budget'];
+				break;
+			default:
+				$budget = 0;
+		}
+		return $budget;
+	}
 }
 
 class PrivateController extends PublicController
@@ -409,7 +451,7 @@ class PrivateController extends PublicController
             "conciliation_shipment_date" => "FECHA ENVIO DE CONCILIACION",
             "cre_return_order_date" => "ORDEN DE DEVOLUCION DE MATERIALES",
             "project_return_materials_date" => "CONFIRMACION DE DEVOLUCION DE MATERIALES",
-            "payment_order_registered_date" => "FECHA DE REGSITRO DE ORDEN DE PAGO",
+            "payment_order_registered_date" => "FECHA DE REGISTRO DE ORDEN DE PAGO",
             "payment_order_registered_order_number" => "NRO ORDEN DE PAGO",
             "payment_order_registered_design_budget" => "IMPORTE REAL - DISEÑO",
             "payment_order_registered_transportation_budget" => "IMPORTE REAL - TRANSPORTE",
@@ -465,5 +507,6 @@ class PrivateController extends PublicController
 		$ci->load->view("default-template/panel/email-template/test-mail-server", $data);
 //		echo "<pre>"; $sendMessageResponse;exit;
 	}
-}
 
+
+}

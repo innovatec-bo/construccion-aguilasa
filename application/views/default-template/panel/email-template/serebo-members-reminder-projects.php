@@ -71,9 +71,11 @@
                                                 $date = new DateTime($project[$shipmentDate]);
                                                 $date = $date->format("d-m-Y");
 
-                                                $amountColumn = number_format($project["total_approved"],2,",",".");
-                                                if($project["keyword_pst"] == "project_return_materials")
-                                                    $amountColumn = number_format($project["payment_order_registered_total_real_budget"]);
+//                                                $amountColumn = number_format($project["total_approved"],2,",",".");
+//                                                if($project["keyword_pst"] == "project_return_materials")
+//                                                    $amountColumn = number_format($project["payment_order_registered_total_real_budget"],2,",",".");
+												$amountColumn = PublicController::getPaymentByStatusFromWorkflow($project);
+												$amountColumn = number_format($amountColumn,2,",",".");
 
                                                 $row .= '
                                                     <tr style="font-size: 12px; color:'.$color.'">
@@ -152,14 +154,15 @@
                                                         </td>
                                                     </tr>
                                                 ';
-                                                if($project["keyword_pst"] == "project_return_materials")
-                                                {
-                                                    $totalAmount += $project['payment_order_registered_total_real_budget'];
-                                                }
-                                                else
-                                                {
-                                                    $totalAmount += $project['total_approved'];
-                                                }
+//                                                if($project["keyword_pst"] == "project_return_materials")
+//                                                {
+//                                                    $totalAmount += $project['payment_order_registered_total_real_budget'];
+//                                                }
+//                                                else
+//                                                {
+//                                                    $totalAmount += $project['total_approved'];
+//                                                }
+                                                $totalAmount += PublicController::getPaymentByStatusFromWorkflow($project);
                                                 $i++;
                                             }
                                             $totalAmount = number_format($totalAmount,2,",",".");
@@ -181,11 +184,11 @@
                                                 <td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
                                                     <span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
                                                     <?php
-                                                    $amountTitle = "Monto Aprobado";
-                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
-                                                    {
-                                                        $amountTitle = "Monto Conciliado";
-                                                    }
+                                                    $amountTitle = "Importe";
+//                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
+//                                                    {
+//                                                        $amountTitle = "Monto Conciliado";
+//                                                    }
                                                     ?>
                                                     <span style="color: #404E67;"><?=$amountTitle?></span>
                                                 </td>

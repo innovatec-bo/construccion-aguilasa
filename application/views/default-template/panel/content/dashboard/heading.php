@@ -390,6 +390,18 @@ $monthList = array(
 				<div class="panel-heading">
 					Informe Ejecutivo
 				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-12 text-center">
+							<div class="form-group">
+								<select class="form-control input-sm" name="executive-report-type">
+									<option value="1" selected>Externo</option>
+									<option value="2">Interno</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="panel-footer p-0">
 					<button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
 				</div>

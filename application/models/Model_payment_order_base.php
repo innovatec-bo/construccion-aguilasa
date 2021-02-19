@@ -101,6 +101,11 @@ class Model_payment_order_base extends MY_Model
         $this->_invoiceNumber = $invoiceNumber;
     }
 
+    public function setEntryDate($entryDate)
+	{
+		$this->_entryDate = $entryDate;
+	}
+
     public function setInvoiceDate($invoiceDate)
     {
         $this->_invoiceDate = $invoiceDate;
