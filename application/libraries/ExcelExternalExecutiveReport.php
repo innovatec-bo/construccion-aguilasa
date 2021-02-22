@@ -341,7 +341,7 @@ class ExcelExternalExecutiveReport
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("L".($i+1), '=SUM(L4:L'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("N".($i+1), '=SUM(N4:N'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("O".($i+1), '=SUM(O4:O'.$i.')');
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("Q".($i+1), '=SUM(Q4:O'.$i.')');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("Q".($i+1), '=SUM(Q4:Q'.$i.')');
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('C'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('F'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
