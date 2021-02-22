@@ -392,6 +392,7 @@ class ExcelExternalExecutiveReport
 			$statusKeyword = $row['keyword_pst'];
 			if($statusKeyword == "project_return_materials")
 			{
+				$creFiscalId = 1000;
 				$creFiscalName = "Victor Miranda";
 			}
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
