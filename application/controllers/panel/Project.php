@@ -764,9 +764,21 @@ class Project extends PrivateController
 	{
 		set_time_limit(300);
 		ini_set('memory_limit','256M');
-		$report = new ExcelExecutiveReport($this->sessionUser);
-		$report->setType($reportType);
-		$report->getReport();
+		if($reportType == 1)
+		{
+			$report = new ExcelExternalExecutiveReport($this->sessionUser);
+			$report->getReport();
+		}
+		elseif($reportType == 2)
+		{
+			$report = new ExcelInternalExecutiveReport($this->sessionUser);
+			$report->getReport();
+		}
+		else
+		{
+			$this->session->set_flashdata("errorMessage", "Tipo de reporte desconocido!");
+			redirect(base_url('panel/Home'));
+		}
 	}
 
 	public function importItems()

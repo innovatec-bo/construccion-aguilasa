@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class ExcelExecutiveReport
+class ExcelExternalExecutiveReport
 {
     private object $_sessionUser;
     private array $_workflowDetail;
@@ -14,10 +14,6 @@ class ExcelExecutiveReport
     private array $_dependency;
     private array $_externalObservations;
     private string $_fileName;
-    private string $_type;
-
-    CONST TYPE_EXTERNAL = 1;
-    CONST TYPE_INTERNAL = 2;
 
     public function __construct(object $sessionUser = NULL)
     {
@@ -55,27 +51,12 @@ class ExcelExecutiveReport
 			'jhonyvv@cre.com.bo' => 'Alberto Lobera',
 			'reneoom@cre.com.bo' => 'Alberto Lobera'
 		);
-		$this->_type = static::TYPE_EXTERNAL;
 		$this->_fileName = 'Informe Ejecutivo Externo - '.date("d.m.y h.i A").'.xlsx';
     }
-
-	/**
-	 * @param int $type
-	 */
-    public function setType(int $type) : void
-	{
-		$this->_type = $type;
-	}
 
     function getReport($save = FALSE) : void
     {
 		$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
-    	if($this->_type == static::TYPE_INTERNAL)
-		{
-			$additionalParameters = array('status-keyword' => "assign_to,in_progress,paused,completed,project_energized,cre_return_order,project_return_materials,conciliation_reception");
-			$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
-		}
-
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
@@ -188,26 +169,9 @@ class ExcelExecutiveReport
 					continue;
 			}
         	$creFiscal = $row['cre_fiscal_pro'];
-        	switch ($row['keyword_pst'])
+        	if($row['keyword_pst'] == "project_return_materials")
 			{
-				case "already_sent":
-					$totalBudget = floatval($row['schedule_design_budget']);
-					break;
-				case "as_built":
-					$totalBudget = floatval($row['total_approved']);
-					break;
-				case "conciliation_shipment":
-					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
-					break;
-				case "project_return_materials":
-					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
-					if($this->_type == static::TYPE_EXTERNAL)
-					{
-						$creFiscal = "Victor Miranda";
-					}
-					break;
-				default:
-					$totalBudget = floatval($row['total_approved']);
+				$creFiscal = "Victor Miranda";
 			}
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
 			$totalTotalBudget += $totalBudget;
@@ -426,27 +390,9 @@ class ExcelExecutiveReport
 			$creFiscalId = $row['cre_fiscal_id'];
 			$creFiscalName = $row['cre_fiscal_pro'];
 			$statusKeyword = $row['keyword_pst'];
-			switch ($statusKeyword)
+			if($statusKeyword == "project_return_materials")
 			{
-				case "already_sent":
-					$totalBudget = floatval($row['schedule_design_budget']);
-					break;
-				case "as_built":
-					$totalBudget = floatval($row['total_approved']);
-					break;
-				case "conciliation_shipment":
-					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
-					break;
-				case "project_return_materials":
-					$totalBudget = floatval($row['payment_order_registered_total_real_budget']);
-					if($this->_type == static::TYPE_EXTERNAL)
-					{
-						$creFiscalId = 1000;
-						$creFiscalName = "Victor Miranda";
-					}
-					break;
-				default:
-					$totalBudget = floatval($row['total_approved']);
+				$creFiscalName = "Victor Miranda";
 			}
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
 			if(!isset($generalExecutiveReportToPrint[$creFiscalId]))
@@ -506,6 +452,4 @@ class ExcelExecutiveReport
 	{
 		return FCPATH.'assets/'.$this->_fileName;
 	}
-
-
 }
