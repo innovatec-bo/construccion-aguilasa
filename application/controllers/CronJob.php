@@ -107,7 +107,7 @@ class CronJob extends PublicController
 			$response = Model_user::sendExecutiveReport();
 			if($response['success'] == 1)
 			{
-				/** @var ExcelExecutiveReport $report */
+				/** @var ExcelExternalExecutiveReport $report */
 				$report = $response['report'];
 				$report->removeFile();
 			}

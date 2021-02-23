@@ -549,7 +549,7 @@ class Model_user extends Model_user_base
 	public static function sendExecutiveReport()
 	{
 		$ci = &get_instance();
-		$report = new ExcelExecutiveReport();
+		$report = new ExcelExternalExecutiveReport();
 		$report->getReport(TRUE);
 		$data = array();
 		$sendTo = array(

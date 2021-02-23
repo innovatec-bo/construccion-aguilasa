@@ -43,13 +43,14 @@
                                     </tr>
                                     <!-- Image -->
                                     <tr>
-                                        <td align="center" valign="top"><img alt="img" data-crop="false" editable="" label="ph1" mc:edit="ph1" src="<?=base_url("assets/images/favicon.png")?>" style="border: 0px; display: block; font-size: 0px; line-height: 0px;" width="80"></td>
+                                        <td align="center" valign="top" colspan="2"><img alt="img" data-crop="false" editable="" label="ph1" mc:edit="ph1" src="<?=base_url("assets/images/favicon.png")?>" style="border: 0px; display: block; font-size: 0px; line-height: 0px;" width="80"></td>
                                     </tr>
                                     <!-- End Image -->
                                     <!-- Content -->
                                     <?php
                                     $row = "";
                                     $i = 1;
+									$totalAmount = 0;
                                     usort($projectList, function($a, $b) {
                                         return $b['static_days'] - $a['static_days'];
                                     });
@@ -69,6 +70,8 @@
                                         $date = new DateTime($project[$shipmentDate]);
                                         $date = $date->format("d-m-Y");
                                         $sereboFiscal = $project['fiscal_responsible']==""?"Sin asignar":$project['fiscal_responsible'];
+										$amountColumn = PublicController::getPaymentByStatusFromWorkflow($project);
+										$amountColumn = number_format($amountColumn,2,",",".");
                                         $row .= '
                                                                         <tr style="font-size: 12px; color:'.$color.'">
                                                                             <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
@@ -98,13 +101,18 @@
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                 '.$sereboFiscal.'
                                                                             </td>
+                                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+																				'.$amountColumn.'
+																			</td>
                                                                         </tr>
                                                                     ';
-                                        $i++;
+										$totalAmount += PublicController::getPaymentByStatusFromWorkflow($project);
+										$i++;
                                     }
+									$totalAmount = number_format($totalAmount,2,",",".");
                                     ?>
                                     <tr>
-                                        <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
+                                        <td colspan="2" align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                             <multiline label="ab5">
                                                 Estimado <?=$creFiscalFullName?>,<br>
                                                 <?=$reference?>
@@ -118,9 +126,20 @@
                                                 <span style="color:#FFA87D;font-weight: bold">Media: </span>Dias estaticos mayor a 7 y menor a 14 <br>
                                             <span style="color:#404E67;font-weight: bold">Baja: </span>Dias estaticos menor a 7
                                         </td>
+										<td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
+											<span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
+											<?php
+											$amountTitle = "Importe";
+											//                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
+											//                                                    {
+											//                                                        $amountTitle = "Monto Conciliado";
+											//                                                    }
+											?>
+											<span style="color: #404E67;"><?=$amountTitle?></span>
+										</td>
                                     </tr>
                                     <tr>
-                                        <td align="center" data-color="module1_text4" data-size="module1_text4" mc:edit="ab6" style="color: #000; font-family: 'Open Sans', sans-serif;  font-weight: 500; line-height: 26px; padding-top: 10px;">
+                                        <td colspan="2" align="center" data-color="module1_text4" data-size="module1_text4" mc:edit="ab6" style="color: #000; font-family: 'Open Sans', sans-serif;  font-weight: 500; line-height: 26px; padding-top: 10px;">
                                             <table style="width:90%;border:1px solid #b5babf;color:#000;border-collapse: collapse;" cellpadding="5px" cellspacing="0">
                                                 <thead>
                                                 <tr style="background: #f6f6f6;font-size: 12px;">
@@ -133,6 +152,7 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCIÓN</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">IMPORTE</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -145,7 +165,7 @@
                                     </tr>
                                     <!-- End Content -->
                                     <tr>
-                                        <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
+                                        <td align="center" colspan="2" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                             <multiline label="ab5">
                                                 Serebo.Admin
                                             </multiline>
@@ -154,11 +174,11 @@
                                     </tr>
                                     <!-- End Content -->
                                     <tr>
-                                        <td class="td_hide" height="30">
+                                        <td colspan="2" class="td_hide" height="30">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td height="35" style="background: url(<?=base_url("assets/images/bg-body.jpg")?>);">
+                                        <td colspan="2" height="35" style="background: url(<?=base_url("assets/images/bg-body.jpg")?>);">
                                         </td>
                                     </tr>
                                 </tbody>
