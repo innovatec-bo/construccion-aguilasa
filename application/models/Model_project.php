@@ -467,6 +467,7 @@ class Model_project extends Model_project_base
             conciliation_shipment.entry_date conciliation_shipment_date,
             cre_return_order.entry_date cre_return_order_date,
             project_return_materials.entry_date project_return_materials_date,
+            project_return_materials2.entry_date project_return_materials_date2,
             payment_order_registered.entry_date payment_order_registered_date,
             payment_order_registered.order_number_pao payment_order_registered_order_number,
             if(payment_order_registered.order_number_pao != '','Pagado','Pendiente de pago') payment_status,
@@ -506,6 +507,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(37).") cre_return_order on cre_return_order.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(39).") project_return_materials2 on project_return_materials2.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(47).") project_energized on project_energized.project_id_psl = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro
         LEFT JOIN (".static::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
