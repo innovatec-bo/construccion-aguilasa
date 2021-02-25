@@ -463,7 +463,8 @@ class PrivateController extends PublicController
             "payment_order_invoice_sent_date" => "FECHA DE ENVIO DE FACTURA",
             "payment_order_has_been_settled_date" => "FECHA DE LIQUIDACION",
             "project_manager_assigned" => "ENCARGADO DEL PROYECTO",
-			"payment_status" => "ESTADO DEL PAGO"
+			"payment_status" => "ESTADO DEL PAGO",
+			"project_return_materials2_date" => "FECHA DE DEVULUCION DE MATERIALES A CRE"
         );
         return $columnList;
     }

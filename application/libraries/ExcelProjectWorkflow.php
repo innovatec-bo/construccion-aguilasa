@@ -164,7 +164,7 @@ class ExcelProjectWorkflow
     private function _dateFormat($spreadsheet, $totalRows)
     {
         $columnList = array("entry_date_pro", "status_log_manual_entry_date", "folder_date_pro", "cre_design_completion_date_pro", "cre_building_completion_date_pro", "stake_date", "returned_date", "digitization_date", "drawing_date", "schedule_date", "schedule_start", "schedule_end", "already_sent_date", "approved_date", "canceled_date", "rectify_design_date", "rectify_illustration_date", "record_building_materials_date","get_materials_date",
-                            "deliver_materials_date", "materials_reception_date", "assign_to_date", "start_date_assigned", "end_date_assigned", "in_progress_date", "completed_date", "paused_date", "stopped_date", "as_built_date", "conciliation_reception_date", "conciliation_shipment_date", "cre_return_order_date", "project_return_materials_date", "payment_order_registered_date", "payment_order_invoice_sent_date", "payment_order_has_been_settled_date","project_energized_entry_date");
+                            "deliver_materials_date", "materials_reception_date", "assign_to_date", "start_date_assigned", "end_date_assigned", "in_progress_date", "completed_date", "paused_date", "stopped_date", "as_built_date", "conciliation_reception_date", "conciliation_shipment_date", "cre_return_order_date", "project_return_materials_date", "payment_order_registered_date", "payment_order_invoice_sent_date", "payment_order_has_been_settled_date","project_energized_entry_date","project_return_materials2_date");
         $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         $startData = $this->startDataRow() + 1;
         foreach($columnList as $key => $column)
