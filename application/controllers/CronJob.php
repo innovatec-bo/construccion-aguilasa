@@ -118,7 +118,7 @@ class CronJob extends PublicController
 	{
 		if($challenge == 'sendInternalExecutiveReport2020')
 		{
-			$response = Model_user::sendExecutiveReport();
+			$response = Model_user::sendInternalExecutiveReport();
 			if($response['success'] == 1)
 			{
 				/** @var ExcelInternalExecutiveReport $report */
