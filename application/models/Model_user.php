@@ -599,6 +599,9 @@ class Model_user extends Model_user_base
 			"maguilera@serebo.com",
 			"eddysonca@serebo.com"
 		);
+		$sendTo = array(
+			"jair@twiiti.com"
+		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
@@ -607,26 +610,26 @@ class Model_user extends Model_user_base
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
-        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
-//		try
-//		{
-//			if($email->Send())
-//			{
-//				$sendMessageResponse['success'] = 1;
-//				$sendMessageResponse['message'] = "Notice sent successfully.";
-//				$sendMessageResponse['report'] = $report;
-//			}
-//			else
-//			{
-//				$sendMessageResponse['success'] = 0;
-//				$sendMessageResponse['message'] = "Something went wrong!";
-//			}
-//		}
-//		catch (Exception $e)
-//		{
-//			$sendMessageResponse['success'] = 0;
-//			$sendMessageResponse['message'] = "Internal server error, please try again.";
-//		}
-//		return $sendMessageResponse;
+//        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+		try
+		{
+			if($email->Send())
+			{
+				$sendMessageResponse['success'] = 1;
+				$sendMessageResponse['message'] = "Notice sent successfully.";
+				$sendMessageResponse['report'] = $report;
+			}
+			else
+			{
+				$sendMessageResponse['success'] = 0;
+				$sendMessageResponse['message'] = "Something went wrong!";
+			}
+		}
+		catch (Exception $e)
+		{
+			$sendMessageResponse['success'] = 0;
+			$sendMessageResponse['message'] = "Internal server error, please try again.";
+		}
+		return $sendMessageResponse;
 	}
 }
