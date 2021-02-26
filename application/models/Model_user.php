@@ -586,4 +586,47 @@ class Model_user extends Model_user_base
 		}
 		return $sendMessageResponse;
 	}
+
+	public static function sendInternalExecutiveReport()
+	{
+		$ci = &get_instance();
+		$report = new ExcelInternalExecutiveReport();
+		$report->getReport(TRUE);
+		$data = array();
+		$sendTo = array(
+			"vhsuarez@serebo.com",
+			"vh.suarez@serebo.com",
+			"maguilera@serebo.com",
+			"eddysonca@serebo.com"
+		);
+		$emailHandler = new EmailHandler();
+		$email = $emailHandler->initialize();
+		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
+		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+		$email->to($emailHandler->getEmailByEnvironment($sendTo));
+		$email->subject("Reporte ejecutivo");
+		$email->attach($report->getFilePath());
+		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
+        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+//		try
+//		{
+//			if($email->Send())
+//			{
+//				$sendMessageResponse['success'] = 1;
+//				$sendMessageResponse['message'] = "Notice sent successfully.";
+//				$sendMessageResponse['report'] = $report;
+//			}
+//			else
+//			{
+//				$sendMessageResponse['success'] = 0;
+//				$sendMessageResponse['message'] = "Something went wrong!";
+//			}
+//		}
+//		catch (Exception $e)
+//		{
+//			$sendMessageResponse['success'] = 0;
+//			$sendMessageResponse['message'] = "Internal server error, please try again.";
+//		}
+//		return $sendMessageResponse;
+	}
 }

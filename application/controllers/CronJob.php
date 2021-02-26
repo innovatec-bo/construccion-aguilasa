@@ -113,4 +113,18 @@ class CronJob extends PublicController
 			}
 		}
 	}
+
+	public function sendInternalExecutiveReport($challenge)
+	{
+		if($challenge == 'sendInternalExecutiveReport2020')
+		{
+			$response = Model_user::sendExecutiveReport();
+			if($response['success'] == 1)
+			{
+				/** @var ExcelInternalExecutiveReport $report */
+				$report = $response['report'];
+				$report->removeFile();
+			}
+		}
+	}
 }
