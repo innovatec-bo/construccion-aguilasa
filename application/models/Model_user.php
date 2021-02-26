@@ -599,9 +599,6 @@ class Model_user extends Model_user_base
 			"maguilera@serebo.com",
 			"eddysonca@serebo.com"
 		);
-		$sendTo = array(
-			"jair@twiiti.com"
-		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
