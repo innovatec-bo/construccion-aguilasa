@@ -268,13 +268,13 @@ class Project extends PrivateController
 
             $budgetaryPosition = $formData["project-budgetary-position"];
             $contractId = $formData["project-contract-id"];
-            $endContractId = $formData["project-end-contract-id"];
+            $endContractId = $formData["project-end-contract-id"] == ""?NULL:$formData["project-end-contract-id"];
             $detail = $formData["project-detail"];
             $latitude = $formData["latitude"];
             $longitude = $formData["longitude"];
             $workArea = $formData['work-area'];
             $projectYear = $formData['project-year'];
-
+//			echo "<pre>";var_dump($endContractId);exit();
             $project->setLatitude($latitude);
             $project->setLongitude($longitude);
             if($projectStatus != "")

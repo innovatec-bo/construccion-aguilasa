@@ -34,10 +34,10 @@ class Model_project_base extends MY_Model
     protected string $_detail;
     protected int $_energized;
     protected int $_projectPercentage;
-    protected string $_latitude;
-    protected string $_longitude;
+    protected ?string $_latitude;
+    protected ?string $_longitude;
     protected string $_workArea;
-    protected string $_projectYear;
+    protected ?string $_projectYear;
     protected ?int $_endContract;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
