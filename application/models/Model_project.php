@@ -455,6 +455,7 @@ class Model_project extends Model_project_base
             assign_to.project_manager_id project_manager_user_id,
             assign_to.project_manager_full_name project_manager_assigned,
             in_progress.entry_date in_progress_date,
+            in_progress_first_detail.entry_date in_progress_first_detail_date,
             completed.entry_date completed_date,
             paused.entry_date paused_date,
             paused.percentage_paused percentage_paused,
@@ -499,6 +500,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_warehouseStatusDetailQuery(26).") materials_reception on materials_reception.project_id_war = id_pro
         LEFT JOIN (".static::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(29).") in_progress on in_progress.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(29, TRUE).") in_progress_first_detail on in_progress_first_detail.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(32).") completed on completed.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro
@@ -613,15 +615,21 @@ class Model_project extends Model_project_base
         return $result;
     }
 
-    /**
-     * This method is a complement of getWorkflowDetail method.
-     * @param $statusId
-     * @return string
-     */
-    private static function _statusDetailQuery($statusId)
+	/**
+	 * This method is a complement of getWorkflowDetail method.
+	 * @param $statusId
+	 * @param bool $showFirstDetail
+	 * @return string
+	 */
+    private static function _statusDetailQuery($statusId, bool $showFirstDetail = FALSE)
     {
         $ci = &get_instance();
         $ci->load->database();
+        $entryCriteria = 'MAX';
+        if($showFirstDetail)
+		{
+			$entryCriteria = 'MIN';
+		}
         $sql = "
         select 
 			id_psl,
@@ -664,7 +672,7 @@ class Model_project extends Model_project_base
 		RIGHT JOIN(
             SELECT			
                 project_id_psl project_id,
-                max(manual_entry_date_psl) entry_date
+                ".$entryCriteria."(manual_entry_date_psl) entry_date
             FROM
                 wfl_project_status_log
             WHERE		
