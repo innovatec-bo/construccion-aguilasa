@@ -31,8 +31,8 @@ class Model_project_base extends MY_Model
     protected string $_secondaryCode;
     protected string $_folderDate;
     protected ?int $_contractId;
-    protected string $_detail;
-    protected int $_energized;
+    protected ?string $_detail;
+    protected ?int $_energized;
     protected int $_projectPercentage;
     protected ?string $_latitude;
     protected ?string $_longitude;
