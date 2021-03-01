@@ -25,9 +25,9 @@ class Model_project_base extends MY_Model
     protected float $_distance;
     protected ?int $_managementBy;
     protected int $_qualityLevel;
-    protected string $_creDesignCompletionDate;
-    protected string $_creBuildingCompletionDate;
-    protected string $_budgetaryPosition;
+    protected ?string $_creDesignCompletionDate;
+    protected ?string $_creBuildingCompletionDate;
+    protected ?string $_budgetaryPosition;
     protected string $_secondaryCode;
     protected string $_folderDate;
     protected ?int $_contractId;
