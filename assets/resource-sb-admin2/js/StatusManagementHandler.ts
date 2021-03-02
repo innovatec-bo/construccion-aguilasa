@@ -1118,7 +1118,7 @@ class StatusManagementHandler
                         let projectBudgetId = $("input[name=project-budget-id]").val();
                         if(projectBudgetId != "")
                         {
-                            _this.getProjectLog();
+                            _this.projectLog();
                             _this.loadStatusForm('approved', 0);
                         }
                         else
