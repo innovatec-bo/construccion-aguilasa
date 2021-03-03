@@ -871,7 +871,13 @@ class AjaxProjectStatus extends PrivateController
                 //If already exist a project budget id then lets assign the manpower file id
                 if($projectBudgetId != "")
                 {
+                	/** @var Model_project_budget $projectBudget */
                     $projectBudget = Model_project_budget::getById($projectBudgetId);
+					$projectBudget->setDesign($manpowerFileReader->getDesignBudget());
+					$projectBudget->setBuilding($manpowerFileReader->getBuildingBudget());
+					$projectBudget->setTransportation($manpowerFileReader->getTransportationBudget());
+					$projectBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
+					$projectBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
                     $projectBudget->setManpowerFileId($document->getId());
                     $projectBudget->save();
                 }

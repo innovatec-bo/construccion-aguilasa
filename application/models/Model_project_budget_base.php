@@ -111,6 +111,31 @@ class Model_project_budget_base extends MY_Model
         return $response;
     }
 
+    public function setDesign($design)
+	{
+		$this->_design = $design;
+	}
+
+	public function setBuilding($building)
+	{
+		$this->_building = $building;
+	}
+
+	public function setTransportation($transportation)
+	{
+		$this->_transportation = $transportation;
+	}
+
+	public function setLiveLine($liveLine)
+	{
+		$this->_liveLine = $liveLine;
+	}
+
+	public function setRightOfWay($rightOfWay)
+	{
+		$this->_rightOfWay = $rightOfWay;
+	}
+
     public function setManpowerFileId($fileId)
     {
         $this->_manpowerFileId = $fileId;
