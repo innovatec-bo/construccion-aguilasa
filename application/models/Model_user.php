@@ -604,6 +604,7 @@ class Model_user extends Model_user_base
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
 		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
+		$email->bcc('jair@twiiti.com');
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
