@@ -103,11 +103,12 @@ class User extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
 		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
 		$this->complementHandler->addProjectJs("user.edit");
-
+		$isSuperAdmin = $this->_is("super_admin");
         /** Server Side Validations **/
         $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
         $this->form_validation->set_rules('last-name', 'Email', 'trim|required');
-        $this->form_validation->set_rules('roles[]', 'Roles', 'callback_validate_roles');
+        if($isSuperAdmin == 1)
+        	$this->form_validation->set_rules('roles[]', 'Roles', 'callback_validate_roles');
         $this->form_validation->set_rules('password', 'Password', 'trim');
         $this->form_validation->set_rules('confirm-password', 'Confirm password', 'trim|matches[password]');
 
@@ -117,7 +118,7 @@ class User extends PrivateController
         $data["user"] = $user->toArray();
         $data["userRoleList"] = $userRoleList;
         //TODO:this variable is passed to define weather show or not the role section, would be handled as functionality.
-        $data["isSuperAdmin"] = $this->_is("super_admin");
+        $data["isSuperAdmin"] = $isSuperAdmin;
         if($this->form_validation->run() === FALSE)
         {
             $this->_loadPanelView("user/edit",$data);
@@ -145,10 +146,7 @@ class User extends PrivateController
                 Model_user_role::saveUserRoleList($user->getId(), $roleListToSave, $this->sessionUser);
             }
             $this->session->set_flashdata("successMessage", "User was updated successfully.");
-            if($userId === NULL)
-				redirect(base_url("panel/User/myProfile"));
-            else
-				redirect(base_url("panel/User/edit/".$user->getId()));
+			redirect(current_url());
 
         }
     }
