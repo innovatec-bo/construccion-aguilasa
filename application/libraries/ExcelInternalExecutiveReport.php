@@ -56,7 +56,7 @@ class ExcelInternalExecutiveReport
 
     function getReport($save = FALSE) : void
     {
-		$additionalParameters = array('status-keyword' => "approved,assign_to,in_progress,paused,completed,project_energized,cre_return_order,project_return_materials,conciliation_reception");
+		$additionalParameters = array('status-keyword' => "already_sent,approved,assign_to,in_progress,paused,completed,project_energized,cre_return_order,project_return_materials,conciliation_reception");
 		$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
 
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
@@ -172,10 +172,17 @@ class ExcelInternalExecutiveReport
 					continue;
 				}
 			}
+			$statusKeyword = $row['keyword_pst'];
         	$creFiscal = $row['cre_fiscal_pro'];
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
+			if($statusKeyword == 'already_sent')
+			{
+				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
+				{
+					$totalBudget = $row['schedulee_tentative_total_budget'];
+				}
+			}
 			$totalTotalBudget += $totalBudget;
-			$statusKeyword = $row['keyword_pst'];
 			$sereboFiscal = $row['fiscal_responsible'];
 			if(is_null($sereboFiscal) || $statusKeyword == "project_return_materials")
 			{
@@ -252,19 +259,20 @@ class ExcelInternalExecutiveReport
 
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('A1', 'INFORME EJECUTIVO GENERAL');
 		$this->_phpSpreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:AF1')->applyFromArray($titleStyleArray);
-		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('A1:AF1');
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('C2', "APROBADO");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('F2', "ASIGNACION");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('I2', "EN CONSTRUCCION");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('L2', "PAUSADO");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('O2', "COMPLETADO");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('R2', "ENERGIZADO");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('U2', "RECEP. DE CONCIL.");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('X2', "RECEP. ORDEN DEV.");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('AA2', "MATE. DEV A CRE");
-		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('AD2', "TOTALES");
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A2:AF2')->applyFromArray($titleStyleArray);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:AI1')->applyFromArray($titleStyleArray);
+		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('A1:AI1');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('C2', "ENVIADO");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('F2', "APROBADO");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('I2', "ASIGNACION");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('L2', "EN CONSTRUCCION");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('O2', "PAUSADO");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('R2', "COMPLETADO");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('U2', "ENERGIZADO");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('X2', "RECEP. DE CONCIL.");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('AA2', "RECEP. ORDEN DEV.");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('AD2', "MATE. DEV A CRE");
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue('AG2', "TOTALES");
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A2:AI2')->applyFromArray($titleStyleArray);
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('C2:E2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('F2:H2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('I2:K2');
@@ -275,6 +283,7 @@ class ExcelInternalExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('X2:Z2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('AA2:AC2');
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('AD2:AF2');
+		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('AG2:AI2');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
 			->setCellValue('A3', "#")
 			->setCellValue('B3', "FISCAL DE\nSEREBO")
@@ -307,8 +316,11 @@ class ExcelInternalExecutiveReport
 			->setCellValue('AC3', "Importe")
 			->setCellValue('AD3', "Cant.\nProyectos")
 			->setCellValue('AE3', "Tiempo Prome.\nDias")
-			->setCellValue('AF3', "Importe");
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A3:AF3')->applyFromArray($headerStyleArray);
+			->setCellValue('AF3', "Importe")
+			->setCellValue('AG3', "Cant.\nProyectos")
+			->setCellValue('AH3', "Tiempo Prome.\nDias")
+			->setCellValue('AI3', "Importe");
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A3:AI3')->applyFromArray($headerStyleArray);
 		$counter = 1;
 		$i = 3;
 //		if($filterBy != "")
@@ -318,78 +330,85 @@ class ExcelInternalExecutiveReport
 		foreach ($generalExecutiveReportToPrint as $row)
 		{
 			$staticDays1 = "";
-			if(isset($row["approved"]))
-				$staticDays1 = round($row["approved"]['staticDays']/$row["approved"]['quantity'],2);
+			if(isset($row["already_sent"]))
+				$staticDays1 = round($row["already_sent"]['staticDays']/$row["already_sent"]['quantity'],2);
 
 			$staticDays2 = "";
-			if(isset($row["assign_to"]))
-				$staticDays2 = round($row["assign_to"]['staticDays']/$row["assign_to"]['quantity'],2);
+			if(isset($row["approved"]))
+				$staticDays2 = round($row["approved"]['staticDays']/$row["approved"]['quantity'],2);
 
 			$staticDays3 = "";
-			if(isset($row["in_progress"]))
-				$staticDays3 = round($row["in_progress"]['staticDays']/$row["in_progress"]['quantity'],2);
+			if(isset($row["assign_to"]))
+				$staticDays3 = round($row["assign_to"]['staticDays']/$row["assign_to"]['quantity'],2);
 
 			$staticDays4 = "";
-			if(isset($row["paused"]))
-				$staticDays4 = round($row["paused"]['staticDays']/$row["paused"]['quantity'],2);
+			if(isset($row["in_progress"]))
+				$staticDays4 = round($row["in_progress"]['staticDays']/$row["in_progress"]['quantity'],2);
 
 			$staticDays5 = "";
-			if(isset($row["completed"]))
-				$staticDays5 = round($row["completed"]['staticDays']/$row["completed"]['quantity'],2);
+			if(isset($row["paused"]))
+				$staticDays5 = round($row["paused"]['staticDays']/$row["paused"]['quantity'],2);
 
 			$staticDays6 = "";
-			if(isset($row["project_energized"]))
-				$staticDays6 = round($row["project_energized"]['staticDays']/$row["project_energized"]['quantity'],2);
+			if(isset($row["completed"]))
+				$staticDays6 = round($row["completed"]['staticDays']/$row["completed"]['quantity'],2);
 
 			$staticDays7 = "";
-			if(isset($row["cre_return_order"]))
-				$staticDays7 = round($row["cre_return_order"]['staticDays']/$row["cre_return_order"]['quantity'],2);
+			if(isset($row["project_energized"]))
+				$staticDays7 = round($row["project_energized"]['staticDays']/$row["project_energized"]['quantity'],2);
 
 			$staticDays8 = "";
-			if(isset($row["project_return_materials"]))
-				$staticDays8 = round($row["project_return_materials"]['staticDays']/$row["project_return_materials"]['quantity'],2);
+			if(isset($row["cre_return_order"]))
+				$staticDays8 = round($row["cre_return_order"]['staticDays']/$row["cre_return_order"]['quantity'],2);
 
 			$staticDays9 = "";
-			if(isset($row["conciliation_reception"]))
-				$staticDays9 = round($row["conciliation_reception"]['staticDays']/$row["conciliation_reception"]['quantity'],2);
+			if(isset($row["project_return_materials"]))
+				$staticDays9 = round($row["project_return_materials"]['staticDays']/$row["project_return_materials"]['quantity'],2);
 
 			$staticDays10 = "";
+			if(isset($row["conciliation_reception"]))
+				$staticDays10 = round($row["conciliation_reception"]['staticDays']/$row["conciliation_reception"]['quantity'],2);
+
+			$staticDays11 = "";
 			if(isset($row["total"]))
-				$staticDays10 = round($row["total"]['staticDays']/$row["total"]['quantity'],2);
+				$staticDays11 = round($row["total"]['staticDays']/$row["total"]['quantity'],2);
 
 			$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
 				->setCellValue('A'.($i+1), $counter)
 				->setCellValue('B'.($i+1), $row["fullName"])
-				->setCellValue('C'.($i+1), $row["approved"]['quantity']??"")
+				->setCellValue('C'.($i+1), $row["already_sent"]['quantity']??"")
 				->setCellValue('D'.($i+1), $staticDays1)
-				->setCellValue('E'.($i+1), $row["approved"]['totalBudget']??"")
-				->setCellValue('F'.($i+1), $row["assign_to"]['quantity']??"")
+				->setCellValue('E'.($i+1), $row["already_sent"]['totalBudget']??"")
+				->setCellValue('F'.($i+1), $row["approved"]['quantity']??"")
 				->setCellValue('G'.($i+1), $staticDays2)
-				->setCellValue('H'.($i+1), $row["assign_to"]['totalBudget']??"")
-				->setCellValue('I'.($i+1), $row["in_progress"]['quantity']??"")
+				->setCellValue('H'.($i+1), $row["approved"]['totalBudget']??"")
+				->setCellValue('I'.($i+1), $row["assign_to"]['quantity']??"")
 				->setCellValue('J'.($i+1), $staticDays3)
-				->setCellValue('K'.($i+1), $row["in_progress"]['totalBudget']??"")
-				->setCellValue('L'.($i+1), $row["paused"]['quantity']??"")
+				->setCellValue('K'.($i+1), $row["assign_to"]['totalBudget']??"")
+				->setCellValue('L'.($i+1), $row["in_progress"]['quantity']??"")
 				->setCellValue('M'.($i+1), $staticDays4)
-				->setCellValue('N'.($i+1), $row["paused"]['totalBudget']??"")
-				->setCellValue('O'.($i+1), $row["completed"]['quantity']??"")
+				->setCellValue('N'.($i+1), $row["in_progress"]['totalBudget']??"")
+				->setCellValue('O'.($i+1), $row["paused"]['quantity']??"")
 				->setCellValue('P'.($i+1), $staticDays5)
-				->setCellValue('Q'.($i+1), $row["completed"]['totalBudget']??"")
-				->setCellValue('R'.($i+1), $row["project_energized"]['quantity']??"")
+				->setCellValue('Q'.($i+1), $row["paused"]['totalBudget']??"")
+				->setCellValue('R'.($i+1), $row["completed"]['quantity']??"")
 				->setCellValue('S'.($i+1), $staticDays6)
-				->setCellValue('T'.($i+1), $row["project_energized"]['totalBudget']??"")
-				->setCellValue('U'.($i+1), $row["cre_return_order"]['quantity']??"")
+				->setCellValue('T'.($i+1), $row["completed"]['totalBudget']??"")
+				->setCellValue('U'.($i+1), $row["project_energized"]['quantity']??"")
 				->setCellValue('V'.($i+1), $staticDays7)
-				->setCellValue('W'.($i+1), $row["cre_return_order"]['totalBudget']??"")
-				->setCellValue('X'.($i+1), $row["project_return_materials"]['quantity']??"")
+				->setCellValue('W'.($i+1), $row["project_energized"]['totalBudget']??"")
+				->setCellValue('X'.($i+1), $row["cre_return_order"]['quantity']??"")
 				->setCellValue('Y'.($i+1), $staticDays8)
-				->setCellValue('Z'.($i+1), $row["project_return_materials"]['totalBudget']??"")
-				->setCellValue('AA'.($i+1), $row["conciliation_reception"]['quantity']??"")
+				->setCellValue('Z'.($i+1), $row["cre_return_order"]['totalBudget']??"")
+				->setCellValue('AA'.($i+1), $row["project_return_materials"]['quantity']??"")
 				->setCellValue('AB'.($i+1), $staticDays9)
-				->setCellValue('AC'.($i+1), $row["conciliation_reception"]['totalBudget']??"")
-				->setCellValue('AD'.($i+1), $row["total"]['quantity']??"")
+				->setCellValue('AC'.($i+1), $row["project_return_materials"]['totalBudget']??"")
+				->setCellValue('AD'.($i+1), $row["conciliation_reception"]['quantity']??"")
 				->setCellValue('AE'.($i+1), $staticDays10)
-				->setCellValue('AF'.($i+1), "=SUM(E".($i+1).",H".($i+1).",K".($i+1).",N".($i+1).",Q".($i+1).",T".($i+1).",W".($i+1).",Z".($i+1).",AC".($i+1).",AF".($i+1).")");
+				->setCellValue('AF'.($i+1), $row["conciliation_reception"]['totalBudget']??"")
+				->setCellValue('AG'.($i+1), $row["total"]['quantity']??"")
+				->setCellValue('AH'.($i+1), $staticDays11)
+				->setCellValue('AI'.($i+1), "=SUM(E".($i+1).",H".($i+1).",K".($i+1).",N".($i+1).",Q".($i+1).",T".($i+1).",W".($i+1).",Z".($i+1).",AC".($i+1).",AF".($i+1).")");
 
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('H'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
@@ -401,6 +420,7 @@ class ExcelInternalExecutiveReport
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('Z'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('AC'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$this->_phpSpreadsheet->getActiveSheet()->getStyle('AF'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+			$this->_phpSpreadsheet->getActiveSheet()->getStyle('AI'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 			$i++;
 			$counter++;
 		}
@@ -426,6 +446,7 @@ class ExcelInternalExecutiveReport
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("AC".($i+1), '=SUM(AC4:AC'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("AD".($i+1), '=SUM(AD4:AD'.$i.')');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("AF".($i+1), '=SUM(AF4:AF'.$i.')');
+		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)->setCellValue("AI".($i+1), '=SUM(AI4:AI'.$i.')');
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('C'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('F'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -446,6 +467,7 @@ class ExcelInternalExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('AC'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('AD'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 		$this->_phpSpreadsheet->getActiveSheet()->getStyle('AF'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('AI'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
 
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -478,7 +500,10 @@ class ExcelInternalExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AD')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AE')->setAutoSize(true);
 		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AF')->setAutoSize(true);
-		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:AF'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AG')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AH')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getColumnDimension('AI')->setAutoSize(true);
+		$this->_phpSpreadsheet->getActiveSheet()->getStyle('A1:AI'.($i+1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 	}
 
 	private function _prepareGeneralExecutiveReport($filterBy = "") : array
@@ -510,6 +535,13 @@ class ExcelInternalExecutiveReport
 			}
 
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
+			if($statusKeyword == 'already_sent')
+			{
+				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
+				{
+					$totalBudget = $row['schedulee_tentative_total_budget'];
+				}
+			}
 			if(!isset($generalExecutiveReportToPrint[$sereboFiscalId]))
 			{
 				$generalExecutiveReportToPrint[$sereboFiscalId]['fullName'] = $sereboFiscalName;
