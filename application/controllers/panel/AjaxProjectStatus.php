@@ -801,6 +801,9 @@ class AjaxProjectStatus extends PrivateController
             $statusListArray[$status->getId()] = $status->toArray();
         }
         $projectFullDetail = Model_project::getProjectFullDetail($projectId);
+        $workFlow = Model_project::getWorkflowDetail(array('code-list'=>$projectFullDetail['code_pro']));
+		$projectWorkFlow = $workFlow[0];
+		$projectCurrentBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkFlow);
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
         $data["statusList"] = $statusListArray;
@@ -820,6 +823,7 @@ class AjaxProjectStatus extends PrivateController
         $data["allowBackSteps"] = count($processLinesEnabled) > 0? 1:0;
         $data["projectFullDetail"] = $projectFullDetail;
         $data["template"] = $this->loadView("panel/content/project-status/ht-status-management", array(), TRUE);
+		$data['projectCurrentBudget'] = $projectCurrentBudget;
         $response["success"] = 1;
         $response["message"] = "";
         $response["data"] = $data;

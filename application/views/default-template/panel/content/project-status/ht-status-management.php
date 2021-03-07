@@ -16,7 +16,9 @@
         $this->load->view("default-template/flash-data-basic-messages");
         ?>
     </div>
-
+    <div class='col-md-12'>
+    	<h2>Importe: Bs. {{numberFormat viewData.projectCurrentBudget}}</h2>
+	</div>
     <div id="basic-data">
         <div class="col-md-2 col-xs-12">
             <div class="panel panel-info status-management-card">

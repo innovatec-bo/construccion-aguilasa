@@ -91,6 +91,38 @@ class Home extends PrivateController
         echo"finished";exit;
     }
 
+	public function updateDetails()
+	{
+		set_time_limit(300);
+		ini_set('memory_limit','256M');
+		require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+		$reader = new Xlsx();
+		$spreadsheet = $reader->load(FCPATH."assets/actualizacion_campo_detalle_del_proyecto.xlsx");
+		$sheetList = $spreadsheet->getAllSheets();
+		$i = 0;
+		$toUpdate = array();
+		foreach ($sheetList as $sheetData)
+		{
+			$arrayData = $sheetData->toArray();
+			foreach ($arrayData as $data)
+			{
+				if($i >= 3 && $i <=144)
+				{
+					$projectCode = $data[0];
+					$newDetail = $data[2];
+					$toUpdate[] = array(
+						"code_pro" => $projectCode,
+						"detail_pro" => $newDetail
+					);
+				}
+				$i++;
+			}
+
+		}
+        Model_project::updateBatch($toUpdate,'code_pro');
+		echo"finished";exit;
+	}
+
     public function test()
     {
         $logDateRange = array('from' => '2020-03-01 00:00:00', 'to' => '2020-03-30 23:59:59');

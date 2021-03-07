@@ -45,6 +45,7 @@ var StatusManagementHandler = /** @class */ (function () {
     };
     StatusManagementHandler.prototype.prepareViewData = function () {
         var project = this.loadViewResponse.data.projectFullDetail;
+        var projectCurrentBudget = this.loadViewResponse.data.projectCurrentBudget;
         var projectLog = this.loadViewResponse.data.projectLog;
         var allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         var allowUpdateHistory = this.loadViewResponse.data.updateHistory;
@@ -71,6 +72,7 @@ var StatusManagementHandler = /** @class */ (function () {
         }
         this.viewData.statusName = statusName;
         this.viewData.project = project;
+        this.viewData.projectCurrentBudget = projectCurrentBudget;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
         this.viewData.allowDeleteStatusLog = allowDeleteStatusLog;

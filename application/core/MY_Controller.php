@@ -206,6 +206,7 @@ class PublicController extends CI_Controller
 			case "rd_drawing":
 			case "ri_digitization":
 			case "ri_drawing":
+			case "canceled":
 				$budget = $row['schedule_design_budget'];
 				break;
 			//Second budget stage

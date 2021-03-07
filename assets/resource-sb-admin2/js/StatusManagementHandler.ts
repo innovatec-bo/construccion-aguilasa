@@ -75,6 +75,7 @@ class StatusManagementHandler
     prepareViewData()
     {
         let project = this.loadViewResponse.data.projectFullDetail;
+        let projectCurrentBudget = this.loadViewResponse.data.projectCurrentBudget;
         let projectLog = this.loadViewResponse.data.projectLog;
 		let allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         let allowUpdateHistory = this.loadViewResponse.data.updateHistory;
@@ -106,6 +107,7 @@ class StatusManagementHandler
 
         this.viewData.statusName = statusName;
         this.viewData.project = project;
+        this.viewData.projectCurrentBudget = projectCurrentBudget;
         this.viewData.projectLog = projectLog;
         this.viewData.allowUpdateHistory = allowUpdateHistory;
         this.viewData.allowDeleteStatusLog = allowDeleteStatusLog;
