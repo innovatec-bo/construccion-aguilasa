@@ -281,6 +281,12 @@ class Model_user extends Model_user_base
             $data['reference'] = $referenceList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
+			$showBudget = 0;
+            if($creFiscalEmail == 'victormg@cre.com.bo')
+			{
+				$showBudget = 1;
+			}
+            $data['showBudget'] = $showBudget;
             $listManagementBy = array_column($projectList, 'management_by_pro');
             $listManagementBy = array_unique($listManagementBy);
             $listManagementBy = implode(',',$listManagementBy);

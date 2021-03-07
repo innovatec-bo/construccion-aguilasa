@@ -70,8 +70,19 @@
                                         $date = new DateTime($project[$shipmentDate]);
                                         $date = $date->format("d-m-Y");
                                         $sereboFiscal = $project['fiscal_responsible']==""?"Sin asignar":$project['fiscal_responsible'];
-										$amountColumn = PublicController::getPaymentByStatusFromWorkflow($project);
-										$amountColumn = number_format($amountColumn,2,",",".");
+										$projectBudget = PublicController::getPaymentByStatusFromWorkflow($project);
+										$projectBudget = number_format($projectBudget,2,",",".");
+										$budgetColumnHead = '';
+										$budgetColumnBody = '';
+										if($showBudget == 1)
+										{
+											$budgetColumnHead = '<th style="border: 1px solid #b5babf;color: #404E67;text-align: left">IMPORTE</th>';
+											$budgetColumnBody = '
+												<td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+													'.$projectBudget.'
+												</td>
+												';
+										}
                                         $row .= '
                                                                         <tr style="font-size: 12px; color:'.$color.'">
                                                                             <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
@@ -101,9 +112,7 @@
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                 '.$sereboFiscal.'
                                                                             </td>
-                                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-																				'.$amountColumn.'
-																			</td>
+                                                                            '.$budgetColumnBody.'
                                                                         </tr>
                                                                     ';
 										$totalAmount += PublicController::getPaymentByStatusFromWorkflow($project);
@@ -127,15 +136,15 @@
                                             <span style="color:#404E67;font-weight: bold">Baja: </span>Dias estaticos menor a 7
                                         </td>
 										<td align="left" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="width: 50%;padding-right:44px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;text-align:right">
-											<span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
 											<?php
-											$amountTitle = "Importe";
-											//                                                    if($projectList[0]["keyword_pst"] == "project_return_materials")
-											//                                                    {
-											//                                                        $amountTitle = "Monto Conciliado";
-											//                                                    }
+											if($showBudget == 1)
+											{
 											?>
-											<span style="color: #404E67;"><?=$amountTitle?></span>
+												<span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
+												<span style="color: #404E67;">Importe</span>
+											<?php
+											}
+											?>
 										</td>
                                     </tr>
                                     <tr>
@@ -152,7 +161,13 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCIÓN</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">IMPORTE</th>
+													<?php
+													if($showBudget == 1)
+													{
+														echo $budgetColumnHead;
+													}
+													?>
+
                                                 </tr>
                                                 </thead>
                                                 <tbody>
