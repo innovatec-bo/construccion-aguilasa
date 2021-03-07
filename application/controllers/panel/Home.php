@@ -119,7 +119,7 @@ class Home extends PrivateController
 			}
 
 		}
-        Model_project::updateBatch($toUpdate,'code_pro');
+//        Model_project::updateBatch($toUpdate,'code_pro');
 		echo"finished";exit;
 	}
 
