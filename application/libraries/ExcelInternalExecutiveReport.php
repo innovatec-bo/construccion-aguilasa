@@ -176,13 +176,13 @@ class ExcelInternalExecutiveReport
 			$statusKeyword = $row['keyword_pst'];
         	$creFiscal = $row['cre_fiscal_pro'];
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
-			if($statusKeyword == 'already_sent')
-			{
-				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
-				{
-					$totalBudget = $row['schedulee_tentative_total_budget'];
-				}
-			}
+//			if($statusKeyword == 'already_sent')
+//			{
+//				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
+//				{
+//					$totalBudget = $row['schedulee_tentative_total_budget'];
+//				}
+//			}
 			$totalTotalBudget += $totalBudget;
 			$sereboFiscal = $row['fiscal_responsible'];
 			if(is_null($sereboFiscal) || $statusKeyword == "project_return_materials")
@@ -398,15 +398,15 @@ class ExcelInternalExecutiveReport
 				->setCellValue('U'.($i+1), $row["project_energized"]['quantity']??"")
 				->setCellValue('V'.($i+1), $staticDays7)
 				->setCellValue('W'.($i+1), $row["project_energized"]['totalBudget']??"")
-				->setCellValue('X'.($i+1), $row["cre_return_order"]['quantity']??"")
-				->setCellValue('Y'.($i+1), $staticDays8)
-				->setCellValue('Z'.($i+1), $row["cre_return_order"]['totalBudget']??"")
-				->setCellValue('AA'.($i+1), $row["project_return_materials"]['quantity']??"")
-				->setCellValue('AB'.($i+1), $staticDays9)
-				->setCellValue('AC'.($i+1), $row["project_return_materials"]['totalBudget']??"")
-				->setCellValue('AD'.($i+1), $row["conciliation_reception"]['quantity']??"")
-				->setCellValue('AE'.($i+1), $staticDays10)
-				->setCellValue('AF'.($i+1), $row["conciliation_reception"]['totalBudget']??"")
+				->setCellValue('x'.($i+1), $row["conciliation_reception"]['quantity']??"")
+				->setCellValue('y'.($i+1), $staticDays10)
+				->setCellValue('z'.($i+1), $row["conciliation_reception"]['totalBudget']??"")
+				->setCellValue('AA'.($i+1), $row["cre_return_order"]['quantity']??"")
+				->setCellValue('AB'.($i+1), $staticDays8)
+				->setCellValue('AC'.($i+1), $row["cre_return_order"]['totalBudget']??"")
+				->setCellValue('AD'.($i+1), $row["project_return_materials"]['quantity']??"")
+				->setCellValue('AE'.($i+1), $staticDays9)
+				->setCellValue('AF'.($i+1), $row["project_return_materials"]['totalBudget']??"")
 				->setCellValue('AG'.($i+1), $row["total"]['quantity']??"")
 				->setCellValue('AH'.($i+1), $staticDays11)
 				->setCellValue('AI'.($i+1), "=SUM(E".($i+1).",H".($i+1).",K".($i+1).",N".($i+1).",Q".($i+1).",T".($i+1).",W".($i+1).",Z".($i+1).",AC".($i+1).",AF".($i+1).")");
@@ -536,13 +536,13 @@ class ExcelInternalExecutiveReport
 			}
 
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
-			if($statusKeyword == 'already_sent')
-			{
-				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
-				{
-					$totalBudget = $row['schedulee_tentative_total_budget'];
-				}
-			}
+//			if($statusKeyword == 'already_sent')
+//			{
+//				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
+//				{
+//					$totalBudget = $row['schedulee_tentative_total_budget'];
+//				}
+//			}
 			if(!isset($generalExecutiveReportToPrint[$sereboFiscalId]))
 			{
 				$generalExecutiveReportToPrint[$sereboFiscalId]['fullName'] = $sereboFiscalName;
