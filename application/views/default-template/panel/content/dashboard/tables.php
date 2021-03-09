@@ -143,7 +143,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-primary" id="panel-executive-summary-report">
+            <div class="panel panel-primary hide" id="panel-executive-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getExecutiveSummaryReport")?>" method="post">
                         <i class="fa fa-table fa-fw"></i> Executive summary report
