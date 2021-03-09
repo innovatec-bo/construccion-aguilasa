@@ -171,7 +171,8 @@ class AjaxDashboard extends PrivateController
             $management = $formData["management"];
             $contract = $formData["contract"];
         }
-        $response = Model_project::prepareCurrentStatusSummaryArray($system, $management, $contract);
+//        $response = Model_project::prepareCurrentStatusSummaryArray($system, $management, $contract);
+        $response = Model_project::prepareCurrentStatusSummaryArray2($system, $management, $contract);
 
         if($ajaxRequest)
         {

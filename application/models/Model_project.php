@@ -371,6 +371,7 @@ class Model_project extends Model_project_base
             detail_inc,
             status_name_pst,
             keyword_pst,
+            order_pst,
             project_percentage_pro,
             contract_number_con,
             TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
@@ -423,6 +424,7 @@ class Model_project extends Model_project_base
             schedulee.design_prb schedule_design_budget,
             project_start_pro schedule_start,
             project_end_pro schedule_end,
+               ready_to_send.entry_date ready_to_send_date,
             already_sent.entry_date already_sent_date,
             schedulee.tentative_total_budget_prb schedulee_tentative_total_budget,
             approved.entry_date approved_date,
@@ -490,6 +492,7 @@ class Model_project extends Model_project_base
         LEFT JOIN (".static::_statusDetailQuery(3).") digitization on digitization.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(5).") drawing on drawing.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(6).") schedulee on schedulee.project_id_psl = id_pro
+        LEFT JOIN (".static::_statusDetailQuery(9).") ready_to_send on ready_to_send.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro
         LEFT JOIN (".static::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro
@@ -960,6 +963,16 @@ class Model_project extends Model_project_base
             $contractId = $filters["contract-id"];
             $sql .= " and id_con = ".$ci->db->escape($contractId)." ";
         }
+		if(isset($filters["system"]) && $filters["system"] != "")
+		{
+			$system = $filters["system"];
+			$sql .= " and system_pro = ".$ci->db->escape($system)." ";
+		}
+		if(isset($filters["management-by"]) && $filters["management-by"] != "")
+		{
+			$management = $filters["management-by"];
+			$sql .= " and management_by_pro = ".$ci->db->escape($management)." ";
+		}
        // echo"<pre>";var_dump($sql);exit;
         return $sql;
     }
@@ -1804,7 +1817,12 @@ class Model_project extends Model_project_base
             -- order_pst,
             status_name_pst status_name,
             keyword_pst keyword,
-            count(id_pro) total_projects,	
+            count(id_pro) total_projects,
+            CASE
+				WHEN keyword_pst = 'schedule' and tentative_total_budget_prb is null THEN sum(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0))
+				WHEN keyword_pst = 'schedule' and tentative_total_budget_prb is not null THEN sum(tentative_total_budget_prb)
+                WHEN keyword_pst = 'approved' THEN sum(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0))
+			END approved_budgets2,
             sum(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) approved_budgets,
 	        sum(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) real_budgets
         FROM
@@ -1951,7 +1969,55 @@ class Model_project extends Model_project_base
 
         return $response;
     }
-    
+
+	public static function prepareCurrentStatusSummaryArray2($system = "", $management = "", $contract = "")
+	{
+		$workflow = Model_project::getWorkflowDetail(array('system'=>$system, 'management'=>$management,'contract-id'=>$contract));
+		usort($workflow, function($a, $b) {
+			return $a['order_pst'] <=> $b['order_pst'];
+		});
+		$projectGroups = array();
+		$totalApprovedBudget = 0;
+		$totalRealBudget = 0;
+		$totalProjects = 0;
+		foreach($workflow as $row)
+		{
+			$statusKeyword = $row['keyword_pst'];
+			$statusName = $row['status_name_pst'];
+			if(!isset($projectGroups[$statusKeyword]))
+			{
+				$projectGroups[$statusKeyword]['totalProjects'] = 0;
+				$projectGroups[$statusKeyword]['approvedBudgets'] = 0;
+				$projectGroups[$statusKeyword]['realBudgets'] = 0;
+			}
+			$approvedBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'approved');
+			if($approvedBudget <= 0)
+			{
+				$approvedBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'schedule');
+			}
+			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_shipment');
+			if($statusKeyword != 'ready_to_send' && $statusKeyword != 'already_sent' && $statusKeyword != 'canceled')
+				$totalApprovedBudget += $approvedBudget;
+			$totalRealBudget += $realBudget;
+			$totalProjects++;
+			$projectGroups[$statusKeyword]['approvedBudgets'] += $approvedBudget;
+			$projectGroups[$statusKeyword]['realBudgets'] += $realBudget;
+			$projectGroups[$statusKeyword]['keyword'] = $statusKeyword;
+			$projectGroups[$statusKeyword]['statusName'] = $statusName;
+			$projectGroups[$statusKeyword]['totalProjects']++;
+
+		}
+		$projectGroups = array_values($projectGroups);
+//		echo"<pre>";var_dump($projectGroups);exit;
+//		echo json_encode($projectGroups);exit;
+		$response["success"] = 1;
+		$response["data"]["list"] = $projectGroups;
+		$response["data"]["totalApprovedBudgets"] = number_format($totalApprovedBudget,2);
+		$response["data"]["totalRealBudgets"] = number_format($totalRealBudget,2);
+		$response["data"]["totalProjects"] = $totalProjects;
+		return $response;
+	}
+
     public static function prepareExecutiveSummaryArray($system = "", $management = "", $contract = "")
     {
         $contractAmount = 0;

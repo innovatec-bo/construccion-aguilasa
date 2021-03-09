@@ -33,8 +33,8 @@
                         {{#ifCond keyword "==" "already_sent"}}
                             <i class="fa fa-exclamation fa-fw" title="Monto no incluido en la suma"></i>
                         {{/ifCond}}
-                        {{approvedBudgets}}</td>
-                    <td class="text-right">{{realBudgets}}</td>
+                        {{numberFormat approvedBudgets}}</td>
+                    <td class="text-right">{{numberFormat realBudgets}}</td>
                 </tr>
             {{/each}}
             </tbody>

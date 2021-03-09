@@ -600,6 +600,7 @@ class Model_user extends Model_user_base
 		$report->getReport(TRUE);
 		$data = array();
 		$sendTo = array(
+			"gilbertof@serebo.com",
 			"vhsuarez@serebo.com",
 			"vh.suarez@serebo.com",
 			"maguilera@serebo.com",

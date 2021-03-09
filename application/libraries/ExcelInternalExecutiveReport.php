@@ -57,14 +57,15 @@ class ExcelInternalExecutiveReport
     function getReport($save = FALSE) : void
     {
 		$additionalParameters = array('status-keyword' => "already_sent,approved,assign_to,in_progress,paused,completed,project_energized,cre_return_order,project_return_materials,conciliation_reception");
+//		$additionalParameters = array('status-keyword' => "project_return_materials");
 		$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
 
         $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
 		});
-		$this->_externalObservations = Model_external_fiscal_observations::getMasterDetail();
-		$this->_removeObservedProjects();
+//		$this->_externalObservations = Model_external_fiscal_observations::getMasterDetail();
+//		$this->_removeObservedProjects();
 		$this->_phpSpreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
             ->setTitle("Informe Ejecutivo")

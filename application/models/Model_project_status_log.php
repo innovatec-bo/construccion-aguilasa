@@ -68,6 +68,7 @@ class Model_project_status_log extends Model_project_status_log_base
             live_line_reb,
             right_of_way_reb,
             (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) total_budget,
+            (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) total_real_budget,
             images.images_list,
             documents.documents_list
             

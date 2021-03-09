@@ -86,6 +86,8 @@
                         {{/ifCond}}
 
                         {{#ifCond keyword_pst "==" "conciliation_shipment"}}
+                        	<dt>Total Importe real</dt>
+                            <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_real_budget}}</span></dd>
                             <dt>Importe real diseño</dt>
                             <dd>{{design_reb}}</dd>
                             <dt>Importe real construccion</dt>

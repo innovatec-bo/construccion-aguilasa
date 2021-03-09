@@ -191,9 +191,13 @@ class PublicController extends CI_Controller
         return $statusList[$status];
     }
 
-	public static function getPaymentByStatusFromWorkflow($row)
+	public static function getPaymentByStatusFromWorkflow($row, $forceKeyword = "")
 	{
-		switch($row['keyword_pst'])
+		$currentKeyword = $row['keyword_pst'];
+		$keyword = $currentKeyword;
+		if($forceKeyword != "")
+			$keyword = $forceKeyword;
+		switch($keyword)
 		{
 			//First budget stage
 			case 'schedule':
@@ -208,6 +212,10 @@ class PublicController extends CI_Controller
 			case "ri_drawing":
 			case "canceled":
 				$budget = $row['schedule_design_budget'];
+				if($row['schedulee_tentative_total_budget'] != null && $row['schedulee_tentative_total_budget'] > 0)
+				{
+					$budget = $row['schedulee_tentative_total_budget'];
+				}
 				break;
 			//Second budget stage
 			case 'approved':
@@ -466,7 +474,8 @@ class PrivateController extends PublicController
             "project_manager_assigned" => "ENCARGADO DEL PROYECTO",
 			"payment_status" => "ESTADO DEL PAGO",
 			"project_return_materials2_date" => "FECHA DE DEVULUCION DE MATERIALES A CRE",
-			"in_progress_first_detail_date" => "1RA. FECHA DE INICIO DE CONSTRUC."
+			"in_progress_first_detail_date" => "1RA. FECHA DE INICIO DE CONSTRUC.",
+			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA"
         );
         return $columnList;
     }
