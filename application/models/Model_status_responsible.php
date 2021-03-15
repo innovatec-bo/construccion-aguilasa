@@ -17,7 +17,7 @@ class Model_status_responsible extends Model_status_responsible_base
     {
         $ci = &get_instance();
         $ci->load->database();
-		$userIdFilter = "";
+		$keywordFilter = "";
         if($keyword != "")
         {
             $keywordFilter = " and keyword_pst = ".$ci->db->escape($keyword);

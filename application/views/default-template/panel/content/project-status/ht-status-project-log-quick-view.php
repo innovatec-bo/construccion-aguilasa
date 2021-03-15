@@ -68,20 +68,20 @@
                                 </dd>
                             {{/ifCond}}
                             {{#ifCond manpower_file_id_prb "!=" null}}
-                                <dt>Cargar Materiales</dt>
-                                <dd>
-                                    <form name="manpower-upload-file" enctype="multipart/form-data">
-                                        <input type="hidden" value="{{project_id_psl}}" name="project-id">
-                                        <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">
-											<div class="form-group input-group hide">
-											<span class="input-group-btn">
-												<button class="btn btn-primary extract-approved-materials btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
-												</button>
-											</span>
-											<input type="file" name="materials-file" accept=".xlsx, .xls, .csv">
-										</div>
-                                    </form>
-                                </dd>
+<!--                                <dt>Cargar Materiales</dt>-->
+<!--                                <dd>-->
+<!--                                    <form name="manpower-upload-file" enctype="multipart/form-data">-->
+<!--                                        <input type="hidden" value="{{project_id_psl}}" name="project-id">-->
+<!--                                        <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">-->
+<!--											<div class="form-group input-group hide">-->
+<!--											<span class="input-group-btn">-->
+<!--												<button class="btn btn-primary extract-approved-materials btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}-->
+<!--												</button>-->
+<!--											</span>-->
+<!--											<input type="file" name="materials-file" accept=".xlsx, .xls, .csv">-->
+<!--										</div>-->
+<!--                                    </form>-->
+<!--                                </dd>-->
                             {{/ifCond}}
                             <dt>Total Importe</dt>
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_budget}}</span></dd>
