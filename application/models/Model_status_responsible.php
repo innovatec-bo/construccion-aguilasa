@@ -13,15 +13,20 @@ class Model_status_responsible extends Model_status_responsible_base
         parent::__construct($userId, $statusId);
     }
 
-    public static function getUsersResponsible($keyword = "")
+    public static function getUsersResponsible($keyword = "", $userId = NULL)
     {
         $ci = &get_instance();
         $ci->load->database();
-        $keywordFilter = "";
+		$userIdFilter = "";
         if($keyword != "")
         {
             $keywordFilter = " and keyword_pst = ".$ci->db->escape($keyword);
         }
+        $userIdFilter = "";
+		if(!is_null($userId))
+		{
+			$userIdFilter = " and id_usr = ".$ci->db->escape($userId);
+		}
 
         $sql = "
             SELECT
@@ -38,6 +43,7 @@ class Model_status_responsible extends Model_status_responsible_base
             deleted_usr != 1
             and deleted_sre != 1
             ".$keywordFilter."
+            ".$userIdFilter."
         ";
         $query = $ci->db->query($sql);
         $result = $query->result_array();

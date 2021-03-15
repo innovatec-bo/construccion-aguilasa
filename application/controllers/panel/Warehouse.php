@@ -14,38 +14,91 @@ class Warehouse extends PrivateController
         parent::__construct();
     }
 
-    public function index()
+	public function index()
+	{
+		$this->_validateFeature('warehouse_index');
+		$this->complementHandler->addViewComplement("bootbox");
+		$this->complementHandler->addViewComplement("jquery.datatables");
+		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.bootstrap");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.flash");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.html5");
+		$this->complementHandler->addViewComplement("jquery.datatables.buttons.print");
+		$this->complementHandler->addViewComplement("jquery.datatables.jszip");
+		$this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
+		$this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
+		$this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
+		$this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+		$this->complementHandler->addProjectCss('project.index');
+		$this->complementHandler->addProjectJs('project.index');
+		$data["viewTitle"] = "Proyectos con materiales asignados";
+		$data["status"] = "11,21,29,30,31,32,33,34,35,38,39,47";
+		$data["statusSet"] = "";
+		$data["projectSystems"] = $this->_projectSystems;
+		$data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+		$data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$projectStatus = Model_project_status::getAll(100,0);
+		$statusInLog = Model_project_status::getByStatusKeywordList(array("approved",
+			"assign_to",
+			"in_progress",
+			'paused',
+			'stopped',
+			'completed',
+			'project_energized',
+			'as_built',
+			'conciliation_reception',
+			'conciliation_shipment',
+			'cre_return_order',
+			'project_return_materials'));
+		$arrayStatus = array();
+		foreach ($projectStatus as $status)
+		{
+			$status = (array)$status;
+			$arrayStatus[$status['id_pst']] = $status["status_name_pst"];
+		}
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
+		$data["projectStatusJson"] = json_encode($arrayStatus);
+		$data["statusInLog"] = $statusInLog;
+		$this->_loadPanelView("warehouse/index",$data);
+	}
+
+	public function entry(string $code)
+	{
+		$this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addProjectCss('warehouse.entry', TRUE);
+		$this->complementHandler->addProjectJs('warehouse.entry', TRUE);
+
+		$data = array();
+		$project = Model_project::getByCode($code);
+		if(!$project instanceof Model_project)
+		{
+			$this->session->set_flashdata("errorMessage", "El proyecto <strong>$code</strong> no existe o fue eliminado.");
+			redirect(base_url("panel/Warehouse"));
+		}
+		$this->_loadPanelView("warehouse/entry",$data);
+	}
+
+	public function exit(string $code)
+	{
+		$data = array();
+		$project = Model_project::getByCode($code);
+		if(!$project instanceof Model_project)
+		{
+			$this->session->set_flashdata("errorMessage", "El proyecto <strong>$code</strong> no existe o fue eliminado.");
+			redirect(base_url("panel/Warehouse"));
+		}
+		$this->_loadPanelView("warehouse/exit",$data);
+	}
+
+	public function index_old2()
 	{
 		$data = array();
 		$this->_loadPanelView("warehouse/index",$data);
 	}
 
-	public function entry()
-	{
-		$data = array();
-		$projectCode = $_GET['project-code']??NULL;
-		$data['summaryList'] = array();
-		$data['materialList'] = array();
-		if(!is_null($projectCode))
-		{
-			$project = Model_project::getByCode($projectCode);
-			if($project instanceof Model_project)
-			{
-				$data['summaryList'] = Model_material_summary::getByProjectId($project->getId());
-				$data['project'] = $project->toArray();
 
-				$summaryId = $_GET['summary-id']??NULL;
-				if(!is_null($summaryId))
-				{
-					$summary = Model_material_summary::getById($summaryId);
-					$data['materialList'] = array(1,2,3);
-				}
-
-			}
-		}
-//		echo"<pre>";var_dump($data);exit;
-		$this->_loadPanelView("warehouse/entry",$data);
-	}
 
     public function index_old()
     {

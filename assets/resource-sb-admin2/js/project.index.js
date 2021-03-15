@@ -202,60 +202,66 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                var currentStatusSet = $("input[name=status-set]").val();
-                var html = '';
+                let currentStatusSet = $("input[name=status-set]").val();
                 let showStatusManagementProjectBtn = 0;
                 let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro;
-                let showStatusManagementWharehouseBtn = 0;
-                let statusManagementWharehouseUrl = base_url + 'panel/Warehouse/statusManagement/'+row.id_war;
+                let showStatusManagementWarehouseBtn = 0;
+                let statusManagementWarehouseUrl = base_url + 'panel/Warehouse/statusManagement/'+row.id_war;
                 let showAddIncidentBtn = 0;
                 let showManpowerBtn = 0;
-                let showEditProjectBtn = 1;
-                let showDeleteProjectBtn = 1;
+                let showEditProjectBtn = $('input[name=show-edit-button]').val();
+                let showDeleteProjectBtn = $('input[name=show-delete-button]').val();
                 let showAssignProjectBtn = 0;
+                let showWarehouseOptions = 0;
                 let assignProjectUrl = base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro;
                 if(currentStatusSet != "")
                 {
                     if(statusSet[row.status_pro] == "warehouse")
                     {
-                        showStatusManagementWharehouseBtn = 1;
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Warehouse/statusManagement/'+row.id_war+'" title="" data-original-title="ALMACEN"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
+                        showStatusManagementWarehouseBtn = 1;
                     }
                     else
                     {
                         showStatusManagementProjectBtn = 1;
-                        html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro+'" title="" data-original-title="ADMINISTRACION DE ESTADOS"  data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i></a> ';
                     }
                     if(statusSet[row.status_pro] == "building")
                     {
                         showAddIncidentBtn = 1;
-                        html += ' <a class="btn btn-warning btn-xs add-incident" data-project-id="'+row.id_pro+'" data-status-id="'+row.status_pro+'" href="#" title="" data-original-title="AÑADIR INCIDENTE"  data-toggle="tooltip" data-placement="top"><i class="fa fa-flag-o"></i></a> ';
                     }
                     if(row.manpower_file_id !== null && !isNaN(row.manpower_file_id))
                     {
                         showManpowerBtn = 1;
-                        html += ' <a class="btn btn-warning btn-xs" href="'+base_url + 'panel/Project/manpower/'+row.id_pro+'" title="" data-original-title="MANO DE OBRA"  data-toggle="tooltip" data-placement="top"><i class="fa fa-table"></i></a> ';
                     }
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/Project/edit/' +row.id_pro+'" title="" data-original-title="EDITAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a> ';
-                    html += ' <a class="btn btn-danger btn-xs datatable-delete-button" href="#" data-object-id="'+row.id_pro+'" data-url= "'+base_url+'panel/Project/delete/'+row.id_pro+'" title="" data-original-title="ELIMINAR"  data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a> ';
                 }
                 else
                 {
-                    showAssignProjectBtn = 1;
-                    html += ' <a class="btn btn-primary btn-xs" href="'+base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro+'" title="" data-original-title="ASIGNAR PROYECTO"  data-toggle="tooltip" data-placement="top"><i class="fa fa-th-list"></i></a> ';
+					let parts = window.location.href.split('/');
+					let lastSegment = parts.pop() || parts.pop();
+					console.log(lastSegment);
+
+					if(lastSegment.toLowerCase() === "warehouse")
+					{
+						showWarehouseOptions = 1;
+					}
+					else
+					{
+						showAssignProjectBtn = 1;
+					}
+
                 }
-                // return html;
+
                 let visibility = {
                     showStatusManagementProjectBtn:showStatusManagementProjectBtn,
                     statusManagementProjectUrl:statusManagementProjectUrl,
-                    showStatusManagementWharehouseBtn:showStatusManagementWharehouseBtn,
-                    statusManagementWharehouseUrl:statusManagementWharehouseUrl,
+                    showStatusManagementWarehouseBtn:showStatusManagementWarehouseBtn,
+                    statusManagementWarehouseUrl:statusManagementWarehouseUrl,
                     showAddIncidentBtn:showAddIncidentBtn,
                     showManpowerBtn:showManpowerBtn,
                     showEditProjectBtn:showEditProjectBtn,
                     showDeleteProjectBtn:showDeleteProjectBtn,
                     showAssignProjectBtn:showAssignProjectBtn,
-                    assignProjectUrl:assignProjectUrl
+                    assignProjectUrl:assignProjectUrl,
+					showWarehouseOptions:showWarehouseOptions
                 };
                 let htmlSource   = $("#ht-datatable-dropdown-menu").html();
                 let template = Handlebars.compile(htmlSource);

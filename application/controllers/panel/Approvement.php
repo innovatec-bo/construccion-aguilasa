@@ -37,6 +37,8 @@ class Approvement extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -72,6 +74,8 @@ class Approvement extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -107,6 +111,8 @@ class Approvement extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -142,6 +148,8 @@ class Approvement extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -177,6 +185,8 @@ class Approvement extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)

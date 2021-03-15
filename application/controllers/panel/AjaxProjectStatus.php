@@ -428,10 +428,11 @@ class AjaxProjectStatus extends PrivateController
 					$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 					$initialMaterials = Model_material_summary_type::getByKeyword(array('materials_initial_list'));
 					$initialMaterials = array_values($initialMaterials);
+					/** @var Model_material_summary_type $initialMaterialType */
 					$initialMaterialType = $initialMaterials[0];
 					$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
 					$materialsFileReader->saveMaterialsInDataBase();
-					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), "Lista inicial de materiales");
+					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), $initialMaterialType->getName());
 				}
 			}
             //Validating point to point file
@@ -979,8 +980,10 @@ class AjaxProjectStatus extends PrivateController
 				$materialsFileReader->saveMaterialsInDataBase();
 				if($registerMaterialsInSystem == 1)
 				{
+					$currentUser = PrivateController::getSessionUser();
+					$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 					$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
-					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl']);
+					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'],$currentUserId);
 				}
 
 				$response['success'] = 1;

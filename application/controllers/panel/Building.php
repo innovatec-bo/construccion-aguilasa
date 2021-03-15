@@ -42,6 +42,8 @@ class Building extends PrivateController
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -77,6 +79,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 29;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -112,6 +116,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 30;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -147,6 +153,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 31;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -182,6 +190,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 32;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -217,6 +227,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 47;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -252,6 +264,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 33;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -287,6 +301,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 34;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -322,6 +338,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 35;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -357,6 +375,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 38;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -392,6 +412,8 @@ class Building extends PrivateController
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $data["status"] = 39;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)

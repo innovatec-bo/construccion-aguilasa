@@ -44,6 +44,8 @@ class Project extends PrivateController
         $data["projectSystems"] = $this->_projectSystems;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         // echo"<pre>";var_dump($data['builderList']);exit;
         $projectStatus = Model_project_status::getAll(100,0);
         $statusInLog = Model_project_status::getAllInLog();
@@ -145,13 +147,18 @@ class Project extends PrivateController
             $longitude = $formData["longitude"];
             $workArea = $formData['work-area'];
             $projectYear = $formData['project-year'];
+			//Let's search the status responsible
+			$responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created", $this->sessionUser->id);
+			if(count($responsibleList) <= 0)
+			{
+				$this->session->set_flashdata("errorMessage", "No esta habilitado como responsable para la creacion de proyectos");
+				redirect(base_url("panel/Project"));
+			}
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
                 $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude, $workArea, $projectYear);
             $project->save();
-            //Let's search the status responsible
-            $responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created");
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
             $project->savePoints($projectPoints, $projectMetersDistance, $statusHasBeenCreated,"El proyecto ha sido creado.", $projectEntryDate,$responsibleList);

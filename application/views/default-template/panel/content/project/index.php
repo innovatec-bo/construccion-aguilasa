@@ -21,6 +21,8 @@
             <input type="hidden" name="status-set" value="<?=$statusSet?>">
             <form class="form-group" id="extra-request-data">
                 <input type="hidden" name="status" value="<?=$status?>">
+				<input type="hidden" name="show-edit-button" value="<?=$showEditButton?>">
+				<input type="hidden" name="show-delete-button" value="<?=$showDeleteButton?>">
                 <fieldset class="custom-border">
                     <legend class="custom-border">Filtros</legend>
                     <div class="col-md-2">

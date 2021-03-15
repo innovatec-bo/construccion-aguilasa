@@ -36,6 +36,8 @@ class RectifyIllustration extends PrivateController
         $data["status"] = "14,18,19";
         $data["statusSet"] = "rectify_illustration";
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -69,6 +71,8 @@ class RectifyIllustration extends PrivateController
         $data["statusSet"] = "rectify_illustration";
         $data["status"] = 18;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)
@@ -102,6 +106,8 @@ class RectifyIllustration extends PrivateController
         $data["statusSet"] = "rectify_illustration";
         $data["status"] = 19;
         $data["projectSystems"] = $this->_projectSystems;
+		$data['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
+		$data['showDeleteButton'] = $this->_validateFeature('delete_project', TRUE);
         $projectStatus = Model_project_status::getAll(100,0);
         $arrayStatus = array();
         foreach ($projectStatus as $status)

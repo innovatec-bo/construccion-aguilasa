@@ -24,8 +24,11 @@ class Model_material_summary_base extends MY_Model
 	protected int $_summaryTypeId;
 	protected ?int $_fileId;
 	protected ?int $_parentSummaryId;
+	protected ?int $_isLoan;
+	protected ?int $_loanClosed;
+	protected ?string $_loanClosedDate;
 
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?int $fileId = NULL, ?int $parentSummaryId = NULL)
+    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;
@@ -40,6 +43,10 @@ class Model_material_summary_base extends MY_Model
 		$this->_summaryTypeId = $summaryTypeId;
 		$this->_fileId = $fileId;
 		$this->_parentSummaryId = $parentSummaryId;
+		$this->_isLoan = $isLoan;
+		$this->_loanClosed = $loanClosed;
+		$this->_loanClosedDate = $loanClosedDate;
+
     }
 
     /**
@@ -62,6 +69,9 @@ class Model_material_summary_base extends MY_Model
 			"summary_type_id_msu" => $this->_summaryTypeId,
 			"file_id_msu" => $this->_fileId,
 			"parent_summary_id_msu" => $this->_parentSummaryId,
+			"is_loan_msu" => $this->_isLoan,
+			"loan_closed_msu" => $this->_loanClosed,
+			"loan_closed_date_msu" => $this->_loanClosedDate,
 			"deleted_msu" => $this->_deleted,
 			"createdon_msu" => $this->_createdOn,
 			"createdby_msu" => $this->_createdBy,
@@ -96,7 +106,10 @@ class Model_material_summary_base extends MY_Model
 				$object->user_responsible_msu,
 				$object->summary_type_id_msu,
 				$object->file_id_msu,
-				$object->parent_summary_id_msu
+				$object->parent_summary_id_msu,
+				$object->is_loan_msu,
+				$object->loan_closed_msu,
+				$object->loan_closed_date_msu
             );
             $instance->_id = $object->id_msu;
 
@@ -171,6 +184,21 @@ class Model_material_summary_base extends MY_Model
 		$this->_parentSummaryId = $parentSummaryId;
 	}
 
+	public function setIsLoan($isLoan)
+	{
+		$this->_isLoan = $isLoan;
+	}
+
+	public function setLoanClosed($loanClosed)
+	{
+		$this->_loanClosed = $loanClosed;
+	}
+
+	public function setLoanClosedDate($loanClosedDate)
+	{
+		$this->_loanClosedDate = $loanClosedDate;
+	}
+
     //Getters
     public function getProjectStatusLogId()
 	{
@@ -230,5 +258,20 @@ class Model_material_summary_base extends MY_Model
 	public function getParentSummaryId()
 	{
 		return $this->_parentSummaryId;
+	}
+
+	public function getIsLoan()
+	{
+		return $this->_isLoan;
+	}
+
+	public function getLoanClosed()
+	{
+		return $this->_loanClosed;
+	}
+
+	public function getLoanClosedDate()
+	{
+		return $this->_loanClosedDate;
 	}
 }

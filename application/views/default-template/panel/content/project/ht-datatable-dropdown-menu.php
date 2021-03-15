@@ -43,6 +43,12 @@
                     <a href="{{base_url}}panel/ProjectStatus/assignProject/{{row.id_pro}}" class="pl-1"><i class="fa fa-th-list fa-fw"></i> Asignar</a>
                 </li>
             {{/ifCond}}
+			{{#ifCond visibility.showWarehouseOptions "==" 1}}
+				<li>
+					<a href="{{base_url}}panel/Warehouse/entry/{{row.code_pro}}" class="pl-1">Registrar Ingreso</a>
+					<a href="{{base_url}}panel/Warehouse/exit/{{row.code_pro}}" class="pl-1">Registrar Egreso</a>
+				</li>
+			{{/ifCond}}
             <li role="separator" class="divider"></li>
             {{#ifCond visibility.showDeleteProjectBtn "==" 1}}
                 <li>
