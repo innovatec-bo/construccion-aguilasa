@@ -47,8 +47,7 @@ class PublicController extends CI_Controller
         $options = [
             'cost' => 10
         ];
-        $passwordHash = password_hash($password, PASSWORD_BCRYPT, $options);
-        return $passwordHash;
+		return password_hash($password, PASSWORD_BCRYPT, $options);
     }
 
     public function loadView($viewFile, $contentData = array(), $returnAsData = FALSE)
@@ -483,7 +482,7 @@ class PrivateController extends PublicController
 	public function testMailServer($to = 'jair@twiiti.com')
 	{
 		$ci = &get_instance();
-		$ci->load->library('encrypt');
+//		$ci->load->library('encrypt');
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$config = $emailHandler->getConfig();

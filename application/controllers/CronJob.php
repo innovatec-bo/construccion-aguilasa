@@ -2,10 +2,47 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class CronJob extends PublicController
 {
+	private string $_logPath;
+
 	public function __construct()
     {
         parent::__construct();
+		$this->_defineLogEnvironment();
     }
+
+	private function _defineLogEnvironment()
+	{
+		switch (ENVIRONMENT)
+		{
+			case 'development':
+				$this->_logPath = FCPATH."/assets/cronjob/development-cronjob-log.txt";
+				break;
+			case 'testing':
+				$this->_logPath = FCPATH."/assets/cronjob/testing-cronjob-log.txt";
+				break;
+			case 'production':
+				$this->_logPath = FCPATH."/assets/cronjob/production-cronjob-log.txt";
+		}
+	}
+
+	private function _saveInLog($cronJobResult)
+	{
+		$trace = debug_backtrace();
+		$caller = $trace[1];
+
+		$log = $this->_logPath;
+		ob_start();
+		//
+		echo "==================== ".date("Y-m-d H:i:s")." ====================\n";
+		echo "---------------------- BEGIN - {$caller["function"]} ---------------------\n";
+		print_r($cronJobResult);
+		echo"\n";
+		echo "---------------------- END - {$caller['function']} -------------------\n\n\n\n\n";
+		//
+		$data = ob_get_contents();
+		ob_end_clean();
+		file_put_contents($log,$data,FILE_APPEND);
+	}
 
 	public function netBuildingEmail($challenge = "nbreport2019")
     {
@@ -40,14 +77,16 @@ class CronJob extends PublicController
 //            $codeList = array_column($fiscalListToNotify[1000]['statusListToNotify']['project_return_materials'],'code_pro');
 //			asort($codeList);
 //            echo"<pre>";var_dump($fiscalListToNotify);exit;
+			$response = array();
             foreach ($fiscalListToNotify as $fiscalData)
             {
                 //Let's make sure that the fiscal have not mailinator.com email
                 if(strpos($fiscalData['creFiscalEmail'], 'mailinator.com') === FALSE)
                 {
-                    $response = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
+                    $response[] = Model_user::notifyProjectStatusToCreFiscal($fiscalData);
                 }
             }
+			$this->_saveInLog($response);
         }
     }
 
@@ -56,16 +95,19 @@ class CronJob extends PublicController
         if($challenge == 'notifyProjectStatusToSereboFiscal2019')
         {
             $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
+			$response = array();
             foreach ($fiscalListToNotify as $fiscalData)
             {
                 //Let's make sure that the fiscal have not mailinator.com email
                 $fiscalData['sereboFiscalEmail'] = is_array($fiscalData['sereboFiscalEmail'])?implode(",",$fiscalData['sereboFiscalEmail']):$fiscalData['sereboFiscalEmail'];
                 if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
                 {
-                    Model_user::notifyProjectStatusToSereboMembers($fiscalData);
+					$response[] = Model_user::notifyProjectStatusToSereboMembers($fiscalData);
                 }
             }
+			$this->_saveInLog($response);
         }
+
     }
 
     public function notifyProjectsByStatusToInternalMembers($challenge)
@@ -83,7 +125,8 @@ class CronJob extends PublicController
                     $projectListFiltered[$keyword][] = $project;
                 }
             }
-            Model_user::notifyProjectByStatusToSereboMembers($projectListFiltered);
+			$response = Model_user::notifyProjectByStatusToSereboMembers($projectListFiltered);
+			$this->_saveInLog($response);
         }
     }
 
@@ -111,6 +154,8 @@ class CronJob extends PublicController
 				$report = $response['report'];
 				$report->removeFile();
 			}
+			unset($response['report']);
+			$this->_saveInLog($response);
 		}
 	}
 
@@ -125,6 +170,8 @@ class CronJob extends PublicController
 				$report = $response['report'];
 				$report->removeFile();
 			}
+			unset($response['report']);
+			$this->_saveInLog($response);
 		}
 	}
 }

@@ -432,7 +432,7 @@ class AjaxProjectStatus extends PrivateController
 					$initialMaterialType = $initialMaterials[0];
 					$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
 					$materialsFileReader->saveMaterialsInDataBase();
-					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), $initialMaterialType->getName());
+					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), $initialMaterialType->getName(), NULL, $reservationNumber);
 				}
 			}
             //Validating point to point file
@@ -983,7 +983,7 @@ class AjaxProjectStatus extends PrivateController
 					$currentUser = PrivateController::getSessionUser();
 					$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 					$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
-					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'],$currentUserId);
+					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], $currentUserId);
 				}
 
 				$response['success'] = 1;

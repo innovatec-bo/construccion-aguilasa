@@ -8,9 +8,9 @@
 
 class Model_material_summary extends Model_material_summary_base
 {
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
+    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
 	{
-		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $userResponsible, $summaryTypeId, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate);
+		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $userResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate);
 	}
 
 	/**

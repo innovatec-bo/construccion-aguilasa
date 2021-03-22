@@ -27,16 +27,16 @@ class EmailHandler
                     case 'development':
                     case 'testing':
                     $config = array(
-                        'protocol' => 'smtp',
-                        '_smtp_auth' => TRUE,
-                        'smtp_host' => 'ssl://serebo.toqueeltimbre.com',
-                        'smtp_port' => 465,
-                        'smtp_user' => 'noreply@serebo.toqueeltimbre.com',
-                        'smtp_pass' => 'p9VOu&X6n!tD',
-                        'mailtype' => 'html',
-                        'charset' => 'utf-8',
-                        'newline' => "\r\n"
-                    );
+						'protocol' => 'smtp',
+						'_smtp_auth' => TRUE,
+						'smtp_host' => 'smtp.mailtrap.io',
+						'smtp_port' => 2525,
+						'smtp_user' => '9f71c5a16ae3bf',
+						'smtp_pass' => 'e6c6895ce29011',
+						'mailtype' => 'html',
+						'charset' => 'utf-8',
+						'newline' => "\r\n"
+					);
                     break;
                     case 'production':
                         $config = array(

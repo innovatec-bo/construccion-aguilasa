@@ -22,13 +22,14 @@ class Model_material_summary_base extends MY_Model
 	protected string $_detail;
 	protected int $_userResponsible;
 	protected int $_summaryTypeId;
+	protected string $_reservationNumber;
 	protected ?int $_fileId;
 	protected ?int $_parentSummaryId;
 	protected ?int $_isLoan;
 	protected ?int $_loanClosed;
 	protected ?string $_loanClosedDate;
 
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
+    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;
@@ -41,6 +42,7 @@ class Model_material_summary_base extends MY_Model
 		$this->_detail = $detail;
 		$this->_userResponsible = $userResponsible;
 		$this->_summaryTypeId = $summaryTypeId;
+		$this->_reservationNumber = $reservationNumber;
 		$this->_fileId = $fileId;
 		$this->_parentSummaryId = $parentSummaryId;
 		$this->_isLoan = $isLoan;
@@ -67,6 +69,7 @@ class Model_material_summary_base extends MY_Model
 			"detail_msu" => $this->_detail,
 			"user_responsible_msu" => $this->_userResponsible,
 			"summary_type_id_msu" => $this->_summaryTypeId,
+			"reservation_number_prb" => $this->_reservationNumber,
 			"file_id_msu" => $this->_fileId,
 			"parent_summary_id_msu" => $this->_parentSummaryId,
 			"is_loan_msu" => $this->_isLoan,
@@ -105,6 +108,7 @@ class Model_material_summary_base extends MY_Model
 				$object->detail_msu,
 				$object->user_responsible_msu,
 				$object->summary_type_id_msu,
+				$object->reservation_number_msu,
 				$object->file_id_msu,
 				$object->parent_summary_id_msu,
 				$object->is_loan_msu,
@@ -172,6 +176,11 @@ class Model_material_summary_base extends MY_Model
 	public function setSummaryType($summaryTypeId)
 	{
 		$this->_summaryTypeId = $summaryTypeId;
+	}
+
+	public function setReservationNumber($reservationNumber)
+	{
+		$this->_reservationNumber = $reservationNumber;
 	}
 
 	public function setFileId($fileId)
@@ -248,6 +257,11 @@ class Model_material_summary_base extends MY_Model
 	public function getSummaryType()
 	{
 		return $this->_summaryTypeId;
+	}
+
+	public function getReservationNumber()
+	{
+		return $this->_reservationNumber;
 	}
 
 	public function getFileId()

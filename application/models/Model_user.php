@@ -299,24 +299,25 @@ class Model_user extends Model_user_base
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
+            $messageDetail = "\nSubject: ".$subject."\nTo: ".$emailHandler->getEmailByEnvironment($creFiscalEmail)."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
 //            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
                 {
                     $sendMessageResponse['success'] = 1;
-                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                    $sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
                 }
                 else
                 {
                     $sendMessageResponse['success'] = 0;
-                    $sendMessageResponse['message'] = "Something went wrong!";
+                    $sendMessageResponse['message'] = "\nSomething went wrong.".$messageDetail;
                 }
             }
             catch (Exception $e)
             {
                 $sendMessageResponse['success'] = 0;
-                $sendMessageResponse['message'] = "Internal server error, please try again.";
+                $sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
             }
             $responseList[] = $sendMessageResponse;
         }
@@ -400,24 +401,25 @@ class Model_user extends Model_user_base
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
 //            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
                 {
                     $sendMessageResponse['success'] = 1;
-                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                    $sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
                 }
                 else
                 {
                     $sendMessageResponse['success'] = 0;
-                    $sendMessageResponse['message'] = "Something went wrong!";
+                    $sendMessageResponse['message'] = "\nSomething went wrong!".$messageDetail;
                 }
             }
             catch (Exception $e)
             {
                 $sendMessageResponse['success'] = 0;
-                $sendMessageResponse['message'] = "Internal server error, please try again.";
+                $sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
             }
             $responseList[] = $sendMessageResponse;
         }
@@ -459,24 +461,25 @@ class Model_user extends Model_user_base
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
-           // echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
+			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
+            // echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
             try
             {
                 if($email->Send())
                 {
                     $sendMessageResponse['success'] = 1;
-                    $sendMessageResponse['message'] = "Notice sent successfully.";
+                    $sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
                 }
                 else
                 {
                     $sendMessageResponse['success'] = 0;
-                    $sendMessageResponse['message'] = "Something went wrong!";
+                    $sendMessageResponse['message'] = "\nSomething went wrong!".$messageDetail;
                 }
             }
             catch (Exception $e)
             {
                 $sendMessageResponse['success'] = 0;
-                $sendMessageResponse['message'] = "Internal server error, please try again.";
+                $sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
             }
             $responseList[] = $sendMessageResponse;
         }
@@ -554,6 +557,8 @@ class Model_user extends Model_user_base
 
 	public static function sendExecutiveReport()
 	{
+		set_time_limit(300);
+		ini_set('memory_limit','512M');
 		$ci = &get_instance();
 		$report = new ExcelExternalExecutiveReport();
 		$report->getReport(TRUE);
@@ -570,25 +575,26 @@ class Model_user extends Model_user_base
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
+		$messageDetail = "\nSubject: Reporte ejecutivo\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
 //        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
 		try
 		{
 			if($email->Send())
 			{
 				$sendMessageResponse['success'] = 1;
-				$sendMessageResponse['message'] = "Notice sent successfully.";
+				$sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
 				$sendMessageResponse['report'] = $report;
 			}
 			else
 			{
 				$sendMessageResponse['success'] = 0;
-				$sendMessageResponse['message'] = "Something went wrong!";
+				$sendMessageResponse['message'] = "\nSomething went wrong!".$messageDetail;
 			}
 		}
 		catch (Exception $e)
 		{
 			$sendMessageResponse['success'] = 0;
-			$sendMessageResponse['message'] = "Internal server error, please try again.";
+			$sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
 		}
 		return $sendMessageResponse;
 	}
@@ -615,25 +621,26 @@ class Model_user extends Model_user_base
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
+		$messageDetail = "\nSubject: Reporte ejecutivo\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
 //        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
 		try
 		{
 			if($email->Send())
 			{
 				$sendMessageResponse['success'] = 1;
-				$sendMessageResponse['message'] = "Notice sent successfully.";
+				$sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
 				$sendMessageResponse['report'] = $report;
 			}
 			else
 			{
 				$sendMessageResponse['success'] = 0;
-				$sendMessageResponse['message'] = "Something went wrong!";
+				$sendMessageResponse['message'] = "\nSomething went wrong!".$messageDetail;
 			}
 		}
 		catch (Exception $e)
 		{
 			$sendMessageResponse['success'] = 0;
-			$sendMessageResponse['message'] = "Internal server error, please try again.";
+			$sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
 		}
 		return $sendMessageResponse;
 	}

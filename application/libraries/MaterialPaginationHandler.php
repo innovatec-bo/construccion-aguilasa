@@ -160,7 +160,13 @@ class MaterialPaginationHandler extends BasePaginationHandler
 				"material_code" => $row->material_code,
 				"project_code" => $row->project_code,
 				"quantity_assigned" => $row->quantity_assigned,
-				"material_description" => $row->material_description
+				"material_description" => $row->material_description,
+				"quantity_picked_up_from_cre" => $row->quantity_picked_up_from_cre,
+				"quantity_materials_delivered_to_builder" => $row->quantity_materials_delivered_to_builder,
+				"quantity_materials_delivered_to_cre" => $row->quantity_materials_delivered_to_cre,
+				"quantity_new_materials_returned_by_builder" => $row->quantity_new_materials_returned_by_builder,
+				"quantity_old_materials_returned_by_builder" => $row->quantity_old_materials_returned_by_builder,
+				"quantity_good_condition_materials_returned_by_builder" => $row->quantity_good_condition_materials_returned_by_builder
 			);
 		}
 

@@ -1,16 +1,17 @@
 <script id="table-row" type="text/x-handlebars-template">
 	<tr>
-		<td></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"></td>
-		<td class="text-right"><input type="text" size="7"></td>
-		<td><input type="button" class="btn btn-danger btn-sm" value="X"></td>
+		<input type="hidden" name="summary[{{data.material_code}}]['code'][]" value="{{data.material_code}}">
+<!--		<td>1</td>-->
+		<td class="text-right">{{data.material_code}}</td>
+		<td class="text-left">{{data.material_description}}</td>
+<!--		<td class="text-right">{{numberFormat data.quantity_assigned}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_picked_up_from_cre}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_materials_delivered_to_builder}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_materials_delivered_to_cre}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_new_materials_returned_by_builder}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_old_materials_returned_by_builder}}</td>-->
+<!--		<td class="text-right">{{numberFormat data.quantity_good_condition_materials_returned_by_builder}}</td>-->
+		<td class="text-right"><input type="text" name="summary[{{data.material_code}}]['quantity'][]" value="0" size="7"></td>
+		<td><input type="button" class="btn btn-danger btn-sm wh-quit-row" value="X"></td>
 	</tr>
 </script>

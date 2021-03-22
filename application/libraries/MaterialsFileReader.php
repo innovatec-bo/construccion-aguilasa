@@ -161,14 +161,15 @@ class MaterialsFileReader
 	 * @param int $summaryTypeId This variable specify the warehouse material activity
 	 * @param string $detail
 	 * @param int|null $parentSummaryId
+	 * @param string $reservationNumber
 	 */
-    public function registerMaterialsInSystem(int $projectStatusLogId, string $entryDate, int $userResponsibleId, int $summaryTypeId, string $detail = "", ?int $parentSummaryId = NULL) : void
+    public function registerMaterialsInSystem(int $projectStatusLogId, string $entryDate, int $userResponsibleId, int $summaryTypeId, string $detail = "", ?int $parentSummaryId = NULL, ?string $reservationNumber = "") : void
     {
         $materialSummaries = Model_material_summary::getByProjectId($this->_projectId);
         //If the material summary does not exist for the project then let's create it and add its project's material list
         if(count($materialSummaries) <= 0)
         {
-            $materialSummary = new Model_material_summary($projectStatusLogId, $this->_levelOfTension, $this->_projectId, $this->_projectId, $this->_graphNumber,  $this->_destiny, $entryDate, $detail, $userResponsibleId, $summaryTypeId, $this->_file->getId(), $parentSummaryId);
+            $materialSummary = new Model_material_summary($projectStatusLogId, $this->_levelOfTension, $this->_projectId, $this->_projectId, $this->_graphNumber,  $this->_destiny, $entryDate, $detail, $userResponsibleId, $summaryTypeId, $reservationNumber, $this->_file->getId(), $parentSummaryId);
             $materialSummary->save();
             $materialsCodeList = array_keys($this->_materialListFromExcelFile);
             $existingMaterials = Model_material::getMasterDetailByMaterialCodeList($materialsCodeList);

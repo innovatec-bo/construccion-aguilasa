@@ -64,20 +64,41 @@ class Warehouse extends PrivateController
 		$this->_loadPanelView("warehouse/index",$data);
 	}
 
-	public function entry(string $code)
+	/**
+	 * @param string $code
+	 */
+	public function entry(string $code) : void
 	{
+		/** View complements */
 		$this->complementHandler->addViewComplement('select2');
+		$this->complementHandler->addViewComplement("parsley");
+		$this->complementHandler->addViewComplement("parsley.spanish");
+		$this->complementHandler->addViewComplement("moment-with-locales");
+		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addProjectCss('warehouse.entry', TRUE);
+		$this->complementHandler->addProjectJs('WarehouseHandler', TRUE);
 		$this->complementHandler->addProjectJs('warehouse.entry', TRUE);
-
+		/** Server Side Validations **/
+		$this->form_validation->set_rules('summary-type', 'Tipo de movimiento', 'trim|required');
 		$data = array();
 		$project = Model_project::getByCode($code);
+		$builders = Model_user::getByRoleKeyword('builder');
+		$data['builders'] = $builders;
 		if(!$project instanceof Model_project)
 		{
 			$this->session->set_flashdata("errorMessage", "El proyecto <strong>$code</strong> no existe o fue eliminado.");
 			redirect(base_url("panel/Warehouse"));
 		}
-		$this->_loadPanelView("warehouse/entry",$data);
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->_loadPanelView("warehouse/entry",$data);
+		}
+		else
+		{
+			$formData = $this->input->post();
+			echo "<pre>";var_dump($formData);exit;
+		}
 	}
 
 	public function exit(string $code)

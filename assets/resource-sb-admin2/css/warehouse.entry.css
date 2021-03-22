@@ -5,6 +5,12 @@
 	padding: 60px 0px;
 	background-color: rgb(220, 220, 220);
 }*/
+/*To use in group buttons - begin*/
+.select2-container--default .select2-selection--single
+{
+	border-radius: 4px 0px 0px 4px;
+}
+/*To use in group buttons - end*/
 .dd-select2-labor-cost .select2-results__option.select2-results__option--highlighted {
 	background-color: #0F263A;
 	color: #1e1e1e;
