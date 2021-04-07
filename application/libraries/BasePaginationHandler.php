@@ -49,7 +49,7 @@ class BasePaginationHandler
 	 * @param array $additionalParameters
 	 * @return void
 	 */
-	public function setAdditionalParameters(array $additionalParameters) : void
+		public function setAdditionalParameters(array $additionalParameters) : void
 	{
 		$this->_additionalParameters = 	$additionalParameters;
 	}
@@ -64,7 +64,7 @@ class BasePaginationHandler
 
 		$sql = '
                 select count(' . static::TABLE_ID. ') as total
-                from ' . $this->_coreQuery() .' where 1=1 '.$this->_additionalParameters();//echo"<pre>";var_dump($sql);exit;
+                from ' . $this->_coreQuery() .' where 1=1 '.$this->_additionalParameters();
 
 		$query = $ci->db->query($sql);
 		return $query->row()->total;
@@ -87,6 +87,7 @@ class BasePaginationHandler
 				1 = 1
 				'.$this->_additionalParameters().'                    
                 group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' limit ' . $this->_limit . ' offset ' . $this->_offset;
+//		echo"<pre>";var_dump($sql);exit;
 		$query = $ci->db->query($sql);
 		return $query->result();
 	}

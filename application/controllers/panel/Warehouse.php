@@ -14,7 +14,7 @@ class Warehouse extends PrivateController
         parent::__construct();
     }
 
-	public function index()
+	public function index_old3()
 	{
 		$this->_validateFeature('warehouse_index');
 		$this->complementHandler->addViewComplement("bootbox");
@@ -64,12 +64,11 @@ class Warehouse extends PrivateController
 		$this->_loadPanelView("warehouse/index",$data);
 	}
 
-	/**
-	 * @param string $code
-	 */
-	public function entry(string $code) : void
+	public function index() : void
 	{
 		/** View complements */
+		$this->complementHandler->addViewComplement("jquery.datatables");
+		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
 		$this->complementHandler->addViewComplement('select2');
 		$this->complementHandler->addViewComplement("parsley");
 		$this->complementHandler->addViewComplement("parsley.spanish");
@@ -81,14 +80,8 @@ class Warehouse extends PrivateController
 		/** Server Side Validations **/
 		$this->form_validation->set_rules('summary-type', 'Tipo de movimiento', 'trim|required');
 		$data = array();
-		$project = Model_project::getByCode($code);
 		$builders = Model_user::getByRoleKeyword('builder');
 		$data['builders'] = $builders;
-		if(!$project instanceof Model_project)
-		{
-			$this->session->set_flashdata("errorMessage", "El proyecto <strong>$code</strong> no existe o fue eliminado.");
-			redirect(base_url("panel/Warehouse"));
-		}
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -97,7 +90,39 @@ class Warehouse extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
-			echo "<pre>";var_dump($formData);exit;
+//			echo"<pre>";var_dump($formData);exit;
+			$reservationNumber = $formData['reservation-number'];
+			$summaryType = $formData['summary-type'];
+			$builder = $formData['builder'];
+			$isLoan = isset($formData['is-loan'])?1:0;
+			$entryDate = $formData['entry-date'];
+			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+			$entryDate = date_format($entryDate, 'Y-m-d');
+			$entryDate = $entryDate." ".date("H:i:s");
+			$materials = array_values($formData['summary']);
+			$summaryWithBuilders = array(4,10,11);
+			$currentUser = PrivateController::getSessionUser();
+			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+			$materialSummary = Model_material_summary::getByReservationNumber($reservationNumber);
+			/** @var Model_material_summary $newMaterialSummary */
+			$newMaterialSummary = clone $materialSummary;
+			$newMaterialSummary->setFileId(NULL);
+			$newMaterialSummary->setSummaryType($summaryType);
+			$newMaterialSummary->setEntryDate($entryDate);
+			$newMaterialSummary->setUserResponsible($currentUserId);
+			$newMaterialSummary->setIsLoan($isLoan);
+			if(array_search($summaryType, $summaryWithBuilders) !== FALSE)
+			{
+				$newMaterialSummary->setUserResponsible($builder);
+			}
+			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$summaryType);
+			$correlativeCounter = count($summariesByProjectAndType) + 1;
+			$newMaterialSummary->setCorrelativeCounter($correlativeCounter);
+			$newMaterialSummary->save();
+			$newMaterialSummary->saveMaterials($materials);
+			$this->session->set_flashdata("successMessage", "Registro exitoso de movimiento de materiales.");
+			redirect(base_url("panel/Warehouse"));
+//			echo "<pre>";var_dump($materialSummary,$newMaterialSummary,$formData);exit;
 		}
 	}
 

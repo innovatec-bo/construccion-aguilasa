@@ -15,13 +15,15 @@ class Model_project_material_base extends MY_Model
     protected int $_materialsSummaryId;
 	protected int $_materialId;
 	protected float $_quantity;
+	protected int $_statusId;
 
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId)
     {
         parent::__construct();
         $this->_materialsSummaryId = $materialsSummaryId;
 		$this->_materialId = $materialId;
 		$this->_quantity = $quantity;
+		$this->_statusId = $statusId;
     }
 
     /**
@@ -35,6 +37,7 @@ class Model_project_material_base extends MY_Model
 			"materials_summary_id_prm" => $this->_materialsSummaryId,
 			"material_id_prm" => $this->_materialId,
 			"quantity_prm" => $this->_quantity,
+			"status_id_prm" => $this->_statusId,
 			"deleted_prm" => $this->_deleted,
 			"createdon_prm" => $this->_createdOn,
 			"createdby_prm" => $this->_createdBy,
@@ -60,7 +63,8 @@ class Model_project_material_base extends MY_Model
             $instance = new $className(
                 $object->materials_summary_id_prm,
 				$object->material_id_prm,
-				$object->quantity_prm
+				$object->quantity_prm,
+				$object->status_id_prm
             );
             $instance->_id = $object->id_prm;
 
@@ -90,6 +94,11 @@ class Model_project_material_base extends MY_Model
 		$this->_quantity = $quantity;
 	}
 
+	public function setStatusId($statusId)
+	{
+		$this->_statusId = $statusId;
+	}
+
     //Getters
     public function getMaterialsSummaryId()
 	{
@@ -104,5 +113,10 @@ class Model_project_material_base extends MY_Model
 	public function getQuantity()
 	{
 		return $this->_quantity;
+	}
+
+	public function getStatusId()
+	{
+		return $this->_statusId;
 	}
 }

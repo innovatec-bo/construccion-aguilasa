@@ -174,6 +174,8 @@ class MaterialsFileReader
             $materialsCodeList = array_keys($this->_materialListFromExcelFile);
             $existingMaterials = Model_material::getMasterDetailByMaterialCodeList($materialsCodeList);
             $startReadingData = FALSE;
+            /** @var Model_material_status $status */
+			$status = Model_material_status::getByCode('NVO');
             foreach($this->_excelArrayData as $index => $data)
             {
                 //Material
@@ -194,7 +196,7 @@ class MaterialsFileReader
                 if($startReadingData && $materialCode != '')
                 {
                 	//Save the projects material
-                    $projectMaterial = new Model_project_material($materialSummary->getId(), $materialId, $quantity);
+                    $projectMaterial = new Model_project_material($materialSummary->getId(), $materialId, $quantity, $status->getId());
 					$projectMaterial->save();
                 }
             }

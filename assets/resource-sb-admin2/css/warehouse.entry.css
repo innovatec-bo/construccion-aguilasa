@@ -5,6 +5,11 @@
 	padding: 60px 0px;
 	background-color: rgb(220, 220, 220);
 }*/
+/*Data tables styles - begin*/
+div.dataTables_length {
+	display: none;
+}
+/*Data tables styles - end*/
 /*To use in group buttons - begin*/
 .select2-container--default .select2-selection--single
 {

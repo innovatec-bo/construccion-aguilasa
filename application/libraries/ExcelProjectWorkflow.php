@@ -260,9 +260,13 @@ class ExcelProjectWorkflow
 					if($arrayKeys[$i] == "contract_number_con" && $rowData[$arrayKeys[$i]] == "461-0002/199")
 					{
 						$columnPaymentStatus = $this->_getExcelColumnByDataKey("payment_status");
-						$spreadsheet->getActiveSheet()->getStyle('A'.$rowNumber.':'.$columnPaymentStatus . $rowNumber)->getFill()
-							->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-							->getStartColor()->setRGB('fb9901');
+						//Prevent highlight when column is hidden
+						if($columnPaymentStatus != "")
+						{
+							$spreadsheet->getActiveSheet()->getStyle('A'.$rowNumber.':'.$columnPaymentStatus . $rowNumber)->getFill()
+								->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+								->getStartColor()->setRGB('fb9901');
+						}
 					}
 
                     if ($rowNumber == ($this->startDataRow() + 1))

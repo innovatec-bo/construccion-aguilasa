@@ -8,8 +8,8 @@
 
 class Model_project_material extends Model_project_material_base
 {
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId)
 	{
-		parent::__construct($materialsSummaryId, $materialId, $quantity);
+		parent::__construct($materialsSummaryId, $materialId, $quantity, $statusId);
 	}
 }

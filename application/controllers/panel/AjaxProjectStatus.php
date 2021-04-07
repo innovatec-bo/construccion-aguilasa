@@ -983,7 +983,7 @@ class AjaxProjectStatus extends PrivateController
 					$currentUser = PrivateController::getSessionUser();
 					$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 					$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
-					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], $currentUserId);
+					$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], $currentUserId,1);
 				}
 
 				$response['success'] = 1;

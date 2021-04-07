@@ -22,14 +22,15 @@ class Model_material_summary_base extends MY_Model
 	protected string $_detail;
 	protected int $_userResponsible;
 	protected int $_summaryTypeId;
-	protected string $_reservationNumber;
+	protected ?string $_reservationNumber;
 	protected ?int $_fileId;
 	protected ?int $_parentSummaryId;
 	protected ?int $_isLoan;
 	protected ?int $_loanClosed;
 	protected ?string $_loanClosedDate;
+	protected ?int $_correlativeCounter;
 
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL)
+    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;
@@ -48,6 +49,7 @@ class Model_material_summary_base extends MY_Model
 		$this->_isLoan = $isLoan;
 		$this->_loanClosed = $loanClosed;
 		$this->_loanClosedDate = $loanClosedDate;
+		$this->_correlativeCounter = $correlativeCounter;
 
     }
 
@@ -69,12 +71,13 @@ class Model_material_summary_base extends MY_Model
 			"detail_msu" => $this->_detail,
 			"user_responsible_msu" => $this->_userResponsible,
 			"summary_type_id_msu" => $this->_summaryTypeId,
-			"reservation_number_prb" => $this->_reservationNumber,
+			"reservation_number_msu" => $this->_reservationNumber,
 			"file_id_msu" => $this->_fileId,
 			"parent_summary_id_msu" => $this->_parentSummaryId,
 			"is_loan_msu" => $this->_isLoan,
 			"loan_closed_msu" => $this->_loanClosed,
 			"loan_closed_date_msu" => $this->_loanClosedDate,
+			"correlative_counter_msu" => $this->_correlativeCounter,
 			"deleted_msu" => $this->_deleted,
 			"createdon_msu" => $this->_createdOn,
 			"createdby_msu" => $this->_createdBy,
@@ -113,7 +116,8 @@ class Model_material_summary_base extends MY_Model
 				$object->parent_summary_id_msu,
 				$object->is_loan_msu,
 				$object->loan_closed_msu,
-				$object->loan_closed_date_msu
+				$object->loan_closed_date_msu,
+				$object->correlative_counter_msu
             );
             $instance->_id = $object->id_msu;
 
@@ -208,6 +212,11 @@ class Model_material_summary_base extends MY_Model
 		$this->_loanClosedDate = $loanClosedDate;
 	}
 
+	public function setCorrelativeCounter($correlativeCounter)
+	{
+		$this->_correlativeCounter = $correlativeCounter;
+	}
+
     //Getters
     public function getProjectStatusLogId()
 	{
@@ -287,5 +296,10 @@ class Model_material_summary_base extends MY_Model
 	public function getLoanClosedDate()
 	{
 		return $this->_loanClosedDate;
+	}
+
+	public function getCorrelativeCounter()
+	{
+		return $this->_correlativeCounter;
 	}
 }

@@ -18,18 +18,19 @@
 		</div>
 	</div>
 	<form method="post" name="materials-summary">
-	</form>
+
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">
 				<label>Tipo de movimiento</label>
 				<select class="form-control input-sm" name="summary-type">
-					<option value="3">Retirado de CRE</option>
-					<option value="5">Material nuevo devuelto por el constructor</option>
-					<option value="6">Constructor devuelve materiales no utilizados.(NVO)</option>
-					<option value="6">Constructor devuelve materiales retirados de obra.(MEO, RBE)</option>
-					<option value="6">Material viejo devuelto por el constructor</option>
-					<option value="7">Material en buen estado devuelto por el constructor</option>
+					<option value="3" data-columns="material_code:name,material_description:name,quantity_assigned:name,quantity_picked_up_from_cre:name,pending_material_in_cre:name,movement:name,status:name">Retirado de CRE</option>
+					<option value="4" data-columns="material_code:name,material_description:name,quantity_assigned:name,quantity_in_warehouse:name,movement:name,status:name">Entrega de materiales al contructor</option>
+					<option value="8" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Envio de materiales a CRE(222)</option>
+					<option value="9" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Ingreso por conciliacion 221</option>
+					<option value="10" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Constructor devuelve materiales no utilizados</option>
+					<option value="11" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Constructor devuelve materiales retirados de obra</option>
+					<option value="12" disabled data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Ajuste</option>
 				</select>
 			</div>
 		</div>
@@ -71,20 +72,15 @@
 			</div>
 		</div>
 		<div class="col-md-4">
-			<div class="form-group">
+			<div class="form-group" id="reservation-number-selection">
 				<label>Nro reserva</label>
-				<select class="form-control input-sm" name="summary-type">
-					<option value="3">Retirado de CRE</option>
-					<option value="5">Material nuevo devuelto por el constructor</option>
-					<option value="6">Constructor devuelve materiales no utilizados.(NVO)</option>
-					<option value="6">Constructor devuelve materiales retirados de obra.(MEO, RBE)</option>
-					<option value="6">Material viejo devuelto por el constructor</option>
-					<option value="7">Material en buen estado devuelto por el constructor</option>
+				<select class="form-control input-sm" name="reservation-number">
+					<option>--Elija un Nro. de reserva--</option>
 				</select>
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row hide">
 		<div class="col-md-6">
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" data-parsley-required="" parsley-trigger="change" name="materials">
@@ -96,42 +92,39 @@
 			</div>
 		</div>
 	</div>
+	<div class="row hide">
+		<div class="col-md-6">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="is-loan">Pr&eacute;stamo de materiales
+				</label>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-striped table-bordered table-hover display pageResize" id="items-summary-list">
 					<thead>
 					<tr>
 <!--						<th>#</th>-->
 						<th>C&oacute;digo</th>
 						<th>Descripci&oacute;n</th>
-<!--						<th>Total<br>asignado</th>-->
-<!--						<th>Total<br>retirado<br>de CRE</th>-->
+						<th>Total<br>asignado</th>
+						<th>Total<br>retirado<br>de CRE</th>
+						<th>Saldo por<br>retirar de CRE</th>
 <!--						<th>Total<br>entregado<br>al constructor</th>-->
 <!--						<th>Total<br>entregado<br>a CRE</th>-->
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
+						<th>Disponible</th>
 						<th>Movimiento</th>
-						<th>Quitar</th>
+						<th>Estado</th>
+<!--						<th>Quitar</th>-->
 					</tr>
 					</thead>
 					<tbody id="table-body">
-					<tr>
-						<input type="hidden" name="summary[4]['code'][]" value="4">
-						<!--		<td>1</td>-->
-						<td class="text-right">4</td>
-						<td class="text-left">ABRAZADERA P/BALANCIN  9"</td>
-						<!--		<td class="text-right">38.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<!--		<td class="text-right">0.00</td>-->
-						<td class="text-right"><input type="text" name="summary[4]['quantity'][]" value="0" size="7"></td>
-						<td><input type="button" class="btn btn-danger btn-sm wh-quit-row" value="X"></td>
-					</tr>
 					</tbody>
 				</table>
 			</div>
@@ -143,7 +136,7 @@
 			<br><br>
 		</div>
 	</div>
-
+	</form>
 </div>
 <?php
 $this->load->view("default-template/panel/content/project/WarehouseHandler.php");
