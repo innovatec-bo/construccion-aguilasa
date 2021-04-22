@@ -14,8 +14,20 @@ declare let timbthumbImage : any;
 
 class WarehouseHandler
 {
+	private _projectMaterialSummary;
+	public static columnsDefinition = [];
     constructor()
     {
+    	this._projectMaterialSummary = [];
+		WarehouseHandler.columnsDefinition['material_code'] = 1;
+		WarehouseHandler.columnsDefinition['material_description'] = 2;
+		WarehouseHandler.columnsDefinition['quantity_assigned_materials'] = 3;
+		WarehouseHandler.columnsDefinition['quantity_picked_up_from_cre'] = 4;
+		WarehouseHandler.columnsDefinition['pending_material_in_cre'] = 5;
+		WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 6;
+		WarehouseHandler.columnsDefinition['movement'] = 7;
+		WarehouseHandler.columnsDefinition['tension'] = 8;
+		WarehouseHandler.columnsDefinition['status'] = 9;
     }
 
 	private _addRow()
@@ -23,14 +35,77 @@ class WarehouseHandler
 		let rowData = $('.select2-materials').select2('data')[0];
 		let htmlSource   = $('#table-row').html();
 		let template = Handlebars.compile(htmlSource);
-		let data = {data:rowData};
+		let data = {data:rowData, rowId: Date.now()};
 		let html = template(data);
-		$('#table-body').append(html);
+
+		//Add new row: let's get the last row to append the new row after it
+		let lastRow = $("td:nth-child(1)").filter(function(){
+			return $(this).text() == rowData.material_code;
+		}).last().parent();
+		//If there is at least one row.
+		if(lastRow.length > 0)
+			lastRow.after(html);
+		//If the tbody is empty.
+		else
+			$('#table-body').append(html);
+
+		//Search summary from next array by code added to table
+		let rowDataSummary = this._projectMaterialSummary.filter(p => p.material_code == rowData.material_code);
+		//Get rows using the first column
+		let rows = $("td:nth-child(1)").filter(function(){
+			return $(this).text() == rowData.material_code;
+		}).parent();console.log(rowDataSummary);
+		WarehouseHandler._applyRowspan(rows, rowData, rowDataSummary);
+		WarehouseHandler.columnsVisibility();
 	}
 
-	private _quitRow(row)
+	private _quitRow(btn)
 	{
-		$(row).closest('tr').remove();
+		let materialCode = $(btn).closest('tr').find("td:eq(0)").text();
+		//Removing entire row
+		$(btn).closest('tr').remove();
+		//Get rows using the first cell from tr deleted
+		let rows = $("td:nth-child(1)").filter(function(){
+			return $(this).text() == materialCode;
+		}).parent();
+		WarehouseHandler._applyRowspan(rows);
+		WarehouseHandler.columnsVisibility();
+	}
+
+	private static _applyRowspan(rows, rowData?, rowDataSummary?)
+	{
+		//Add colspan
+		let toApplyRowspan = ['material_code','material_description','quantity_assigned_materials','quantity_picked_up_from_cre','pending_material_in_cre','quantity_in_warehouse'];
+		for (let columnKey in WarehouseHandler.columnsDefinition)
+		{
+			let columnIndex = WarehouseHandler.columnsDefinition[columnKey];
+			if(toApplyRowspan.indexOf(columnKey) >= 0)
+			{
+				$.each(rows.find("td:eq("+(columnIndex-1)+")"), function(rowIndex,value){
+					if(rowDataSummary && rowDataSummary.length > 0)
+					{
+						let cellValue = rowDataSummary[0][columnKey];
+						$(value).text(cellValue);
+					}
+					else if(rowData)
+					{
+						let cellValue = "--";
+						if(rowData.hasOwnProperty(columnKey))
+						{
+							cellValue = rowData[columnKey];
+						}
+						$(value).text(cellValue);
+					}
+					if(rowIndex == 0)
+					{
+						$(value).attr('rowspan', rows.length);
+						$(value).removeClass('hide');
+					}
+					else
+						$(value).addClass('hide');
+				});
+			}
+		}
 	}
 
 	private static _builderSelectionVisibility(optionSelected?)
@@ -48,7 +123,7 @@ class WarehouseHandler
 		}
 	}
 
-	private static _reservationNumberVisibility(optionSelected?)
+	private _reservationNumberVisibility(optionSelected?)
 	{
 		let $component = $('#reservation-number-selection');
 		switch(optionSelected)
@@ -59,7 +134,11 @@ class WarehouseHandler
 				break;
 			default:
 				$component.slideUp();
+				let projectId = $('select.select2.project option:selected').val();
+				if(projectId != "")
+					this.getSummaryByReservationNumber(projectId);
 		}
+		console.log('reservationNumberVisibility');
 	}
 
 	public getSummaryByReservationNumber(projectId, reservationNumber = "")
@@ -71,135 +150,78 @@ class WarehouseHandler
 			type : "GET",
 			success:function(response)
 			{
-				let htmlSource   = $('#table-row').html();
-				let template = Handlebars.compile(htmlSource);
-				let html = "";
-				console.log(response);
-				$.each(response, function(index,value){
-					let data = {data:value};
-					html += template(data);
-				});
-				let data = _this._prepareDataTableRow(response);
-				let table = $('#items-summary-list').DataTable();
-				table.clear().draw();
-				table.rows.add(data).draw();
-				// $('#table-body').html(html);
-				// if ($.fn.DataTable.isDataTable( '#items-summary-list' ) )
-				// {
-				// 	$('#items-summary-list').DataTable().clear().destroy();
-				//
-				// }
+				_this._projectMaterialSummary = response;
+				// console.log(response);
 			}
 		});
-	}
-
-	private _prepareDataTableRow(list)
-	{
-		let newData = [];
-
-		$.each(list, function(index, value){
-
-			let statusSelection = '<select class="form-control input-sm" name="summary['+value.material_code+'][status]"><option value="1">NVO</option></select>'
-			let row = [
-				value.material_code,
-				value.material_description,
-				value.quantity_assigned,
-				value.quantity_picked_up_from_cre,
-				value.pending_material_in_cre,
-				value.quantity_in_warehouse,
-				'<input type="text" name="summary['+value.material_code+'][quantity]" value="0" size="7"><input type="hidden" name="summary['+value.material_code+'][id]" value="'+value.material_id+'" size="7">',
-				statusSelection
-			];
-			newData.push(row);
-		});
-		return newData;
 	}
 
 	public static columnsVisibility()
 	{
-		let table = $('#items-summary-list').DataTable();
-		let columns = $('select[name=summary-type]').find(':selected').data('columns');
-		columns = columns.split(',');
-		table.columns().visible( false );
-		table.columns( columns ).visible( true );
+		let visibleColumns = $('select[name=summary-type]').find(':selected').data('columns');
+		visibleColumns = visibleColumns.split(',');
+		for (let key in WarehouseHandler.columnsDefinition)
+		{
+			let value = WarehouseHandler.columnsDefinition[key];
+			let $currentColumn = $('td:nth-child('+value+'),th:nth-child('+value+')');
+			$currentColumn.hide();
+			if(visibleColumns.indexOf(key) >= 0)
+			{
+				$currentColumn.show();
+			}
+		}
 	}
 
-	private static _changeStatusOptionsToChoose()
+	public getSummaryListByProjectId()
 	{
-		let table = $('#items-summary-list').DataTable();
-		table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-			let data = this.data();
-			let options = '';
-			let summaryType = $('select[name=summary-type] option:selected').val();
-			switch(summaryType)
+		let projectId = $('select.select2.project option:selected').val();
+		$.ajax({
+			url : base_url + 'panel/AjaxMaterialSummary/getSummaryListByProjectId/'+projectId,
+			dataType  :"json",
+			type : "GET",
+			success:function(response)
 			{
-				case '1':
-					options = '';
-					break;
-				case '2':
-					options = ''
-					break;
-				case '3':
-				case '4':
-				case '9':
-				case '10':
-					options = '<select name="summary['+data[0]+'][status]" class="form-control input-sm"><option value="1">NVO</option></select>'
-					break;
-				case '8':
-				case '12':
-					options = '<select name="summary['+data[0]+'][status]" class="form-control input-sm"><option value="1">NVO</option><option value="2">MEO</option><option value="3">RBE</option></select>'
-					break;
-				case '11':
-					options = '<select name="summary['+data[0]+'][status]" class="form-control input-sm"><option value="2">MEO</option><option value="3">RBE</option></select>'
-					break;
+				let htmlSource   = $('#reservation-number-options').html();
+				let template = Handlebars.compile(htmlSource);
+				let data = {options:response};
+				let html = template(data);
+				$('select[name=reservation-number]').html(html);
 			}
-			data[7] = options;
-			this.invalidate();
-		} );
-	}
-	private static _changeStatusOptionsToChoose2()
-	{
-		let myTable = $('#items-summary-list').DataTable();
-		// myTable.column('status:name').nodes().each(function(node){
-		let index = 0;
-		myTable.column(['material_code:name','status:name']).each(function(node){
-			let options = '';
-			let summaryType = $('select[name=summary-type] option:selected').val();
-			switch(summaryType)
-			{
-				case '1':
-					options = '';
-					break;
-				case '2':
-					options = ''
-					break;
-				case '3':
-				case '4':
-				case '9':
-				case '10':
-					options = '<select name="options" class="form-control input-sm"><option value="1">NVO</option></select>'
-					break;
-				case '8':
-				case '12':
-					options = '<select name="options" class="form-control input-sm"><option value="1">NVO</option><option value="2">MEO</option><option value="3">RBE</option></select>'
-					break;
-				case '11':
-					options = '<select name="options" class="form-control input-sm"><option value="2">MEO</option><option value="3">RBE</option></select>'
-					break;
-			}
-			console.log(node);
-			// myTable.cell(node).data(options);
-			index++;
 		});
-		console.log(index);
-
 	}
 
     public loadEventHandlers()
     {
         let _this    = this;
         $(document).on('click','.wh-add-row',function(){
-			_this._addRow();
+
+			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
+			let reservationNumber = $('select[name=reservation-number]').val();
+			let project = $('select[name=project]').val();
+			let material = $('select[name=materials]').val();
+			if(project == "")
+			{
+				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+			}
+			else
+			{
+				if(reservationNumberVisible && reservationNumber == "")
+				{
+					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
+				}
+				else
+				{
+					if(material == "")
+					{
+						toastr.error('Seleccione un material', '', {'progressBar':true});
+					}
+					else
+					{
+						_this._addRow();
+					}
+				}
+			}
+
 		});
 
 		$(document).on('click','.wh-quit-row',function(){
@@ -209,13 +231,24 @@ class WarehouseHandler
 		$('select[name=summary-type]').on('change', function (e) {
 			let optionSelected = parseInt($(this).val());
 			WarehouseHandler._builderSelectionVisibility(optionSelected);
-			WarehouseHandler._reservationNumberVisibility(optionSelected);
+			_this._reservationNumberVisibility(optionSelected);
 			WarehouseHandler.columnsVisibility();
-			WarehouseHandler._changeStatusOptionsToChoose();
 		});
 
-		$('form[name=materials-summary]').on('submit',function(e){
-			$("#items-summary-list").DataTable().search("").draw();
+		$('select.select2.project').on('change', function (e) {
+			let projectId = $('select.select2.project option:selected').val();
+			if(projectId != "")
+			{
+				//If the reservation number is not
+				if(!$("#reservation-number-selection").is(':visible'))
+				{
+					_this.getSummaryByReservationNumber(projectId);
+				}
+				$('select[name=reservation-number]').html('<option value="">Cargando..</option>');
+				$('#table-body').html("");
+				_this.getSummaryListByProjectId();
+			}
+			console.log('Triggered project select2 change');
 		});
 	}
 }

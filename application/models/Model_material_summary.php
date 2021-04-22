@@ -8,7 +8,7 @@
 
 class Model_material_summary extends Model_material_summary_base
 {
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
 	{
 		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $userResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter);
 	}
@@ -32,11 +32,10 @@ class Model_material_summary extends Model_material_summary_base
 	}
 
 	/**
-	 * Return Model_material_summary instance or null
-	 * @param string
-	 * @return object
+	 * @param string $reservationNumber
+	 * @return object|null
 	 */
-	public static function getByReservationNumber(string $reservationNumber) : object
+	public static function getByReservationNumber(string $reservationNumber) : ?object
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -88,6 +87,7 @@ class Model_material_summary extends Model_material_summary_base
 					'material_id_prm' => $material['id'],
 					'quantity_prm' => $quantity,
 					'status_id_prm' => $material['status'],
+					'tension_id_prm' => $material['tension'],
 					'createdon_prm' => $currentDate,
 					'createdby_prm' => $currentUserId
 				);
@@ -99,7 +99,7 @@ class Model_material_summary extends Model_material_summary_base
 		}
 	}
 
-	public function getSummariesByProjectAndType($project, $type)
+	public static function getSummariesByProjectAndType($project, $type)
 	{
 		$ci = &get_instance();
 		$ci->load->database();

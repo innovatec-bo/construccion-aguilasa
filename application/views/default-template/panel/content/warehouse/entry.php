@@ -16,6 +16,16 @@
 			$this->load->view("default-template/flash-data-basic-messages");
 			?>
 		</div>
+		<div class="col-md-12">
+			<div class="alert alert-info">
+				<strong>Nota</strong><br>
+				<ol>
+					<li>La lista se limpia cuando los valores de "Proyecto" y "Nro. de reserva" cambian.</li>
+					<li>Si ingresa un material mas de una vez y repite su tension y estado, se registra la ultima ocurrencia ingresada en la tabla/lista.</li>
+					<li>Las columnas son dinamicas y estan en funcion al tipo de movimiento que se realiza.</li>
+				</ol>
+			</div>
+		</div>
 	</div>
 	<form method="post" name="materials-summary">
 
@@ -24,13 +34,13 @@
 			<div class="form-group">
 				<label>Tipo de movimiento</label>
 				<select class="form-control input-sm" name="summary-type">
-					<option value="3" data-columns="material_code:name,material_description:name,quantity_assigned:name,quantity_picked_up_from_cre:name,pending_material_in_cre:name,movement:name,status:name">Retirado de CRE</option>
-					<option value="4" data-columns="material_code:name,material_description:name,quantity_assigned:name,quantity_in_warehouse:name,movement:name,status:name">Entrega de materiales al contructor</option>
-					<option value="8" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Envio de materiales a CRE(222)</option>
-					<option value="9" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Ingreso por conciliacion 221</option>
-					<option value="10" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Constructor devuelve materiales no utilizados</option>
-					<option value="11" data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Constructor devuelve materiales retirados de obra</option>
-					<option value="12" disabled data-columns="material_code:name,material_description:name,quantity_assigned:name,movement:name,status:name">Ajuste</option>
+					<option value="3" data-columns="material_code,material_description,quantity_assigned,quantity_picked_up_from_cre,pending_material_in_cre,movement,tension,status">Retirado de CRE</option>
+					<option value="4" data-columns="material_code,material_description,quantity_assigned,quantity_in_warehouse,movement,tension,status">Entrega de materiales al contructor</option>
+					<option value="8" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Envio de materiales a CRE(222)</option>
+					<option value="9" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Ingreso por conciliacion 221</option>
+					<option value="10" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Constructor devuelve materiales no utilizados</option>
+					<option value="11" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Constructor devuelve materiales retirados de obra</option>
+					<option value="12" disabled data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Ajuste</option>
 				</select>
 			</div>
 		</div>
@@ -75,20 +85,24 @@
 			<div class="form-group" id="reservation-number-selection">
 				<label>Nro reserva</label>
 				<select class="form-control input-sm" name="reservation-number">
-					<option>--Elija un Nro. de reserva--</option>
+					<option value="">--Elija un Nro. de reserva--</option>
 				</select>
 			</div>
 		</div>
 	</div>
-	<div class="row hide">
+	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" data-parsley-required="" parsley-trigger="change" name="materials">
 					<option></option>
 				</select>
 				<span class="input-group-btn">
-					<button class="btn btn-success btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
+					<button class="btn btn-default btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
+					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>-->
 				</span>
+<!--				<span class="input-group-btn">-->
+<!--					<button class="btn btn-info btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>-->
+<!--				</span>-->
 			</div>
 		</div>
 	</div>
@@ -108,7 +122,7 @@
 					<thead>
 					<tr>
 <!--						<th>#</th>-->
-						<th>C&oacute;digo</th>
+						<th>COD</th>
 						<th>Descripci&oacute;n</th>
 						<th>Total<br>asignado</th>
 						<th>Total<br>retirado<br>de CRE</th>
@@ -118,10 +132,11 @@
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
-						<th>Disponible</th>
+						<th>Disponible<br>en almac&eacute;n</th>
 						<th>Movimiento</th>
+						<th>Tension</th>
 						<th>Estado</th>
-<!--						<th>Quitar</th>-->
+						<th>Quitar</th>
 					</tr>
 					</thead>
 					<tbody id="table-body">

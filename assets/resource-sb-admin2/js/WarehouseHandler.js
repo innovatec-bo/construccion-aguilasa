@@ -1,16 +1,83 @@
 var WarehouseHandler = /** @class */ (function () {
     function WarehouseHandler() {
+        this._projectMaterialSummary = [];
+        WarehouseHandler.columnsDefinition['material_code'] = 1;
+        WarehouseHandler.columnsDefinition['material_description'] = 2;
+        WarehouseHandler.columnsDefinition['quantity_assigned_materials'] = 3;
+        WarehouseHandler.columnsDefinition['quantity_picked_up_from_cre'] = 4;
+        WarehouseHandler.columnsDefinition['pending_material_in_cre'] = 5;
+        WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 6;
+        WarehouseHandler.columnsDefinition['movement'] = 7;
+        WarehouseHandler.columnsDefinition['tension'] = 8;
+        WarehouseHandler.columnsDefinition['status'] = 9;
     }
     WarehouseHandler.prototype._addRow = function () {
         var rowData = $('.select2-materials').select2('data')[0];
         var htmlSource = $('#table-row').html();
         var template = Handlebars.compile(htmlSource);
-        var data = { data: rowData };
+        var data = { data: rowData, rowId: Date.now() };
         var html = template(data);
-        $('#table-body').append(html);
+        //Add new row: let's get the last row to append the new row after it
+        var lastRow = $("td:nth-child(1)").filter(function () {
+            return $(this).text() == rowData.material_code;
+        }).last().parent();
+        //If there is at least one row.
+        if (lastRow.length > 0)
+            lastRow.after(html);
+        //If the tbody is empty.
+        else
+            $('#table-body').append(html);
+        //Search summary from next array by code added to table
+        var rowDataSummary = this._projectMaterialSummary.filter(function (p) { return p.material_code == rowData.material_code; });
+        //Get rows using the first column
+        var rows = $("td:nth-child(1)").filter(function () {
+            return $(this).text() == rowData.material_code;
+        }).parent();
+        console.log(rowDataSummary);
+        WarehouseHandler._applyRowspan(rows, rowData, rowDataSummary);
+        WarehouseHandler.columnsVisibility();
     };
-    WarehouseHandler.prototype._quitRow = function (row) {
-        $(row).closest('tr').remove();
+    WarehouseHandler.prototype._quitRow = function (btn) {
+        var materialCode = $(btn).closest('tr').find("td:eq(0)").text();
+        //Removing entire row
+        $(btn).closest('tr').remove();
+        //Get rows using the first cell from tr deleted
+        var rows = $("td:nth-child(1)").filter(function () {
+            return $(this).text() == materialCode;
+        }).parent();
+        WarehouseHandler._applyRowspan(rows);
+        WarehouseHandler.columnsVisibility();
+    };
+    WarehouseHandler._applyRowspan = function (rows, rowData, rowDataSummary) {
+        //Add colspan
+        var toApplyRowspan = ['material_code', 'material_description', 'quantity_assigned_materials', 'quantity_picked_up_from_cre', 'pending_material_in_cre', 'quantity_in_warehouse'];
+        var _loop_1 = function (columnKey) {
+            var columnIndex = WarehouseHandler.columnsDefinition[columnKey];
+            if (toApplyRowspan.indexOf(columnKey) >= 0) {
+                $.each(rows.find("td:eq(" + (columnIndex - 1) + ")"), function (rowIndex, value) {
+                    if (rowDataSummary && rowDataSummary.length > 0) {
+                        var cellValue = rowDataSummary[0][columnKey];
+                        $(value).text(cellValue);
+                    }
+                    else if (rowData) {
+                        var cellValue = "--";
+                        if (rowData.hasOwnProperty(columnKey)) {
+                            cellValue = rowData[columnKey];
+                        }
+                        $(value).text(cellValue);
+                    }
+                    if (rowIndex == 0) {
+                        $(value).attr('rowspan', rows.length);
+                        $(value).removeClass('hide');
+                    }
+                    else
+                        $(value).addClass('hide');
+                });
+            }
+        };
+        for (var columnKey in WarehouseHandler.columnsDefinition) {
+            _loop_1(columnKey);
+        }
     };
     WarehouseHandler._builderSelectionVisibility = function (optionSelected) {
         var $component = $('#builder-selection');
@@ -24,7 +91,7 @@ var WarehouseHandler = /** @class */ (function () {
                 $component.slideUp();
         }
     };
-    WarehouseHandler._reservationNumberVisibility = function (optionSelected) {
+    WarehouseHandler.prototype._reservationNumberVisibility = function (optionSelected) {
         var $component = $('#reservation-number-selection');
         switch (optionSelected) {
             case 8:
@@ -33,7 +100,11 @@ var WarehouseHandler = /** @class */ (function () {
                 break;
             default:
                 $component.slideUp();
+                var projectId = $('select.select2.project option:selected').val();
+                if (projectId != "")
+                    this.getSummaryByReservationNumber(projectId);
         }
+        console.log('reservationNumberVisibility');
     };
     WarehouseHandler.prototype.getSummaryByReservationNumber = function (projectId, reservationNumber) {
         if (reservationNumber === void 0) { reservationNumber = ""; }
@@ -43,121 +114,61 @@ var WarehouseHandler = /** @class */ (function () {
             dataType: "json",
             type: "GET",
             success: function (response) {
-                var htmlSource = $('#table-row').html();
-                var template = Handlebars.compile(htmlSource);
-                var html = "";
-                console.log(response);
-                $.each(response, function (index, value) {
-                    var data = { data: value };
-                    html += template(data);
-                });
-                var data = _this._prepareDataTableRow(response);
-                var table = $('#items-summary-list').DataTable();
-                table.clear().draw();
-                table.rows.add(data).draw();
-                // $('#table-body').html(html);
-                // if ($.fn.DataTable.isDataTable( '#items-summary-list' ) )
-                // {
-                // 	$('#items-summary-list').DataTable().clear().destroy();
-                //
-                // }
+                _this._projectMaterialSummary = response;
+                // console.log(response);
             }
         });
-    };
-    WarehouseHandler.prototype._prepareDataTableRow = function (list) {
-        var newData = [];
-        $.each(list, function (index, value) {
-            var statusSelection = '<select class="form-control input-sm" name="summary[' + value.material_code + '][status]"><option value="1">NVO</option></select>';
-            var row = [
-                value.material_code,
-                value.material_description,
-                value.quantity_assigned,
-                value.quantity_picked_up_from_cre,
-                value.pending_material_in_cre,
-                value.quantity_in_warehouse,
-                '<input type="text" name="summary[' + value.material_code + '][quantity]" value="0" size="7"><input type="hidden" name="summary[' + value.material_code + '][id]" value="' + value.material_id + '" size="7">',
-                statusSelection
-            ];
-            newData.push(row);
-        });
-        return newData;
     };
     WarehouseHandler.columnsVisibility = function () {
-        var table = $('#items-summary-list').DataTable();
-        var columns = $('select[name=summary-type]').find(':selected').data('columns');
-        columns = columns.split(',');
-        table.columns().visible(false);
-        table.columns(columns).visible(true);
-    };
-    WarehouseHandler._changeStatusOptionsToChoose = function () {
-        var table = $('#items-summary-list').DataTable();
-        table.rows().every(function (rowIdx, tableLoop, rowLoop) {
-            var data = this.data();
-            var options = '';
-            var summaryType = $('select[name=summary-type] option:selected').val();
-            switch (summaryType) {
-                case '1':
-                    options = '';
-                    break;
-                case '2':
-                    options = '';
-                    break;
-                case '3':
-                case '4':
-                case '9':
-                case '10':
-                    options = '<select name="summary[' + data[0] + '][status]" class="form-control input-sm"><option value="1">NVO</option></select>';
-                    break;
-                case '8':
-                case '12':
-                    options = '<select name="summary[' + data[0] + '][status]" class="form-control input-sm"><option value="1">NVO</option><option value="2">MEO</option><option value="3">RBE</option></select>';
-                    break;
-                case '11':
-                    options = '<select name="summary[' + data[0] + '][status]" class="form-control input-sm"><option value="2">MEO</option><option value="3">RBE</option></select>';
-                    break;
+        var visibleColumns = $('select[name=summary-type]').find(':selected').data('columns');
+        visibleColumns = visibleColumns.split(',');
+        for (var key in WarehouseHandler.columnsDefinition) {
+            var value = WarehouseHandler.columnsDefinition[key];
+            var $currentColumn = $('td:nth-child(' + value + '),th:nth-child(' + value + ')');
+            $currentColumn.hide();
+            if (visibleColumns.indexOf(key) >= 0) {
+                $currentColumn.show();
             }
-            data[7] = options;
-            this.invalidate();
-        });
+        }
     };
-    WarehouseHandler._changeStatusOptionsToChoose2 = function () {
-        var myTable = $('#items-summary-list').DataTable();
-        // myTable.column('status:name').nodes().each(function(node){
-        var index = 0;
-        myTable.column(['material_code:name', 'status:name']).each(function (node) {
-            var options = '';
-            var summaryType = $('select[name=summary-type] option:selected').val();
-            switch (summaryType) {
-                case '1':
-                    options = '';
-                    break;
-                case '2':
-                    options = '';
-                    break;
-                case '3':
-                case '4':
-                case '9':
-                case '10':
-                    options = '<select name="options" class="form-control input-sm"><option value="1">NVO</option></select>';
-                    break;
-                case '8':
-                case '12':
-                    options = '<select name="options" class="form-control input-sm"><option value="1">NVO</option><option value="2">MEO</option><option value="3">RBE</option></select>';
-                    break;
-                case '11':
-                    options = '<select name="options" class="form-control input-sm"><option value="2">MEO</option><option value="3">RBE</option></select>';
-                    break;
+    WarehouseHandler.prototype.getSummaryListByProjectId = function () {
+        var projectId = $('select.select2.project option:selected').val();
+        $.ajax({
+            url: base_url + 'panel/AjaxMaterialSummary/getSummaryListByProjectId/' + projectId,
+            dataType: "json",
+            type: "GET",
+            success: function (response) {
+                var htmlSource = $('#reservation-number-options').html();
+                var template = Handlebars.compile(htmlSource);
+                var data = { options: response };
+                var html = template(data);
+                $('select[name=reservation-number]').html(html);
             }
-            console.log(node);
-            // myTable.cell(node).data(options);
-            index++;
         });
-        console.log(index);
     };
     WarehouseHandler.prototype.loadEventHandlers = function () {
         var _this = this;
         $(document).on('click', '.wh-add-row', function () {
-            _this._addRow();
+            var reservationNumberVisible = $("#reservation-number-selection").is(':visible');
+            var reservationNumber = $('select[name=reservation-number]').val();
+            var project = $('select[name=project]').val();
+            var material = $('select[name=materials]').val();
+            if (project == "") {
+                toastr.error('Debe especificar un proyecto', '', { 'progressBar': true });
+            }
+            else {
+                if (reservationNumberVisible && reservationNumber == "") {
+                    toastr.error('Seleccione un Nro. de reserva', '', { 'progressBar': true });
+                }
+                else {
+                    if (material == "") {
+                        toastr.error('Seleccione un material', '', { 'progressBar': true });
+                    }
+                    else {
+                        _this._addRow();
+                    }
+                }
+            }
         });
         $(document).on('click', '.wh-quit-row', function () {
             _this._quitRow(this);
@@ -165,13 +176,23 @@ var WarehouseHandler = /** @class */ (function () {
         $('select[name=summary-type]').on('change', function (e) {
             var optionSelected = parseInt($(this).val());
             WarehouseHandler._builderSelectionVisibility(optionSelected);
-            WarehouseHandler._reservationNumberVisibility(optionSelected);
+            _this._reservationNumberVisibility(optionSelected);
             WarehouseHandler.columnsVisibility();
-            WarehouseHandler._changeStatusOptionsToChoose();
         });
-        $('form[name=materials-summary]').on('submit', function (e) {
-            $("#items-summary-list").DataTable().search("").draw();
+        $('select.select2.project').on('change', function (e) {
+            var projectId = $('select.select2.project option:selected').val();
+            if (projectId != "") {
+                //If the reservation number is not
+                if (!$("#reservation-number-selection").is(':visible')) {
+                    _this.getSummaryByReservationNumber(projectId);
+                }
+                $('select[name=reservation-number]').html('<option value="">Cargando..</option>');
+                $('#table-body').html("");
+                _this.getSummaryListByProjectId();
+            }
+            console.log('Triggered project select2 change');
         });
     };
+    WarehouseHandler.columnsDefinition = [];
     return WarehouseHandler;
 }());

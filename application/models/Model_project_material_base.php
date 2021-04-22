@@ -16,14 +16,16 @@ class Model_project_material_base extends MY_Model
 	protected int $_materialId;
 	protected float $_quantity;
 	protected int $_statusId;
+	protected ?int $_tension;
 
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL)
     {
         parent::__construct();
         $this->_materialsSummaryId = $materialsSummaryId;
 		$this->_materialId = $materialId;
 		$this->_quantity = $quantity;
 		$this->_statusId = $statusId;
+		$this->_tension = $tension;
     }
 
     /**
@@ -38,6 +40,7 @@ class Model_project_material_base extends MY_Model
 			"material_id_prm" => $this->_materialId,
 			"quantity_prm" => $this->_quantity,
 			"status_id_prm" => $this->_statusId,
+			"tension_id_prm" => $this->_tension,
 			"deleted_prm" => $this->_deleted,
 			"createdon_prm" => $this->_createdOn,
 			"createdby_prm" => $this->_createdBy,
@@ -64,7 +67,8 @@ class Model_project_material_base extends MY_Model
                 $object->materials_summary_id_prm,
 				$object->material_id_prm,
 				$object->quantity_prm,
-				$object->status_id_prm
+				$object->status_id_prm,
+				$object->tension_id_prm
             );
             $instance->_id = $object->id_prm;
 
@@ -99,6 +103,11 @@ class Model_project_material_base extends MY_Model
 		$this->_statusId = $statusId;
 	}
 
+	public function setTension($tensionId)
+	{
+		$this->_tension = $tensionId;
+	}
+
     //Getters
     public function getMaterialsSummaryId()
 	{
@@ -118,5 +127,10 @@ class Model_project_material_base extends MY_Model
 	public function getStatusId()
 	{
 		return $this->_statusId;
+	}
+
+	public function getTension()
+	{
+		return $this->_tension;
 	}
 }

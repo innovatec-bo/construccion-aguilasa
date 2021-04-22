@@ -73,7 +73,7 @@
                                     {{#ifCond previousEntry.id_prb "==" null}}
                                         {{var "buttonText" "Revisar materiales"}}
                                     {{/ifCond}}
-                                    <div class="form-group input-group hide">
+                                    <div class="form-group input-group">
                                         <span class="input-group-btn">
                                             <button class="btn btn-primary extract-approved-materials btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
                                             </button>

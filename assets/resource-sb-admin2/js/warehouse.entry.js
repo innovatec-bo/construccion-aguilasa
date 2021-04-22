@@ -1,19 +1,4 @@
 $(document).ready(function() {
-	let table = $('#items-summary-list').DataTable({
-		scrollY:        '100vh',
-		scrollCollapse: true,
-		paging:         false,
-		columns: [
-			{ name: 'material_code'},
-			{ name: 'material_description'},
-			{ name: 'quantity_assigned'},
-			{ name: 'quantity_picked_up_from_cre'},
-			{ name: 'pending_material_in_cre'},
-			{ name: 'quantity_in_warehouse'},
-			{ name: 'movement'},
-			{ name: 'status'}
-		]
-	});
 	startSelect2Materials('select.select2-materials');
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
@@ -27,22 +12,9 @@ $(document).ready(function() {
 		format: 'DD-MM-YYYY'
 	});
 
-	$('select.select2.project').on('change', function (e) {
-		let projectId = $('select.select2.project option:selected').val();
-		if(projectId != "")
-		{
-			if(!$("#reservation-number-selection").is(':visible'))
-			{
-				warehouse.getSummaryByReservationNumber(projectId);
-			}
-			$('select[name=reservation-number]').html('<option>Cargando..</option>');
-			$('#table-body').html("");
-			getSummaryListByProjectId();
 
-		}
-	});
 	$('select.select2.project').on('select2:clear', function (e) {
-		$('select[name=reservation-number]').html('<option>--Elija un Nro. de reserva--</option>');
+		$('select[name=reservation-number]').html('<option value="">--Elija un Nro. de reserva--</option>');
 		$('#table-body').html("");
 	});
 
@@ -51,23 +23,68 @@ $(document).ready(function() {
 		let reservationNumber = $('select[name=reservation-number] option:selected').val();
 		warehouse.getSummaryByReservationNumber(projectId, reservationNumber);
 	});
+
+	$('.wh-add-new-material').on('click',function(){
+		addMaterial();
+	});
 });
 
-function getSummaryListByProjectId()
+
+function addMaterial(formData)
 {
-	let projectId = $('select.select2.project option:selected').val();
+	let method = formData === undefined?"GET":"POST";
 	$.ajax({
-		url : base_url + 'panel/AjaxMaterialSummary/getSummaryListByProjectId/'+projectId,
+		url : base_url + 'panel/AjaxMaterial/add',
 		dataType  :"json",
-		type : "GET",
-		success:function(response)
-		{
-			console.log(response);
-			let htmlSource   = $('#reservation-number-options').html();
-			let template = Handlebars.compile(htmlSource);
-			let data = {options:response};
-			let html = template(data);
-			$('select[name=reservation-number]').html(html);
+		type : method,
+		data:formData,
+		success:function(response){
+			if(response.success === 1 && !formData)
+			{
+				launchForm(response,"Form add")
+			}
+			else if(response.success === 1 && formData)
+			{
+				toastr.success(response.message, '', {'progressBar':true});
+			}
+			else
+			{
+				bootbox.alert({
+					title:"Something went wrong!",
+					message: response.message,
+					size:"medium"
+				})
+			}
+		}
+	});
+}
+function launchForm(response, formTitle)
+{
+	let htmlSource   = $(response.template).html();
+	let template = Handlebars.compile(htmlSource);
+	let data = {role:response.role};
+	let html    = template(data);
+	bootbox.confirm({
+		title:formTitle,
+		message: html,
+		className: "material-modal-form",
+		buttons: {
+			confirm: {
+				label: 'Save',
+				className: 'btn-success'
+			},
+			cancel: {
+				label: 'Cancel',
+				className: 'btn-danger'
+			}
+		},
+		callback: function (result) {
+			if(result)
+			{
+				let form = $(".material-modal-form form");
+				addMaterial(form.serialize());
+
+			}
 		}
 	});
 }

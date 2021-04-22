@@ -49,9 +49,9 @@ class BasePaginationHandler
 	 * @param array $additionalParameters
 	 * @return void
 	 */
-		public function setAdditionalParameters(array $additionalParameters) : void
+	public function setAdditionalParameters(array $additionalParameters) : void
 	{
-		$this->_additionalParameters = 	$additionalParameters;
+		$this->_additionalParameters = array_merge($this->_additionalParameters, $additionalParameters);
 	}
 
 	/**

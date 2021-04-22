@@ -10,16 +10,25 @@ class Model_material_base extends MY_Model
     const TABLE_ID = "id_mat";
     const ATTRIB_SUFIX = "_mat";
 
-    protected $_code;
-	protected $_name;
-	protected $_description;
+    protected string $_code;
+	protected ?string $_name;
+	protected string $_description;
+	protected ?string $_unitOfMeasurement;
 
-    public function __construct($code = "", $name = "", $description = "")
+	/**
+	 * Model_material_base constructor.
+	 * @param string $code
+	 * @param string $name
+	 * @param string $description
+	 * @param string|null $unitOfMeasurement
+	 */
+    public function __construct(string $code, ?string $name, string $description, ?string $unitOfMeasurement = NULL)
     {
         parent::__construct();
         $this->_code = $code;
 		$this->_name = $name;
 		$this->_description = $description;
+		$this->_unitOfMeasurement = $unitOfMeasurement;
     }
 
     /**
@@ -33,6 +42,7 @@ class Model_material_base extends MY_Model
 			"code_mat" => $this->_code,
 			"name_mat" => $this->_name,
 			"description_mat" => $this->_description,
+			"unit_of_measurement_mat" => $this->_unitOfMeasurement,
 			"deleted_mat" => $this->_deleted,
 			"createdon_mat" => $this->_createdOn,
 			"createdby_mat" => $this->_createdBy,
@@ -58,7 +68,8 @@ class Model_material_base extends MY_Model
             $instance = new $className(
                 $object->code_mat,
 				$object->name_mat,
-				$object->description_mat
+				$object->description_mat,
+				$object->unit_of_measurement_mat
             );
             $instance->_id = $object->id_mat;
 
@@ -88,6 +99,11 @@ class Model_material_base extends MY_Model
 		$this->_description = $description;
 	}
 
+	public function setUnitOfMeasurement($unitOfMeasurement)
+	{
+		$this->_unitOfMeasurement = $unitOfMeasurement;
+	}
+
     //Getters
     public function getCode()
 	{
@@ -102,5 +118,10 @@ class Model_material_base extends MY_Model
 	public function getDescription()
 	{
 		return $this->_description;
+	}
+
+	public function getUnitOfMeasurement()
+	{
+		return $this->_unitOfMeasurement;
 	}
 }

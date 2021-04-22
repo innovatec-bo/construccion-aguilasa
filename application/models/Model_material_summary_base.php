@@ -12,7 +12,7 @@ class Model_material_summary_base extends MY_Model
     const TABLE_ID = "id_msu";
     const ATTRIB_SUFIX = "_msu";
 
-    protected int $_projectStatusLogId;
+    protected ?int $_projectStatusLogId;
     protected string $_tensionLevel;
 	protected int $_projectId;
 	protected int $_applicantProjectId;
@@ -30,7 +30,7 @@ class Model_material_summary_base extends MY_Model
 	protected ?string $_loanClosedDate;
 	protected ?int $_correlativeCounter;
 
-    public function __construct(int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;

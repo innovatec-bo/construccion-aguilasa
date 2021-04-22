@@ -116,8 +116,8 @@ class AjaxMaterialSummary extends PrivateController
 		{
 			$parameters = array('reservation-number'=>$reservationNumber,'project-id'=>$projectId);
 		}
-
-		$materialPaginationHandler = new MaterialPaginationHandler(1000,0,'material_description');
+		$parameters['grouping-criteria'] = ' project_id_msu, material_id_prm ';
+		$materialPaginationHandler = new MaterialSummaryPaginationHandler(1000,0,'material_description');
 		$materialPaginationHandler->setAdditionalParameters($parameters);
 		echo json_encode($materialPaginationHandler->getAll());exit;
 	}

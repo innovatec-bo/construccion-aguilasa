@@ -91,6 +91,7 @@ class Warehouse extends PrivateController
 		{
 			$formData = $this->input->post();
 //			echo"<pre>";var_dump($formData);exit;
+			$projectId = $formData['project'];
 			$reservationNumber = $formData['reservation-number'];
 			$summaryType = $formData['summary-type'];
 			$builder = $formData['builder'];
@@ -103,14 +104,16 @@ class Warehouse extends PrivateController
 			$summaryWithBuilders = array(4,10,11);
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
-			$materialSummary = Model_material_summary::getByReservationNumber($reservationNumber);
-			/** @var Model_material_summary $newMaterialSummary */
-			$newMaterialSummary = clone $materialSummary;
-			$newMaterialSummary->setFileId(NULL);
-			$newMaterialSummary->setSummaryType($summaryType);
-			$newMaterialSummary->setEntryDate($entryDate);
-			$newMaterialSummary->setUserResponsible($currentUserId);
-			$newMaterialSummary->setIsLoan($isLoan);
+//			$materialSummary = Model_material_summary::getByReservationNumber($reservationNumber);
+//			/** @var Model_material_summary $newMaterialSummary */
+//			$newMaterialSummary = clone $materialSummary;
+//			$newMaterialSummary->setFileId(NULL);
+//			$newMaterialSummary->setSummaryType($summaryType);
+//			$newMaterialSummary->setEntryDate($entryDate);
+//			$newMaterialSummary->setUserResponsible($currentUserId);
+//			$newMaterialSummary->setIsLoan($isLoan);
+
+			$newMaterialSummary = new Model_material_summary(NULL,'TODOS',$projectId,$projectId,'','',$entryDate,'',$currentUserId,$summaryType, NULL);
 			if(array_search($summaryType, $summaryWithBuilders) !== FALSE)
 			{
 				$newMaterialSummary->setUserResponsible($builder);

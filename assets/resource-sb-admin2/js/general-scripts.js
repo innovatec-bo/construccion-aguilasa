@@ -382,7 +382,7 @@ function downloadBuilderProductivityReport(builderId, month, year)
     // });
     window.location.href = base_url+"panel/Home/testProductivityReport/"+builderId+"/"+month+"/"+year;
 }
-function startSelect2Materials(containerCssClass, size)
+function startSelect2MaterialsSummary(containerCssClass, size)
 {
 	containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
 	size = size === undefined?"":size;
@@ -431,7 +431,75 @@ function startSelect2Materials(containerCssClass, size)
 			}
 		},
 		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-		templateResult: select2MaterialsResponse,
+		templateResult: select2MaterialsSummaryResponse,
+		width : "100%"
+	});
+}
+
+function select2MaterialsSummaryResponse (response)
+{
+	if (response.loading)
+		return response.text;
+
+	let htmlSource   = $("#ht-select2-material-summary-response").html();
+	let template = Handlebars.compile(htmlSource);
+	let data = {data:response};
+	return template(data);
+}
+
+function startSelect2Materials(containerCssClass, size)
+{
+	containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
+	size = size === undefined?"":size;
+	let $content = $(document.body);
+	// if($('.modal-content').length > 0)
+	// {
+	// 	$content = $('.modal-content');
+	// }
+	// else if($('.swal2-content').length > 0)
+	// {
+	// 	$content = $('.swal2-content');
+	// }
+
+	$(containerCssClass).select2({
+		placeholder: "Buscar material",
+		containerCssClass: size,
+		debug: true,
+		dropdownCssClass: "dd-select2-labor-cost",
+		dropdownParent: $content,
+		// allowClear : true,
+		ajax : {
+			url : base_url + 'panel/AjaxMaterial/select2',
+			dataType : "json",
+			type : "post",
+			delay : 600,
+			cache: false,
+			data : function(params) {
+				return {
+					term : params.term || "",//search term
+					limit : 10,// page size
+					page: params.page || 1
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: data.list,
+					// pagination: data.pagination
+					pagination: {more:true}
+				};
+			}
+		},
+		"language": {
+			"noResults": function(){
+				// return '<button type="button" class="btn btn-primary btn-block add-new">Registrar nuevo</button>';
+				return 'No se encontraron resultados';
+			},
+			"searching": function(){
+				return 'Buscando..';
+			}
+		},
+		// escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		// templateResult: select2MaterialsResponse,
 		width : "100%"
 	});
 }

@@ -6,10 +6,10 @@
 
 class Model_material extends Model_material_base
 {
-    public function __construct($code = "", $name = "", $description = "")
-    {
-        parent::__construct($code, $name, $description);
-    }
+    public function __construct(string $code, ?string $name, string $description, ?string $unitOfMeasurement = NULL)
+	{
+		parent::__construct($code, $name, $description, $unitOfMeasurement);
+	}
 
 	public static function getByCodeList($structureList = array())
 	{
