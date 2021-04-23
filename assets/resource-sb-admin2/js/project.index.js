@@ -204,7 +204,9 @@ $(document).ready(function() {
             }
         }, {
 			"data" : "projectBudget",
-			"className": 'text-right'
+			"className": 'text-right',
+			"orderable" : false,
+			"searchable" : false
 		}, {
             "defaultContent" : "",
             "searchable" : false,
