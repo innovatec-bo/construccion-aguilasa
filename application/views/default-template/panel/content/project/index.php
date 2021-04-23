@@ -141,14 +141,16 @@
                         <th>CODIGO</th>
                         <th>INGRESO EN SISTEMA</th>
                         <th>INGRESO EN ESTADO</th>
-                        <th>DIAS ESTATICO</th>
+                        <th>DIAS<br>ESTATICO</th>
                         <th>ESTADO</th>
                         <th>SISTEMA</th>
                         <th>DISTANCIA Y<br>PUNTOS</th>
+                        <th>FISCAL<br>DE CRE</th>
                         <th>RESPONSABLE</th>
                         <th>FISCAL</th>
                         <th>CONSTRUCTOR</th>
                         <th>UBICACION</th>
+                        <th>IMPORTE</th>
                         <th class="text-center"><i class="fa fa-cogs fa-2x"></i></th>
                     </tr>
                     </thead>

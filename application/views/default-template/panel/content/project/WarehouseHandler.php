@@ -1,12 +1,11 @@
 <script id="table-row" type="text/x-handlebars-template">
 	<tr>
-
-<!--		<td>1</td>-->
 		<td class="text-center">{{data.material_code}}</td>
 		<td class="text-left">{{data.material_description}}</td>
 		<td class="text-right">{{numberFormat data.quantity_assigned_materials}}</td>
 		<td class="text-right">{{numberFormat data.quantity_picked_up_from_cre}}</td>
 		<td class="text-right">{{numberFormat data.pending_material_in_cre}}</td>
+		<td class="text-right">{{numberFormat data.quantity_materials_delivered_to_builder}}</td>
 		<td class="text-right">{{numberFormat data.quantity_in_warehouse}}</td>
 		<td class="text-right"><input type="text" name="summary[{{rowId}}][quantity]" value="0" size="7"></td>
 

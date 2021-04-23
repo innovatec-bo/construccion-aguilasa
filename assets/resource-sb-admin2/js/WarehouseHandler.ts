@@ -24,10 +24,11 @@ class WarehouseHandler
 		WarehouseHandler.columnsDefinition['quantity_assigned_materials'] = 3;
 		WarehouseHandler.columnsDefinition['quantity_picked_up_from_cre'] = 4;
 		WarehouseHandler.columnsDefinition['pending_material_in_cre'] = 5;
-		WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 6;
-		WarehouseHandler.columnsDefinition['movement'] = 7;
-		WarehouseHandler.columnsDefinition['tension'] = 8;
-		WarehouseHandler.columnsDefinition['status'] = 9;
+		WarehouseHandler.columnsDefinition['quantity_materials_delivered_to_builder'] = 6;
+		WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 7;
+		WarehouseHandler.columnsDefinition['movement'] = 8;
+		WarehouseHandler.columnsDefinition['tension'] = 9;
+		WarehouseHandler.columnsDefinition['status'] = 10;
     }
 
 	private _addRow()
@@ -75,7 +76,7 @@ class WarehouseHandler
 	private static _applyRowspan(rows, rowData?, rowDataSummary?)
 	{
 		//Add colspan
-		let toApplyRowspan = ['material_code','material_description','quantity_assigned_materials','quantity_picked_up_from_cre','pending_material_in_cre','quantity_in_warehouse'];
+		let toApplyRowspan = ['material_code','material_description','quantity_assigned_materials','quantity_picked_up_from_cre','pending_material_in_cre','quantity_materials_delivered_to_builder','quantity_in_warehouse'];
 		for (let columnKey in WarehouseHandler.columnsDefinition)
 		{
 			let columnIndex = WarehouseHandler.columnsDefinition[columnKey];
@@ -108,14 +109,17 @@ class WarehouseHandler
 		}
 	}
 
-	private static _builderSelectionVisibility(optionSelected?)
+	public static builderSelectionVisibility()
 	{
+		let optionSelected = parseInt($('select[name=summary-type] option:selected').val());
 		let $component = $('#builder-selection');
 		switch(optionSelected)
 		{
 			case 4:
 			case 10:
 			case 11:
+			case 14:
+			case 15:
 				$component.slideDown();
 				break;
 			default:
@@ -123,8 +127,9 @@ class WarehouseHandler
 		}
 	}
 
-	private _reservationNumberVisibility(optionSelected?)
+	public reservationNumberVisibility()
 	{
+		let optionSelected = parseInt($('select[name=summary-type] option:selected').val());
 		let $component = $('#reservation-number-selection');
 		switch(optionSelected)
 		{
@@ -138,7 +143,6 @@ class WarehouseHandler
 				if(projectId != "")
 					this.getSummaryByReservationNumber(projectId);
 		}
-		console.log('reservationNumberVisibility');
 	}
 
 	public getSummaryByReservationNumber(projectId, reservationNumber = "")
@@ -230,8 +234,8 @@ class WarehouseHandler
 
 		$('select[name=summary-type]').on('change', function (e) {
 			let optionSelected = parseInt($(this).val());
-			WarehouseHandler._builderSelectionVisibility(optionSelected);
-			_this._reservationNumberVisibility(optionSelected);
+			WarehouseHandler.builderSelectionVisibility();
+			_this.reservationNumberVisibility();
 			WarehouseHandler.columnsVisibility();
 		});
 

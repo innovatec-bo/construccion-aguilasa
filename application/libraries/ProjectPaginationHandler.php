@@ -32,6 +32,7 @@ class ProjectPaginationHandler extends BasePaginationHandler
 					status_log_manual_entry_date.fiscal_responsible_id,
 					status_log_manual_entry_date.builder_responsible,
 					status_log_manual_entry_date.builder_responsible_ids,
+					concat(cre_fiscal.firstname_usr,' ',cre_fiscal.lastname_usr) cre_fiscal_full_name,
 					manpower.manpower_file_id,
 					status_log_manual_entry_date.id_psl,
 					id_war,
@@ -206,7 +207,8 @@ class ProjectPaginationHandler extends BasePaginationHandler
 						AND rb_status.project_id = psl.project_id_psl 
 						AND deleted_psl != 1 
 					) real_budget ON real_budget.rb_project_id_psl = id_pro
-					LEFT JOIN wfl_project_real_budgets ON status_log_id_reb = real_budget.rb_id_psl 
+					LEFT JOIN wfl_project_real_budgets ON status_log_id_reb = real_budget.rb_id_psl
+					left join sec_users cre_fiscal on cre_fiscal_pro = cre_fiscal.id_usr 
 				WHERE
 					deleted_pro != 1
 				) ".static::TABLE_NAME."_master_detail

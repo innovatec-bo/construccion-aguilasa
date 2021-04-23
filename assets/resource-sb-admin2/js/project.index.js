@@ -93,6 +93,7 @@ $(document).ready(function() {
             "data" : "code_pro"
         }, {
             "data" : "entry_date_pro",
+			"className": 'text-center',
             "render" : function(data, type, row, meta) {
                 var result = "";
                 if(row.entry_date_pro !== "" && row.entry_date_pro !== null)
@@ -108,6 +109,7 @@ $(document).ready(function() {
             }
         }, {
             "data" : "manual_entry_date_psl",
+			"className": 'text-center',
             "render" : function(data, type, row, meta) {
                 var result = "";
                 if(row.manual_entry_date_psl !== "" && row.manual_entry_date_psl !== null)
@@ -123,6 +125,7 @@ $(document).ready(function() {
             }
         }, {
             "defaultContent" : "",
+			"className": 'text-center',
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
@@ -172,6 +175,8 @@ $(document).ready(function() {
                 return response;
             }
         }, {
+			"data" : "cre_fiscal_full_name"
+		}, {
             "data" : "responsible"
         }, {
             "data" : "fiscal_responsible"
@@ -198,6 +203,9 @@ $(document).ready(function() {
                 return response;
             }
         }, {
+			"data" : "projectBudget",
+			"className": 'text-right'
+		}, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,

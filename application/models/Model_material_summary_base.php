@@ -20,7 +20,7 @@ class Model_material_summary_base extends MY_Model
 	protected string $_destiny;
 	protected string $_entryDate;
 	protected string $_detail;
-	protected int $_userResponsible;
+	protected ?int $_builderResponsible;
 	protected int $_summaryTypeId;
 	protected ?string $_reservationNumber;
 	protected ?int $_fileId;
@@ -29,8 +29,9 @@ class Model_material_summary_base extends MY_Model
 	protected ?int $_loanClosed;
 	protected ?string $_loanClosedDate;
 	protected ?int $_correlativeCounter;
+	protected ?int $_fiscalResponsible;
 
-    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, int $userResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;
@@ -41,7 +42,7 @@ class Model_material_summary_base extends MY_Model
 		$this->_destiny = $destiny;
 		$this->_entryDate = $entryDate;
 		$this->_detail = $detail;
-		$this->_userResponsible = $userResponsible;
+		$this->_builderResponsible = $builderResponsible;
 		$this->_summaryTypeId = $summaryTypeId;
 		$this->_reservationNumber = $reservationNumber;
 		$this->_fileId = $fileId;
@@ -50,6 +51,7 @@ class Model_material_summary_base extends MY_Model
 		$this->_loanClosed = $loanClosed;
 		$this->_loanClosedDate = $loanClosedDate;
 		$this->_correlativeCounter = $correlativeCounter;
+		$this->_fiscalResponsible = $fiscalResponsible;
 
     }
 
@@ -69,7 +71,7 @@ class Model_material_summary_base extends MY_Model
 			"destiny_msu" => $this->_destiny,
 			"entry_date_msu" => $this->_entryDate,
 			"detail_msu" => $this->_detail,
-			"user_responsible_msu" => $this->_userResponsible,
+			"builder_responsible_msu" => $this->_builderResponsible,
 			"summary_type_id_msu" => $this->_summaryTypeId,
 			"reservation_number_msu" => $this->_reservationNumber,
 			"file_id_msu" => $this->_fileId,
@@ -78,6 +80,7 @@ class Model_material_summary_base extends MY_Model
 			"loan_closed_msu" => $this->_loanClosed,
 			"loan_closed_date_msu" => $this->_loanClosedDate,
 			"correlative_counter_msu" => $this->_correlativeCounter,
+			"fiscal_responsible_msu" => $this->_fiscalResponsible,
 			"deleted_msu" => $this->_deleted,
 			"createdon_msu" => $this->_createdOn,
 			"createdby_msu" => $this->_createdBy,
@@ -109,7 +112,7 @@ class Model_material_summary_base extends MY_Model
 				$object->destiny_msu,
 				$object->entry_date_msu,
 				$object->detail_msu,
-				$object->user_responsible_msu,
+				$object->builder_responsible_msu,
 				$object->summary_type_id_msu,
 				$object->reservation_number_msu,
 				$object->file_id_msu,
@@ -117,7 +120,8 @@ class Model_material_summary_base extends MY_Model
 				$object->is_loan_msu,
 				$object->loan_closed_msu,
 				$object->loan_closed_date_msu,
-				$object->correlative_counter_msu
+				$object->correlative_counter_msu,
+				$object->fiscal_responsible_msu
             );
             $instance->_id = $object->id_msu;
 
@@ -172,9 +176,9 @@ class Model_material_summary_base extends MY_Model
 		$this->_detail = $detail;
 	}
 
-	public function setUserResponsible($userResponsible)
+	public function setBuilderResponsible($userResponsible)
 	{
-		$this->_userResponsible = $userResponsible;
+		$this->_builderResponsible = $userResponsible;
 	}
 
 	public function setSummaryType($summaryTypeId)
@@ -215,6 +219,11 @@ class Model_material_summary_base extends MY_Model
 	public function setCorrelativeCounter($correlativeCounter)
 	{
 		$this->_correlativeCounter = $correlativeCounter;
+	}
+
+	public function setFiscalResponsible($fiscalResponsible)
+	{
+		$this->_fiscalResponsible = $fiscalResponsible;
 	}
 
     //Getters
@@ -258,9 +267,9 @@ class Model_material_summary_base extends MY_Model
 		return $this->_detail;
 	}
 
-	public function getUserResponsible()
+	public function getBuilderResponsible()
 	{
-		return $this->_userResponsible;
+		return $this->_builderResponsible;
 	}
 
 	public function getSummaryType()
@@ -301,5 +310,10 @@ class Model_material_summary_base extends MY_Model
 	public function getCorrelativeCounter()
 	{
 		return $this->_correlativeCounter;
+	}
+
+	public function getFiscalResponsible()
+	{
+		return $this->_fiscalResponsible;
 	}
 }

@@ -31,6 +31,20 @@ class AjaxProject extends PrivateController
 		$paginationHandler = new ProjectPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
 		$paginationHandler->setAdditionalParameters($additionalParameters);
 		$response = $paginationHandler->getResponseForDataTable();
+
+		$codeList = "";
+		foreach ($response['resultArray'] as $row)
+		{
+			$codeList .= $row->code_pro." ";
+
+		}
+		$projectWorkflow = Model_project::getWorkflowDetail(['code-list' => $codeList]);
+		foreach ($response['resultArray'] as &$row)
+		{
+			$positionInWorkFlow = array_search($row->id_pro,array_column($projectWorkflow,'id_pro'));
+			$projectBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkflow[$positionInWorkFlow]);
+			$row->projectBudget = number_format($projectBudget, 2, '.', ',');
+		}
 		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
 	}
 

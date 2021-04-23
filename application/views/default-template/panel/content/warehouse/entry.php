@@ -9,7 +9,7 @@
 <div class="container-fluid box-shadow-2">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Movimiento de materiales</h1>
+			<h1 class="page-header"><?=$viewTitle?></h1>
 		</div>
 		<div class="col-md-12">
 			<?php
@@ -32,33 +32,54 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">
-				<label>Tipo de movimiento</label>
+				<label><?=$summaryTypeTitle?></label>
 				<select class="form-control input-sm" name="summary-type">
-					<option value="3" data-columns="material_code,material_description,quantity_assigned,quantity_picked_up_from_cre,pending_material_in_cre,movement,tension,status">Retirado de CRE</option>
-					<option value="4" data-columns="material_code,material_description,quantity_assigned,quantity_in_warehouse,movement,tension,status">Entrega de materiales al contructor</option>
-					<option value="8" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Envio de materiales a CRE(222)</option>
-					<option value="9" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Ingreso por conciliacion 221</option>
-					<option value="10" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Constructor devuelve materiales no utilizados</option>
-					<option value="11" data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Constructor devuelve materiales retirados de obra</option>
-					<option value="12" disabled data-columns="material_code,material_description,quantity_assigned,movement,tension,status">Ajuste</option>
-				</select>
-			</div>
-		</div>
-		<div class="col-md-5">
-			<div class="form-group" id="builder-selection" style="display: none">
-				<label>Especifique el constructor</label>
-				<select class="form-control input-sm" name="builder">
 					<?php
-					$html = '';
-					foreach ($builders as $builder)
+					$options = "";
+					$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,quantity_in_warehouse,movement,tension,status";
+					/** @var Model_material_summary_type $summaryType */
+					foreach ($summaryTypes as $summaryType)
 					{
-						$html .= "<option value='{$builder->getId()}'>{$builder->getFullName()}</option>";
+						$options .= "<option value='{$summaryType->getId()}' data-columns='$columnsToShow'>{$summaryType->getName()}</option>";
 					}
-					echo $html;
+					echo $options;
 					?>
 				</select>
 			</div>
 		</div>
+		<div id="builder-selection" style="display: none">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Fiscal</label>
+					<select class="form-control input-sm" name="fiscal">
+						<?php
+						$html = '';
+						foreach ($fiscals as $fiscal)
+						{
+							$html .= "<option value='{$fiscal->getId()}'>{$fiscal->getFullName()}</option>";
+						}
+						echo $html;
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Constructor</label>
+					<select class="form-control input-sm" name="builder">
+						<?php
+						$html = '';
+						foreach ($builders as $builder)
+						{
+							$html .= "<option value='{$builder->getId()}'>{$builder->getFullName()}</option>";
+						}
+						echo $html;
+						?>
+					</select>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<div class="row">
 		<div class="col-md-3">
@@ -121,13 +142,12 @@
 				<table class="table table-striped table-bordered table-hover display pageResize" id="items-summary-list">
 					<thead>
 					<tr>
-<!--						<th>#</th>-->
 						<th>COD</th>
 						<th>Descripci&oacute;n</th>
-						<th>Total<br>asignado</th>
+						<th>Comprometido<br>de la CRE</th>
 						<th>Total<br>retirado<br>de CRE</th>
-						<th>Saldo por<br>retirar de CRE</th>
-<!--						<th>Total<br>entregado<br>al constructor</th>-->
+						<th>Saldo por<br>retirar<br>de CRE</th>
+						<th>Entregado<br>al constructor</th>
 <!--						<th>Total<br>entregado<br>a CRE</th>-->
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->

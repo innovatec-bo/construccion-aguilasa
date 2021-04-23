@@ -2,7 +2,9 @@ $(document).ready(function() {
 	startSelect2Materials('select.select2-materials');
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
+	warehouse.reservationNumberVisibility();
 	WarehouseHandler.columnsVisibility();
+	WarehouseHandler.builderSelectionVisibility();
 	select2ProjectGeneralList();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,

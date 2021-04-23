@@ -6,10 +6,11 @@ var WarehouseHandler = /** @class */ (function () {
         WarehouseHandler.columnsDefinition['quantity_assigned_materials'] = 3;
         WarehouseHandler.columnsDefinition['quantity_picked_up_from_cre'] = 4;
         WarehouseHandler.columnsDefinition['pending_material_in_cre'] = 5;
-        WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 6;
-        WarehouseHandler.columnsDefinition['movement'] = 7;
-        WarehouseHandler.columnsDefinition['tension'] = 8;
-        WarehouseHandler.columnsDefinition['status'] = 9;
+        WarehouseHandler.columnsDefinition['quantity_materials_delivered_to_builder'] = 6;
+        WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 7;
+        WarehouseHandler.columnsDefinition['movement'] = 8;
+        WarehouseHandler.columnsDefinition['tension'] = 9;
+        WarehouseHandler.columnsDefinition['status'] = 10;
     }
     WarehouseHandler.prototype._addRow = function () {
         var rowData = $('.select2-materials').select2('data')[0];
@@ -50,7 +51,7 @@ var WarehouseHandler = /** @class */ (function () {
     };
     WarehouseHandler._applyRowspan = function (rows, rowData, rowDataSummary) {
         //Add colspan
-        var toApplyRowspan = ['material_code', 'material_description', 'quantity_assigned_materials', 'quantity_picked_up_from_cre', 'pending_material_in_cre', 'quantity_in_warehouse'];
+        var toApplyRowspan = ['material_code', 'material_description', 'quantity_assigned_materials', 'quantity_picked_up_from_cre', 'pending_material_in_cre', 'quantity_materials_delivered_to_builder', 'quantity_in_warehouse'];
         var _loop_1 = function (columnKey) {
             var columnIndex = WarehouseHandler.columnsDefinition[columnKey];
             if (toApplyRowspan.indexOf(columnKey) >= 0) {
@@ -79,19 +80,23 @@ var WarehouseHandler = /** @class */ (function () {
             _loop_1(columnKey);
         }
     };
-    WarehouseHandler._builderSelectionVisibility = function (optionSelected) {
+    WarehouseHandler.builderSelectionVisibility = function () {
+        var optionSelected = parseInt($('select[name=summary-type] option:selected').val());
         var $component = $('#builder-selection');
         switch (optionSelected) {
             case 4:
             case 10:
             case 11:
+            case 14:
+            case 15:
                 $component.slideDown();
                 break;
             default:
                 $component.slideUp();
         }
     };
-    WarehouseHandler.prototype._reservationNumberVisibility = function (optionSelected) {
+    WarehouseHandler.prototype.reservationNumberVisibility = function () {
+        var optionSelected = parseInt($('select[name=summary-type] option:selected').val());
         var $component = $('#reservation-number-selection');
         switch (optionSelected) {
             case 8:
@@ -104,7 +109,6 @@ var WarehouseHandler = /** @class */ (function () {
                 if (projectId != "")
                     this.getSummaryByReservationNumber(projectId);
         }
-        console.log('reservationNumberVisibility');
     };
     WarehouseHandler.prototype.getSummaryByReservationNumber = function (projectId, reservationNumber) {
         if (reservationNumber === void 0) { reservationNumber = ""; }
@@ -175,8 +179,8 @@ var WarehouseHandler = /** @class */ (function () {
         });
         $('select[name=summary-type]').on('change', function (e) {
             var optionSelected = parseInt($(this).val());
-            WarehouseHandler._builderSelectionVisibility(optionSelected);
-            _this._reservationNumberVisibility(optionSelected);
+            WarehouseHandler.builderSelectionVisibility();
+            _this.reservationNumberVisibility();
             WarehouseHandler.columnsVisibility();
         });
         $('select.select2.project').on('change', function (e) {
