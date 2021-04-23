@@ -168,8 +168,13 @@ class ManpowerFileReader
             {
                 $structure = trim($data[2]);
                 $execution = trim($data[3]);
-                $quantity = floatval(trim($data[6]));
-                $unitPrice = floatval(trim($data[7]));
+                $quantity = trim($data[6]);
+                $quantity = str_replace(",","",$quantity);
+                $quantity = floatval($quantity);
+
+				$unitPrice = trim($data[7]);
+				$unitPrice = str_replace(",","",$unitPrice);
+				$unitPrice = floatval($unitPrice);
                 $amount = round($quantity*$unitPrice, 2);
 
                 if(in_array($structure, $this->_designBudgetIdentifiers))
