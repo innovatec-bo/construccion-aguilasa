@@ -184,6 +184,7 @@ class PublicController extends CI_Controller
     public static function internalNoticeByStatus($status)
     {
         $statusList = array(
+            "project_has_been_created" => array("to" => array("pmendoza@serebo.com"), "cc" => array()),
             "approved" => array("to" => array("maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "assign_to" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "in_progress" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
@@ -481,7 +482,8 @@ class PrivateController extends PublicController
 			"payment_status" => "ESTADO DEL PAGO",
 			"project_return_materials2_date" => "FECHA DE DEVULUCION DE MATERIALES A CRE",
 			"in_progress_first_detail_date" => "1RA. FECHA DE INICIO DE CONSTRUC.",
-			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA"
+			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA",
+			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO"
         );
         return $columnList;
     }

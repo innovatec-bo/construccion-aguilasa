@@ -483,7 +483,12 @@ class Model_project extends Model_project_base
             if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget) payment_order_registered_total_real_budget,
             payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
             payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,
-            payment_order_has_been_settled.entry_date payment_order_has_been_settled_date
+            payment_order_has_been_settled.entry_date payment_order_has_been_settled_date,
+            CASE 
+				WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)
+				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget
+				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)
+			END project_current_budget
         FROM
             wfl_projects
         LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro

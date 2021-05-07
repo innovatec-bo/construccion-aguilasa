@@ -216,10 +216,10 @@ class Model_user extends Model_user_base
         $sendToCC = array_merge($sendToCC, $supervisionList);
 
 		$subjectList = array(
-			"already_sent" => "PROYECTOS PENDIENTES DE APROBACION",
-			"as_built" => "PROYECTOS POR CONCILIAR" ,
-			"conciliation_shipment" => "PROYECTOS PENDIENTES DE ORDEN DE DEVOLUCION",
-			"project_return_materials" => "MATERIAL DEVUELTO A CRE"
+			"already_sent" => "Proyectos pendientes de aprobaci&oacute;n",
+			"as_built" => "Proyectos por conciliar" ,
+			"conciliation_shipment" => "Proyectos pendientes de orden de devoluci&oacute;n",
+			"project_return_materials" => "Material devuelto a CRE"
 		);
 
         $referenceList = array(
@@ -336,14 +336,14 @@ class Model_user extends Model_user_base
         );
 
         $subjectList = array(
-            "assign_to" => "ASIGNADOS A fiscal_name",
-            "in_progress" => "EN CONSTRUCCION",
-            "paused" => "PAUSADO",
-            "completed" => "ENERGIZAR Y/O ENVIAR AS BUILT",
-            "project_energized" => "PROYECTOS ENERGIZADOS",
-            "cre_return_order" => "DEVOLVER MATERIALES A CRE",
-            "project_return_materials" => "COBRAR A CRE",
-            "conciliation_reception" => "CONCILIAR CON CRE"
+            "assign_to" => "Asignados a fiscal_name",
+            "in_progress" => "En construcci&oacute;n",
+            "paused" => "Pausado",
+            "completed" => "Energizar y/o enviar as built",
+            "project_energized" => "Proyectos energizados",
+            "cre_return_order" => "Devolver materiales a CRE",
+            "project_return_materials" => "Cobrar a CRE",
+            "conciliation_reception" => "Conciliar con CRE"
         );
 
         $shortText = array(
@@ -436,10 +436,12 @@ class Model_user extends Model_user_base
         );
 
         $subjectList = array(
-            "approved" => "PROYECTOS APROBADOS"
+            "approved" => "Proyectos aprobados",
+            "project_has_been_created" => "Proyectos creados"
         );
         $shipmentDateList = array(
-            "approved" => "approved_date"
+            "approved" => "approved_date",
+			"project_has_been_created" => "entry_date_pro"
         );
         $responseList = array();
         foreach($statusList as $status => $projectList)

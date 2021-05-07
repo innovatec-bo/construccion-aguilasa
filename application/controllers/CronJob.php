@@ -114,7 +114,7 @@ class CronJob extends PublicController
     { 
         if($challenge == 'notifyProjectsByStatusToInternalMembers2019')
         {
-            $statusToNotify = array("approved");
+            $statusToNotify = array("approved","project_has_been_created");
             $projectListFiltered = array();
             $projectList = Model_project::getWorkflowDetail();
             foreach ($projectList as $project)

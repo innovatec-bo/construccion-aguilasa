@@ -201,7 +201,7 @@ class ExcelProjectWorkflow
 
     private function _currencyFormatNumber($spreadsheet, $totalRows)
     {
-        $columnList = array("design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved");
+        $columnList = array("design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved",'project_current_budget');
         $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         foreach($columnList as $key => $column)
         {

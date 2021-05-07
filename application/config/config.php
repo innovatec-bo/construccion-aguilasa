@@ -23,10 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+$host = $_SERVER["HTTP_HOST"]??"";
 switch (ENVIRONMENT)
 {
     case 'development':
-        $config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/serebo';
+        $config['base_url']	= 'http://'.$host.'/serebo';
         break;
     case 'testing':
     case 'production':
