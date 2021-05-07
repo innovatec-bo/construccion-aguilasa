@@ -2776,4 +2776,29 @@ class Model_project extends Model_project_base
         $result = $query->result_array();
         return $result;   
     }
+
+	public static function getByStatusKeywordList($statusKeywordList)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$escapedList = "";
+		foreach ($statusKeywordList as $keyword)
+		{
+			$escapedList .= $ci->db->escape($keyword).", ";
+		}
+		$escapedList = substr($escapedList, 0, -2);
+		$sql = "
+            select 
+                   ".static::TABLE_NAME.".* 
+            from ".static::TABLE_NAME."
+            left join wfl_project_status on id_pst = status_pro 
+			where 
+				".static::notDeleted()." 
+				and keyword_pst in(".$escapedList.")
+        ";
+
+		$query = $ci->db->query($sql);
+		return static::recastArray(get_called_class(), $query->result());
+	}
 }

@@ -62,7 +62,14 @@ class PublicController extends CI_Controller
         }
     }
 
-    protected function _validateObjectToEdit($parameter, $class, $onFailRedirectTo)
+	/**
+	 * @param $parameter
+	 * @param $class
+	 * @param $onFailRedirectTo
+	 * @param string $nonExistentObjectMessage
+	 * @return mixed
+	 */
+    protected function _validateObjectToEdit($parameter, $class, $onFailRedirectTo, $nonExistentObjectMessage = "El objeto no existe.")
     {
         if(!is_numeric($parameter))
         {
@@ -73,7 +80,7 @@ class PublicController extends CI_Controller
 
         if(!$object instanceof $class)
         {
-            $this->session->set_flashdata("errorMessage", "El objeto no existe.");
+            $this->session->set_flashdata("errorMessage", $nonExistentObjectMessage);
             redirect(base_url($onFailRedirectTo));
         }
 

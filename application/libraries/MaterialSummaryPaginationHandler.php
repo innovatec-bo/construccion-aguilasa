@@ -60,156 +60,69 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					LEFT JOIN wfl_projects on id_pro = project_id_msu
 					where 
 						deleted_prm != 1
-						and deleted_msu != 1
 						{project-id}
 						{reservation-number}
+						and deleted_msu != 1
 						GROUP BY project_id_msu, material_id_prm
 						ORDER BY createdby_msu
 				) as working_materials
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-					 summary_type_id_msu in (1,2)
-					 and deleted_prm != 1
-					 {project-id}
-					 {reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('1,2')}
 				) as assigned_materials on working_materials.material_id = assigned_materials.material_id and working_materials.project_id = assigned_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 3
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('3')}
 				) materials_picked_up_from_cre on materials_picked_up_from_cre.material_id = working_materials.material_id and materials_picked_up_from_cre.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 4
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('4')}
 				) materials_delivered_to_builder on materials_delivered_to_builder.material_id = working_materials.material_id and materials_delivered_to_builder.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 6
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('6')}
 				) builder_returns_new_materials on builder_returns_new_materials.material_id = working_materials.material_id and builder_returns_new_materials.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 5
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('5')}
 				) builder_returns_old_materials on builder_returns_old_materials.material_id = working_materials.material_id and builder_returns_old_materials.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 8
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('8')}
 				) materials_delivered_to_cre on materials_delivered_to_cre.material_id = working_materials.material_id and materials_delivered_to_cre.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 7
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('7')}
 				) builder_returns_good_condition_materials on builder_returns_good_condition_materials.material_id = working_materials.material_id and builder_returns_good_condition_materials.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 9
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('9')}
 				) entry_by_conciliation_221 on entry_by_conciliation_221.material_id = working_materials.material_id and entry_by_conciliation_221.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 10
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('10')}
 				) non_used_materials on non_used_materials.material_id = working_materials.material_id and non_used_materials.project_id = working_materials.project_id
 				LEFT JOIN (
-					SELECT
-						sum(quantity_prm) quantity,
-						material_id_prm material_id,
-						project_id_msu project_id
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					where 
-						summary_type_id_msu = 11
-						{project-id}
-						{reservation-number}
-					GROUP BY {grouping-criteria}
+					{$this->_subQueryQuantity('11')}
 				) material_removed_from_construction on material_removed_from_construction.material_id = working_materials.material_id and material_removed_from_construction.project_id = working_materials.project_id	 
 			) ".static::TABLE_NAME."_master_detail
 		";
 		return $this->_applyNestedFilters($coreQuery);
+	}
+
+	/**
+	 * @param string $summaryTypeId
+	 * @return string
+	 */
+	private function _subQueryQuantity(string $summaryTypeId) : string
+	{
+		return "
+		SELECT
+			sum(quantity_prm) quantity,
+			material_id_prm material_id,
+			project_id_msu project_id
+		FROM
+			mat_projects_materials
+		LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
+		where 
+			summary_type_id_msu in ({$summaryTypeId})
+			{project-id}
+			{reservation-number}
+			and deleted_msu != 1
+			and deleted_prm != 1
+		GROUP BY {grouping-criteria}
+		";
 	}
 
 	/**

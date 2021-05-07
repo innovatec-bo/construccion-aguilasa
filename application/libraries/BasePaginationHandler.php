@@ -113,7 +113,7 @@ class BasePaginationHandler
 
 		$sql = substr($sql, 0, -3);
 		$sql .= ') '.$this->_additionalParameters().' group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' limit ' . $this->_limit . ' offset ' . $this->_offset;
-		$query = $ci->db->query($sql);
+		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
 		return $query->result();
 	}
 

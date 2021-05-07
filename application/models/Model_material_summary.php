@@ -53,17 +53,35 @@ class Model_material_summary extends Model_material_summary_base
 	 * @param int $listId
 	 * @return array
 	 */
-	public function getMasterDetailByListId(int $listId) : array
+	public static function getMasterDetailByListId(int $listId) : array
 	{
 		$ci = &get_instance();
 		$ci->load->database();
 
 		$sql = "
-            select * from ".static::TABLE_NAME." where project_id_msu = ".$ci->db->escape($listId)." and ".static::notDeleted()."
+            select 
+            	id_msu summary_id,
+                entry_date_msu summary_entry_date,
+                fiscal.id_usr fiscal_id,
+                concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
+			   	builder.id_usr builder_id,
+                concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name,
+                summary_type_id_msu summary_type,
+                id_pro project_id,
+                code_pro project_code
+            from 
+			".static::TABLE_NAME." 
+			left join sec_users fiscal on fiscal.id_usr = fiscal_responsible_msu
+			left join sec_users builder on builder.id_usr = builder_responsible_msu
+			left join mat_materials_summary_types on id_mqt = summary_type_id_msu
+			left join wfl_projects on id_pro = project_id_msu
+			where 
+				id_msu = ".$ci->db->escape($listId)."
+				and ".static::notDeleted()."
         ";
 
 		$query = $ci->db->query($sql);
-		return $query->result_array();
+		return $query->row_array();
 	}
 
 	/**

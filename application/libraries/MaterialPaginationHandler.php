@@ -26,6 +26,7 @@ class MaterialPaginationHandler extends BasePaginationHandler
 					unit_of_measurement_mat material_unit_of_measurement
 				from
 					mat_materials
+				{assigned-to-project}
 				where deleted_mat != 1
 					 
 			) ".static::TABLE_NAME."_master_detail
@@ -114,6 +115,27 @@ class MaterialPaginationHandler extends BasePaginationHandler
 				{
 					case "{key-to-search-in-sql}":
 						$query = str_replace("{key-to-search-in-sql}",' and filer_to_put_in_query = '.$ci->db->escape($value).' ', $query);
+						break;
+					case "{assigned-to-project}":
+						$toReplace = "
+						RIGHT JOIN (
+							SELECT
+								material_id_prm material_id 
+							FROM
+								mat_materials_summary
+							LEFT JOIN mat_materials_summary_types on id_mqt = summary_type_id_msu
+							LEFT JOIN mat_projects_materials on materials_summary_id_prm = id_msu
+							WHERE	
+								1 = 1
+								and deleted_prm != 1
+								and deleted_mqt != 1
+								and deleted_msu != 1
+								and movement_type_mqt = 'control_in'
+								and project_id_msu = {$ci->db->escape($value)}
+								GROUP BY material_id_prm
+						) filter_project on filter_project.material_id = id_mat
+						";
+						$query = str_replace("{assigned-to-project}",$toReplace, $query);
 						break;
 				}
 			}

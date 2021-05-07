@@ -13,10 +13,10 @@ function DTAdditionalParameterHandler(objectContent, table) {
     var clearAdditionalParameters = false;
     var tableSelector = table;
 
-    this.addParameterObject = function(name, type)
+    this.addParameterObject = function(name, type, key)
     {
         //let's fill out parameter list
-        parameterList.push({name:name,type:type});
+        parameterList.push({name:name,type:type, key: key});
     };
 
     this.setValuesToParameters = function()
@@ -45,7 +45,13 @@ function DTAdditionalParameterHandler(objectContent, table) {
                 }
                 parameter.value = value;
                 if(parameter.value != "")
-                    jsonAdditionalRequest[parameter.name] = parameter.value;
+				{
+					let key = parameter.name;
+					if(parameter.key)
+						key = parameter.key;
+					jsonAdditionalRequest[key] = parameter.value;
+				}
+
             });
         }
     };

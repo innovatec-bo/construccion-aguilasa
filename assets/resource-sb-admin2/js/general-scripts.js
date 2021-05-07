@@ -447,7 +447,7 @@ function select2MaterialsSummaryResponse (response)
 	return template(data);
 }
 
-function startSelect2Materials(containerCssClass, size)
+function startSelect2Materials(containerCssClass, size, additionalParameter)
 {
 	containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
 	size = size === undefined?"":size;
@@ -475,11 +475,16 @@ function startSelect2Materials(containerCssClass, size)
 			delay : 600,
 			cache: false,
 			data : function(params) {
-				return {
+				let data = {
 					term : params.term || "",//search term
 					limit : 10,// page size
 					page: params.page || 1
 				};
+				if(additionalParameter)
+				{
+					data.additionalParameters = additionalParameter.getList();
+				}
+				return data;
 			},
 			processResults: function (data) {
 				return {

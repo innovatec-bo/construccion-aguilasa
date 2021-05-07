@@ -139,8 +139,8 @@
                         <th>ID</th>
                         <th>ORDEN</th>
                         <th>CODIGO</th>
-                        <th>INGRESO EN SISTEMA</th>
-                        <th>INGRESO EN ESTADO</th>
+                        <th>INGRESO<br>EN SISTEMA</th>
+                        <th>INGRESO<br>EN ESTADO</th>
                         <th>DIAS<br>ESTATICO</th>
                         <th>ESTADO</th>
                         <th>SISTEMA</th>

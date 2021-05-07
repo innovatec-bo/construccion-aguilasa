@@ -7,24 +7,28 @@
 		<td class="text-right">{{numberFormat data.pending_material_in_cre}}</td>
 		<td class="text-right">{{numberFormat data.quantity_materials_delivered_to_builder}}</td>
 		<td class="text-right">{{numberFormat data.quantity_in_warehouse}}</td>
-		<td class="text-right"><input type="text" name="summary[{{rowId}}][quantity]" value="0" size="7"></td>
+		<td class="text-right"><input type="text" class="quantity" name="summary[{{rowId}}][quantity]" value="0" size="7"></td>
 
 		<td>
-			<select class="form-control input-sm" name="summary[{{rowId}}][tension]">
+			<select class="form-control input-sm tension" name="summary[{{rowId}}][tension]">
+				<option value="4">Indefinido</option>
 				<option value="1">Media</option>
 				<option value="2">Baja</option>
 				<option value="3">Transformador</option>
+
 			</select>
 		</td>
 		<td>
-			<select class="form-control input-sm" name="summary[{{rowId}}][status]">
+			<select class="form-control input-sm status" name="summary[{{rowId}}][status]">
+				<option value="4">Indefinido</option>
 				<option value="1">NVO</option>
 				<option value="2">MEO</option>
 				<option value="3">RBE</option>
+
 			</select>
 		</td>
 		<td><input type="button" class="btn btn-danger btn-sm wh-quit-row" value="X"></td>
-		<input type="hidden" name="summary[{{rowId}}][id]" value="{{data.material_id}}">
+		<input type="hidden" class="material" name="summary[{{rowId}}][id]" value="{{data.material_id}}">
 	</tr>
 </script>
 <script id="reservation-number-options" type="text/x-handlebars-template">

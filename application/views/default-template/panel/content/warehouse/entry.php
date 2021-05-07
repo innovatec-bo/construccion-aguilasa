@@ -6,6 +6,11 @@
  * Time: 22:33
  */
 ?>
+<script>
+	var materialSummary = <?=json_encode($materialSummary)?>;
+	var materialList = <?=json_encode($materialList)?>;
+	var summaryTypeId = <?=json_encode($summaryTypeId)?>;
+</script>
 <div class="container-fluid box-shadow-2">
 	<div class="row">
 		<div class="col-lg-12">
@@ -16,19 +21,33 @@
 			$this->load->view("default-template/flash-data-basic-messages");
 			?>
 		</div>
-		<div class="col-md-12">
-			<div class="alert alert-info">
-				<strong>Nota</strong><br>
-				<ol>
-					<li>La lista se limpia cuando los valores de "Proyecto" y "Nro. de reserva" cambian.</li>
-					<li>Si ingresa un material mas de una vez y repite su tension y estado, se registra la ultima ocurrencia ingresada en la tabla/lista.</li>
-					<li>Las columnas son dinamicas y estan en funcion al tipo de movimiento que se realiza.</li>
-				</ol>
+	</div>
+	<?php
+	if($showSearchBox == 1)
+	{
+	?>
+	<form role="form" method="get">
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<label>Ingresar ID de solicitud</label>
+					<div class="form-group input-group">
+						<input type="text" class="form-control" name="request-id" autocomplete="off">
+						<span class="input-group-btn">
+					<button class="btn btn-default" type="submit"><i class="fa fa-search"></i>
+					</button>
+				</span>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</form>
+	<?php
+	}
+	?>
 	<form method="post" name="materials-summary">
-
+		<input type="hidden" name="show-assigned-materials-only" value="<?=$showAssignedMaterialsOnly?>">
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">
@@ -94,11 +113,21 @@
 				<div id="error-entry-date"></div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4" id="extra-request-data">
 			<div class="form-group">
 				<label>Proyecto</label>
-				<select class="form-control input-sm select2 project" name="project">
+				<select class="form-control input-sm project" name="project">
 					<option></option>
+					<?php
+					$options = "";
+					/** @var Model_project $project */
+					foreach ($projects as $project)
+					{
+						$options .= "<option value='{$project->getId()}'>{$project->getCode()}</option>";
+					}
+					echo $options;
+					?>
+
 				</select>
 			</div>
 		</div>
@@ -112,7 +141,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-8">
+			<label><?=$materialsTitle?></label>
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" data-parsley-required="" parsley-trigger="change" name="materials">
 					<option></option>
@@ -120,10 +150,8 @@
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
 					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>-->
+					<button class="btn btn-info btn-sm wh-show-all-in-table" type="button" style="padding: 4px 10px;">Mostrar todos</button>-->
 				</span>
-<!--				<span class="input-group-btn">-->
-<!--					<button class="btn btn-info btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>-->
-<!--				</span>-->
 			</div>
 		</div>
 	</div>

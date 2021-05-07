@@ -1,27 +1,31 @@
 $(document).ready(function() {
-	startSelect2Materials('select.select2-materials');
+	let additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","");
+	additionalParameter.addParameterObject('project','select', 'assigned-to-project');
+	let showAssignedMaterialsOnly = $('input[name=show-assigned-materials-only]').val();
+	if(showAssignedMaterialsOnly == 1)
+		startSelect2Materials('select.select2-materials','', additionalParameter);
+	else
+		startSelect2Materials('select.select2-materials','');
+	$('select[name=project]').select2({allowClear:true,placeholder:'Elija un proyecto'})
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
 	warehouse.reservationNumberVisibility();
+	warehouse.loadRequestedData();
 	WarehouseHandler.columnsVisibility();
 	WarehouseHandler.builderSelectionVisibility();
 	select2ProjectGeneralList();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,
-		// defaultDate: minDate,
+		defaultDate: moment(),
 		// minDate:minDate,
 		locale:"es",
 		format: 'DD-MM-YYYY'
 	});
 
 
-	$('select.select2.project').on('select2:clear', function (e) {
-		$('select[name=reservation-number]').html('<option value="">--Elija un Nro. de reserva--</option>');
-		$('#table-body').html("");
-	});
 
 	$('select[name=reservation-number]').on('change', function (e) {
-		let projectId = $('select.select2.project option:selected').val();
+		let projectId = $('select.project option:selected').val();
 		let reservationNumber = $('select[name=reservation-number] option:selected').val();
 		warehouse.getSummaryByReservationNumber(projectId, reservationNumber);
 	});

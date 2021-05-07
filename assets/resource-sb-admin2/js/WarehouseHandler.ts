@@ -55,7 +55,7 @@ class WarehouseHandler
 		//Get rows using the first column
 		let rows = $("td:nth-child(1)").filter(function(){
 			return $(this).text() == rowData.material_code;
-		}).parent();console.log(rowDataSummary);
+		}).parent();
 		WarehouseHandler._applyRowspan(rows, rowData, rowDataSummary);
 		WarehouseHandler.columnsVisibility();
 	}
@@ -139,7 +139,7 @@ class WarehouseHandler
 				break;
 			default:
 				$component.slideUp();
-				let projectId = $('select.select2.project option:selected').val();
+				let projectId = $('select.project option:selected').val();
 				if(projectId != "")
 					this.getSummaryByReservationNumber(projectId);
 		}
@@ -155,9 +155,23 @@ class WarehouseHandler
 			success:function(response)
 			{
 				_this._projectMaterialSummary = response;
-				// console.log(response);
 			}
 		});
+	}
+
+	public fillTable()
+	{
+		let htmlSource   = $('#table-row').html();
+		let template = Handlebars.compile(htmlSource);
+		let html = "";
+		$.each(this._projectMaterialSummary, function(index, value){
+			let data = {data:value, rowId: index+Date.now()};
+			html += template(data);
+		});
+		let $tableBody = $('#table-body');
+		$tableBody.html('');
+		$tableBody.append(html);
+
 	}
 
 	public static columnsVisibility()
@@ -178,7 +192,7 @@ class WarehouseHandler
 
 	public getSummaryListByProjectId()
 	{
-		let projectId = $('select.select2.project option:selected').val();
+		let projectId = $('select.project option:selected').val();
 		$.ajax({
 			url : base_url + 'panel/AjaxMaterialSummary/getSummaryListByProjectId/'+projectId,
 			dataType  :"json",
@@ -194,11 +208,40 @@ class WarehouseHandler
 		});
 	}
 
+	public loadRequestedData()
+	{
+		let _this = this;
+		if(materialSummary.summary_id !== undefined)
+		{
+			let $newOption = $("<option selected='selected'></option>").val(materialSummary.project_id).text(materialSummary.project_code)
+			$("select[name=project]").append($newOption).trigger('change');
+			$("select[name=summary-type]").val(summaryTypeId).trigger('change');
+			$("select[name=fiscal]").val(materialSummary.fiscal_id);
+			$("select[name=builder]").val(materialSummary.builder_id);
+			setTimeout(function () {
+				$.each(materialList, function(index, value){
+					let $select2Materials = $(".select2-materials");
+					let data = { id: value.material_id, text: "("+value.material_code+") "+value.material_description, material_code: value.material_code};
+					$select2Materials.select2("trigger", "select", {data: data});
+					$select2Materials.trigger('change');
+					_this._addRow();
+					//Luego de agregar un row se debe asignar los valores por defecto
+					//After add a new row, let's assign the default values
+					$select2Materials.val(null).trigger('change');
+					let $rowAdded = $('#table-body tr:last');
+					$rowAdded.find('.quantity').val(value.material_quantity);
+					$rowAdded.find('.tension').val(value.material_tension_id);
+					$rowAdded.find('.status').val(value.material_status_id);
+					$rowAdded.find('.material').val(value.material_id);
+				});
+			},2000);
+		}
+	}
+
     public loadEventHandlers()
     {
         let _this    = this;
         $(document).on('click','.wh-add-row',function(){
-
 			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
 			let reservationNumber = $('select[name=reservation-number]').val();
 			let project = $('select[name=project]').val();
@@ -233,14 +276,19 @@ class WarehouseHandler
 		});
 
 		$('select[name=summary-type]').on('change', function (e) {
-			let optionSelected = parseInt($(this).val());
 			WarehouseHandler.builderSelectionVisibility();
 			_this.reservationNumberVisibility();
 			WarehouseHandler.columnsVisibility();
 		});
 
-		$('select.select2.project').on('change', function (e) {
-			let projectId = $('select.select2.project option:selected').val();
+		$('select.project').on('select2:clear', function (e) {
+			$('select[name=reservation-number]').html('<option value="">--Elija un Nro. de reserva--</option>');
+			$('#table-body').html("");
+			$('.select2-materials').val(null).trigger('change');
+		});
+
+		$('select.project').on('change', function (e) {
+			let projectId = $('select.project option:selected').val();
 			if(projectId != "")
 			{
 				//If the reservation number is not
@@ -252,7 +300,47 @@ class WarehouseHandler
 				$('#table-body').html("");
 				_this.getSummaryListByProjectId();
 			}
-			console.log('Triggered project select2 change');
+			$('.select2-materials').val(null).trigger('change');
+		});
+
+		$(document).on('click','.wh-show-all-in-table',function(){
+			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
+			let reservationNumber = $('select[name=reservation-number]').val();
+			let project = $('select[name=project]').val();
+			if(project == "")
+			{
+				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+			}
+			else
+			{
+				if(reservationNumberVisible && reservationNumber == "")
+				{
+					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
+				}
+				else
+				{
+					_this.fillTable();
+				}
+			}
+		});
+
+		$(document).on('select2:opening', '.select2-materials',function(){
+			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
+			let reservationNumber = $('select[name=reservation-number]').val();
+			let project = $('select[name=project]').val();
+			if(project == "")
+			{
+				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+				return false;
+			}
+			else
+			{
+				if(reservationNumberVisible && reservationNumber == "")
+				{
+					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
+					return false;
+				}
+			}
 		});
 	}
 }

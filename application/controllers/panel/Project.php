@@ -35,7 +35,7 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
-        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler');
+        $this->complementHandler->addProjectJs('DTAdditionalParameterHandler', TRUE);
         $this->complementHandler->addProjectCss('project.index',TRUE);
         $this->complementHandler->addProjectJs('project.index',TRUE);
         $data["viewTitle"] = "Lista de proyectos";
