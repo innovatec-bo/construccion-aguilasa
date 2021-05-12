@@ -22,11 +22,11 @@ class AjaxProject extends PrivateController
     public function ajaxDtAllProjects()
 	{
 		$additionalParameters = $this->input->post('additionalParameters')??array();
-		$response = $this->_is("fiscal");
-		if($response == 1)
-		{
-			$additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
-		}
+//		$response = $this->_is("fiscal");
+//		if($response == 1)
+//		{
+//			$additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
+//		}
 		$dt = new JqdtHandler($this->input->post());
 		$paginationHandler = new ProjectPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
 		$paginationHandler->setAdditionalParameters($additionalParameters);
