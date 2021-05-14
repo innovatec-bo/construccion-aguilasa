@@ -35,10 +35,6 @@
                             </select>    
                         </div>
                     </div>
-                    <?php
-                    if($isSuperAdmin == 1)
-                    {
-                    ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Fiscales</label>
@@ -55,9 +51,6 @@
                             </select>
                         </div>
                     </div>
-                    <?php
-                    }
-                    ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Constructores</label>
