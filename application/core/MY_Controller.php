@@ -138,6 +138,7 @@ class PublicController extends CI_Controller
     {
         $list = array(
 //            SISTEMA INTEGRADO
+            'joseosy@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo','lorgiocc@cre.com.bo'),
             'luisdf@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
             'salviocm@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
             'rolandodc@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),
