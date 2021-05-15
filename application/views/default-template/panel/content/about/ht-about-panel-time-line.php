@@ -33,8 +33,16 @@
 </script>
 <script id="ht-to-do-list" type="text/x-handlebars-template">
     {{#each issueList}}
-        <a href="#" class="list-group-item">
-            {{title}}
-        </a>
+		<a href="javascript:void(0)" class="list-group-item">
+		{{#ifCond description "!=" null}}
+				<strong>SE-{{iid}}</strong><br>
+				<u>{{title}}</u>
+				{{{description}}}
+		{{/ifCond}}
+		{{#ifCond description "==" null}}
+			<strong>SE-{{iid}}</strong><br>
+			{{title}}
+		{{/ifCond}}
+		</a>
     {{/each}}
 </script>
