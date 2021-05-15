@@ -36,7 +36,7 @@
 		<a href="javascript:void(0)" class="list-group-item">
 		{{#ifCond description "!=" null}}
 				<strong>SE-{{iid}}</strong><br>
-				<u>{{title}}</u>
+				<u>{{title}}</u><br>
 				{{{description}}}
 		{{/ifCond}}
 		{{#ifCond description "==" null}}
