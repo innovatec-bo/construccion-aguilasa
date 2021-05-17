@@ -488,7 +488,8 @@ class Model_project extends Model_project_base
 				WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)
 				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget
 				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)
-			END project_current_budget
+			END project_current_budget,
+            FORMAT(((IFNULL(production.total_bs, 0) + schedulee.design_prb) * 100)/approved.total_budget, 2) production_percentage
         FROM
             wfl_projects
         LEFT JOIN (".static::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
@@ -614,6 +615,22 @@ class Model_project extends Model_project_base
             where deleted_inc != 1
             GROUP BY project_id_inc
         ) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro
+        LEFT JOIN (
+        	SELECT
+        		project_id_lad,
+				sum(ROUND(worked_up_wus * price_wus,2)) total_bs
+			FROM
+				bui_worked_up_structures
+			LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
+			LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+			LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
+			LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
+			LEFT JOIN bui_building_points on point_id_lal = id_bpo
+			where 
+			 	deleted_wus != 1
+				and deleted_lal != 1 
+			GROUP BY project_id_lad
+        ) production on production.project_id_lad = id_pro
         where 
         deleted_pro != 1
         ".static::_workflowAdditionalFilter($additionalFilters)."
@@ -630,7 +647,7 @@ class Model_project extends Model_project_base
 	 * @param bool $showFirstDetail
 	 * @return string
 	 */
-    private static function _statusDetailQuery($statusId, bool $showFirstDetail = FALSE)
+    public static function _statusDetailQuery($statusId, bool $showFirstDetail = FALSE)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -772,7 +789,7 @@ class Model_project extends Model_project_base
      * @param $statusId
      * @return string
      */
-    private static function _warehouseStatusDetailQuery($statusId)
+    public static function _warehouseStatusDetailQuery($statusId)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -808,7 +825,7 @@ class Model_project extends Model_project_base
 	 * @param $statusId
 	 * @return string
 	 */
-	private static function _paymentOrderStatusDetailQuery($statusId)
+	public static function _paymentOrderStatusDetailQuery($statusId)
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -2701,8 +2718,7 @@ class Model_project extends Model_project_base
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
-        $result = $query->result_array();
-        return $result;
+		return $query->result_array();
     }
 
     public static function allProjectsLog()

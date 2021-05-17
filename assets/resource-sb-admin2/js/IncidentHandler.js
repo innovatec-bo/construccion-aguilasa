@@ -13,6 +13,15 @@ var IncidentHandler = /** @class */ (function () {
             dataType: "json",
             method: method,
             data: formData,
+            beforeSend: function () {
+                Swal.fire({
+                    html: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+            },
             success: function (response) {
                 if (response.success === 1 && !formData) {
                     _this._launchForm(response);

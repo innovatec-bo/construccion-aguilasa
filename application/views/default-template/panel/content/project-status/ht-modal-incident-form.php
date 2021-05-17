@@ -14,7 +14,7 @@
                     <form name="incident-form" data-parsley-validate>
                         <input type="hidden" name="status-keyword" value="{{projectData.keyword_pst}}">
                         <input type="hidden" name="project-id" value="{{projectData.id_pro}}">
-                        <input type="hidden" name="status-id" value="{{projectData.status_pro}}">
+                        <input type="hidden" name="status-id" value="{{projectData.project_status_id}}">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -32,8 +32,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>% fisico</label>
-                                    <div class="input-group date date-time-picker">
-                                        <input name="incident-percentage" value="{{projectData.percentage_inc}}" min="{{projectData.percentage_inc}}" max="99" class="form-control input-sm" required="" data-parsley-numeric data-parsley-errors-container="#error-incident-percentage" data-parsley-group="none-incident">
+                                    <div class="input-group">
+                                        <input name="incident-percentage" readonly value="{{projectData.production_percentage}}" class="form-control input-sm" data-parsley-errors-container="#error-incident-percentage" data-parsley-group="none-incident">
                                         <span class="input-group-addon">
                                             %
                                         </span>

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Jair
- * Date: 10/1/2018
- * Time: 2:01 PM
- */
-
 
 class AjaxUser extends PrivateController
 {

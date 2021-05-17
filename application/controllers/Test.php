@@ -4,11 +4,15 @@
  * User: Jair
  * Date: 12/4/2018
  */
-class Test extends PrivateController
+class Test extends PublicController
 {
     public function __construct()
     {
         parent::__construct();
+        if(!is_cli())
+		{
+			show_404();
+		}
     }
 
     public function codegen()
@@ -361,14 +365,28 @@ class Test extends PrivateController
 
 	public function warehouseSummary($projectId, $reservationNumber = NULL)
 	{
-		$parameters = array('project-id' => $projectId);
-		if($reservationNumber != "")
-		{
-			$parameters = array('reservation-number' => $reservationNumber,'project-id' => $projectId);
-		}
-		$parameters['grouping-criteria'] = ' project_id_msu, material_id_prm ';
-		$materialPaginationHandler = new MaterialSummaryPaginationHandler(1000,0,'material_description');
-		$materialPaginationHandler->setAdditionalParameters($parameters);
-		echo json_encode($materialPaginationHandler->getAll());exit;
+//		$parameters = array('project-id' => $projectId);
+//		if($reservationNumber != "")
+//		{
+//			$parameters = array('reservation-number' => $reservationNumber,'project-id' => $projectId);
+//		}
+//		$parameters['grouping-criteria'] = ' project_id_msu, material_id_prm ';
+//		$materialPaginationHandler = new MaterialSummaryPaginationHandler(1000,0,'material_description');
+//		$materialPaginationHandler->setAdditionalParameters($parameters);
+//		echo json_encode($materialPaginationHandler->getAll());exit;
+	}
+
+	public function getWorkflow($projectCode)
+	{
+		$project = Model_project::getWorkflowDetail(['code-list'=>$projectCode]);
+		echo print_r($project);exit;
+	}
+
+	public function getWorkflowPagination($projectCode)
+	{
+		$paginationHandler = new WorkflowPaginationHandler(1,0);
+//		$paginationHandler->setAdditionalParameters(['code-list'=>$projectCode]);
+		$response = $paginationHandler->getResponseForDataTable();
+		echo"<pre>";var_dump($response);exit;
 	}
 }
