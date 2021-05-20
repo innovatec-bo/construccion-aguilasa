@@ -20,7 +20,7 @@ class StatusManagementHandler
     private loadViewResponse: any;
     private loadViewTemplate: any;
     private viewData: any;
-    private stopTreeLoop: boolean;
+    private stoprojectFullDetailpTreeLoop: boolean;
     private _breadCrumb : any;
     private nextStep: any;
     private _statusFilesIdsToSave: any;
@@ -80,7 +80,6 @@ class StatusManagementHandler
 		let allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         let allowUpdateHistory = this.loadViewResponse.data.updateHistory;
         let allowDeleteStatusLog = this.loadViewResponse.data.deleteStatusLog;
-        let projectSystems = this.loadViewResponse.data.projectSystems;
         let statusList = this.loadViewResponse.data.statusList;
         let statusArray = this.loadViewResponse.data.statusArray;
         let statusSet = this.loadViewResponse.data.statusSet;
@@ -90,13 +89,13 @@ class StatusManagementHandler
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         let responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         let statusName = "Este proyecto no esta en esta etapa";
-        if(project.status_pro == 20)
+        if(project.project_status_id == 20)
         {
             statusName = "Este proyecto ha sido devuelto a CRE";
         }
-        else if(statusList.hasOwnProperty(project.status_pro))
+        else if(statusList.hasOwnProperty(project.project_status_id))
         {
-            statusName = statusList[project.status_pro].status_name_pst
+            statusName = statusList[project.project_status_id].status_name_pst
         }
 
         let showBtnEditConstructionAssignments = 0;
@@ -117,7 +116,7 @@ class StatusManagementHandler
         this.viewData.responsibleList = responsibleList;
         this.viewData.responsibleListFiscal = responsibleListFiscal;
         this.viewData.responsibleListBuilder = responsibleListBuilder;
-        this.viewData.project.system = projectSystems[project.system_pro];
+        this.viewData.project.system = project.system_pro;
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;
         this.viewData.statusArray = statusArray;
@@ -143,7 +142,7 @@ class StatusManagementHandler
                 previousStatusId = value.status_id_psl;
                 previousOrder = parseInt(value.order_pst);
                 let completed = statusSetList.indexOf(value.keyword_pst) >= 0?" completed ":"";
-                let stepStatus =  value.status_id_psl == viewData.project.status_pro?" active ":completed;
+                let stepStatus =  value.status_id_psl == viewData.project.project_status_id?" active ":completed;
                 let step = {stepId:value.status_id_psl, stepName:value.status_name_pst, stepKeyword: value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus:stepStatus};
                 stepList.push(step);
                 memory.push(value.keyword_pst);

@@ -546,6 +546,7 @@ class Project extends PrivateController
     {
 
         $this->_validateFeature('project_manpower');
+        /** @var Model_project $project */
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");
         $result = Model_structure_by_point::getByProjectId($projectId);
         if(count($result) > 0)
@@ -575,22 +576,11 @@ class Project extends PrivateController
         $this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
-		$approved = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "approved");
-		$approved = $approved[0];
-		$design = $approved['design_prb'];
-		$building = $approved['building_prb'];
-		$transportation = $approved['transportation_prb'];
-		$liveLine = $approved['live_line_prb'];
-		$rightOfWay = $approved['right_of_way_prb'];
-		$total = $design + $building + $transportation + $liveLine + $rightOfWay;
-		$total = number_format($total, 2);
-		$data['total'] = $total;
-//		echo"<pre>";var_dump($assignmentEntry);exit;
+		$paginationHandler = new WorkflowPaginationHandler(1,0);
+		$paginationHandler->setAdditionalParameters(['code-list'=>$project->getCode()]);
+		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
-		$productionGeneralSummary = Model_project::productionGeneralSummary(array(), $project->getId());
-		if(count($productionGeneralSummary) > 0)
-			$productionGeneralSummary = $productionGeneralSummary[0];
-		$data['productionGeneralSummary'] = $productionGeneralSummary;
+		$data['workflow'] = (array)$response[0];
         $this->_loadPanelView('project/manpower', $data);
     }
 
@@ -631,22 +621,12 @@ class Project extends PrivateController
 		$this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
 		$this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
-		$approved = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "approved");
-		$approved = $approved[0];
-		$design = $approved['design_prb'];
-		$building = $approved['building_prb'];
-		$transportation = $approved['transportation_prb'];
-		$liveLine = $approved['live_line_prb'];
-		$rightOfWay = $approved['right_of_way_prb'];
-		$total = $design + $building + $transportation + $liveLine + $rightOfWay;
-		$total = number_format($total, 2);
-		$data['total'] = $total;
-        $productionGeneralSummary = Model_project::productionGeneralSummary(array(), $project->getId());
-		if(count($productionGeneralSummary) > 0)
-			$productionGeneralSummary = $productionGeneralSummary[0];
-		$data['productionGeneralSummary'] = $productionGeneralSummary;
+
+		$paginationHandler = new WorkflowPaginationHandler(1,0);
+		$paginationHandler->setAdditionalParameters(['code-list'=>$project->getCode()]);
+		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
-        $data['productionGeneralSummary'] = $productionGeneralSummary;
+        $data['workflow'] = (array)$response[0];
 
         $this->_loadPanelView('project/building-points', $data);
     }

@@ -5,7 +5,10 @@
 .tags span.info{color:#FFF;background-color:#5BC0DE;border-color: #eaeaea;}
 .tags span.warning{color:#FFF;background-color:#F0AD4E;border-color:#EEA236}
 .tags span.danger{color:#FFF;background-color:#D9534F;border-color:#D43F3A}
-
+.progress
+{
+	border-radius: 0;
+}
 .sortable-list
 {
     margin-bottom: 5px;

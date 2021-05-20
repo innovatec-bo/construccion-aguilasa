@@ -382,11 +382,12 @@ class Test extends PublicController
 		echo print_r($project);exit;
 	}
 
-	public function getWorkflowPagination($projectCode)
+	public function getWorkflowPagination($projectCode, $key)
 	{
 		$paginationHandler = new WorkflowPaginationHandler(1,0);
-//		$paginationHandler->setAdditionalParameters(['code-list'=>$projectCode]);
-		$response = $paginationHandler->getResponseForDataTable();
-		echo"<pre>";var_dump($response);exit;
+		$paginationHandler->setReturnAsObjectCollection(FALSE);
+		$paginationHandler->setAdditionalParameters(['code-list'=>$projectCode]);
+		$response = $paginationHandler->getAll();
+		echo"<pre>";var_dump($response[0][$key]);exit;
 	}
 }

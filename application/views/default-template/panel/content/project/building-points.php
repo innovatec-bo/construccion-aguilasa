@@ -18,29 +18,20 @@
     <div class="col-md-12">
         <?php
         $this->load->view("default-template/flash-data-basic-messages");
+		$currentBudget = $workflow['project_current_budget'];
+		$production = $workflow['production_total_bs'] + $workflow['project_current_design_budget'];
+		$balance = $currentBudget - $production;
         ?>
     </div>
-	<?php
-	$approvedBudget = number_format(0, 2);
-	$currentProductivity = number_format(0, 2);
-	$balance = number_format(0, 2);
-	if(isset($productionGeneralSummary['importe_aprobado']))
-	{
-		$approvedBudget = number_format($productionGeneralSummary['importe_aprobado'], 2);
-		$currentProductivity = number_format(($productionGeneralSummary['produccion_actual'] + $productionGeneralSummary['design_prb']), 2);
-		$balance = number_format($productionGeneralSummary['importe_aprobado'] - ($productionGeneralSummary['produccion_actual'] + $productionGeneralSummary['design_prb']), 2);
-	}
-
-	?>
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-bordered table-condensed">
 				<tbody>
 				<tr>
-					<td class="text-center text-info"><h3 class="m-0">APROBADO</h3></td>
-					<td class="text-center text-info"><h3 class="m-0"><?=$approvedBudget?></h3></td>
-					<td class="text-center text-info"><h3 class="m-0"><?=$currentProductivity?></h3></td>
-					<td class="text-center text-info"><h3 class="m-0"><?=$balance?></h3></td>
+					<td class="text-center text-info"><h3 class="m-0">ACTUAL</h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=number_format($currentBudget,2,'.',',')?></h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=number_format($production,2,'.',',')?></h3></td>
+					<td class="text-center text-info"><h3 class="m-0"><?=number_format($balance,2,'.',',')?></h3></td>
 				</tr>
 				</tbody>
 				<tfoot>
@@ -54,7 +45,6 @@
 			</table>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="nav nav-tabs">

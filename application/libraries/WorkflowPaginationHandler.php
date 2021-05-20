@@ -98,6 +98,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             approved.live_line_prb live_line_budget,
             approved.right_of_way_prb right_of_way_budget,
             approved.total_budget total_approved,
+            approved.manpower_file_id,
             '' as record_building_materials_date,
 		   	'' as get_materials_date,
 		   	'' as deliver_materials_date,
@@ -150,7 +151,23 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget
 				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)
 			END project_current_budget,
-            FORMAT(((IFNULL(production.total_bs, 0) + if(approved.design_prb is null,schedulee.design_prb, approved.design_prb)) * 100)/approved.total_budget, 2) production_percentage
+			CASE 
+				WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then schedulee.design_prb
+				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.design_prb
+				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
+			END project_current_design_budget,
+			CASE 
+				WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned','schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+					then 0.00
+				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed')
+					then 
+					FORMAT(
+						(((IFNULL(production.total_bs,0) + approved.design_prb) * 100)/ approved.total_budget)
+					, 2)
+				WHEN keyword_pst in('project_energized','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+					then 100.00
+			END production_percentage,
+			production.total_bs production_total_bs
         FROM
             wfl_projects
         LEFT JOIN (".Model_project::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
@@ -398,6 +415,24 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			if($codeListFilter != "")
 			{
 				$sql .= " and code_pro in (".$codeListFilter.") ";
+			}
+		}
+		if(isset($filters["id-list"]))
+		{
+			$idList = $filters["id-list"];
+			$idList = str_replace("\r\n"," ", $idList);
+			$idList = str_replace(" ",PHP_EOL, $idList);
+			$idList = explode(PHP_EOL, $idList);
+			$idList = array_values(array_filter($idList));
+			$idListFilter = "";
+			foreach ($idList as $id)
+			{
+				$idListFilter .= $ci->db->escape($id).", ";
+			}
+			$idListFilter = substr($idListFilter,0, -2);
+			if($idListFilter != "")
+			{
+				$sql .= " and id_pro in (".$idListFilter.") ";
 			}
 		}
 		if(isset($filters["status-keyword"]) && $filters["status-keyword"] != "")

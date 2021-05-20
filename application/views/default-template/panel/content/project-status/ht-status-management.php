@@ -8,8 +8,18 @@
 ?>
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
-        <h1 class="page-header">{{viewData.statusName}}
-            <em class="subtext">{{viewData.project.code_pro}}({{viewData.project.project_percentage_pro}}%)</em> <a class="btn btn-warning pull-right add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-flag-o"></i></a></h1>
+        <h1 class="page-header mb-0">{{viewData.statusName}}
+            <em class="subtext">{{viewData.project.code_pro}}</em> <a class="btn btn-warning pull-right add-incident" data-status-id="{{viewData.project.status_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-flag-o"></i></a>
+		</h1>
+    <div class="progress mb-0">
+		{{var 'progress' 'sucess'}}
+		{{#ifCond viewData.project.production_percentage '<' 100}}
+			{{var 'progress' 'warning'}}
+		{{/ifCond}}
+	  <div class="progress-bar progress-bar-{{progress}}" role="progressbar" aria-valuenow="{{viewData.project.production_percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{viewData.project.production_percentage}}%;">
+	  </div>
+	</div>
+
     </div>
     <div class="col-md-12">
         <?php
@@ -17,7 +27,16 @@
         ?>
     </div>
     <div class='col-md-12'>
-    	<h2>Importe: Bs. {{numberFormat viewData.projectCurrentBudget}}</h2>
+    	<h2>Importe: Bs. {{numberFormat viewData.projectCurrentBudget}}
+			<em class="subtext">
+				{{#ifCond viewData.project.manpower_file_id '==' null}}
+					(Producci&oacute;n al {{viewData.project.production_percentage}}%)
+				{{/ifCond}}
+				{{#ifCond viewData.project.manpower_file_id '!=' null}}
+					<a href="{{base_url}}panel/Project/manpower/{{viewData.project.id_pro}}" target="_blank">(Producci&oacute;n al {{viewData.project.production_percentage}}%)</a>
+				{{/ifCond}}
+			</em>
+    	</h2>
 	</div>
     <div id="basic-data">
         <div class="col-md-2 col-xs-12">
@@ -58,7 +77,7 @@
                             <i class="fa fa-user fa-2x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
-                            <div class="">{{viewData.project.firstname_usr}} {{viewData.project.lastname_usr}}</div>
+                            <div class="">{{viewData.project.cre_fiscal_pro}}</div>
                         </div>
                     </div>
                     <div class="status-management-card-title">FISCAL</div>

@@ -34,6 +34,8 @@ class BasePaginationHandler
 	 */
 	protected string $_textToSearch;
 
+	protected bool $_returnAsObjectCollection;
+
 	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
 	{
 		$this->_limit = $limit;
@@ -43,6 +45,7 @@ class BasePaginationHandler
 		$this->_textToSearch = $textToSearch;
 		$this->_colsArray = $colsArray;
 		$this->_additionalParameters = array();
+		$this->_returnAsObjectCollection = TRUE;
 	}
 
 	/**
@@ -52,6 +55,14 @@ class BasePaginationHandler
 	public function setAdditionalParameters(array $additionalParameters) : void
 	{
 		$this->_additionalParameters = array_merge($this->_additionalParameters, $additionalParameters);
+	}
+
+	/**
+	 * @param bool $flag
+	 */
+	public function setReturnAsObjectCollection(bool $flag = TRUE) : void
+	{
+		$this->_returnAsObjectCollection = $flag;
 	}
 
 	/**
@@ -87,9 +98,12 @@ class BasePaginationHandler
 				1 = 1
 				'.$this->_additionalParameters().'                    
                 group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' limit ' . $this->_limit . ' offset ' . $this->_offset;
-//		echo"<pre>";var_dump($sql);exit;
+;
 		$query = $ci->db->query($sql);
-		return $query->result();
+		if($this->_returnAsObjectCollection)
+			return $query->result();
+		else
+			return $query->result_array();
 	}
 
 	/**
@@ -114,7 +128,10 @@ class BasePaginationHandler
 		$sql = substr($sql, 0, -3);
 		$sql .= ') '.$this->_additionalParameters().' group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' limit ' . $this->_limit . ' offset ' . $this->_offset;
 		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
-		return $query->result();
+		if($this->_returnAsObjectCollection)
+			return $query->result();
+		else
+			return $query->result_array();
 	}
 
 	/**

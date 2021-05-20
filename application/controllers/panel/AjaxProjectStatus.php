@@ -801,15 +801,12 @@ class AjaxProjectStatus extends PrivateController
         {
             $statusListArray[$status->getId()] = $status->toArray();
         }
-        $projectFullDetail = Model_project::getProjectFullDetail($projectId);
-        $workFlow = Model_project::getWorkflowDetail(array('code-list'=>$projectFullDetail['code_pro']));
+        $workFlow = Model_project::getWorkflowDetail(['id-list'=>$projectId]);
 		$projectWorkFlow = $workFlow[0];
-		$projectCurrentBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkFlow);
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
         $data["statusList"] = $statusListArray;
         $data["statusArray"] = array_values($statusListArray);
-        $data["projectSystems"] = $this->_projectSystems;
         $responsibleList = Model_status_responsible::getUsersResponsible();
         $data["responsibleList"] = json_encode($responsibleList);
         $data["responsibleListFiscal"] = json_encode($responsibleListFiscal);
@@ -822,9 +819,9 @@ class AjaxProjectStatus extends PrivateController
         $data["deleteStatusLog"] = $this->_validateFeature("deleted_status_log_add",TRUE);
         $processLinesEnabled = Model_process_line::getByUserIdAndProjectId($this->sessionUser->id, $projectId);
         $data["allowBackSteps"] = count($processLinesEnabled) > 0? 1:0;
-        $data["projectFullDetail"] = $projectFullDetail;
+        $data["projectFullDetail"] = $projectWorkFlow;//$projectFullDetail;
         $data["template"] = $this->loadView("panel/content/project-status/ht-status-management", array(), TRUE);
-		$data['projectCurrentBudget'] = $projectCurrentBudget;
+		$data['projectCurrentBudget'] = $projectWorkFlow['project_current_budget'];
         $response["success"] = 1;
         $response["message"] = "";
         $response["data"] = $data;

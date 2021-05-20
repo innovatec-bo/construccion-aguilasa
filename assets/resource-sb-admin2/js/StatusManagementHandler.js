@@ -50,7 +50,6 @@ var StatusManagementHandler = /** @class */ (function () {
         var allowBackSteps = this.loadViewResponse.data.allowBackSteps;
         var allowUpdateHistory = this.loadViewResponse.data.updateHistory;
         var allowDeleteStatusLog = this.loadViewResponse.data.deleteStatusLog;
-        var projectSystems = this.loadViewResponse.data.projectSystems;
         var statusList = this.loadViewResponse.data.statusList;
         var statusArray = this.loadViewResponse.data.statusArray;
         var statusSet = this.loadViewResponse.data.statusSet;
@@ -60,11 +59,11 @@ var StatusManagementHandler = /** @class */ (function () {
         var responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         var responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         var statusName = "Este proyecto no esta en esta etapa";
-        if (project.status_pro == 20) {
+        if (project.project_status_id == 20) {
             statusName = "Este proyecto ha sido devuelto a CRE";
         }
-        else if (statusList.hasOwnProperty(project.status_pro)) {
-            statusName = statusList[project.status_pro].status_name_pst;
+        else if (statusList.hasOwnProperty(project.project_status_id)) {
+            statusName = statusList[project.project_status_id].status_name_pst;
         }
         var showBtnEditConstructionAssignments = 0;
         if (this.statusSet == "building" && this.loadViewResponse.data.updateHistory == 1) {
@@ -82,7 +81,7 @@ var StatusManagementHandler = /** @class */ (function () {
         this.viewData.responsibleList = responsibleList;
         this.viewData.responsibleListFiscal = responsibleListFiscal;
         this.viewData.responsibleListBuilder = responsibleListBuilder;
-        this.viewData.project.system = projectSystems[project.system_pro];
+        this.viewData.project.system = project.system_pro;
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;
         this.viewData.statusArray = statusArray;
@@ -105,7 +104,7 @@ var StatusManagementHandler = /** @class */ (function () {
                 previousStatusId = value.status_id_psl;
                 previousOrder = parseInt(value.order_pst);
                 var completed = statusSetList.indexOf(value.keyword_pst) >= 0 ? " completed " : "";
-                var stepStatus = value.status_id_psl == viewData.project.status_pro ? " active " : completed;
+                var stepStatus = value.status_id_psl == viewData.project.project_status_id ? " active " : completed;
                 var step = { stepId: value.status_id_psl, stepName: value.status_name_pst, stepKeyword: value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus: stepStatus };
                 stepList.push(step);
                 memory.push(value.keyword_pst);
