@@ -943,7 +943,7 @@ class Project extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
-//			$projectCode = $formData["project-code"];
+			$projectCode = $formData["project-code"];
 			$projectManager = $formData['project-manager']??NULL;
 
 			$responsibleIds = $formData["responsible-ids"]??NULL;
@@ -955,6 +955,8 @@ class Project extends PrivateController
 			$project->setCREFiscal($projectCreFiscal);
 			$project->setContractId($contractId);
 			$project->setWorkArea($workArea);
+			$project->setCode($projectCode);
+			$project->setSecondaryCode($projectCode);
 			$project->save();
 			$assignmentRecords = Model_construction_assignment::getAssignmentRecords($project->getId());
 			//Change manager
