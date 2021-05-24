@@ -454,6 +454,18 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			}
 			$sql .= " and keyword_pst in( ".$statusKeyword." )";
 		}
+		if(isset($filters["status"]) && $filters["status"] != "")
+		{
+			$value = $filters["status"];
+			$statusList = explode(",",$value);
+			$statusScape = "";
+			foreach ($statusList as $status)
+			{
+				$statusScape .= $ci->db->escape($status).", ";
+			}
+			$statusScape = substr($statusScape,0,-2);
+			$sql .= " and project_status_id in ( ".$statusScape." )";
+		}
 		if(isset($filters["contract-id"]) && $filters["contract-id"] != "")
 		{
 			$contractId = $filters["contract-id"];
@@ -469,7 +481,31 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			$management = $filters["management-by"];
 			$sql .= " and management_by_pro = ".$ci->db->escape($management)." ";
 		}
-		// echo"<pre>";var_dump($sql);exit;
+		if(isset($filters["work-area"]) && $filters["work-area"] != "")
+		{
+			$workArea = $filters["work-area"];
+			$sql .= " and work_area_pro = ".$ci->db->escape($workArea)." ";
+		}
+		if(isset($filters["fiscal-responsible-id"]) && $filters["fiscal-responsible-id"] != "")
+		{
+			$fiscalId = $filters["fiscal-responsible-id"];
+			$sql .= " and fiscal_responsible_id = ".$ci->db->escape($fiscalId)." ";
+		}
+		if(isset($filters["builder-responsible-id"]) && $filters["builder-responsible-id"] != "")
+		{
+			$builderId = $filters["builder-responsible-id"];
+			$sql .= " and builder_responsible_id = ".$ci->db->escape($builderId)." ";
+		}
+		if(isset($filters["manpower-uploaded"]) && $filters["manpower-uploaded"] != "")
+		{
+			$manpowerUploaded = $filters["manpower-uploaded"];
+			if($manpowerUploaded == 1)
+				$sql .= " and manpower_file_id is not null ";
+			else if($manpowerUploaded == 0)
+				$sql .= " and manpower_file_id is null ";
+			else
+				$sql .= " ";
+		}
 		return $sql;
 	}
 

@@ -1,5 +1,15 @@
 
 $(document).ready(function() {
+	var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#workflow-index");
+	additionalParameter.addParameterObject('status','text');
+	additionalParameter.addParameterObject('work-area','select');
+	additionalParameter.addParameterObject('fiscal-responsible-id','select');
+	additionalParameter.addParameterObject('builder-responsible-id','select');
+	additionalParameter.addParameterObject('manpower-uploaded','select');
+	additionalParameter.addParameterObject('status','select');
+	additionalParameter.setButtonFilter('#send-filters');
+	additionalParameter.setButtonRest('#remove-additional-parameters');
+	additionalParameter.loadEventHandlers();
     //Horizontal Icons dataTable
 	let dtColumns = [];
 	$.each(columns, function(index, value){
@@ -10,7 +20,10 @@ $(document).ready(function() {
         "serverSide" : true,
         "ajax" : {
             url : base_url + 'panel/AjaxWorkflow/ajaxDtAll',
-            type : 'POST'
+            type : 'POST',
+			data:function ( data ) {
+				data.additionalParameters = additionalParameter.getList();
+			}
         },
         "language": {
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
