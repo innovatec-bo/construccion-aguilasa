@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	printView();
 	let additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","");
 	additionalParameter.addParameterObject('project','select', 'assigned-to-project');
 	let showAssignedMaterialsOnly = $('input[name=show-assigned-materials-only]').val();
@@ -33,9 +34,18 @@ $(document).ready(function() {
 	$('.wh-add-new-material').on('click',function(){
 		addMaterial();
 	});
+
 });
 
 
+function printView()
+{
+	let printContents = $("#invoice-template").html();
+	if(printContents !== undefined)
+	{
+		window.print();
+	}
+}
 function addMaterial(formData)
 {
 	let method = formData === undefined?"GET":"POST";

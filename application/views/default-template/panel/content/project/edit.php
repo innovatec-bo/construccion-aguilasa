@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-md-12">
                                 <em>En google earth ir al menu Herramientas -> opciones -> escoger tipo de coordenadas Grados decimales. Con esto obtendra el formato indicado de coordenadas para este mapa. NOTA: no copiar el simbolo de grados (°)</em>
-                                <a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q=47.5951518,-122.3316393">hhh</a>
+<!--                                <a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q=47.5951518,-122.3316393">hhh</a>-->
                             </div>
                         </div>
                         <div class='row'>

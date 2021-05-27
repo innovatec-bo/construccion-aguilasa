@@ -1,0 +1,55 @@
+.invoice-title h2, .invoice-title h3 {
+	display: inline-block;
+}
+
+.table > tbody > tr > .no-line {
+	border-top: none;
+}
+
+.table > thead > tr > .no-line {
+	border-bottom: none;
+}
+
+.table > tbody > tr > .thick-line {
+	border-top: 2px solid;
+}
+@media print {
+	@page { margin-top: 1cm; }
+	body { margin-top: -0.5cm; }
+	/*#summary-content td*/
+	/*{*/
+	/*	padding: 0rem 1rem 0rem 1rem;*/
+	/*}*/
+	/*#summary-content*/
+	/*{*/
+	/*	font-size: 9px;*/
+	/*}*/
+	/*#summary-content th*/
+	/*{*/
+	/*	padding: 0rem 1rem 0rem 1rem;*/
+	/*}*/
+	/*.partner-earned-detail*/
+	/*{*/
+	/*	text-align: left!important;*/
+	/*	margin-top: 0px!important;*/
+	/*	padding-top: 0px!important;*/
+	/*}*/
+
+	/*@page*/
+	/*{*/
+	/*size:  auto;   !* auto is the initial value *!*/
+	/*margin: 10mm;  !* this affects the margin in the printer settings *!*/
+	/*}*/
+
+	/*html*/
+	/*{*/
+	/*background-color: #FFFFFF;*/
+	/*margin: 0px;  !* this affects the margin on the html before sending to printer *!*/
+	/*}*/
+
+	/*body*/
+	/*{*/
+	/*border: solid 1px blue ;*/
+	/*!*margin: 10mm 15mm 10mm 15mm; !* margin you want for the content *!*/
+	/*}*/
+}

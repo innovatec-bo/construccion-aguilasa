@@ -11,7 +11,7 @@
 	var materialList = <?=json_encode($materialList)?>;
 	var summaryTypeId = <?=json_encode($summaryTypeId)?>;
 </script>
-<div class="container-fluid box-shadow-2">
+<div class="container-fluid box-shadow-2 hidden-print">
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header"><?=$viewTitle?></h1>
@@ -201,6 +201,12 @@
 	</div>
 	</form>
 </div>
+<?php
+if($this->session->flashdata("printView"))
+{
+	echo $this->session->flashdata('printView');
+}
+?>
 <?php
 $this->load->view("default-template/panel/content/project/WarehouseHandler.php");
 ?>

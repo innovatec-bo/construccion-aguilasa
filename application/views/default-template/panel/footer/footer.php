@@ -2,7 +2,7 @@
 $complementHandler->printViewjs();
 ?>
 <?php $this->load->view('default-template/ht-select2-labor-cost-response', $contentData);?>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="pswp hidden-print" tabindex="-1" role="dialog" aria-hidden="true">
 
     <!-- Background of PhotoSwipe. 
          It's a separate element as animating opacity is faster than rgba(). -->

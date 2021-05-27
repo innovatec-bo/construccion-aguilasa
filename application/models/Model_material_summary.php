@@ -62,6 +62,7 @@ class Model_material_summary extends Model_material_summary_base
             select 
             	id_msu summary_id,
                 entry_date_msu summary_entry_date,
+                correlative_counter_msu summary_correlative_counter,
                 fiscal.id_usr fiscal_id,
                 concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
 			   	builder.id_usr builder_id,

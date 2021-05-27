@@ -16,7 +16,6 @@ class Warehouse extends PrivateController
 
 	private function _index($metaData) : void
 	{
-
 		$materialSummary = NULL;
 		if(isset($_GET['request-id']))
 		{
@@ -68,6 +67,7 @@ class Warehouse extends PrivateController
 		}
 		/*** data from request list - end*/
 		$projects = Model_project::getByStatusKeywordList(['approved','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+
 		$data['projects'] = $projects;
 		$data['fiscals'] = $fiscals;
 		$data['builders'] = $builders;
@@ -122,8 +122,10 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->saveMaterials($materials);
 			$requestID = "";
 			if($newMaterialSummary->getSummaryType() == 14 || $newMaterialSummary->getSummaryType() == 15)
-				$requestID = "<strong>Su c&oacute;digo de solicitud es : ".$newMaterialSummary->getId()."</strong>";
+				$requestID = "<strong>Su c&oacute;digo de solicitud es : ".$newMaterialSummary->getId()."</strong> <a href='javascript:void(0)' onclick='window.print();'>Imprimir</a>";
 			$this->session->set_flashdata("successMessage", "La lista se creo correctamente.".$requestID);
+			$printView = $this->printView($newMaterialSummary->getId(),1);
+			$this->session->set_flashdata("printView", $printView);
 			$method = debug_backtrace()[1]['function'];
 			redirect(base_url("panel/Warehouse/".$method));
 		}
@@ -155,5 +157,50 @@ class Warehouse extends PrivateController
 			'showAssignedMaterialsOnly' => 1
 		];
 		$this->_index($metaData);
+	}
+
+	public function printView($summaryId = NULL, $getAsVariable = NULL)
+	{
+		$materialSummary = NULL;
+		if(!is_null($summaryId))
+		{
+			$materialsRequestId = $summaryId;
+			$method = debug_backtrace()[1]['function'];
+			$redirectTo = "panel/Warehouse/".$method;
+			/** @var Model_material_summary $materialSummary */
+			$materialSummary = $this->_validateObjectToEdit($materialsRequestId,Model_material_summary::class, $redirectTo, "No se encuentra la lista de solicitud.");
+		}
+
+		$this->complementHandler->addProjectCss('warehouse.print-view', TRUE);
+		$this->complementHandler->addProjectJs('warehouse.print-view', TRUE);
+
+		/*** data from request list - begin*/
+		$materialList = NULL;
+		$summaryTypeId = NULL;
+		if($materialSummary instanceof Model_material_summary)
+		{
+			$materialSummary = Model_material_summary::getMasterDetailByListId($materialSummary->getId());
+			$materialList = Model_project_material::getBySummaryId($materialSummary['summary_id']);
+			$summaryType = Model_material_summary_type::getById($materialSummary['summary_type']);
+			$summaryTypeId = $summaryType->getId();
+		}
+		/*** data from request list - end*/
+		$viewTitle = "Movimiento de materiales";
+		if($summaryTypeId == 15 || $summaryTypeId == 14)
+			$viewTitle = "Solicitud de materiales";
+
+
+		if($getAsVariable == 1)
+		{
+			$visiblePrintBlock = "visible-print-block";
+			return $this->load->view("default-template/panel/content/warehouse/print-view",compact('viewTitle','materialSummary','materialList','summaryTypeId','summaryType','visiblePrintBlock'), TRUE);
+		}
+
+		else
+		{
+			$visiblePrintBlock = "";
+			$this->_loadPanelView("warehouse/print-view",compact('viewTitle','materialSummary','materialList','summaryTypeId','summaryType','visiblePrintBlock'));
+		}
+
 	}
 }
