@@ -29,7 +29,7 @@ class Model_construction_assignment extends Model_construction_assignment_base
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		WHERE
 			project_id_psl = ".$ci->db->escape($projectId)." 
-			AND status_id_psl = 21
+			AND (status_id_psl = 21 or status_id_psl = 11)
 			and deleted_cas != 1
 			and deleted_psl != 1
 		";

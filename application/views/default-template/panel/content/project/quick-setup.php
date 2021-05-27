@@ -93,10 +93,10 @@
 								<div class="form-group">
 									<label>Encargado/Responsable
 										<?php
-										if(is_null($workFlow['project_manager_user_id']))
+										if(is_null($workFlow['construction_assignment_id']))
 										{
 										?>
-										<a href="javascript:void(0)" class="fa fa-exclamation-circle text-danger"  data-trigger="hover" data-toggle="popover" data-container="body" title="Estados requeridos" data-content="Requiere haber sido previamente asignado"></a>
+										<a href="javascript:void(0)" class="fa fa-exclamation-circle text-danger"  data-trigger="hover" data-toggle="popover" data-container="body" title="Estados requeridos" data-content="Requiere haber sido previamente aprobado o asignado"></a>
 										<?php
 										}
 										?>
@@ -109,7 +109,7 @@
 											$selected = $workFlow['project_manager_user_id'] == $user->getId()?" selected ":"";
 											$options .= " <option value='".$user->getId()."' ".$selected." >".$user->getFullName()."</option> ";
 										}
-										if(!is_null($workFlow['project_manager_user_id']))
+										if(!is_null($workFlow['construction_assignment_id']))
 											echo $options;
 										?>
 									</select>

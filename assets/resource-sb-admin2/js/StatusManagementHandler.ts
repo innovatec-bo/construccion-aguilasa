@@ -827,6 +827,7 @@ class StatusManagementHandler
         let manpowerFileId = $("input[name=manpower-file-id]").val();
         let pointToPointFileId = $("input[name=point-to-point-file-id]").val();
         let materialsFileId = $("input[name=materials-file-id]").val();
+        let projectManager = $("select[name=project-manager] option:selected").val();
         let approved = {
             design: design,
             building: building,
@@ -838,7 +839,8 @@ class StatusManagementHandler
             secondaryCode:secondaryCode,
             manpowerFileId:manpowerFileId,
             pointToPointFileId:pointToPointFileId,
-			materialsFileId:materialsFileId
+			materialsFileId:materialsFileId,
+			projectManager:projectManager
         };
         let dataResult = Object.assign(data, approved);
         $.ajax({

@@ -400,6 +400,7 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = str_replace(",","",$rightOfWay);
         $responsibleList = $formData["responsibleList"];
         $secondaryCode = $formData["secondaryCode"];
+        $projectManager = $formData["projectManager"];
         $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
         $pointToPointFileId = $formData["pointToPointFileId"] == ''?NULL:$formData["pointToPointFileId"];
         $materialsFileId = $formData["materialsFileId"] == ''?NULL:$formData["materialsFileId"];
@@ -409,6 +410,8 @@ class AjaxProjectStatus extends PrivateController
         $project->setSecondaryCode($secondaryCode);
         $project->save();
         $statusLogId = $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay,0, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId, $materialsFileId);
+		$constructionAssignment = new Model_construction_assignment($statusLogId, "", "", 0, 0, 0, 0, $projectManager);
+		$constructionAssignment->save();
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
         {

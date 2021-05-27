@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label>Codigo secundario</label>
+                                        <label>C&oacute;digo secundario</label>
                                         <div class="form-group">
                                             {{var "secondaryCode" viewData.project.code_pro}}
                                             {{#ifCond previousEntry.secondary_code_pro "!=" undefined}}
@@ -53,6 +53,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+									<div class="col-md-6">
+										<fieldset>
+											<label>Encargado del proyecto</label>
+											<div class="form-group">
+												<select name="project-manager" class="form-control" parsley-trigger="change" required="">
+													<option value="22">Eddyson Copa</option>
+													<option value="2">Mario Aguilera</option>
+												</select>
+											</div>
+										</fieldset>
+									</div>
+								</div>
                                 {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
                                     {{var "buttonText" "Cargar mano de obra"}}
                                     {{var "buttonTextPointToPoint" "Cargar punto a punto"}}

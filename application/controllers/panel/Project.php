@@ -914,6 +914,19 @@ class Project extends PrivateController
 		$this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
 		$this->form_validation->set_rules('work-area', 'Work area', 'trim|required');
 
+		//Get all approved status to assign a Manager
+		$allApprovesStatus = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), 'approved');
+		foreach ($allApprovesStatus as $row)
+		{
+			$assignmentRecords = Model_construction_assignment::getAssignmentRecords($row['project_id_psl']);
+			//If the approved status does not assigned a manager then let's assign one
+			if(count($assignmentRecords) <= 0)
+			{
+				$constructionAssignment = new Model_construction_assignment($row['id_psl'], "", "", 0, 0, 0, 0, NULL);
+				$constructionAssignment->save();
+			}
+		}
+
 		$projectFullDetail = Model_project::getProjectFullDetail($projectId);
 		$projectLog = Model_project_status_log::getLogByProjectId($projectId);
 		$workFlow = Model_project::getWorkflowDetail(array('code-list'=>$projectFullDetail['code_pro']));
@@ -926,6 +939,8 @@ class Project extends PrivateController
 		$getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
 		$creFiscalList = Model_user::getByRoleKeyword("cre_fiscal");
 		$contractList = Model_contract::getAll(100, 0);
+
+//		echo"<pre>";var_dump($allApprovesStatus, $allAssignedStatus);exit;
 		$data["lastProjectStatus"] = $getLastProjectStatus;
 		$data["project"] = $project->toArray();
 		$data["projectFullDetail"] = $projectFullDetail;
@@ -959,6 +974,13 @@ class Project extends PrivateController
 			$project->setSecondaryCode($projectCode);
 			$project->save();
 			$assignmentRecords = Model_construction_assignment::getAssignmentRecords($project->getId());
+//			if(count($assignmentRecords) <= 0)
+//			{
+//				$allApprovesStatus = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), 'approved');
+//				echo"<pre>";var_dump($allApprovesStatus);exit;
+//				$constructionAssignment = new Model_construction_assignment($statusLogId, "", "", 0, 0, 0, 0, $projectManager);
+//				$constructionAssignment->save();
+//			}
 			//Change manager
 			/** @var Model_construction_assignment $row */
 			foreach ($assignmentRecords as $row)
