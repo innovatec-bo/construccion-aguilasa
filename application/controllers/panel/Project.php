@@ -351,6 +351,17 @@ class Project extends PrivateController
         return $result;
     }
 
+	public function validate_entity_id($entityId)
+	{
+		$result = TRUE;
+		if(!is_numeric($entityId))
+		{
+			$this->form_validation->set_message('validate_entity_id', 'El campo {field} debe ser un identificador valido ');
+			$result = FALSE;
+		}
+		return $result;
+	}
+
     public function validate_secondary_code()
     {
         $formData = $this->input->post();
@@ -908,12 +919,6 @@ class Project extends PrivateController
 		$this->complementHandler->addProjectCss('project.quick-setup',TRUE);
 		$this->complementHandler->addProjectJs('project.quick-setup', TRUE);
 
-		/** Server Side Validations **/
-		$this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
-		$this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
-		$this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric');
-		$this->form_validation->set_rules('work-area', 'Work area', 'trim|required');
-
 		//Get all approved status to assign a Manager
 		$allApprovesStatus = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), 'approved');
 		foreach ($allApprovesStatus as $row)
@@ -927,23 +932,15 @@ class Project extends PrivateController
 			}
 		}
 
-		$projectFullDetail = Model_project::getProjectFullDetail($projectId);
-		$projectLog = Model_project_status_log::getLogByProjectId($projectId);
-		$workFlow = Model_project::getWorkflowDetail(array('code-list'=>$projectFullDetail['code_pro']));
+		$workFlow = Model_project::getWorkflowDetail(array('id-list'=>$projectId));
 		$workFlow = $workFlow[0];
 		$projectManagers = Model_user::getByRoleKeyword('project_manager');
 		$responsibleListStacker = Model_status_responsible::getResponsibleDetailListByStatusKeyword("stakes", array('stacker'));
 		$responsibleListFiscal = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('fiscal'));
 		$responsibleListBuilder = Model_status_responsible::getResponsibleDetailListByStatusKeyword("assign_to", array('builder'));
-//		echo"<pre>";var_dump($projectLog);exit;
-		$getLastProjectStatus = Model_project_status_log::getLastProjectStatusLogByProjectId($project->getId());
 		$creFiscalList = Model_user::getByRoleKeyword("cre_fiscal");
 		$contractList = Model_contract::getAll(100, 0);
 
-//		echo"<pre>";var_dump($allApprovesStatus, $allAssignedStatus);exit;
-		$data["lastProjectStatus"] = $getLastProjectStatus;
-		$data["project"] = $project->toArray();
-		$data["projectFullDetail"] = $projectFullDetail;
 		$data["contractList"] = $contractList;
 		$data["creFiscalList"] = $creFiscalList;
 		$data["workFlow"] = $workFlow;
@@ -951,20 +948,27 @@ class Project extends PrivateController
 		$data["responsibleListFiscal"] = $responsibleListFiscal;
 		$data["responsibleListBuilder"] = $responsibleListBuilder;
 		$data["responsibleListStacker"] = $responsibleListStacker;
+
+		/** Server Side Validations **/
+		$this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
+		$this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
+		$this->form_validation->set_rules('work-area', 'Work area', 'trim|required');
+		$this->form_validation->set_rules('project-contract-id', 'Contract ID', 'trim|numeric|required');
+
 		if($this->form_validation->run() === FALSE)
 		{
 			$this->_loadPanelView("project/quick-setup", $data);
 		}
 		else
 		{
-			$formData = $this->input->post();
+			$formData = $this->input->post();//echo"<pre>";var_dump($formData);exit;
+			$projectLog = Model_project_status_log::getLogByProjectId($projectId);
 			$projectCode = $formData["project-code"];
 			$projectManager = $formData['project-manager']??NULL;
 
 			$responsibleIds = $formData["responsible-ids"]??NULL;
 			$staker = $formData['staker']??NULL;
 			$projectCreFiscal = $formData["project-cre-fiscal"];
-//			echo"<pre>";var_dump($projectCreFiscal);exit;
 			$contractId = $formData["project-contract-id"];
 			$workArea = $formData['work-area'];
 			$project->setCREFiscal($projectCreFiscal);
@@ -974,20 +978,15 @@ class Project extends PrivateController
 			$project->setSecondaryCode($projectCode);
 			$project->save();
 			$assignmentRecords = Model_construction_assignment::getAssignmentRecords($project->getId());
-//			if(count($assignmentRecords) <= 0)
-//			{
-//				$allApprovesStatus = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($project->getId(), 'approved');
-//				echo"<pre>";var_dump($allApprovesStatus);exit;
-//				$constructionAssignment = new Model_construction_assignment($statusLogId, "", "", 0, 0, 0, 0, $projectManager);
-//				$constructionAssignment->save();
-//			}
 			//Change manager
 			/** @var Model_construction_assignment $row */
 			foreach ($assignmentRecords as $row)
 			{
-				if(!is_null($projectManager))
-				$row->setProjectManager($projectManager);
-				$row->save();
+				if(!is_null($projectManager) && $projectManager != "")
+				{
+					$row->setProjectManager($projectManager);
+					$row->save();
+				}
 			}
 			//Change stacker
 			foreach ($projectLog as $log)

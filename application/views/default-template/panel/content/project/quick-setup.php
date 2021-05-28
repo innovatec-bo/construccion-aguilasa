@@ -9,7 +9,7 @@
 <div class="container-fluid box-shadow-2">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Quick Setup<em class="subtext"><?=$projectFullDetail['code_pro']." (".$projectFullDetail['status_name_pst'].")"?></em></h1>
+            <h1 class="page-header">Quick Setup<em class="subtext"><?=$workFlow['code_pro']." (".$workFlow['status_name_pst'].")"?></em></h1>
         </div>
         <div class="col-md-12">
             <?php
@@ -17,16 +17,13 @@
             ?>
         </div>
         <div class="col-md-12">
-			<?php
-//			echo"<pre>";print_r($projectFullDetail);
-			?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Configuraci&oacute;n r&aacute;pida para CAMBIOS en el proyecto.
                 </div>
                 <div class="panel-body">
                     <form role="form" method="post" name="project-quick-setup-form" data-parsley-validate>
-                        <input type="hidden" name="project-id" value="<?=$project["id_pro"]?>">
+                        <input type="hidden" name="project-id" value="<?=$workFlow["id_pro"]?>">
                         <div class="row">
 							<div class="col-md-12">
 								<h3>Datos basicos <a href="javascript:void(0)" class="fa fa-question-circle"  data-trigger="hover" data-toggle="popover" title="Nota" data-content="No se requieren estados especificos para hacer estos cambios."></a></h3>
@@ -34,7 +31,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>Codigo</label>
-									<input class="form-control" value="<?=set_value('project-code', $project["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
+									<input class="form-control" value="<?=set_value('project-code', $workFlow["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -46,7 +43,7 @@
 										$html = "";
 										foreach ($contractList as $contract)
 										{
-											$selected = $project["contract_id_pro"] == $contract->id_con?" selected ":"";
+											$selected = $workFlow["id_con"] == $contract->id_con?" selected ":"";
 											$html .= '<option '.$selected.' value="'.$contract->id_con.'" >'.$contract->contract_number_con.'</option>';
 										}
 										echo $html;
@@ -59,8 +56,8 @@
 									<label>Area de trabajo</label>
 									<select  class="form-control" name="work-area">
 										<option value="">Elija una area</option>
-										<option value="gis"<?=$project["work_area_pro"] == "gis"?"selected":""?>>GIS</option>
-										<option value="gir"<?=$project["work_area_pro"] == "gir"?"selected":""?>>GIR</option>
+										<option value="gis"<?=$workFlow["work_area_pro"] == "gis"?"selected":""?>>GIS</option>
+										<option value="gir"<?=$workFlow["work_area_pro"] == "gir"?"selected":""?>>GIR</option>
 									</select>
 								</div>
 							</div>
@@ -74,7 +71,7 @@
 										foreach ($creFiscalList as $fiscal)
 										{
 											$fiscal = $fiscal->toArray();
-											$selected = $project["cre_fiscal_pro"] == $fiscal["id_usr"]?" selected ":"";
+											$selected = $workFlow["cre_fiscal_id"] == $fiscal["id_usr"]?" selected ":"";
 											$html .= '<option '.$selected.' value="'.$fiscal["id_usr"].'" >'.$fiscal["firstname_usr"].' '.$fiscal["lastname_usr"].'</option>';
 										}
 										echo $html;
@@ -102,6 +99,7 @@
 										?>
 									</label>
 									<select name="project-manager" class="form-control" parsley-trigger="change">
+										<option value=""> Sin encagado </option>
 										<?php
 										$options = "";
 										foreach ($projectManagers as $user)
