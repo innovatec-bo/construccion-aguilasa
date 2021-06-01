@@ -10,7 +10,7 @@
     <div class="tab-pane active" role="tabpanel" id="step_schedule">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                Formulario de Cronograma new
+                Formulario de Cronograma
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Fecha de ingreso</label>
                                             <div class="input-group date date-time-picker">
@@ -30,6 +30,7 @@
                                             <div id="error-schedule-entry-date"></div>
                                         </div>
                                     </div>
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Importe diseño</label>
@@ -40,6 +41,15 @@
 										<div class="form-group">
 											<label>Imp. total tentativo</label>
 											<input required type="text" class="form-control input-masked" name="tentative-total-budget" data-parsley-group="schedule"  data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label>Poda</label>
+											<select class="form-control" name="trim-tree">
+												<option value="0">No</option>
+												<option value="1">Si</option>
+											</select>
 										</div>
 									</div>
                                 </div>

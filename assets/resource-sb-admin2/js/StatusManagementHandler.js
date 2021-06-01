@@ -637,11 +637,13 @@ var StatusManagementHandler = /** @class */ (function () {
         var projectEnd = $("input[name=project-end]").val();
         var design = $("input[name=design]").val();
         var tentativeTotalBudget = $("input[name=tentative-total-budget]").val();
+        var trimTree = $("select[name=trim-tree] option:selected").val();
         var schedule = {
             projectStart: projectStart,
             projectEnd: projectEnd,
             design: design,
-            tentativeTotalBudget: tentativeTotalBudget
+            tentativeTotalBudget: tentativeTotalBudget,
+            trimTree: trimTree
         };
         var dataResult = Object.assign(data, schedule);
         $.ajax({

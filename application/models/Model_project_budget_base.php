@@ -24,8 +24,9 @@ class Model_project_budget_base extends MY_Model
     protected ?int $_manpowerFileId;
     protected ?int $_buildingStructureFileId;
 	protected ?int $_materialsFileId;
+	protected ?int $_trimTree;
 
-    public function __construct($statusLogId = NULL, $design = 0.0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL)
+    public function __construct($statusLogId = NULL, $design = 0.0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL, $trimTree = 0)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -40,6 +41,7 @@ class Model_project_budget_base extends MY_Model
         $this->_manpowerFileId = $manpowerFileId;
         $this->_buildingStructureFileId = $buildingStructureFileId;
         $this->_materialsFileId = $materialsFileId;
+        $this->_trimTree = $trimTree;
     }
 
     /**
@@ -62,6 +64,7 @@ class Model_project_budget_base extends MY_Model
             "manpower_file_id_prb" => $this->_manpowerFileId,
             "building_structure_file_id_prb" => $this->_buildingStructureFileId,
             "materials_file_id_prb" => $this->_materialsFileId,
+            "trim_tree_prb" => $this->_trimTree,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -97,7 +100,8 @@ class Model_project_budget_base extends MY_Model
                 $object->tentative_total_budget_prb,
                 $object->manpower_file_id_prb,
                 $object->building_structure_file_id_prb,
-				$object->materials_file_id_prb
+				$object->materials_file_id_prb,
+				$object->trim_tree_prb
             );
             $instance->_id = $object->id_prb;
 
@@ -149,5 +153,10 @@ class Model_project_budget_base extends MY_Model
     public function setMaterialFileId($materialFileId)
 	{
 		$this->_materialsFileId = $materialFileId;
+	}
+
+	public function setTrimTree($trimTree)
+	{
+		$this->_trimTree = $trimTree;
 	}
 }
