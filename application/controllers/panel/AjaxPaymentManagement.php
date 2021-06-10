@@ -207,9 +207,10 @@ class AjaxPaymentManagement extends PrivateController
 		}
 		else
 		{
-			$formData = $this->input->post();
+			$formData = $this->input->post();//echo"<pre>";var_dump($formData);exit;
 			$paymentOrderId = $formData["paymentOrderId"];
 			$orderNumber = $formData["orderNumber"];
+			$invoiceNumber = $formData["invoiceNumber"];
 			$endContractId = $formData["endContractId"];
 			$entryDate = $formData["entryDate"];
 			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
@@ -221,6 +222,7 @@ class AjaxPaymentManagement extends PrivateController
 			$paymentOrder = Model_payment_order::getById($paymentOrderId);
 			$paymentOrder->setEndContractId($endContractId);
 			$paymentOrder->setEntryDate($entryDate);
+			$paymentOrder->setInvoiceNumber($invoiceNumber);
 			$paymentOrder->save();
 			$paymentOrder->saveProjects($formData["projectList"]);
 			$response = array("success" => 1, "message" => "Orden de pago actualizada correctamente!", "paymentOrderId" => $paymentOrder->getId());
@@ -258,11 +260,11 @@ class AjaxPaymentManagement extends PrivateController
             $this->form_validation->set_message('validate_update_payment_order', 'El numero de orden que intenta registrar ya existe!');
             $response = FALSE;
         }
-        elseif($paymentOrder->getInvoiceNumber() != "")
-        {
-            $this->form_validation->set_message('validate_update_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
-            $response = FALSE;
-        }
+//        elseif($paymentOrder->getInvoiceNumber() != "")
+//        {
+//            $this->form_validation->set_message('validate_update_payment_order', 'No puedes actualizar esta orden de pago, porque ya ha sido facturada!');
+//            $response = FALSE;
+//        }
         return $response;
     }
 

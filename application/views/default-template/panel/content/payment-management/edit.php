@@ -56,10 +56,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-2">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Numero de factura</label>
-                                    <input class="form-control input-masked" name="invoice-number" placeholder="Ingrese el numero de factura de pago de CRE" value="<?=$paymentOrder["invoice_number_pao"]?>" data-inputmask="'alias': 'integer'">
+                                    <input class="form-control" name="invoice-number" placeholder="Ingrese el numero de factura de pago de CRE" value="<?=$paymentOrder["invoice_number_pao"]?>">
                                 </div>
                             </div>
                         </div>

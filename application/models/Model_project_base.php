@@ -29,7 +29,7 @@ class Model_project_base extends MY_Model
     protected ?string $_creBuildingCompletionDate;
     protected ?string $_budgetaryPosition;
     protected string $_secondaryCode;
-    protected string $_folderDate;
+    protected ?string $_folderDate;
     protected ?int $_contractId;
     protected ?string $_detail;
     protected ?int $_energized;
@@ -38,7 +38,7 @@ class Model_project_base extends MY_Model
     protected ?string $_longitude;
     protected string $_workArea;
     protected ?string $_projectYear;
-    protected ?int $_endContract;
+    protected ?string $_endContract;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
                                 $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0, $projectPercentage = 0, $latitude = "",

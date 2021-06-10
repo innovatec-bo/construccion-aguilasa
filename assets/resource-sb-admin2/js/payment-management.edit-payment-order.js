@@ -273,7 +273,8 @@ function savePaymentOrder()
         orderNumber: $("input[name=order-number]").val(),
         entryDate: $("input[name=entry-date]").val(),
         endContractId: $("select[name=end-contract-id] option:selected").val(),
-        detail: $("textarea[name=detail]").val()
+        detail: $("textarea[name=detail]").val(),
+		invoiceNumber: $("input[name=invoice-number]").val()
     };
     $.each(projectList,function(index, value){
         var $row = $(value);
