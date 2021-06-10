@@ -11,14 +11,13 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=7.4.*",
-      "ext-json": "*"
+		"php": ">=7.4",
+      	"ext-json": "*",
+		"doctrine/orm": "^2.6.2",
+		"symfony/yaml": "2.*"
     },
-	"suggest": {
-		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.1.*",
-		"phpunit/phpunit": "4.* || 5.*"
+	"autoload": {
+	  "psr-0": {"": "src/"}
 	}
+
 }
