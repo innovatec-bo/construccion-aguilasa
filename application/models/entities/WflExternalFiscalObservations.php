@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflExternalFiscalObservations
  *
- * @ORM\Table(name="wfl_external_fiscal_observations", indexes={@ORM\Index(name="fk_fixed_by_efo", columns={"fixed_by_efo"}), @ORM\Index(name="fk_status_id_efo", columns={"status_id_efo"}), @ORM\Index(name="fk_project_id_efo", columns={"project_id_efo"}), @ORM\Index(name="fk_fiscal_id_efo", columns={"fiscal_id_efo"})})
+ * @ORM\Table(name="wfl_external_fiscal_observations", indexes={@ORM\Index(name="fk_fiscal_id_efo", columns={"fiscal_id_efo"}), @ORM\Index(name="fk_fixed_by_efo", columns={"fixed_by_efo"}), @ORM\Index(name="fk_status_id_efo", columns={"status_id_efo"}), @ORM\Index(name="fk_project_id_efo", columns={"project_id_efo"})})
  * @ORM\Entity
  */
 class WflExternalFiscalObservations

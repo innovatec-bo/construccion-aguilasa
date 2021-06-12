@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SecPermissions
  *
- * @ORM\Table(name="sec_permissions", uniqueConstraints={@ORM\UniqueConstraint(name="UQ_sec_permissions_id_per", columns={"id_per"})}, indexes={@ORM\Index(name="roleid_per", columns={"roleid_per"}), @ORM\Index(name="featureid_per", columns={"featureid_per"})})
+ * @ORM\Table(name="sec_permissions", uniqueConstraints={@ORM\UniqueConstraint(name="UQ_sec_permissions_id_per", columns={"id_per"})}, indexes={@ORM\Index(name="featureid_per", columns={"featureid_per"}), @ORM\Index(name="roleid_per", columns={"roleid_per"})})
  * @ORM\Entity
  */
 class SecPermissions
