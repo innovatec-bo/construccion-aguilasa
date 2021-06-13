@@ -53,17 +53,10 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-//	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-//	$host = $_SERVER["HTTP_HOST"];
-	$host = $_SERVER["HTTP_HOST"]??"";
-	switch ($host)
-	{
-		case 'serebo.toqueeltimbre.com':
-			define('ENVIRONMENT', 'production');
-			break;
-		default:
-			define('ENVIRONMENT', 'development');
-	}
+	require_once "application/libraries/phpdotenv/vendor/autoload.php";
+	$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+	$dotenv->load();
+	define('ENVIRONMENT', getenv('ENVIRONMENT'));
 
 /*
  *---------------------------------------------------------------
@@ -314,7 +307,6 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
-
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

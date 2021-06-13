@@ -6,6 +6,8 @@
  * Time: 21:25
  */
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
+//include_once FCPATH."application/libraries/phpdotenv/src/Dotenv.php";
 class Home extends PrivateController
 {
     public function __construct()
@@ -15,7 +17,9 @@ class Home extends PrivateController
 
     public function index()
     {
-        $this->_validateFeature("home");
+
+
+		$this->_validateFeature("home");
         $this->complementHandler->addViewComplement("swiper");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
