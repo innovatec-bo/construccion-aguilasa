@@ -15,13 +15,25 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/applicati
 //$config = Setup::createXMLMetadataConfiguration(array(__DIR__."/config/xml"), $isDevMode);
 //$config = Setup::createYAMLMetadataConfiguration(array(__DIR__."/config/yaml"), $isDevMode);
 
+$host = $_SERVER["HTTP_HOST"]??"";
+switch ($host)
+{
+	case 'serebo.toqueeltimbre.com':
+		define('ENVIRONMENT', 'production');
+		break;
+	default:
+		define('ENVIRONMENT', 'development');
+}
+define('BASEPATH', 'system');
+require_once 'application/config/database.php';
+//echo"<pre>";var_dump($db[ENVIRONMENT]);exit;
 // database configuration parameters
 $conn = array(
-    'driver' => 'mysqli',
-    'user' => 'admin',
-	'password' => '123456',
-	'host' => 'localhost',
-	'dbname' => 'serebo_doctrine'
+    'driver' => $db[ENVIRONMENT]['dbdriver'],
+    'user' => $db[ENVIRONMENT]['username'],
+	'password' => $db[ENVIRONMENT]['password'],
+	'host' => $db[ENVIRONMENT]['hostname'],
+	'dbname' => $db[ENVIRONMENT]['database']
 );
 
 // obtaining the entity manager
