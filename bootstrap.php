@@ -6,7 +6,7 @@ require_once "vendor/autoload.php";
 require_once "application/libraries/phpdotenv/vendor/autoload.php";
 
 // Create a simple "default" Doctrine ORM configuration for Annotations
-$isDevMode = true;
+$isDevMode = false;
 $proxyDir = null;
 $cache = null;
 $useSimpleAnnotationReader = false;
