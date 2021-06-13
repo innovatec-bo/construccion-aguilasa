@@ -33,4 +33,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 assets/uploads/
 assets/cronjob/
 timthumb/
-
+.env
