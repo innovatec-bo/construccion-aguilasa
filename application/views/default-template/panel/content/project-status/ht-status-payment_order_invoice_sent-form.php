@@ -34,7 +34,7 @@
                                     <div class="col-md-3">
                                         <label>Nro. de factura</label>
                                         <div class="form-group">
-                                            <input class="form-control" value="" name="invoice-number" placeholder="Numero de factura" data-parsley-type="number" required="" data-parsley-group="{{statusKeyword}}">
+                                            <input class="form-control" value="" name="invoice-number" placeholder="Numero de factura" required="" data-parsley-group="{{statusKeyword}}">
                                         </div>
                                     </div>
                                 </div>
