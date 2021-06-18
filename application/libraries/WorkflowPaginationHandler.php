@@ -161,13 +161,16 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			CASE 
 				WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned','schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
 					then 0.00
-				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed')
+				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception')
 					then 
 					FORMAT(
 						(((IFNULL(production.total_bs,0) + approved.design_prb) * 100)/ approved.total_budget)
 					, 2)
-				WHEN keyword_pst in('project_energized','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
-					then 100.00
+				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+					then
+					FORMAT(
+						(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget))
+					, 2)
 			END production_percentage,
 			production.total_bs production_total_bs
         FROM
