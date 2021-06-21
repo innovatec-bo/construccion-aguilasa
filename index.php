@@ -53,7 +53,7 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	require_once "application/libraries/phpdotenv/vendor/autoload.php";
+	require_once "vendor/autoload.php";
 	$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 	$dotenv->load();
 	define('ENVIRONMENT', getenv('ENVIRONMENT'));
