@@ -26,7 +26,7 @@ class WflStatusLineManagement
      *
      * @ORM\Column(name="deleted_", type="smallint", nullable=true)
      */
-    private $deleted = '0';
+    private $deleted;
 
     /**
      * @var \DateTime|null

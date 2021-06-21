@@ -31,7 +31,7 @@ class WflContracts
     /**
      * @var float|null
      *
-     * @ORM\Column(name="amount_con", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="amount_con", type="float", precision=10, scale=0, nullable=true)
      */
     private $amountCon;
 
@@ -54,7 +54,7 @@ class WflContracts
      *
      * @ORM\Column(name="deleted_con", type="smallint", nullable=true)
      */
-    private $deletedCon = '0';
+    private $deletedCon;
 
     /**
      * @var \DateTime|null

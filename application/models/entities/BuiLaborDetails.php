@@ -54,7 +54,7 @@ class BuiLaborDetails
      *
      * @ORM\Column(name="deleted_lad", type="smallint", nullable=true)
      */
-    private $deletedLad = '0';
+    private $deletedLad;
 
     /**
      * @var \DateTime|null

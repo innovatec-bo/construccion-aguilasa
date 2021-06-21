@@ -40,7 +40,7 @@ class BuiBuildersInManpower
      *
      * @ORM\Column(name="deleted_bim", type="smallint", nullable=true)
      */
-    private $deletedBim = '0';
+    private $deletedBim;
 
     /**
      * @var \DateTime|null

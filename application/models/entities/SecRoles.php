@@ -40,7 +40,7 @@ class SecRoles
      *
      * @ORM\Column(name="deleted_rol", type="smallint", nullable=true)
      */
-    private $deletedRol = '0';
+    private $deletedRol;
 
     /**
      * @var \DateTime|null

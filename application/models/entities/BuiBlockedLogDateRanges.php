@@ -47,7 +47,7 @@ class BuiBlockedLogDateRanges
      *
      * @ORM\Column(name="deleted_bld", type="smallint", nullable=true)
      */
-    private $deletedBld = '0';
+    private $deletedBld;
 
     /**
      * @var \DateTime|null

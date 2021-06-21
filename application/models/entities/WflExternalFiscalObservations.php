@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflExternalFiscalObservations
  *
- * @ORM\Table(name="wfl_external_fiscal_observations", indexes={@ORM\Index(name="fk_fiscal_id_efo", columns={"fiscal_id_efo"}), @ORM\Index(name="fk_fixed_by_efo", columns={"fixed_by_efo"}), @ORM\Index(name="fk_status_id_efo", columns={"status_id_efo"}), @ORM\Index(name="fk_project_id_efo", columns={"project_id_efo"})})
+ * @ORM\Table(name="wfl_external_fiscal_observations", indexes={@ORM\Index(name="fk_fixed_by_efo", columns={"fixed_by_efo"}), @ORM\Index(name="fk_status_id_efo", columns={"status_id_efo"}), @ORM\Index(name="fk_project_id_efo", columns={"project_id_efo"}), @ORM\Index(name="fk_fiscal_id_efo", columns={"fiscal_id_efo"})})
  * @ORM\Entity
  */
 class WflExternalFiscalObservations
@@ -82,14 +82,14 @@ class WflExternalFiscalObservations
      *
      * @ORM\Column(name="fixed_efo", type="smallint", nullable=true)
      */
-    private $fixedEfo = '0';
+    private $fixedEfo;
 
     /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_efo", type="smallint", nullable=true)
      */
-    private $deletedEfo = '0';
+    private $deletedEfo;
 
     /**
      * @var \DateTime|null

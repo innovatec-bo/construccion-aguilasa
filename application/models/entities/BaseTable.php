@@ -24,9 +24,9 @@ class BaseTable
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_", type="smallint", nullable=true, options={"default":0})
+     * @ORM\Column(name="deleted_", type="smallint", nullable=true)
      */
-    private $deleted = '0';
+    private $deleted;
 
     /**
      * @var \DateTime|null
@@ -55,4 +55,6 @@ class BaseTable
      * @ORM\Column(name="editedby_", type="bigint", nullable=true)
      */
     private $editedby;
+
+
 }

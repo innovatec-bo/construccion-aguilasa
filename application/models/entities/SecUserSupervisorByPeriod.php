@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SecUserSupervisorByPeriod
  *
- * @ORM\Table(name="sec_user_supervisor_by_period", indexes={@ORM\Index(name="fk_user_id_usp", columns={"user_id_usp"}), @ORM\Index(name="fk_supervisor_id_usp", columns={"supervisor_id_usp"})})
+ * @ORM\Table(name="sec_user_supervisor_by_period", indexes={@ORM\Index(name="fk_supervisor_id_usp", columns={"supervisor_id_usp"}), @ORM\Index(name="fk_user_id_usp", columns={"user_id_usp"})})
  * @ORM\Entity
  */
 class SecUserSupervisorByPeriod
@@ -54,7 +54,7 @@ class SecUserSupervisorByPeriod
      *
      * @ORM\Column(name="deleted_usp", type="smallint", nullable=true)
      */
-    private $deletedUsp = '0';
+    private $deletedUsp;
 
     /**
      * @var \DateTime|null

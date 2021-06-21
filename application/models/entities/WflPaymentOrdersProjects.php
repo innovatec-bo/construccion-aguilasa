@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflPaymentOrdersProjects
  *
- * @ORM\Table(name="wfl_payment_orders_projects", indexes={@ORM\Index(name="fk_project_id_pop", columns={"project_id_pop"}), @ORM\Index(name="fk_order_id_pop", columns={"order_id_pop"})})
+ * @ORM\Table(name="wfl_payment_orders_projects", indexes={@ORM\Index(name="fk_order_id_pop", columns={"order_id_pop"}), @ORM\Index(name="fk_project_id_pop", columns={"project_id_pop"})})
  * @ORM\Entity
  */
 class WflPaymentOrdersProjects
@@ -24,35 +24,35 @@ class WflPaymentOrdersProjects
     /**
      * @var float|null
      *
-     * @ORM\Column(name="design_budget_pop", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="design_budget_pop", type="float", precision=10, scale=0, nullable=true)
      */
     private $designBudgetPop;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="transportation_budget_pop", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="transportation_budget_pop", type="float", precision=10, scale=0, nullable=true)
      */
     private $transportationBudgetPop;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="building_budget_pop", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="building_budget_pop", type="float", precision=10, scale=0, nullable=true)
      */
     private $buildingBudgetPop;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="live_line_budget_pop", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="live_line_budget_pop", type="float", precision=10, scale=0, nullable=true)
      */
     private $liveLineBudgetPop;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="right_of_way_budget_pop", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="right_of_way_budget_pop", type="float", precision=10, scale=0, nullable=true)
      */
     private $rightOfWayBudgetPop;
 
@@ -61,7 +61,7 @@ class WflPaymentOrdersProjects
      *
      * @ORM\Column(name="deleted_pop", type="smallint", nullable=true)
      */
-    private $deletedPop = '0';
+    private $deletedPop;
 
     /**
      * @var \DateTime|null

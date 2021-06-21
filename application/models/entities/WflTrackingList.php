@@ -40,7 +40,7 @@ class WflTrackingList
      *
      * @ORM\Column(name="deleted_trl", type="smallint", nullable=true)
      */
-    private $deletedTrl = '0';
+    private $deletedTrl;
 
     /**
      * @var \DateTime|null

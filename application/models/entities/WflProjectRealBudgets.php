@@ -24,35 +24,35 @@ class WflProjectRealBudgets
     /**
      * @var float|null
      *
-     * @ORM\Column(name="design_reb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="design_reb", type="float", precision=10, scale=0, nullable=true)
      */
     private $designReb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="building_reb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="building_reb", type="float", precision=10, scale=0, nullable=true)
      */
     private $buildingReb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="transportation_reb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="transportation_reb", type="float", precision=10, scale=0, nullable=true)
      */
     private $transportationReb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="live_line_reb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="live_line_reb", type="float", precision=10, scale=0, nullable=true)
      */
     private $liveLineReb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="right_of_way_reb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="right_of_way_reb", type="float", precision=10, scale=0, nullable=true)
      */
     private $rightOfWayReb;
 
@@ -61,7 +61,7 @@ class WflProjectRealBudgets
      *
      * @ORM\Column(name="deleted_reb", type="smallint", nullable=true)
      */
-    private $deletedReb = '0';
+    private $deletedReb;
 
     /**
      * @var \DateTime|null

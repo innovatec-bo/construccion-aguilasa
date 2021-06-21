@@ -31,7 +31,7 @@ class WflProjectPoints
     /**
      * @var float|null
      *
-     * @ORM\Column(name="distance_prp", type="float", precision=5, scale=2, nullable=true)
+     * @ORM\Column(name="distance_prp", type="float", precision=10, scale=0, nullable=true)
      */
     private $distancePrp;
 
@@ -40,7 +40,7 @@ class WflProjectPoints
      *
      * @ORM\Column(name="deleted_prp", type="smallint", nullable=true)
      */
-    private $deletedPrp = '0';
+    private $deletedPrp;
 
     /**
      * @var \DateTime|null

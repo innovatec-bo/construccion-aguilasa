@@ -54,7 +54,7 @@ class MatMaterialsSummaryTypes
      *
      * @ORM\Column(name="deleted_mqt", type="smallint", nullable=true)
      */
-    private $deletedMqt = '0';
+    private $deletedMqt;
 
     /**
      * @var \DateTime|null

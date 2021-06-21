@@ -61,14 +61,14 @@ class BuiStructureByPoints
      *
      * @ORM\Column(name="is_additional_sbp", type="smallint", nullable=true)
      */
-    private $isAdditionalSbp = '0';
+    private $isAdditionalSbp;
 
     /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_sbp", type="smallint", nullable=true)
      */
-    private $deletedSbp = '0';
+    private $deletedSbp;
 
     /**
      * @var \DateTime|null

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflWarehouses
  *
- * @ORM\Table(name="wfl_warehouses", indexes={@ORM\Index(name="fk_status_id_war", columns={"status_id_war"}), @ORM\Index(name="fk_project_id_war", columns={"project_id_war"})})
+ * @ORM\Table(name="wfl_warehouses", indexes={@ORM\Index(name="fk_project_id_war", columns={"project_id_war"}), @ORM\Index(name="fk_status_id_war", columns={"status_id_war"})})
  * @ORM\Entity
  */
 class WflWarehouses
@@ -26,7 +26,7 @@ class WflWarehouses
      *
      * @ORM\Column(name="deleted_war", type="smallint", nullable=true)
      */
-    private $deletedWar = '0';
+    private $deletedWar;
 
     /**
      * @var \DateTime|null
@@ -57,16 +57,6 @@ class WflWarehouses
     private $editedbyWar;
 
     /**
-     * @var \WflProjects
-     *
-     * @ORM\ManyToOne(targetEntity="WflProjects")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id_war", referencedColumnName="id_pro")
-     * })
-     */
-    private $projectIdWar;
-
-    /**
      * @var \WflProjectStatus
      *
      * @ORM\ManyToOne(targetEntity="WflProjectStatus")
@@ -75,6 +65,16 @@ class WflWarehouses
      * })
      */
     private $statusIdWar;
+
+    /**
+     * @var \WflProjects
+     *
+     * @ORM\ManyToOne(targetEntity="WflProjects")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id_war", referencedColumnName="id_pro")
+     * })
+     */
+    private $projectIdWar;
 
 
 }

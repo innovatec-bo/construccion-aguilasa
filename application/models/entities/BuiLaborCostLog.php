@@ -54,7 +54,7 @@ class BuiLaborCostLog
      *
      * @ORM\Column(name="deleted_lal", type="smallint", nullable=true)
      */
-    private $deletedLal = '0';
+    private $deletedLal;
 
     /**
      * @var \DateTime|null

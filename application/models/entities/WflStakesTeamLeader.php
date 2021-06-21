@@ -33,7 +33,7 @@ class WflStakesTeamLeader
      *
      * @ORM\Column(name="deleted_stl", type="smallint", nullable=true)
      */
-    private $deletedStl = '0';
+    private $deletedStl;
 
     /**
      * @var \DateTime|null

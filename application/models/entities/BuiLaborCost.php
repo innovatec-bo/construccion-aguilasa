@@ -68,14 +68,14 @@ class BuiLaborCost
      *
      * @ORM\Column(name="is_additional_lac", type="smallint", nullable=true)
      */
-    private $isAdditionalLac = '0';
+    private $isAdditionalLac;
 
     /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_lac", type="smallint", nullable=true)
      */
-    private $deletedLac = '0';
+    private $deletedLac;
 
     /**
      * @var \DateTime|null

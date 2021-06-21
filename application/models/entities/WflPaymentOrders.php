@@ -38,7 +38,7 @@ class WflPaymentOrders
     /**
      * @var string|null
      *
-     * @ORM\Column(name="invoice_number_pao", type="string", length=30, nullable=true)
+     * @ORM\Column(name="invoice_number_pao", type="text", length=65535, nullable=true)
      */
     private $invoiceNumberPao;
 
@@ -75,7 +75,7 @@ class WflPaymentOrders
      *
      * @ORM\Column(name="deleted_pao", type="smallint", nullable=true)
      */
-    private $deletedPao = '0';
+    private $deletedPao;
 
     /**
      * @var \DateTime|null

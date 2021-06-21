@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflProjectStakes
  *
- * @ORM\Table(name="wfl_project_stakes", indexes={@ORM\Index(name="fk_stakes_leader_id_prs", columns={"stakes_leader_id_prs"}), @ORM\Index(name="fk_project_id_prs", columns={"project_id_prs"})})
+ * @ORM\Table(name="wfl_project_stakes", indexes={@ORM\Index(name="fk_project_id_prs", columns={"project_id_prs"}), @ORM\Index(name="fk_stakes_leader_id_prs", columns={"stakes_leader_id_prs"})})
  * @ORM\Entity
  */
 class WflProjectStakes
@@ -26,7 +26,7 @@ class WflProjectStakes
      *
      * @ORM\Column(name="deleted_prs", type="smallint", nullable=true)
      */
-    private $deletedPrs = '0';
+    private $deletedPrs;
 
     /**
      * @var \DateTime|null
@@ -57,16 +57,6 @@ class WflProjectStakes
     private $editedbyPrs;
 
     /**
-     * @var \WflProjects
-     *
-     * @ORM\ManyToOne(targetEntity="WflProjects")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id_prs", referencedColumnName="id_pro")
-     * })
-     */
-    private $projectIdPrs;
-
-    /**
      * @var \WflStakesTeamLeader
      *
      * @ORM\ManyToOne(targetEntity="WflStakesTeamLeader")
@@ -75,6 +65,16 @@ class WflProjectStakes
      * })
      */
     private $stakesLeaderIdPrs;
+
+    /**
+     * @var \WflProjects
+     *
+     * @ORM\ManyToOne(targetEntity="WflProjects")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id_prs", referencedColumnName="id_pro")
+     * })
+     */
+    private $projectIdPrs;
 
 
 }

@@ -54,7 +54,7 @@ class MatMaterials
      *
      * @ORM\Column(name="deleted_mat", type="smallint", nullable=true)
      */
-    private $deletedMat = '0';
+    private $deletedMat;
 
     /**
      * @var \DateTime|null

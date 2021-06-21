@@ -26,7 +26,7 @@ class SecUserroles
      *
      * @ORM\Column(name="deleted_uro", type="smallint", nullable=true)
      */
-    private $deletedUro = '0';
+    private $deletedUro;
 
     /**
      * @var \DateTime|null

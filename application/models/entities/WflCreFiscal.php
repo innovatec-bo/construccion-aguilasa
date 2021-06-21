@@ -40,7 +40,7 @@ class WflCreFiscal
      *
      * @ORM\Column(name="deleted_cfi", type="smallint", nullable=true)
      */
-    private $deletedCfi = '0';
+    private $deletedCfi;
 
     /**
      * @var \DateTime|null

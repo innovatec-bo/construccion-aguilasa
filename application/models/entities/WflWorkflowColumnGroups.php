@@ -40,7 +40,7 @@ class WflWorkflowColumnGroups
      *
      * @ORM\Column(name="deleted_wcg", type="smallint", nullable=true)
      */
-    private $deletedWcg = '0';
+    private $deletedWcg;
 
     /**
      * @var \DateTime|null

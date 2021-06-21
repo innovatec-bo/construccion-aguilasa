@@ -75,7 +75,7 @@ class WflConstructionAssignments
      *
      * @ORM\Column(name="deleted_cas", type="smallint", nullable=true)
      */
-    private $deletedCas = '0';
+    private $deletedCas;
 
     /**
      * @var \DateTime|null

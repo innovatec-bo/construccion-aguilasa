@@ -54,7 +54,7 @@ class BuiCustomStructureMaterials
      *
      * @ORM\Column(name="deleted_csm", type="smallint", nullable=true)
      */
-    private $deletedCsm = '0';
+    private $deletedCsm;
 
     /**
      * @var \DateTime|null

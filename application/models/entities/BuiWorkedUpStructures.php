@@ -54,7 +54,7 @@ class BuiWorkedUpStructures
      *
      * @ORM\Column(name="deleted_wus", type="smallint", nullable=true)
      */
-    private $deletedWus = '0';
+    private $deletedWus;
 
     /**
      * @var \DateTime|null

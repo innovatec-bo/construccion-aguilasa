@@ -47,7 +47,7 @@ class SecDeletedStatusLogs
      *
      * @ORM\Column(name="deleted_dsl", type="smallint", nullable=true)
      */
-    private $deletedDsl = '0';
+    private $deletedDsl;
 
     /**
      * @var \DateTime|null

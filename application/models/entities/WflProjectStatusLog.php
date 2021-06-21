@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflProjectStatusLog
  *
- * @ORM\Table(name="wfl_project_status_log", indexes={@ORM\Index(name="fk_status_id_psl", columns={"status_id_psl"}), @ORM\Index(name="fk_project_id_psl", columns={"project_id_psl"})})
+ * @ORM\Table(name="wfl_project_status_log", indexes={@ORM\Index(name="fk_project_id_psl", columns={"project_id_psl"}), @ORM\Index(name="fk_status_id_psl", columns={"status_id_psl"})})
  * @ORM\Entity
  */
 class WflProjectStatusLog
@@ -40,7 +40,7 @@ class WflProjectStatusLog
      *
      * @ORM\Column(name="deleted_psl", type="smallint", nullable=true)
      */
-    private $deletedPsl = '0';
+    private $deletedPsl;
 
     /**
      * @var \DateTime|null

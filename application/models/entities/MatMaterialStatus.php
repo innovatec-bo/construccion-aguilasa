@@ -40,7 +40,7 @@ class MatMaterialStatus
      *
      * @ORM\Column(name="deleted_mst", type="smallint", nullable=true)
      */
-    private $deletedMst = '0';
+    private $deletedMst;
 
     /**
      * @var \DateTime|null

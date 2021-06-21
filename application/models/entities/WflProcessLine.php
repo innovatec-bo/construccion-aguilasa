@@ -61,7 +61,7 @@ class WflProcessLine
      *
      * @ORM\Column(name="deleted_prl", type="smallint", nullable=true)
      */
-    private $deletedPrl = '0';
+    private $deletedPrl;
 
     /**
      * @var \DateTime|null

@@ -75,7 +75,7 @@ class SecExecutiveSummaryLog
      *
      * @ORM\Column(name="deleted_esl", type="smallint", nullable=true)
      */
-    private $deletedEsl = '0';
+    private $deletedEsl;
 
     /**
      * @var \DateTime|null

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflPaymentOrdersStatusLog
  *
- * @ORM\Table(name="wfl_payment_orders_status_log", indexes={@ORM\Index(name="fk_status_id_pos", columns={"status_id_pos"}), @ORM\Index(name="fk_payment_order_id_pos", columns={"payment_order_id_pos"})})
+ * @ORM\Table(name="wfl_payment_orders_status_log", indexes={@ORM\Index(name="fk_payment_order_id_pos", columns={"payment_order_id_pos"}), @ORM\Index(name="fk_status_id_pos", columns={"status_id_pos"})})
  * @ORM\Entity
  */
 class WflPaymentOrdersStatusLog
@@ -40,7 +40,7 @@ class WflPaymentOrdersStatusLog
      *
      * @ORM\Column(name="deleted_pos", type="smallint", nullable=true)
      */
-    private $deletedPos = '0';
+    private $deletedPos;
 
     /**
      * @var \DateTime|null
@@ -71,16 +71,6 @@ class WflPaymentOrdersStatusLog
     private $editedbyPos;
 
     /**
-     * @var \WflPaymentOrders
-     *
-     * @ORM\ManyToOne(targetEntity="WflPaymentOrders")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="payment_order_id_pos", referencedColumnName="id_pao")
-     * })
-     */
-    private $paymentOrderIdPos;
-
-    /**
      * @var \WflProjectStatus
      *
      * @ORM\ManyToOne(targetEntity="WflProjectStatus")
@@ -89,6 +79,16 @@ class WflPaymentOrdersStatusLog
      * })
      */
     private $statusIdPos;
+
+    /**
+     * @var \WflPaymentOrders
+     *
+     * @ORM\ManyToOne(targetEntity="WflPaymentOrders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="payment_order_id_pos", referencedColumnName="id_pao")
+     * })
+     */
+    private $paymentOrderIdPos;
 
 
 }

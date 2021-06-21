@@ -75,7 +75,7 @@ class BuiBuildingPoints
      *
      * @ORM\Column(name="deleted_bpo", type="smallint", nullable=true)
      */
-    private $deletedBpo = '0';
+    private $deletedBpo;
 
     /**
      * @var \DateTime|null

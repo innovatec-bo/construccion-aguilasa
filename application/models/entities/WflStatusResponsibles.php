@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflStatusResponsibles
  *
- * @ORM\Table(name="wfl_status_responsibles", indexes={@ORM\Index(name="fk_status_id_sre", columns={"status_id_sre"}), @ORM\Index(name="fk_user_id_sre", columns={"user_id_sre"})})
+ * @ORM\Table(name="wfl_status_responsibles", indexes={@ORM\Index(name="fk_user_id_sre", columns={"user_id_sre"}), @ORM\Index(name="fk_status_id_sre", columns={"status_id_sre"})})
  * @ORM\Entity
  */
 class WflStatusResponsibles
@@ -26,7 +26,7 @@ class WflStatusResponsibles
      *
      * @ORM\Column(name="deleted_sre", type="smallint", nullable=true)
      */
-    private $deletedSre = '0';
+    private $deletedSre;
 
     /**
      * @var \DateTime|null
@@ -57,16 +57,6 @@ class WflStatusResponsibles
     private $editedbySre;
 
     /**
-     * @var \WflProjectStatus
-     *
-     * @ORM\ManyToOne(targetEntity="WflProjectStatus")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status_id_sre", referencedColumnName="id_pst")
-     * })
-     */
-    private $statusIdSre;
-
-    /**
      * @var \SecUsers
      *
      * @ORM\ManyToOne(targetEntity="SecUsers")
@@ -75,6 +65,16 @@ class WflStatusResponsibles
      * })
      */
     private $userIdSre;
+
+    /**
+     * @var \WflProjectStatus
+     *
+     * @ORM\ManyToOne(targetEntity="WflProjectStatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status_id_sre", referencedColumnName="id_pst")
+     * })
+     */
+    private $statusIdSre;
 
 
 }

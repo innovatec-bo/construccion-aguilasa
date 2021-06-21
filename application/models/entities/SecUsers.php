@@ -115,16 +115,16 @@ class SecUsers
     /**
      * @var float|null
      *
-     * @ORM\Column(name="umbo_usr", type="float", precision=8, scale=2, nullable=true, options={"default"="0.00"})
+     * @ORM\Column(name="umbo_usr", type="float", precision=10, scale=0, nullable=true)
      */
-    private $umboUsr = 0.00;
+    private $umboUsr;
 
     /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_usr", type="smallint", nullable=true)
      */
-    private $deletedUsr = '0';
+    private $deletedUsr;
 
     /**
      * @var \DateTime|null

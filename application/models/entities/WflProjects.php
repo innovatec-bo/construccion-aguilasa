@@ -87,7 +87,7 @@ class WflProjects
     /**
      * @var float|null
      *
-     * @ORM\Column(name="distance_pro", type="float", precision=5, scale=2, nullable=true)
+     * @ORM\Column(name="distance_pro", type="float", precision=10, scale=0, nullable=true)
      */
     private $distancePro;
 
@@ -159,7 +159,7 @@ class WflProjects
      *
      * @ORM\Column(name="project_percentage_pro", type="integer", nullable=true)
      */
-    private $projectPercentagePro = '0';
+    private $projectPercentagePro;
 
     /**
      * @var string|null
@@ -201,7 +201,7 @@ class WflProjects
      *
      * @ORM\Column(name="deleted_pro", type="smallint", nullable=true)
      */
-    private $deletedPro = '0';
+    private $deletedPro;
 
     /**
      * @var \DateTime|null
@@ -232,16 +232,6 @@ class WflProjects
     private $editedbyPro;
 
     /**
-     * @var \WflContracts
-     *
-     * @ORM\ManyToOne(targetEntity="WflContracts")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="contract_id_pro", referencedColumnName="id_con")
-     * })
-     */
-    private $contractIdPro;
-
-    /**
      * @var \WflProjectStatus
      *
      * @ORM\ManyToOne(targetEntity="WflProjectStatus")
@@ -250,6 +240,16 @@ class WflProjects
      * })
      */
     private $statusPro;
+
+    /**
+     * @var \WflContracts
+     *
+     * @ORM\ManyToOne(targetEntity="WflContracts")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="contract_id_pro", referencedColumnName="id_con")
+     * })
+     */
+    private $contractIdPro;
 
 
 }

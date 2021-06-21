@@ -54,7 +54,7 @@ class BuiBuildingStructures
      *
      * @ORM\Column(name="deleted_bus", type="smallint", nullable=true)
      */
-    private $deletedBus = '0';
+    private $deletedBus;
 
     /**
      * @var \DateTime|null

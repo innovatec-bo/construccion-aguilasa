@@ -47,7 +47,7 @@ class WflDatesToWork
      *
      * @ORM\Column(name="deleted_wpl", type="smallint", nullable=true)
      */
-    private $deletedWpl = '0';
+    private $deletedWpl;
 
     /**
      * @var \DateTime|null

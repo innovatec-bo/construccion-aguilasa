@@ -26,7 +26,7 @@ class SecPermissions
      *
      * @ORM\Column(name="deleted_per", type="smallint", nullable=true)
      */
-    private $deletedPer = '0';
+    private $deletedPer;
 
     /**
      * @var \DateTime|null

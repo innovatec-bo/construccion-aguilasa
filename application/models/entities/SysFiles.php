@@ -96,7 +96,7 @@ class SysFiles
      *
      * @ORM\Column(name="deleted_fil", type="smallint", nullable=true)
      */
-    private $deletedFil = '0';
+    private $deletedFil;
 
     /**
      * @var \DateTime|null

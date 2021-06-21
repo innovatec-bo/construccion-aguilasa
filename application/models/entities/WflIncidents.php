@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflIncidents
  *
- * @ORM\Table(name="wfl_incidents", indexes={@ORM\Index(name="fk_project_id_inc", columns={"project_id_inc"}), @ORM\Index(name="fk_status_id_inc", columns={"status_id_inc"})})
+ * @ORM\Table(name="wfl_incidents", indexes={@ORM\Index(name="fk_status_id_inc", columns={"status_id_inc"}), @ORM\Index(name="fk_project_id_inc", columns={"project_id_inc"})})
  * @ORM\Entity
  */
 class WflIncidents
@@ -47,7 +47,7 @@ class WflIncidents
      *
      * @ORM\Column(name="paused_inc", type="smallint", nullable=true)
      */
-    private $pausedInc = '0';
+    private $pausedInc;
 
     /**
      * @var int|null
@@ -68,7 +68,7 @@ class WflIncidents
      *
      * @ORM\Column(name="need_to_be_solved_inc", type="smallint", nullable=true)
      */
-    private $needToBeSolvedInc = '0';
+    private $needToBeSolvedInc;
 
     /**
      * @var \DateTime|null
@@ -89,7 +89,7 @@ class WflIncidents
      *
      * @ORM\Column(name="deleted_inc", type="smallint", nullable=true)
      */
-    private $deletedInc = '0';
+    private $deletedInc;
 
     /**
      * @var \DateTime|null

@@ -54,7 +54,7 @@ class WflProjectStatusFiles
      *
      * @ORM\Column(name="deleted_psf", type="smallint", nullable=true)
      */
-    private $deletedPsf = '0';
+    private $deletedPsf;
 
     /**
      * @var \DateTime|null

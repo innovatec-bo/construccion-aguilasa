@@ -24,14 +24,14 @@ class WflProjectBudgets
     /**
      * @var float|null
      *
-     * @ORM\Column(name="design_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="design_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $designPrb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="building_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="building_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $buildingPrb;
 
@@ -52,28 +52,28 @@ class WflProjectBudgets
     /**
      * @var float|null
      *
-     * @ORM\Column(name="transportation_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="transportation_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $transportationPrb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="live_line_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="live_line_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $liveLinePrb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="right_of_way_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="right_of_way_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $rightOfWayPrb;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="tentative_total_budget_prb", type="float", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="tentative_total_budget_prb", type="float", precision=10, scale=0, nullable=true)
      */
     private $tentativeTotalBudgetPrb;
 
@@ -103,14 +103,14 @@ class WflProjectBudgets
      *
      * @ORM\Column(name="trim_tree_prb", type="smallint", nullable=true)
      */
-    private $trimTreePrb = '0';
+    private $trimTreePrb;
 
     /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_prb", type="smallint", nullable=true)
      */
-    private $deletedPrb = '0';
+    private $deletedPrb;
 
     /**
      * @var \DateTime|null

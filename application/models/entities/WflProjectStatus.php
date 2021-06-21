@@ -61,7 +61,7 @@ class WflProjectStatus
      *
      * @ORM\Column(name="deleted_pst", type="smallint", nullable=true)
      */
-    private $deletedPst = '0';
+    private $deletedPst;
 
     /**
      * @var \DateTime|null

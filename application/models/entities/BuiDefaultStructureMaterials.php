@@ -47,7 +47,7 @@ class BuiDefaultStructureMaterials
      *
      * @ORM\Column(name="deleted_dsm", type="smallint", nullable=true)
      */
-    private $deletedDsm = '0';
+    private $deletedDsm;
 
     /**
      * @var \DateTime|null

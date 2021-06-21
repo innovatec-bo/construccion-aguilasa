@@ -54,7 +54,7 @@ class WflUserUbmos
      *
      * @ORM\Column(name="deleted_uub", type="smallint", nullable=true)
      */
-    private $deletedUub = '0';
+    private $deletedUub;
 
     /**
      * @var \DateTime|null

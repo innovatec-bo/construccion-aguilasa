@@ -66,42 +66,42 @@ class BuiPointToPointMaster
     /**
      * @var float|null
      *
-     * @ORM\Column(name="distance_at_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="distance_at_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $distanceAtPtp;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="angle_at_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="angle_at_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $angleAtPtp;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="distance_mt_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="distance_mt_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $distanceMtPtp;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="angle_mt_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="angle_mt_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $angleMtPtp;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="distance_bt_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="distance_bt_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $distanceBtPtp;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(name="angle_bt_ptp", type="float", precision=8, scale=2, nullable=true)
+     * @ORM\Column(name="angle_bt_ptp", type="float", precision=10, scale=0, nullable=true)
      */
     private $angleBtPtp;
 
@@ -152,7 +152,7 @@ class BuiPointToPointMaster
      *
      * @ORM\Column(name="deleted_ptp", type="smallint", nullable=true)
      */
-    private $deletedPtp = '0';
+    private $deletedPtp;
 
     /**
      * @var \DateTime|null

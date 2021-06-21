@@ -82,7 +82,7 @@ class SecFeatures
      *
      * @ORM\Column(name="deleted_fes", type="smallint", nullable=true)
      */
-    private $deletedFes = '0';
+    private $deletedFes;
 
     /**
      * @var \DateTime|null

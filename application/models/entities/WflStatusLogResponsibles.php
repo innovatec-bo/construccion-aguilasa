@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * WflStatusLogResponsibles
  *
- * @ORM\Table(name="wfl_status_log_responsibles", indexes={@ORM\Index(name="fk_responsible_id_slr", columns={"responsible_id_slr"}), @ORM\Index(name="fk_status_log_id_slr", columns={"status_log_id_slr"})})
+ * @ORM\Table(name="wfl_status_log_responsibles", indexes={@ORM\Index(name="fk_status_log_id_slr", columns={"status_log_id_slr"}), @ORM\Index(name="fk_responsible_id_slr", columns={"responsible_id_slr"})})
  * @ORM\Entity
  */
 class WflStatusLogResponsibles
@@ -26,7 +26,7 @@ class WflStatusLogResponsibles
      *
      * @ORM\Column(name="deleted_slr", type="smallint", nullable=true)
      */
-    private $deletedSlr = '0';
+    private $deletedSlr;
 
     /**
      * @var \DateTime|null
@@ -57,16 +57,6 @@ class WflStatusLogResponsibles
     private $editedbySlr;
 
     /**
-     * @var \WflStatusResponsibles
-     *
-     * @ORM\ManyToOne(targetEntity="WflStatusResponsibles")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="responsible_id_slr", referencedColumnName="id_sre")
-     * })
-     */
-    private $responsibleIdSlr;
-
-    /**
      * @var \WflProjectStatusLog
      *
      * @ORM\ManyToOne(targetEntity="WflProjectStatusLog")
@@ -75,6 +65,16 @@ class WflStatusLogResponsibles
      * })
      */
     private $statusLogIdSlr;
+
+    /**
+     * @var \WflStatusResponsibles
+     *
+     * @ORM\ManyToOne(targetEntity="WflStatusResponsibles")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="responsible_id_slr", referencedColumnName="id_sre")
+     * })
+     */
+    private $responsibleIdSlr;
 
 
 }
