@@ -52,7 +52,7 @@ class BaseTable
     /**
      * @var int|null
      *
-     * @ORM\Column(name="editedby_", type="bigint", nullable=true)
+     * @ORM\Column(name="editedby", type="bigint", nullable=true)
      */
     private $editedby;
 }
