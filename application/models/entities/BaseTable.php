@@ -55,6 +55,4 @@ class BaseTable
      * @ORM\Column(name="editedby_", type="bigint", nullable=true)
      */
     private $editedby;
-
-
 }
