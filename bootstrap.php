@@ -1,7 +1,7 @@
 <?php
 use Doctrine\ORM\EntityManager,
 	Doctrine\ORM\Configuration;
-require_once "application/libraries/phpdotenv/vendor/autoload.php";
+
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 define('ENVIRONMENT', getenv('ENVIRONMENT'));
