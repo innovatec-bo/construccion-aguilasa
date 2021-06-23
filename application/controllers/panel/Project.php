@@ -511,6 +511,7 @@ class Project extends PrivateController
 
     public function getStakeReport()
     {
+		ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $startDate = $formData["stake-report-from"];
         $startDate = DateTime::createFromFormat('d-m-Y', $startDate);
