@@ -251,7 +251,6 @@ $projectSystems = array(
             <div class="dropdown" style='display:inline'>
               <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="caret"></span>
-                
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a href="#" class='edit-log' data-log-id="{{logId}}"><i class='fa fa-edit fa-fw'></i> Editar</a></li>

@@ -484,7 +484,8 @@ class PrivateController extends PublicController
 			"project_return_materials2_date" => "FECHA DE DEVULUCION DE MATERIALES A CRE",
 			"in_progress_first_detail_date" => "1RA. FECHA DE INICIO DE CONSTRUC.",
 			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA",
-			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO"
+			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO",
+			'production_total_bs' => "PRODUCCION ACTUAL DEL PROYECTO"
         );
         return $columnList;
     }

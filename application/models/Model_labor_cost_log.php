@@ -152,6 +152,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             structure_code_bus structure_code,
             description_bus description,
             worked_up_wus worked_up,
+            unit_price_lac unit_price,
+               round(worked_up_wus*unit_price_lac,2) worked_up_bs,
             unit_of_measurement_bus unit_of_measurement,
             id_bpo point_id,
             label_bpo point_label,
@@ -168,6 +170,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                 bui_labor_cost.labor_detail_id_lac,
                 bui_labor_cost.execution_lac,		
                 bui_labor_cost.activity_lac,
+                bui_labor_cost.unit_price_lac,   
                 bui_building_structures.structure_code_bus, 
                 bui_building_structures.unit_of_measurement_bus,
                 bui_building_structures.description_bus
@@ -198,12 +201,13 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
     public static function prepareArrayLog($projectId = NULL, $builderId = NULL)
     {
         $laborCostLog = Model_labor_cost_log::getLogByProjectId($projectId, $builderId);
-        $singleList = array();
+        $singleList = array();//dd(array_column($laborCostLog,'worked_up_bs'));
         $arrayLog = array();
         for ($i = 0; $i < count($laborCostLog); $i++)
         {
             $logId = $laborCostLog[$i]["log_id"];
             $singleList[] = $laborCostLog[$i];
+
             if(isset($laborCostLog[$i+1]))
             {
                 if($laborCostLog[$i]["log_id"] != $laborCostLog[$i+1]["log_id"])
@@ -235,7 +239,6 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
                 $arrayLog[$logId]['itemList'] = $singleList;
             }
         }
-
         return $arrayLog;
     }
 
