@@ -52,7 +52,7 @@ class BuiCustomStructureMaterials
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_csm", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_csm", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedCsm;
 

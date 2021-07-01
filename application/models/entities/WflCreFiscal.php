@@ -38,7 +38,7 @@ class WflCreFiscal
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_cfi", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_cfi", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedCfi;
 

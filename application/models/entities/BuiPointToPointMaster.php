@@ -150,7 +150,7 @@ class BuiPointToPointMaster
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_ptp", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_ptp", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedPtp;
 

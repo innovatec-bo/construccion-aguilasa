@@ -59,7 +59,7 @@ class MatProjectsMaterials
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_prm", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_prm", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedPrm;
 

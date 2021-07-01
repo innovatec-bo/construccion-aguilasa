@@ -87,7 +87,7 @@ class WflExternalFiscalObservations
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_efo", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_efo", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedEfo;
 

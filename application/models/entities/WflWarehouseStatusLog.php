@@ -38,7 +38,7 @@ class WflWarehouseStatusLog
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_wsl", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_wsl", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedWsl;
 

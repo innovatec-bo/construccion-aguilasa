@@ -52,7 +52,7 @@ class WflWorkPlans
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_wpl", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_wpl", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedWpl;
 

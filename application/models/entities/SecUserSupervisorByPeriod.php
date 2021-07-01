@@ -52,7 +52,7 @@ class SecUserSupervisorByPeriod
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_usp", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_usp", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedUsp;
 

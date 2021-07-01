@@ -52,7 +52,7 @@ class BuiWorkedUpStructures
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_wus", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_wus", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedWus;
 

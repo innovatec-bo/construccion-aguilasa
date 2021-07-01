@@ -73,7 +73,7 @@ class BuiLaborCost
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_lac", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_lac", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedLac;
 

@@ -73,7 +73,7 @@ class SecExecutiveSummaryLog
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_esl", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_esl", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedEsl;
 

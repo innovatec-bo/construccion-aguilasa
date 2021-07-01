@@ -38,7 +38,7 @@ class WflWorkflowColumnGroups
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_wcg", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_wcg", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedWcg;
 

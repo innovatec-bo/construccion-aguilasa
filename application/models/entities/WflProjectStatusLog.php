@@ -38,7 +38,7 @@ class WflProjectStatusLog
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_psl", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_psl", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedPsl;
 

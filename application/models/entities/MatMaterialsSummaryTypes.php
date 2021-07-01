@@ -52,7 +52,7 @@ class MatMaterialsSummaryTypes
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_mqt", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_mqt", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedMqt;
 

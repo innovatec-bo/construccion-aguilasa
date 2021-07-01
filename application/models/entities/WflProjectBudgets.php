@@ -108,7 +108,7 @@ class WflProjectBudgets
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_prb", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_prb", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedPrb;
 

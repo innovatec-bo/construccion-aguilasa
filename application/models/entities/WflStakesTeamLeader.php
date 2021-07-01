@@ -31,7 +31,7 @@ class WflStakesTeamLeader
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_stl", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_stl", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedStl;
 

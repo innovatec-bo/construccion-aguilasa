@@ -45,7 +45,7 @@ class WflWorkPlanDates
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_wpd", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_wpd", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedWpd;
 

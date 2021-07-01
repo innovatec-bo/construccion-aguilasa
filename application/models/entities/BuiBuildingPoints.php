@@ -73,7 +73,7 @@ class BuiBuildingPoints
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_bpo", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_bpo", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedBpo;
 

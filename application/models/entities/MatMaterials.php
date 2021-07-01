@@ -52,7 +52,7 @@ class MatMaterials
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_mat", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_mat", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedMat;
 

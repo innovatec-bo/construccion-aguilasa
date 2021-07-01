@@ -59,7 +59,7 @@ class WflProjectRealBudgets
     /**
      * @var int|null
      *
-     * @ORM\Column(name="deleted_reb", type="smallint", nullable=true)
+     * @ORM\Column(name="deleted_reb", type="smallint", nullable=true, options={"default"="0"})
      */
     private $deletedReb;
 
