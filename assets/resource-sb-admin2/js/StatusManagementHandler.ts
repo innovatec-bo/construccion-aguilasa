@@ -8,6 +8,7 @@ declare let window: any;
 declare let Swal: any;
 declare let Dropzone: any;
 declare let initPhotoSwipeFromDOM : any;
+
 class StatusManagementHandler
 {
     private statusSet: string;
@@ -49,7 +50,7 @@ class StatusManagementHandler
             dataType  :"json",
             method : "GET",
             data:{},
-            success:function(response){
+            success:function(response: { success: number; data: { template: any; }; }){
                 _this.loadViewResponse = response;
                 if(response.success === 1)
                 {
@@ -136,7 +137,7 @@ class StatusManagementHandler
         let statusSetList = this.statusSetList();
         let memory = [];
         //Only loop up to current project status
-        $.each(projectLog, function(index, value){
+        $.each(projectLog, function(index: any, value: { status_id_psl: any; order_pst: string; keyword_pst: any; status_name_pst: any; status_icon_pst: any; }){
             if(previousStatusId != value.status_id_psl && previousOrder >= parseInt(value.order_pst) && statusSetList.indexOf(value.keyword_pst) >= 0 && memory.indexOf(value.keyword_pst) == -1)
             {
                 previousStatusId = value.status_id_psl;
@@ -175,7 +176,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : {projectId:_this.projectId},
-            success:function(response){
+            success:function(response: any){
                 let allowUpdateHistory = viewData.allowUpdateHistory;
                 let allowDeleteStatusLog = viewData.allowDeleteStatusLog;
                 let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory, allowDeleteStatusLog:allowDeleteStatusLog};
@@ -200,14 +201,14 @@ class StatusManagementHandler
     private _defineNextStep()
     {
         let breadCrumb = [];
-        $.each(this._breadCrumb,function(index, value){
+        $.each(this._breadCrumb,function(index: any, value: { stepKeyword: any; }){
             if(value.stepKeyword !== null)
                 breadCrumb.push(value.stepKeyword);
         });
         this.processTree(this.viewData.stepTree,0, breadCrumb);
     }
 
-    addStep(button)
+    addStep(button: any)
     {
         this._defineNextStep();
         this.stopTreeLoop = false;
@@ -215,7 +216,7 @@ class StatusManagementHandler
         this.nextStep = [];//after assign this variable to a local variable let's set as empty
         let nextStepObjectArray = [];
         let statusList = this.loadViewResponse.data.statusList;
-        $.each(statusList, function(index, value){
+        $.each(statusList, function(index: any, value: { keyword_pst: any; id_pst: any; status_name_pst: any; status_icon_pst: any; }){
             if(nextStep.includes(value.keyword_pst))
             {
                 let step = {stepId: value.id_pst, stepName: value.status_name_pst, stepKeyword:  value.keyword_pst, stepIcon: value.status_icon_pst, stepStatus:""};
@@ -237,21 +238,21 @@ class StatusManagementHandler
         }
     }
 
-    insertStep(step)
+    insertStep(step: { stepKeyword: any; })
     {
         let html = this.getHandlebarHtml("#ht-wizard-step", step);
         $(html).insertBefore($(".li-add-step"));
         this.loadStatusForm(step.stepKeyword,1);
     }
 
-    removeStep(button)
+    removeStep(button: any)
     {
         StatusManagementHandler.applyStepListClass(button, "removeStep");
         let statusKeyword = $(".step-list li.active a").prop("id");
         this.loadStatusForm(statusKeyword, 0);
     }
 
-    static applyStepListClass(button, event)
+    static applyStepListClass(button: { parent: () => { (): any; new(): any; removeClass: { (arg0: string): { (): any; new(): any; addClass: { (arg0: string): void; new(): any; }; }; new(): any; }; prev: { (): { (): any; new(): any; removeClass: { (arg0: string): { (): any; new(): any; addClass: { (arg0: string): void; new(): any; }; }; new(): any; }; }; new(): any; }; }; removeClass: (arg0: string) => { (): any; new(): any; addClass: { (arg0: string): void; new(): any; }; }; find: (arg0: string) => { (): any; new(): any; removeClass: { (arg0: string): { (): any; new(): any; addClass: { (arg0: string): void; new(): any; }; }; new(): any; }; }; }, event: string)
     {
         let $liStep : any = $(".step-list li");
         switch (event)
@@ -275,7 +276,7 @@ class StatusManagementHandler
         }
     }
 
-    launchStepSelector(button, nextStepObjectArray)
+    launchStepSelector(button: { parent: () => { (): any; new(): any; popover: { (arg0: string): void; new(): any; }; trigger: { (arg0: string): void; new(): any; }; }; }, nextStepObjectArray: any[])
     {
         let project = this.viewData.project;
         let data = {nextStepObjectArray:nextStepObjectArray, project:project };
@@ -290,7 +291,7 @@ class StatusManagementHandler
         button.parent().trigger("click");
     }
 
-    addStepFromList(step)
+    addStepFromList(step: { stepId: any; stepName: any; stepKeyword: any; stepIcon: any; stepStatus: string; })
     {
         this.insertStep(step);
         let $button = $(".step-list .li-add-step").find("a");
@@ -298,7 +299,7 @@ class StatusManagementHandler
         $('.popover').popover('destroy');
     }
 
-    loadStatusForm(statusKeyword, addMoreInfo)
+    loadStatusForm(statusKeyword: string, addMoreInfo: number)
     {
         let _this = this;
         let $statusFormContent = $("#status-form-content");
@@ -308,7 +309,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : {projectId:_this.projectId, statusKeyword:statusKeyword, statusSet:_this.statusSet},
-            success:function(response){
+            success:function(response: { previousEntry: any[]; assignmentEntry: string | any[]; }){
                 _this._statusFilesIdsToSave = [];
                 let html = "something went wrong";
                 if(response.previousEntry[0] === undefined || addMoreInfo ==  1)
@@ -355,7 +356,7 @@ class StatusManagementHandler
         });
     }
 
-    getHandlebarHtml(templateId, dataObject)
+    getHandlebarHtml(templateId: string, dataObject: { viewData?: any; projectLog?: any; allowUpdateHistory?: any; allowDeleteStatusLog?: any; nextStepObjectArray?: any; project?: any; statusResponsible?: any; responsibleListLength?: any; responsibleGroup?: any; points?: any; distance?: any; statusKeyword?: any; statusSet?: string; previousEntry?: any; assignmentResponsible?: any; assignmentResponsibleFiscal?: any[]; assignmentResponsibleBuilder?: any[]; })
     {
         let $template = $("<div>"+this.loadViewTemplate+"</div>");
         let htmlSource   = $template.find(templateId).html();
@@ -391,7 +392,7 @@ class StatusManagementHandler
 
         if($dateTimePickerComponent.length > 0)
         {
-            $.each($dateTimePickerComponent, function(index, value){
+            $.each($dateTimePickerComponent, function(index: number, value: any){
                 if(index === 0)
                 {
                     let minDate = new Date(_this.viewData.projectLog[0].manual_entry_date_psl);
@@ -456,7 +457,7 @@ class StatusManagementHandler
             autoProcessQueue:false,
             // addRemoveLinks:true
             });    
-            myDropzone.on('addedfile', function(file) {
+            myDropzone.on('addedfile', function(file: { name: string; previewElement: { appendChild: (arg0: any) => void; }; }) {
                 let ext = file.name.split('.').pop();
                 ext = ext.toLowerCase();
                 let imageUrl = base_url + "assets/images/file-default-icon.png";
@@ -480,7 +481,7 @@ class StatusManagementHandler
                 $(file.previewElement).find(".dz-image img").attr("src", timthumbImage);
                 let removeButton = Dropzone.createElement('<a class="btn btn-danger btn-xs dropzone-remove btn-block" href="#" title="" data-original-title="ELIMINAR" data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>');
                 let _this = this;
-                removeButton.addEventListener("click", function (e) {
+                removeButton.addEventListener("click", function (e: { preventDefault: () => void; stopPropagation: () => void; }) {
                     // Make sure the button click doesn't submit the form:
                     e.preventDefault();
                     e.stopPropagation();
@@ -495,7 +496,7 @@ class StatusManagementHandler
             // myDropzone.on('queuecomplete', function() {
             //     console.log(_this._statusFilesIdsToSave);
             // });
-            myDropzone.on("success", function(file, responseText) {
+            myDropzone.on("success", function(file: any, responseText: any) {
                 let fileId = responseText;
                _this._statusFilesIdsToSave.push(fileId);
                
@@ -504,14 +505,14 @@ class StatusManagementHandler
         }
     }
 
-    static getResponsibleGroup(statusKeyword)
+    static getResponsibleGroup(statusKeyword: any)
     {
         //all responsible by status keyword
         let response: any = {};
         let responsibleString : string = $("input[name=responsible-list]").val().toString();
         let responsibleList = JSON.parse(responsibleString);
         let statusResponsible: any[] = [];
-        $.each(responsibleList,function(index,value){
+        $.each(responsibleList,function(index: any,value: { keyword_pst: any; }){
             if(value.keyword_pst == statusKeyword)
                 statusResponsible.push(value);
         });
@@ -523,7 +524,7 @@ class StatusManagementHandler
         responsibleString = $("input[name=responsible-list-fiscal]").val().toString();
         let responsibleListFiscal = JSON.parse(responsibleString);
         let statusResponsibleFiscal = [];
-        $.each(responsibleListFiscal,function(index,value){
+        $.each(responsibleListFiscal,function(index: any,value: any){
             statusResponsibleFiscal.push(value);
         });
         let responsibleListFiscalLength = statusResponsibleFiscal.length;
@@ -534,7 +535,7 @@ class StatusManagementHandler
         responsibleString = $("input[name=responsible-list-builder]").val().toString();
         let responsibleListBuilder = JSON.parse(responsibleString);
         let statusResponsibleBuilder = [];
-        $.each(responsibleListBuilder,function(index,value){
+        $.each(responsibleListBuilder,function(index: any,value: any){
             statusResponsibleBuilder.push(value);
         });
         let responsibleListBuilderLength = statusResponsibleBuilder.length;
@@ -558,7 +559,7 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data:data,
-            success:function(response){
+            success:function(response: { allIncidents: string | any[]; incidentList: any; }){
                 let currentProjectPercentage: number = 0;
                 if(response.allIncidents.length > 0)
                 {
@@ -571,7 +572,7 @@ class StatusManagementHandler
         });
     }
 
-    saveStatus(button)
+    saveStatus(button: { data: (arg0: string) => any; })
     {
         let $form = $("form[name=status-management]");
         let $content = $("#status-form-content");
@@ -600,7 +601,7 @@ class StatusManagementHandler
         }
     }
 
-    chooseMethod(statusKeyword, statusId, button)
+    chooseMethod(statusKeyword: any, statusId: any, button: any)
     {
         switch(statusKeyword)
         {
@@ -675,7 +676,7 @@ class StatusManagementHandler
         }
     }
 
-    saveBasicLog(statusId,statusKeyword)
+    saveBasicLog(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -690,7 +691,7 @@ class StatusManagementHandler
         });
     }
 
-    saveDigitization(statusId, statusKeyword, button)
+    saveDigitization(statusId: any, statusKeyword: any, button: { data: (arg0: string) => any; })
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -726,7 +727,7 @@ class StatusManagementHandler
         });
     }
 
-    saveDrawing(statusId,statusKeyword,button)
+    saveDrawing(statusId: any,statusKeyword: any,button: { data: (arg0: string) => any; })
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -753,7 +754,7 @@ class StatusManagementHandler
         });
     }
 
-    saveSchedule(statusId,statusKeyword)
+    saveSchedule(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -781,7 +782,7 @@ class StatusManagementHandler
         });
     }
 
-    saveRectifyDesign(statusId,statusKeyword)
+    saveRectifyDesign(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let dataResult = this.prepareDataToSave(statusId, statusKeyword);
@@ -797,7 +798,7 @@ class StatusManagementHandler
         });
     }
 
-    saveRectifyIllustration(statusId, statusKeyword)
+    saveRectifyIllustration(statusId: any, statusKeyword: any)
     {
         let _this = this;
         let dataResult = this.prepareDataToSave(statusId, statusKeyword);
@@ -813,7 +814,7 @@ class StatusManagementHandler
         });
     }
 
-    saveApproved(statusId,statusKeyword)
+    saveApproved(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -856,7 +857,7 @@ class StatusManagementHandler
         });
     }
 
-    saveCanceled(statusId,statusKeyword)
+    saveCanceled(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -879,7 +880,7 @@ class StatusManagementHandler
         });
     }
 
-    saveInProgress(statusId,statusKeyword)
+    saveInProgress(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -888,7 +889,7 @@ class StatusManagementHandler
         let select2Data2 = $('.select2.builders').select2("data");
         Array.prototype.push.apply(select2Data1,select2Data2);
         let responsibleList = [];
-        $.each(select2Data1, function(index, value){
+        $.each(select2Data1, function(index: any, value: { id: any; }){
             responsibleList.push(value.id);
         });
         data.responsibleList = responsibleList;
@@ -904,7 +905,7 @@ class StatusManagementHandler
         });
     }
 
-    saveAsBuilt(statusId,statusKeyword)
+    saveAsBuilt(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -926,7 +927,7 @@ class StatusManagementHandler
         });
     }
 
-    saveProjectEnergized(statusId,statusKeyword)
+    saveProjectEnergized(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -948,7 +949,7 @@ class StatusManagementHandler
         });
     }
 
-    saveConciliationShipment(statusId,statusKeyword)
+    saveConciliationShipment(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let data = this.prepareDataToSave(statusId, statusKeyword);
@@ -979,7 +980,7 @@ class StatusManagementHandler
         });
     }
 
-    saveCreReturnOrder(statusId,statusKeyword)
+    saveCreReturnOrder(statusId: any,statusKeyword: any)
     {
         let _this = this;
         let dataResult = this.prepareDataToSave(statusId, statusKeyword);
@@ -995,12 +996,12 @@ class StatusManagementHandler
         });
     }
 
-    prepareDataToSave(statusId, statusKeyword)
+    prepareDataToSave(statusId: any, statusKeyword: string)
     {
         let projectId = this.projectId;
         let select2Data = $('#ajax-get-responsible-list').select2("data");
         let responsibleList = [];
-        $.each(select2Data, function(index, value){
+        $.each(select2Data, function(index: any, value: { id: any; }){
             responsibleList.push(value.id);
         });
         let entryDate = $("input[name="+statusKeyword+"-entry-date]").val();
@@ -1016,7 +1017,7 @@ class StatusManagementHandler
         };
     }
 
-    processTree(tree, index, breadCrumb)
+    processTree(tree: string | any[], index: number, breadCrumb: string | any[])
     {
         for(let i = 0; i<tree.length; i++)
         {
@@ -1046,7 +1047,7 @@ class StatusManagementHandler
     loadEventHandler()
     {
         let _this = this;
-        $(document).on("click", this.buttonAddStep, function(e){
+        $(document).on("click", this.buttonAddStep, function(e: { preventDefault: () => void; }){
             e.preventDefault();
             let $button = $(this);
             $('.popover').popover('destroy');
@@ -1054,7 +1055,7 @@ class StatusManagementHandler
 
         });
 
-        $(document).on("click",".add-step-from-list", function(e){
+        $(document).on("click",".add-step-from-list", function(e: { preventDefault: () => void; }){
            e.preventDefault();
            let stepId = $(this).data("step-id");
            let stepName = $(this).data("step-name");
@@ -1064,31 +1065,31 @@ class StatusManagementHandler
            _this.addStepFromList(step);
         });
 
-        $(document).on("click", this.buttonRemoveStep, function(e){
+        $(document).on("click", this.buttonRemoveStep, function(e: { preventDefault: () => void; }){
             e.preventDefault();
             let $button = $(this);
             _this.removeStep($button);
         });
 
-        $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) {
+        $(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e: { preventDefault: () => void; }) {
             e.preventDefault();
             let keyword = $(this).prop("id");
             _this.loadStatusForm(keyword,0);
         });
 
-        $(document).on("click",".cancel-add-step",function(e){
+        $(document).on("click",".cancel-add-step",function(e: { preventDefault: () => void; }){
            e.preventDefault();
             $('.popover').popover('destroy');
         });
 
-        $(document).on("click",".load-status-form-new-info",function(e){
+        $(document).on("click",".load-status-form-new-info",function(e: { preventDefault: () => void; }){
             e.preventDefault();
             let keyword = $(this).data("keyword");
             _this.loadStatusForm(keyword,1);
             // console.log(keyword);
         });
 
-        $(document).on("click", this.buttonAdd, function(e){
+        $(document).on("click", this.buttonAdd, function(e: { preventDefault: () => void; }){
            e.preventDefault();
            let $button = $(this);
            _this.saveStatus($button);
@@ -1116,7 +1117,7 @@ class StatusManagementHandler
                 beforeSend:function(){
                     blockArea($(form));
                 },
-                success: function (response) {
+                success: function (response: { success: number; data: { file: any; budget: any; extraInfo: any; }; message: any; }) {
                     $(form).unblock();
                     if(response.success == 1)
                     {
@@ -1176,7 +1177,7 @@ class StatusManagementHandler
                 beforeSend:function(){
                     blockArea($(form));
                 },
-                success: function (response) {
+                success: function (response: { success: number; data: { file: any; budget: any; }; message: any; }) {
                     $(form).unblock();
                     if(response.success == 1)
                     {
@@ -1231,7 +1232,7 @@ class StatusManagementHandler
 				beforeSend:function(){
 					blockArea($(form));
 				},
-				success: function (response) {
+				success: function (response: { success: number; data: { file: any; }; message: any; }) {
 					$(form).unblock();
 					if(response.success == 1)
 					{

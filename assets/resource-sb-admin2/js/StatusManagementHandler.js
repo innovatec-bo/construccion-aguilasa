@@ -367,6 +367,7 @@ var StatusManagementHandler = /** @class */ (function () {
                 maxFiles: 15,
                 acceptedFiles: ".pdf, .jpg, .jpeg, .png",
                 autoProcessQueue: false,
+                // addRemoveLinks:true
             });
             myDropzone.on('addedfile', function (file) {
                 var ext = file.name.split('.').pop();
