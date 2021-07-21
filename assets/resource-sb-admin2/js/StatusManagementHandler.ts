@@ -369,15 +369,15 @@ class StatusManagementHandler
         let $totalAmountContent : any = $("#total-project-amount");
         if($totalAmountContent.length == 1)
         {
-            let design : number = parseFloat($("input[name=design-budget]").val().replace(",",""));
+            let design : number = parseFloat($("input[name=design-budget]").val().replace(/,/g,""));
             design = isNaN(design)?0:design;
-            let building : number = parseFloat($("input[name=building-budget]").val().replace(",",""));
+            let building : number = parseFloat($("input[name=building-budget]").val().replace(/,/g,""));
             building = isNaN(building)?0:building;
-            let transportation : number = parseFloat($("input[name=transportation-budget]").val().replace(",",""));
+            let transportation : number = parseFloat($("input[name=transportation-budget]").val().replace(/,/g,""));
             transportation = isNaN(transportation)?0:transportation;
-            let liveLine : number = parseFloat($("input[name=live-line-budget]").val().replace(",",""));
+            let liveLine : number = parseFloat($("input[name=live-line-budget]").val().replace(/,/g,""));
             liveLine = isNaN(liveLine)?0:liveLine;
-            let rightOfWay : number = parseFloat($("input[name=right-of-way-budget]").val().replace(",",""));
+            let rightOfWay : number = parseFloat($("input[name=right-of-way-budget]").val().replace(/,/g,""));
             rightOfWay = isNaN(rightOfWay)?0:rightOfWay;
             let total : number = design + building + transportation + liveLine + rightOfWay;
             total = parseFloat(total.toFixed(2));
