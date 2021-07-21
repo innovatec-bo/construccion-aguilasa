@@ -28,7 +28,6 @@ class AjaxMaterial extends PrivateController
 		$page = $this->input->post("page");
 		$offset = ($page-1)*$limit;
 		$additionalParameters = $this->input->post('additionalParameters')??[];
-//		$additionalParameters = ['assigned-to-project' => 1458];
 		$teamPaginationHandler = new MaterialPaginationHandler($limit,$offset,'material_description','asc',$term,array('material_description','material_code'));
 		$teamPaginationHandler->setAdditionalParameters($additionalParameters);
 		$result = $teamPaginationHandler->getResponseForSelect2($page);

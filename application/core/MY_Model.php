@@ -235,6 +235,7 @@ class MY_Model
         if(is_null($key))
         	$key = static::TABLE_ID;
         $ci->db->update_batch(static::TABLE_NAME, $list, $key);
+        return $ci->db->affected_rows();
     }
 
     public static function insertBatch($list = array())
@@ -242,6 +243,7 @@ class MY_Model
         $ci=&get_instance();
         $ci->load->database();
         $ci->db->insert_batch(static::TABLE_NAME, $list);
+        return $ci->db->affected_rows();
     }
 
     public static function getAllInArrayIds($arrayIds = array(), $limit, $offset, $orderBy = null, $orderType = 'asc')

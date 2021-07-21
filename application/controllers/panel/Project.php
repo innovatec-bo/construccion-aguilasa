@@ -356,7 +356,7 @@ class Project extends PrivateController
 		$result = TRUE;
 		if(!is_numeric($entityId))
 		{
-			$this->form_validation->set_message('validate_entity_id', 'El campo {field} debe ser un identificador valido ');
+			$this-> form_validation->set_message('validate_entity_id', 'El campo {field} debe ser un identificador valido ');
 			$result = FALSE;
 		}
 		return $result;
@@ -1010,4 +1010,59 @@ class Project extends PrivateController
 			redirect(base_url("panel/Project/quickSetup/".$project->getId()));
 		}
 	}
+
+    public function loadPendingsFile()
+    {
+        /** Load libraries */
+        $this->load->library('form_validation');
+        // $this->form_validation->set_rules('pendings-file', 'File', 'trim');
+
+        /** Breadcrumbs */
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("warehouse/import-materials");
+        }
+        else
+        {
+            if (!empty($_FILES['pendings-file']['name']))
+            {
+                try
+                {
+                    $formData = $this->input->post();
+                    $createPendingSummary = $formData['create-pending-summary'];
+                    $fileHandler = new FileHandler();
+                    $document = $fileHandler->fileUpload($_FILES['pendings-file'], "pendings_doc", "documents", "document");
+                    $document->save();
+                    $pendingReturnsFileReader = new PendingReturnsFileReader($document);
+                    if($createPendingSummary == 1)
+                    {
+                        $pendingReturnsFileReader->createPendingSummary();
+                    }
+                    else
+                    {
+                        $preview = $pendingReturnsFileReader->previewPendingSummary();
+                        $this->_loadPanelView("project/upload-pendings-file",['preview'=>$preview]);
+                    }
+                    
+                    $response['success'] = 1;
+                    $response['message'] = '';
+                    $response['data']['preview'] = $preview??[];
+                }
+                catch (Exception $e)
+                {
+                    $response['success'] = 0;
+                    $response['message'] = $e->getMessage();
+                    $response['data'] = array();
+                }
+            }
+            else
+            {
+                $response['success'] = 0;
+                $response['message'] = 'No se selecciono ningun archivo de Pendientes para revisar.';
+                $response['data']['file'] = array();
+            }
+            //echo json_encode($response);exit;
+        }  
+    }
 }

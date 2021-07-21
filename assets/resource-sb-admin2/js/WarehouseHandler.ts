@@ -14,7 +14,7 @@ declare let timbthumbImage : any;
 
 class WarehouseHandler
 {
-	private _projectMaterialSummary;
+	private _projectMaterialSummary: any[];
 	public static columnsDefinition = [];
     constructor()
     {
@@ -25,18 +25,24 @@ class WarehouseHandler
 		WarehouseHandler.columnsDefinition['quantity_picked_up_from_cre'] = 4;
 		WarehouseHandler.columnsDefinition['pending_material_in_cre'] = 5;
 		WarehouseHandler.columnsDefinition['quantity_materials_delivered_to_builder'] = 6;
-		WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 7;
-		WarehouseHandler.columnsDefinition['movement'] = 8;
-		WarehouseHandler.columnsDefinition['tension'] = 9;
-		WarehouseHandler.columnsDefinition['status'] = 10;
+		WarehouseHandler.columnsDefinition['request_materials_quantity'] = 7;
+		WarehouseHandler.columnsDefinition['quantity_in_warehouse'] = 8;
+		WarehouseHandler.columnsDefinition['all_quantity_in_warehouse'] = 9;
+		WarehouseHandler.columnsDefinition['movement'] = 10;
+		WarehouseHandler.columnsDefinition['tension'] = 11;
+		WarehouseHandler.columnsDefinition['status'] = 12;
     }
 
 	private _addRow()
 	{
 		let rowData = $('.select2-materials').select2('data')[0];
+		//Search summary from next array by code added to table
+		let rowDataSummary = this._projectMaterialSummary.filter((p: { material_code: any; }) => p.material_code == rowData.material_code);
 		let htmlSource   = $('#table-row').html();
 		let template = Handlebars.compile(htmlSource);
 		let data = {data:rowData, rowId: Date.now()};
+		if(rowDataSummary.length > 0)
+			data.data = rowDataSummary[0];
 		let html = template(data);
 
 		//Add new row: let's get the last row to append the new row after it
@@ -50,17 +56,22 @@ class WarehouseHandler
 		else
 			$('#table-body').append(html);
 
-		//Search summary from next array by code added to table
-		let rowDataSummary = this._projectMaterialSummary.filter(p => p.material_code == rowData.material_code);
+		
 		//Get rows using the first column
 		let rows = $("td:nth-child(1)").filter(function(){
 			return $(this).text() == rowData.material_code;
 		}).parent();
 		WarehouseHandler._applyRowspan(rows, rowData, rowDataSummary);
 		WarehouseHandler.columnsVisibility();
+		WarehouseHandler._initInputMask();
 	}
 
-	private _quitRow(btn)
+	private static _initInputMask()
+	{
+		$(".input-masked").inputmask();
+	}
+
+	private _quitRow(btn: any)
 	{
 		let materialCode = $(btn).closest('tr').find("td:eq(0)").text();
 		//Removing entire row
@@ -73,16 +84,22 @@ class WarehouseHandler
 		WarehouseHandler.columnsVisibility();
 	}
 
-	private static _applyRowspan(rows, rowData?, rowDataSummary?)
+	/**
+	 * Add info to each cell(already in dom) and apply the proper rowspan
+	 * @param rows 
+	 * @param rowData 
+	 * @param rowDataSummary 
+	 */
+	private static _applyRowspan(rows: { find: (arg0: string) => any; length: any; }, rowData?: { [x: string]: string; hasOwnProperty: (arg0: string) => any; }, rowDataSummary?: string | any[])
 	{
 		//Add colspan
-		let toApplyRowspan = ['material_code','material_description','quantity_assigned_materials','quantity_picked_up_from_cre','pending_material_in_cre','quantity_materials_delivered_to_builder','quantity_in_warehouse'];
+		let toApplyRowspan = ['material_code','material_description','quantity_assigned_materials','quantity_picked_up_from_cre','pending_material_in_cre','quantity_materials_delivered_to_builder','request_materials_quantity','quantity_in_warehouse','all_quantity_in_warehouse'];
 		for (let columnKey in WarehouseHandler.columnsDefinition)
 		{
 			let columnIndex = WarehouseHandler.columnsDefinition[columnKey];
 			if(toApplyRowspan.indexOf(columnKey) >= 0)
 			{
-				$.each(rows.find("td:eq("+(columnIndex-1)+")"), function(rowIndex,value){
+				$.each(rows.find("td:eq("+(columnIndex-1)+")"), function(rowIndex: number,value: any){
 					if(rowDataSummary && rowDataSummary.length > 0)
 					{
 						let cellValue = rowDataSummary[0][columnKey];
@@ -141,18 +158,18 @@ class WarehouseHandler
 				$component.slideUp();
 				let projectId = $('select.project option:selected').val();
 				if(projectId != "")
-					this.getSummaryByReservationNumber(projectId);
+					this.getSummaryByReservationNumber(optionSelected, projectId);
 		}
 	}
 
-	public getSummaryByReservationNumber(projectId, reservationNumber = "")
+	public getSummaryByReservationNumber(summaryType: string | number, projectId: string, reservationNumber = "")
 	{
 		let _this = this;
 		$.ajax({
-			url : base_url + 'panel/AjaxMaterialSummary/getSummaryByReservationNumber/'+projectId+'/'+reservationNumber,
+			url : base_url + 'panel/AjaxMaterialSummary/getSummaryByReservationNumber/'+summaryType+'/'+projectId+'/'+reservationNumber,
 			dataType  :"json",
 			type : "GET",
-			success:function(response)
+			success:function(response: any)
 			{
 				_this._projectMaterialSummary = response;
 			}
@@ -164,14 +181,30 @@ class WarehouseHandler
 		let htmlSource   = $('#table-row').html();
 		let template = Handlebars.compile(htmlSource);
 		let html = "";
-		$.each(this._projectMaterialSummary, function(index, value){
+		$.each(this._projectMaterialSummary, function(index: number, value: { pending_material_in_cre: number; quantity_in_warehouse: number; }){
+			let optionSelected = parseInt($('select[name=summary-type] option:selected').val());
+			//If the option selected is 'material_picked_up_from_cre' and the "pending_materials_in_cre" is "0" then let's skip that row.
+			if(optionSelected == 3 && value.pending_material_in_cre == 0)
+			{
+				return true;
+			}
+			
+			if(optionSelected == 14 && value.quantity_in_warehouse == 0)
+			{
+				return true;
+			}
 			let data = {data:value, rowId: index+Date.now()};
 			html += template(data);
 		});
 		let $tableBody = $('#table-body');
-		$tableBody.html('');
+		WarehouseHandler.emptyTable($tableBody);
 		$tableBody.append(html);
 
+	}
+
+	public static emptyTable(tableBody: { html: (arg0: string) => void; })
+	{
+		tableBody.html('');
 	}
 
 	public static columnsVisibility()
@@ -197,7 +230,7 @@ class WarehouseHandler
 			url : base_url + 'panel/AjaxMaterialSummary/getSummaryListByProjectId/'+projectId,
 			dataType  :"json",
 			type : "GET",
-			success:function(response)
+			success:function(response: any)
 			{
 				let htmlSource   = $('#reservation-number-options').html();
 				let template = Handlebars.compile(htmlSource);
@@ -206,6 +239,48 @@ class WarehouseHandler
 				$('select[name=reservation-number]').html(html);
 			}
 		});
+	}
+
+	/**
+	 * This method is used in warehouse.entry.js as parley validation
+	 */
+	public static validateQuantityToMove(element: any) : boolean
+	{
+		let summaryTypeKeyword : string = $('select[name=summary-type] option:selected').data('keyword');
+		let inputValue = $(element).val();
+		let $tr : any = $(element).closest('tr');
+		let pendingMaterialInCre : number = parseFloat($tr.data('pending-material-in-cre'));
+		let quantitInWarehouse : number = parseFloat($tr.data('quantity-in-warehouse'));
+		let quantityRequested = parseFloat($tr.find('.quantity').data('quantity-requested'));
+		let response : boolean;
+		let message : string;
+		switch(summaryTypeKeyword)
+		{
+			case 'materials_picked_up_from_cre':
+				response = inputValue <= pendingMaterialInCre;
+				message = 'No puede exceder la cantidad pendiente en CRE';
+				break;
+			case 'materials_delivered_to_builder':
+				//response = inputValue <= (quantitInWarehouse + quantityRequested);
+				response = inputValue <= quantityRequested;
+				message = 'No puede llevar mas que la cantidad solicitada.';
+				break;
+			case 'request_materials':
+				response = inputValue <= quantitInWarehouse;
+				message = 'No puede solicitar mas materiales de los que tiene disponible el proyecto en almacen.'
+				break;
+			default:
+				message = '';
+				response = true;
+		}
+		window.Parsley.addMessage('es', 'validateQuantityToMove', message);
+		
+		// let materialCode = $(element.$element).closest('tr').data('material-code');//element
+		// var requestedQuantity = 0;
+		// $(".quantity-"+materialCode).each(function() {   
+		// 	requestedQuantity += +this.value;
+		// });
+		return response;
 	}
 
 	public loadRequestedData()
@@ -219,9 +294,16 @@ class WarehouseHandler
 			$("select[name=fiscal]").val(materialSummary.fiscal_id);
 			$("select[name=builder]").val(materialSummary.builder_id);
 			setTimeout(function () {
-				$.each(materialList, function(index, value){
+				$.each(materialList, function(index: any, value: { material_id: any; material_code: string; material_description: string; request_materials_quantity: any; material_quantity: any; material_tension_id: any; material_status_id: any; quantity_in_warehouse: any, all_quantity_in_warehouse: any}){
 					let $select2Materials = $(".select2-materials");
-					let data = { id: value.material_id, text: "("+value.material_code+") "+value.material_description, material_code: value.material_code};
+					let data = { 
+						id: value.material_id, 
+						text: "("+value.material_code+") "+value.material_description, 
+						material_code: value.material_code,
+						request_materials_quantity: value.request_materials_quantity,
+						quantity_in_warehouse: value.quantity_in_warehouse,
+						all_quantity_in_warehouse: value.all_quantity_in_warehouse
+					};
 					$select2Materials.select2("trigger", "select", {data: data});
 					$select2Materials.trigger('change');
 					_this._addRow();
@@ -230,6 +312,7 @@ class WarehouseHandler
 					$select2Materials.val(null).trigger('change');
 					let $rowAdded = $('#table-body tr:last');
 					$rowAdded.find('.quantity').val(value.material_quantity);
+					$rowAdded.find('.quantity').data('quantity-requested',value.material_quantity);
 					$rowAdded.find('.tension').val(value.material_tension_id);
 					$rowAdded.find('.status').val(value.material_status_id);
 					$rowAdded.find('.material').val(value.material_id);
@@ -275,26 +358,27 @@ class WarehouseHandler
 			_this._quitRow(this);
 		});
 
-		$('select[name=summary-type]').on('change', function (e) {
+		$('select[name=summary-type]').on('change', function (e: any) {
 			WarehouseHandler.builderSelectionVisibility();
 			_this.reservationNumberVisibility();
 			WarehouseHandler.columnsVisibility();
 		});
 
-		$('select.project').on('select2:clear', function (e) {
+		$('select.project').on('select2:clear', function (e: any) {
 			$('select[name=reservation-number]').html('<option value="">--Elija un Nro. de reserva--</option>');
 			$('#table-body').html("");
 			$('.select2-materials').val(null).trigger('change');
 		});
 
-		$('select.project').on('change', function (e) {
+		$('select.project').on('change', function (e: any) {
 			let projectId = $('select.project option:selected').val();
+			let summaryType = parseInt($('select[name=summary-type] option:selected').val());
 			if(projectId != "")
 			{
 				//If the reservation number is not
 				if(!$("#reservation-number-selection").is(':visible'))
 				{
-					_this.getSummaryByReservationNumber(projectId);
+					_this.getSummaryByReservationNumber(summaryType, projectId);
 				}
 				$('select[name=reservation-number]').html('<option value="">Cargando..</option>');
 				$('#table-body').html("");
@@ -341,6 +425,10 @@ class WarehouseHandler
 					return false;
 				}
 			}
+		});
+		$(document).on('click','.wh-clear-table',function(){
+			let $tableBody = $('#table-body');
+			WarehouseHandler.emptyTable($tableBody);
 		});
 	}
 }

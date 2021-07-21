@@ -5,9 +5,22 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 	const TABLE_ID = "id_pro";
 	const ATTRIB_SUFIX = "_pro";
 
+	private array $_columnsToShow;
+	private array $_columnsAndDependencies;
+	private array $_queryDependencies;
+
 	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
 	{
 		parent::__construct($limit, $offset, $orderBy, $orderType, $textToSearch, $colsArray);
+		$this->_setColumnsAndDependencies();
+		$this->_setQueryDependencies();
+		$this->_columnsToShow = [];
+
+	}
+
+	public function setColumnsToShow(array $columnList) : void
+	{
+		$this->_columnsToShow = $columnList;
 	}
 
 	/**
@@ -16,39 +29,24 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 	 */
 	protected function _coreQuery() : string
 	{
-		return "
+		$buildQuery = $this->_buildQuery();
+		$core = "
 			(
 			
 			SELECT
             id_pro,
             IF(energized_pro = 1, 'Si', 'No') energized_pro,
-            project_energized.entry_date project_energized_entry_date,
-            last_week_percentage,
-            work_area_pro,
-            previous_percentage,
-            previous_manual_entry_date,
-            percentage_inc,
-            last_three_incidents,
-            detail_inc,
+			work_area_pro,
             status_pro project_status_id,
-            status_name_pst,
-            keyword_pst,
-            order_pst,
-            project_percentage_pro,
-            id_con,
-            contract_number_con,
-            TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
-            status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
-            code_pro,
+			project_percentage_pro,
+			code_pro,
             secondary_code_pro,
             detail_pro,
             budgetary_position_pro,
             entry_date_pro,
             folder_date_pro,
             concat(firstname_usr,' ', lastname_usr) cre_fiscal_pro,
-            id_usr cre_fiscal_id,
-            email_usr cre_fiscal_email,
-            CASE
+			CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'
                 WHEN system_pro = 3 then 'Sistema Misiones'
@@ -72,137 +70,35 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             quality_level_pro,
             cre_design_completion_date_pro,
             cre_building_completion_date_pro,
-            stakes.entry_date stake_date,	
-            stakes.responsible_user_id stake_responsible_user_id,
-            stakes.responsible stake_responsible,
-            digitization.points_quantity_prp digitization_points_quantity,
-            digitization.distance_prp digitization_distance,
-            rd_digitization.points_quantity_prp rd_digitization_points_quantity,
-            rd_digitization.distance_prp rd_digitization_distance,
-            returned.entry_date returned_date,
-            digitization.entry_date digitization_date,
-            drawing.entry_date drawing_date,
-            schedulee.entry_date schedule_date,
-            schedulee.design_prb schedule_design_budget,
-            project_start_pro schedule_start,
+			project_start_pro schedule_start,
             project_end_pro schedule_end,
-            ready_to_send.entry_date ready_to_send_date,
-            already_sent.entry_date already_sent_date,
-            schedulee.tentative_total_budget_prb schedulee_tentative_total_budget,
-            approved.entry_date approved_date,
-            canceled.entry_date canceled_date,
-            rectify_design.entry_date rectify_design_date,
-            rectify_illustration.entry_date rectify_illustration_date,
-            approved.design_prb design_budget,
-            approved.building_prb building_budget,
-            approved.transportation_prb transportation_budget,
-            approved.live_line_prb live_line_budget,
-            approved.right_of_way_prb right_of_way_budget,
-            approved.total_budget total_approved,
-            approved.manpower_file_id,
+			{$buildQuery['columns']}
+			
+
+            last_week_percentage,
+            previous_percentage,
+            previous_manual_entry_date,
+            percentage_inc,
+            last_three_incidents,
+            detail_inc,
+            status_name_pst,
+            keyword_pst,
+            order_pst,
+            id_con,
+            contract_number_con,
+            TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
+            status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
+            id_usr cre_fiscal_id,
+            email_usr cre_fiscal_email,
             '' as record_building_materials_date,
 		   	'' as get_materials_date,
 		   	'' as deliver_materials_date,
-		   	'' as materials_reception_date,               
-            assign_to.entry_date assign_to_date,
-            assign_to.responsible assign_to_responsible,
-            in_progress.builder_responsible builder_responsible,
-            in_progress.builder_responsible_id builder_responsible_id,
-            in_progress.responsible_user_id builder_responsible_user_id,
-            assign_to.fiscal_responsible_id fiscal_responsible_id,
-            assign_to.fiscal_responsible fiscal_responsible,
-            -- if(assign_to.live_line_cas,'Si','No') live_line_assigned,
-            if(status_pro >= 35,if(conciliation_shipment.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned,
-            if(assign_to.power_down_cas, 'Si','No') power_down_assigned,
-            if(assign_to.maneuver_cas, 'Si','No') maneuver_assigned,
-            assign_to.start_date_cas start_date_assigned,
-            assign_to.end_date_cas end_date_assigned,
-            assign_to.estimated_time_cas estimated_time_assigned,
-            IF(assign_to.construction_assignment_id is null, approved.construction_assignment_id, assign_to.construction_assignment_id) construction_assignment_id,
-            IF(assign_to.project_manager_id is null, approved.project_manager_id, assign_to.project_manager_id) project_manager_user_id,
-            IF(assign_to.project_manager_id is null, approved.project_manager_full_name, assign_to.project_manager_full_name) project_manager_assigned,
-            in_progress.entry_date in_progress_date,
-            in_progress_first_detail.entry_date in_progress_first_detail_date,
-            completed.entry_date completed_date,
-            paused.entry_date paused_date,
-            paused.percentage_paused percentage_paused,
-            stopped.entry_date stopped_date,
-            stopped.percentage_stopped percentage_stopped,
-            as_built.entry_date as_built_date,
-            as_built.points_quantity_prp as_built_points_quantity,
-            as_built.distance_prp as_built_distance,
-            conciliation_reception.entry_date conciliation_reception_date,
-            conciliation_shipment.entry_date conciliation_shipment_date,
-            cre_return_order.entry_date cre_return_order_date,
-            project_return_materials.entry_date project_return_materials_date,
-            project_return_materials2.entry_date project_return_materials2_date,
-            payment_order_registered.entry_date payment_order_registered_date,
-            payment_order_registered.order_number_pao payment_order_registered_order_number,
-            if(payment_order_registered.order_number_pao != '','Pagado','Pendiente de pago') payment_status,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) payment_order_registered_design_budget,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.building_budget_pop, conciliation_shipment.building_reb) payment_order_registered_building_budget,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.transportation_budget_pop, conciliation_shipment.transportation_reb) payment_order_registered_transportation_budget,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.live_line_budget_pop, conciliation_shipment.live_line_reb) payment_order_registered_live_line_budget,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.right_of_way_budget_pop, conciliation_shipment.right_of_way_reb) payment_order_registered_right_of_way_budget,
-            if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget) payment_order_registered_total_real_budget,
-            payment_order_registered.invoice_number_pao payment_order_registered_invoice_number,
-            payment_order_invoice_sent.entry_date payment_order_invoice_sent_date,
-            payment_order_has_been_settled.entry_date payment_order_has_been_settled_date,
-            CASE 
-				WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)
-				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget
-				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)
-			END project_current_budget,
-			CASE 
-				WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then schedulee.design_prb
-				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.design_prb
-				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
-			END project_current_design_budget,
-			CASE 
-				WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned','schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
-					then 0.00
-				WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception')
-					then 
-					FORMAT(
-						(((IFNULL(production.total_bs,0) + approved.design_prb) * 100)/ approved.total_budget)
-					, 2)
-				WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
-					then
-					FORMAT(
-						(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget))
-					, 2)
-			END production_percentage,
-			production.total_bs production_total_bs
+		   	'' as materials_reception_date,
+            production.total_bs production_total_bs
         FROM
             wfl_projects
-        LEFT JOIN (".Model_project::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(16).") rd_digitization on rd_digitization.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(20).") returned on returned.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(3).") digitization on digitization.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(5).") drawing on drawing.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(6).") schedulee on schedulee.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(9).") ready_to_send on ready_to_send.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(13).") rectify_design on rectify_design.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(14).") rectify_illustration on rectify_illustration.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(29).") in_progress on in_progress.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(29, TRUE).") in_progress_first_detail on in_progress_first_detail.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(32).") completed on completed.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(34).") conciliation_reception on conciliation_reception.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(37).") cre_return_order on cre_return_order.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(39).") project_return_materials2 on project_return_materials2.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_statusDetailQuery(47).") project_energized on project_energized.project_id_psl = id_pro
-        LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro
-        LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro
-        LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro
+		{$buildQuery['dependencies']}
+        
         LEFT JOIN wfl_project_status on status_pro = id_pst
         left join sec_users cre_fiscal on id_usr = cre_fiscal_pro
         left join wfl_contracts on contract_id_pro = id_con
@@ -314,6 +210,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
         deleted_pro != 1
 				) ".static::TABLE_NAME."
 		";
+		return $core;
 	}
 
 	/**
@@ -539,4 +436,207 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		$resultArray['pagination'] = array("more" => $moreResults);
 		return $resultArray;
 	}
+
+	private function _setColumnsAndDependencies()
+	{
+		$this->_columnsAndDependencies = [
+			'stake_date' => ['column' => 'stakes.entry_date stake_date', 'dependencies' => ['stakes']],
+            'stake_responsible_user_id' => ['column' => 'stakes.responsible_user_id stake_responsible_user_id', 'dependencies' => ['stakes']],
+            'stake_responsible' => ['column' => 'stakes.responsible stake_responsible', 'dependencies' => ['stakes']],
+
+			'rd_digitization_points_quantity' => ['column' => 'rd_digitization.points_quantity_prp rd_digitization_points_quantity', 'dependencies' => ['rd_digitization']],
+            'rd_digitization_distance' => ['column' => 'rd_digitization.distance_prp rd_digitization_distance', 'dependencies' => ['rd_digitization']],
+
+			'returned_date' => ['column' => 'returned.entry_date returned_date', 'dependencies' => ['returned']],
+
+			'digitization_points_quantity' => ['column' => 'digitization.points_quantity_prp digitization_points_quantity', 'dependencies' => ['digitization']],
+            'digitization_distance' => ['column' => 'digitization.distance_prp digitization_distance', 'dependencies' => ['digitization']],
+            'digitization_date' => ['column' => 'digitization.entry_date digitization_date', 'dependencies' => ['digitization']],
+
+			'drawing_date' => ['column' => 'drawing.entry_date drawing_date', 'dependencies' => ['drawing']],
+
+			'schedule_date' => ['column' => 'schedulee.entry_date schedule_date', 'dependencies' => ['schedulee']],
+            'schedule_design_budget' => ['column' => 'schedulee.design_prb schedule_design_budget', 'dependencies' => ['schedulee']],
+			'schedulee_tentative_total_budget' => ['column' => 'schedulee.tentative_total_budget_prb schedulee_tentative_total_budget', 'dependencies' => ['schedulee']],
+			'project_current_budget' => ['column' => "CASE
+											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
+											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget\n
+											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)\n
+										END project_current_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
+			'project_current_design_budget' => ['column' => "CASE 
+													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then schedulee.design_prb
+													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.design_prb
+													WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
+												END project_current_design_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
+
+			'ready_to_send_date' => ['column' => 'ready_to_send.entry_date ready_to_send_date', 'dependencies' => ['ready_to_send']],
+
+			'already_sent_date' => ['column' => 'already_sent.entry_date already_sent_date', 'dependencies' => ['already_sent']],
+
+			'approved_date' => ['column' => 'approved.entry_date approved_date', 'dependencies' => ['approved']],
+			'design_budget' => ['column' => 'approved.design_prb design_budget', 'dependencies' => ['approved']],
+            'building_budget' => ['column' => 'approved.building_prb building_budget', 'dependencies' => ['approved']],
+            'transportation_budget' => ['column' => 'approved.transportation_prb transportation_budget', 'dependencies' => ['approved']],
+            'live_line_budget' => ['column' => 'approved.live_line_prb live_line_budget', 'dependencies' => ['approved']],
+            'right_of_way_budget' => ['column' => 'approved.right_of_way_prb right_of_way_budget', 'dependencies' => ['approved']],
+            'total_approved' => ['column' => 'approved.total_budget total_approved', 'dependencies' => ['approved']],
+            'manpower_file_id' => ['column' => 'approved.manpower_file_id', 'dependencies' => ['approved']],
+			'live_line_assigned' => ['column' => "if(status_pro >= 35,if(conciliation_shipment.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned", 'dependencies' => ['conciliation_shipment','approved']],
+			'construction_assignment_id' => ['column' => 'IF(assign_to.construction_assignment_id is null, approved.construction_assignment_id, assign_to.construction_assignment_id) construction_assignment_id', 'dependencies' => ['assign_to','approved']],
+            'project_manager_user_id' => ['column' => 'IF(assign_to.project_manager_id is null, approved.project_manager_id, assign_to.project_manager_id) project_manager_user_id', 'dependencies' => ['assign_to','approved']],
+            'project_manager_assigned' => ['column' => 'IF(assign_to.project_manager_id is null, approved.project_manager_full_name, assign_to.project_manager_full_name) project_manager_assigned', 'dependencies' => ['assign_to','approved']],
+			'production_percentage' => ['column' => "CASE 
+											WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned','schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+												then 0.00
+											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception')
+												then 
+												FORMAT(
+													(((IFNULL(production.total_bs,0) + approved.design_prb) * 100)/ approved.total_budget)
+												, 2)
+											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+												then
+												FORMAT(
+													(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget))
+												, 2)
+										END production_percentage", 'dependencies' => ['production','approved','payment_order_registered','conciliation_shipment']],
+
+			'canceled_date' => ['column' => 'canceled.entry_date canceled_date', 'dependencies' => ['canceled']],
+
+			'rectify_design_date' => ['column' => 'rectify_design.entry_date rectify_design_date', 'dependencies' => ['rectify_design']],
+
+			'rectify_illustration_date' => ['column' => 'rectify_illustration.entry_date rectify_illustration_date', 'dependencies' => ['rectify_illustration']],
+
+			'assign_to_date' => ['column' => 'assign_to.entry_date assign_to_date', 'dependencies' => ['assign_to']],
+            'assign_to_responsible' => ['column' => 'assign_to.responsible assign_to_responsible', 'dependencies' => ['assign_to']],
+			//'live_line_assigned' => "-- if(assign_to.live_line_cas,'Si','No') live_line_assigned",
+			'fiscal_responsible_id' => ['column' => 'assign_to.fiscal_responsible_id fiscal_responsible_id', 'dependencies' => ['assign_to']],
+            'fiscal_responsible' => ['column' => 'assign_to.fiscal_responsible fiscal_responsible', 'dependencies' => ['assign_to']],
+            'power_down_assigned' => ['column' => "if(assign_to.power_down_cas, 'Si','No') power_down_assigned", 'dependencies' => ['assign_to']],
+            'maneuver_assigned' => ['column' => "if(assign_to.maneuver_cas, 'Si','No') maneuver_assigned", 'dependencies' => ['assign_to']],
+            'start_date_assigned' => ['column' => 'assign_to.start_date_cas start_date_assigned', 'dependencies' => ['assign_to']],
+            'end_date_assigned' => ['column' => 'assign_to.end_date_cas end_date_assigned', 'dependencies' => ['assign_to']],
+            'estimated_time_assigned' => ['column' => 'assign_to.estimated_time_cas estimated_time_assigned', 'dependencies' => ['assign_to']],
+
+            'builder_responsible' => ['column' => 'in_progress.builder_responsible builder_responsible', 'dependencies' => ['in_progress']],
+            'builder_responsible_id' => ['column' => 'in_progress.builder_responsible_id builder_responsible_id', 'dependencies' => ['in_progress']],
+            'builder_responsible_user_id' => ['column' => 'in_progress.responsible_user_id builder_responsible_user_id', 'dependencies' => ['in_progress']],
+            'in_progress_date' => ['column' => 'in_progress.entry_date in_progress_date', 'dependencies' => ['in_progress']],
+
+			'in_progress_first_detail_date' => ['column' => 'in_progress_first_detail.entry_date in_progress_first_detail_date', 'dependencies' => ['in_progress_first_detail']],
+
+			'completed_date' => ['column' => 'completed.entry_date completed_date', 'dependencies' => ['completed']],
+
+			'paused_date' => ['column' => 'paused.entry_date paused_date', 'dependencies' => ['paused']],
+            'percentage_paused' => ['column' => 'paused.percentage_paused percentage_paused', 'dependencies' => ['paused']],
+
+			'stopped_date' => ['column' => 'stopped.entry_date stopped_date', 'dependencies' => ['stopped']],
+            'percentage_stopped' => ['column' => 'stopped.percentage_stopped percentage_stopped', 'dependencies' => ['stopped']],
+
+			'as_built_date' => ['column' => 'as_built.entry_date as_built_date', 'dependencies' => ['as_built']],
+            'as_built_points_quantity' => ['column' => 'as_built.points_quantity_prp as_built_points_quantity', 'dependencies' => ['as_built']],
+            'as_built_distance' => ['column' => 'as_built.distance_prp as_built_distance', 'dependencies' => ['as_built']],
+
+			'conciliation_reception_date' => ['column' => 'conciliation_reception.entry_date conciliation_reception_date', 'dependencies' => ['conciliation_reception']],
+
+			'conciliation_shipment_date' => ['column' => 'conciliation_shipment.entry_date conciliation_shipment_date', 'dependencies' => ['conciliation_shipment']],
+			'payment_order_registered_design_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) payment_order_registered_design_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+            'payment_order_registered_building_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.building_budget_pop, conciliation_shipment.building_reb) payment_order_registered_building_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+            'payment_order_registered_transportation_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.transportation_budget_pop, conciliation_shipment.transportation_reb) payment_order_registered_transportation_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+            'payment_order_registered_live_line_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.live_line_budget_pop, conciliation_shipment.live_line_reb) payment_order_registered_live_line_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+            'payment_order_registered_right_of_way_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.right_of_way_budget_pop, conciliation_shipment.right_of_way_reb) payment_order_registered_right_of_way_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+            'payment_order_registered_total_real_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget) payment_order_registered_total_real_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+
+			'cre_return_order_date' => ['column' => 'cre_return_order.entry_date cre_return_order_date', 'dependencies' => ['cre_return_order']],
+
+			'project_return_materials_date' => ['column' => 'project_return_materials.entry_date project_return_materials_date', 'dependencies' => ['project_return_materials']],
+
+			'project_return_materials2_date' => ['column' => 'project_return_materials2.entry_date project_return_materials2_date', 'dependencies' => ['project_return_materials2']],
+
+			'project_energized_entry_date' => ['column' => 'project_energized.entry_date project_energized_entry_date', 'dependencies' => ['project_energized']],
+
+			'payment_order_registered_date' => ['column' => 'payment_order_registered.entry_date payment_order_registered_date', 'dependencies' => ['payment_order_registered',]],
+            'payment_order_registered_order_number' => ['column' => 'payment_order_registered.order_number_pao payment_order_registered_order_number', 'dependencies' => ['payment_order_registered']],
+            'payment_status' => ['column' => "if(payment_order_registered.order_number_pao != '','Pagado','Pendiente de pago') payment_status", 'dependencies' => ['payment_order_registered']],
+            'payment_order_registered_invoice_number' => ['column' => "payment_order_registered.invoice_number_pao payment_order_registered_invoice_number", 'dependencies' => ['payment_order_registered']],
+
+			'payment_order_invoice_sent_date' => ['column' => 'payment_order_invoice_sent.entry_date payment_order_invoice_sent_date', 'dependencies' => ['payment_order_invoice_sent']],
+
+			'payment_order_has_been_settled_date' => ['column' => 'payment_order_has_been_settled.entry_date payment_order_has_been_settled_date', 'dependencies' => ['payment_order_has_been_settled']]
+		];
+	}
+
+	private function _setQueryDependencies()
+	{
+		$this->_queryDependencies = [
+			'stakes' => " LEFT JOIN (".Model_project::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro ",
+        	'rd_digitization' => "LEFT JOIN (".Model_project::_statusDetailQuery(16).") rd_digitization on rd_digitization.project_id_psl = id_pro",
+			'returned' => " LEFT JOIN (".Model_project::_statusDetailQuery(20).") returned on returned.project_id_psl = id_pro ",
+			'digitization' => " LEFT JOIN (".Model_project::_statusDetailQuery(3).") digitization on digitization.project_id_psl = id_pro ",
+			'drawing' => " LEFT JOIN (".Model_project::_statusDetailQuery(5).") drawing on drawing.project_id_psl = id_pro ",
+			'schedulee' => " LEFT JOIN (".Model_project::_statusDetailQuery(6).") schedulee on schedulee.project_id_psl = id_pro ",
+			'ready_to_send' => " LEFT JOIN (".Model_project::_statusDetailQuery(9).") ready_to_send on ready_to_send.project_id_psl = id_pro ",
+			'already_sent' => " LEFT JOIN (".Model_project::_statusDetailQuery(10).") already_sent on already_sent.project_id_psl = id_pro ",
+			'approved' => " LEFT JOIN (".Model_project::_statusDetailQuery(11).") approved on approved.project_id_psl = id_pro ",
+			'canceled' => " LEFT JOIN (".Model_project::_statusDetailQuery(12).") canceled on canceled.project_id_psl = id_pro ",
+			'rectify_design' => " LEFT JOIN (".Model_project::_statusDetailQuery(13).") rectify_design on rectify_design.project_id_psl = id_pro ",
+			'rectify_illustration' => " LEFT JOIN (".Model_project::_statusDetailQuery(14).") rectify_illustration on rectify_illustration.project_id_psl = id_pro ",
+			'assign_to' => " LEFT JOIN (".Model_project::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = id_pro ",
+			'in_progress' => " LEFT JOIN (".Model_project::_statusDetailQuery(29).") in_progress on in_progress.project_id_psl = id_pro ",
+			'in_progress_first_detail' => " LEFT JOIN (".Model_project::_statusDetailQuery(29, TRUE).") in_progress_first_detail on in_progress_first_detail.project_id_psl = id_pro ",
+			'completed' => " LEFT JOIN (".Model_project::_statusDetailQuery(32).") completed on completed.project_id_psl = id_pro ",
+			'paused' => " LEFT JOIN (".Model_project::_statusDetailQuery(31).") paused on paused.project_id_psl = id_pro ",
+			'stopped' => " LEFT JOIN (".Model_project::_statusDetailQuery(30).") stopped on stopped.project_id_psl = id_pro ",
+			'as_built' => " LEFT JOIN (".Model_project::_statusDetailQuery(33).") as_built on as_built.project_id_psl = id_pro ",
+			'conciliation_reception' => " LEFT JOIN (".Model_project::_statusDetailQuery(34).") conciliation_reception on conciliation_reception.project_id_psl = id_pro ",
+			'conciliation_shipment' => " LEFT JOIN (".Model_project::_statusDetailQuery(35).") conciliation_shipment on conciliation_shipment.project_id_psl = id_pro ",
+			'cre_return_order' => " LEFT JOIN (".Model_project::_statusDetailQuery(37).") cre_return_order on cre_return_order.project_id_psl = id_pro ",
+			'project_return_materials' => " LEFT JOIN (".Model_project::_statusDetailQuery(38).") project_return_materials on project_return_materials.project_id_psl = id_pro ",
+			'project_return_materials2' => " LEFT JOIN (".Model_project::_statusDetailQuery(39).") project_return_materials2 on project_return_materials2.project_id_psl = id_pro ",
+			'project_energized' => " LEFT JOIN (".Model_project::_statusDetailQuery(47).") project_energized on project_energized.project_id_psl = id_pro ",
+			'payment_order_registered' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro ",
+			'payment_order_invoice_sent' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro ",
+			'payment_order_has_been_settled' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro "        
+		];
+	}
+
+	private function _buildQuery() : array
+	{
+		$columns = "";
+		$dependencies = "";
+		$response = ['columns' => '', 'dependencies' => ''];
+		
+		$dependencyList = [];
+		foreach($this->_columnsAndDependencies as $key => $value)
+		{
+			//If there are columns passed by parameter then let's check if the current key is in columnToShow array 
+			if(count($this->_columnsToShow) > 0 && array_search($key, $this->_columnsToShow) === FALSE)
+			{
+				dd($key,'toc toc');
+			}
+				
+
+			
+			$columns .= $value['column'].",";
+			foreach($value['dependencies'] as $dependency)
+			{
+				$dependencyList[$dependency] = $dependency;
+			}
+		}
+		$columns = substr($columns,0,-1);
+		dd($columns);
+		$dependencyList = array_values($dependencyList);
+		foreach($this->_queryDependencies as $key => $query)
+		{
+			//If dependency is found in requested dependency list then let's include de join
+			if(array_search($key,$dependencyList) !== FALSE)
+			{
+				$dependencies .= $query."\n";
+			}
+		}
+
+		$response['columns'] = $columns;
+		$response['dependencies'] = $dependencies;
+		dd($response['columns']);
+		return $response;
+	} 
 }

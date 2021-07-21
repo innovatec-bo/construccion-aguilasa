@@ -8,9 +8,9 @@
 
 class Model_material_summary_type extends Model_material_summary_type_base
 {
-    public function __construct(string $name = "", string $keyword = "", ?string $icon = "")
+    public function __construct(string $name = "", string $keyword = "", ?string $movementType = "", ?string $icon = NULL)
 	{
-		parent::__construct($name, $keyword, $icon);
+		parent::__construct($name, $keyword, $movementType, $icon);
 	}
 
 	public static function getByKeyword(array $keywordList)

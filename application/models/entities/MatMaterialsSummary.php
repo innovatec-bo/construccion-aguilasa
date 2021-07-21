@@ -182,5 +182,25 @@ class MatMaterialsSummary
      */
     private $editedbyMsu;
 
+    /**
+     * @var int|null
+     * pending, Canceled, withdrawn
+     * @ORM\Column(name="status_id_msu", type="smallint", nullable=true)
+     */
+    private $statusIdMsu;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="canceled_on_msu", type="datetime", nullable=true)
+     */
+    private $canceledOnMsu;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="withdrawn_on_msu", type="datetime", nullable=true)
+     */
+    private $withdrawnOnMsu;
 
 }

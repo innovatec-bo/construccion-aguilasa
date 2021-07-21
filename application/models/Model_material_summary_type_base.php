@@ -14,10 +14,10 @@ class Model_material_summary_type_base extends MY_Model
 
     protected string $_name;
 	protected string $_keyword;
-	protected string $_movementType;
+	protected ?string $_movementType;
 	protected ?string $_icon;
 
-    public function __construct(string $name = "", string $keyword = "", string $movementType = "", ?string $icon = NULL)
+    public function __construct(string $name = "", string $keyword = "", ?string $movementType = "", ?string $icon = NULL)
     {
         parent::__construct();
         $this->_name = $name;

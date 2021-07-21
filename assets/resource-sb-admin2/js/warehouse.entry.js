@@ -1,12 +1,14 @@
 $(document).ready(function() {
+	customValidations();
 	printView();
 	let additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","");
 	additionalParameter.addParameterObject('project','select', 'assigned-to-project');
 	let showAssignedMaterialsOnly = $('input[name=show-assigned-materials-only]').val();
-	if(showAssignedMaterialsOnly == 1)
-		startSelect2Materials('select.select2-materials','', additionalParameter);
-	else
-		startSelect2Materials('select.select2-materials','');
+	// if(showAssignedMaterialsOnly == 1)
+	// 	startSelect2Materials('select.select2-materials','', additionalParameter);
+	// else
+	// 	startSelect2Materials('select.select2-materials','');
+	startSelect2MaterialsSummary('select.select2-materials','');
 	$('select[name=project]').select2({allowClear:true,placeholder:'Elija un proyecto'})
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
@@ -23,12 +25,11 @@ $(document).ready(function() {
 		format: 'DD-MM-YYYY'
 	});
 
-
-
 	$('select[name=reservation-number]').on('change', function (e) {
+		let summaryType = parseInt($('select[name=summary-type] option:selected').val());
 		let projectId = $('select.project option:selected').val();
 		let reservationNumber = $('select[name=reservation-number] option:selected').val();
-		warehouse.getSummaryByReservationNumber(projectId, reservationNumber);
+		warehouse.getSummaryByReservationNumber(summaryType, projectId, reservationNumber);
 	});
 
 	$('.wh-add-new-material').on('click',function(){
@@ -103,4 +104,16 @@ function launchForm(response, formTitle)
 			}
 		}
 	});
+}
+
+function customValidations()
+{
+	window.Parsley
+		.addValidator('validateQuantityToMove', {
+			requirementType: 'integer',
+			validateNumber: function(value, requirement, element) {
+				return WarehouseHandler.validateQuantityToMove(element.element);
+			}
+		});
+
 }

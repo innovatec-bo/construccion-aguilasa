@@ -1,4 +1,10 @@
 <?php
+
+use Assert\Assertion;
+use Assert\Assert;
+use Assert\LazyAssertionException;
+use Assert\AssertionFailedException;
+
 class PublicController extends CI_Controller
 {
     protected $_ci;
@@ -249,6 +255,92 @@ class PublicController extends CI_Controller
 		}
 		return $budget;
 	}
+
+    /**
+     * Validate materials to be saved in summary list
+     */
+    public function validate_summary_materials()
+    {
+        $formData = $this->input->post();
+        $summary = array_values($formData['summary']);
+        $i = 1;
+        $errors = [];
+        foreach($summary as $row)
+        {
+            $quantity = str_replace(',','',$row['quantity']);
+			$quantity = floatval($quantity);
+            try
+            {
+                if($i == 1)
+                {
+                    Assert::lazy()
+                    ->that($row, 'Material')->keyExists('id')
+                    ->that($row, 'Material')->keyExists('status')
+                    ->that($row, 'Material')->keyExists('tension')
+                    ->verifyNow();
+                Assert::lazy()->that($row['id'], 'ID')
+                    ->notEmpty()
+                    ->notBlank()
+                    ->numeric()
+                    ->that($row['status'], 'estado')
+                    ->notEmpty()
+                    ->notBlank()
+                    ->numeric()
+                    ->that($row['tension'], 'tension')
+                    ->notEmpty()
+                    ->notBlank()
+                    ->numeric()
+                    ->that($row['quantity'], 'Cantidad')
+                    ->notEmpty()
+                    ->notBlank()
+                    ->numeric()
+                    ->between(1,1,"El material {$row['code']} excede su limite")
+                    ->verifyNow();
+                }
+                else
+                {
+                    Assert::lazy()
+                    ->that($row, 'Material')->keyExists('id')
+                    ->that($row, 'Material')->keyExists('status')
+                    ->that($row, 'Material')->keyExists('tension')
+                    ->verifyNow();
+                    Assert::lazy()->that($row['id'], 'ID')
+                        ->notEmpty()
+                        ->notBlank()
+                        ->numeric()
+                        ->that($row['status'], 'estado')
+                        ->notEmpty()
+                        ->notBlank()
+                        ->numeric()
+                        ->that($row['tension'], 'tension')
+                        ->notEmpty()
+                        ->notBlank()
+                        ->numeric()
+                        ->that($row['quantity'], 'tension')
+                        ->notEmpty()
+                        ->notBlank()
+                        ->numeric()
+                        ->verifyNow();
+                }
+                
+            }
+            catch(LazyAssertionException $e) 
+            {
+                $message = "In position {$i} ".$e->getMessage();
+                $errors[$i] = nl2br($message);
+            }
+            $i++;
+        }
+
+        
+        $response = TRUE;
+        if(count($errors) > 0)
+        {//dd($errors);
+            $this->form_validation->set_message('validate_summary_materials', implode("<br>",$errors) );
+            $response = FALSE;
+        }
+        return $response;
+    }
 }
 
 class PrivateController extends PublicController

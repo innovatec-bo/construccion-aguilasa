@@ -401,9 +401,9 @@ function startSelect2MaterialsSummary(containerCssClass, size)
 		containerCssClass: size,
 		dropdownCssClass: "dd-select2-labor-cost",
 		dropdownParent: $content,
-		// allowClear : true,
+		allowClear : true,
 		ajax : {
-			url : base_url + 'panel/AjaxMaterial/select2',
+			url : base_url + 'panel/AjaxMaterialSummary/select2',
 			dataType : "json",
 			type : "post",
 			delay : 600,
@@ -430,8 +430,8 @@ function startSelect2MaterialsSummary(containerCssClass, size)
 				return 'Buscando..';
 			}
 		},
-		escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-		templateResult: select2MaterialsSummaryResponse,
+		//escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+		//templateResult: select2MaterialsSummaryResponse,
 		width : "100%"
 	});
 }

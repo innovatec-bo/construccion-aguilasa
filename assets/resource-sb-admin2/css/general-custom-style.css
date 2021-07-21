@@ -421,3 +421,8 @@ legend.custom-border {
     padding: 0 10px;
     border-bottom: none;
 }
+
+.bg-warning {
+  background-color : #f0ad4e !important;
+}
+

@@ -46,7 +46,7 @@
 	<?php
 	}
 	?>
-	<form method="post" name="materials-summary">
+	<form method="post" name="materials-summary" data-parsley-validate>
 		<input type="hidden" name="show-assigned-materials-only" value="<?=$showAssignedMaterialsOnly?>">
 	<div class="row">
 		<div class="col-md-4">
@@ -55,17 +55,39 @@
 				<select class="form-control input-sm" name="summary-type">
 					<?php
 					$options = "";
-					$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,quantity_in_warehouse,movement,tension,status";
+					
 					/** @var Model_material_summary_type $summaryType */
 					foreach ($summaryTypes as $summaryType)
 					{
-						$options .= "<option value='{$summaryType->getId()}' data-columns='$columnsToShow'>{$summaryType->getName()}</option>";
+						switch($summaryType->getKeyword())
+						{
+							case 'materials_additional_list':
+								$columnsToShow = "material_code,material_description,movement,tension,status";
+							break;
+							default:
+							$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,request_materials_quantity,quantity_in_warehouse,all_quantity_in_warehouse,movement,tension,status";
+
+						}
+						$options .= "<option data-keyword='{$summaryType->getKeyword()}' value='{$summaryType->getId()}' data-columns='$columnsToShow'>{$summaryType->getName()}</option>";
 					}
 					echo $options;
 					?>
 				</select>
 			</div>
+			
 		</div>
+		<?php
+		if($showNewReservationNumber == 1)
+		{
+		?>
+		<div class="col-md-3">
+			<label>Nro. de reserva</label>
+			<input type="text" class="form-control" name="new-reservation-number" autocomplete="off">
+		</div>
+		<?php
+		}
+		?>
+		
 		<div id="builder-selection" style="display: none">
 			<div class="col-md-4">
 				<div class="form-group">
@@ -144,13 +166,21 @@
 		<div class="col-md-8">
 			<label><?=$materialsTitle?></label>
 			<div class="form-group input-group">
-				<select class="form-control select2-materials" data-parsley-required="" parsley-trigger="change" name="materials">
+				<select class="form-control select2-materials" parsley-trigger="change" name="materials">
 					<option></option>
 				</select>
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
-					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>-->
-					<button class="btn btn-info btn-sm wh-show-all-in-table" type="button" style="padding: 4px 10px;">Mostrar todos</button>-->
+					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>
+					<?php
+					if($showBtnListAll == 1)
+					{
+					?>
+						<button class="btn btn-info btn-sm wh-show-all-in-table" type="button" style="padding: 4px 10px;">Mostrar todos</button>
+					<?php
+					}
+					?>
+					<button class="btn btn-danger btn-sm wh-clear-table" type="button" style="padding: 4px 10px;">Limpiar lista</button>
 				</span>
 			</div>
 		</div>
@@ -180,7 +210,9 @@
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
-						<th>Disponible<br>en almac&eacute;n</th>
+						<th>Comprometido<br>en SEREBO</th>
+						<th>Disponible<br>en el almac&eacute;n</th>
+						<th class="bg-warning">Disponible<br>en el almac&eacute;n</th>
 						<th>Movimiento</th>
 						<th>Tension</th>
 						<th>Estado</th>

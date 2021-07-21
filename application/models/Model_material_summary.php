@@ -8,9 +8,9 @@
 
 class Model_material_summary extends Model_material_summary_base
 {
-    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL)
 	{
-		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $builderResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter, $fiscalResponsible);
+		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $builderResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter, $fiscalResponsible, $statusId, $canceledOn, $withrawnOn);
 	}
 
 	/**
@@ -125,6 +125,39 @@ class Model_material_summary extends Model_material_summary_base
 
 		$sql = "
             select * from ".static::TABLE_NAME." where project_id_msu = ".$ci->db->escape($project)." and summary_type_id_msu = ".$ci->db->escape($type)." and ".static::notDeleted()."
+        ";
+
+		$query = $ci->db->query($sql);
+		return $query->result_array();
+	}
+
+	public static function getRequestsList(int $id = NULL, int $fiscalId = NULL, int $builderId = NULL)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$idFilter = "";
+		if(is_numeric($id))
+			$idFilter = " and id_msu = ".$ci->db->escape($id)." ";
+
+		$fiscalFilter = "";
+		if(is_numeric($fiscalId))
+			$fiscalFilter = " and fiscal_responsible_msu = ".$ci->db->escape($fiscalId)." ";
+
+		$builderFilter = "";
+		if(is_numeric($builderId))
+			$builderFilter = " and builder_responsible_msu = ".$ci->db->escape($builderId)." ";
+
+		$sql = "
+            select 
+				* 
+			from ".static::TABLE_NAME." 
+			where 
+			summary_type_id_msu = 14
+			{$idFilter}
+			{$fiscalFilter}
+			{$builderFilter}
+			and ".static::notDeleted()."
         ";
 
 		$query = $ci->db->query($sql);

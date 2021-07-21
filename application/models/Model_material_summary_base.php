@@ -12,6 +12,10 @@ class Model_material_summary_base extends MY_Model
     const TABLE_ID = "id_msu";
     const ATTRIB_SUFIX = "_msu";
 
+	const STATUS_PENDING = 1;
+	const STATUS_CANCELED = 2;
+	const STATUS_WITHDRAWN = 3;
+
     protected ?int $_projectStatusLogId;
     protected string $_tensionLevel;
 	protected int $_projectId;
@@ -30,8 +34,11 @@ class Model_material_summary_base extends MY_Model
 	protected ?string $_loanClosedDate;
 	protected ?int $_correlativeCounter;
 	protected ?int $_fiscalResponsible;
+	protected ?int $_statusId;
+	protected ?string $_canceledOn;
+	protected ?string $_withrawnOn;
 
-    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL)
     {
         parent::__construct();
         $this->_projectStatusLogId = $projectStatusLogId;
@@ -52,6 +59,9 @@ class Model_material_summary_base extends MY_Model
 		$this->_loanClosedDate = $loanClosedDate;
 		$this->_correlativeCounter = $correlativeCounter;
 		$this->_fiscalResponsible = $fiscalResponsible;
+		$this->_statusId = $statusId;
+		$this->_canceledOn = $canceledOn;
+		$this->_withrawnOn = $withrawnOn;
 
     }
 
@@ -81,6 +91,9 @@ class Model_material_summary_base extends MY_Model
 			"loan_closed_date_msu" => $this->_loanClosedDate,
 			"correlative_counter_msu" => $this->_correlativeCounter,
 			"fiscal_responsible_msu" => $this->_fiscalResponsible,
+			"status_id_msu" => $this->_statusId,
+			"canceled_on_msu" => $this->_canceledOn,
+			"withdrawn_on_msu" => $this->_withrawnOn,
 			"deleted_msu" => $this->_deleted,
 			"createdon_msu" => $this->_createdOn,
 			"createdby_msu" => $this->_createdBy,
@@ -121,7 +134,10 @@ class Model_material_summary_base extends MY_Model
 				$object->loan_closed_msu,
 				$object->loan_closed_date_msu,
 				$object->correlative_counter_msu,
-				$object->fiscal_responsible_msu
+				$object->fiscal_responsible_msu,
+				$object->status_id_msu,
+				$object->canceled_on_msu,
+				$object->withdrawn_on_msu
             );
             $instance->_id = $object->id_msu;
 
@@ -224,6 +240,21 @@ class Model_material_summary_base extends MY_Model
 	public function setFiscalResponsible($fiscalResponsible)
 	{
 		$this->_fiscalResponsible = $fiscalResponsible;
+	}
+
+	public function setStatusId($statusId)
+	{
+		$this->_statusId = $statusId;
+	}
+
+	public function setCanceledOn($canceledOn)
+	{
+		$this->_canceledOn = $canceledOn;
+	}
+
+	public function setWithdrawnOn($withdrawnOn)
+	{
+		$this->_withrawnOn = $withdrawnOn;
 	}
 
     //Getters

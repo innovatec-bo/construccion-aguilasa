@@ -6,6 +6,10 @@
  * Time: 10:34 AM
  */
 
+require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class Warehouse extends PrivateController
 {
@@ -34,10 +38,11 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addViewComplement("jquery.datatables");
 		$this->complementHandler->addViewComplement("jquery.datatables.bootstrap");
 		$this->complementHandler->addViewComplement('select2');
-		$this->complementHandler->addViewComplement("parsley");
-		$this->complementHandler->addViewComplement("parsley.spanish");
+		$this->complementHandler->addViewComplement("parsley292");
+		$this->complementHandler->addViewComplement("parsley292.spanish");
 		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
+		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
 		$this->complementHandler->addProjectJs('DTAdditionalParameterHandler', TRUE);
 		$this->complementHandler->addProjectCss('warehouse.entry', TRUE);
 		$this->complementHandler->addProjectJs('WarehouseHandler', TRUE);
@@ -45,6 +50,8 @@ class Warehouse extends PrivateController
 
 		/** Server Side Validations **/
 		$this->form_validation->set_rules('summary-type', 'Tipo de movimiento', 'trim|required');
+		//$this->form_validation->set_rules('summary', 'Materiales','callback_validate_summary_materials');
+		//$this->form_validation->set_rules('summary', 'Materiales','trim');
 		$data = array();
 		$fiscals = Model_user::getByRoleKeyword('fiscal');
 		$builders = Model_user::getByRoleKeyword('builder');
@@ -80,9 +87,10 @@ class Warehouse extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
-//			echo"<pre>";var_dump($formData);exit;
+			// dd($formData);
 			$projectId = $formData['project'];
 			$reservationNumber = $formData['reservation-number'];
+			$newReservationNumber = $formData['new-reservation-number']??"";
 			$summaryType = $formData['summary-type'];
 			$builder = $formData['builder'];
 			$fiscal = $formData['fiscal'];
@@ -93,6 +101,7 @@ class Warehouse extends PrivateController
 			$materials = array_values($formData['summary']);
 			$summaryWithBuilderAndFiscal = array(4,10,11,14,15);
 			$summaryWithReservationNumber = array(3,8);
+			$summaryWithNewReservationNumber = [2];
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 
@@ -112,6 +121,10 @@ class Warehouse extends PrivateController
 			if(array_search($summaryType, $summaryWithReservationNumber) !== FALSE)
 			{
 				$newMaterialSummary->setReservationNumber($reservationNumber);
+			}
+			if(array_search($summaryType, $summaryWithNewReservationNumber) !== FALSE)
+			{
+				$newMaterialSummary->setReservationNumber($newReservationNumber);
 			}
 
 			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$summaryType);
@@ -140,7 +153,9 @@ class Warehouse extends PrivateController
 			'summaryTypes' => $summaryTypes,
 			'showSearchBox' => 1,
 			'materialsTitle' => 'Lista general',
-			'showAssignedMaterialsOnly' => 0
+			'showAssignedMaterialsOnly' => 0,
+			'showNewReservationNumber' => 0,
+			'showBtnListAll' => 1
 		];
 		$this->_index($metaData);
 	}
@@ -154,10 +169,28 @@ class Warehouse extends PrivateController
 			'summaryTypes' => $summaryTypes,
 			'showSearchBox' => 0,
 			'materialsTitle' => 'Materiales asignados',
-			'showAssignedMaterialsOnly' => 1
+			'showAssignedMaterialsOnly' => 1,
+			'showNewReservationNumber' => 0,
+			'showBtnListAll' => 1
 		];
 		$this->_index($metaData);
 	}
+
+    public function registerAdditionalList()
+    {
+        $summaryTypes = Model_material_summary_type::getByKeyword(['materials_additional_list']);
+		$metaData = [
+			'viewTitle' => 'Ingresar lista de adicionales',
+			'summaryTypeTitle' => 'Lista',
+			'summaryTypes' => $summaryTypes,
+			'showSearchBox' => 0,
+			'materialsTitle' => 'Materiales en el sistema',
+			'showAssignedMaterialsOnly' => 0,
+			'showNewReservationNumber' => 1,
+			'showBtnListAll' => 0
+		];
+		$this->_index($metaData);
+    }
 
 	public function printView($summaryId = NULL, $getAsVariable = NULL)
 	{
@@ -201,6 +234,135 @@ class Warehouse extends PrivateController
 			$visiblePrintBlock = "";
 			$this->_loadPanelView("warehouse/print-view",compact('viewTitle','materialSummary','materialList','summaryTypeId','summaryType','visiblePrintBlock'));
 		}
-
 	}
+
+	public function requestAdditionalList()
+	{
+		$this->complementHandler->addViewComplement("parsley292");
+		$this->complementHandler->addViewComplement("parsley292.spanish");
+		$this->complementHandler->addViewComplement("moment-with-locales");
+		$this->complementHandler->addViewComplement("date-time-picker");
+		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
+		$this->complementHandler->addProjectCss('warehouse.request-additional-list', TRUE);
+		$this->complementHandler->addProjectJs('warehouse.request-additional-list', TRUE);
+		//Server side validations
+		$this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
+
+		$data = [];
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->_loadPanelView("warehouse/request-additional-list",$data);
+		}
+		else
+		{
+
+		}		
+	}
+
+	public function importMaterials()
+	{
+        /** Load libraries */
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('materials-file', 'File', 'trim');
+
+        /** Breadcrumbs */
+
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("warehouse/import-materials");
+        }
+        else
+        {
+            if (!empty($_FILES['materials-file']['name']))
+            {
+                try
+                {
+                    $fileHandler = new FileHandler();
+                    $document = $fileHandler->fileUpload($_FILES['materials-file'], "import_materials_doc", "documents", "document");
+                    $document->save();
+
+					switch (strtolower($document->getExtension()))
+					{
+						case 'xlsx':
+							$reader = new Xlsx();
+							break;
+						case 'xls':
+							$reader = new Xls();
+							break;
+						default:
+							$reader = new Csv();
+							$reader->setDelimiter(';');
+							break;
+					}
+					
+					// $reader->setInputEncoding('ISO-8859-1');
+					$fileLocation = FCPATH.$document->getUrl();
+					$spreadsheet = $reader->load($fileLocation);
+					$sheetList = $spreadsheet->getAllSheets();
+					$sheetData = $sheetList[0];
+					$excelArrayData = $sheetData->toArray();
+					array_shift($excelArrayData);
+					$codesInExcel = array_column($excelArrayData,0);
+					$existingMaterials = Model_material::getByCodeList($codesInExcel);
+					
+					$toUpdate = [];
+					$toSave = [];
+					$i = 0;
+					/** @var Model_material $existingMaterial */
+					foreach($existingMaterials as $existingMaterial)
+					{
+						$key = array_search($existingMaterial->getCode(), $codesInExcel);
+						if($key !== FALSE)
+						{
+							$descriptionInExcel = $excelArrayData[$key][1];
+							$unitOfMeasurementInExcel = $excelArrayData[$key][2];
+							if($descriptionInExcel != "")
+								$existingMaterial->setDescription($descriptionInExcel);
+							if($unitOfMeasurementInExcel != "")
+								$existingMaterial->setUnitOfMeasurement($unitOfMeasurementInExcel);
+							if($descriptionInExcel != "" || $unitOfMeasurementInExcel != "")
+							{
+								$existingMaterial->setEditedOn(date('Y-m-d H:i:s'));
+								$existingMaterial->setEditedBy($this->sessionUser->id);
+							}
+								
+							$toUpdate[] = $existingMaterial->toArray(); 
+							unset($codesInExcel[$key]);
+							unset($excelArrayData[$key]);
+						}	
+						$i++;
+					}
+					$excelArrayData = array_values($excelArrayData);
+					foreach($excelArrayData as $excelData)
+					{
+						$code = $excelData[0];
+						$descriptionInExcel = $excelData[1];
+						$unitOfMeasurementInExcel = $excelData[2];
+						// dd($code,$descriptionInExcel, $unitOfMeasurementInExcel);
+						$newMaterial = new Model_material($code,NULL,$descriptionInExcel,$unitOfMeasurementInExcel);
+						$newMaterial->setCreatedOn(date('Y-m-d H:i:s'));
+						$newMaterial->setCreatedBy($this->sessionUser->id);
+						$toSave[] = $newMaterial->toArray();
+					}
+					$totalToUpdate = count($toUpdate);
+					if($totalToUpdate > 0)
+						$updatedRows = Model_material::updateBatch($toUpdate,'code_mat');
+					$totalToSave = count($toSave);
+					if($totalToSave > 0)
+						$insertRows = Model_material::insertBatch($toSave);
+
+					$this->session->set_flashdata("successMessage", "Archivo leido correctamente.");
+                }
+                catch (Exception $e)
+                {
+					$this->session->set_flashdata("errorMessage", $e->getMessage());
+                }
+            }
+            else
+            {
+				$this->session->set_flashdata("errorMessage", "No se selecciono ningun archivo!");
+            }
+            redirect(base_url("panel/Warehouse/importMaterials"));
+        }  
+    }
 }

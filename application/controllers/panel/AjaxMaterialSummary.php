@@ -11,6 +11,16 @@ class AjaxMaterialSummary extends PrivateController
         }
     }
 
+	public function ajaxDtAllMaterialSummary()
+	{
+		$additionalParameters = $this->input->post('additionalParameters')??array();
+		$dt = new JqdtHandler($this->input->post());
+		$paginationHandler = new MaterialSummaryPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
+		$paginationHandler->setAdditionalParameters($additionalParameters);
+		$response = $paginationHandler->getResponseForDataTable();
+		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
+	}
+
     public function add()
 	{
 		/** Server Side Validations **/
@@ -109,15 +119,30 @@ class AjaxMaterialSummary extends PrivateController
 		echo json_encode($data);exit;
 	}
 
-	public function getSummaryByReservationNumber($projectId, $reservationNumber = "")
+	public function select2()
+	{
+		$term = $this->input->post("term");
+		$limit = $this->input->post("limit");
+		$page = $this->input->post("page");
+		$offset = ($page-1)*$limit;
+		$additionalParameters = $this->input->post('additionalParameters')??[];
+		$parameters['grouping-criteria'] = ' material_id_prm ';
+		$teamPaginationHandler = new MaterialSummaryPaginationHandler($limit,$offset,'material_description','asc',$term,array('material_description','material_code'));
+		$teamPaginationHandler->setAdditionalParameters($additionalParameters);
+		$result = $teamPaginationHandler->getResponseForSelect2($page);
+		echo json_encode($result);exit;
+	}
+
+	public function getSummaryByReservationNumber($summaryType, $projectId, $reservationNumber = "")
 	{
 		$parameters = array('project-id'=>$projectId);
 		if($reservationNumber != "")
 		{
 			$parameters = array('reservation-number'=>$reservationNumber,'project-id'=>$projectId);
 		}
+
 		$parameters['grouping-criteria'] = ' project_id_msu, material_id_prm ';
-		$materialPaginationHandler = new MaterialSummaryPaginationHandler(1000,0,'material_description');
+		$materialPaginationHandler = new MaterialSummaryPaginationHandler(1000,0,'material_description');//dd($parameters);
 		$materialPaginationHandler->setAdditionalParameters($parameters);
 		echo json_encode($materialPaginationHandler->getAll());exit;
 	}

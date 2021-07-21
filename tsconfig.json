@@ -70,7 +70,8 @@
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
     "files": [
-      "assets/resource-sb-admin2/js/StatusManagementHandler.ts"
+      "assets/resource-sb-admin2/js/StatusManagementHandler.ts",
+      "assets/resource-sb-admin2/js/WarehouseHandler.ts"
     ]
   }
 }

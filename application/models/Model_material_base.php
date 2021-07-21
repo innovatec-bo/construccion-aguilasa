@@ -104,6 +104,25 @@ class Model_material_base extends MY_Model
 		$this->_unitOfMeasurement = $unitOfMeasurement;
 	}
 
+	public function setEditedOn($editedOn)
+	{
+		$this->_editedOn = $editedOn;
+	}
+
+	public function setEditedBy($editedBy)
+	{
+		$this->_editedBy = $editedBy;
+	}
+
+	public function setCreatedOn($createdOn)
+	{
+		$this->_createdOn = $createdOn;
+	}
+
+	public function setCreatedBy($createdBy)
+	{
+		$this->_createdBy = $createdBy;
+	}
     //Getters
     public function getCode()
 	{

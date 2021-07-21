@@ -6,23 +6,14 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class PendingReturnsFileReader
 {
-    private int $_projectId;
     private Model_file $_file;
     private array $_excelArrayData;
-    private string $_graphNumber;
-    private string $_levelOfTension;
-    private string $_destiny;
-    private array $_materialListFromExcelFile;
-    private array $_materialsQuantityLog;
-    private int $_isAdditional = 0;
 
-    public function __construct(int $projectId, Model_file $file)
+    public function __construct(Model_file $file)
 	{
-	    $this->_projectId = $projectId;
         $this->_file = $file;
         $this->_setExcelArrayData();
-        $this->_setMaterialListFromExcelFile();
-        $this->_setDataFromExcelFile();
+        //$this->_setDataFromExcelFile();
 	}
 
 	private function _setExcelArrayData() : void
@@ -40,7 +31,7 @@ class PendingReturnsFileReader
                 $reader->setDelimiter(';');
                 break;
         }
-		$reader->setInputEncoding('ISO-8859-1');
+		//$reader->setInputEncoding('ISO-8859-1');
         $fileLocation = FCPATH.$this->_file->getUrl();
         $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();
@@ -48,153 +39,110 @@ class PendingReturnsFileReader
         $this->_excelArrayData = $sheetData->toArray();
     }
 
-	private function _setMaterialListFromExcelFile() : void
+	public function previewPendingSummary()
     {
-        $startReadingData = FALSE;
-        //Prepare data to save from excel file
+        $i = 0;
+        $list = [];
         foreach($this->_excelArrayData as $index => $data)
         {
-            //Setting approved budgets
-            if($data[0] == 'ITEM')
+            $project = explode('.',trim($data[10]));
+            array_pop($project);
+            $project = implode('.',$project);
+            $code = trim($data[3]);
+            $detail = trim($data[4]);
+            $nec = trim($data[5]);
+            $dif = trim($data[6]);
+            $lote = trim($data[7]);
+            $umb = trim($data[8]);
+            $tension = explode('.',trim($data[10]));
+            $tension = end($tension);
+            if($i > 0 && $project != "")
             {
-                $startReadingData = TRUE;
-                continue;
+                $list[$project]['project'] = $project;
+                if(!isset($list[$project]['materials']))
+                    $list[$project]['materials'] = [];
+                
+                $list[$project]['materials'][$code.'-'.$lote.'-'.$tension] = [
+                                                                                'code' => $code, 
+                                                                                'detail' => $detail,
+                                                                                'nec' => $nec,
+                                                                                'dif' => $dif,
+                                                                                'lote' => $lote,
+                                                                                'umb' => $umb,
+                                                                                'tension' => $tension
+                                                                            ];
             }
-            if($startReadingData)
-            {
-                $materialCode = trim($data[1]);
-                $description = trim($data[2]);
-                $unit = trim($data[3]);
-                $quantity = trim($data[4]);
-                $currentUser = PrivateController::getSessionUser();
-                $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
-                if($materialCode != "")
-                {
-                    $this->_materialListFromExcelFile[$materialCode] = array(
-                        'code_mat' => $materialCode,
-                        'description_mat' => $description,
-                        'unit_of_measurement_mat' => $unit,
-                        'createdon_mat' => date('Y-m-d H:i:s'),
-                        'createdby_mat' => $currentUserId
-                    );
-
-                    $this->_materialsQuantityLog[$materialCode] = array(
-						'quantity_pmq' => $quantity,
-						'createdon_pmq' => date('Y-m-d H:i:s'),
-						'createdby_pmq' => $currentUserId
-					);
-                }
-            }
+            $i++;
         }
-    }
-
-	public function saveMaterialsInDataBase() : void
-    {
-        $materialListFromExcelFile = $this->_materialListFromExcelFile;
-        $materialsToUpdate = array();
-        $materialCodeList = array_keys($materialListFromExcelFile);
-        $existingMaterials = Model_material::getByCodeList($materialCodeList);
-        foreach($existingMaterials as $material)
+        foreach($list as &$row)
         {
-            $material = $material->toArray();
-            $existingMaterialCode = $material['code_mat'];
-            if(isset($materialListFromExcelFile[$existingMaterialCode]))
-            {
-				$materialsToUpdate[] = $materialListFromExcelFile[$existingMaterialCode];
-                unset($materialListFromExcelFile[$existingMaterialCode]);
-            }
+            $row['materials'] = array_values($row['materials']);
         }
-        $materialListFromExcelFile = array_values($materialListFromExcelFile);
-        if(count($materialListFromExcelFile) > 0)
-            Model_material::insertBatch($materialListFromExcelFile);
-        if(count($materialsToUpdate) > 0)
-			Model_material::updateBatch($materialsToUpdate, 'code_mat');
+        return $list;
     }
 
-    private function _setDataFromExcelFile() : void
+    public function createPendingSummary()
     {
+        $i = 0;
+        $list = [];
+        
+        $materialCodes = $this->_getArrayMaterialCodes();
+        $materials = Model_material::getByCodeList($materialCodes);
+        dd($materials, $materialCodes);
         foreach($this->_excelArrayData as $index => $data)
         {
-            //Setting Graph number and level of tension
-            if(strpos(strtolower($data[0]),'grafo') !== FALSE)
+            $project = explode('.',trim($data[10]));
+            array_pop($project);
+            $project = implode('.',$project);
+            $code = trim($data[3]);
+            $detail = trim($data[4]);
+            $nec = trim($data[5]);
+            $dif = trim($data[6]);
+            $lote = trim($data[7]);
+            $umb = trim($data[8]);
+            $tension = explode('.',trim($data[10]));
+            $tension = end($tension);
+            if($i > 0 && $project != "")
             {
-                $haystack = array_values(array_filter(explode(" ",$data[0])));
-                foreach ($haystack as $index => $value)
-                {
-                    if (preg_match('/.*grafo.*/i', strtolower($value)))
-                    {
-                        $this->_graphNumber = trim($haystack[$index+1]);
-                    }
-
-                    if (preg_match('/.*tension.*/i', strtolower($value)))
-                    {
-                        $this->_levelOfTension = trim($haystack[$index+1]);
-                    }
-                }
+                $list[$project]['project'] = $project;
+                if(!isset($list[$project]['materials']))
+                    $list[$project]['materials'] = [];
+                
+                $list[$project]['materials'][$code.'-'.$lote.'-'.$tension] = [
+                                                                                'code' => $code, 
+                                                                                'detail' => $detail,
+                                                                                'nec' => $nec,
+                                                                                'dif' => $dif,
+                                                                                'lote' => $lote,
+                                                                                'umb' => $umb,
+                                                                                'tension' => $tension
+                                                                            ];
             }
-            //Setting destiny
-            if(strpos(strtolower($data[0]),'destino') !== FALSE)
-            {
-                $haystack = array_values(array_filter(explode(":",$data[0])));
-                foreach ($haystack as $index => $value)
-                {
-                    if(preg_match('/.*destino.*/i', strtolower($value)))
-                    {
-                        $this->_destiny = trim($haystack[$index+1]);
-                        break;
-                    }
-                }
-            }
+            $i++;
         }
-    }
-
-	/**
-	 * This method allow register initial materials and additional materials to project.
-	 * @param int $projectStatusLogId All materials are associated to project status log ID
-	 * @param string $entryDate Specify the materials entry date
-	 * @param int $userResponsibleId User responsible by materials summary
-	 * @param int $summaryTypeId This variable specify the warehouse material activity
-	 * @param string $detail
-	 * @param int|null $parentSummaryId
-	 * @param string $reservationNumber
-	 */
-    public function registerMaterialsInSystem(int $projectStatusLogId, string $entryDate, int $userResponsibleId, int $summaryTypeId, string $detail = "", ?int $parentSummaryId = NULL, ?string $reservationNumber = "") : void
-    {
-        $materialSummaries = Model_material_summary::getByProjectId($this->_projectId);
-        //If the material summary does not exist for the project then let's create it and add its project's material list
-        if(count($materialSummaries) <= 0)
+        foreach($list as &$row)
         {
-            $materialSummary = new Model_material_summary($projectStatusLogId, $this->_levelOfTension, $this->_projectId, $this->_projectId, $this->_graphNumber,  $this->_destiny, $entryDate, $detail, $userResponsibleId, $summaryTypeId, $reservationNumber, $this->_file->getId(), $parentSummaryId);
-            $materialSummary->save();
-            $materialsCodeList = array_keys($this->_materialListFromExcelFile);
-            $existingMaterials = Model_material::getMasterDetailByMaterialCodeList($materialsCodeList);
-            $startReadingData = FALSE;
-            /** @var Model_material_status $status */
-			$status = Model_material_status::getByCode('NVO');
-            foreach($this->_excelArrayData as $index => $data)
-            {
-                //Material
-				$materialCode = trim($data[1]);
-				$quantity = trim($data[4]);
-				//let's find the key from existing material list
-                $key = array_search($materialCode, array_column($existingMaterials, 'code_mat'));
-                //Once found the key let's get the material internal ID
-                $materialId = $existingMaterials[$key];
-                $materialId = $materialId['id_mat'];
-
-                if($data[0] == 'ITEM')
-                {
-                    $startReadingData = TRUE;
-                    continue;
-                }
-
-                if($startReadingData && $materialCode != '')
-                {
-                	//Save the projects material
-                    $projectMaterial = new Model_project_material($materialSummary->getId(), $materialId, $quantity, $status->getId());
-					$projectMaterial->save();
-                }
-            }
+            $row['materials'] = array_values($row['materials']);
         }
+        return $list;
+    }
+    
+    private function _getArrayMaterialCodes()
+    {
+        $materialCodes = array_column($this->_excelArrayData, 3);// 3 => material column
+        $materialCodes = array_unique($materialCodes);
+        //Removing nulls and column title
+        if (($key = array_search('Material', $materialCodes)) !== false) {
+            unset($materialCodes[$key]);
+        }
+        if (($key = array_search(null, $materialCodes)) !== false) {
+            unset($materialCodes[$key]);
+        }
+        $materialCodes = array_values($materialCodes);
+        $materialCodes = array_map(function($value) {
+            return intval($value);
+        }, $materialCodes);
+
+        return $materialCodes;   
     }
 }

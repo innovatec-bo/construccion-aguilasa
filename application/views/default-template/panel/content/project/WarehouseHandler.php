@@ -1,16 +1,32 @@
 <script id="table-row" type="text/x-handlebars-template">
-	<tr>
+	<tr 
+		data-material-code="{{data.material_code}}" 
+		data-pending-material-in-cre="{{data.pending_material_in_cre}}"
+		data-quantity-in-warehouse="{{numberFormat data.quantity_in_warehouse}}">
+
 		<td class="text-center">{{data.material_code}}</td>
 		<td class="text-left">{{data.material_description}}</td>
 		<td class="text-right">{{numberFormat data.quantity_assigned_materials}}</td>
 		<td class="text-right">{{numberFormat data.quantity_picked_up_from_cre}}</td>
 		<td class="text-right">{{numberFormat data.pending_material_in_cre}}</td>
 		<td class="text-right">{{numberFormat data.quantity_materials_delivered_to_builder}}</td>
+		<td class="text-right">{{numberFormat data.request_materials_quantity}}</td>
 		<td class="text-right">{{numberFormat data.quantity_in_warehouse}}</td>
-		<td class="text-right"><input type="text" class="quantity" name="summary[{{rowId}}][quantity]" value="0" size="7"></td>
+		<td class="text-right bg-warning">{{numberFormat data.all_quantity_in_warehouse}}</td>
+		<td class="text-right">
+			<input 
+			type="text" 
+			class="quantity quantity-{{data.material_code}} text-right input-masked" 
+			name="summary[{{rowId}}][quantity]" 
+			value="{{numberFormat data.quantity_in_warehouse}}" 
+			size="7" 
+			data-parsley-trigger="input" 
+			data-parsley-validate-quantity-to-move=""
+			data-inputmask="'alias': 'decimal', 'groupSeparator': '', 'autoGroup': true, 'digits':2, 'placeholder':'0','digitsOptional': false">
+		</td>
 
 		<td>
-			<select class="form-control input-sm tension" name="summary[{{rowId}}][tension]">
+			<select class="wh-table-component-select tension" name="summary[{{rowId}}][tension]">
 				<option value="4">Indefinido</option>
 				<option value="1">Media</option>
 				<option value="2">Baja</option>
@@ -19,7 +35,7 @@
 			</select>
 		</td>
 		<td>
-			<select class="form-control input-sm status" name="summary[{{rowId}}][status]">
+			<select class="wh-table-component-select status" name="summary[{{rowId}}][status]">
 				<option value="4">Indefinido</option>
 				<option value="1">NVO</option>
 				<option value="2">MEO</option>
@@ -27,8 +43,9 @@
 
 			</select>
 		</td>
-		<td><input type="button" class="btn btn-danger btn-sm wh-quit-row" value="X"></td>
+		<td><input type="button" class="btn btn-xs btn-danger btn-sm wh-quit-row" value="X"></td>
 		<input type="hidden" class="material" name="summary[{{rowId}}][id]" value="{{data.material_id}}">
+		<input type="hidden" class="material" name="summary[{{rowId}}][code]" value="{{data.material_code}}">
 	</tr>
 </script>
 <script id="reservation-number-options" type="text/x-handlebars-template">

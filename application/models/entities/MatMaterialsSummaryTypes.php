@@ -24,7 +24,7 @@ class MatMaterialsSummaryTypes
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name_mqt", type="string", length=50, nullable=true)
+     * @ORM\Column(name="name_mqt", type="text", length=65535, nullable=true)
      */
     private $nameMqt;
 
