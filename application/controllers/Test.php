@@ -67,30 +67,13 @@ class Test extends PublicController
 
 	public function wfImprovement()
 	{
-		$workflow = new WorkflowPaginationHandler(2);
-		$workflow->setColumnsToShow(['stakes']);
+		$workflow = new WorkflowPaginationHandler(10);
+		$wfColumns = PrivateController::getWorkflowColumns();
+		$wfColumns = array_keys($wfColumns);
+		// $workflow->setColumnsToShow(['stake_date','rd_digitization_points_quantity']);
+		$workflow->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id']);
+		// $workflow->setColumnsToShow($wfColumns);
 		$result = $workflow->getAll();
 		dd($result);
-	}
-
-	public function columnsDependencies()
-	{
-		$columnsAndDependencies = [
-			//Column => table or query join
-			'stake_date' => ['stakes'],
-			'stake_responsible_user_id' => ['stakes'],
-			'stake_responsible' => ['stakes'],
-			'rd_digitization_points_quantity' => ['rd_digitization'],
-			'rd_digitization_distance' => ['rd_digitization'],
-			'returned_date' => ['returned'],
-			'digitization_points_quantity' => ['digitization'],
-			'digitization_distance' => ['digitization'],
-			'digitization_date' => ['digitization'],
-			'drawing_date' => ['drawing'],
-			'schedule_date' => [],
-			'schedule_design_budget' => [],
-			'schedulee_tentative_total_budget' => [],
-			'project_current_design_budget' => []
-		];
 	}
 }

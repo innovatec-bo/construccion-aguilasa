@@ -45,7 +45,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             budgetary_position_pro,
             entry_date_pro,
             folder_date_pro,
-            concat(firstname_usr,' ', lastname_usr) cre_fiscal_pro,
+            
 			CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'
@@ -73,139 +73,19 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			project_start_pro schedule_start,
             project_end_pro schedule_end,
 			{$buildQuery['columns']}
-			
-
-            last_week_percentage,
-            previous_percentage,
-            previous_manual_entry_date,
-            percentage_inc,
-            last_three_incidents,
-            detail_inc,
-            status_name_pst,
-            keyword_pst,
-            order_pst,
-            id_con,
-            contract_number_con,
-            TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
-            status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date,
-            id_usr cre_fiscal_id,
-            email_usr cre_fiscal_email,
             '' as record_building_materials_date,
 		   	'' as get_materials_date,
 		   	'' as deliver_materials_date,
-		   	'' as materials_reception_date,
-            production.total_bs production_total_bs
+		   	'' as materials_reception_date
+            
         FROM
             wfl_projects
 		{$buildQuery['dependencies']}
         
-        LEFT JOIN wfl_project_status on status_pro = id_pst
-        left join sec_users cre_fiscal on id_usr = cre_fiscal_pro
-        left join wfl_contracts on contract_id_pro = id_con
-        LEFT JOIN (
-		    select * from (
-                select
-                    project_id_psl project_id, max(manual_entry_date_psl) max_date
-                    from (
-                        SELECT
-                            project_id_psl,
-                            manual_entry_date_psl
-                        FROM
-                            wfl_project_status_log
-                        LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                        where deleted_psl != 1 and deleted_slr != 1
-                        GROUP BY id_psl
-                    ) statusLogAndResponsible group by project_id_psl
-            ) as max_entry
-            LEFT JOIN (
-                        SELECT
-                            id_psl,
-                            project_id_psl,
-                            log_detail_psl,
-                            manual_entry_date_psl,
-                            GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
-                            GROUP_CONCAT(id_usr) responsible_ids
-                        FROM
-                            wfl_project_status_log
-                        LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-                        LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
-                        LEFT JOIN sec_users on id_usr = user_id_sre
-                        where deleted_psl != 1  and deleted_slr != 1
-                        GROUP BY id_psl
-                        ) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
-        ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
-        LEFT JOIN (
-            select inc.*
-            from (
-               select 
-                    project_id_inc,
-                    max(manual_entry_date_inc) manual_entry_date_inc
-                    from wfl_incidents
-                    where status_id_inc in (29) -- in_progress 
-                    GROUP BY project_id_inc
-            ) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
-        ) wfl_incidents on project_id_inc = id_pro
-        LEFT JOIN ( 
-            select           
-            IFNULL(percentage_inc,0) last_week_percentage,
-            project_id_inc last_week_project_id
-            from (
-               select 
-                    project_id_inc last_week_project_id,
-                    max(manual_entry_date_inc) last_week_manual_entry_date
-                    from wfl_incidents
-                    where status_id_inc in (29) -- in_progress 
-                    and manual_entry_date_inc >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
-                    AND manual_entry_date_inc < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY     
-                    GROUP BY project_id_inc
-            ) as filtered_last_week inner join wfl_incidents as inc on inc.project_id_inc = filtered_last_week.last_week_project_id and inc.manual_entry_date_inc = filtered_last_week.last_week_manual_entry_date
-        ) wfl_incidents_last_week on last_week_project_id = id_pro
-        LEFT JOIN (
-            select
-            current.project_id_inc project_id,
-            current.percentage_inc current_percentage,
-            current.manual_entry_date_inc current_manual_entry_date,
-            IFNULL(previous.percentage_inc,0) previous_percentage,
-            previous.manual_entry_date_inc previous_manual_entry_date
-            from (
-                SELECT
-                    t1.project_id_inc project_id,   
-                    max( t1.manual_entry_date_inc ) current_update, 
-                    max( t2.manual_entry_date_inc ) previous_update
-                FROM
-                    wfl_incidents t1
-                    LEFT JOIN wfl_incidents t2 ON t1.project_id_inc = t2.project_id_inc AND t2.manual_entry_date_inc < t1.manual_entry_date_inc 
-                GROUP BY
-                    t1.project_id_inc
-            ) current_and_previous
-            LEFT JOIN wfl_incidents previous on previous.project_id_inc = current_and_previous.project_id and previous.manual_entry_date_inc = current_and_previous.previous_update
-            LEFT JOIN wfl_incidents current on current.project_id_inc = current_and_previous.project_id and current.manual_entry_date_inc = current_and_previous.current_update
-        ) previous_incident on previous_incident.project_id = id_pro
-        LEFT JOIN ( 
-            SELECT
-                project_id_inc,
-                SUBSTRING_INDEX(GROUP_CONCAT(CONCAT(percentage_inc,' (',DATE_FORMAT(manual_entry_date_inc,'%d-%m-%Y'),')') ORDER BY manual_entry_date_inc desc SEPARATOR '\n'), '\n', 3) last_three_incidents
-            FROM
-                wfl_incidents
-            where deleted_inc != 1
-            GROUP BY project_id_inc
-        ) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro
-        LEFT JOIN (
-        	SELECT
-        		project_id_lad,
-				sum(ROUND(worked_up_wus * price_wus,2)) total_bs
-			FROM
-				bui_worked_up_structures
-			LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
-			LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
-			LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
-			LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
-			LEFT JOIN bui_building_points on point_id_lal = id_bpo
-			where 
-			 	deleted_wus != 1
-				and deleted_lal != 1 
-			GROUP BY project_id_lad
-        ) production on production.project_id_lad = id_pro
+
+        
+        
+        
         where 
         deleted_pro != 1
 				) ".static::TABLE_NAME."
@@ -561,7 +441,31 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 			'payment_order_invoice_sent_date' => ['column' => 'payment_order_invoice_sent.entry_date payment_order_invoice_sent_date', 'dependencies' => ['payment_order_invoice_sent']],
 
-			'payment_order_has_been_settled_date' => ['column' => 'payment_order_has_been_settled.entry_date payment_order_has_been_settled_date', 'dependencies' => ['payment_order_has_been_settled']]
+			'payment_order_has_been_settled_date' => ['column' => 'payment_order_has_been_settled.entry_date payment_order_has_been_settled_date', 'dependencies' => ['payment_order_has_been_settled']],
+
+			'status_name_pst' => ['column' => 'status_name_pst', 'dependencies'=> ['wfl_project_status']],
+            'keyword_pst' => ['column' => 'keyword_pst', 'dependencies'=> ['wfl_project_status']],
+            'order_pst' => ['column' => 'order_pst', 'dependencies'=> ['wfl_project_status']],
+
+			'cre_fiscal_id' => ['column' => 'id_usr cre_fiscal_id', 'dependencies' => ['cre_fiscal']],
+			'cre_fiscal_pro' => ['column' => " concat(cre_fiscal.firstname_usr,' ', cre_fiscal.lastname_usr) cre_fiscal_pro", 'dependencies' => ['cre_fiscal']],
+            'cre_fiscal_email' => ['column' => 'email_usr cre_fiscal_email', 'dependencies' => ['cre_fiscal']],
+
+			'id_con' => ['column' => 'id_con', 'dependencies' => ['wfl_contracts']],
+            'contract_number_con' => ['column' => 'contract_number_con', 'dependencies' => ['wfl_contracts']],
+
+			'static_days' => ['column' => " TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days ", 'dependencies' => ['status_log_manual_entry_date']],
+            'status_log_manual_entry_date' => ['column' => " status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date ", 'dependencies' => ['status_log_manual_entry_date']],
+			
+			'percentage_inc' => ['column' => 'percentage_inc', 'dependencies' => ['wfl_incidents']],
+			'detail_inc' => ['column' => 'detail_inc', 'dependencies' => ['wfl_incidents']],
+
+			'last_week_percentage' => ['column' => 'wfl_incidents_last_week.last_week_percentage', 'dependencies' => ['wfl_incidents_last_week']],
+			'previous_percentage' => ['column' => 'previous_incident.previous_percentage', 'dependencies' => ['previous_incident']],
+
+            'previous_manual_entry_date' => ['column' => 'previous_incident.previous_manual_entry_date', 'dependencies' => ['previous_incident']],
+			'last_three_incidents' => ['column' => 'wfl_incidents_last_three_incidents.last_three_incidents', 'dependencies' => ['wfl_incidents_last_three_incidents']],
+			'production_total_bs' => ['column' => 'production.total_bs production_total_bs', 'dependencies' => ['production']]
 		];
 	}
 
@@ -595,7 +499,114 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'project_energized' => " LEFT JOIN (".Model_project::_statusDetailQuery(47).") project_energized on project_energized.project_id_psl = id_pro ",
 			'payment_order_registered' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(42).") payment_order_registered on payment_order_registered.project_id_pop = id_pro ",
 			'payment_order_invoice_sent' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(43).") payment_order_invoice_sent on payment_order_invoice_sent.project_id_pop = id_pro ",
-			'payment_order_has_been_settled' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro "        
+			'payment_order_has_been_settled' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro ",
+			'wfl_project_status' => " LEFT JOIN wfl_project_status on status_pro = id_pst ",
+			'cre_fiscal' => " left join sec_users cre_fiscal on id_usr = cre_fiscal_pro ",
+			'wfl_contracts' => " left join wfl_contracts on contract_id_pro = id_con ",
+			'status_log_manual_entry_date' => " LEFT JOIN (
+													select * from (
+														select
+															project_id_psl project_id, max(manual_entry_date_psl) max_date
+															from (
+																SELECT
+																	project_id_psl,
+																	manual_entry_date_psl
+																FROM
+																	wfl_project_status_log
+																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+																where deleted_psl != 1 and deleted_slr != 1
+																GROUP BY id_psl
+															) statusLogAndResponsible group by project_id_psl
+													) as max_entry
+													LEFT JOIN (
+																SELECT
+																	id_psl,
+																	project_id_psl,
+																	log_detail_psl,
+																	manual_entry_date_psl,
+																	GROUP_CONCAT(CONCAT(firstname_usr,' ',lastname_usr)) responsible,
+																	GROUP_CONCAT(id_usr) responsible_ids
+																FROM
+																	wfl_project_status_log
+																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
+																LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
+																LEFT JOIN sec_users on id_usr = user_id_sre
+																where deleted_psl != 1  and deleted_slr != 1
+																GROUP BY id_psl
+																) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
+												) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro ",
+			'wfl_incidents' => " LEFT JOIN (
+									select inc.*
+									from (
+									select 
+											project_id_inc,
+											max(manual_entry_date_inc) manual_entry_date_inc
+											from wfl_incidents
+											where status_id_inc in (29) -- in_progress 
+											GROUP BY project_id_inc
+									) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
+								) wfl_incidents on project_id_inc = id_pro ",
+			'wfl_incidents_last_week' => " LEFT JOIN ( 
+						select           
+						IFNULL(percentage_inc,0) last_week_percentage,
+						project_id_inc last_week_project_id
+						from (
+						select 
+								project_id_inc last_week_project_id,
+								max(manual_entry_date_inc) last_week_manual_entry_date
+								from wfl_incidents
+								where status_id_inc in (29) -- in_progress 
+								and manual_entry_date_inc >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+								AND manual_entry_date_inc < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY     
+								GROUP BY project_id_inc
+						) as filtered_last_week inner join wfl_incidents as inc on inc.project_id_inc = filtered_last_week.last_week_project_id and inc.manual_entry_date_inc = filtered_last_week.last_week_manual_entry_date
+					) wfl_incidents_last_week on last_week_project_id = id_pro ",
+			'previous_incident' => " LEFT JOIN (
+						select
+						current.project_id_inc project_id,
+						current.percentage_inc current_percentage,
+						current.manual_entry_date_inc current_manual_entry_date,
+						IFNULL(previous.percentage_inc,0) previous_percentage,
+						previous.manual_entry_date_inc previous_manual_entry_date
+						from (
+							SELECT
+								t1.project_id_inc project_id,   
+								max( t1.manual_entry_date_inc ) current_update, 
+								max( t2.manual_entry_date_inc ) previous_update
+							FROM
+								wfl_incidents t1
+								LEFT JOIN wfl_incidents t2 ON t1.project_id_inc = t2.project_id_inc AND t2.manual_entry_date_inc < t1.manual_entry_date_inc 
+							GROUP BY
+								t1.project_id_inc
+						) current_and_previous
+						LEFT JOIN wfl_incidents previous on previous.project_id_inc = current_and_previous.project_id and previous.manual_entry_date_inc = current_and_previous.previous_update
+						LEFT JOIN wfl_incidents current on current.project_id_inc = current_and_previous.project_id and current.manual_entry_date_inc = current_and_previous.current_update
+					) previous_incident on previous_incident.project_id = id_pro ",
+			'wfl_incidents_last_three_incidents' => " LEFT JOIN ( 
+															SELECT
+																project_id_inc,
+																SUBSTRING_INDEX(GROUP_CONCAT(CONCAT(percentage_inc,' (',DATE_FORMAT(manual_entry_date_inc,'%d-%m-%Y'),')') ORDER BY manual_entry_date_inc desc SEPARATOR '\n'), '\n', 3) last_three_incidents
+															FROM
+																wfl_incidents
+															where deleted_inc != 1
+															GROUP BY project_id_inc
+														) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro ",
+			'production' => " LEFT JOIN (
+								SELECT
+									project_id_lad,
+									sum(ROUND(worked_up_wus * price_wus,2)) total_bs
+								FROM
+									bui_worked_up_structures
+								LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus
+								LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+								LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac
+								LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
+								LEFT JOIN bui_building_points on point_id_lal = id_bpo
+								where
+									deleted_wus != 1
+									and deleted_lal != 1 
+								GROUP BY project_id_lad
+							) production on production.project_id_lad = id_pro "
 		];
 	}
 
@@ -606,24 +617,22 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		$response = ['columns' => '', 'dependencies' => ''];
 		
 		$dependencyList = [];
+		if(count($this->_columnsToShow) > 0)
+		{
+			$this->_columnsAndDependencies = array_filter($this->_columnsAndDependencies, function($k) {
+				return array_search($k,$this->_columnsToShow) !== FALSE;
+			}, ARRAY_FILTER_USE_KEY);
+		}
+
 		foreach($this->_columnsAndDependencies as $key => $value)
 		{
-			//If there are columns passed by parameter then let's check if the current key is in columnToShow array 
-			if(count($this->_columnsToShow) > 0 && array_search($key, $this->_columnsToShow) === FALSE)
-			{
-				dd($key,'toc toc');
-			}
-				
-
-			
 			$columns .= $value['column'].",";
 			foreach($value['dependencies'] as $dependency)
 			{
 				$dependencyList[$dependency] = $dependency;
 			}
 		}
-		$columns = substr($columns,0,-1);
-		dd($columns);
+		// $columns = substr($columns,0,-1);
 		$dependencyList = array_values($dependencyList);
 		foreach($this->_queryDependencies as $key => $query)
 		{
@@ -636,7 +645,6 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 		$response['columns'] = $columns;
 		$response['dependencies'] = $dependencies;
-		dd($response['columns']);
 		return $response;
 	} 
 }
