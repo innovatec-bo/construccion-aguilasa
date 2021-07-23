@@ -83,7 +83,7 @@ $(document).ready(function() {
         "language": {
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
         },
-        "dom": "<'row'<'col-sm-6'Bl><'col-sm-6 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
+        "dom": "<'row'<'col-sm-7'Bl><'col-sm-5 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
         "columns" : [{
             "data" : "id_pro"

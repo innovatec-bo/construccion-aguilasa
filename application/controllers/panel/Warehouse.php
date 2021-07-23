@@ -413,4 +413,9 @@ class Warehouse extends PrivateController
 		//El fiscal podra ver las listas que ha creado, pueden ser sus solicitudes al almacen interno, o las listas que envio a CRE para solicitar materiales.
 		//Cada lita debe tener sus botones de accion.
 	}
+
+	public function downloadExcelRequestAdditionalToCRE()
+	{
+		
+	}
 }

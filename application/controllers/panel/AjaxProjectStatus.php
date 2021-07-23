@@ -804,8 +804,14 @@ class AjaxProjectStatus extends PrivateController
         {
             $statusListArray[$status->getId()] = $status->toArray();
         }
-        $workFlow = Model_project::getWorkflowDetail(['id-list'=>$projectId]);
-		$projectWorkFlow = $workFlow[0];
+        // $workFlow = Model_project::getWorkflowDetail(['id-list'=>$projectId]);
+		// $projectWorkFlow = $workFlow[0];
+
+        $wokflowPaginationHandler = new WorkflowPaginationHandler(1);
+        $wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$projectId]);
+        $wokflowPaginationHandler->setColumnsToShow(['keyword_pst','production_percentage','project_current_budget','manpower_file_id','cre_fiscal_pro']);
+        $projectWorkFlow = $wokflowPaginationHandler->getAll()[0];
+        $projectWorkFlow = (array)$projectWorkFlow;
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
         $data["statusList"] = $statusListArray;

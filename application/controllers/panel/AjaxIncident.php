@@ -62,10 +62,11 @@ class AjaxIncident extends PrivateController
             if(!is_numeric($projectId))
             {
                 $additionalParameters['status'] = $statusId;
-                $projectList = Model_project::getAll(100, 0, "entry_date_pro","desc", $additionalParameters);
+                // $projectList = Model_project::getAll(100, 0, "entry_date_pro","desc", $additionalParameters);
 
                 $paginationHandler = new WorkflowPaginationHandler(100,0);
 				$paginationHandler->setAdditionalParameters($additionalParameters);
+                $paginationHandler->setColumnsToShow(['status_name_pst','keyword_pst','production_percentage']);
 				$projectList = $paginationHandler->getAll();
             }
             else
@@ -78,7 +79,8 @@ class AjaxIncident extends PrivateController
                 $status = Model_project_status::getById($project["status_pro"])->toArray();
                 $projectList = array_merge($project, $incident,$status);
 
-				$paginationHandler = new WorkflowPaginationHandler(1,0);
+				$paginationHandler = new WorkflowPaginationHandler(1);
+                $paginationHandler->setColumnsToShow(['status_name_pst','keyword_pst','production_percentage']);
 				$paginationHandler->setAdditionalParameters(['code-list'=>$project['code_pro']]);
 				$projectList = $paginationHandler->getAll();
             }
