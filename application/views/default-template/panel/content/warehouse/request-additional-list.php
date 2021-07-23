@@ -11,41 +11,6 @@
 	</div>
 	<form method="post" name="materials-summary" data-parsley-validate>
 	<div class="row">
-		<div id="builder-selection" style="display: none">
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>Fiscal</label>
-					<select class="form-control input-sm" name="fiscal">
-						<?php
-						$html = '';
-						foreach ($fiscals as $fiscal)
-						{
-							$html .= "<option value='{$fiscal->getId()}'>{$fiscal->getFullName()}</option>";
-						}
-						echo $html;
-						?>
-					</select>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="form-group">
-					<label>Constructor</label>
-					<select class="form-control input-sm" name="builder">
-						<?php
-						$html = '';
-						foreach ($builders as $builder)
-						{
-							$html .= "<option value='{$builder->getId()}'>{$builder->getFullName()}</option>";
-						}
-						echo $html;
-						?>
-					</select>
-				</div>
-			</div>
-		</div>
-
-	</div>
-	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group">
 				<label>Fecha</label>
@@ -58,28 +23,32 @@
 				<div id="error-entry-date"></div>
 			</div>
 		</div>
-		<div class="col-md-4" id="extra-request-data">
+		<div class="col-md-3" id="extra-request-data">
 			<div class="form-group">
 				<label>Proyecto</label>
-				<select class="form-control input-sm project" name="project">
+				<select class="form-control input-sm select2 workflow" name="project">
 					<option></option>
-					<?php
-					$options = "";
-					/** @var Model_project $project */
-					foreach ($projects as $project)
-					{
-						$options .= "<option value='{$project->getId()}'>{$project->getCode()}</option>";
-					}
-					echo $options;
-					?>
-
 				</select>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<div class="form-group" id="reservation-number-selection">
-				<label>Nro reserva</label>
-				<input type="text" class="form-control" readonly value="1234">
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group" id="reservation-number">
+				<label>Nro reserva aprobado</label>
+				<input type="text" class="form-control" name="reservation-number" readonly value="">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group" id="fiscal">
+				<label>Fiscal</label>
+				<input type="text" class="form-control" readonly value="" name="fiscal-name">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group" id="builder">
+				<label>Constructor</label>
+				<input type="text" class="form-control" readonly value="" name='builder-name'>
 			</div>
 		</div>
 	</div>
@@ -109,6 +78,29 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			<table id="toolbox">
+				<tbody>
+					<tr>
+						<td>
+							<input type="button" value="Merge" class="button" onclick="redips.merge()" title="Merge marked table cells horizontally and verically"/>
+						</td>
+						<td>
+							<input type="button" value="Split H" class="button" onclick="redips.split('h')" title="Split marked table cell horizontally"/>
+							<input type="button" value="Split V" class="button" onclick="redips.split('v')" title="Split marked table cell vertically"/>
+						</td>
+						<td>
+							<input type="button" value="Row +" class="button" onclick="redips.row('insert')" title="Add table row"/>
+							<input type="button" value="Row -" class="button" onclick="redips.row('delete')" title="Delete table row"/>
+						</td>
+						<td>
+							<input type="button" value="Col +" class="button" onclick="redips.column('insert')" title="Add table column"/>
+							<input type="button" value="Col -" class="button" onclick="redips.column('delete')" title="Delete table column"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-12">
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover display pageResize" id="items-summary-list">
 					<thead>
@@ -118,6 +110,8 @@
 						<th>Movimiento</th>
 						<th>Tension</th>
 						<th>Estado</th>
+						<th>PTO</th>
+						<th>OBSERV./MOTIVO DEL AD.</th>
 						<th>Quitar</th>
 					</tr>
 					</thead>

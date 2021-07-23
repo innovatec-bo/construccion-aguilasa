@@ -24,4 +24,18 @@ class AjaxWorkflow extends PrivateController
       $response = $paginationHandler->getResponseForDataTable();
       echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
     }
+
+    public function select2()
+    {
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $offset = ($page-1)*$limit;
+		    $additionalParameters = $this->input->post('additionalParameters')??array();
+        $wokflowPaginationHandler = new WorkflowPaginationHandler($limit,$offset,'code_pro','asc',$term,array('code_pro'));
+        $wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
+		    $wokflowPaginationHandler->setAdditionalParameters($additionalParameters);
+        $result = $wokflowPaginationHandler->getResponseForSelect2($page);
+		    echo json_encode($result);exit;
+    }
 }

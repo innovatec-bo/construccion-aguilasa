@@ -57,6 +57,20 @@ class MatProjectsMaterials
     private $tensionIdPrm;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="request_cre_pto_prm", type="text", length=65535, nullable=true)
+     */
+    private $requestCrePtoPrm;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="request_cre_detail_prm", type="text", length=65535, nullable=true)
+     */
+    private $requestCreDetailPrm;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_prm", type="smallint", nullable=true, options={"default"="0"})

@@ -240,6 +240,7 @@ class Warehouse extends PrivateController
 	{
 		$this->complementHandler->addViewComplement("parsley292");
 		$this->complementHandler->addViewComplement("parsley292.spanish");
+		$this->complementHandler->addViewComplement("redips-table");
 		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
@@ -255,7 +256,39 @@ class Warehouse extends PrivateController
 		}
 		else
 		{
+			$formData = $this->input->post();
+			// dd($formData);
+			$entryDate = $formData['entry-date'];
+			$projectId = $formData['project'];
+			$wokflowPaginationHandler = new WorkflowPaginationHandler(1);
+			$wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$projectId]);
+			$wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
+			$projectWorkflow = $wokflowPaginationHandler->getAll()[0];
+			// dd($projectWorkflow, $formData);
+			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+			$entryDate = date_format($entryDate, 'Y-m-d');
+			$entryDate = $entryDate." ".date("H:i:s");
+			$materials = array_values($formData['summary']);
+			$currentUser = PrivateController::getSessionUser();
+			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+			$summaryType = Model_material_summary_type::getByKeyword(['request_additionals_to_cre']);
+			$summaryType = array_values($summaryType);
+			/** @var Model_material_summary_type $summaryType */
+			$summaryType = $summaryType[0];
+			$newMaterialSummary = new Model_material_summary(NULL,'TODOS',$projectId,$projectId,'','',$entryDate,'',$currentUserId, $summaryType->getId(), NULL);
+			$newMaterialSummary->setBuilderResponsible($projectWorkflow->fiscal_responsible_id);
+			$newMaterialSummary->setFiscalResponsible($projectWorkflow->builder_responsible_id);
+			
+			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$newMaterialSummary->getSummaryType());
+			$correlativeCounter = count($summariesByProjectAndType) + 1;
+			
+			$newMaterialSummary->setCorrelativeCounter($correlativeCounter);
+			$newMaterialSummary->save();
+			$newMaterialSummary->saveMaterials($materials);
 
+			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente.");
+			$method = debug_backtrace()[1]['function'];
+			redirect(base_url("panel/Warehouse/requestAdditionalList"));
 		}		
 	}
 
@@ -263,6 +296,9 @@ class Warehouse extends PrivateController
 	{
         /** Load libraries */
         $this->load->library('form_validation');
+
+		
+
         $this->form_validation->set_rules('materials-file', 'File', 'trim');
 
         /** Breadcrumbs */
@@ -295,7 +331,6 @@ class Warehouse extends PrivateController
 							break;
 					}
 					
-					// $reader->setInputEncoding('ISO-8859-1');
 					$fileLocation = FCPATH.$document->getUrl();
 					$spreadsheet = $reader->load($fileLocation);
 					$sheetList = $spreadsheet->getAllSheets();
@@ -365,4 +400,17 @@ class Warehouse extends PrivateController
             redirect(base_url("panel/Warehouse/importMaterials"));
         }  
     }
+
+	public function setUp()
+	{
+		// Crear una vista para configurar el almacen
+		// Primer parametro de configuracion de almacen => definir los dias de vigencia de una solicitud de fiscal a almacen.
+		// Ejecutar el cerrado de solicitudes pendientes que han vencido.
+	}
+
+	public function getMySummaries()
+	{
+		//El fiscal podra ver las listas que ha creado, pueden ser sus solicitudes al almacen interno, o las listas que envio a CRE para solicitar materiales.
+		//Cada lita debe tener sus botones de accion.
+	}
 }

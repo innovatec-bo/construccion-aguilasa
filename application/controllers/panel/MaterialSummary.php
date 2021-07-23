@@ -59,7 +59,6 @@ class MaterialSummary extends PrivateController
         $this->complementHandler->addProjectCss('material-summary.index');
         $this->complementHandler->addProjectJs('material-summary.index');
 
-        
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $requestList = [];

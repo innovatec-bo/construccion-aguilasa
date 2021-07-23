@@ -519,3 +519,38 @@ function select2MaterialsResponse (response)
 	let data = {data:response};
 	return template(data);
 }
+
+function select2Workflow(selector)
+{
+    selector = selector || '.select2.workflow';
+    //select2 ajax for projects
+    $(selector).select2({
+        placeholder: "Codigo de proyecto",
+        containerCssClass: 'select-xs',
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxWorkflow/select2',
+            dataType : "json",
+            type : "post",
+            delay : 600,
+            data : function(params) {
+                
+                return {
+                    term : params.term || "", //search term
+                    limit : 10, // page size
+                    page: params.page || 1
+                };
+            },
+
+            processResults: function (data) {
+                return {
+                    results: data.list,
+                    pagination: data.pagination
+                };
+            }
+        },
+        width : "100%"
+        //escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        //templateResult: select2ProjectGeneralListFormatResponse
+    });
+}

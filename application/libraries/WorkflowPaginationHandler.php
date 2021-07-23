@@ -302,13 +302,25 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		$recordsFiltered = $this->searchTotalCount();
 		$resultArray = array();
 		$list = array();
-
+		
+		// dd($this->_columnsToShow);
 		foreach ($objects as $row)
 		{
-			$list[] = array(
-				"id" => $row->id_pro,
-				"text" => $row->code_pro
-			);
+			$columnsToShow = [];
+			foreach($this->_columnsToShow as $column)
+			{
+				if($column != "")
+				{
+					$columnsToShow[$column] = $row->$column;
+				}
+			}
+
+			$result = [
+						"id" => $row->id_pro,
+						"text" => $row->code_pro
+					];
+			$result = array_merge($result,$columnsToShow);
+			$list[] = $result;
 		}
 
 		$moreResults = ($page * $this->_limit) < $recordsFiltered;
@@ -353,6 +365,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 			'already_sent_date' => ['column' => 'already_sent.entry_date already_sent_date', 'dependencies' => ['already_sent']],
 
+			'approved_reservation_number' => ['column' => 'approved.reservation_number_prb approved_reservation_number', 'dependencies' => ['approved']],
 			'approved_date' => ['column' => 'approved.entry_date approved_date', 'dependencies' => ['approved']],
 			'design_budget' => ['column' => 'approved.design_prb design_budget', 'dependencies' => ['approved']],
             'building_budget' => ['column' => 'approved.building_prb building_budget', 'dependencies' => ['approved']],

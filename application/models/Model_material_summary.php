@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by CodeGenHandler.
- * User: Jair
- * Date: 2021-02-08
- * Time: 18:23:39
- */
-
 class Model_material_summary extends Model_material_summary_base
 {
-    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL, ?int $canceledBy = NULL)
 	{
-		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $builderResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter, $fiscalResponsible, $statusId, $canceledOn, $withrawnOn);
+		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $builderResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter, $fiscalResponsible, $statusId, $canceledOn, $withrawnOn, $canceledBy);
 	}
 
 	/**
@@ -101,15 +94,28 @@ class Model_material_summary extends Model_material_summary_base
 			$quantity = floatval($quantity);
 			if($quantity > 0)
 			{
-				$dataToSave[] = array(
-					'materials_summary_id_prm' => $this->_id,
-					'material_id_prm' => $material['id'],
-					'quantity_prm' => $quantity,
-					'status_id_prm' => $material['status'],
-					'tension_id_prm' => $material['tension'],
-					'createdon_prm' => $currentDate,
-					'createdby_prm' => $currentUserId
-				);
+				$projectMaterial = new Model_project_material($this->_id,$material['id'],$quantity,$material['status'],$material['tension']);
+				if(isset($material['pto']))
+				{
+					$projectMaterial->setRequestCrePto($material['pto']);	
+				}
+				if(isset($material['detail-request-additiona-to-cre']))
+				{
+					$projectMaterial->setRequestCreDetail($material['detail-request-additiona-to-cre']);	
+				}
+				$projectMaterial->setCreatedOn($currentDate);
+				$projectMaterial->setCreatedBy($currentUserId);
+				$dataToSave[] = $projectMaterial->toArray();
+
+				// $dataToSave[] = array(
+				// 	'materials_summary_id_prm' => $this->_id,
+				// 	'material_id_prm' => $material['id'],
+				// 	'quantity_prm' => $quantity,
+				// 	'status_id_prm' => $material['status'],
+				// 	'tension_id_prm' => $material['tension'],
+				// 	'createdon_prm' => $currentDate,
+				// 	'createdby_prm' => $currentUserId
+				// );
 			}
 		}
 		if(count($dataToSave) > 0)

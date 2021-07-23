@@ -17,8 +17,10 @@ class Model_project_material_base extends MY_Model
 	protected float $_quantity;
 	protected int $_statusId;
 	protected ?int $_tension;
+	protected ?string $_requestCrePto;
+	protected ?string $_requestCreDetail;
 
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL, ?string $requestCrePto = NULL, ?string $requestCreDetail = NULL)
     {
         parent::__construct();
         $this->_materialsSummaryId = $materialsSummaryId;
@@ -26,6 +28,8 @@ class Model_project_material_base extends MY_Model
 		$this->_quantity = $quantity;
 		$this->_statusId = $statusId;
 		$this->_tension = $tension;
+		$this->_requestCrePto = $requestCrePto;
+		$this->_requestCreDetail = $requestCreDetail;
     }
 
     /**
@@ -41,6 +45,8 @@ class Model_project_material_base extends MY_Model
 			"quantity_prm" => $this->_quantity,
 			"status_id_prm" => $this->_statusId,
 			"tension_id_prm" => $this->_tension,
+			"request_cre_pto_prm" => $this->_requestCrePto,
+			"request_cre_detail_prm" => $this->_requestCreDetail,
 			"deleted_prm" => $this->_deleted,
 			"createdon_prm" => $this->_createdOn,
 			"createdby_prm" => $this->_createdBy,
@@ -68,7 +74,9 @@ class Model_project_material_base extends MY_Model
 				$object->material_id_prm,
 				$object->quantity_prm,
 				$object->status_id_prm,
-				$object->tension_id_prm
+				$object->tension_id_prm,
+				$object->request_cre_pto_prm,
+				$object->request_cre_detail_prm,
             );
             $instance->_id = $object->id_prm;
 
@@ -108,6 +116,15 @@ class Model_project_material_base extends MY_Model
 		$this->_tension = $tensionId;
 	}
 
+	public function setRequestCrePto($value)
+	{
+		$this->_requestCrePto = $value;
+	}
+
+	public function setRequestCreDetail($value)
+	{
+		$this->_requestCreDetail = $value;
+	}
     //Getters
     public function getMaterialsSummaryId()
 	{
@@ -132,5 +149,15 @@ class Model_project_material_base extends MY_Model
 	public function getTension()
 	{
 		return $this->_tension;
+	}
+
+	public function getRequestCrePto()
+	{
+		return $this->_requestCrePto;
+	}
+
+	public function getRequestCreDetail()
+	{
+		return $this->_requestCreDetail;
 	}
 }

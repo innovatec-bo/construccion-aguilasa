@@ -203,4 +203,10 @@ class MatMaterialsSummary
      */
     private $withdrawnOnMsu;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="canceledby_msu", type="bigint", nullable=true)
+     */
+    private $canceledbyMsu;
 }

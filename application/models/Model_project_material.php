@@ -8,9 +8,9 @@
 
 class Model_project_material extends Model_project_material_base
 {
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL, ?string $requestCrePto = NULL, ?string $requestCreDetail = NULL)
 	{
-		parent::__construct($materialsSummaryId, $materialId, $quantity, $statusId, $tension);
+		parent::__construct($materialsSummaryId, $materialId, $quantity, $statusId, $tension, $requestCrePto, $requestCreDetail);
 	}
 
 	/**

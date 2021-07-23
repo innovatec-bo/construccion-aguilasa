@@ -31,16 +31,14 @@
 				<option value="1">Media</option>
 				<option value="2">Baja</option>
 				<option value="3">Transformador</option>
-
 			</select>
 		</td>
 		<td>
 			<select class="wh-table-component-select status" name="summary[{{rowId}}][status]">
-				<option value="4">Indefinido</option>
 				<option value="1">NVO</option>
 				<option value="2">MEO</option>
 				<option value="3">RBE</option>
-
+				<option value="4">Indefinido</option>
 			</select>
 		</td>
 		<td><input type="button" class="btn btn-xs btn-danger btn-sm wh-quit-row" value="X"></td>
@@ -53,4 +51,48 @@
 	{{#each options}}
 		<option value="{{reservation_number}}">{{reservation_number}}</option>
 	{{/each}}
+</script>
+<script id="table-row-request-materials-to-cre" type="text/x-handlebars-template">
+	<tr>
+		<td class="text-center">{{data.material_code}}</td>
+		<td class="text-left">{{data.material_description}}</td>
+		<td>
+		<input 
+			type="text" 
+			class="quantity quantity-{{data.material_code}} text-right input-masked" 
+			name="summary[{{rowId}}][quantity]" 
+			value="" 
+			size="7" 
+			data-parsley-trigger="input" 
+			data-parsley-validate-quantity-to-request-to-cre=""
+			data-inputmask="'alias': 'decimal', 'groupSeparator': '', 'autoGroup': true, 'digits':2, 'placeholder':'0','digitsOptional': false">
+		</td>
+		<td>
+			<select class="wh-table-component-select tension" name="summary[{{rowId}}][tension]">
+				<option value="4">Indefinido</option>
+				<option value="1">Media</option>
+				<option value="2">Baja</option>
+				<option value="3">Transformador</option>
+			</select>
+		</td>
+		<td>
+			<select class="wh-table-component-select status" name="summary[{{rowId}}][status]">
+				<option value="1">NVO</option>
+				<option value="2">MEO</option>
+				<option value="3">RBE</option>
+				<option value="4">Indefinido</option>
+			</select>
+		</td>
+		<td>
+			<textarea name="summary[{{rowId}}][pto]" cols="30" rows="2"></textarea>
+		</td>
+		<td>
+			<textarea name="summary[{{rowId}}][detail-request-additiona-to-cre]" cols="30" rows="2"></textarea>
+		</td>
+		<td>
+			<input type="button" class="btn btn-xs btn-danger btn-sm wh-quit-row" value="X">
+		</td>
+		<input type="hidden" class="material" name="summary[{{rowId}}][id]" value="{{data.material_id}}">
+		<input type="hidden" class="material" name="summary[{{rowId}}][code]" value="{{data.material_code}}">
+	</tr>
 </script>

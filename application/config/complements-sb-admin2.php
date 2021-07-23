@@ -130,3 +130,5 @@ $config['complements']['dragula']['js'] = assets_url('resource-sb-admin2/plugins
 
 $config['complements']['swiper']['css'] = assets_url('resource-sb-admin2/plugins/swiper/swiper-bundle.css');
 $config['complements']['swiper']['js'] = assets_url('resource-sb-admin2/plugins/swiper/swiper-bundle.js');
+
+$config['complements']['redips-table']['js'] = assets_url('resource-sb-admin2/plugins/redips_table/redips-table-min.js');

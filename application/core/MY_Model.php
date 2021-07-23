@@ -64,6 +64,17 @@ class MY_Model
     {
         return $this->_id;
     }
+
+    public function setCreatedOn($value)
+    {
+        $this->_createdOn = $value;
+    }
+
+    public function setCreatedBy($value)
+    {
+        $this->_createdBy = $value;
+    }
+
     public function __toString()
     {
         $jsonEncode = json_encode($this->toArray());
