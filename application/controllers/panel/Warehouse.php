@@ -287,6 +287,7 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->saveMaterials($materials);
 
 			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente.");
+			$this->session->set_flashdata("requestId", $newMaterialSummary->getId());
 			$method = debug_backtrace()[1]['function'];
 			redirect(base_url("panel/Warehouse/requestAdditionalList"));
 		}		
@@ -416,6 +417,10 @@ class Warehouse extends PrivateController
 
 	public function downloadExcelRequestAdditionalToCRE()
 	{
-		
+		$summaryId = $this->input->post('summary-id');
+		// $summaryId = 16;
+		$excelRequestMaterialToCRE = new ExcelRequestMaterialToCRE($this->sessionUser, $summaryId);
+		$excelRequestMaterialToCRE->getReport();
+		// dd($materialSummary, $materialList);
 	}
 }

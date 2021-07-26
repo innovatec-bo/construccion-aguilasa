@@ -9,6 +9,9 @@
 			?>
 		</div>
 	</div>
+	<form method="post" name="download-excel-format" action="<?=base_url('panel/Warehouse/downloadExcelRequestAdditionalToCRE')?>">
+		<input type="hidden" name="summary-id" value="<?=$this->session->flashdata('requestId')?>">
+	</form>
 	<form method="post" name="materials-summary" data-parsley-validate>
 	<div class="row">
 		<div class="col-md-3">

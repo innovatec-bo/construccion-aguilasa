@@ -397,6 +397,7 @@ class Model_project extends Model_project_base
 			(IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as total_budget,
             tentative_total_budget_prb,
             reservation_number_prb,
+            graph_number_prb,
 			design_reb,
 			building_reb,			
 			transportation_reb,

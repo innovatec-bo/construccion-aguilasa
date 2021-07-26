@@ -366,6 +366,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'already_sent_date' => ['column' => 'already_sent.entry_date already_sent_date', 'dependencies' => ['already_sent']],
 
 			'approved_reservation_number' => ['column' => 'approved.reservation_number_prb approved_reservation_number', 'dependencies' => ['approved']],
+			'approved_graph_number' => ['column' => 'approved.graph_number_prb approved_graph_number', 'dependencies' => ['approved']],
 			'approved_date' => ['column' => 'approved.entry_date approved_date', 'dependencies' => ['approved']],
 			'design_budget' => ['column' => 'approved.design_prb design_budget', 'dependencies' => ['approved']],
             'building_budget' => ['column' => 'approved.building_prb building_budget', 'dependencies' => ['approved']],

@@ -29,13 +29,19 @@ class Model_project_material extends Model_project_material_base
             	description_mat material_description,
 			   	unit_of_measurement_mat material_unit_of_measurement,
                 quantity_prm material_quantity,
+				detail_mst material_status,
 			   	status_id_prm material_status_id,
+				detail_mte material_tension,
+				tension_id_prm material_tension_id,
                 code_mst material_status_code,
-                tension_id_prm material_tension_id                   
+                tension_id_prm material_tension_id,
+				request_cre_pto_prm material_request_cre_pto,
+				request_cre_detail_prm material_request_cre_detail
             from 
                  ".static::TABLE_NAME."
 			 left join mat_materials on id_mat = material_id_prm
 			 left join mat_material_status on status_id_prm = id_mst 
+			 left join mat_material_tensions on tension_id_prm = id_mte
 			where 
 				materials_summary_id_prm = ".$ci->db->escape($summaryId)." 
 				and ".static::notDeleted()."
