@@ -107,7 +107,6 @@ class CronJob extends PublicController
             }
 			$this->_saveInLog($response);
         }
-
     }
 
     public function notifyProjectsByStatusToInternalMembers($challenge)

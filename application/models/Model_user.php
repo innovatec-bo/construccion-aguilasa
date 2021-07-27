@@ -332,7 +332,8 @@ class Model_user extends Model_user_base
 
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@serebo.com"
+            "gilbertof@serebo.com",
+            "vh.suarez@serebo.com"
         );
 
         $subjectList = array(
@@ -397,12 +398,16 @@ class Model_user extends Model_user_base
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
             $email->to($emailHandler->getEmailByEnvironment($sendTo));
+            if($status == 'completed')
+                $sendToCC[] = 'pvargas@serebo.com';
+            else
+                $sendToCC = array("vhsuarez@serebo.com","gilbertof@serebo.com","vh.suarez@serebo.com");
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
 			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
-//            echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
