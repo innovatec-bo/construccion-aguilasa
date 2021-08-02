@@ -76,21 +76,6 @@
 			</div>
 			
 		</div>
-		<?php
-		if($showNewReservationNumber == 1)
-		{
-		?>
-		<div class="col-md-3">
-			<label>Codigo de reserva a CRE</label>
-			<input type="text" class="form-control" name="new-reservation-number" autocomplete="off">
-		</div>
-		<div class="col-md-3">
-			<label>Nro. de reserva( no es necesario un nuevo nro de reserva para registra el adicional en el sistema)</label>
-			<input type="text" class="form-control" name="new-reservation-number" autocomplete="off">
-		</div>
-		<?php
-		}
-		?>
 		
 		<div id="builder-selection" style="display: none">
 			<div class="col-md-4">

@@ -261,8 +261,7 @@ class WarehouseHandler
 				message = 'No puede exceder la cantidad pendiente en CRE';
 				break;
 			case 'materials_delivered_to_builder':
-				//response = inputValue <= (quantitInWarehouse + quantityRequested);
-				response = inputValue <= quantityRequested;
+				response = isNaN(quantityRequested)?true: inputValue <= quantityRequested;
 				message = 'No puede llevar mas que la cantidad solicitada.';
 				break;
 			case 'request_materials':

@@ -28,7 +28,7 @@ class Warehouse extends PrivateController
 			$redirectTo = "panel/Warehouse/".$method;
 			/** @var Model_material_summary $materialSummary */
 			$materialSummary = $this->_validateObjectToEdit($materialsRequestId,Model_material_summary::class, $redirectTo, "No se encuentra la lista de solicitud.");
-			$requests = Model_material_summary_type::getByMovementType(['request']);
+			$requests = Model_material_summary_type::getByMovementType(['request','request_cre']);
 			if(!isset($requests[$materialSummary->getSummaryType()]))
 			{
 				$this->session->set_flashdata("errorMessage", "Debe ingresar un c&oacute;digo de una lista de solcitud.");
@@ -62,9 +62,11 @@ class Warehouse extends PrivateController
 		$data['summaryTypeId'] = [];
 		if($materialSummary instanceof Model_material_summary)
 		{
+			//summary type id calling another summary type
 			$outList = [
 				14 => "materials_delivered_to_builder",
-				15 => "materials_delivered_to_builder_loan"
+				15 => "materials_delivered_to_builder_loan",
+				16 => "materials_additional_list"
 			];
 			$data['materialSummary'] = Model_material_summary::getMasterDetailByListId($materialSummary->getId());
 			$data['materialList'] = Model_project_material::getBySummaryId($materialSummary->getId());
@@ -154,7 +156,6 @@ class Warehouse extends PrivateController
 			'showSearchBox' => 1,
 			'materialsTitle' => 'Lista general',
 			'showAssignedMaterialsOnly' => 0,
-			'showNewReservationNumber' => 0,
 			'showBtnListAll' => 1
 		];
 		$this->_index($metaData);
@@ -170,7 +171,6 @@ class Warehouse extends PrivateController
 			'showSearchBox' => 0,
 			'materialsTitle' => 'Materiales asignados',
 			'showAssignedMaterialsOnly' => 1,
-			'showNewReservationNumber' => 0,
 			'showBtnListAll' => 1
 		];
 		$this->_index($metaData);
@@ -183,10 +183,9 @@ class Warehouse extends PrivateController
 			'viewTitle' => 'Ingresar lista de adicionales',
 			'summaryTypeTitle' => 'Lista',
 			'summaryTypes' => $summaryTypes,
-			'showSearchBox' => 0,
+			'showSearchBox' => 1,
 			'materialsTitle' => 'Materiales en el sistema',
 			'showAssignedMaterialsOnly' => 0,
-			'showNewReservationNumber' => 1,
 			'showBtnListAll' => 0
 		];
 		$this->_index($metaData);

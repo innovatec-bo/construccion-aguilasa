@@ -410,7 +410,7 @@ function startSelect2MaterialsSummary(containerCssClass, size)
 			data : function(params) {
 				return {
 					term : params.term || "",//search term
-					limit : 5,// page size
+					limit : 10,// page size
 					page: params.page || 1
 				};
 			},
