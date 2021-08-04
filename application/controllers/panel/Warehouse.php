@@ -40,7 +40,6 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addViewComplement('select2');
 		$this->complementHandler->addViewComplement("parsley292");
 		$this->complementHandler->addViewComplement("parsley292.spanish");
-		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
 		$this->complementHandler->addProjectJs('DTAdditionalParameterHandler', TRUE);
@@ -240,7 +239,6 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addViewComplement("parsley292");
 		$this->complementHandler->addViewComplement("parsley292.spanish");
 		$this->complementHandler->addViewComplement("redips-table");
-		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
 		$this->complementHandler->addProjectCss('warehouse.request-additional-list', TRUE);

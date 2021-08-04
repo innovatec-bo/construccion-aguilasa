@@ -95,73 +95,32 @@ $(document).ready(function() {
             "data" : "entry_date_pro",
 			"className": 'text-center',
             "render" : function(data, type, row, meta) {
-                var result = "";
-                if(row.entry_date_pro !== "" && row.entry_date_pro !== null)
+                let date = moment(row.entry_date_pro,'YYYY-MM-DD HH:mm:ss');
+                let result = "";
+                if(date.isValid())
                 {
-                    var dateObject = new Date(row.entry_date_pro);
-                    var date = dateObject.getDate() < 10? "0"+dateObject.getDate():dateObject.getDate();
-                    var month = (dateObject.getMonth()+1) < 10? "0"+(dateObject.getMonth()+1):(dateObject.getMonth()+1);
-                    var year = dateObject.getFullYear();
-                    result = date+"-"+month+"-"+year;
+                    result = date.format('DD-MM-YYYY');
                 }
-
                 return result;
             }
         }, {
-            "data" : "manual_entry_date_psl",
+            "data" : "status_log_manual_entry_date",
 			"className": 'text-center',
             "render" : function(data, type, row, meta) {
-                var result = "";
-                if(row.manual_entry_date_psl !== "" && row.manual_entry_date_psl !== null)
+                let date = moment(row.status_log_manual_entry_date,'YYYY-MM-DD HH:mm:ss');
+                let result = "";
+                if(date.isValid())
                 {
-                    var dateObject = new Date(row.manual_entry_date_psl);
-                    var date = dateObject.getDate() < 10? "0"+dateObject.getDate():dateObject.getDate();
-                    var month = (dateObject.getMonth()+1) < 10? "0"+(dateObject.getMonth()+1):(dateObject.getMonth()+1);
-                    var year = dateObject.getFullYear();
-                    result = date+"-"+month+"-"+year;
+                    result = date.format('DD-MM-YYYY');
                 }
-
                 return result;
             }
         }, {
-            "defaultContent" : "",
-			"className": 'text-center',
-            "searchable" : false,
-            "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var response = dateDiff(new Date(row.manual_entry_date_psl), new Date());
-                return response;
-            }
+            "data" : "static_days"
         }, {
-            "data" : "status_pro",
-            "defaultContent" : "",
-            // "searchable" : false,
-            // "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var response = "";
-                var projectStatus = $("#project-index").data("project-status");
-                if(row.status_pro in projectStatus)
-                {
-                    response = projectStatus[row.status_pro];
-                }
-
-                return response;
-            }
+            "data" : "status_name_pst"
         }, {
-            "data" : "system_pro",
-            "defaultContent" : "",
-            "searchable" : false,
-            "orderable" : false,
-            "render" : function(data, type, row, meta) {
-                var response = "";
-                var projectSystem = $("#project-index").data("project-systems");
-                if(row.system_pro in projectSystem)
-                {
-                    response = projectSystem[row.system_pro];
-                }
-
-                return response;
-            }
+            "data" : "system_pro"
         }, {
             "defaultContent" : "",
             "searchable" : false,
@@ -175,9 +134,9 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-			"data" : "cre_fiscal_full_name"
+			"data" : "cre_fiscal_pro"
 		}, {
-            "data" : "responsible"
+            "data" : "assign_to_responsible"
         }, {
             "data" : "fiscal_responsible"
         }, {
@@ -203,10 +162,15 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-			"data" : "projectBudget",
+			"data" : "project_current_budget",
 			"className": 'text-right',
-			"orderable" : false,
-			"searchable" : false
+			// "orderable" : false,
+			"searchable" : false,
+            "render": function(data, type, row, meta){
+                let amount = new Intl.NumberFormat('en',{minimumFractionDigits:2,maximumFractionDigits:2}).format(row.project_current_budget);
+                let html = "<span style='font-weight:bold'>"+amount+"</span>";
+                return html;
+            }
 		}, {
             "defaultContent" : "",
             "searchable" : false,
@@ -214,7 +178,7 @@ $(document).ready(function() {
             "render" : function(data, type, row, meta) {
                 let currentStatusSet = $("input[name=status-set]").val();
                 let showStatusManagementProjectBtn = 0;
-                let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro;
+                let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.project_status_id]+'/'+row.id_pro;
                 let showStatusManagementWarehouseBtn = 0;
                 let statusManagementWarehouseUrl = base_url + 'panel/Warehouse/statusManagement/'+row.id_war;
                 let showAddIncidentBtn = 0;
@@ -226,7 +190,7 @@ $(document).ready(function() {
                 let assignProjectUrl = base_url + 'panel/ProjectStatus/assignProject/'+row.id_pro;
                 if(currentStatusSet != "")
                 {
-                    if(statusSet[row.status_pro] == "warehouse")
+                    if(statusSet[row.project_status_id] == "warehouse")
                     {
                         showStatusManagementWarehouseBtn = 1;
                     }
@@ -234,7 +198,7 @@ $(document).ready(function() {
                     {
                         showStatusManagementProjectBtn = 1;
                     }
-                    if(statusSet[row.status_pro] == "building")
+                    if(statusSet[row.project_status_id] == "building")
                     {
                         showAddIncidentBtn = 1;
                     }

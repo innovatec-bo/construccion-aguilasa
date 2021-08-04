@@ -40,7 +40,6 @@ class Incident extends PublicController
         $this->complementHandler->addViewComplement("perfect-scrollbar");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectCss('cre-incident.project', TRUE);
         $this->complementHandler->addProjectJs('cre-incident.project', TRUE);

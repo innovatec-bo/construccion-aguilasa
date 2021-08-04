@@ -49,7 +49,6 @@ class PaymentManagement extends PrivateController
     public function createPaymentOrder()
     {
         $this->complementHandler->addViewComplement('sweet-alert2');
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("bootbox");
@@ -67,7 +66,6 @@ class PaymentManagement extends PrivateController
 	public function editPaymentOrder($paymentOrderId)
 	{
         $this->complementHandler->addViewComplement('sweet-alert2');
-		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addViewComplement("jquery.inputmask.bundle");
 		$this->complementHandler->addViewComplement("bootbox");
@@ -195,7 +193,6 @@ class PaymentManagement extends PrivateController
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement('select2');

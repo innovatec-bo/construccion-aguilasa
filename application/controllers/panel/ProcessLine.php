@@ -23,7 +23,6 @@ class ProcessLine extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
-		$this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectCss('process-line.index');
         $this->complementHandler->addProjectJs('process-line.index');

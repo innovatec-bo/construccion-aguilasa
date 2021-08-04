@@ -22,6 +22,32 @@ class AjaxProject extends PrivateController
     public function ajaxDtAllProjects()
 	{
 		$additionalParameters = $this->input->post('additionalParameters')??array();
+
+		$dt = new JqdtHandler($this->input->post());
+		$paginationHandler = new WorkflowPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
+		$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id']);
+        $paginationHandler->setAdditionalParameters($additionalParameters);
+        $response = $paginationHandler->getResponseForDataTable();
+
+		// $codeList = "";
+		// foreach ($response['resultArray'] as $row)
+		// {
+		// 	$codeList .= $row->code_pro." ";
+
+		// }
+		// $projectWorkflow = Model_project::getWorkflowDetail(['code-list' => $codeList]);
+		// foreach ($response['resultArray'] as &$row)
+		// {
+		// 	$positionInWorkFlow = array_search($row->id_pro,array_column($projectWorkflow,'id_pro'));
+		// 	$projectBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkflow[$positionInWorkFlow]);
+		// 	$row->projectBudget = number_format($projectBudget, 2, '.', ',');
+		// }
+		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
+	}
+
+    public function ajaxDtAllProjects_old2()
+	{
+		$additionalParameters = $this->input->post('additionalParameters')??array();
 //		$response = $this->_is("fiscal");
 //		if($response == 1)
 //		{

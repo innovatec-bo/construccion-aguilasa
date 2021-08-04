@@ -129,21 +129,21 @@
                 <table class="table table-bordered table-striped table-hover" id="project-index" data-project-systems='<?=json_encode($projectSystems)?>' data-project-status='<?=$projectStatusJson?>'>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>ORDEN</th>
-                        <th>CODIGO</th>
-                        <th>INGRESO<br>EN SISTEMA</th>
-                        <th>INGRESO<br>EN ESTADO</th>
-                        <th>DIAS<br>ESTATICO</th>
-                        <th>ESTADO</th>
-                        <th>SISTEMA</th>
-                        <th>DISTANCIA Y<br>PUNTOS</th>
-                        <th>FISCAL<br>DE CRE</th>
-                        <th>RESPONSABLE</th>
-                        <th>FISCAL</th>
-                        <th>CONSTRUCTOR</th>
-                        <th>UBICACION</th>
-                        <th>IMPORTE</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">ORDEN</th>
+                        <th class="text-center">CODIGO</th>
+                        <th class="text-center">INGRESO<br>EN SISTEMA</th>
+                        <th class="text-center">INGRESO<br>EN ESTADO</th>
+                        <th class="text-center">DIAS<br>ESTATICO</th>
+                        <th class="text-center">ESTADO</th>
+                        <th class="text-center">SISTEMA</th>
+                        <th class="text-center">DISTANCIA Y<br>PUNTOS</th>
+                        <th class="text-center">FISCAL<br>DE CRE</th>
+                        <th class="text-center">RESPONSABLE</th>
+                        <th class="text-center">FISCAL</th>
+                        <th class="text-center">CONSTRUCTOR</th>
+                        <th class="text-center">UBICACION</th>
+                        <th class="text-center">IMPORTE<br>Bs.</th>
                         <th class="text-center"><i class="fa fa-cogs fa-2x"></i></th>
                     </tr>
                     </thead>

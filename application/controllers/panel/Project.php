@@ -33,7 +33,6 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler', TRUE);
         $this->complementHandler->addProjectCss('project.index',TRUE);
@@ -67,7 +66,6 @@ class Project extends PrivateController
         /** View complements */
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
@@ -193,7 +191,6 @@ class Project extends PrivateController
 
         /** View complements */
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("google.maps.api");
@@ -575,7 +572,6 @@ class Project extends PrivateController
 		$this->complementHandler->addViewComplement("jquery.datatables.jszip");
 		$this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
 		$this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
-        $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
@@ -611,7 +607,6 @@ class Project extends PrivateController
 		$this->complementHandler->addViewComplement("jquery.datatables.jszip");
 		$this->complementHandler->addViewComplement("jquery.datatables.pdfmake");
 		$this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
-        $this->complementHandler->addViewComplement("moment-with-locales");
 		$this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
@@ -715,7 +710,6 @@ class Project extends PrivateController
     {
         $this->_validateFeature('project_locations');
         $this->complementHandler->addViewComplement('select2');
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("pagination-js");

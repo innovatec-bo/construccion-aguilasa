@@ -23,7 +23,6 @@ class WorkPlan extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("moment-range");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("core");

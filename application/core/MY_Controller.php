@@ -359,6 +359,7 @@ class PrivateController extends PublicController
 
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
+        $this->complementHandler->addViewComplement('moment-with-locales');
         $this->complementHandler->addViewComplement("metisMenu");
         $this->complementHandler->addViewComplement("font-awesome");
         $this->complementHandler->addViewComplement("sb-admin-2");

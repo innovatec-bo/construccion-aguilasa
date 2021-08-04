@@ -37,7 +37,6 @@ class Dashboard extends PrivateController
     {
 //        $this->_validateFeature("dashboard_tables");
 
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("core");
@@ -66,7 +65,6 @@ class Dashboard extends PrivateController
     private function _charts()
     {
 //        $this->_validateFeature("dashboard_charts");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement('select2');
         $this->complementHandler->addViewComplement("core");
@@ -93,7 +91,6 @@ class Dashboard extends PrivateController
     private function _executiveSummaryDifferential()
     {
 //        $this->_validateFeature("differential");
-        $this->complementHandler->addViewComplement("moment-with-locales");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addProjectCss('dashboard.executive-summary-differential', TRUE);
         $this->complementHandler->addProjectJs('dashboard.executive-summary-differential', TRUE);
