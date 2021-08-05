@@ -45,7 +45,8 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 _this._markerCluster.clearMarkers();
                 var marker = {};
                 $.each(data, function (index, project) {
-                    var loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
+                    console.log(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
+                    var loc = new google.maps.LatLng(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
                     _this._bounds.extend(loc);
                     marker = _this.addMarker(project);
                     _this._currentMarkers.push(marker);
@@ -74,8 +75,8 @@ var ProjectsLocationHandler = /** @class */ (function () {
     };
     ProjectsLocationHandler.prototype.addMarker = function (project) {
         var _this = this;
-        var latitude = parseFloat(project.latitude_pro);
-        var longitude = parseFloat(project.longitude_pro);
+        var latitude = parseFloat(project.project_latitude);
+        var longitude = parseFloat(project.project_longitude);
         var position = { lat: latitude, lng: longitude };
         var markerImage = timbthumbImage(base_url + 'assets/images/google-maps-marker.png', 35);
         var marker = new google.maps.Marker({

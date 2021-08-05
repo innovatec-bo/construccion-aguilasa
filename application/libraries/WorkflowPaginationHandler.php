@@ -68,6 +68,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             points_pro,
             distance_pro,
             quality_level_pro,
+			latitude_pro project_latitude,
+			longitude_pro project_longitude,
             cre_design_completion_date_pro,
             cre_building_completion_date_pro,
 			project_start_pro schedule_start,
@@ -288,6 +290,17 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			else
 				$sql .= " ";
 		}
+		if(isset($filters["has-location"]) && $filters["has-location"] != "")
+		{
+			$hasLocation = $filters["has-location"];
+			if($hasLocation == 1)
+				$sql .= " and project_latitude is not null and project_latitude != '' and project_latitude != '0'";
+			else if($hasLocation == 0)
+				$sql .= " and project_latitude is null or project_latitude = '' ";
+			else
+				$sql .= " ";
+		}
+
 		return $sql;
 	}
 
@@ -470,6 +483,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 			'static_days' => ['column' => " TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days ", 'dependencies' => ['status_log_manual_entry_date']],
             'status_log_manual_entry_date' => ['column' => " status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date ", 'dependencies' => ['status_log_manual_entry_date']],
+			'responsible' => ['column' => " status_log_manual_entry_date.responsible responsible ", 'dependencies' => ['status_log_manual_entry_date']],
 			
 			'percentage_inc' => ['column' => 'percentage_inc', 'dependencies' => ['wfl_incidents']],
 			'detail_inc' => ['column' => 'detail_inc', 'dependencies' => ['wfl_incidents']],

@@ -520,7 +520,7 @@ class AjaxProject extends PrivateController
 
     }
 
-    public function paginationJs()
+    public function paginationJs_old()
     {
         $formData = $this->input->post();
         $pageSize = $formData['pageSize'];
@@ -550,5 +550,30 @@ class AjaxProject extends PrivateController
         $response['recordsFiltered'] = $recordsFiltered;
         $response['resultArray'] = $resultArray;
         echo json_encode($response);exit;
+    }
+
+    public function paginationJs()
+    {
+        $formData = $this->input->post();
+        $pageSize = $formData['pageSize'];
+        $pageNumber = $formData['pageNumber'] == 1?($formData['pageNumber'] - 1):(($formData['pageNumber']-1)*20)+1;
+        $textToSearch = isset($formData['textToSearch'])?$formData['textToSearch']:"";
+        $additionalParameters = isset($formData["additionalParameters"])?$formData["additionalParameters"]:[];
+        $additionalParameters["has-location"] = 1;
+        $response = $this->_is("fiscal");
+        if($response == 1)
+        {
+            $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
+        }
+
+		//$dt = new JqdtHandler($this->input->post());
+		$paginationHandler = new WorkflowPaginationHandler($pageSize, $pageNumber, '', 'asc',$textToSearch, ['code_pro']);
+		//$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','responsible','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id']);
+        $paginationHandler->setColumnsToShow(['status_name_pst','fiscal_responsible','responsible']);
+        $paginationHandler->setAdditionalParameters($additionalParameters);
+        $response = $paginationHandler->getResponseForDataTable();
+
+        echo json_encode($response);exit;
+		//echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
     }
 }

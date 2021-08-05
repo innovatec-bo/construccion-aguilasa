@@ -19,7 +19,7 @@
         {{/ifCond}}
         <dt>DETALLE</dt> 
             <dd class="">{{project.detail_pro}}</dd> 
-        <a href="https://wa.me/?text=https://maps.google.com/maps/?q={{project.latitude_pro}},{{project.longitude_pro}}" target="_blank" class="btn btn-whatsapp mt-1 btn-block btn-sm" role="button">
+        <a href="https://wa.me/?text=https://maps.google.com/maps/?q={{project.project_latitude}},{{project.project_longitude}}" target="_blank" class="btn btn-whatsapp mt-1 btn-block btn-sm" role="button">
             <?php
             $timthumbUrl = base_url("timthumb/timthumb.php");
             $imageUrl = assets_url("images/whatsapp-icon.png");

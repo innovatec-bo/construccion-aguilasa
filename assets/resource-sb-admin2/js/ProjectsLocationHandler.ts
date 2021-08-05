@@ -71,7 +71,8 @@ class ProjectsLocationHandler
                 _this._markerCluster.clearMarkers();
                 let marker = {};
                 $.each(data, function(index, project){
-                        let loc = new google.maps.LatLng(parseFloat(project.latitude_pro), parseFloat(project.longitude_pro));
+                    console.log(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
+                        let loc = new google.maps.LatLng(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
                         _this._bounds.extend(loc);
                         marker = _this.addMarker(project);
                         _this._currentMarkers.push(marker);
@@ -109,8 +110,8 @@ class ProjectsLocationHandler
     public addMarker(project)
     {
         let _this : ProjectsLocationHandler = this;
-        let latitude = parseFloat(project.latitude_pro);
-        let longitude = parseFloat(project.longitude_pro);
+        let latitude = parseFloat(project.project_latitude);
+        let longitude = parseFloat(project.project_longitude);
         let position = {lat: latitude, lng: longitude};
         let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png', 35);
         let marker = new google.maps.Marker({
