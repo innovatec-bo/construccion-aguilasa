@@ -64,11 +64,12 @@ class MaterialSummary extends PrivateController
         $requestList = [];
         if($_POST)
         {
-            $id = $this->input->post('request-id');
-            $fiscalResponsible = $this->input->post('fiscal-responsible');
-            $builderResponsible = $this->input->post('builder-responsible');
+            $id = intval($this->input->post('request-id'));
+            $fiscalResponsible = $this->input->post('fiscal-responsible') == ""?NULL:intval($this->input->post('fiscal-responsible'));
+            $builderResponsible = $this->input->post('builder-responsible') == ""?NULL:intval($this->input->post('builder-responsible'));
+            // dd($id, $fiscalResponsible, $builderResponsible);
             $requestList = Model_material_summary::getRequestsList($id, $fiscalResponsible, $builderResponsible);
-            dd($requestList);
+            // dd($requestList);
         }
 
         $data['requestList'] = $requestList;

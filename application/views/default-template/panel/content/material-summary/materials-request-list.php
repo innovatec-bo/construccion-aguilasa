@@ -16,14 +16,14 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>ID de solicitud</label>
-                            <input type="text" class="form-control" name='id'>
+                            <input type="text" class="form-control" name='request-id'>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Fiscal</label>
-                            <select class="form-control" name="fiscal-responsible-id">
+                            <select class="form-control" name="fiscal-responsible">
                                 <option value="">Todos</option>
                                 <?php
                                     $list = "";
@@ -40,7 +40,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Constructor</label>
-                            <select class="form-control" name="builder-responsible-id">
+                            <select class="form-control" name="builder-responsible">
                                 <option value="">Todos</option>
                                 <?php
                                     $list = "";
@@ -73,19 +73,29 @@
                         <th>ESTADO</th>
                         <th>FISCAL</th>
                         <th>CONSTRUCTOR</th>
+                        <th>FECHA DE<BR>ENTRADA MANUAL</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
                         $tr = "";
+                        $statusList = [
+                            Model_material_summary::STATUS_PENDING => 'Pendiente',
+                            Model_material_summary::STATUS_CANCELED_BY_FISCAL => 'Cancelado por el fiscal',
+                            Model_material_summary::STATUS_CANCELED_BY_SYSTEM => 'Cancelado por el sistema',
+                            Model_material_summary::STATUS_WITHDRAWN => 'Retirado'
+                        ];
                         foreach($requestList as $row)
                         {
+                            $status = $statusList[$row['status_id_msu']]??"";
+                            $manualEntryDate = new DateTime($row['entry_date_msu']);
                             $tr .= "
                             <tr>
                                 <td>{$row['id_msu']}</td>
-                                <td>{$row['status_id_msu']}</td>
-                                <td>{$row['fiscal_responsible_full_name']}</td>
-                                <td>{$row['builder_responsible_full_name']}</td>
+                                <td>{$status}</td>
+                                <td>{$row['fiscal_full_name']}</td>
+                                <td>{$row['builder_full_name']}</td>
+                                <td>{$manualEntryDate->format('d-m-Y H:i:s')}</td>
                             </tr>    
                             ";
                         }

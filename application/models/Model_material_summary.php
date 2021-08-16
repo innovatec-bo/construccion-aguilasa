@@ -156,8 +156,12 @@ class Model_material_summary extends Model_material_summary_base
 
 		$sql = "
             select 
-				* 
+			".static::TABLE_NAME.".*,
+			concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
+			concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name 
 			from ".static::TABLE_NAME." 
+			left join sec_users fiscal on fiscal.id_usr = fiscal_responsible_msu
+			left join sec_users builder on builder.id_usr = builder_responsible_msu
 			where 
 			summary_type_id_msu = 14
 			{$idFilter}
@@ -166,7 +170,7 @@ class Model_material_summary extends Model_material_summary_base
 			and ".static::notDeleted()."
         ";
 
-		$query = $ci->db->query($sql);
+		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
 		return $query->result_array();
 	}
 }
