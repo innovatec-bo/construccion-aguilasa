@@ -169,10 +169,10 @@ class ExcelExternalExecutiveReport
 					continue;
 			}
         	$creFiscal = $row['cre_fiscal_pro'];
-        	if($row['keyword_pst'] == "project_return_materials")
-			{
-				$creFiscal = "Victor Miranda";
-			}
+        	// if($row['keyword_pst'] == "project_return_materials")
+			// {
+			// 	$creFiscal = "Victor Miranda";
+			// }
 			$totalBudget = PublicController::getPaymentByStatusFromWorkflow($row);
 			$totalTotalBudget += $totalBudget;
 
