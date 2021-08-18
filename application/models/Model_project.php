@@ -2120,8 +2120,10 @@ class Model_project extends Model_project_base
                 id_lac,
                 id_lal,
                 manual_entry_date_lal,
-                building_responsibles.fiscal_responsible_id,
-                building_responsibles.fiscal_responsible,
+                -- building_responsibles.fiscal_responsible_id,
+                -- building_responsibles.fiscal_responsible,
+                user_id_lal fiscal_responsible_id,
+                CONCAT(fiscals.firstname_usr,' ',fiscals.lastname_usr) fiscal_responsible,
                 building_responsibles.builder_responsible_id,
                 building_responsibles.builder_responsible,
                 builders_in_manpower.builders,
@@ -2144,6 +2146,7 @@ class Model_project extends Model_project_base
             LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
             LEFT JOIN bui_building_points on point_id_lal = id_bpo
             LEFT JOIN wfl_projects on id_pro = project_id_lad
+            LEFT JOIN sec_users fiscals on fiscals.id_usr = user_id_lal
             LEFT JOIN(
                 select 
                         id_psl,

@@ -76,4 +76,16 @@ class Test extends PublicController
 		$result = $workflow->getAll();
 		dd($result);
 	}
+
+	public function getFiscals()
+	{
+		$users = Model_user::getByRoleKeyword('fiscal');
+		$list = [];
+		/** @var Model_user $user */
+		foreach($users as $user)
+		{
+			$list[] = $user->getFullName().': '.$user->getId();
+		}
+		dd($list);
+	}
 }
