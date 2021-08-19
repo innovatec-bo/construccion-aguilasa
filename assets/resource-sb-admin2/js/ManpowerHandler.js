@@ -95,7 +95,7 @@ var ManpowerHandler = /** @class */ (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
-        var data = { structureList: structureList, builders: response.data.builders };
+        var data = { structureList: structureList, builders: response.data.builders, fiscals: response.data.fiscals, project: response.data.project };
         var html = template(data);
         var _this = this;
         Swal({

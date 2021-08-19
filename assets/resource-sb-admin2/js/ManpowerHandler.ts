@@ -137,7 +137,8 @@ class ManpowerHandler
             laborCostList:this._laborCostMasterDetail
         };
         let structureList = [item];
-        let data = {structureList:structureList, builders:response.data.builders};
+
+        let data = {structureList:structureList, builders:response.data.builders, fiscals:response.data.fiscals, project: response.data.project};
         let html = template(data);
         let _this = this;
         Swal({

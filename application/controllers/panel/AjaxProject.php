@@ -260,11 +260,28 @@ class AjaxProject extends PrivateController
                     'lastName' => $builder['lastname_usr']
                 );
             }
+            $fiscals = Model_user::getByRoleKeyword('fiscal');
+            $arrayFiscal = array();
+            foreach($fiscals as $fiscal)
+            {
+                $fiscal = $fiscal->toArray();
+                $arrayFiscal[] = array(
+                    'id' => $fiscal['id_usr'],
+                    'firstName' => $fiscal['firstname_usr'],
+                    'lastName' => $fiscal['lastname_usr']
+                );
+            }
+            $workflowPagination = new WorkflowPaginationHandler(1);
+            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
+            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible']);
+            $project = $workflowPagination->getAll();
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
+            $response["data"]["fiscals"] = $arrayFiscal;
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
             $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
+            $response['data']['project'] = $project[0];
         }
         else
         {
@@ -276,9 +293,10 @@ class AjaxProject extends PrivateController
             $detail = $formData["detail"];
             $workedUp = $formData["worked-up"];
             $builders = $formData["builders"];
+            $fiscalId = $formData['fiscal'];
             $pointId = !isset($formData["point-id"])?NULL:$formData["point-id"];
             $userId = $this->sessionUser->id;
-            Model_labor_cost_log::addLog($userId, $detail, $manualEntryDate, $workedUp, $builders);
+            Model_labor_cost_log::addLog($fiscalId, $detail, $manualEntryDate, $workedUp, $builders);
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
         }
@@ -338,7 +356,6 @@ class AjaxProject extends PrivateController
         else
         {
             $formData = $this->input->post();
-
             $manualEntryDate = $formData["entry-date"];
             $manualEntryDate = DateTime::createFromFormat('d-m-Y', $manualEntryDate);
             $manualEntryDate = date_format($manualEntryDate, 'Y-m-d');
