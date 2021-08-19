@@ -2259,7 +2259,7 @@ class Model_project extends Model_project_base
                 $totalAmountWorkedToSplit = $productivityBaseReport[$i]["total_amount_worked_to_split"];
                 $totalAmountWorkedByBuilder = $productivityBaseReport[$i]["total_amount_worked_by_builder"];
                 $manualEntryDate = $productivityBaseReport[$i]["manual_entry_date_lal"];
-                $projectList[$projectId] = array(
+                $projectList[$logId] = array(
                                 "id" => $projectId,
                                 "code" => $projectCode,
                                 "address"=> $projectAddress,
@@ -2288,12 +2288,12 @@ class Model_project extends Model_project_base
                     $buildersInProject[$id]['totalDatesInProject'][$date] = $date;
                 }
                 
-                if(!isset($productivityBaseReport[$i+1]) || $projectId != $productivityBaseReport[$i+1]['project_id_lad'])
+                if(!isset($productivityBaseReport[$i+1]) || $logId != $productivityBaseReport[$i+1]['id_lal'])
                 {
-                    $projectList[$projectId]['totalWorkedUpAmount'] = $totalWorkedUpAmount;
-                    $projectList[$projectId]['totalBuilderProductivity'] = $totalBuilderProductivity;
-                    $projectList[$projectId]['totalDates'] = count(array_values($totalDates));
-                    $projectList[$projectId]['allBuilders'] = $buildersInProject;
+                    $projectList[$logId]['totalWorkedUpAmount'] = $totalWorkedUpAmount;
+                    $projectList[$logId]['totalBuilderProductivity'] = $totalBuilderProductivity;
+                    $projectList[$logId]['totalDates'] = count(array_values($totalDates));
+                    $projectList[$logId]['allBuilders'] = $buildersInProject;
                     $totalWorkedUpAmount = 0;
                     $totalAmountWorkedByBuilder = 0;
                     $totalDates = array();
