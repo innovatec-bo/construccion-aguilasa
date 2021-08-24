@@ -112,7 +112,7 @@ class PublicController extends CI_Controller
                 $keywordList = array("ready_to_send","already_sent","approved","canceled","rectify_design","rectify_illustration");
                 break;
             case 'rectify_design':
-                $keywordList = array("rectify_design", "rd_stakes", "rd_digitization", "rd_drawing");
+                $keywordList = array("rectify_design", "rd_stakes", "rd_digitization", "rd_drawing","returned");
                 break;
             case 'rectify_illustration':
                 $keywordList = array("rectify_illustration", "ri_digitization", "ri_drawing");
