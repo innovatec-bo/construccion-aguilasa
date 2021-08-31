@@ -537,6 +537,9 @@ class AjaxProject extends PrivateController
 
     }
 
+    /**
+     * @deprecated
+     */
     public function paginationJs_old()
     {
         $formData = $this->input->post();
@@ -569,6 +572,9 @@ class AjaxProject extends PrivateController
         echo json_encode($response);exit;
     }
 
+    /**
+     * Used to paginated the locations view
+     */
     public function paginationJs()
     {
         $formData = $this->input->post();
@@ -578,10 +584,11 @@ class AjaxProject extends PrivateController
         $additionalParameters = isset($formData["additionalParameters"])?$formData["additionalParameters"]:[];
         $additionalParameters["has-location"] = 1;
         $response = $this->_is("fiscal");
-        if($response == 1)
-        {
-            $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
-        }
+        //Line commente because the map now show all projects
+        // if($response == 1)
+        // {
+        //     $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
+        // }
 
 		//$dt = new JqdtHandler($this->input->post());
 		$paginationHandler = new WorkflowPaginationHandler($pageSize, $pageNumber, '', 'asc',$textToSearch, ['code_pro']);
