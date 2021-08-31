@@ -116,7 +116,7 @@ class StructureUsageValidator
 			totalWorkedUp = totalWorkedUp.replace(',','');
 			totalWorkedUp = parseFloat(totalWorkedUp);
         	let unitOfMeasurement = $tr.attr('data-unit-of-measurement');
-        	let maxQuantityToUse = (quantityToUse + (quantityToUse*1)) - totalWorkedUp;
+        	let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
         	maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;
         	$(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
         	$(this).attr('data-parsley-max-quantity-to-use-message',"Permitido: "+maxQuantityToUse+" "+unitOfMeasurement);
