@@ -107,6 +107,9 @@ class ExcelBuilderProductivityReport
         $spreadsheet->getActiveSheet()->getStyle('E8')->getFont()->setBold(true);
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('F8', $this->_userBuilder->getFullName());
         $dataToPrint = $this->prepareDataToPrint($projectProductivity);
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('E9', "FISCAL(ES)");
+        $spreadsheet->getActiveSheet()->getStyle('E9')->getFont()->setBold(true);
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('F9', $dataToPrint['fiscals']);
         
         //********AS ASSIGNED
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('D10', "PRODUCCION CON PROYECTOS ASIGNADOS");
@@ -302,8 +305,8 @@ class ExcelBuilderProductivityReport
 		$year = date_format($date, 'Y');
 		$spreadsheet->setActiveSheetIndex(1)->setCellValue('A1', "HISTORIAL DE TRABAJO DE ".strtoupper($this->_userBuilder->getFullName())." - ".strtoupper($month)." DEL ".$year);
 		$spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-		$spreadsheet->getActiveSheet()->getStyle('A1:M1')->applyFromArray($titleStyleArray);
-		$spreadsheet->getActiveSheet()->mergeCells('A1:M1');
+		$spreadsheet->getActiveSheet()->getStyle('A1:N1')->applyFromArray($titleStyleArray);
+		$spreadsheet->getActiveSheet()->mergeCells('A1:N1');
 
 		$spreadsheet->setActiveSheetIndex(1)
 			->setCellValue('A2', "#")
@@ -318,8 +321,9 @@ class ExcelBuilderProductivityReport
 			->setCellValue('J2', "UNIDAD")
 			->setCellValue('K2', "PRECIO\nUNITARIO")
 			->setCellValue('L2', "MONTO\nTRABAJADO")
-			->setCellValue('M2', "MONTO\nCONSIGNADO");
-		$spreadsheet->getActiveSheet()->getStyle('A2:M2')->applyFromArray($headerStyleArray);
+			->setCellValue('M2', "MONTO\nCONSIGNADO")
+            ->setCellValue('N2', "FISCAL");
+		$spreadsheet->getActiveSheet()->getStyle('A2:N2')->applyFromArray($headerStyleArray);
 		$counter = 1;
 		$i = 2;
 		// $workflowDetail = array();
@@ -340,7 +344,8 @@ class ExcelBuilderProductivityReport
 				->setCellValue('J'.($i+1), $row["structure_unit_of_measurement"])
 				->setCellValue('K'.($i+1), $row["price_wus"])
 				->setCellValue('L'.($i+1), $row["total_amount_worked_to_split"])
-				->setCellValue('M'.($i+1), $row["total_amount_worked_by_builder"]);
+				->setCellValue('M'.($i+1), $row["total_amount_worked_by_builder"])
+                ->setCellValue('N'.($i+1), $row['fiscal_responsible']);
 			$i++;
 			$counter++;
 
@@ -358,7 +363,8 @@ class ExcelBuilderProductivityReport
 		$spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-		$spreadsheet->getActiveSheet()->getStyle('A1:M'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getStyle('A1:N'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 		// $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
 		$spreadsheet->getActiveSheet()->getStyle('C3:C'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY);
 		$spreadsheet->getActiveSheet()->getStyle('I3:I'.$i)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2);
@@ -370,15 +376,17 @@ class ExcelBuilderProductivityReport
 
     public function prepareDataToPrint($projectProductivity)
     {
-        $arrayPerformanceList = array();
-        $asAssigned = array();
-        $asSupport  = array();
+        $arrayPerformanceList = [];
+        $fiscals = [];
+        $asAssigned = [];
+        $asSupport  = [];
         foreach ($projectProductivity as $row) 
         {
             $allBulders = $row['allBuilders'];
             //let see if the builder has worked in this project
             if(isset($allBulders[$this->_builderId]))
             {
+                $fiscals[$row['fiscalIdAssigned']] = $row['fiscalFullName'];
                 $builder = $allBulders[$this->_builderId];
                 //if the builder is present then let's verify is this is the assigned builder
                 if($row["builderIdAssigned"] == $this->_builderId)
@@ -404,6 +412,7 @@ class ExcelBuilderProductivityReport
                 
             }
         }
+        $productivity['fiscals'] = implode(', ',$fiscals);
         $productivity['asAssigned'] = $asAssigned;
         $productivity['asSupport'] = $asSupport;
         return $productivity;

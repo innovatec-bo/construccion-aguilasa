@@ -2244,6 +2244,7 @@ class Model_project extends Model_project_base
         for ($i=0; $i < count($productivityBaseReport); $i++) 
         { 
             $responsibleFiscalId = $productivityBaseReport[$i]["fiscal_responsible_id"];
+            $responsibleFiscalFullName = $productivityBaseReport[$i]['fiscal_responsible'];
             $responsibleBuilderId = $productivityBaseReport[$i]["builder_responsible_id"];
             $builderIds = $productivityBaseReport[$i]["builders"];
 
@@ -2266,6 +2267,7 @@ class Model_project extends Model_project_base
                                 "latitude" => $projectLatitude,
                                 "longitude" => $projectLongitude,
                                 "fiscalIdAssigned" => $responsibleFiscalId,
+                                'fiscalFullName' => $responsibleFiscalFullName,
                                 "builderIdAssigned" => $responsibleBuilderId
                                 );
                 $totalWorkedUpAmount += $totalAmountWorkedToSplit;
