@@ -26,7 +26,7 @@ class WflWarehouseSetUp
      *
      * @ORM\Column(name="rolename_rol", type="string", length=20, nullable=true)
      */
-    private $rolenameRol;
+    private $ware;
 
     /**
      * @var string|null

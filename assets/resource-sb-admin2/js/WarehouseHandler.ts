@@ -189,7 +189,7 @@ class WarehouseHandler
 				return true;
 			}
 			
-			if(optionSelected == 14 && value.quantity_in_warehouse == 0)
+			if(optionSelected == 14 && value.quantity_in_warehouse <= 0 )
 			{
 				return true;
 			}

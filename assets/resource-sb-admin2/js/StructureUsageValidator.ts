@@ -46,7 +46,7 @@ class StructureUsageValidator
 			{
 				let currentValue = $(e.element).val() == ""?"0":$(e.element).val();
 				currentValue = currentValue.replace(',','');
-				currentValue = parseFloat(currentValue;
+				currentValue = parseFloat(currentValue);
 				let $tr = $(e.element).closest('tr');
 				let quantityToUse = $tr.attr('data-quantity-to-use');
 				quantityToUse = quantityToUse.replace(',','');
@@ -54,7 +54,7 @@ class StructureUsageValidator
 				let totalWorkedUp = $tr.attr('data-total-worked-up');
 				totalWorkedUp = totalWorkedUp.replace(',','');
 				totalWorkedUp = parseFloat(totalWorkedUp);
-				let maxQuantityToUse = (quantityToUse + (quantityToUse*1)) - totalWorkedUp;
+				let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
 				maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;
 
 				//success
