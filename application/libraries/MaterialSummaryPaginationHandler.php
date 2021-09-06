@@ -26,7 +26,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					-- Filter by project
 					IFNULL(assigned_materials.quantity,0) quantity_assigned_materials,
 					IFNULL(materials_picked_up_from_cre.quantity,0) quantity_picked_up_from_cre,
-					IFNULL(materials_delivered_to_builder.quantity,0) quantity_materials_delivered_to_builder,
+					(IFNULL(materials_delivered_to_builder.quantity,0) - IFNULL(non_used_materials.quantity,0)) quantity_materials_delivered_to_builder,
 					IFNULL(materials_delivered_to_cre.quantity,0) quantity_materials_delivered_to_cre,
 					IFNULL(builder_returns_new_materials.quantity,0) quantity_new_materials_returned_by_builder,
 					IFNULL(builder_returns_old_materials.quantity,0) quantity_old_materials_returned_by_builder,
@@ -37,13 +37,18 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					IFNULL(assigned_materials.quantity,0) - IFNULL(materials_picked_up_from_cre.quantity,0) pending_material_in_cre,
 					IFNULL(request_materials.quantity,0) request_materials_quantity,
 					
-					(IFNULL(materials_picked_up_from_cre.quantity,0) +
-					IFNULL(entry_by_conciliation_221.quantity,0) +
-					IFNULL(non_used_materials.quantity,0) +
-					IFNULL(material_removed_from_construction.quantity,0)) -
-					(IFNULL(materials_delivered_to_builder.quantity,0) +
-					IFNULL(materials_delivered_to_cre.quantity,0)+
-					IFNULL(request_materials.quantity,0)) quantity_in_warehouse,
+					(
+						IFNULL(materials_picked_up_from_cre.quantity,0) +
+						IFNULL(entry_by_conciliation_221.quantity,0) +
+						IFNULL(non_used_materials.quantity,0) +
+						IFNULL(material_removed_from_construction.quantity,0)
+					) -
+					(
+						IFNULL(materials_delivered_to_builder.quantity,0) +
+						IFNULL(materials_delivered_to_builder_loan.quantity,0) +
+						IFNULL(materials_delivered_to_cre.quantity,0)+
+						IFNULL(request_materials.quantity,0)
+					) quantity_in_warehouse,
 
 					-- No project filter
 					(IFNULL(all_materials_picked_up_from_cre.quantity,0) +
@@ -139,6 +144,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 				LEFT JOIN (
 					{$this->_subQueryQuantity('15')}
 				) request_loans_materials on request_loans_materials.material_id = working_materials.material_id and request_loans_materials.project_id = working_materials.project_id
+				LEFT JOIN (
+					{$this->_subQueryQuantity('17')}
+				) materials_delivered_to_builder_loan on materials_delivered_to_builder_loan.material_id = working_materials.material_id and materials_delivered_to_builder_loan.project_id = working_materials.project_id
 				LEFT JOIN (".Model_project::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = working_materials.project_id
 			) ".static::TABLE_NAME."_master_detail
 		";

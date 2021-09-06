@@ -195,12 +195,12 @@
 						<th>Comprometido<br>de la CRE</th>
 						<th>Total<br>retirado<br>de CRE</th>
 						<th>Saldo por<br>retirar<br>de CRE</th>
-						<th>Entregado<br>al constructor</th>
+						<th data-toggle="tooltip" data-placement="top" title="Esta columna es dinamica de acuerdo a lo que reciba o devuelva el constructor">Entregado<br>al constructor</th>
 <!--						<th>Total<br>entregado<br>a CRE</th>-->
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
-						<th>Comprometido<br>en SEREBO</th>
+						<th data-toggle="tooltip" data-placement="top" title="Cantidad solicitada por un fiscal de SEREBO">Comprometido<br>en SEREBO</th>
 						<th>Disponible<br>en el almac&eacute;n</th>
 						<th class="bg-warning">Disponible<br>en el almac&eacute;n</th>
 						<th>Movimiento</th>

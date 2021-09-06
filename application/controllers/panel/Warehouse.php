@@ -91,7 +91,6 @@ class Warehouse extends PrivateController
 			// dd($formData);
 			$projectId = $formData['project'];
 			$reservationNumber = $formData['reservation-number'];
-			$newReservationNumber = $formData['new-reservation-number']??"";
 			$summaryType = $formData['summary-type'];
 			$builder = $formData['builder'];
 			$fiscal = $formData['fiscal'];
@@ -101,8 +100,7 @@ class Warehouse extends PrivateController
 			$entryDate = $entryDate." ".date("H:i:s");
 			$materials = array_values($formData['summary']);
 			$summaryWithBuilderAndFiscal = array(4,10,11,14,15);
-			$summaryWithReservationNumber = array(3,8);
-			$summaryWithNewReservationNumber = [2];
+			$summaryWithReservationNumber = array(2,3,8);
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 
@@ -122,10 +120,6 @@ class Warehouse extends PrivateController
 			if(array_search($summaryType, $summaryWithReservationNumber) !== FALSE)
 			{
 				$newMaterialSummary->setReservationNumber($reservationNumber);
-			}
-			if(array_search($summaryType, $summaryWithNewReservationNumber) !== FALSE)
-			{
-				$newMaterialSummary->setReservationNumber($newReservationNumber);
 			}
 
 			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$summaryType);
@@ -282,8 +276,8 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->setCorrelativeCounter($correlativeCounter);
 			$newMaterialSummary->save();
 			$newMaterialSummary->saveMaterials($materials);
-
-			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente.");
+			$requestID = "<strong>Su c&oacute;digo de solicitud es : ".$newMaterialSummary->getId()."</strong> <a href='javascript:void(0)' onclick='window.print();'>Imprimir</a>";
+			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente. ".$requestID);
 			$this->session->set_flashdata("requestId", $newMaterialSummary->getId());
 			$method = debug_backtrace()[1]['function'];
 			redirect(base_url("panel/Warehouse/requestAdditionalList"));
