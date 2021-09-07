@@ -24,11 +24,15 @@
                         <div class="form-group">
                             <label>Fiscal</label>
                             <select class="form-control" name="fiscal-responsible">
-                                <option value="">Todos</option>
+                                
                                 <?php
                                     $list = "";
                                     foreach ($fiscalList as $fiscal) 
                                     {
+                                        if(count($fiscalList) > 1)
+                                        {
+                                            $list .= "<option value=''>Todos</option>";
+                                        }
                                         $list .= "<option value='".$fiscal->getId()."'>".$fiscal->getFullName()."</option>";
                                     }
                                     echo $list;

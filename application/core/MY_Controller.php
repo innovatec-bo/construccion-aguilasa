@@ -356,6 +356,7 @@ class PrivateController extends PublicController
         parent::__construct();
         //Add General Components
         $this->complementHandler = new ComplementHandler();
+        $this->_tabTitle = "Panel";
 
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
@@ -391,6 +392,7 @@ class PrivateController extends PublicController
         $contentData["complementHandler"] = $this->complementHandler;
         $contentData["contentView"] = $contentView;
         $contentData["sessionUser"] = $this->sessionUser;
+        $contentData["tabTitle"] = $this->_tabTitle;
         $contentData["isSuperAdmin"] = $this->_is("super_admin");
         $contentData["isFiscal"] = $this->_is("fiscal");
         $contentData["showProjectQuickSearch"] = $this->_validateFeature('project_quick_search', TRUE);

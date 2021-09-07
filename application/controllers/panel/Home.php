@@ -18,8 +18,8 @@ class Home extends PrivateController
     public function index()
     {
 
-
 		$this->_validateFeature("home");
+        $this->_tabTitle = 'Home';
         $this->complementHandler->addViewComplement("swiper");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");

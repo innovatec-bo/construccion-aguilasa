@@ -166,6 +166,7 @@ class Warehouse extends PrivateController
 			'showAssignedMaterialsOnly' => 1,
 			'showBtnListAll' => 1
 		];
+		$this->_tabTitle = "Solicitar materiales";
 		$this->_index($metaData);
 	}
 
@@ -181,6 +182,7 @@ class Warehouse extends PrivateController
 			'showAssignedMaterialsOnly' => 0,
 			'showBtnListAll' => 0
 		];
+		$this->_tabTitle = "Ingresar lista de adicionales";
 		$this->_index($metaData);
     }
 
@@ -239,7 +241,7 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addProjectJs('warehouse.request-additional-list', TRUE);
 		//Server side validations
 		$this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
-
+		$this->_tabTitle = "Solicitar lista de adicionales";
 		$data = [];
 		if($this->form_validation->run() === FALSE)
 		{
@@ -286,6 +288,7 @@ class Warehouse extends PrivateController
 
 	public function importMaterials()
 	{
+		$this->_tabTitle = "Importar materiales";
         /** Load libraries */
         $this->load->library('form_validation');
 
@@ -395,6 +398,7 @@ class Warehouse extends PrivateController
 
 	public function setUp()
 	{
+		$this->_tabTitle = "Configuracion de almacen";
 		// Crear una vista para configurar el almacen
 		// Primer parametro de configuracion de almacen => definir los dias de vigencia de una solicitud de fiscal a almacen.
 		// Ejecutar el cerrado de solicitudes pendientes que han vencido.

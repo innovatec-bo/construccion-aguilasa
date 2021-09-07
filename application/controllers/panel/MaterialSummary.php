@@ -56,10 +56,20 @@ class MaterialSummary extends PrivateController
         $this->complementHandler->addViewComplement("jquery.datatables.vfs_fonts");
         $this->complementHandler->addViewComplement("jquery.datatables.filterdelay");
         $this->complementHandler->addProjectJs('DTAdditionalParameterHandler', TRUE);
-        $this->complementHandler->addProjectCss('material-summary.index');
-        $this->complementHandler->addProjectJs('material-summary.index');
+        // $this->complementHandler->addProjectCss('material-summary.index');
+        // $this->complementHandler->addProjectJs('material-summary.index');
 
-        $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
+        $isFiscal = $this->_is('fiscal');
+
+        if($isFiscal == 1)
+        {
+            $builderList = [Model_user::getById($this->sessionUser->id)];
+        }
+        else
+        {
+            $builderList = Model_user::getByRoleKeyword('fiscal');
+        }
+        $data['fiscalList'] = $builderList;
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
         $requestList = [];
         if($_POST)
