@@ -77,15 +77,11 @@ class Test extends PublicController
 		dd($result);
 	}
 
-	public function getFiscals()
+	public function summary()
 	{
-		$users = Model_user::getByRoleKeyword('fiscal');
-		$list = [];
-		/** @var Model_user $user */
-		foreach($users as $user)
-		{
-			$list[] = $user->getFullName().': '.$user->getId();
-		}
-		dd($list);
+		$materialSummary = new SummaryPaginationHandler();
+		$materialSummary->setAdditionalParameters(['fiscal-id' => 30, 'builder-id' => 16]);
+		$response = $materialSummary->getAll();
+		dd($response);
 	}
 }

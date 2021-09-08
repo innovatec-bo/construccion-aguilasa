@@ -61,6 +61,7 @@ class Model_material_summary extends Model_material_summary_base
 			   	builder.id_usr builder_id,
                 concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name,
                 summary_type_id_msu summary_type,
+				name_mqt summary_type_name,
                 id_pro project_id,
                 code_pro project_code
             from 

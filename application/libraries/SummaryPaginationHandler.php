@@ -1,9 +1,9 @@
 <?php
 class SummaryPaginationHandler extends BasePaginationHandler
 {
-	const TABLE_NAME = "";
-	const TABLE_ID = "";
-	const ATTRIB_SUFIX = "";
+	const TABLE_NAME = Model_material_summary::TABLE_NAME;
+	const TABLE_ID = Model_material_summary::TABLE_ID;
+	const ATTRIB_SUFIX = Model_material_summary::ATTRIB_SUFIX;
 
 	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
 	{
@@ -19,9 +19,21 @@ class SummaryPaginationHandler extends BasePaginationHandler
 		return "
 			(
 				SELECT
-					".static::TABLE_NAME.".*
+					".static::TABLE_NAME.".*,
+					concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
+					concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name,
+					keyword_mqt summary_type_keyword,
+					CASE
+						WHEN status_id_msu = 1 then 'Pendiente'
+						WHEN status_id_msu = 2 then 'Cancelado por el fiscal'
+						WHEN status_id_msu = 3 then 'Cancelado por el sistema'
+						WHEN status_id_msu = 4 then 'Retirado de almacen'
+					END material_summary_status
 				FROM
 					".static::TABLE_NAME."
+				left join sec_users fiscal on fiscal_responsible_msu = fiscal.id_usr
+				left join sec_users builder on builder_responsible_msu = builder.id_usr
+				left join mat_materials_summary_types on id_mqt = summary_type_id_msu
 				GROUP BY ".static::TABLE_ID."	 
 			) ".static::TABLE_NAME."_master_detail
 		";
@@ -33,7 +45,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 	 */
 	protected function _dataTableColumns() : string
 	{
-		return static::TABLE_NAME.".*";
+		return static::TABLE_NAME."_master_detail.*";
 	}
 
 	/**
@@ -51,10 +63,36 @@ class SummaryPaginationHandler extends BasePaginationHandler
 			{
 				switch ($parameter)
 				{
-					case "id":
+					case "summary-id":
 						if($value != "")
 							$sql .= " and ".static::TABLE_ID." = ".$ci->db->escape($value);
 						break;
+					case "fiscal-id":
+						if($value != "")
+							$sql .= " and fiscal_responsible_msu = ".$ci->db->escape($value);
+						break;
+					case "builder-id":
+						if($value != "")
+							$sql .= " and builder_responsible_msu = ".$ci->db->escape($value);
+						break;
+					case "summary-type-id":
+						if($value != "")
+							$sql .= " and summary_type_id_msu = ".$ci->db->escape($value);
+						break;
+					case 'summary-type-keyword':
+						if($value != "")
+						{
+							$list = explode(",",$value);
+							$scaped = "";
+							foreach ($list as $status)
+							{
+								$scaped .= $ci->db->escape($status).", ";
+								$includeFilter = TRUE;
+							}
+							$scaped = substr($scaped,0,-2);
+							$sql .= " and summary_type_keyword in ({$scaped})";
+						}
+							
 				}
 			}
 		}
