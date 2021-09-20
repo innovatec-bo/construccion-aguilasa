@@ -300,7 +300,7 @@ class Model_user extends Model_user_base
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
             $messageDetail = "\nSubject: ".$subject."\nTo: ".$emailHandler->getEmailByEnvironment($creFiscalEmail)."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
-           echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));exit;
+        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));exit;
             try
             {
                 if($email->Send())
