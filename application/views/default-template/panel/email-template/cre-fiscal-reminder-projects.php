@@ -83,6 +83,14 @@
 												</td>
 												';
 										}
+                                        $energizedDays = "Sin energizar";
+                                        if(!is_null($project['project_energized_entry_date']))
+                                        {
+                                            $date1 = new DateTime($project['project_energized_entry_date']);
+                                            $date2 = new DateTime();
+                                            $interval = $date1->diff($date2);
+                                            $energizedDays = $interval->format('%a dias');
+                                        }
                                         $row .= '
                                                                         <tr style="font-size: 12px; color:'.$color.'">
                                                                             <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
@@ -108,6 +116,9 @@
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                 '.$project['address_pro'].'
+                                                                            </td>
+                                                                            <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                                '.$energizedDays.'
                                                                             </td>
                                                                             <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                                                 '.$sereboFiscal.'
@@ -160,6 +171,7 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS<br>ESTATICO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCIÓN</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS DE<BR>ENERGIZADO</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
 													<?php
 													if($showBudget == 1)
