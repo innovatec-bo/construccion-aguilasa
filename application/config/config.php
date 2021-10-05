@@ -27,7 +27,7 @@ $host = $_SERVER["HTTP_HOST"]??"";
 switch (ENVIRONMENT)
 {
     case 'development':
-        $config['base_url']	= 'http://'.$host.'/serebo';
+        $config['base_url']	= 'http://'.$host;
         break;
     case 'testing':
     case 'production':
