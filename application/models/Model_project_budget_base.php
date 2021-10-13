@@ -37,7 +37,7 @@ class Model_project_budget_base extends MY_Model
         $this->_transportation = $transportation;
         $this->_liveLine = $liveLine;
         $this->_rightOfWay = $rightOfWay;
-        $this->_tentativeTotalBudget = $tentativeTotalBudget;
+        $this->_tentativeTotalBudget = $tentativeTotalBudget??0;
         $this->_manpowerFileId = $manpowerFileId;
         $this->_buildingStructureFileId = $buildingStructureFileId;
         $this->_materialsFileId = $materialsFileId;
