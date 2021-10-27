@@ -164,6 +164,8 @@ class AjaxDashboard extends PrivateController
 
     public function getCurrentStatusSummary($ajaxRequest = TRUE, $system = "", $management = "", $contract = "")
     {
+        set_time_limit(240);
+		ini_set('memory_limit','512M');
         if($ajaxRequest)
         {
             $formData = $this->input->post();
