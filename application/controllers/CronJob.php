@@ -92,6 +92,8 @@ class CronJob extends PublicController
 
     public function notifyProjectStatusToSereboFiscal($challenge)
     { 
+		set_time_limit(240);
+		ini_set('memory_limit','512M');
         if($challenge == 'notifyProjectStatusToSereboFiscal2019')
         {
             $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
