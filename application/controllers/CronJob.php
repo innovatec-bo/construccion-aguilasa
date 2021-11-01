@@ -71,6 +71,8 @@ class CronJob extends PublicController
 
     public function notifyProjectStatusToCreFiscal($challenge)
     { 
+		set_time_limit(240);
+		ini_set('memory_limit','512M');
         if($challenge == 'notifyProjectStatusToCreFiscal2019')
         {
             $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
