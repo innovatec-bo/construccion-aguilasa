@@ -286,6 +286,13 @@ class Model_user extends Model_user_base
 			{
 				$showBudget = 1;
 			}
+            //Special validation: if the status is conciliation_shipment then send the notice to layonelrln@cre.com.bo 
+            if($status == 'conciliation_shipment')
+            {
+                $data['creFiscalFullName'] = 'Layonel Lujan';
+                $creFiscalEmail = 'layonelrln@cre.com.bo';
+            }
+
             $data['showBudget'] = $showBudget;
             $listManagementBy = array_column($projectList, 'management_by_pro');
             $listManagementBy = array_unique($listManagementBy);
