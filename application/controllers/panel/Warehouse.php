@@ -286,6 +286,61 @@ class Warehouse extends PrivateController
 		}		
 	}
 
+	public function loadInitialList()
+	{
+		$this->_tabTitle = "Cargar lista inicial de materiales";
+		// $this->form_validation->set_rules('materials-file', 'File', 'trim|required');
+		$this->form_validation->set_rules('project-code', 'Project Code', 'trim|required');
+		if ($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("warehouse/load-initial-list");
+        }
+        else
+        {
+			if (!empty($_FILES['materials-file']['name']))
+			{
+				try
+				{
+					$formData = $this->input->post();
+					$project = Model_project::getByCode($formData['project-code']);
+					$projectId = $project->getId();
+					$fileHandler = new FileHandler();
+					$materialsFile = $fileHandler->fileUpload($_FILES['materials-file'], "materials_doc", "documents", "document");
+					$materialsFile->save();
+					$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
+					$materialsFileReader->saveMaterialsInDataBase();
+					// if($registerMaterialsInSystem == 1)
+					// {
+						$currentUser = PrivateController::getSessionUser();
+						$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+						$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
+						$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], $currentUserId,1,"",null,$log[0]['reservation_number_prb']);
+					// }
+
+					$response['success'] = 1;
+					$response['message'] = '';
+					$response['data']['file']['id'] = $materialsFile->getId();
+					$this->session->set_flashdata("successMessage", 'Materiales cargados correctamente');
+				}
+				catch (Exception $e)
+				{
+					$response['success'] = 0;
+					$response['message'] = $e->getMessage();
+					$response['data'] = array();
+					$this->session->set_flashdata("errorMessage", $response['message']);
+				}
+			}
+			else
+			{
+				$response['success'] = 0;
+				$response['message'] = 'No se selecciono ningun archivo de materiales para revisar.';
+				$response['data']['file'] = array();
+				$this->session->set_flashdata("errorMessage", $response['message']);
+			}
+			redirect(current_url());
+		}
+	}
+	
 	public function importMaterials()
 	{
 		$this->_tabTitle = "Importar materiales";

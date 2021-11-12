@@ -1,11 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Jair
- * Date: 12/4/2018
- * Time: 22:33
- */
-?>
 <div class="container-fluid box-shadow-2">
     <div class="row">
         <div class="col-lg-12">
