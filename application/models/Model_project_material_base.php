@@ -19,8 +19,9 @@ class Model_project_material_base extends MY_Model
 	protected ?int $_tension;
 	protected ?string $_requestCrePto;
 	protected ?string $_requestCreDetail;
+	protected ?string $_deliveredToBuilderDetail;
 
-    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL, ?string $requestCrePto = NULL, ?string $requestCreDetail = NULL)
+    public function __construct(int $materialsSummaryId, int $materialId, float $quantity, int $statusId, ?int $tension = NULL, ?string $requestCrePto = NULL, ?string $requestCreDetail = NULL, ?string $deliveredToBuilderDetail = NULL)
     {
         parent::__construct();
         $this->_materialsSummaryId = $materialsSummaryId;
@@ -30,6 +31,7 @@ class Model_project_material_base extends MY_Model
 		$this->_tension = $tension;
 		$this->_requestCrePto = $requestCrePto;
 		$this->_requestCreDetail = $requestCreDetail;
+		$this->_deliveredToBuilderDetail = $deliveredToBuilderDetail;
     }
 
     /**
@@ -47,6 +49,7 @@ class Model_project_material_base extends MY_Model
 			"tension_id_prm" => $this->_tension,
 			"request_cre_pto_prm" => $this->_requestCrePto,
 			"request_cre_detail_prm" => $this->_requestCreDetail,
+			"delivered_to_builder_detail_prm" => $this->_deliveredToBuilderDetail,
 			"deleted_prm" => $this->_deleted,
 			"createdon_prm" => $this->_createdOn,
 			"createdby_prm" => $this->_createdBy,
@@ -125,6 +128,11 @@ class Model_project_material_base extends MY_Model
 	{
 		$this->_requestCreDetail = $value;
 	}
+
+	public function setDeliveredToBuilderDetail($value)
+	{
+		$this->_deliveredToBuilderDetail = $value;
+	}
     //Getters
     public function getMaterialsSummaryId()
 	{
@@ -159,5 +167,10 @@ class Model_project_material_base extends MY_Model
 	public function getRequestCreDetail()
 	{
 		return $this->_requestCreDetail;
+	}
+
+	public function getDeliveredToBuilderDetail()
+	{
+		return $this->_deliveredToBuilderDetail;
 	}
 }

@@ -31,6 +31,7 @@ class WarehouseHandler
 		WarehouseHandler.columnsDefinition['movement'] = 10;
 		WarehouseHandler.columnsDefinition['tension'] = 11;
 		WarehouseHandler.columnsDefinition['status'] = 12;
+		WarehouseHandler.columnsDefinition['delivered_to_builder_detail'] = 13;
     }
 
 	private _addRow()

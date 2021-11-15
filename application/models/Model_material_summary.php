@@ -104,6 +104,10 @@ class Model_material_summary extends Model_material_summary_base
 				{
 					$projectMaterial->setRequestCreDetail($material['detail-request-additiona-to-cre']);	
 				}
+				if(isset($material['delivered-to-builder-detail']))
+				{
+					$projectMaterial->setDeliveredToBuilderDetail($material['delivered-to-builder-detail']);
+				}
 				$projectMaterial->setCreatedOn($currentDate);
 				$projectMaterial->setCreatedBy($currentUserId);
 				$dataToSave[] = $projectMaterial->toArray();

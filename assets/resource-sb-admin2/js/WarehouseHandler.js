@@ -13,6 +13,7 @@ var WarehouseHandler = /** @class */ (function () {
         WarehouseHandler.columnsDefinition['movement'] = 10;
         WarehouseHandler.columnsDefinition['tension'] = 11;
         WarehouseHandler.columnsDefinition['status'] = 12;
+        WarehouseHandler.columnsDefinition['delivered_to_builder_detail'] = 13;
     }
     WarehouseHandler.prototype._addRow = function () {
         var rowData = $('.select2-materials').select2('data')[0];

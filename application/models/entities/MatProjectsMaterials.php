@@ -71,6 +71,13 @@ class MatProjectsMaterials
     private $requestCreDetailPrm;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="delivered_to_builder_detail_prm", type="text", length=65535, nullable=true)
+     */
+    private $deliveredToBuilderDetailPrm;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_prm", type="smallint", nullable=true, options={"default"="0"})

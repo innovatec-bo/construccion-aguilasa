@@ -41,6 +41,13 @@
 				<option value="4">Indefinido</option>
 			</select>
 		</td>
+		<td>
+			<input 
+				type="text" 
+				class="text-right input-masked" 
+				name="summary[{{rowId}}][delivered-to-builder-detail]" 
+				value="">
+		</td>
 		<td><input type="button" class="btn btn-xs btn-danger btn-sm wh-quit-row" value="X"></td>
 		<input type="hidden" class="material" name="summary[{{rowId}}][id]" value="{{data.material_id}}">
 		<input type="hidden" class="material" name="summary[{{rowId}}][code]" value="{{data.material_code}}">
