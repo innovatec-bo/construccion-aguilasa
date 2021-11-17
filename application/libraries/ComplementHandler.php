@@ -13,7 +13,9 @@ class ComplementHandler
     private $_complements;
     private $_projectTsPath;
     private $_projectJsPath;
+    private $_projectJsDirectory;
     private $_projectCssPath;
+    private $_projectCssDirectory;
 
     public function __construct()
     {
@@ -22,7 +24,9 @@ class ComplementHandler
         $this->_complements = $ci->config->item("complements");
         $this->_projectTsPath = $ci->config->item("projectTsPath");
         $this->_projectJsPath = $ci->config->item("projectJsPath");
+        $this->_projectJsDirectory = $ci->config->item("projectJsDirectory");
         $this->_projectCssPath = $ci->config->item("projectCssPath");
+        $this->_projectCssDirectory = $ci->config->item("projectCssDirectory");
         $this->_publicJsPath = $ci->config->item("publicJsPath");
         $this->_publicCssPath = $ci->config->item("publicJsPath");
     }
@@ -65,10 +69,7 @@ class ComplementHandler
     public function addProjectJs($name, $applyVersion = FALSE)
     {
         $version = "";
-        if($applyVersion)
-        {
-            $version = strtotime(date("Y-m-d"));
-        }
+        $version = filemtime($this->_projectJsDirectory . "/" . $name . ".js");
         $this->_viewJavascript[] = $this->_projectJsPath . "/" . $name . ".js?v=".$version;
     }
 
@@ -80,10 +81,7 @@ class ComplementHandler
     public function addProjectCss($name, $applyVersion = FALSE)
     {
         $version = "";
-        if($applyVersion)
-        {
-            $version = strtotime(date("Y-m-d"));
-        }
+        $version = filemtime($this->_projectCssDirectory . "/" . $name . ".css");
         $this->_viewCss[] = $this->_projectCssPath . "/" . $name . ".css?v=".$version;
     }
 

@@ -404,6 +404,7 @@ class WarehouseHandler
 				else
 				{
 					_this.fillTable();
+					WarehouseHandler.columnsVisibility();
 				}
 			}
 		});

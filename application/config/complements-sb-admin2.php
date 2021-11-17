@@ -9,6 +9,9 @@ $config['projectTsPath'] = assets_url("resource-sb-admin2/ts");
 $config['projectJsPath'] = assets_url("resource-sb-admin2/js");
 $config['projectCssPath'] = assets_url("resource-sb-admin2/css");
 
+$config['projectJsDirectory'] = FCPATH."assets/resource-sb-admin2/js";
+$config['projectCssDirectory'] = FCPATH."assets/resource-sb-admin2/css";
+
 $config['complements']['jquery']['js'] = assets_url('resource-sb-admin2/vendor/jquery/jquery.min.js');
 
 $config['complements']['jquery.ui']['css'] = assets_url('resource-sb-admin2/plugins/jquery-ui/jquery-ui.min.css');

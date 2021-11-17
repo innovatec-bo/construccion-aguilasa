@@ -322,6 +322,7 @@ var WarehouseHandler = /** @class */ (function () {
                 }
                 else {
                     _this.fillTable();
+                    WarehouseHandler.columnsVisibility();
                 }
             }
         });

@@ -50,7 +50,7 @@ class Warehouse extends PrivateController
 		/** Server Side Validations **/
 		$this->form_validation->set_rules('summary-type', 'Tipo de movimiento', 'trim|required');
 		//$this->form_validation->set_rules('summary', 'Materiales','callback_validate_summary_materials');
-		//$this->form_validation->set_rules('summary', 'Materiales','trim');
+		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
 		$data = array();
 		$fiscals = Model_user::getByRoleKeyword('fiscal');
 		$builders = Model_user::getByRoleKeyword('builder');
