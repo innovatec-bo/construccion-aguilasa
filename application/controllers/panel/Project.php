@@ -1059,4 +1059,54 @@ class Project extends PrivateController
             //echo json_encode($response);exit;
         }  
     }
+
+    public function setEstimatedDays()
+    {
+        $newDays = [
+            "ro.21.0070" => 7, 
+            "ro.21.0127" => 2, 
+            "ro.21.0083" => 3, 
+            "ro.21.0368" => 4, 
+            "ro.21.0095" => 4, 
+            "ro.21.0091" => 2, 
+            "ro.21.0265" => 6, 
+            "ro.21.0253" => 2, 
+            "ro.21.0301" => 6, 
+            "ro.21.0163" => 6, 
+            "ro.21.0077" => 4, 
+            'ra.21.2208' => 3, 
+            'ra.21.2454' => 2, 
+            'ra.21.2677' => 2, 
+            'ra.21.2744' => 7, 
+            'ra.21.2487' => 4
+        ];
+        $codeList = array_keys($newDays);
+
+        // $newDays = ['RD.20.0067' => 3];
+        // $codeList = array_keys($newDays);
+
+        $projectList = Model_project::getByCodeList($codeList);
+
+        /** @var Model_project $project */
+        foreach($projectList as $project)
+        {
+            // Model_project
+            $assignmentRecords = Model_construction_assignment::getAssignmentRecords($project->getId());
+
+            /** @var Model_construction_assignment $row */
+            foreach ($assignmentRecords as $row)
+            {
+                $newQuantityDays = $newDays[$project->getCode()];
+                
+                $row->setEstimatedTime($newQuantityDays);
+
+                $startDate = New DateTime($row->getStartDate());
+                $startDate->modify("+".$newQuantityDays." days");
+                
+                $row->setEndDate($startDate->format("Y-m-d H:i:s"));
+                $row->save();
+            }
+        }
+        
+    }
 }

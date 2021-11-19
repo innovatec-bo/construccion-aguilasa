@@ -95,6 +95,8 @@ class Model_construction_assignment_base extends MY_Model
         return $response;
     }
 
+    //Setters
+
 	/**
 	 * @param int $projectManagerId
 	 */
@@ -102,4 +104,26 @@ class Model_construction_assignment_base extends MY_Model
 	{
 		$this->_projectManager = $projectManagerId;
 	}
+
+    public function setEndDate($value)
+    {
+        $this->_endDate = $value;
+    }
+
+    public function setEstimatedTime($value)
+    {
+        $this->_estimatedTime = $value;
+    }
+
+    //Getters 
+
+    public function getStartDate()
+    {
+        return $this->_startDate;
+    }
+
+    public function getEndDate()
+    {
+        return $this->_endDate;
+    }
 }
