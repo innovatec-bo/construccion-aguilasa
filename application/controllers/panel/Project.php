@@ -1061,7 +1061,7 @@ class Project extends PrivateController
     }
 
     public function setEstimatedDays()
-    {
+    {exit('disabled');
         $newDays = [
             "ro.21.0070" => 7, 
             "ro.21.0127" => 2, 
