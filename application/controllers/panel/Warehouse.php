@@ -74,7 +74,7 @@ class Warehouse extends PrivateController
 			$data['summaryTypeId'] = $summaryType[0]->getId();
 		}
 		/*** data from request list - end*/
-		$projects = Model_project::getByStatusKeywordList(['approved','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
 
 		$data['projects'] = $projects;
 		$data['fiscals'] = $fiscals;
