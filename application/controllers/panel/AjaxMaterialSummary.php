@@ -103,19 +103,7 @@ class AjaxMaterialSummary extends PrivateController
 
 	public function getSummaryListByProjectId($projectId)
 	{
-		$list = Model_material_summary::getByProjectId($projectId);
-		$data = array();
-		/** @var Model_material_summary $summaryList */
-		foreach ($list as $summaryList)
-		{
-			if(is_null($summaryList->getReservationNumber()) || $summaryList->getReservationNumber() == "")
-			{
-				continue;
-			}
-			$data[] = array(
-				'reservation_number' => $summaryList->getReservationNumber()
-			);
-		}
+		$data = Model_material_summary::getReservationNumbersByProjectId($projectId);
 		echo json_encode($data);exit;
 	}
 

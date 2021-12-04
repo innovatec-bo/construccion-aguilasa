@@ -88,9 +88,25 @@ class Warehouse extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
-			// dd($formData);
+			$method = debug_backtrace()[1]['function'];
+
 			$projectId = $formData['project'];
+			
 			$reservationNumber = $formData['reservation-number'];
+			if($reservationNumber == "")
+			{
+				$data = Model_material_summary::getReservationNumbersByProjectId($projectId);
+				if(count($data) > 0)
+					$reservationNumber = $data[0]['reservation_number'];
+				else
+				{
+					$this->session->set_flashdata("errorMessage", "La lista inicial de materiales no cuenta con el numero de reserva, por favor contacte con soporte.");
+					redirect(base_url("panel/Warehouse/".$method));
+				}
+					
+
+			}
+
 			$summaryType = $formData['summary-type'];
 			$builder = $formData['builder'];
 			$fiscal = $formData['fiscal'];
@@ -119,6 +135,7 @@ class Warehouse extends PrivateController
 			}
 			if(array_search($summaryType, $summaryWithReservationNumber) !== FALSE)
 			{
+				
 				$newMaterialSummary->setReservationNumber($reservationNumber);
 			}
 
@@ -134,7 +151,7 @@ class Warehouse extends PrivateController
 			$this->session->set_flashdata("successMessage", "La lista se creo correctamente.".$requestID);
 			$printView = $this->printView($newMaterialSummary->getId(),1);
 			$this->session->set_flashdata("printView", $printView);
-			$method = debug_backtrace()[1]['function'];
+			
 			redirect(base_url("panel/Warehouse/".$method));
 		}
 	}

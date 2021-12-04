@@ -178,4 +178,23 @@ class Model_material_summary extends Model_material_summary_base
 		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
 		return $query->result_array();
 	}
+
+	public static function getReservationNumbersByProjectId(int $projectId) : array
+	{
+		$list = Model_material_summary::getByProjectId($projectId);
+		$data = array();
+		/** @var Model_material_summary $summaryList */
+		foreach ($list as $summaryList)
+		{
+			if(is_null($summaryList->getReservationNumber()) || $summaryList->getReservationNumber() == "")
+			{
+				continue;
+			}
+			$data[] = array(
+				'reservation_number' => $summaryList->getReservationNumber()
+			);
+		}
+
+		return $data;
+	}
 }
