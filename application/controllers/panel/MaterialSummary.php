@@ -27,7 +27,7 @@ class MaterialSummary extends PrivateController
         $this->complementHandler->addProjectCss('material-summary.index');
         $this->complementHandler->addProjectJs('material-summary.index');
 
-        $projects = Model_project::getByStatusKeywordList(['approved','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+        $projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
         $data['projects'] = $projects;
         $data['fiscalList'] = Model_user::getByRoleKeyword('fiscal');
         $this->_loadPanelView("material-summary/index",$data);
