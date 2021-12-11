@@ -18,7 +18,9 @@
             <dd class="">{{project.builder_responsible}}</dd> 
         {{/ifCond}}
         <dt>DETALLE</dt> 
-            <dd class="">{{project.detail_pro}}</dd> 
+        <dd class="">{{project.detail_pro}}</dd> 
+        <dt>COORDENADAS</dt> 
+        <dd class="">{{project.project_latitude}},<br>{{project.project_longitude}}</dd>
         <a href="https://wa.me/?text=https://maps.google.com/maps/?q={{project.project_latitude}},{{project.project_longitude}}" target="_blank" class="btn btn-whatsapp mt-1 btn-block btn-sm" role="button">
             <?php
             $timthumbUrl = base_url("timthumb/timthumb.php");
