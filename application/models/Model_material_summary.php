@@ -197,4 +197,18 @@ class Model_material_summary extends Model_material_summary_base
 
 		return $data;
 	}
+
+	public static function getHistoryLog($projectId)
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+		$ci->db->select("mat_materials_summary.*,mat_materials_summary_types.*, concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name, concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name");
+		$ci->db->from("mat_materials_summary");
+		$ci->db->join('sec_users as fiscal','mat_materials_summary.fiscal_responsible_msu = fiscal.id_usr','left');
+		$ci->db->join('sec_users as builder','mat_materials_summary.builder_responsible_msu = builder.id_usr','left');
+		$ci->db->join('mat_materials_summary_types', 'mat_materials_summary.summary_type_id_msu = mat_materials_summary_types.id_mqt','left');
+		$ci->db->where('project_id_msu',$projectId);
+		$query = $ci->db->get();
+		return $query;
+	}
 }

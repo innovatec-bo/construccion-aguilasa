@@ -490,4 +490,18 @@ class Warehouse extends PrivateController
 		$excelRequestMaterialToCRE->getReport();
 		// dd($materialSummary, $materialList);
 	}
+
+	public function movementsLog()
+	{
+		$projectCode = $this->input->get('project-code');
+		$log = [];
+		if(!is_null($projectCode))
+		{
+			$project = Model_project::getByCode($projectCode);
+			$query = Model_material_summary::getHistoryLog($project->getId());
+			$log = $query->result_array();
+		}
+		
+		$this->_loadPanelView("warehouse/movements-log", compact('log','projectCode'));
+	}
 }

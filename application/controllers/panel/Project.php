@@ -1109,4 +1109,10 @@ class Project extends PrivateController
         }
         
     }
+
+    public function batchStatusUpdate()
+    {
+        $data['viewTitle'] = "Actualizacion Masiva";
+        $this->_loadPanelView("project/batch-status-update", $data);       
+    }
 }
