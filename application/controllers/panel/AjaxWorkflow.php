@@ -9,7 +9,7 @@ class AjaxWorkflow extends PrivateController
         {
             redirect('404');
         }
-		$this->_validateFeature('workflow_index');
+		// $this->_validateFeature('workflow_index');
     }
 
     public function ajaxDtAll()
