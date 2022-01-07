@@ -134,4 +134,14 @@ class AjaxMaterialSummary extends PrivateController
 		$materialPaginationHandler->setAdditionalParameters($parameters);
 		echo json_encode($materialPaginationHandler->getAll());exit;
 	}
+
+	public function show($projectId)
+	{
+		$paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
+		$paginationHandler->setAdditionalParameters(['project-id' => $projectId]);
+		$list = $paginationHandler->getAll();
+		$response["success"] = 1;
+		$response["data"]['list'] = $list;
+		echo json_encode($response);exit;
+	}
 }

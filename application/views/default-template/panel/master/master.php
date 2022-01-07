@@ -18,4 +18,5 @@ $this->load->view('default-template/panel/content/project/ht-datatable-dropdown-
 $this->load->view("default-template/panel/content/payment-management/ht-select2-project-response");
 $this->load->view("default-template/ht-select2-material-response");
 $this->load->view("default-template/ht-select2-material-summary-response");
+$this->load->view("default-template/ht-show-materials-summary");
 ?>

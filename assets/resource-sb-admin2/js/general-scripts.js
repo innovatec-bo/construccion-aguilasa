@@ -77,6 +77,11 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(document).on('click','.show-materials-summary', function(){
+        let projectId = $(this).data('project-id');
+        showSummaryList(projectId);
+    });
 });
 function deleteObject(objectId, url)
 {
@@ -552,5 +557,42 @@ function select2Workflow(selector)
         width : "100%"
         //escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         //templateResult: select2ProjectGeneralListFormatResponse
+    });
+}
+
+function showSummaryList(projectId)
+{
+    $.ajax({
+        url : base_url + 'panel/ajaxMaterialSummary/show/'+projectId,
+        dataType  :"json",
+        type : "get",
+        data:{},
+        success:function(response){
+
+            if(response.success === 1 && response.data.list.length > 0)
+            {
+                let htmlSource   = $("#ht-show-materials-summary").html();
+                let template = Handlebars.compile(htmlSource);
+                let data = {'list':response.data.list};
+                let html = template(data);
+                Swal.fire({
+                    title: '<strong>Resumen de materiales '+response.data.list[0].project_code+'</strong>',
+                    width: '100%',
+                    html: html,
+                    showConfirmButton: false,
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    cancelButtonText:'Cerrar'
+                });
+            }
+            elseif(response.success === 1 && response.data.list.length <= 0)
+            {
+                Swal.fire({
+                    type: 'error',
+                    title: 'No se encontro un resumen de materiales',
+                    text: 'Es probable que no se haya cargado una lista de materiales para este proyecto.',
+                });
+            }
+        }
     });
 }
