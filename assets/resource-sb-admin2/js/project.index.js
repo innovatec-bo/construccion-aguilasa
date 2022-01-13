@@ -11,6 +11,8 @@ $(document).ready(function() {
     additionalParameter.addParameterObject('builder-responsible-id','select');
     additionalParameter.addParameterObject('manpower-uploaded','select');
     additionalParameter.addParameterObject('status','select');
+    additionalParameter.addParameterObject('all-materials-picked-up-from-cre','checkbox');
+    additionalParameter.addParameterObject('none-materials-picked-up-from-cre','checkbox');
     additionalParameter.setButtonFilter('#send-filters');
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();

@@ -98,6 +98,33 @@
 						</div>
 					</div>
                     <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="checkbox my-0">
+                                    <label>
+                                        <input type="checkbox" name="none-materials-picked-up-from-cre" value="0"> Sin material retirado de CRE
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="checkbox my-0">
+                                    <label>
+                                        <input type="checkbox" name="all-materials-picked-up-from-cre"> Todo el material retirado de CRE
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="checkbox my-0 mb-3">
+                                    <label>
+                                        <input type="checkbox" disabled> Todo el material devuelto a CRE
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-12">
                         <div class="form-group mb-0">
                             <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>
                             <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove filtros</button>

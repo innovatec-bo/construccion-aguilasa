@@ -301,6 +301,28 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 				$sql .= " ";
 		}
 
+		if(isset($filters["quantity-picked-up-from-cre"]) && $filters["quantity-picked-up-from-cre"] != "")
+		{
+			$quantityPickedUpFromCre = $filters["quantity-picked-up-from-cre"];
+			$sql .= " and quantity_picked_up_from_cre = ".$ci->db->escape($quantityPickedUpFromCre)." ";
+		}
+
+		if(isset($filters["quantity-pending-in-cre"]) && $filters["quantity-pending-in-cre"] != "")
+		{
+			$pendingMaterialInCre = $filters["quantity-pending-in-cre"];
+			$sql .= " and pending_material_in_cre = ".$ci->db->escape($pendingMaterialInCre)." ";
+		}
+
+		if(isset($filters["all-materials-picked-up-from-cre"]) && $filters["all-materials-picked-up-from-cre"] != "")
+		{
+			$sql .= " and pending_material_in_cre <= 0 and quantity_materials_assigned > 0";
+		}
+
+		if(isset($filters["none-materials-picked-up-from-cre"]) && $filters["none-materials-picked-up-from-cre"] != "")
+		{
+			$sql .= " and pending_material_in_cre = quantity_materials_assigned and quantity_materials_assigned > 0 ";
+		}
+
 		return $sql;
 	}
 
@@ -493,7 +515,11 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
             'previous_manual_entry_date' => ['column' => 'previous_incident.previous_manual_entry_date', 'dependencies' => ['previous_incident']],
 			'last_three_incidents' => ['column' => 'wfl_incidents_last_three_incidents.last_three_incidents', 'dependencies' => ['wfl_incidents_last_three_incidents']],
-			'production_total_bs' => ['column' => 'production.total_bs production_total_bs', 'dependencies' => ['production']]
+			'production_total_bs' => ['column' => 'production.total_bs production_total_bs', 'dependencies' => ['production']],
+			'quantity_picked_up_from_cre' => ['column' => 'IFNULL(quantity_picked_up_from_cre.quantity, 0) quantity_picked_up_from_cre', 'dependencies' => ['quantity_picked_up_from_cre']],
+			'materials_delivered_to_cre' => ['column' => 'IFNULL(materials_delivered_to_cre.quantity, 0) materials_delivered_to_cre', 'dependencies' => ['materials_delivered_to_cre']],
+			'quantity_materials_assigned' => ['column' => 'IFNULL(quantity_materials_assigned.quantity, 0) quantity_materials_assigned', 'dependencies' => ['quantity_materials_assigned']],
+			'pending_material_in_cre' => ['column' => 'IFNULL(quantity_materials_assigned.quantity, 0)-IFNULL(quantity_picked_up_from_cre.quantity, 0) pending_material_in_cre', 'dependencies' => ['quantity_picked_up_from_cre','quantity_materials_assigned']],
 		];
 	}
 
@@ -634,7 +660,49 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 									deleted_wus != 1
 									and deleted_lal != 1 
 								GROUP BY project_id_lad
-							) production on production.project_id_lad = id_pro "
+							) production on production.project_id_lad = id_pro ",
+			'quantity_picked_up_from_cre' =>  "
+								left join (
+									SELECT
+										sum(quantity_prm) quantity,
+										project_id_msu project_id
+									FROM
+										mat_projects_materials
+									LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
+									where 
+										summary_type_id_msu in (3)
+										and deleted_msu != 1
+										and deleted_prm != 1
+									GROUP BY project_id_msu
+								) quantity_picked_up_from_cre on quantity_picked_up_from_cre.project_id = id_pro ",
+			'materials_delivered_to_cre' =>  "
+								left join (
+									SELECT
+										sum(quantity_prm) quantity,
+										project_id_msu project_id
+									FROM
+										mat_projects_materials
+									LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
+									where 
+										summary_type_id_msu in (8)
+										and deleted_msu != 1
+										and deleted_prm != 1
+									GROUP BY project_id_msu
+								) materials_delivered_to_cre on materials_delivered_to_cre.project_id = id_pro ",
+			'quantity_materials_assigned' =>  "
+								left join (
+									SELECT
+										sum(quantity_prm) quantity,
+										project_id_msu project_id
+									FROM
+										mat_projects_materials
+									LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
+									where 
+										summary_type_id_msu in (1,2)
+										and deleted_msu != 1
+										and deleted_prm != 1
+									GROUP BY project_id_msu
+								) quantity_materials_assigned on quantity_materials_assigned.project_id = id_pro ",
 		];
 	}
 

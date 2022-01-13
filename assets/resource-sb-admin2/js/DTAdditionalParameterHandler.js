@@ -51,7 +51,6 @@ function DTAdditionalParameterHandler(objectContent, table) {
 						key = parameter.key;
 					jsonAdditionalRequest[key] = parameter.value;
 				}
-
             });
         }
     };
