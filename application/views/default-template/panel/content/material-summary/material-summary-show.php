@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Detalle</h1>
+            <a class="btn btn-info hidden-print pull-right" href='javascript:void(0)' onclick='window.print();'><i class="fa fa-print fa-fw"></i>Imprimir</a>
         </div>
         <div class="col-md-12">
             <?php
