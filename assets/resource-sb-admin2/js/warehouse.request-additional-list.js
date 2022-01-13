@@ -17,12 +17,12 @@ $(document).ready(function() {
 	$(document).on('change','.select2.workflow', function (e) {
 		let data = $(this).select2('data')[0];
 		$('input[name=fiscal-name]').val(data.fiscal_responsible);
-		$('input[name=builder-name]').val(data.builder_responsible);
+		$('select[name=builder-id]').val(data.builder_responsible_id);
 		$('input[name=reservation-number]').val(data.approved_reservation_number);
 	});
 	$(document).on('select2:clear','.select2.workflow', function (e) {
 		$('input[name=fiscal-name]').val('');
-		$('input[name=builder-name]').val('');
+		$('input[name=builder-id]').val('');
 		$('input[name=reservation-number]').val('');
 		$('.select2-materials').val(null).trigger('change');
 	});
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		$(".input-masked").inputmask();
 		console.log(data);
 		// $('input[name=fiscal-name]').val(data.fiscal_responsible);
-		// $('input[name=builder-name]').val(data.builder_responsible);
+		// $('input[name=builder-id]').val(data.builder_responsible);
 		// $('input[name=reservation-number]').val(data.approved_reservation_number);
 	});
 	$(document).on('click','.wh-quit-row',function(){

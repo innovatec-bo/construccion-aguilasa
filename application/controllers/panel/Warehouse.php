@@ -258,11 +258,13 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addProjectJs('warehouse.request-additional-list', TRUE);
 		//Server side validations
 		$this->form_validation->set_rules('entry-date', 'Fecha', 'trim|required');
+		$this->form_validation->set_rules('builder-id', 'Constructor', 'trim|required');
 		$this->_tabTitle = "Solicitar lista de adicionales";
+		$builders = Model_user::getByRoleKeyword('builder');
 		$data = [];
 		if($this->form_validation->run() === FALSE)
 		{
-			$this->_loadPanelView("warehouse/request-additional-list",$data);
+			$this->_loadPanelView("warehouse/request-additional-list",compact('builders'));
 		}
 		else
 		{
@@ -270,6 +272,7 @@ class Warehouse extends PrivateController
 			// dd($formData);
 			$entryDate = $formData['entry-date'];
 			$projectId = $formData['project'];
+			$builderId = $formData['builder-id'];
 			$wokflowPaginationHandler = new WorkflowPaginationHandler(1);
 			$wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$projectId]);
 			$wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
@@ -286,8 +289,9 @@ class Warehouse extends PrivateController
 			/** @var Model_material_summary_type $summaryType */
 			$summaryType = $summaryType[0];
 			$newMaterialSummary = new Model_material_summary(NULL,'TODOS',$projectId,$projectId,'','',$entryDate,'',$currentUserId, $summaryType->getId(), NULL);
-			$newMaterialSummary->setBuilderResponsible($projectWorkflow->fiscal_responsible_id);
-			$newMaterialSummary->setFiscalResponsible($projectWorkflow->builder_responsible_id);
+			//13/01/2022 - se modificaron las asignaciones
+			$newMaterialSummary->setBuilderResponsible($builderId);
+			$newMaterialSummary->setFiscalResponsible($projectWorkflow->fiscal_responsible_id);
 			
 			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$newMaterialSummary->getSummaryType());
 			$correlativeCounter = count($summariesByProjectAndType) + 1;
@@ -295,8 +299,7 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->setCorrelativeCounter($correlativeCounter);
 			$newMaterialSummary->save();
 			$newMaterialSummary->saveMaterials($materials);
-			$requestID = "<strong>Su c&oacute;digo de solicitud es : ".$newMaterialSummary->getId()."</strong> <a href='javascript:void(0)' onclick='window.print();'>Imprimir</a>";
-			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente. ".$requestID);
+			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente. Esta solicitud sirve como garantia para pedir un prestamo en el almacen de SEREBO");
 			$this->session->set_flashdata("requestId", $newMaterialSummary->getId());
 			$method = debug_backtrace()[1]['function'];
 			redirect(base_url("panel/Warehouse/requestAdditionalList"));

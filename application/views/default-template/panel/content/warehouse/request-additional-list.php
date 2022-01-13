@@ -51,7 +51,19 @@
 		<div class="col-md-3">
 			<div class="form-group" id="builder">
 				<label>Constructor</label>
-				<input type="text" class="form-control" readonly value="" name='builder-name'>
+				<select class="form-control" parsley-trigger="change" name="builder-id">
+					<option value=""></option>
+					<?php
+						$html = '';
+						foreach($builders as $builder)
+						{
+							$html .= '<option value="'.$builder->getId().'">'.$builder->getFullName().'</option>';
+						}
+						echo $html;
+					?>
+					
+				</select>
+				<!-- <input type="text" class="form-control" readonly value="" name='builder-name'> -->
 			</div>
 		</div>
 	</div>
