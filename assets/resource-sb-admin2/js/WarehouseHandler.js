@@ -345,6 +345,9 @@ var WarehouseHandler = /** @class */ (function () {
             var $tableBody = $('#table-body');
             WarehouseHandler.emptyTable($tableBody);
         });
+        $(document).on('click', '.wh-set-cero-as-movement', function () {
+            $("input.quantity").val("0.00");
+        });
     };
     WarehouseHandler.columnsDefinition = [];
     return WarehouseHandler;

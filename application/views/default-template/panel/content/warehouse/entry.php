@@ -174,6 +174,7 @@
 					}
 					?>
 					<button class="btn btn-danger btn-sm wh-clear-table" type="button" style="padding: 4px 10px;">Limpiar lista</button>
+					<button class="btn btn-danger btn-sm wh-set-cero-as-movement" type="button" style="padding: 4px 10px;">Movimiento en cero "0"</button>
 				</span>
 			</div>
 		</div>
