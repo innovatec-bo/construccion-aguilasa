@@ -146,10 +146,11 @@ var WarehouseHandler = /** @class */ (function () {
             if (optionSelected == 3 && value.pending_material_in_cre == 0) {
                 return true;
             }
-            if (optionSelected == 14 && value.quantity_in_warehouse <= 0) {
-                return true;
+            var data = { data: value, rowId: index + Date.now(), rowClass: "" };
+            if (optionSelected == 14) {
+                if (value.quantity_picked_up_from_cre > 0)
+                    data.rowClass = "bg-danger text-white";
             }
-            var data = { data: value, rowId: index + Date.now() };
             html += template(data);
         });
         var $tableBody = $('#table-body');

@@ -216,3 +216,12 @@ div.dataTables_length {
 		padding: 10px 0px 9px;
 	}
 }
+
+.bg-danger
+{
+	background-color: #ff2828;
+}
+.text-white
+{
+	color: #ffffff;
+}

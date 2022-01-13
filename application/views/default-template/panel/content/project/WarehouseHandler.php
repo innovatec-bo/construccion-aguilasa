@@ -1,5 +1,5 @@
 <script id="table-row" type="text/x-handlebars-template">
-	<tr 
+	<tr class="{{rowClass}}"
 		data-material-code="{{data.material_code}}" 
 		data-pending-material-in-cre="{{data.pending_material_in_cre}}"
 		data-quantity-in-warehouse="{{numberFormat data.quantity_in_warehouse}}">

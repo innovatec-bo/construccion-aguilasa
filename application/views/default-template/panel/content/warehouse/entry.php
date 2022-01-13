@@ -191,7 +191,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover display pageResize" id="items-summary-list">
+				<table class="table table-bordered display pageResize" id="items-summary-list">
 					<thead>
 					<tr>
 						<th>COD</th>
