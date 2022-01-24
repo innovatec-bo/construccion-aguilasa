@@ -1,6 +1,12 @@
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<!-- <script src="<?=assets_url('resource-sb-admin2/react-components/like_button.js')?>"></script>
+<script src="<?=assets_url('resource-sb-admin2/react-components/hello_world.js')?>" type="text/babel"></script> -->
 <?php
 $complementHandler->printViewjs();
 ?>
+
 <?php $this->load->view('default-template/ht-select2-labor-cost-response', $contentData);?>
 <div class="pswp hidden-print" tabindex="-1" role="dialog" aria-hidden="true">
 

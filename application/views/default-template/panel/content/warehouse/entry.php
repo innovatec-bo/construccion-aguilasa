@@ -231,6 +231,12 @@
 		</div>
 	</div>
 	</form>
+	<div id="like_button_container"></div>
+	<div id="hello-example" style="display: none;"></div>
+	<!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> -->
+	<!-- Load our React component. -->
+	<!-- <script src="<?=assets_url('resource-sb-admin2/react-components/like_button.js')?>"></script> -->
 </div>
 <?php
 if($this->session->flashdata("printView"))

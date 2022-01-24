@@ -12,6 +12,9 @@ $config['projectCssPath'] = assets_url("resource-sb-admin2/css");
 $config['projectJsDirectory'] = FCPATH."assets/resource-sb-admin2/js";
 $config['projectCssDirectory'] = FCPATH."assets/resource-sb-admin2/css";
 
+$config['reactComponentPath'] = assets_url("resource-sb-admin2/react-components");
+$config['reactComponentDirectory'] = FCPATH."assets/resource-sb-admin2/react-components";
+
 $config['complements']['jquery']['js'] = assets_url('resource-sb-admin2/vendor/jquery/jquery.min.js');
 
 $config['complements']['jquery.ui']['css'] = assets_url('resource-sb-admin2/plugins/jquery-ui/jquery-ui.min.css');

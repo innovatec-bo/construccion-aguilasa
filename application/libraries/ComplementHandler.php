@@ -16,6 +16,8 @@ class ComplementHandler
     private $_projectJsDirectory;
     private $_projectCssPath;
     private $_projectCssDirectory;
+    private $_reactComponentPath;
+    private $_reactComponentDirectory;
 
     public function __construct()
     {
@@ -29,6 +31,8 @@ class ComplementHandler
         $this->_projectCssDirectory = $ci->config->item("projectCssDirectory");
         $this->_publicJsPath = $ci->config->item("publicJsPath");
         $this->_publicCssPath = $ci->config->item("publicJsPath");
+        $this->_reactComponentPath = $ci->config->item('reactComponentPath');
+        $this->_reactComponentDirectory = $ci->config->item('reactComponentDirectory');
     }
 
     public function addViewComplement($name)
@@ -95,8 +99,17 @@ class ComplementHandler
         if(!empty($this->_viewJavascript)){
             foreach ($this->_viewJavascript as $javascript)
             {
-                echo "\n";
-                echo "<script type=\"text/javascript\" src=\"" . $javascript . "\"></script>";
+                if(strpos($javascript,'react') !== FALSE)
+                {
+                    echo "\n";
+                    echo "<script src=\"" . $javascript . "\" type=\"text/babel\"></script>";
+                }
+                else
+                {
+                    echo "\n";
+                    echo "<script type=\"text/javascript\" src=\"" . $javascript . "\"></script>";
+                }
+                
             }
         }
     }
@@ -112,5 +125,11 @@ class ComplementHandler
             }
         }
 
+    }
+
+    public function addReactComponent($name)
+    {
+        $version = filemtime($this->_reactComponentDirectory . "/" . $name . ".js");
+        $this->_viewJavascript[] = $this->_reactComponentPath . "/" . $name . ".js?v=".$version;
     }
 }

@@ -46,6 +46,8 @@ class Warehouse extends PrivateController
 		$this->complementHandler->addProjectCss('warehouse.entry', TRUE);
 		$this->complementHandler->addProjectJs('WarehouseHandler', TRUE);
 		$this->complementHandler->addProjectJs('warehouse.entry', TRUE);
+		// $this->complementHandler->addReactComponent('like_button');
+		$this->complementHandler->addReactComponent('hello_world');
 
 		/** Server Side Validations **/
 		$this->form_validation->set_rules('summary-type', 'Tipo de movimiento', 'trim|required');
