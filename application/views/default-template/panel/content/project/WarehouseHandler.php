@@ -26,7 +26,7 @@
 		</td>
 
 		<td>
-			<select class="wh-table-component-select tension" name="summary[{{rowId}}][tension]">
+			<select class="wh-table-component-select tension text-muted" name="summary[{{rowId}}][tension]">
 				<option value="4">Indefinido</option>
 				<option value="1">Media</option>
 				<option value="2">Baja</option>
@@ -34,7 +34,7 @@
 			</select>
 		</td>
 		<td>
-			<select class="wh-table-component-select status" name="summary[{{rowId}}][status]">
+			<select class="wh-table-component-select status text-muted" name="summary[{{rowId}}][status]">
 				<option value="1">NVO</option>
 				<option value="2">MEO</option>
 				<option value="3">RBE</option>
