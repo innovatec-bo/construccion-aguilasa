@@ -16,7 +16,7 @@
 		<td class="text-right">
 			<input 
 			type="text" 
-			class="quantity quantity-{{data.material_code}} text-right input-masked" 
+			class="quantity quantity-{{data.material_code}} text-right input-masked text-muted" 
 			name="summary[{{rowId}}][quantity]" 
 			value="{{numberFormat data.quantity_in_warehouse}}" 
 			size="7" 
