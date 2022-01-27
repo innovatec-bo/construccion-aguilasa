@@ -75,10 +75,8 @@ class Warehouse extends PrivateController
 			$summaryType = array_values($summaryType);
 			$data['summaryTypeId'] = $summaryType[0]->getId();
 		}
-		/*** data from request list - end*/
-		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+		/*** data from request list - end*/		
 
-		$data['projects'] = $projects;
 		$data['fiscals'] = $fiscals;
 		$data['builders'] = $builders;
 		$data = array_merge($data,$metaData);
@@ -161,6 +159,7 @@ class Warehouse extends PrivateController
 	public function registerMovement()
 	{
 		$summaryTypes = Model_material_summary_type::getByMovementType(['in','out']);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
 		$metaData = [
 			'viewTitle' => 'Registrar movimiento de materiales',
 			'summaryTypeTitle' => 'Tipo de movimiento',
@@ -168,7 +167,8 @@ class Warehouse extends PrivateController
 			'showSearchBox' => 1,
 			'materialsTitle' => 'Lista general',
 			'showAssignedMaterialsOnly' => 0,
-			'showBtnListAll' => 1
+			'showBtnListAll' => 1,
+			'projects' => $projects
 		];
 		$this->_index($metaData);
 	}
@@ -176,6 +176,7 @@ class Warehouse extends PrivateController
 	public function requestMaterials()
 	{
 		$summaryTypes = Model_material_summary_type::getByMovementType(['request']);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed']);
 		$metaData = [
 			'viewTitle' => 'Solicitar materiales',
 			'summaryTypeTitle' => 'Tipo de solicitud',
@@ -183,7 +184,8 @@ class Warehouse extends PrivateController
 			'showSearchBox' => 0,
 			'materialsTitle' => 'Materiales asignados',
 			'showAssignedMaterialsOnly' => 1,
-			'showBtnListAll' => 1
+			'showBtnListAll' => 1,
+			'projects' => $projects
 		];
 		$this->_tabTitle = "Solicitar materiales";
 		$this->_index($metaData);
@@ -192,6 +194,7 @@ class Warehouse extends PrivateController
     public function registerAdditionalList()
     {
         $summaryTypes = Model_material_summary_type::getByKeyword(['materials_additional_list']);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
 		$metaData = [
 			'viewTitle' => 'Ingresar lista de adicionales',
 			'summaryTypeTitle' => 'Lista',
@@ -199,7 +202,8 @@ class Warehouse extends PrivateController
 			'showSearchBox' => 1,
 			'materialsTitle' => 'Materiales en el sistema',
 			'showAssignedMaterialsOnly' => 0,
-			'showBtnListAll' => 0
+			'showBtnListAll' => 0,
+			'projects' => $projects
 		];
 		$this->_tabTitle = "Ingresar lista de adicionales";
 		$this->_index($metaData);
