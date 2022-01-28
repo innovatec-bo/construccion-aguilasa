@@ -146,7 +146,7 @@ var WarehouseHandler = /** @class */ (function () {
             if (optionSelected == 3 && value.pending_material_in_cre == 0) {
                 return true;
             }
-            var data = { data: value, rowId: index + Date.now(), rowClass: "" };
+            var data = { data: value, rowId: index + Date.now(), rowClass: "", summaryType: optionSelected };
             if (optionSelected == 14) {
                 if (value.quantity_picked_up_from_cre > 0)
                     data.rowClass = "bg-danger text-white";

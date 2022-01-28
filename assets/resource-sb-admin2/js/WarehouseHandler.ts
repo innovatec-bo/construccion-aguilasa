@@ -189,7 +189,7 @@ class WarehouseHandler
 			{
 				return true;
 			}
-			let data = {data:value, rowId: index+Date.now(), rowClass: ""};
+			let data = {data:value, rowId: index+Date.now(), rowClass: "", summaryType:optionSelected};
 			if(optionSelected == 14)
 			{
 				if(value.quantity_picked_up_from_cre > 0)

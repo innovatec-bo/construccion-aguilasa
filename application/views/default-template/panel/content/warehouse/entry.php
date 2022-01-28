@@ -245,6 +245,6 @@ if($this->session->flashdata("printView"))
 }
 ?>
 <?php
-$this->load->view("default-template/panel/content/project/WarehouseHandler.php");
+$this->load->view("default-template/panel/content/project/WarehouseHandler.hbr");
 ?>
 <!-- /.container-fluid -->

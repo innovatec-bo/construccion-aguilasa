@@ -124,7 +124,7 @@ var MarkerManager = /** @class */ (function () {
      *
      */
     MarkerManager.prototype._getTilePoint = function (latlng, zoom, padding) {
-        var pixelPoint = utils_1.latLngToPixel(latlng, zoom);
+        var pixelPoint = (0, utils_1.latLngToPixel)(latlng, zoom);
         var point = new google.maps.Point(Math.floor((pixelPoint.x + padding.width) / this._tileSize), Math.floor((pixelPoint.y + padding.height) / this._tileSize));
         return point;
     };
