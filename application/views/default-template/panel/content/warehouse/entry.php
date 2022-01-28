@@ -69,7 +69,7 @@
 							break;
 							default:
 							//all_quantity_in_warehouse,
-								$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,request_materials_quantity,quantity_in_warehouse,all_quantity_in_warehouse,movement,tension,status";
+								$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,request_materials_quantity,quantity_in_warehouse,movement,tension,status";
 
 						}
 						$options .= "<option data-keyword='{$summaryType->getKeyword()}' value='{$summaryType->getId()}' data-columns='$columnsToShow'>{$summaryType->getName()}</option>";
