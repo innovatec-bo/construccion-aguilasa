@@ -43,9 +43,10 @@ class MaterialsFileReader
             default:
                 $reader = new Csv();
                 $reader->setDelimiter(';');
+                $reader->setInputEncoding('ISO-8859-1');
                 break;
         }
-		$reader->setInputEncoding('ISO-8859-1');
+		
         $fileLocation = FCPATH.$this->_file->getUrl();
         $spreadsheet = $reader->load($fileLocation);
         $sheetList = $spreadsheet->getAllSheets();
