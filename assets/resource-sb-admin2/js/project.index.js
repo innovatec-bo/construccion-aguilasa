@@ -138,6 +138,8 @@ $(document).ready(function() {
         }, {
 			"data" : "cre_fiscal_pro"
 		}, {
+            "data" : "stake_responsible",
+        }, {
             "data" : "assign_to_responsible"
         }, {
             "data" : "fiscal_responsible"
@@ -276,13 +278,13 @@ function columnVisibility(_this)
     {
         case "building":
             _this.api().column(9).visible(false);
-            _this.api().column(10).visible(true);
             _this.api().column(11).visible(true);
+            _this.api().column(12).visible(true);
             break;
         default:
             _this.api().column(9).visible(true);
-            _this.api().column(10).visible(false);
             _this.api().column(11).visible(false);
+            _this.api().column(12).visible(false);
     }
 
 }

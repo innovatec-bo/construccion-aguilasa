@@ -166,6 +166,7 @@
                         <th class="text-center">SISTEMA</th>
                         <th class="text-center">DISTANCIA Y<br>PUNTOS</th>
                         <th class="text-center">FISCAL<br>DE CRE</th>
+                        <th class="text-center">RESPONSABLE<br>DE ESTACADO</th>
                         <th class="text-center">RESPONSABLE</th>
                         <th class="text-center">FISCAL</th>
                         <th class="text-center">CONSTRUCTOR</th>
