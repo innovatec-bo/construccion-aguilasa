@@ -19,7 +19,7 @@
 			class="quantity quantity-{{data.material_code}} text-right input-masked text-muted {{summaryType}}" 
 			name="summary[{{rowId}}][quantity]" 
 			{{#ifCond summaryType '==' 15}}
-				value="{{math data.quantity_in_warehouse "+" data.pending_material_in_cre}}"
+				value="{{numberFormat data.pending_material_in_cre}}"
 			{{/ifCond}}
 			{{#ifCond summaryType '!=' 15}}
 				value="{{numberFormat data.quantity_in_warehouse}}"	
