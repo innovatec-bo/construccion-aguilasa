@@ -184,8 +184,8 @@ class WarehouseHandler
 		let html = "";
 		$.each(this._projectMaterialSummary, function(index: number, value: { pending_material_in_cre: number; quantity_in_warehouse: number; quantity_picked_up_from_cre: number}){
 			let optionSelected = parseInt($('select[name=summary-type] option:selected').val());
-			//If the option selected is 'material_picked_up_from_cre' and the "pending_materials_in_cre" is "0" then let's skip that row.
-			if(optionSelected == 3 && value.pending_material_in_cre == 0)
+			//If the option selected is 'material_picked_up_from_cre' or 'request_loans_materials' and the "pending_materials_in_cre" is "0" then let's skip that row.
+			if((optionSelected == 3 || optionSelected == 15) && value.pending_material_in_cre == 0)
 			{
 				return true;
 			}
