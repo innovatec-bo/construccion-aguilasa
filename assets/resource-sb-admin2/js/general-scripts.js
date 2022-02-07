@@ -82,7 +82,27 @@ $(document).ready(function() {
         let projectId = $(this).data('project-id');
         showSummaryList(projectId);
     });
+
+    $(document).on('click','button[data-confirm-question]',function(){
+		let $form = $(this).closest('form');
+		let question = $(this).data('confirm-question');
+		confirmSubmit(question, $form);
+	  });
 });
+function confirmSubmit(question, form)
+{
+  Swal.fire({
+      title: question,
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+  }).then(function (result){
+      if(result.value === true){
+        form.submit();
+      }
+  });
+}
 function deleteObject(objectId, url)
 {
     bootbox.confirm({
@@ -412,6 +432,7 @@ function startSelect2MaterialsSummary(containerCssClass, size)
 			dataType : "json",
 			type : "post",
 			delay : 600,
+            width:"100%",
 			data : function(params) {
 				return {
 					term : params.term || "",//search term

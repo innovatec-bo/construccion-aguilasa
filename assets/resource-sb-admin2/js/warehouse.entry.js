@@ -35,11 +35,7 @@ $(document).ready(function() {
 	$('.wh-add-new-material').on('click',function(){
 		addMaterial();
 	});
-	$(document).on('click','button[data-confirm-question]',function(){
-		let $form = $(this).closest('form');
-		let question = $(this).data('confirm-question');
-		confirmSubmit(question, $form);
-	  });
+	
 
 });
 
@@ -121,18 +117,4 @@ function customValidations()
 			}
 		});
 
-}
-function confirmSubmit(question, form)
-{
-  Swal.fire({
-      title: question,
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Si",
-      cancelButtonText: "No",
-  }).then(function (result){
-      if(result.value === true){
-        form.submit();
-      }
-  });
 }

@@ -513,4 +513,56 @@ class Warehouse extends PrivateController
 		
 		$this->_loadPanelView("warehouse/movements-log", compact('log','projectCode'));
 	}
+
+	public function internal()
+	{
+		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
+		$this->complementHandler->addProjectJs('warehouse.internal');
+		
+		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
+
+		$materials = Model_material::getAll(10000,0);
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->_loadPanelView('warehouse/internal', compact('materials'));
+		}
+		else
+		{
+			$formData = $this->input->post();
+			$entryDate = date('d-m-Y');
+			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+			$entryDate = date_format($entryDate, 'Y-m-d');
+			$entryDate = $entryDate." ".date("H:i:s");
+			$materials = array_values($formData['summary']);
+			$currentUser = PrivateController::getSessionUser();
+			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+			
+			foreach ($materials as $material)
+			{
+				$quantity = str_replace(',','',$material['quantity']);
+				$quantity = floatval($quantity);
+				if($quantity > 0)
+				{
+					$iternalMaterials = new Model_internals($material['id'],$quantity,$material['status'],$material['tension']);
+					$iternalMaterials->setCreatedOn($entryDate);
+					$iternalMaterials->setCreatedBy($currentUserId);
+					$dataToSave[] = $iternalMaterials->toArray();
+				}
+			}
+
+			if(count($dataToSave) > 0)
+			{
+				Model_internals::insertBatch($dataToSave);
+				$this->session->set_flashdata("successMessage", 'Se agregaron nuevos materiales a la reserva interna.');
+			}
+			else
+			{
+				$this->session->set_flashdata("errorMessage", 'No se agrego ningun material');
+			}			
+			
+			redirect(base_url("panel/Warehouse/internal"));				
+		}
+		
+	}
 }
