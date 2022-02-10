@@ -22,7 +22,7 @@ class Test extends PublicController
 
     public function codegen()
     {
-   	$codeGen = new CodeGenHandler('mat_internals', 'internals');
+   	$codeGen = new CodeGenHandler('mat_internal_warehouse_operations', 'internal_warehouse_operation');
    	$codeGen->generateModelFiles();
     }
 

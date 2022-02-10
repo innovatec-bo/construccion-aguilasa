@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * MatInternals
  *
- * @ORM\Table(name="mat_internals")
+ * @ORM\Table(name="mat_internals", indexes={@ORM\Index(name="fk_operation_id_int", columns={"operation_id_int"})})
  * @ORM\Entity
  */
 class MatInternals
@@ -46,9 +46,18 @@ class MatInternals
      * @var int|null
      *
      * @ORM\Column(name="tension_id_int", type="smallint", nullable=true)
-     */
-    
+     */    
     private $tensionIdInt;
+
+    /**
+     * Many Internal materials has one internal warehouse operaion
+     * @ORM\ManyToOne(targetEntity="MatInternalWarehouseOperation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="operation_id_int", referencedColumnName="id_iwo")
+     * })
+     */
+    private $operationId;
+
     /**
      * @var int|null
      *
