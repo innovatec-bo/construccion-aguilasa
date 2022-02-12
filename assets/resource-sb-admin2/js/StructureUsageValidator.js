@@ -4,6 +4,7 @@ var StructureUsageValidator = /** @class */ (function () {
         // this._tableSelector = tableSelector;
         this._formName = formName;
         this._manpowerHasPoint = false;
+        this._overflowPercentage = 10;
     }
     StructureUsageValidator.prototype.hasPoint = function () {
         this._manpowerHasPoint = true;
@@ -13,6 +14,7 @@ var StructureUsageValidator = /** @class */ (function () {
     StructureUsageValidator.prototype._setBackgroundColor = function () {
     };
     StructureUsageValidator.prototype.loadFieldEvents = function () {
+        var _this = this;
         $("form[name=" + this._formName + "]").parsley().on('field:validate', function (e) {
             if ($(e.element).hasClass('quantity-to-use')) {
                 var currentValue = $(e.element).val() == "" ? "0" : $(e.element).val();
@@ -25,7 +27,8 @@ var StructureUsageValidator = /** @class */ (function () {
                 var totalWorkedUp = $tr.attr('data-total-worked-up');
                 totalWorkedUp = totalWorkedUp.replace(',', '');
                 totalWorkedUp = parseFloat(totalWorkedUp);
-                var maxQuantityToUse = (quantityToUse + (quantityToUse * 1.5)) - totalWorkedUp;
+                // let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
+                var maxQuantityToUse = (quantityToUse + (quantityToUse * (_this._overflowPercentage / 100))) - totalWorkedUp;
                 maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
                 //success
                 if (currentValue == 0 || (currentValue + totalWorkedUp) <= quantityToUse) {
@@ -79,7 +82,8 @@ var StructureUsageValidator = /** @class */ (function () {
             totalWorkedUp = totalWorkedUp.replace(',', '');
             totalWorkedUp = parseFloat(totalWorkedUp);
             var unitOfMeasurement = $tr.attr('data-unit-of-measurement');
-            var maxQuantityToUse = (quantityToUse + (quantityToUse * 1.5)) - totalWorkedUp;
+            // let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
+            var maxQuantityToUse = (quantityToUse + (quantityToUse * (_this._overflowPercentage / 100))) - totalWorkedUp;
             maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
             $(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
             $(this).attr('data-parsley-max-quantity-to-use-message', "Permitido: " + maxQuantityToUse + " " + unitOfMeasurement);

@@ -84,7 +84,7 @@ var WmsMapType = function (_a) {
     }
     var getTileUrl = function (coord, zoom) {
         return (url +
-            (0, query_string_1.stringify)(__assign({ bbox: xyzToBounds(coord.x, coord.y, zoom).join(",") }, params)));
+            query_string_1.stringify(__assign({ bbox: xyzToBounds(coord.x, coord.y, zoom).join(",") }, params)));
     };
     return new google.maps.ImageMapType({
         getTileUrl: getTileUrl,
