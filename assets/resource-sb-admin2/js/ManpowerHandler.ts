@@ -138,7 +138,7 @@ class ManpowerHandler
         };
         let structureList = [item];
 
-        let data = {structureList:structureList, builders:response.data.builders, fiscals:response.data.fiscals, project: response.data.project};
+        let data = {structureList:structureList, builders:response.data.builders, fiscals:response.data.fiscals, project: response.data.project, productionLimit: response.data.productionLimit};
         let html = template(data);
         let _this = this;
         Swal({
@@ -549,6 +549,7 @@ class ManpowerHandler
 
         $(document).on("click",".remove-row", function(){
            $(this).closest("tr").remove();
+           _this._structureUsageValidator.setIncomingProduction();
 
         });
         $(document).on("click",'[data-toggle="tooltip"]', function(e){

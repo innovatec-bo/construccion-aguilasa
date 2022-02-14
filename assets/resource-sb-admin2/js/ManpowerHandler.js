@@ -95,7 +95,7 @@ var ManpowerHandler = /** @class */ (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
-        var data = { structureList: structureList, builders: response.data.builders, fiscals: response.data.fiscals, project: response.data.project };
+        var data = { structureList: structureList, builders: response.data.builders, fiscals: response.data.fiscals, project: response.data.project, productionLimit: response.data.productionLimit };
         var html = template(data);
         var _this = this;
         Swal({
@@ -457,6 +457,7 @@ var ManpowerHandler = /** @class */ (function () {
         });
         $(document).on("click", ".remove-row", function () {
             $(this).closest("tr").remove();
+            _this._structureUsageValidator.setIncomingProduction();
         });
         $(document).on("click", '[data-toggle="tooltip"]', function (e) {
             e.preventDefault();

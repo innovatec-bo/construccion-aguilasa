@@ -23,22 +23,12 @@ class StructureUsageValidator
     	// this._tableSelector = tableSelector;
 		this._formName = formName;
     	this._manpowerHasPoint = false;
-		this._overflowPercentage = 10;
+		this._overflowPercentage = 1000;
     }
 
     public hasPoint()
 	{
 		this._manpowerHasPoint = true;
-	}
-
-    public validateQuantityToUse()
-	{
-
-	}
-
-    private _setBackgroundColor()
-	{
-
 	}
 
 	public loadFieldEvents()
@@ -91,6 +81,33 @@ class StructureUsageValidator
 		});
 	}
 
+	public setIncomingProduction()
+	{
+		let incomingProduction = 0;
+		$.each($('#structure-item-list-content').children(), function(index, value){
+			let quantityToUse = $(value).find('.quantity-to-use').val();
+			quantityToUse = quantityToUse.replace(',','');
+			quantityToUse = parseFloat(quantityToUse);
+
+			let unitPrice = $(value).find('.unit-price').val();
+			unitPrice = unitPrice.replace(',','');
+			unitPrice = parseFloat(unitPrice);
+			
+			incomingProduction += (isNaN(quantityToUse)?0:quantityToUse)  * (isNaN(unitPrice)?0:unitPrice);
+			
+		});
+
+		
+		let $progressBar = $('#production-percentage');
+		let currentBudget = $progressBar.data('project-current-budget');
+		let currentPercentage = $progressBar.data('production-percentage');
+		let incomingPercentage = (incomingProduction*100)/ parseFloat(currentBudget);
+		let additionalProductionText = incomingPercentage>0?"+ "+incomingPercentage.toFixed(2)+"% = "+(currentPercentage + incomingPercentage).toFixed(2)+"%":"";
+		$('#additional-production-text').text(additionalProductionText);
+		$('#incoming-percentage').css('width', incomingPercentage+"%");
+		$('input[name=production-limit]').val((currentPercentage + incomingPercentage).toFixed(2)).parsley().validate();
+	}
+
     public loadEventHandlers()
     {
         let _this = this;
@@ -108,11 +125,25 @@ class StructureUsageValidator
 					es: 'Max $s'
 				}
 			});
+		
+		window.Parsley
+			.addValidator('productionLimit', {
+				requirementType: 'string',
+				validateString: function(value, requirement) {
+					value = value.replace(',','');
+					value = parseFloat(value);
+					requirement = parseFloat(requirement);
+					return value <= requirement;
+				},
+				messages: {
+					en: 'Max %s',
+					es: 'Max $s'
+				}
+			});
 
         $(document).on("keyup", '.structure-list-entry-progress input.quantity-to-use', function(){
-        	let $tr = $(this).closest('tr');
-        	// let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-        	// let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
+        	_this.setIncomingProduction();
+			let $tr = $(this).closest('tr');
 			let quantityToUse = $tr.attr('data-quantity-to-use');
 			quantityToUse = quantityToUse.replace(',','');
 			quantityToUse = parseFloat(quantityToUse);
@@ -120,13 +151,21 @@ class StructureUsageValidator
 			totalWorkedUp = totalWorkedUp.replace(',','');
 			totalWorkedUp = parseFloat(totalWorkedUp);
         	let unitOfMeasurement = $tr.attr('data-unit-of-measurement');
-        	// let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
 			let maxQuantityToUse = (quantityToUse + (quantityToUse*(_this._overflowPercentage/100))) - totalWorkedUp;
         	maxQuantityToUse = maxQuantityToUse < 0? 0:maxQuantityToUse;
-        	$(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
-        	$(this).attr('data-parsley-max-quantity-to-use-message',"Permitido: "+maxQuantityToUse+" "+unitOfMeasurement);
+			
+        	// $(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
+        	// $(this).attr('data-parsley-max-quantity-to-use-message',"Permitido: "+maxQuantityToUse+" "+unitOfMeasurement);
         	$(this).parsley().validate();
-        	// console.log($(this).val(), quantityToUse);
+        	
+		});
+
+		$(document).on("keyup", '.structure-list-entry-progress input.unit-price', function(){
+			_this.setIncomingProduction();
+        	// let unitPrice = $(this).val();
+			// unitPrice = unitPrice.replace(',','');
+			// unitPrice = parseFloat(unitPrice);
+			// console.log(unitPrice);
 		});
     }
 }

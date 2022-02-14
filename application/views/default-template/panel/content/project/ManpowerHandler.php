@@ -179,8 +179,16 @@ $projectSystems = array(
                 <div class="form-group">
                     <div class="table-responsive">
                         <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
-						<span class="label label-warning">..</span> Sobre uso de materiales: Se permite guardar el avance.<br>
-						<span class="label label-danger">..</span> Uso excesivo de materiales: No se permite guardar el avance.<br><br>
+                        Produccion al {{project.production_percentage}}% <span id="additional-production-text"></span>
+                        <div class="progress mb-0" style="display: flex;">		
+                            <div class="progress-bar progress-bar-warning" id="production-percentage" role="progressbar" 
+                            data-project-current-budget="{{project.project_current_budget}}"
+                            data-production-percentage="{{project.production_percentage}}" 
+                            data-production-total-bs="{{project.production_total_bs}}"
+                            data-project-current-design="{{project.project_current_design_budget}}" aria-valuenow="{{project.production_percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{project.production_percentage}}%;"></div>
+                            <div class="progress-bar bg-success" id="incoming-percentage" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <input class="production-limit hide" name="production-limit" size="10" data-parsley-production-limit="{{productionLimit.limit_prl}}" data-parsley-production-limit-message="No puede exceder el limite de produccion permitido: {{productionLimit.limit_prl}}%" parsley-trigger="change">
                         <table class="table table-striped table-bordered table-hover structure-list-entry-progress">
                             <thead class="thead-inverse">
                                 <tr>
@@ -541,10 +549,17 @@ $projectSystems = array(
                 </div>
                 <div class="form-group">
                     <div class="table-responsive">
-
-                        <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>
-						<span class="label label-warning">..</span> Sobre uso de materiales: Se permite guardar el avance.<br>
-						<span class="label label-danger">..</span> Uso excesivo de materiales: No se permite guardar el avance.<br><br>
+                        <em class="table-error-message hide">Debe agregar al menos una estructura al detalle</em>                        
+                        Produccion al {{project.production_percentage}}% <span id="additional-production-text"></span>
+						<div class="progress mb-0" style="display: flex;">		
+                            <div class="progress-bar progress-bar-warning" id="production-percentage" role="progressbar" 
+                            data-project-current-budget="{{project.project_current_budget}}"
+                            data-production-percentage="{{project.production_percentage}}" 
+                            data-production-total-bs="{{project.production_total_bs}}"
+                            data-project-current-design="{{project.project_current_design_budget}}" aria-valuenow="{{project.production_percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{project.production_percentage}}%;"></div>
+                            <div class="progress-bar bg-success" id="incoming-percentage" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <input class="production-limit hide" name="production-limit" size="10" data-parsley-production-limit="{{productionLimit.limit_prl}}" data-parsley-production-limit-message="No puede exceder el limite de produccion permitido: {{productionLimit.limit_prl}}%" parsley-trigger="change">
                         <table class="table table-striped table-bordered table-hover table-minimum-padding structure-list-entry-progress">
                             <thead>
                                 <tr>
@@ -574,7 +589,7 @@ $projectSystems = array(
 									<td class="text-right">{{quantity_to_use}}</td>
                                     <td class="text-right">{{total_worked_up}}{{unit_of_measurement}}</td>
                                     <td class="text-center"><input class="input-masked quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" style="text-align: right;"></td>
-                                    <td class="text-center"><input class="input-masked-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
+                                    <td class="text-center"><input class="input-masked-price unit-price" name="worked-up[{{index}}][unit-price]" size="10" style="text-align: right;" value="{{unit_price}}"></td>
                                 </tr>
                                 {{/each}}
                             </tbody>

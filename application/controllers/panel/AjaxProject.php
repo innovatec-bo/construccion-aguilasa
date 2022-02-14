@@ -273,7 +273,13 @@ class AjaxProject extends PrivateController
             }
             $workflowPagination = new WorkflowPaginationHandler(1);
             $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
-            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible']);
+            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
+            $productionLimit = Model_production_limit::getByProjectId($projectId);
+            if(!$productionLimit instanceof Model_production_limit)
+            {
+                $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
+                $productionLimit->save();
+            }
             $project = $workflowPagination->getAll();
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
@@ -282,6 +288,7 @@ class AjaxProject extends PrivateController
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
             $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
             $response['data']['project'] = $project[0];
+            $response['data']['productionLimit'] = $productionLimit->toArray();
         }
         else
         {
@@ -345,6 +352,20 @@ class AjaxProject extends PrivateController
             }
 			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $buildingPoints = Model_building_point::getMasterDetail($projectId, $pointId);
+
+            $workflowPagination = new WorkflowPaginationHandler(1);
+            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
+            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
+            $productionLimit = Model_production_limit::getByProjectId($projectId);
+            if(!$productionLimit instanceof Model_production_limit)
+            {
+                $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
+                $productionLimit->save();
+            }
+            $project = $workflowPagination->getAll();
+
+            $response["data"]["project"] = $project[0];
+            $response['data']['productionLimit'] = $productionLimit->toArray();
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
             $response["data"]["template"] = $template;

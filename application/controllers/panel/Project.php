@@ -971,7 +971,7 @@ class Project extends PrivateController
 			$responsibleIds = $formData["responsible-ids"]??NULL;
 			$staker = $formData['staker']??NULL;
 			$projectCreFiscal = $formData["project-cre-fiscal"];
-            $productionLimit = $formData["project-production-limit"];
+            $newProductionLimit = $formData["project-production-limit"];
 			$contractId = $formData["project-contract-id"];
 			$workArea = $formData['work-area'];
 			$project->setCREFiscal($projectCreFiscal);
@@ -1005,7 +1005,9 @@ class Project extends PrivateController
 					}
 				}
 			}
-            Model_production_limit::newProductionLimit($projectId, (float)$productionLimit);
+
+            if($productionLimit->getLimit() != $newProductionLimit)
+                Model_production_limit::newProductionLimit($projectId, (float)$newProductionLimit);
                 
 			//change responsible list in building process
 			if(!is_null($responsibleIds))

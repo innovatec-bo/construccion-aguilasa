@@ -138,7 +138,7 @@ class PointToPointHandler
             laborCostList:this._laborCostMasterDetail
         };
         let structureList = [item];
-        let data = {point:response.data.point, builders:response.data.builders, response:response};
+        let data = {point:response.data.point, builders:response.data.builders, response:response, productionLimit: response.data.productionLimit, project: response.data.project};
         let html = template(data);
         let _this = this;
         Swal({

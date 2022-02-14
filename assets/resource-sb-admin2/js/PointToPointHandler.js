@@ -96,7 +96,7 @@ var PointToPointHandler = /** @class */ (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
-        var data = { point: response.data.point, builders: response.data.builders, response: response };
+        var data = { point: response.data.point, builders: response.data.builders, response: response, productionLimit: response.data.productionLimit, project: response.data.project };
         var html = template(data);
         var _this = this;
         Swal({

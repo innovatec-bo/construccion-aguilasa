@@ -4,14 +4,10 @@ var StructureUsageValidator = /** @class */ (function () {
         // this._tableSelector = tableSelector;
         this._formName = formName;
         this._manpowerHasPoint = false;
-        this._overflowPercentage = 10;
+        this._overflowPercentage = 1000;
     }
     StructureUsageValidator.prototype.hasPoint = function () {
         this._manpowerHasPoint = true;
-    };
-    StructureUsageValidator.prototype.validateQuantityToUse = function () {
-    };
-    StructureUsageValidator.prototype._setBackgroundColor = function () {
     };
     StructureUsageValidator.prototype.loadFieldEvents = function () {
         var _this = this;
@@ -55,6 +51,26 @@ var StructureUsageValidator = /** @class */ (function () {
             }
         });
     };
+    StructureUsageValidator.prototype.setIncomingProduction = function () {
+        var incomingProduction = 0;
+        $.each($('#structure-item-list-content').children(), function (index, value) {
+            var quantityToUse = $(value).find('.quantity-to-use').val();
+            quantityToUse = quantityToUse.replace(',', '');
+            quantityToUse = parseFloat(quantityToUse);
+            var unitPrice = $(value).find('.unit-price').val();
+            unitPrice = unitPrice.replace(',', '');
+            unitPrice = parseFloat(unitPrice);
+            incomingProduction += (isNaN(quantityToUse) ? 0 : quantityToUse) * (isNaN(unitPrice) ? 0 : unitPrice);
+        });
+        var $progressBar = $('#production-percentage');
+        var currentBudget = $progressBar.data('project-current-budget');
+        var currentPercentage = $progressBar.data('production-percentage');
+        var incomingPercentage = (incomingProduction * 100) / parseFloat(currentBudget);
+        var additionalProductionText = incomingPercentage > 0 ? "+ " + incomingPercentage.toFixed(2) + "% = " + (currentPercentage + incomingPercentage).toFixed(2) + "%" : "";
+        $('#additional-production-text').text(additionalProductionText);
+        $('#incoming-percentage').css('width', incomingPercentage + "%");
+        $('input[name=production-limit]').val((currentPercentage + incomingPercentage).toFixed(2)).parsley().validate();
+    };
     StructureUsageValidator.prototype.loadEventHandlers = function () {
         var _this = this;
         window.Parsley
@@ -71,10 +87,23 @@ var StructureUsageValidator = /** @class */ (function () {
                 es: 'Max $s'
             }
         });
+        window.Parsley
+            .addValidator('productionLimit', {
+            requirementType: 'string',
+            validateString: function (value, requirement) {
+                value = value.replace(',', '');
+                value = parseFloat(value);
+                requirement = parseFloat(requirement);
+                return value <= requirement;
+            },
+            messages: {
+                en: 'Max %s',
+                es: 'Max $s'
+            }
+        });
         $(document).on("keyup", '.structure-list-entry-progress input.quantity-to-use', function () {
+            _this.setIncomingProduction();
             var $tr = $(this).closest('tr');
-            // let quantityToUse = parseFloat($tr.attr('data-quantity-to-use'));
-            // let totalWorkedUp = parseFloat($tr.attr('data-total-worked-up'));
             var quantityToUse = $tr.attr('data-quantity-to-use');
             quantityToUse = quantityToUse.replace(',', '');
             quantityToUse = parseFloat(quantityToUse);
@@ -82,13 +111,18 @@ var StructureUsageValidator = /** @class */ (function () {
             totalWorkedUp = totalWorkedUp.replace(',', '');
             totalWorkedUp = parseFloat(totalWorkedUp);
             var unitOfMeasurement = $tr.attr('data-unit-of-measurement');
-            // let maxQuantityToUse = (quantityToUse + (quantityToUse*1.5)) - totalWorkedUp;
             var maxQuantityToUse = (quantityToUse + (quantityToUse * (_this._overflowPercentage / 100))) - totalWorkedUp;
             maxQuantityToUse = maxQuantityToUse < 0 ? 0 : maxQuantityToUse;
-            $(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
-            $(this).attr('data-parsley-max-quantity-to-use-message', "Permitido: " + maxQuantityToUse + " " + unitOfMeasurement);
+            // $(this).attr('data-parsley-max-quantity-to-use', maxQuantityToUse);
+            // $(this).attr('data-parsley-max-quantity-to-use-message',"Permitido: "+maxQuantityToUse+" "+unitOfMeasurement);
             $(this).parsley().validate();
-            // console.log($(this).val(), quantityToUse);
+        });
+        $(document).on("keyup", '.structure-list-entry-progress input.unit-price', function () {
+            _this.setIncomingProduction();
+            // let unitPrice = $(this).val();
+            // unitPrice = unitPrice.replace(',','');
+            // unitPrice = parseFloat(unitPrice);
+            // console.log(unitPrice);
         });
     };
     return StructureUsageValidator;
