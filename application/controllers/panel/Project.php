@@ -927,6 +927,12 @@ class Project extends PrivateController
 			}
 		}
 
+        $productionLimit = Model_production_limit::getByProjectId($projectId);
+        if(!$productionLimit instanceof Model_production_limit)
+        {
+            $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
+            $productionLimit->save();
+        }
 		$workFlow = Model_project::getWorkflowDetail(array('id-list'=>$projectId));
 		$workFlow = $workFlow[0];
 		$projectManagers = Model_user::getByRoleKeyword('project_manager');
@@ -943,6 +949,7 @@ class Project extends PrivateController
 		$data["responsibleListFiscal"] = $responsibleListFiscal;
 		$data["responsibleListBuilder"] = $responsibleListBuilder;
 		$data["responsibleListStacker"] = $responsibleListStacker;
+        $data["productionLimit"] = $productionLimit;
 
 		/** Server Side Validations **/
 		$this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
@@ -964,6 +971,7 @@ class Project extends PrivateController
 			$responsibleIds = $formData["responsible-ids"]??NULL;
 			$staker = $formData['staker']??NULL;
 			$projectCreFiscal = $formData["project-cre-fiscal"];
+            $productionLimit = $formData["project-production-limit"];
 			$contractId = $formData["project-contract-id"];
 			$workArea = $formData['work-area'];
 			$project->setCREFiscal($projectCreFiscal);
@@ -997,6 +1005,8 @@ class Project extends PrivateController
 					}
 				}
 			}
+            Model_production_limit::newProductionLimit($projectId, (float)$productionLimit);
+                
 			//change responsible list in building process
 			if(!is_null($responsibleIds))
 				Model_status_log_responsible::reAssignResponsibleIds($responsibleIds, $project->getId());

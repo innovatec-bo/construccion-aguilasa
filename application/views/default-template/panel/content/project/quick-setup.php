@@ -79,6 +79,12 @@
 									</select>
 								</div>
 							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Limite de produccion</label>
+									<input class="form-control" type="number" min="100" value="<?=set_value('project-production-limit', $productionLimit->getLimit())?>" required name="project-production-limit" placeholder="Establezca el limite de produccion">
+								</div>
+							</div>
 							<div class="col-md-12">
 								<h3>Datos condicionados <a href="javascript:void(0)" class="fa fa-question-circle"  data-trigger="hover" data-toggle="popover" title="Nota" data-content="Algunos campos requiren que el proyecto haya pasado por cierto estados."></a></h3>
 							</div>

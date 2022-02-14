@@ -71,7 +71,7 @@ class CodeGenHandler
 
 	private function _setModelInfo()
 	{
-		$tableDefinition = My_Model::getTableDefinition($this->_tableName);
+		$tableDefinition = MY_Model::getTableDefinition($this->_tableName);
 		$i = 0;
 		foreach ($tableDefinition as $row)
 		{

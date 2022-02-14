@@ -22,8 +22,8 @@ class Test extends PublicController
 
     public function codegen()
     {
-   	$codeGen = new CodeGenHandler('mat_internal_warehouse_operations', 'internal_warehouse_operation');
-   	$codeGen->generateModelFiles();
+   	// $codeGen = new CodeGenHandler('wfl_production_limits', 'production_limit');
+   	// $codeGen->generateModelFiles();
     }
 
 	public function resetdb()
