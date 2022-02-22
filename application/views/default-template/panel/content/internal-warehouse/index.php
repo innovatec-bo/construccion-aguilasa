@@ -1,7 +1,7 @@
 <div class="container-fluid box-shadow-2">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Historial de ingresos</h1>
+            <h1 class="page-header">Operaciones de ingreso</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -11,7 +11,7 @@
 		?>
     </div>
     <?php
-    if($allInternals)
+    if($allOperations)
     {
     ?>
     <div class="row">
@@ -20,30 +20,27 @@
                 <table class="table table-bordered table-striped table-hover" id="user-index">
                     <thead>
                         <tr>
-                            <th>C&oacute;digo</th>
+                            <th>ID</th>
                             <th>Descripcion</th>
-                            <th>Cantidad<br>ingresada</th>
-                            <th>Unidad de<br>medida</th>
-                            <th>Status</th>
-                            <th>Tension</th>
-                            <th>Ingreso</th>
+                            <th>Fecha</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php
                         $row = "";
-                        foreach ($allInternals as $item) 
+                        foreach ($allOperations as $item) 
                         {
-                            // dd($item);
+                            $carbonDate = new Carbon\Carbon($item->entry_date_iwo);
+                            $diffForHumans = $carbonDate->locale('Es')->diffForHumans();
                             $row .= "
                             <tr>
-                                <td>{$item['code_mat']}</td>
-                                <td>{$item['description_mat']}</td>
-                                <td>{$item['quantity_int']}</td>
-                                <td>{$item['unit_of_measurement_mat']}</td>
-                                <td>{$item['detail_mst']}</td>
-                                <td>{$item['detail_mte']}</td>
-                                <td>{$item['createdon_int']}</td>
+                                <td>{$item->id_iwo}</td>
+                                <td>{$item->detail_iwo}</td>
+                                <td>{$item->entry_date_iwo} (".$diffForHumans.")</td>
+                                <td>
+                                    <a href='".base_url('panel/InternalWarehouse/show/'.$item->id_iwo)."' target='_blank'>Ver</a>
+                                </td>
                             </tr>
                             ";
                         }

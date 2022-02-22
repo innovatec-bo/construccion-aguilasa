@@ -10,6 +10,7 @@ require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use Carbon\Carbon;
 
 class InternalWarehouse extends PrivateController
 {
@@ -62,11 +63,24 @@ class InternalWarehouse extends PrivateController
 		}
 	}
 
-	public function entryLog()
-	{
-		$allInternals = Model_internals::basicEntryLog();
+	// public function entryLog()
+	// {
+	// 	$allInternals = Model_internals::basicEntryLog();
 
-		$this->_loadPanelView("internal-warehouse/entry-log", compact('allInternals'));
+	// 	$this->_loadPanelView("internal-warehouse/entry-log", compact('allInternals'));
+	// }
+
+	public function index()
+	{
+		$allOperations = Model_internal_warehouse_operation::getAll(10000,0);
+		$this->_loadPanelView("internal-warehouse/index", compact('allOperations'));
+	}
+
+	public function show($operationId)
+	{
+		$operation = Model_internal_warehouse_operation::getById($operationId);
+		$materials = Model_internals::getByOperationId($operationId);
+		$this->_loadPanelView("internal-warehouse/show", compact('operation','materials'));
 	}
 
 	public function entry()
@@ -119,7 +133,7 @@ class InternalWarehouse extends PrivateController
 				$this->session->set_flashdata("errorMessage", 'No se agrego ningun material');
 			}			
 			
-			redirect(base_url("panel/InternalWarehouse/entry"));				
+			redirect(base_url("panel/InternalWarehouse/entry"));
 		}
 		
 	}
