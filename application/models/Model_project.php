@@ -2017,8 +2017,22 @@ class Model_project extends Model_project_base
                     /** @var  $user Model_user */
                     if ($user->getId() == $row["fiscal_responsible_id"])
                     {
-                        $reminderList[$user->getId()]['sereboFiscalFullName'] = $user->getFullName();
-                        $reminderList[$user->getId()]['sereboFiscalEmail'] = $user->getEmail();
+                        //Special validation for retired fiscals
+                        switch ($user->getEmail()) {
+                            case 'walvarez@serebo.com':
+                                $userFullName = "Mauro Leonel Litt Garcia";
+                                $userEmail = "maurol@serebo.com";    
+                                break;
+                            case 'rubenaf@serebo.com':
+                                $userFullName = "Mario Aguilera";
+                                $userEmail = "maguilera@serebo.com";
+                                break;
+                            default:
+                            $userFullName = $user->getFullName();
+                            $userEmail = $user->getEmail();
+                        }
+                        $reminderList[$user->getId()]['sereboFiscalFullName'] = $userFullName;
+                        $reminderList[$user->getId()]['sereboFiscalEmail'] = $userEmail;
                         //If the project is on status energized then let's put it in completed group.
                         switch ($row['keyword_pst'])
                         {
@@ -2028,15 +2042,15 @@ class Model_project extends Model_project_base
                                 $reminderList[$user->getId()]['statusListToNotify']['completed'][] = $row;
                                 break;
                             case "project_return_materials":
-                                $reminderList["allReturnedMaterials"]['sereboFiscalFullName'][$user->getId()] = $user->getFullName();
-                                $reminderList["allReturnedMaterials"]['sereboFiscalEmail'][$user->getId()] = $user->getEmail();
+                                $reminderList["allReturnedMaterials"]['sereboFiscalFullName'][$user->getId()] = $userFullName;
+                                $reminderList["allReturnedMaterials"]['sereboFiscalEmail'][$user->getId()] = $userEmail;
                                 if(!isset($reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials']))
                                     $reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials'] = array();
                                 $reminderList["allReturnedMaterials"]['statusListToNotify']['project_return_materials'][] = $row;
                                 break;
                             case "paused":
-                                $reminderList["allPaused"]['sereboFiscalFullName'][$user->getId()] = $user->getFullName();
-                                $reminderList["allPaused"]['sereboFiscalEmail'][$user->getId()] = $user->getEmail();
+                                $reminderList["allPaused"]['sereboFiscalFullName'][$user->getId()] = $userFullName;
+                                $reminderList["allPaused"]['sereboFiscalEmail'][$user->getId()] = $userEmail;
                                 if(!isset($reminderList["allPaused"]['statusListToNotify']['paused']))
                                     $reminderList["allPaused"]['statusListToNotify']['paused'] = array();
                                 $reminderList["allPaused"]['statusListToNotify']['paused'][] = $row;
