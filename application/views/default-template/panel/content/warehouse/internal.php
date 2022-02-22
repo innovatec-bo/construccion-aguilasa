@@ -10,6 +10,29 @@
         $this->load->view("default-template/flash-data-basic-messages");
 		?>
     </div>
+	<form method="post">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group">
+				<label>Fecha</label>
+				<div class="input-group date date-time-picker input-group-sm">
+					<input name="entry-date" readonly="" required="" class="form-control" data-parsley-errors-container="#error-entry-date">
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+				<div id="error-entry-date"></div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="form-group">
+				<label>Detalle</label>
+				<div class="form-group">
+					<input type="text" class="form-control" name="detail" autocomplete="off">
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-8">
 			<label>Materiales</label>
@@ -23,7 +46,7 @@
 			</div>
 		</div>
 	</div>
-    <form method="post">
+    
     <div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive">

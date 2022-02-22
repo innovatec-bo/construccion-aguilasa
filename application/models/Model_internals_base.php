@@ -16,14 +16,16 @@ class Model_internals_base extends MY_Model
 	protected float $_quantity;
     protected int $_status;
     protected int $_tension;
+    protected int $_operationId;
 
-    public function __construct(int $materialId, float $quantity, int $status, int $tension)
+    public function __construct(int $materialId, float $quantity, int $status, int $tension, int $operationId)
     {
         parent::__construct();
         $this->_materialId = $materialId;
 		$this->_quantity = $quantity;
         $this->_status = $status;
         $this->_tension = $tension;
+        $this->_operationId = $operationId;
     }
 
     /**
@@ -38,6 +40,7 @@ class Model_internals_base extends MY_Model
 			"quantity_int" => $this->_quantity,
             "status_id_int" => $this->_status,
             "tension_id_int" => $this->_tension,
+            "operation_id_int" => $this->_operationId,
 			"deleted_int" => $this->_deleted,
 			"createdon_int" => $this->_createdOn,
 			"createdby_int" => $this->_createdBy,
@@ -65,7 +68,8 @@ class Model_internals_base extends MY_Model
                 $object->material_id_int,
 				$object->quantity_int,
                 $object->status_id_int,
-                $object->tension_id_int
+                $object->tension_id_int,
+                $object->operation_id_int
             );
             $instance->_id = $object->id_int;
 
@@ -100,6 +104,10 @@ class Model_internals_base extends MY_Model
         $this->_tension = $tension;
     }
     
+    public function setOperationId($operationId)
+    {
+        $this->_operationId = $operationId;
+    }
 
     //Getters
     public function getMaterialId()
@@ -120,5 +128,10 @@ class Model_internals_base extends MY_Model
     public function getTension()
     {
         return $this->_tension;
+    }
+
+    public function getOperationId()
+    {
+        return $this->_operationId;
     }
 }

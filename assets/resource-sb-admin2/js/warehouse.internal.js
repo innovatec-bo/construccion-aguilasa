@@ -1,6 +1,12 @@
 $(document).ready(function() {
     startSelect2Materials('select.select2-materials','');
-
+    $('.date-time-picker').datetimepicker({
+		ignoreReadonly: true,
+		defaultDate: moment(),
+		// minDate:minDate,
+		locale:"es",
+		format: 'DD-MM-YYYY'
+	});
     $('.iw-add-row').on('click',function(){
         _addRow();
     });

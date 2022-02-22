@@ -72,6 +72,7 @@ class InternalWarehouse extends PrivateController
 	public function entry()
 	{
 		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
+		$this->complementHandler->addViewComplement("date-time-picker");
 		$this->complementHandler->addProjectJs('warehouse.internal');
 		
 		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
@@ -85,21 +86,23 @@ class InternalWarehouse extends PrivateController
 		else
 		{
 			$formData = $this->input->post();
-			$entryDate = date('d-m-Y');
+			$detail = $formData['detail'];
+			$entryDate = $formData['entry-date'];
 			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
 			$entryDate = date_format($entryDate, 'Y-m-d');
 			$entryDate = $entryDate." ".date("H:i:s");
 			$materials = array_values($formData['summary']);
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
-			
+			$operation = new Model_internal_warehouse_operation($entryDate, $detail);
+			$operation = $operation->save();
 			foreach ($materials as $material)
 			{
 				$quantity = str_replace(',','',$material['quantity']);
 				$quantity = floatval($quantity);
 				if($quantity > 0)
 				{
-					$iternalMaterials = new Model_internals($material['id'],$quantity,$material['status'],$material['tension']);
+					$iternalMaterials = new Model_internals($material['id'],$quantity,$material['status'],$material['tension'], $operation->getId());
 					$iternalMaterials->setCreatedOn($entryDate);
 					$iternalMaterials->setCreatedBy($currentUserId);
 					$dataToSave[] = $iternalMaterials->toArray();
@@ -116,8 +119,39 @@ class InternalWarehouse extends PrivateController
 				$this->session->set_flashdata("errorMessage", 'No se agrego ningun material');
 			}			
 			
-			redirect(base_url("panel/Warehouse/internal"));				
+			redirect(base_url("panel/InternalWarehouse/entry"));				
 		}
 		
+	}
+
+	public function createOperations()
+	{
+		$allInternals = Model_internals::basicEntryLog();
+		$dataToUpdate = [];
+
+		foreach ($allInternals as $row) 
+		{
+			if(is_null($row['operation_id_int']))
+			{
+				$dataToUpdate[$row['createdon_int']][] = $row;
+			}
+		}
+
+		foreach ($dataToUpdate as $date => $items) 
+		{
+			$operation = new Model_internal_warehouse_operation($date, "");
+			$operation = $operation->save();
+
+			$toAssignOperationId = [];
+			foreach ($items as $item) 
+			{
+				$toAssignOperationId[] = [
+					'id_int' => $item['id_int'],
+					'operation_id_int' => $operation->getId()
+				];
+			}
+			if(count($toAssignOperationId) > 0)
+				Model_internals::updateBatch($toAssignOperationId,'id_int');
+		}
 	}
 }
