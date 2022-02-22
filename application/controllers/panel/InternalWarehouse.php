@@ -124,34 +124,35 @@ class InternalWarehouse extends PrivateController
 		
 	}
 
-	public function createOperations()
-	{
-		$allInternals = Model_internals::basicEntryLog();
-		$dataToUpdate = [];
+	//Used to update old data in mat_internals table
+	// public function createOperations()
+	// {
+	// 	$allInternals = Model_internals::basicEntryLog();
+	// 	$dataToUpdate = [];
 
-		foreach ($allInternals as $row) 
-		{
-			if(is_null($row['operation_id_int']))
-			{
-				$dataToUpdate[$row['createdon_int']][] = $row;
-			}
-		}
+	// 	foreach ($allInternals as $row) 
+	// 	{
+	// 		if(is_null($row['operation_id_int']))
+	// 		{
+	// 			$dataToUpdate[$row['createdon_int']][] = $row;
+	// 		}
+	// 	}
 
-		foreach ($dataToUpdate as $date => $items) 
-		{
-			$operation = new Model_internal_warehouse_operation($date, "");
-			$operation = $operation->save();
+	// 	foreach ($dataToUpdate as $date => $items) 
+	// 	{
+	// 		$operation = new Model_internal_warehouse_operation($date, "");
+	// 		$operation = $operation->save();
 
-			$toAssignOperationId = [];
-			foreach ($items as $item) 
-			{
-				$toAssignOperationId[] = [
-					'id_int' => $item['id_int'],
-					'operation_id_int' => $operation->getId()
-				];
-			}
-			if(count($toAssignOperationId) > 0)
-				Model_internals::updateBatch($toAssignOperationId,'id_int');
-		}
-	}
+	// 		$toAssignOperationId = [];
+	// 		foreach ($items as $item) 
+	// 		{
+	// 			$toAssignOperationId[] = [
+	// 				'id_int' => $item['id_int'],
+	// 				'operation_id_int' => $operation->getId()
+	// 			];
+	// 		}
+	// 		if(count($toAssignOperationId) > 0)
+	// 			Model_internals::updateBatch($toAssignOperationId,'id_int');
+	// 	}
+	// }
 }
