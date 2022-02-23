@@ -63,12 +63,12 @@ class InternalWarehouse extends PrivateController
 		}
 	}
 
-	// public function entryLog()
-	// {
-	// 	$allInternals = Model_internals::basicEntryLog();
+	public function showAll()
+	{
+		$allInternals = Model_internals::basicEntryLog();
 
-	// 	$this->_loadPanelView("internal-warehouse/entry-log", compact('allInternals'));
-	// }
+		$this->_loadPanelView("internal-warehouse/show-all", compact('allInternals'));
+	}
 
 	public function index()
 	{
