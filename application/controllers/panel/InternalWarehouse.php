@@ -138,6 +138,25 @@ class InternalWarehouse extends PrivateController
 		
 	}
 
+	public function generalList()
+	{
+		$allInternals = Model_internals::basicEntryLog();
+		
+		$grouped = [];
+		foreach ($allInternals as $row)
+		{
+			
+			if(!isset($grouped[$row['code_mat']]))
+			{
+				$grouped[$row['code_mat']] = $row;
+				$grouped[$row['code_mat']]['total'] = 0;
+			}
+			
+			$grouped[$row['code_mat']]['total'] += floatval($row['quantity_int']);
+		}
+		$this->_loadPanelView("internal-warehouse/general-list", compact('grouped'));
+	}
+
 	//Used to update old data in mat_internals table
 	// public function createOperations()
 	// {

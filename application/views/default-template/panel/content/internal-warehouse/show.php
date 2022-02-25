@@ -4,7 +4,6 @@
             <h1 class="page-header">Resumen de ingreso</h1>
             <a class="btn btn-info hidden-print pull-right" href='javascript:void(0)' onclick='window.print();'><i class="fa fa-print fa-fw"></i>Imprimir</a>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
     <div class="col-md-12">
         <?php
@@ -50,7 +49,7 @@
 			</div>
 		</div>
 	</div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-12">
         <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover" id="user-index">
@@ -86,6 +85,14 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="visible-print-inline">
+        <span style="width: 300px;margin-left:25%">
+            Entregue conforme
+        </span>
+        <span style="width: 300px;margin-left: 100px">
+            Recibi conforme
+        </span>
     </div>
     <?php
     }
