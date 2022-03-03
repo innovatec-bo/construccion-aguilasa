@@ -44,6 +44,8 @@ $(document).ready(function() {
                 return result;
             }
         }, {
+            "data" : "project_code",
+        }, {
             "defaultContent" : " ",
             "searchable" : false,
             "orderable" : false,

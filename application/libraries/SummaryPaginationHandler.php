@@ -23,6 +23,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 					concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
 					concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name,
 					keyword_mqt summary_type_keyword,
+					code_pro project_code,
 					CASE
 						WHEN status_id_msu = 1 then 'Pendiente'
 						WHEN status_id_msu = 2 then 'Cancelado por el fiscal'
@@ -34,6 +35,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 				left join sec_users fiscal on fiscal_responsible_msu = fiscal.id_usr
 				left join sec_users builder on builder_responsible_msu = builder.id_usr
 				left join mat_materials_summary_types on id_mqt = summary_type_id_msu
+				left join wfl_projects on id_pro = project_id_msu
 				GROUP BY ".static::TABLE_ID."	 
 			) ".static::TABLE_NAME."_master_detail
 		";

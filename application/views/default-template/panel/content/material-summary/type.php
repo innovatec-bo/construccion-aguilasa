@@ -77,6 +77,7 @@
                         <th>FISCAL</th>
                         <th>CONSTRUCTOR</th>
                         <th>FECHA DE<BR>ENTRADA MANUAL</th>
+                        <th>PROYECTO</th>
                         <th>OPTIONS</th>
                     </tr>
                     </thead>
