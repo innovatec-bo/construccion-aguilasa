@@ -22,7 +22,7 @@ class Test extends PublicController
 
     public function codegen()
     {
-   	// $codeGen = new CodeGenHandler('wfl_production_limits', 'production_limit');
+   	// $codeGen = new CodeGenHandler('mat_internal_warehouse_operation_types', 'internal_warehouse_operation_type');
    	// $codeGen->generateModelFiles();
     }
 

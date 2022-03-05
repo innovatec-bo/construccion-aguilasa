@@ -36,6 +36,14 @@ class MatInternalWarehouseOperation
     private $detailIwo;
 
     /**
+     * @ORM\ManyToOne(targetEntity="MatInternalWarehouseOperationTypes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="operation_type_id_iwo", referencedColumnName="id_oty")
+     * })
+     */
+    private $operationTypeId;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_iwo", type="smallint", nullable=true, options={"default"="0"})

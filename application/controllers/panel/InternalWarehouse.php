@@ -92,7 +92,6 @@ class InternalWarehouse extends PrivateController
 		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
 
 		$materials = Model_material::getAll(10000,0);
-
 		if($this->form_validation->run() === FALSE)
 		{
 			$this->_loadPanelView('warehouse/internal', compact('materials'));
@@ -108,7 +107,11 @@ class InternalWarehouse extends PrivateController
 			$materials = array_values($formData['summary']);
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
-			$operation = new Model_internal_warehouse_operation($entryDate, $detail);
+			$operationType = Model_internal_warehouse_operation_type::getByKeywords(['entry']);
+			$operationType = array_values($operationType); 
+			/** @var $operationType Model_internal_warehouse_operation_type */
+			$operationType = $operationType[0];
+			$operation = new Model_internal_warehouse_operation($entryDate, $detail, $operationType->getId());
 			$operation = $operation->save();
 			foreach ($materials as $material)
 			{

@@ -14,12 +14,14 @@ class Model_internal_warehouse_operation_base extends MY_Model
 
     protected $_entryDate;
 	protected $_detail;
+    protected $_operationTypeId;
 
-    public function __construct($entryDate = "", $detail = "")
+    public function __construct($entryDate = "", $detail = "", $operationTypeId = "")
     {
         parent::__construct();
         $this->_entryDate = $entryDate;
 		$this->_detail = $detail;
+        $this->_operationTypeId = $operationTypeId;
     }
 
     /**
@@ -32,6 +34,7 @@ class Model_internal_warehouse_operation_base extends MY_Model
             "id_iwo" => $this->_id,
 			"entry_date_iwo" => $this->_entryDate,
 			"detail_iwo" => $this->_detail,
+            "operation_type_id_iwo" => $this->_operationTypeId,
 			"deleted_iwo" => $this->_deleted,
 			"createdon_iwo" => $this->_createdOn,
 			"createdby_iwo" => $this->_createdBy,
@@ -57,7 +60,8 @@ class Model_internal_warehouse_operation_base extends MY_Model
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
                 $object->entry_date_iwo,
-				$object->detail_iwo
+				$object->detail_iwo,
+                $object->operation_type_id_iwo
             );
             $instance->_id = $object->id_iwo;
 
@@ -82,6 +86,11 @@ class Model_internal_warehouse_operation_base extends MY_Model
 		$this->_detail = $detail;
 	}
 
+    public function setOperationTypeId($operationTypeId)
+    {
+        $this->_operationTypeId = $operationTypeId;
+    }
+
     //Getters
     public function getEntryDate()
 	{
@@ -92,4 +101,9 @@ class Model_internal_warehouse_operation_base extends MY_Model
 	{
 		return $this->_detail;
 	}
+
+    public function getOperationTypeId()
+    {
+        return $this->_operationTypeId;
+    }
 }

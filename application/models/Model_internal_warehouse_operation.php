@@ -8,8 +8,8 @@
 
 class Model_internal_warehouse_operation extends Model_internal_warehouse_operation_base
 {
-    public function __construct($entryDate = "", $detail = "")
+    public function __construct($entryDate = "", $detail = "", $operationTypeId = "")
     {
-        parent::__construct($entryDate, $detail);
+        parent::__construct($entryDate, $detail, $operationTypeId);
     }
 }
