@@ -72,15 +72,27 @@ class InternalWarehouse extends PrivateController
 
 	public function index()
 	{
+		$operationTypes = Model_internal_warehouse_operation_type::getAll(100,0);
+		$arrayOperationTypes = [];
+		foreach ($operationTypes as $operationType) 
+		{
+			$arrayOperationTypes[$operationType->id_oty] = (array)$operationType;
+		}
 		$allOperations = Model_internal_warehouse_operation::getAll(10000,0);
-		$this->_loadPanelView("internal-warehouse/index", compact('allOperations'));
+		$this->_loadPanelView("internal-warehouse/index", compact('allOperations','arrayOperationTypes'));
 	}
 
 	public function show($operationId)
 	{
+		$operationTypes = Model_internal_warehouse_operation_type::getAll(100,0);
+		$arrayOperationTypes = [];
+		foreach ($operationTypes as $operationType) 
+		{
+			$arrayOperationTypes[$operationType->id_oty] = (array)$operationType;
+		}
 		$operation = Model_internal_warehouse_operation::getById($operationId);
 		$materials = Model_internals::getByOperationId($operationId);
-		$this->_loadPanelView("internal-warehouse/show", compact('operation','materials'));
+		$this->_loadPanelView("internal-warehouse/show", compact('operation','materials','arrayOperationTypes'));
 	}
 
 	public function loan()
