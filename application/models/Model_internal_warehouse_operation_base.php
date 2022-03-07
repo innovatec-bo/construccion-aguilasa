@@ -15,13 +15,19 @@ class Model_internal_warehouse_operation_base extends MY_Model
     protected $_entryDate;
 	protected $_detail;
     protected $_operationTypeId;
+    protected $_fiscalId;
+    protected $_builderId;
+    protected $_projectId;
 
-    public function __construct($entryDate = "", $detail = "", $operationTypeId = "")
+    public function __construct($entryDate = "", $detail = "", $operationTypeId = "", $fiscalId = NULL, $builderId = NULL, $projectId = NULL)
     {
         parent::__construct();
         $this->_entryDate = $entryDate;
 		$this->_detail = $detail;
         $this->_operationTypeId = $operationTypeId;
+        $this->_fiscalId = $fiscalId;
+        $this->_builderId = $builderId;
+        $this->_projectId = $projectId;
     }
 
     /**
@@ -35,7 +41,10 @@ class Model_internal_warehouse_operation_base extends MY_Model
 			"entry_date_iwo" => $this->_entryDate,
 			"detail_iwo" => $this->_detail,
             "operation_type_id_iwo" => $this->_operationTypeId,
-			"deleted_iwo" => $this->_deleted,
+			"fiscal_id_iwo" => $this->_fiscalId,
+            "builder_id_iwo" => $this->_builderId,
+            "project_id_iwo" => $this->_projectId,
+            "deleted_iwo" => $this->_deleted,
 			"createdon_iwo" => $this->_createdOn,
 			"createdby_iwo" => $this->_createdBy,
 			"editedon_iwo" => $this->_editedOn,
@@ -61,7 +70,10 @@ class Model_internal_warehouse_operation_base extends MY_Model
             $instance = new $className(
                 $object->entry_date_iwo,
 				$object->detail_iwo,
-                $object->operation_type_id_iwo
+                $object->operation_type_id_iwo,
+                $object->fiscal_id_iwo,
+                $object->builder_id_iwo,
+                $object->project_id_iwo
             );
             $instance->_id = $object->id_iwo;
 
@@ -91,6 +103,21 @@ class Model_internal_warehouse_operation_base extends MY_Model
         $this->_operationTypeId = $operationTypeId;
     }
 
+    public function setFiscalId($fiscalId)
+    {
+        $this->_fiscalId = $fiscalId;
+    }
+
+    public function setBuilderId($builderId)
+    {
+        $this->_builderId = $builderId;
+    }
+
+    public function setProjectId($projectId)
+    {
+        $this->_projectId = $projectId;
+    }
+
     //Getters
     public function getEntryDate()
 	{
@@ -105,5 +132,20 @@ class Model_internal_warehouse_operation_base extends MY_Model
     public function getOperationTypeId()
     {
         return $this->_operationTypeId;
+    }
+
+    public function getFiscalId()
+    {
+        return $this->_fiscalId;
+    }
+
+    public function getBuilderId()
+    {
+        return $this->_builderId;
+    }
+
+    public function getProjectId()
+    {
+        return $this->_projectId;
     }
 }

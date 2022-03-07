@@ -83,6 +83,81 @@ class InternalWarehouse extends PrivateController
 		$this->_loadPanelView("internal-warehouse/show", compact('operation','materials'));
 	}
 
+	public function loan()
+	{
+		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');
+		$this->complementHandler->addViewComplement("date-time-picker");
+		$this->complementHandler->addProjectJs('warehouse.loan');
+		
+		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
+
+		$materials = Model_material::getAll(10000,0);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+		$fiscals = Model_user::getByRoleKeyword('fiscal');
+		$builders = Model_user::getByRoleKeyword('builder');
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->_loadPanelView('warehouse/loan', compact('materials','projects','fiscals','builders'));
+		}
+		else
+		{
+			$formData = $this->input->post();
+			$detail = $formData['detail'];
+			$fiscalId = $formData['fiscal'];
+			$builderId = $formData['builder'];
+			$projectId = $formData['project'];
+			$entryDate = $formData['entry-date'];
+			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+			$entryDate = date_format($entryDate, 'Y-m-d');
+			$entryDate = $entryDate." ".date("H:i:s");
+			$materials = array_values($formData['summary']);
+			$currentUser = PrivateController::getSessionUser();
+			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+			$operationType = Model_internal_warehouse_operation_type::getByKeywords(['loan']);
+			$operationType = array_values($operationType); 
+			/** @var $operationType Model_internal_warehouse_operation_type */
+			$operationType = $operationType[0];
+			$operation = new Model_internal_warehouse_operation($entryDate, $detail, $operationType->getId());
+			if(is_numeric($fiscalId))
+			{
+				$operation->setFiscalId($fiscalId);
+			}
+			if(is_numeric($builderId))
+			{
+				$operation->setBuilderId($builderId);
+			}
+			if(is_numeric($projectId))
+			{
+				$operation->setProjectId($projectId);
+			}
+			$operation = $operation->save();
+			foreach ($materials as $material)
+			{
+				$quantity = str_replace(',','',$material['quantity']);
+				$quantity = floatval($quantity);
+				if($quantity > 0)
+				{
+					$iternalMaterials = new Model_internals($material['id'],$quantity,$material['status'],$material['tension'], $operation->getId());
+					$iternalMaterials->setCreatedOn($entryDate);
+					$iternalMaterials->setCreatedBy($currentUserId);
+					$dataToSave[] = $iternalMaterials->toArray();
+				}
+			}
+
+			if(count($dataToSave) > 0)
+			{
+				Model_internals::insertBatch($dataToSave);
+				$this->session->set_flashdata("successMessage", 'Se agregaron nuevos materiales a la reserva interna.');
+			}
+			else
+			{
+				$this->session->set_flashdata("errorMessage", 'No se agrego ningun material');
+			}			
+			
+			redirect(base_url("panel/InternalWarehouse/loan"));
+		}	
+	}
+
 	public function entry()
 	{
 		$this->complementHandler->addViewComplement('jquery.inputmask.bundle');

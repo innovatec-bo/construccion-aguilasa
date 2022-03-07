@@ -44,6 +44,30 @@ class MatInternalWarehouseOperation
     private $operationTypeId;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SecUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fiscal_id_iwo", referencedColumnName="id_usr")
+     * })
+     */
+    private $fiscalId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SecUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="builder_id_iwo", referencedColumnName="id_usr")
+     * })
+     */
+    private $builderId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="WflProjects")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id_iwo", referencedColumnName="id_pro")
+     * })
+     */
+    private $projectId;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="deleted_iwo", type="smallint", nullable=true, options={"default"="0"})
