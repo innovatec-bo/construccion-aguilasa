@@ -200,7 +200,7 @@
 						<th>Total<br>retirado<br>de CRE</th>
 						<th>Saldo por<br>retirar<br>de CRE</th>
 						<th>
-							<div data-toggle="tooltip" data-placement="top" title="Esta columna es dinamica de acuerdo a lo que reciba o devuelva el constructor">Entregado<br>al constructor</div>
+							<div data-toggle="tooltip" data-placement="top" title="Esta columna es dinamica de acuerdo a lo que reciba o devuelva el constructor">Entregado<br>al constructor<br>(<em>Prestamos incluidos</em>)</div>
 						</th>
 <!--						<th>Total<br>entregado<br>a CRE</th>-->
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->

@@ -26,7 +26,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					-- Filter by project
 					IFNULL(assigned_materials.quantity,0) quantity_assigned_materials,
 					IFNULL(materials_picked_up_from_cre.quantity,0) quantity_picked_up_from_cre,
-					(IFNULL(materials_delivered_to_builder.quantity,0) - IFNULL(non_used_materials.quantity,0)) quantity_materials_delivered_to_builder,
+					(IFNULL(materials_delivered_to_builder.quantity,0) + IFNULL(materials_delivered_to_builder_loan.quantity,0) )- IFNULL(non_used_materials.quantity,0) quantity_materials_delivered_to_builder,
 					IFNULL(materials_delivered_to_cre.quantity,0) quantity_materials_delivered_to_cre,
 					IFNULL(builder_returns_new_materials.quantity,0) quantity_new_materials_returned_by_builder,
 					IFNULL(builder_returns_old_materials.quantity,0) quantity_old_materials_returned_by_builder,
