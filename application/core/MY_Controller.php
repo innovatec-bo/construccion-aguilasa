@@ -197,10 +197,10 @@ class PublicController extends CI_Controller
             "in_progress" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "paused" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
             "completed" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
-            "project_energized" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
-            "cre_return_order" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => ""),
-            "project_return_materials" => array("to" => array("maguilera@serebo.com"), "cc" => ""),
-            "conciliation_reception" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => "")
+            "project_energized" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "cre_return_order" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array()),
+            "project_return_materials" => array("to" => array("maguilera@serebo.com"), "cc" => array()),
+            "conciliation_reception" => array("to" => array("fiscal","maguilera@serebo.com","eddysonca@serebo.com"), "cc" => array())
         );
         return $statusList[$status];
     }

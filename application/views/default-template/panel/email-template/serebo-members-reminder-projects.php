@@ -58,6 +58,11 @@
                                             });
                                             foreach ($projectList as $project)
                                             {
+                                                //If current date is less than project end date stimated then jump it
+                                                if($project['keyword_pst'] == "in_progress" && date('Y-m-d') < $project['end_date_assigned'])
+                                                {
+                                                    continue;
+                                                }
                                                 //#ff0000 danger
                                                 //#FFA87D warning
                                                 //#404E67 default

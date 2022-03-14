@@ -382,6 +382,12 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
+            //Special validation when status = cre_return_order
+            if($status == "cre_return_order")
+            {
+                $sereboFiscalFullName = 'Fernando Duran';
+                $sendTo = 'fduran@serebo.com';
+            }
             $supervisionList = PublicController::internalNoticeByStatus($status);
             $sendTo = $supervisionList["to"];
             $fiscalKey = array_search("fiscal", $sendTo);
@@ -407,14 +413,12 @@ class Model_user extends Model_user_base
             $email->to($emailHandler->getEmailByEnvironment($sendTo));
             if($status == 'completed')
                 $sendToCC[] = 'pvargas@serebo.com';
-            else
-                $sendToCC = array("vhsuarez@serebo.com","gilbertof@serebo.com","vh.suarez@serebo.com");
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
 			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
-        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
+           echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));exit;
             try
             {
                 if($email->Send())
