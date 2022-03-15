@@ -35,16 +35,38 @@ class CronJob extends PrivateController
     {
         $cronJobs = [
                 [
-                 'job' => 'notifyProjectStatusToSereboFiscal2019',
-                 'detail' => 'Notificacion de estados de proyectos a fiscales de SEREBO',
-                 'minute' => '30',
-                 'hour' => '5',
-                 'day' => '*',
-                 'month' =>  '*',
-                 'weekday' => 'Viernes'
+                    'job' => 'notifyProjectStatusToSereboFiscal2019',
+                    'detail' => 'Notificacion de estados de proyectos a fiscales de SEREBO',
+                    'minute' => '30',
+                    'hour' => '5',
+                    'day' => '*',
+                    'month' =>  '*',
+                    'weekday' => 'Viernes'
                 ]
         ];
 
         $this->_loadPanelView("cron-jobs/index", compact('cronJobs'));
+    }
+
+    public function show($job)
+    {
+        switch ($job) 
+        {
+            case 'notifyProjectStatusToSereboFiscal2019':
+                $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
+                $response = array();
+                foreach ($fiscalListToNotify as $fiscalData)
+                {
+                    //Let's make sure that the fiscal have not mailinator.com email
+                    $fiscalData['sereboFiscalEmail'] = is_array($fiscalData['sereboFiscalEmail'])?implode(",",$fiscalData['sereboFiscalEmail']):$fiscalData['sereboFiscalEmail'];
+                    if(strpos($fiscalData['sereboFiscalEmail'], 'mailinator.com') === FALSE)
+                    {
+                        $response[] = Model_user::notifyProjectStatusToSereboMembers($fiscalData);
+                    }
+                }
+                $this->_saveInLog($response);    
+                break;
+        }
+        $this->_loadPanelView("cron-jobs/show");
     }
 }
