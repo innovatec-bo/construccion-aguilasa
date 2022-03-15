@@ -31,13 +31,13 @@ $(document).ready(function() {
         }, {
             "data" : "project_code"
         }, {
-            "data" : "quantity_materials_delivered_to_builder"
-        }, {
             "data" : "quantity_assigned_materials"
         }, {
             "data" : "quantity_picked_up_from_cre"
         }, {
             "data" : "pending_material_in_cre"
+        }, {
+            "data" : "quantity_materials_delivered_to_builder"
         }],
         "drawCallback" : function(object) {
             $('[data-toggle="tooltip"]').tooltip();
