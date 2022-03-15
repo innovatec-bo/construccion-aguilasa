@@ -72,20 +72,20 @@ class ExcelMaterialSummary
 
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'Resumen de materiales');
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->applyFromArray($titleStyleArray);
-        $spreadsheet->getActiveSheet()->mergeCells('A1:H1');
+        $spreadsheet->getActiveSheet()->getStyle('A1:I1')->applyFromArray($titleStyleArray);
+        $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
 
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A2', "#")
             ->setCellValue('B2', "CODIGO")
             ->setCellValue('C2', "DESCRIPCION")
             ->setCellValue('D2', "PROYECTO")
-            ->setCellValue('E2', "ENTREGADO\nAL CONSTRUCTOR\n(PRESTAMOS INCLUIDOS)")
-            ->setCellValue('F2', "FISCAL")
-            ->setCellValue('G2', "CANTIDAD\nCOMPROMETIDA")
-            ->setCellValue('H2', "RETIRADO\nDE CRE")
-            ->setCellValue('I2', "PENDIENTE POR\nRETIRAR DE CRE");
-        $spreadsheet->getActiveSheet()->getStyle('A2:H2')->applyFromArray($headerStyleArray);
+            ->setCellValue('E2', "FISCAL")
+            ->setCellValue('F2', "CANTIDAD\nCOMPROMETIDA")
+            ->setCellValue('G2', "RETIRADO\nDE CRE")
+            ->setCellValue('H2', "PENDIENTE POR\nRETIRAR DE CRE")
+            ->setCellValue('I2', "ENTREGADO\nAL CONSTRUCTOR\n(PRESTAMOS INCLUIDOS)");
+        $spreadsheet->getActiveSheet()->getStyle('A2:I2')->applyFromArray($headerStyleArray);
         $counter = 1;
         $i = 2;
         foreach ($data as $row)
@@ -96,11 +96,11 @@ class ExcelMaterialSummary
                 ->setCellValue('B'.($i+1), $row["material_code"])
                 ->setCellValue('C'.($i+1), $row["material_description"])
                 ->setCellValue('D'.($i+1), $row['project_code'])
-                ->setCellValue('E'.($i+1), $row['quantity_materials_delivered_to_builder'])
-                ->setCellValue('F'.($i+1), $row['fiscal_responsible'])
-                ->setCellValue('G'.($i+1), $row['quantity_assigned_materials'])
-                ->setCellValue('H'.($i+1), $row['quantity_picked_up_from_cre'])
-                ->setCellValue('I'.($i+1), $row['pending_material_in_cre']);
+                ->setCellValue('E'.($i+1), $row['fiscal_responsible'])
+                ->setCellValue('F'.($i+1), $row['quantity_assigned_materials'])
+                ->setCellValue('G'.($i+1), $row['quantity_picked_up_from_cre'])
+                ->setCellValue('H'.($i+1), $row['pending_material_in_cre'])
+                ->setCellValue('I'.($i+1), $row['quantity_materials_delivered_to_builder']);
             $i++;
             $counter++;
         }
@@ -113,7 +113,7 @@ class ExcelMaterialSummary
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getStyle('A1:H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $spreadsheet->getActiveSheet()->getStyle('A1:I'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         return $spreadsheet;
     }
 
