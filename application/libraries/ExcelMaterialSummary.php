@@ -30,7 +30,6 @@ class ExcelMaterialSummary
 		$paginationHandler = new MaterialSummaryPaginationHandler(50000, 0);
 		$paginationHandler->setAdditionalParameters($this->_additionalParameters);
 		$list = $paginationHandler->getAll();
-        
         $spreadsheet = $this->_summary($spreadsheet, $list);
     
         // redirect output to client browser

@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2 hide">
+                    <!-- <div class="col-md-2 hide">
                         <div class="form-group">
                             <label>Mat. Pendientes</label>
                             <select class="form-control input-sm" name="show-material-pending-in-cre">
@@ -41,7 +41,7 @@
                                 <option value="0">No</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-2">
                         <div class="form-group">
