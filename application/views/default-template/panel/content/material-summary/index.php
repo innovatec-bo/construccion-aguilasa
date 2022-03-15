@@ -80,6 +80,7 @@
                         <th>CODIGO</th>
                         <th>DESCRIPCION</th>
                         <th>PROYECTO</th>
+                        <th>ENTREGADO<br>AL CONSTRUCTOR<br><em>(PRESTAMOS INCLUIDOS)</em></th>
                         <th>CANTIDAD<BR>COMPROMETIDA</th>
                         <th>RETIRADO<br>DE CRE</th>
                         <th>PENDIENTE POR<BR>RETIRAR DE CRE</th>
