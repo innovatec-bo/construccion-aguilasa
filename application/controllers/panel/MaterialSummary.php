@@ -35,6 +35,8 @@ class MaterialSummary extends PrivateController
 
     public function downloadExcelMaterialSummary()
     {
+        set_time_limit(300);
+		ini_set('memory_limit','256M');
         $formData = $this->input->post();
         $materialSummary = new ExcelMaterialSummary($this->sessionUser);
         $materialSummary->setAdditionalParameters($formData);
