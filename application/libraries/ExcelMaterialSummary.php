@@ -27,7 +27,7 @@ class ExcelMaterialSummary
             ->setCategory("Reporte");
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
-		$paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
+		$paginationHandler = new MaterialSummaryPaginationHandler(50000, 0);
 		$paginationHandler->setAdditionalParameters($this->_additionalParameters);
 		$list = $paginationHandler->getAll();
         
