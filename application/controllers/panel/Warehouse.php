@@ -513,4 +513,9 @@ class Warehouse extends PrivateController
 		
 		$this->_loadPanelView("warehouse/movements-log", compact('log','projectCode'));
 	}
+
+	public function summaryByProject()
+	{
+		
+	}
 }
