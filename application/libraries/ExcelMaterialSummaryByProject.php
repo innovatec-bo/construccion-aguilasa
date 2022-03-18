@@ -126,7 +126,7 @@ class ExcelMaterialSummaryByProject
                 $dataGrouped[$row['project_code']] = $row;
                 $dataGrouped[$row['project_code']]['global_quantity'] = 0;
             }
-            $dataGrouped[$row['project_code']]['global_quantity'] += $row['quantity_assigned_materials'];
+            $dataGrouped[$row['project_code']]['global_quantity'] += $row['pending_material_in_cre'];
         }
         return $dataGrouped;
     }
