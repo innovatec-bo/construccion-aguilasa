@@ -337,12 +337,6 @@ class Model_user extends Model_user_base
         $data = array();
         $sereboFiscalEmail = $dataToSend['sereboFiscalEmail'];
 
-        $sendToCC = array(
-            "vhsuarez@serebo.com",
-            "gilbertof@serebo.com",
-            "vh.suarez@serebo.com"
-        );
-
         $subjectList = array(
             "assign_to" => "Asignados a fiscal_name",
             "in_progress" => "En construcci&oacute;n",
@@ -382,11 +376,17 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)
         {
+            $sendToCC = array(
+                "vhsuarez@serebo.com",
+                "gilbertof@serebo.com",
+                "vh.suarez@serebo.com"
+            );
+
             //Special validation when status = cre_return_order
             if($status == "cre_return_order")
             {
-                $sereboFiscalFullName = 'Fernando Duran';
-                $sendTo = 'fduran@serebo.com';
+                //Notify as CC to fduran when the status is CRE return order
+                $sendToCC[] = 'fduran@serebo.com';
             }
             $supervisionList = PublicController::internalNoticeByStatus($status);
             $sendTo = $supervisionList["to"];
