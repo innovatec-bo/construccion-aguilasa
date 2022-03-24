@@ -385,15 +385,26 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'schedule_date' => ['column' => 'schedulee.entry_date schedule_date', 'dependencies' => ['schedulee']],
             'schedule_design_budget' => ['column' => 'schedulee.design_prb schedule_design_budget', 'dependencies' => ['schedulee']],
 			'schedulee_tentative_total_budget' => ['column' => 'schedulee.tentative_total_budget_prb schedulee_tentative_total_budget', 'dependencies' => ['schedulee']],
-			'project_current_budget' => ['column' => "CASE
-											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
-											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.total_budget\n
-											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)\n
+			'project_current_budget' => ['column' => "
+										CASE
+											WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
+												then initial_design_budget_pro + initial_building_budget_pro
+											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+												then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
+											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') 
+												then approved.total_budget\n
+											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+												then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)\n
 										END project_current_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
 			'project_current_design_budget' => ['column' => "CASE 
-													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') then schedulee.design_prb
-													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') then approved.design_prb
-													WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
+													WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
+														then initial_design_budget_pro
+													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+														then schedulee.design_prb
+													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') 
+														then approved.design_prb
+													WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+														then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
 												END project_current_design_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
 
 			'ready_to_send_date' => ['column' => 'ready_to_send.entry_date ready_to_send_date', 'dependencies' => ['ready_to_send']],
