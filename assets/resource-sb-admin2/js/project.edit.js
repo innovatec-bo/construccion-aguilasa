@@ -34,4 +34,5 @@ $(document).ready(function() {
         $("input[name=project-status]").val(projectStatus);
         $(this).closest("form").submit();
     });
+    $(".input-masked").inputmask();
 });

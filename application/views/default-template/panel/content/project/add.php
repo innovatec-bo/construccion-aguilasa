@@ -32,6 +32,20 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label>Diseño Bs.</label>
+                                    <input class="form-control input-masked" value="<?=set_value("project-initial-design-budget")?>" required name="project-initial-design-budget" placeholder="Importe de diseño" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Construccion Bs.</label>
+                                    <input class="form-control input-masked" value="<?=set_value("project-initial-building-budget")?>" required name="project-initial-building-budget" placeholder="Importe de construccion" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label>Codigo</label>
                                     <input class="form-control" value="<?=set_value("project-code")?>" required name="project-code" placeholder="Ingrese el código del proyecto">
                                 </div>

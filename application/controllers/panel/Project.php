@@ -107,6 +107,9 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
+            $projectInitialDesignBudget = $formData['project-initial-design-budget'];
+            $projectInitialBuildingBudget = $formData['project-initial-building-budget'];
+
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
 
@@ -156,6 +159,8 @@ class Project extends PrivateController
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
                 $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude, $workArea, $projectYear);
+            $project->setInitialDesignBudget($projectInitialDesignBudget);
+            $project->setInitialBuildingBudget($projectInitialBuildingBudget);
             $project->save();
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
@@ -191,6 +196,7 @@ class Project extends PrivateController
 
         /** View complements */
         $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("jquery.inputmask.bundle");
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("google.maps.api");
@@ -231,6 +237,9 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
+            $projectInitialDesignBudget = $formData['project-initial-design-budget'];
+            $projectInitialBuildingBudget = $formData['project-initial-building-budget'];
+
             $projectCode = $formData["project-code"];
             $secondaryCode = $formData["project-secondary-code"];
             $projectName = $formData["project-name"];
@@ -300,6 +309,8 @@ class Project extends PrivateController
             $project->setDetail($detail);
             $project->setWorkArea($workArea);
             $project->setProjectYear($projectYear);
+            $project->setInitialDesignBudget($projectInitialDesignBudget);
+            $project->setInitialBuildingBudget($projectInitialBuildingBudget);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")

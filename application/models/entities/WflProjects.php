@@ -251,5 +251,17 @@ class WflProjects
      */
     private $contractIdPro;
 
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="initial_design_budget_pro", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $designPrb;
 
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="initial_building_budget_pro", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $buildingPrb;
 }
