@@ -208,6 +208,7 @@ class Model_material_summary extends Model_material_summary_base
 		$ci->db->join('sec_users as builder','mat_materials_summary.builder_responsible_msu = builder.id_usr','left');
 		$ci->db->join('mat_materials_summary_types', 'mat_materials_summary.summary_type_id_msu = mat_materials_summary_types.id_mqt','left');
 		$ci->db->where('project_id_msu',$projectId);
+		$ci->db->where('deleted_msu',"!=",1);
 		$query = $ci->db->get();
 		return $query;
 	}
