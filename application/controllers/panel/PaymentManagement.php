@@ -212,4 +212,10 @@ class PaymentManagement extends PrivateController
         $data["responsibleList"] = json_encode($responsibleList);
         $this->_loadPanelView("payment-management/status-management", $data);
     }
+
+    public function advancePayments()
+    {
+        $viewTitle = "Anticipos";
+        $this->_loadPanelView("payment-management/advance-payments", compact('viewTitle'));
+    }
 }
