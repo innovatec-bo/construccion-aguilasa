@@ -66,7 +66,7 @@ class WflWorkPlanDates
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="editedon_wpd", type="datetime", nullable=false)
+     * @ORM\Column(name="editedon_wpd", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonWpd;
 

@@ -94,7 +94,7 @@ class WflExternalFiscalObservations
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="createdon_efo", type="datetime", nullable=true)
+     * @ORM\Column(name="createdon_efo", type="datetime", nullable=true, options={"default"=null})
      */
     private $createdonEfo;
 
@@ -108,7 +108,7 @@ class WflExternalFiscalObservations
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="editedon_efo", type="datetime", nullable=true, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_efo", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonEfo = '2018-01-01 01:00:00';
 

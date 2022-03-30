@@ -8,7 +8,7 @@
 
 class Model_incident extends Model_incident_base
 {
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '')
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = null)
     {
         parent::__construct($statusLogId, $percentage, $detail, $manualEntryDate, $projectId, $paused, $stopped, $incidentType, $needToBeSolved, $solvedOnDate);
     }

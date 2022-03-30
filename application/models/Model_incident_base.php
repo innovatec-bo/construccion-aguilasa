@@ -24,7 +24,7 @@ class Model_incident_base extends MY_Model
     protected $_solvedOnDate;
     protected $_solvedBy;
 
-    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = '', $solvedby = NULL)
+    public function __construct($statusLogId = NULL, $percentage = 0, $detail = "", $manualEntryDate = "", $projectId = NULL, $paused = 0, $stopped = 0, $incidentType = NULL, $needToBeSolved = 0, $solvedOnDate = NULL, $solvedby = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;

@@ -59,7 +59,7 @@ class WflProjectPoints
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="editedon_prp", type="datetime", nullable=false, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_prp", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonPrp = '2018-01-01 01:00:00';
 

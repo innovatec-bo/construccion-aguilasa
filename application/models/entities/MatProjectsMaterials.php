@@ -101,7 +101,7 @@ class MatProjectsMaterials
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="editedon_prm", type="datetime", nullable=true, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_prm", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonPrm = '2018-01-01 01:00:00';
 

@@ -73,7 +73,7 @@ class WflContracts
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="editedon_con", type="datetime", nullable=false, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_con", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonCon = '2018-01-01 01:00:00';
 

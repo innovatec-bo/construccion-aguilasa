@@ -91,7 +91,7 @@ class MatInternalWarehouseOperation
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="editedon_iwo", type="datetime", nullable=true, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_iwo", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonMsu = '2018-01-01 01:00:00';
 

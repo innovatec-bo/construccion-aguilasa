@@ -59,7 +59,7 @@ class WflPaymentOrdersStatusLog
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="editedon_pos", type="datetime", nullable=true)
+     * @ORM\Column(name="editedon_pos", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonPos;
 

@@ -73,7 +73,7 @@ class SecUserSupervisorByPeriod
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="editedon_usp", type="datetime", nullable=true, options={"default"="2018-01-01 02:00:00"})
+     * @ORM\Column(name="editedon_usp", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonUsp = '2018-01-01 02:00:00';
 

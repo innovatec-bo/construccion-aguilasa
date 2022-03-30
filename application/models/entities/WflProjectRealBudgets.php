@@ -80,7 +80,7 @@ class WflProjectRealBudgets
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="editedon_reb", type="datetime", nullable=false, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_reb", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonReb = '2018-01-01 01:00:00';
 

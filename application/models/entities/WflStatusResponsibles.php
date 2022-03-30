@@ -45,7 +45,7 @@ class WflStatusResponsibles
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="editedon_sre", type="datetime", nullable=false, options={"default"="2018-01-01 01:00:00"})
+     * @ORM\Column(name="editedon_sre", type="datetime", nullable=true, options={"default"=null})
      */
     private $editedonSre = '2018-01-01 01:00:00';
 

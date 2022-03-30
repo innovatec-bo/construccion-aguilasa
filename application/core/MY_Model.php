@@ -26,7 +26,7 @@ class MY_Model
         $this->_deleted = 0;
         $this->_createdOn = "";
         $this->_createdBy = NULL;
-        $this->_editedOn = "";
+        $this->_editedOn = NULL;
         $this->_editedBy = NULL;
     }
 
