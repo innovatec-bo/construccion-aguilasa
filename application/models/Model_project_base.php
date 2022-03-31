@@ -19,8 +19,8 @@ class Model_project_base extends MY_Model
     protected string $_entryDate;
     protected ?int $_creFiscal;
     protected ?int $_status;
-    protected string $_projectStart;
-    protected string $_projectEnd;
+    protected ?string $_projectStart;
+    protected ?string $_projectEnd;
     protected int $_points;
     protected float $_distance;
     protected ?int $_managementBy;
