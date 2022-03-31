@@ -8,7 +8,7 @@
 
 class Model_construction_assignment extends Model_construction_assignment_base
 {
-    public function __construct($statusLogId = NULL, $startDate = "", $endDate = "", $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0, $projectManager = NULL)
+    public function __construct($statusLogId = NULL, $startDate = NULL, $endDate = NULL, $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0, $projectManager = NULL)
     {
         parent::__construct($statusLogId, $startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $projectManager);
     }

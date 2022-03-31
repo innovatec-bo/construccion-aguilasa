@@ -21,7 +21,7 @@ class Model_construction_assignment_base extends MY_Model
     protected $_maneuver;
     protected $_projectManager;
 
-    public function __construct($statusLogId = NULL, $startDate = "", $endDate = "", $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0, $projectManager = NULL)
+    public function __construct($statusLogId = NULL, $startDate = NULL, $endDate = NULL, $estimatedTime = 0, $liveLine = 0, $powerDown = 0, $maneuver = 0, $projectManager = NULL)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;

@@ -163,4 +163,30 @@ class Test extends PublicController
 		}
 		dd($modifieds);
 	}
+
+	public function fixDateRecords()
+	{
+		$ci = &get_instance();
+		$ci->load->database();
+
+		$oldTables = [
+			['wfl_construction_assignments','start_date_cas'],
+			['wfl_construction_assignments','end_date_cas'],
+			['wfl_incidents','solved_on_date_inc'],
+			['wfl_projects','cre_design_completion_date_pro'],
+			['wfl_projects','cre_building_completion_date_pro'],
+			['wfl_projects','project_start_pro'],
+			['wfl_projects','project_end_pro'],
+			['wfl_project_status_log','manual_entry_date_psl'],
+			['wfl_warehouse_status_log', 'manual_entry_date_wsl']
+		];
+		$modifieds = [];
+		foreach ($oldTables as $row) 
+		{
+			$query = "update ".$row[0]." set ".$row[1]." = null where ".$row[1]."='0000-00-00 00:00:00';";
+			$ci->db->query($query);
+			$modifieds[$row[0].'-'.$row[1]] = $ci->db->affected_rows();
+		}
+		dd($modifieds);
+	}
 }

@@ -31,7 +31,7 @@ class Model_status_log_responsible extends Model_status_log_responsible_base
                 "deleted_slr" => 0,
                 "createdon_slr" => date("Y-m-d -H:i:s"),
                 "createdby_slr" => NULL,
-                "editedon_slr" => "",
+                "editedon_slr" => NULL,
                 "editedby_slr" => NULL
             );
         }
