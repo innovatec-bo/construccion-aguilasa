@@ -157,7 +157,7 @@ class Project extends PrivateController
 			}
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
-            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,"","",$projectPoints,$projectMetersDistance,
+            $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,NULL,NULL,$projectPoints,$projectMetersDistance,
                 $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude, $workArea, $projectYear);
             $project->setInitialDesignBudget($projectInitialDesignBudget);
             $project->setInitialBuildingBudget($projectInitialBuildingBudget);

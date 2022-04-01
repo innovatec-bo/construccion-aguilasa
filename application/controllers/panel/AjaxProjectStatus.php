@@ -410,7 +410,7 @@ class AjaxProjectStatus extends PrivateController
         $project->setSecondaryCode($secondaryCode);
         $project->save();
         $statusLogId = $project->saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay,0, $statusId, $statusDetail, $entryDate, $responsibleList, $manpowerFileId, $pointToPointFileId, $materialsFileId);
-		$constructionAssignment = new Model_construction_assignment($statusLogId, "", "", 0, 0, 0, 0, $projectManager);
+		$constructionAssignment = new Model_construction_assignment($statusLogId, NULL, NULL, 0, 0, 0, 0, $projectManager);
 		$constructionAssignment->save();
         $wareHouse = Model_warehouse::getByProjectId($project->getId());
         if(!$wareHouse instanceof Model_warehouse)
