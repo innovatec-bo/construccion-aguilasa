@@ -8,7 +8,8 @@ $(document).ready(function() {
 	// 	startSelect2Materials('select.select2-materials','', additionalParameter);
 	// else
 	// 	startSelect2Materials('select.select2-materials','');
-	startSelect2MaterialsSummary('select.select2-materials','');
+	startSelect2Materials('select.select2-materials','');
+	// startSelect2MaterialsSummary('select.select2-materials','');
 	$('select[name=project]').select2({allowClear:true,placeholder:'Elija un proyecto'})
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
