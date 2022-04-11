@@ -36,6 +36,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 				left join sec_users builder on builder_responsible_msu = builder.id_usr
 				left join mat_materials_summary_types on id_mqt = summary_type_id_msu
 				left join wfl_projects on id_pro = project_id_msu
+				where deleted_msu != 1
 				GROUP BY ".static::TABLE_ID."	 
 			) ".static::TABLE_NAME."_master_detail
 		";
