@@ -290,9 +290,12 @@ class Model_user extends Model_user_base
             if($status == 'conciliation_shipment')
             {
                 $data['creFiscalFullName'] = 'Layonel Lujan';
-                $creFiscalEmail = 'layonelrln@cre.com.bo';
+                $creFiscalEmail = 'layonelrln@cre.com.bo';   
             }
-
+            else{
+                $data['creFiscalFullName'] = $creFiscalFullName;
+                $creFiscalEmail = $dataToSend['creFiscalEmail'];
+            }
             $data['showBudget'] = $showBudget;
             $listManagementBy = array_column($projectList, 'management_by_pro');
             $listManagementBy = array_unique($listManagementBy);
@@ -307,7 +310,7 @@ class Model_user extends Model_user_base
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
             $messageDetail = "\nSubject: ".$subject."\nTo: ".$emailHandler->getEmailByEnvironment($creFiscalEmail)."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
-        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));exit;
+        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".$creFiscalEmail,"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/cre-fiscal-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
