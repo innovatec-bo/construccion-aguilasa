@@ -31,6 +31,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					IFNULL(builder_returns_new_materials.quantity,0) quantity_new_materials_returned_by_builder,
 					IFNULL(builder_returns_old_materials.quantity,0) quantity_old_materials_returned_by_builder,
 					IFNULL(builder_returns_good_condition_materials.quantity,0) quantity_good_condition_materials_returned_by_builder,
+					IFNULL(builder_returns_materials.quantity,0) quantity_materials_returned_by_builder,
 					IFNULL(entry_by_conciliation_221.quantity,0) quantity_entry_by_conciliation_221,
 					IFNULL(non_used_materials.quantity,0) quantity_non_used_materials,
 					IFNULL(material_removed_from_construction.quantity,0) quantity_material_removed_from_construction,
@@ -41,7 +42,11 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 						IFNULL(materials_picked_up_from_cre.quantity,0) +
 						IFNULL(entry_by_conciliation_221.quantity,0) +
 						IFNULL(non_used_materials.quantity,0) +
-						IFNULL(material_removed_from_construction.quantity,0)
+						IFNULL(material_removed_from_construction.quantity,0) + 
+						IFNULL(builder_returns_new_materials.quantity,0) + 
+						IFNULL(builder_returns_old_materials.quantity,0) +
+						IFNULL(builder_returns_good_condition_materials.quantity,0) +
+						IFNULL(builder_returns_materials.quantity,0)
 					) -
 					(
 						IFNULL(materials_delivered_to_builder.quantity,0) +
@@ -148,6 +153,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					{$this->_subQueryQuantity('17')}
 				) materials_delivered_to_builder_loan on materials_delivered_to_builder_loan.material_id = working_materials.material_id and materials_delivered_to_builder_loan.project_id = working_materials.project_id
 				LEFT JOIN (".Model_project::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = working_materials.project_id
+				LEFT JOIN (
+					{$this->_subQueryQuantity('18')}
+				) builder_returns_materials on builder_returns_materials.material_id = working_materials.material_id and builder_returns_materials.project_id = working_materials.project_id
 			) ".static::TABLE_NAME."_master_detail
 		";
 		return $this->_applyNestedFilters($coreQuery);
