@@ -237,6 +237,19 @@
 <!--                </li>-->
                 <li class="divider"></li>
                 <li><a href="<?=base_url("Logout")?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <?php
+                    
+                    switch (getenv('ENVIRONMENT')) {
+                        case 'development':
+                            $serebo2Url = 'http://serebo2.test/home/magic-login/'.$sessionUser->id;
+                            break;
+                        
+                        case 'production':
+                            $serebo2Url = 'https://serebo2.toqueeltimbre.com/home/magic-login/'.$sessionUser->id;
+                            break;
+                    }
+                ?>
+                <li><a href="<?=$serebo2Url?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> SEREBO2</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
