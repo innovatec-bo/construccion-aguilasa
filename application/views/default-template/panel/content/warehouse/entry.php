@@ -200,17 +200,21 @@
 						<th>Total<br>retirado<br>de CRE</th>
 						<th>Saldo por<br>retirar<br>de CRE</th>
 						<th>
-							<div data-toggle="tooltip" data-placement="top" title="Esta columna es dinamica de acuerdo a lo que reciba o devuelva el constructor">Entregado<br>al constructor<br>(<em>Prestamos incluidos</em>)</div>
+							<div data-toggle="tooltip" data-placement="top" title="Esta columna es dinamica de acuerdo a lo que reciba o devuelva el constructor">Entregado<br>al constructor<br>(<em>Prestamos incluidos</em>) <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div>
 						</th>
 <!--						<th>Total<br>entregado<br>a CRE</th>-->
 <!--						<th>Total<br>devuelto<br>por el constructor</th>-->
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
 						<th>
-							<div data-toggle="tooltip" data-placement="top" title="Cantidad solicitada por un fiscal de SEREBO">Comprometido<br>en SEREBO</div> 
+							<div data-toggle="tooltip" data-placement="top" title="Cantidad solicitada por un fiscal de SEREBO">Comprometido<br>en SEREBO <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div> 
 						</th>
-						<th>Disponible<br>en el almac&eacute;n</th>
-						<th class="bg-warning">Disponible<br>en el almac&eacute;n</th>
+						<th>
+							<div data-toggle="tooltip" data-placement="top" title="Diferencia entre los ingresos y egresos de almacen">Disponible<br>en el almac&eacute;n <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div>
+						</th>
+						<th class="bg-warning">
+							Disponible<br>en el almac&eacute;n
+						</th>
 						<th>Movimiento</th>
 						<th>Tension</th>
 						<th>Estado</th>
