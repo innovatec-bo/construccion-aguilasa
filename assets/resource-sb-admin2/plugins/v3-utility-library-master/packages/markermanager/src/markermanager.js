@@ -29,8 +29,8 @@ var MarkerManager = /** @class */ (function () {
      * @param {Options} options
      */
     function MarkerManager(map, _a) {
-        var _this = this;
         var _b = _a.maxZoom, maxZoom = _b === void 0 ? 19 : _b, trackMarkers = _a.trackMarkers, _c = _a.shown, shown = _c === void 0 ? true : _c, _d = _a.borderPadding, borderPadding = _d === void 0 ? 100 : _d;
+        var _this = this;
         this._tileSize = 1024;
         this._map = map;
         this._mapZoom = map.getZoom();
@@ -124,7 +124,7 @@ var MarkerManager = /** @class */ (function () {
      *
      */
     MarkerManager.prototype._getTilePoint = function (latlng, zoom, padding) {
-        var pixelPoint = utils_1.latLngToPixel(latlng, zoom);
+        var pixelPoint = (0, utils_1.latLngToPixel)(latlng, zoom);
         var point = new google.maps.Point(Math.floor((pixelPoint.x + padding.width) / this._tileSize), Math.floor((pixelPoint.y + padding.height) / this._tileSize));
         return point;
     };

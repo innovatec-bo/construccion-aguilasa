@@ -22,7 +22,7 @@ var markermanager_1 = require("./markermanager");
 var jest_mocks_1 = require("@googlemaps/jest-mocks");
 var gridbounds_1 = require("./gridbounds");
 beforeEach(function () {
-    jest_mocks_1.initialize();
+    (0, jest_mocks_1.initialize)();
 });
 test("can construct MarkerManager", function () {
     var zoom = 10;

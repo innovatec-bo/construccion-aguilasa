@@ -138,6 +138,7 @@ class WarehouseHandler
 			case 11:
 			case 14:
 			case 15:
+			case 18:
 				$component.slideDown();
 				break;
 			default:
