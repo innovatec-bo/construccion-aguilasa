@@ -36,3 +36,4 @@ timthumb/
 .env
 serebo.code-workspace
 .htaccess
+error_log
