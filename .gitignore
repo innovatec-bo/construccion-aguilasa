@@ -35,3 +35,4 @@ assets/cronjob/
 timthumb/
 .env
 serebo.code-workspace
+.htaccess
