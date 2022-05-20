@@ -83,13 +83,10 @@ class WorkflowPaginationHandler extends BasePaginationHandler
         FROM
             wfl_projects
 		{$buildQuery['dependencies']}
-        
-
-        
-        
-        
         where 
         deleted_pro != 1
+		{code-list}
+		{id-list}
 				) ".static::TABLE_NAME."
 		";
 		// return $core;
@@ -793,15 +790,31 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 							{
 								$value = " and code_pro in (".$codeListFilter.") ";
 							}
-							// dd($value);
 							$query = str_replace("{code-list}",$value, $query);
 						}
 						break;
+					case "{id-list}":
+						$idList = $value;
+						$idList = str_replace("\r\n"," ", $idList);
+						$idList = str_replace(" ",PHP_EOL, $idList);
+						$idList = explode(PHP_EOL, $idList);
+						$idList = array_values(array_filter($idList));
+						$idListFilter = "";
+						foreach ($idList as $id)
+						{
+							$idListFilter .= $ci->db->escape($id).", ";
+						}
+						$idListFilter = substr($idListFilter,0, -2);
+						if($idListFilter != "")
+						{
+							$value = " and id_pro in (".$idListFilter.") ";
+						}
+						$query = str_replace("{id-list}",$value, $query);
 				}
 			}
 		}
 		//Remove keywords that hasn't values to be replaced
-		$query = preg_replace("/\{[^}]+\}/","", $query);
+		$query = preg_replace("/\{[^}]+\}/","", $query);//dd($query);
 		return $query;
 	}
 }
