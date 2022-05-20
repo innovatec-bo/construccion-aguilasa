@@ -502,7 +502,7 @@ class Model_project extends Model_project_base
 		LEFT JOIN wfl_construction_assignments on status_log_id_cas = id_psl
 		left join wfl_project_points on status_log_id_prp = id_psl
         left join sec_users project_manager on project_manager_cas = project_manager.id_usr
-		where deleted_pro != 1 and deleted_slr != 1
+		where deleted_pro != 1 and deleted_slr != 1 {code-list}
 		GROUP BY id_psl
         ";
         return $sql;

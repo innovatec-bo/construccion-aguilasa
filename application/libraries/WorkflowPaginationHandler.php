@@ -92,7 +92,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
         deleted_pro != 1
 				) ".static::TABLE_NAME."
 		";
-		return $core;
+		// return $core;
+		return $this->_applyNestedFilters($core);
 	}
 
 	/**
@@ -753,5 +754,54 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		$response['columns'] = $columns;
 		$response['dependencies'] = $dependencies;
 		return $response;
-	} 
+	}
+	
+	/**
+	 * @param string $query
+	 * @return string
+	 */
+	private function _applyNestedFilters(string $query) : string
+	{
+		$ci=&get_instance();
+		$ci->load->database();
+		if(is_array($this->_additionalParameters) && count($this->_additionalParameters) >= 1)
+		{
+			//Apply
+			foreach($this->_additionalParameters as $parameter => $value)
+			{
+				$parameter = "{".$parameter."}";
+				switch ($parameter)
+				{
+					// case "{reservation-number}":
+					// 	$query = str_replace("{reservation-number}",' and reservation_number_msu = '.$ci->db->escape($value).' ', $query);
+					// 	break;
+					case "{code-list}":
+						if($value != '')
+						{
+							$codeList = $value;
+							$codeList = str_replace("\r\n"," ", $codeList);
+							$codeList = str_replace(" ",PHP_EOL, $codeList);
+							$codeList = explode(PHP_EOL, $codeList);
+							$codeList = array_values(array_filter($codeList));
+							$codeListFilter = "";
+							foreach ($codeList as $code)
+							{
+								$codeListFilter .= $ci->db->escape($code).", ";
+							}
+							$codeListFilter = substr($codeListFilter,0, -2);
+							if($codeListFilter != "")
+							{
+								$value = " and code_pro in (".$codeListFilter.") ";
+							}
+							// dd($value);
+							$query = str_replace("{code-list}",$value, $query);
+						}
+						break;
+				}
+			}
+		}
+		//Remove keywords that hasn't values to be replaced
+		$query = preg_replace("/\{[^}]+\}/","", $query);
+		return $query;
+	}
 }
