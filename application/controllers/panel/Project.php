@@ -641,7 +641,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
 
 		$paginationHandler = new WorkflowPaginationHandler(1,0);
-		$paginationHandler->setAdditionalParameters(['code-list'=>$project->getCode()]);
+		$paginationHandler->setAdditionalParameters(['id-list'=>$project->getId()]);
 		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
         $data['workflow'] = (array)$response[0];
