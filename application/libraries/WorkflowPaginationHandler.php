@@ -577,7 +577,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																FROM
 																	wfl_project_status_log
 																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-																where deleted_psl != 1 and deleted_slr != 1
+																where deleted_psl != 1 and deleted_slr != 1 {id-list-psl}
 																GROUP BY id_psl
 															) statusLogAndResponsible group by project_id_psl
 													) as max_entry
@@ -594,7 +594,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
 																LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
 																LEFT JOIN sec_users on id_usr = user_id_sre
-																where deleted_psl != 1  and deleted_slr != 1
+																where deleted_psl != 1  and deleted_slr != 1 {id-list-psl}
 																GROUP BY id_psl
 																) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 												) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro ",
@@ -605,7 +605,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 											project_id_inc,
 											max(manual_entry_date_inc) manual_entry_date_inc
 											from wfl_incidents
-											where status_id_inc in (29) -- in_progress 
+											where status_id_inc in (29) {id-list-inc} -- in_progress 
 											GROUP BY project_id_inc
 									) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
 								) wfl_incidents on project_id_inc = id_pro ",
@@ -618,7 +618,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 								project_id_inc last_week_project_id,
 								max(manual_entry_date_inc) last_week_manual_entry_date
 								from wfl_incidents
-								where status_id_inc in (29) -- in_progress 
+								where status_id_inc in (29) {id-list-inc} -- in_progress 
 								and manual_entry_date_inc >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
 								AND manual_entry_date_inc < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY     
 								GROUP BY project_id_inc
@@ -639,6 +639,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 							FROM
 								wfl_incidents t1
 								LEFT JOIN wfl_incidents t2 ON t1.project_id_inc = t2.project_id_inc AND t2.manual_entry_date_inc < t1.manual_entry_date_inc 
+							where 1 {id-list-inc-t1}
 							GROUP BY
 								t1.project_id_inc
 						) current_and_previous
@@ -651,7 +652,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																SUBSTRING_INDEX(GROUP_CONCAT(CONCAT(percentage_inc,' (',DATE_FORMAT(manual_entry_date_inc,'%d-%m-%Y'),')') ORDER BY manual_entry_date_inc desc SEPARATOR '\n'), '\n', 3) last_three_incidents
 															FROM
 																wfl_incidents
-															where deleted_inc != 1
+															where deleted_inc != 1 {id-list-inc}
 															GROUP BY project_id_inc
 														) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro ",
 			'production' => " LEFT JOIN (
@@ -667,7 +668,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 								LEFT JOIN bui_building_points on point_id_lal = id_bpo
 								where
 									deleted_wus != 1
-									and deleted_lal != 1 
+									and deleted_lal != 1 {id-list-lad}
 								GROUP BY project_id_lad
 							) production on production.project_id_lad = id_pro ",
 			'quantity_picked_up_from_cre' =>  "
@@ -682,6 +683,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (3)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) quantity_picked_up_from_cre on quantity_picked_up_from_cre.project_id = id_pro ",
 			'materials_delivered_to_cre' =>  "
@@ -696,6 +698,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (8)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) materials_delivered_to_cre on materials_delivered_to_cre.project_id = id_pro ",
 			'quantity_materials_assigned' =>  "
@@ -710,6 +713,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (1,2)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) quantity_materials_assigned on quantity_materials_assigned.project_id = id_pro ",
 		];
@@ -807,9 +811,12 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 						$idListFilter = substr($idListFilter,0, -2);
 						if($idListFilter != "")
 						{
-							$value = " and id_pro in (".$idListFilter.") ";
+							$query = str_replace("{id-list}"," and id_pro in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-inc}"," and project_id_inc in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-inc-t1}"," and t1.project_id_inc in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-lad}"," and project_id_lad in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-msu}"," and project_id_msu in (".$idListFilter.") ", $query);
 						}
-						$query = str_replace("{id-list}",$value, $query);
 				}
 			}
 		}

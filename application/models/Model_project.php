@@ -426,7 +426,7 @@ class Model_project extends Model_project_base
             FROM
                 wfl_project_status_log
             WHERE		
-            status_id_psl = ".$ci->db->escape($statusId)."
+            status_id_psl = ".$ci->db->escape($statusId)." {id-list-psl}
             and deleted_psl != 1
             
             GROUP BY project_id_psl
@@ -446,7 +446,7 @@ class Model_project extends Model_project_base
                             wfl_incidents
                         where 
                             paused_inc = 1
-                        and deleted_inc != 1
+                        and deleted_inc != 1 {id-list-inc}
                         GROUP BY
                             project_id_inc
                     ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
@@ -465,7 +465,7 @@ class Model_project extends Model_project_base
                     wfl_incidents
                 where 
                     stopped_inc = 1
-                and deleted_inc != 1
+                and deleted_inc != 1 {id-list-inc}
                 GROUP BY
                     project_id_inc
             ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
