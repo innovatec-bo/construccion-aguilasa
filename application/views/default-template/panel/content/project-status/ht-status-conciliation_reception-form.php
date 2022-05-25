@@ -57,6 +57,9 @@
                                                 </fieldset>
                                             </div>
                                         </div>
+                                        <!-- Begin manpower load -->
+                                        
+                                        <!-- End manpower load -->
                                         <div class="form-group">
                                             <label>Observaciones</label>
                                             <textarea class="form-control" name="{{statusKeyword}}-detail" rows="2"></textarea>

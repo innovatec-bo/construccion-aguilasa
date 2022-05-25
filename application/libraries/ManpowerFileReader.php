@@ -25,6 +25,7 @@ class ManpowerFileReader
     private $_structureListFromExcelFile;
     private $_pointList;
     private $_pointToPointToSave;
+    private $_manpowerStatusId;
 
     public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
 	{
@@ -47,6 +48,7 @@ class ManpowerFileReader
         $this->_destiny = '';
         $this->_setStructureListFromExcelFile();
         $this->_setDataFromExcelFile();
+        $this->_manpowerStatusId = 11;//Approved
 	}
 
 	private function _setExcelArrayData()
@@ -221,6 +223,11 @@ class ManpowerFileReader
         }
     }
 
+    public function setManpowerStatusId($statusId)
+    {
+        $this->_manpowerStatusId = $statusId;
+    }
+
     public function getDesignBudget()
     {
         return $this->_designBudget;
@@ -264,12 +271,18 @@ class ManpowerFileReader
     public function registerManpowerInSystem()
     {
         $laborCostToSave = array();
-        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId);
+        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId, $this->_manpowerStatusId);
+        if($this->_manpowerStatusId != 11)
+        {
+            $laborDetail->delete();
+            $laborDetail = null;
+        }
+        
 
         //If the labor detail does not exist for the project then let's create it and add its labor cost list
         if(!$laborDetail instanceof Model_labor_detail)
         {
-            $laborDetail = new Model_labor_detail($this->_projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny);
+            $laborDetail = new Model_labor_detail($this->_projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny, $this->_manpowerStatusId);
             $laborDetail->save();
             $structureCodeList = array_keys($this->_structureListFromExcelFile);
             $existingStructures = Model_building_structure::getMasterDetailByStructureCodeList($structureCodeList);

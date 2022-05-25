@@ -40,7 +40,7 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
         $ci->db->query($sql);
     }
 
-    public static function exportStructuresToUse($projectId)
+    public static function exportStructuresToUse($projectId, $statusId = 11)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -67,9 +67,9 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
                     bui_labor_cost
                 LEFT JOIN bui_building_structures on id_bus = building_structure_id_lac
                 LEFT JOIN bui_labor_details on id_lad = labor_detail_id_lac  and deleted_lad !=1
-                WHERE project_id_lad = ".$ci->db->escape($projectId)." and deleted_lac != 1 -- labor_detail_id_lac = 130
+                WHERE project_id_lad = ".$ci->db->escape($projectId)." and status_id_lad = ".$statusId." and deleted_lac != 1 -- labor_detail_id_lac = 130
             ) labor_cost_filtered on labor_cost_filtered.activity_lac = activity_ptp and labor_cost_filtered.execution_lac = execution_ptp and labor_cost_filtered.structure_code_bus = building_structure_code_ptp
-            where project_id_lad = ".$ci->db->escape($projectId)." and deleted_ptp != 1
+            where project_id_lad = ".$ci->db->escape($projectId)." and status_id_lad = ".$statusId." and deleted_ptp != 1
         ";
 
         $ci->db->query($sql);   

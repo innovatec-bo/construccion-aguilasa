@@ -31,8 +31,14 @@ class Model_permission extends Model_permission_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
-            Update ".static::TABLE_NAME." set deleted_per = 1 where roleid_per = ".$ci->db->escape($roleId)."
+            Update ".static::TABLE_NAME." set 
+            deleted_per = 1,
+            deleted_at = now(), 
+            deleted_by = ".$currentUserId." 
+            where roleid_per = ".$ci->db->escape($roleId)."
         ";
         $ci->db->query($sql);
     }

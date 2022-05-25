@@ -669,6 +669,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 								where
 									deleted_wus != 1
 									and deleted_lal != 1 {id-list-lad}
+									and status_id_lad = 11 -- Approved
 								GROUP BY project_id_lad
 							) production on production.project_id_lad = id_pro ",
 			'quantity_picked_up_from_cre' =>  "

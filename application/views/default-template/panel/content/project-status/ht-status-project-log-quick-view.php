@@ -102,6 +102,20 @@
                         {{/ifCond}}
 
                         {{#ifCond keyword_pst "==" "conciliation_shipment"}}
+                            <dt>Cargar Mano de obra de construccion</dt>
+                            <dd>
+                                <form name="manpower-upload-file" enctype="multipart/form-data">
+                                    <input type="hidden" value="{{project_id_psl}}" name="project-id">
+                                    <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">
+                                    <div class="form-group input-group">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" data-save-in-system="1" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
+                                                </button>
+                                            </span>
+                                        <input type="file" name="manpower-file">
+                                    </div>
+                                </form>
+                            </dd>
                         	<dt>Total Importe real</dt>
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_real_budget}}</span></dd>
                             <dt>Importe real diseño</dt>

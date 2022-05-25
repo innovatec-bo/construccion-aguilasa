@@ -130,9 +130,13 @@ class MY_Model
     {
         $ci = &get_instance();
         $ci->load->database();
+        date_default_timezone_set('America/La_Paz');
+        $now = new DateTime();
+        $currentDate = $now->format( "Y-m-d H:i:s" );
         if (!$makePhysicalDelete)
         {
             // Delete logically the row. Change the state.
+            $ci->db->update(static::TABLE_NAME, array('deleted_at' => $currentDate), array(static::TABLE_ID => $this->getId()));
             return $ci->db->update(static::TABLE_NAME, array(static::DELETE_FIELD . static::ATTRIB_SUFIX => 1), array(static::TABLE_ID => $this->getId()));
         }
         else

@@ -13,7 +13,7 @@ class Model_labor_cost extends Model_labor_cost_base
 		parent::__construct($laborDetailId, $buildingStructureId, $activity, $execution, $quantity, $unitPrice, $isAdditional);
 	}
 
-	public static function getMasterDetailByProjectId($projectId)
+	public static function getMasterDetailByProjectId($projectId, $statusId = 11)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -52,6 +52,7 @@ class Model_labor_cost extends Model_labor_cost_base
 									GROUP BY labor_cost_id_wus) bui_worked_up_structures on id_lac = labor_cost_id_wus
         where
         project_id_lad = ".$ci->db->escape($projectId)."
+        and status_id_lad = ".$statusId."
         and deleted_lac != 1
         and deleted_bus != 1
         and deleted_lad != 1
@@ -62,7 +63,7 @@ class Model_labor_cost extends Model_labor_cost_base
         return $response;
     }
 
-    public static function getByProjectIdAndStructureCodeList($projectId = NULL, $list = array())
+    public static function getByProjectIdAndStructureCodeList($projectId = NULL, $list = array(), $statusId = 11)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -86,6 +87,7 @@ class Model_labor_cost extends Model_labor_cost_base
             deleted_bus != 1
             and deleted_lac != 1
             and deleted_lad != 1
+            and status_id_lad = ".$statusId."
             and project_id_lad = ".$ci->db->escape($projectId)."
             and structure_code_bus in (".$escapedList.")
         ";
@@ -93,5 +95,21 @@ class Model_labor_cost extends Model_labor_cost_base
         $query = $ci->db->query($sql);
         $response = $query->result_array();
         return $response;   
+    }
+
+    public static function removeAllByLaborDetailId($laborDetailId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
+        $sql = "
+            update ".static::TABLE_NAME." set 
+            deleted_lac = 1, 
+            deleted_at = now(), 
+            deleted_by = ".$currentUserId." 
+            where labor_detail_id_lac = ".$ci->db->escape($laborDetailId)."
+        ";
+        $ci->db->query($sql);
     }
 }

@@ -55,8 +55,14 @@ class Model_project_stakes extends Model_project_stakes_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
-            update ".static::TABLE_NAME." set deleted_prs = 1 where project_id_prs = ".$ci->db->escape($projectId)."
+            update ".static::TABLE_NAME." set 
+            deleted_prs = 1,
+            deleted_at = now(), 
+            deleted_by = ".$currentUserId." 
+            where project_id_prs = ".$ci->db->escape($projectId)."
         ";
         $ci->db->query($sql);
     }
