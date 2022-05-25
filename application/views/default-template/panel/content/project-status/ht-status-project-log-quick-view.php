@@ -106,14 +106,15 @@
                             <dd>
                                 <form name="manpower-upload-file" enctype="multipart/form-data">
                                     <input type="hidden" value="{{project_id_psl}}" name="project-id">
-                                    <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">
-                                    <div class="form-group input-group">
+                                    <input type="hidden" value="{{project_real_budget_id}}" name="project-real-budget-id">
+                                    <div class="form-group input-group mb-0">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" data-save-in-system="1" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
                                                 </button>
                                             </span>
                                         <input type="file" name="manpower-file">
                                     </div>
+                                    <em>Esta mano de obra se puede cargar en multiples ocaciones</em>
                                 </form>
                             </dd>
                         	<dt>Total Importe real</dt>

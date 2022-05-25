@@ -855,20 +855,28 @@ class AjaxProjectStatus extends PrivateController
     public function readManpowerFile($registerManpowerInSystem = 0)
     {
         $this->_validateFeature('project_upload_manpower');
-//        echo"<pre>";var_dump($_FILES);exit;
         if (!empty($_FILES['manpower-file']['name']))
         {
             try
             {
                 $formData = $this->input->post();
                 $projectId = $formData['project-id'];
+                $projectBudgetId = $formData['project-budget-id']??"";
+                $projectRealBudgetId = $formData['project-real-budget-id']??"";
                 $fileHandler = new FileHandler();
                 $document = $fileHandler->fileUpload($_FILES['manpower-file'], "manpower_doc", "documents", "document");
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($projectId, $document);
                 $manpowerFileReader->saveStructuresInDataBase();
+                if($projectRealBudgetId != "")
+                {
+                    $manpowerFileReader->setManpowerStatusId(35);//Envio de conciliacion
+                }
                 if($registerManpowerInSystem == 1)
+                {
                     $manpowerFileReader->registerManpowerInSystem();
+                }
+                    
                 $response['success'] = 1;
                 $response['message'] = '';
                 $response['data']['file']['id'] = $document->getId();
@@ -878,7 +886,7 @@ class AjaxProjectStatus extends PrivateController
                 $response['data']['budget']['liveLine'] = $manpowerFileReader->getLiveLineBudget();
                 $response['data']['budget']['rightOfWay'] = $manpowerFileReader->getRightOfWayBudget();
                 $response['data']['extraInfo']['graphNumber'] = $manpowerFileReader->getGraphNumber();
-                $projectBudgetId = $formData['project-budget-id'];
+                
                 //If already exist a project budget id then lets assign the manpower file id
                 if($projectBudgetId != "")
                 {
@@ -891,6 +899,19 @@ class AjaxProjectStatus extends PrivateController
 					$projectBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
                     $projectBudget->setManpowerFileId($document->getId());
                     $projectBudget->save();
+                }
+                elseif($projectRealBudgetId != "")
+                {
+                    /** @var Model_project_real_budget $projectBudget */
+                    $projectRealBudget = Model_project_real_budget::getById($projectRealBudgetId);
+                    $projectRealBudget->setDesign($manpowerFileReader->getDesignBudget());
+                    $projectRealBudget->setBuilding($manpowerFileReader->getBuildingBudget());
+                    $projectRealBudget->setTransportation($manpowerFileReader->getTransportationBudget());
+                    $projectRealBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
+                    $projectRealBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
+                    $projectRealBudget->setManpowerFileId($document->getId());
+                    $projectRealBudget->save();
+
                 }
             }
             catch (Exception $e)

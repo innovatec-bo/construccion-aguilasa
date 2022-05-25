@@ -274,8 +274,11 @@ class ManpowerFileReader
         $laborDetail = Model_labor_detail::getByProjectId($this->_projectId, $this->_manpowerStatusId);
         if($this->_manpowerStatusId != 11)
         {
-            $laborDetail->delete();
-            $laborDetail = null;
+            if($laborDetail instanceof Model_labor_detail)
+            {
+                $laborDetail->delete();
+                $laborDetail = null;
+            }
         }
         
 

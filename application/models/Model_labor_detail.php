@@ -29,7 +29,7 @@ class Model_labor_detail extends Model_labor_detail_base
 
     public function delete($makePhysicalDelete = FALSE)
     {
-        Model_labor_cost::removeAllByLaborDetailId($this->id);
+        Model_labor_cost::removeAllByLaborDetailId($this->_id);
         parent::delete();
     }
 }

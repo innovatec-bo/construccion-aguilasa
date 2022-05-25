@@ -1194,8 +1194,8 @@ class StatusManagementHandler
                             let budget = response.data.budget;
                             let $form = $("#status-form-content");
                             $form.find("input[name=point-to-point-file-id]").val(file.id);
-                            $form.find("input[name=building-budget]").val(budget.building);
-                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            // $form.find("input[name=building-budget]").val(budget.building);
+                            // StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
                         }
                     }

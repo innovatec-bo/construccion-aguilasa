@@ -1011,8 +1011,8 @@ var StatusManagementHandler = /** @class */ (function () {
                             var budget = response.data.budget;
                             var $form_1 = $("#status-form-content");
                             $form_1.find("input[name=point-to-point-file-id]").val(file.id);
-                            $form_1.find("input[name=building-budget]").val(budget.building);
-                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            // $form.find("input[name=building-budget]").val(budget.building);
+                            // StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
                         }
                     }

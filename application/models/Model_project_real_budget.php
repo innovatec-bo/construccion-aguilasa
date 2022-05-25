@@ -7,8 +7,8 @@
  */
 class Model_project_real_budget extends Model_project_real_budget_base
 {
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $transportation = 0, $liveLine = 0, $rightOfWay)
+    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $transportation = 0, $liveLine = 0, $rightOfWay, $manpowerFileId = NULL)
     {
-        parent::__construct($statusLogId, $design, $building, $transportation, $liveLine, $rightOfWay);
+        parent::__construct($statusLogId, $design, $building, $transportation, $liveLine, $rightOfWay, $manpowerFileId);
     }
 }
