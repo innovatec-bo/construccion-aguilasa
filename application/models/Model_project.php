@@ -2236,7 +2236,7 @@ class Model_project extends Model_project_base
             ".$filterLogDateFrom."
             ".$filterLogDateTo."
             -- and project_id_lad = 653
-            and status_id_lad = 11 -- approved
+            and status_id_lad = 11
             ".$filterBuilder."
             order by project_id_lad, manual_entry_date_lal
         ";
@@ -2458,7 +2458,7 @@ class Model_project extends Model_project_base
             ".$filterLogDateFrom."
             ".$filterLogDateTo."
             ".$filterProjectId."
-            and status_id_lad = 11 -- approved
+            and status_id_lad = 11
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;

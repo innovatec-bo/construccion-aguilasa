@@ -46,7 +46,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-cogs fa-2x"></i>
+                            <i class="fa fa-cogs fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.system}}</div>
@@ -61,7 +61,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-calendar fa-2x"></i>
+                            <i class="fa fa-calendar fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
@@ -76,7 +76,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-user fa-2x"></i>
+                            <i class="fa fa-user fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.cre_fiscal_pro}}</div>
@@ -91,7 +91,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-map-marker fa-2x"></i>
+                            <i class="fa fa-map-marker fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.address_pro}}</div>
@@ -106,7 +106,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-arrows-alt fa-2x"></i>
+                            <i class="fa fa-arrows-alt fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
