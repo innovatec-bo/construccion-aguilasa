@@ -111,13 +111,19 @@ class MY_Model
         {
             $this->_editedOn = $currentDate;
             $this->_editedBy = $currentUserId;
-            $ci->db->update( static::TABLE_NAME, $this->toArray(), array( static::TABLE_ID => $this->getId()));
+            $toArray = $this->toArray();
+            $toArray['updated_at'] = $currentDate;
+            $toArray['updated_by'] = $currentUserId;
+            $ci->db->update( static::TABLE_NAME, $toArray, array( static::TABLE_ID => $this->getId()));
         }
         else
         {
             $this->_createdOn = $currentDate;
             $this->_createdBy = $currentUserId;
-            $result = $ci->db->insert( static::TABLE_NAME, $this->toArray() );
+            $toArray = $this->toArray();
+            $toArray['created_by'] = $currentUserId;
+            $toArray['created_at'] = $currentDate;
+            $result = $ci->db->insert( static::TABLE_NAME, $toArray );
             if ( $result === true )
             {
                 $this->_id = $ci->db->insert_id();
