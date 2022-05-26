@@ -52,8 +52,20 @@ class AjaxDeletedStatusLog extends PrivateController
 			$project = Model_project::getById($projectStatusLog->getProjectId());
 			if($project->getStatus() != $projectLog[0]['status_id_psl'])
 			{
-				$project->setStatus($projectLog[0]['status_id_psl']);
-				$project->save();
+                //If the previous status is 'approvement' then let's also delete it.
+                if($projectLog[0]['status_id_psl'] == 8)
+                {
+                    $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);
+			        $projectStatusLog->delete();
+                    $project->setStatus($projectLog[1]['status_id_psl']);
+				    $project->save();
+                }
+                else
+                {
+                    $project->setStatus($projectLog[0]['status_id_psl']);
+				    $project->save();
+                }
+				
 			}
 
             $detail = $formData["detail"];
