@@ -435,7 +435,7 @@ class AjaxProjectStatus extends PrivateController
 					$initialMaterialType = $initialMaterials[0];
 					$materialsFileReader = new MaterialsFileReader($projectId, $materialsFile);
 					$materialsFileReader->saveMaterialsInDataBase();
-					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, $currentUserId, $initialMaterialType->getId(), $initialMaterialType->getName(), NULL, $reservationNumber);
+					$materialsFileReader->registerMaterialsInSystem($statusLogId, $entryDate, NULL, $initialMaterialType->getId(), $initialMaterialType->getName(), NULL, $reservationNumber);
 				}
 			}
             //Validating point to point file
