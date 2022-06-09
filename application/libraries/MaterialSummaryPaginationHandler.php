@@ -167,9 +167,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 	 */
 	private function _subQueryQuantity(string $summaryTypeId, $reservationNumber = TRUE, $project = TRUE, $summaryStatus = "") : string
 	{
-
 		$reservationNumberFilter = "";
-		if($reservationNumber)
+		//Include reservation number filter if the summary type is materials_initial_list, materials_additional_list, materials_picked_up_from_cre, materials_delivered_to_cre
+		if($reservationNumber && in_array($summaryTypeId,[1,2,3,8]))
 			$reservationNumberFilter = " {reservation-number} ";
 
 		$projectFilter = "";
