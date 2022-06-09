@@ -93,6 +93,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
+			<p class="text-warning"><strong>Es posible ordenar la lista haciendo click <i class="fa fa-mouse-pointer"></i> en el encabezado de la columna</strong></p>
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover display pageResize" id="items-summary-list">
 					<thead>
