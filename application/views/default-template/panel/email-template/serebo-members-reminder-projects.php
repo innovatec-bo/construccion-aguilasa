@@ -205,6 +205,20 @@
                                                     </multiline>
                                                 </td>
                                             </tr>
+                                            <?php
+                                            if($projectList[0]['keyword_pst'] == 'in_progress')
+                                            {
+                                            ?>
+                                            <tr style="">
+                                                <td align="center" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:44px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;"  colspan="2">
+                                                    <multiline label="ab5">
+                                                        <p style="text-align: left">Solo proyectos que no han vencido (Segun fecha de finalizacion especificada en <strong>Asignacion</strong>).</p>
+                                                    </multiline>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            }
+                                            ?>
                                             <tr>
                                                 <td align="center" data-color="module1_text4" data-size="module1_text4" mc:edit="ab6" style="color: #000; font-family: 'Open Sans', sans-serif;  font-weight: 500; line-height: 26px; padding-top: 10px;" colspan="2">
 
