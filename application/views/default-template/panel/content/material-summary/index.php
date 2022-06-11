@@ -61,12 +61,21 @@
                         </div>
                     </div>
 					
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Material</label>
+                            <select class="form-control select2-materials" parsley-trigger="change" name="material-ids">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="form-group mb-0">
-                            <button class="btn btn-primary input-sm" type="submit">Descargar reporte</button>
-                            <button class="btn btn-primary input-sm" type="button" onclick="window.location.href = base_url + 'panel/MaterialSummary/downloadExcelMaterialSummaryByProject'">Descargar reporte por proyecto</button>
-                            <!-- <button class="btn btn-primary input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types">Filtrar</button>
-                            <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types">Remove filtros</button> -->
+                            <button class="btn btn-success input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types"><i class="fa fa-fw fa-filter"></i> Filtrar</button>
+                            <button class="btn btn-danger input-sm" id="remove-additional-parameters" type="button" data-content-data="chart-property-offers-based-on-property-types"><i class="fa fa-fw fa-times"></i> Remove filtros</button>
+                            <button class="btn btn-primary input-sm" type="submit"><i class="fa fa-fw fa-download"></i> Descargar reporte</button>
+                            <button class="btn btn-primary input-sm" type="button" onclick="window.location.href = base_url + 'panel/MaterialSummary/downloadExcelMaterialSummaryByProject'"><i class="fa fa-fw fa-download"></i> Descargar reporte por proyecto</button>
                         </div>
                     </div>
                 </fieldset>

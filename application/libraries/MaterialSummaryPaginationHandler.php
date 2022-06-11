@@ -88,6 +88,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 						deleted_prm != 1
 						{project-id}
 						{reservation-number}
+						{material-ids}
 						and deleted_msu != 1
 						GROUP BY project_id_msu, material_id_prm
 						ORDER BY createdby_msu
@@ -364,6 +365,20 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 						break;
 					case "{grouping-criteria}":
 						$query = str_replace("{grouping-criteria}",$value, $query);
+						break;
+					case "{material-ids}":
+							$idList = $value;
+							$idList = str_replace("\r\n"," ", $idList);
+							$idList = str_replace(" ",PHP_EOL, $idList);
+							$idList = explode(PHP_EOL, $idList);
+							$idList = array_values(array_filter($idList));
+							$idListFilter = "";
+							foreach ($idList as $id)
+							{
+								$idListFilter .= $ci->db->escape($id).", ";
+							}
+							$idListFilter = substr($idListFilter,0, -2);
+							$query = str_replace("{material-ids}",' and id_mat in ('.$idListFilter.') ', $query);
 						break;
 				}
 			}
