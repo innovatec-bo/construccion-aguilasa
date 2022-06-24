@@ -278,7 +278,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-proje
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
-$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view.hbr");
 $this->load->view("default-template/panel/content/project-status/ht-modal-modify-log");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");

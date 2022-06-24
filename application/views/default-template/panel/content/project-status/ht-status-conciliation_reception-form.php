@@ -47,7 +47,7 @@
                                                 </fieldset>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <fieldset>
                                                     <label>Responsables de construccion</label><br>
@@ -58,7 +58,48 @@
                                             </div>
                                         </div>
                                         <!-- Begin manpower load -->
-                                        
+                                        {{#ifCond previousEntry.manpower_file_id_prb "==" null}}
+                                            {{var "buttonText" "Cargar mano de obra"}}
+                                            {{var "buttonTextPointToPoint" "Cargar punto a punto"}}
+                                            {{#ifCond previousEntry.id_prb "==" null}}
+                                                {{var "buttonText" "Revisar mano de obra"}}
+                                                {{var "buttonTextPointToPoint" "Revisar punto a punto"}}
+                                            {{/ifCond}}
+                                            <div class="form-group input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary extract-construction-approved-budgets btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}
+                                                    </button>
+                                                </span>
+                                                <input type="file" name="manpower-file" accept=".xlsx, .xls, .csv">
+                                            </div>
+                                        {{/ifCond}}
+                                        <input type="hidden" name="project-construction-budget-id" value="{{previousEntry.id_prb}}">
+                                        <input type="hidden" name="manpower-construction-file-id" value="{{previousEntry.manpower_file_id_prb}}">
+                                        <div class="row form-inline">
+                                            <div class="col-md-12">
+                                                <label>Importe (<span id="total-project-amount">0.00</span>)</label><br>
+                                                <div class="form-group">
+                                                    <em>Diseño</em><br>
+                                                    <input class="form-control input-masked" value="{{previousEntry.design_reb}}" name="design-budget" placeholder="Diseño" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                                </div>
+                                                <div class="form-group">
+                                                    <em>Construccion</em><br>
+                                                    <input class="form-control input-masked" value="{{previousEntry.building_reb}}" name="building-budget" placeholder="Construccion" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                                </div>
+                                                <div class="form-group">
+                                                    <em>Transporte</em><br>
+                                                    <input class="form-control input-masked" value="{{previousEntry.transportation_reb}}" name="transportation-budget" placeholder="Transporte" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                                </div>
+                                                <div class="form-group">
+                                                    <em>Linea viva</em><br>
+                                                    <input class="form-control input-masked" value="{{previousEntry.live_line_reb}}" name="live-line-budget" placeholder="Linea viva" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                                </div>
+                                                <div class="form-group">
+                                                    <em>Derecho de via</em><br>
+                                                    <input class="form-control input-masked" value="{{previousEntry.right_of_way_reb}}" name="right-of-way-budget" placeholder="Derecho de via" required="" data-parsley-group="{{statusKeyword}}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- End manpower load -->
                                         <div class="form-group">
                                             <label>Observaciones</label>

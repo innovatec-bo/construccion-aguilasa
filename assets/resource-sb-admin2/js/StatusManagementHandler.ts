@@ -655,7 +655,7 @@ class StatusManagementHandler
                 this.saveAsBuilt(statusId, statusKeyword);
                 break;
             case "conciliation_reception":
-                this.saveBasicLog(statusId, statusKeyword);
+                this.saveConciliationReception(statusId, statusKeyword);
                 break;
             case "conciliation_shipment":
                 this.saveConciliationShipment(statusId, statusKeyword);
@@ -949,6 +949,37 @@ class StatusManagementHandler
         });
     }
 
+    saveConciliationReception(statusId: any,statusKeyword: any)
+    {
+        let _this = this;
+        let data = this.prepareDataToSave(statusId, statusKeyword);
+
+        let design = $("input[name=design-budget]").val();
+        let building = $("input[name=building-budget]").val();
+        let transportation = $("input[name=transportation-budget]").val();
+        let liveLine = $("input[name=live-line-budget]").val();
+        let rightOfWay = $("input[name=right-of-way-budget]").val();
+        let conciliationReception = {
+            design: design,
+            building: building,
+            transportation:transportation,
+            liveLine:liveLine,
+            rightOfWay:rightOfWay,
+        };
+
+        let dataResult = Object.assign(data, conciliationReception);
+
+        $.ajax({
+            url : base_url + 'panel/AjaxProjectStatus/saveConciliationReception',
+            dataType  :"json",
+            type : "POST",
+            data : dataResult,
+            success:function(){
+                _this.loadView();
+            }
+        });
+    }
+    
     saveConciliationShipment(statusId: any,statusKeyword: any)
     {
         let _this = this;
@@ -1122,10 +1153,70 @@ class StatusManagementHandler
                     if(response.success == 1)
                     {
                         let projectBudgetId = $("input[name=project-budget-id]").val();
+                        //If projectBudgetId is setup then we are processing for a project with already budget data
                         if(projectBudgetId != "")
                         {
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);
+                        }
+                        else
+                        {
+                            let file = response.data.file;
+                            let budget = response.data.budget;
+                            let extraInfo = response.data.extraInfo;
+                            let $form = $("#status-form-content");
+                            $form.find("input[name=manpower-file-id]").val(file.id);
+                            $form.find("input[name=design-budget]").val(budget.design);
+                            $form.find("input[name=building-budget]").val(budget.building);
+                            $form.find("input[name=transportation-budget]").val(budget.transportation);
+                            $form.find("input[name=live-line-budget]").val(budget.liveLine);
+                            $form.find("input[name=right-of-way-budget]").val(budget.rightOfWay);
+                            $form.find("input[name=graph-number-budget]").val(extraInfo.graphNumber);
+                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            console.log(response.data);
+                        }
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            html: response.message
+                        });
+                        console.log(response.message);
+                    }
+                }
+            });
+        });
+
+        $(document).on("click",".extract-construction-approved-budgets",function(){
+            let formName = $(this).data('form-name');
+            let saveInSystem = $(this).data('save-in-system');
+            let form = $('form[name='+formName+']')[0];
+            let data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readManpowerFile/"+saveInSystem,
+                data: data,
+                dataType:'json',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend:function(){
+                    blockArea($(form));
+                },
+                success: function (response: { success: number; data: { file: any; budget: any; extraInfo: any; }; message: any; }) {
+                    $(form).unblock();
+                    if(response.success == 1)
+                    {
+                        let projectBudgetId = $("input[name=project-construction-budget-id]").val();
+                        //If projectBudgetId is setup then we are processing for a project with already budget data
+                        if(projectBudgetId != "")
+                        {
+                            _this.projectLog();
+                            _this.loadStatusForm('conciliation_reception', 0);
                         }
                         else
                         {

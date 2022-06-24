@@ -466,6 +466,37 @@ class AjaxProjectStatus extends PrivateController
         echo json_encode($response);exit;
     }
 
+    public function saveConciliationReception()
+    {
+        $formData = $this->input->post();
+        $projectId = $formData["projectId"];
+        $entryDate = $formData["entryDate"];
+        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+        $entryDate = date_format($entryDate, 'Y-m-d');
+        $entryDate = $entryDate." ".date("H:i:s");
+        $statusId = $formData["statusId"];
+        $statusDetail = $formData["statusDetail"];
+        $design = $formData["design"];
+        $design = str_replace(",","",$design);
+        $building = $formData["building"];
+        $building = str_replace(",","",$building);
+        $transportation = $formData["transportation"];
+        $transportation = str_replace(",","", $transportation);
+        $liveLine = $formData["liveLine"];
+        $liveLine = str_replace(",","", $liveLine);
+        $rightOfWay = $formData["rightOfWay"];
+        $rightOfWay = str_replace(",","", $rightOfWay);
+        $responsibleList = $formData["responsibleList"];
+        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
+        $project = Model_project::getById($projectId);
+        $project->setStatus($statusId);
+        $project->save();
+        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+        $response["success"] = 1;
+        $response["message"] = "Operacion realizada con exito.";
+        echo json_encode($response);exit;
+    }
+    
     public function saveConciliationShipment()
     {
         $formData = $this->input->post();
@@ -851,7 +882,8 @@ class AjaxProjectStatus extends PrivateController
         echo'<pre>';var_dump($_FILES, $_FILES['workforce-file']['tmp_name'],$dataSheet->toArray());exit;
 
     }
-
+    //TODO: detectar cuando se este guardando una mano de obra en construcion, no guiarse por el parametro $projectRealBudgetId
+    //Existe informacion que debe pasar de envio a recepcion.. de tal manera que recepcion no comenzara con cero datos
     public function readManpowerFile($registerManpowerInSystem = 0)
     {
         $this->_validateFeature('project_upload_manpower');
@@ -870,7 +902,7 @@ class AjaxProjectStatus extends PrivateController
                 $manpowerFileReader->saveStructuresInDataBase();
                 if($projectRealBudgetId != "")
                 {
-                    $manpowerFileReader->setManpowerStatusId(35);//Envio de conciliacion
+                    $manpowerFileReader->setManpowerStatusId(34);//Conciliation reception
                 }
                 if($registerManpowerInSystem == 1)
                 {

@@ -101,7 +101,7 @@
                             <dd>{{reservation_number_prb}}</dd>
                         {{/ifCond}}
 
-                        {{#ifCond keyword_pst "==" "conciliation_shipment"}}
+                        {{#ifCond keyword_pst "==" "conciliation_reception"}}
                             <dt>Cargar Mano de obra de construccion</dt>
                             <dd>
                                 <form name="manpower-upload-file" enctype="multipart/form-data">
@@ -109,7 +109,7 @@
                                     <input type="hidden" value="{{project_real_budget_id}}" name="project-real-budget-id">
                                     <div class="form-group input-group mb-0">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary extract-approved-budgets btn-xs" data-form-name="manpower-upload-file" data-save-in-system="1" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
+                                                <button class="btn btn-primary extract-construction-approved-budgets btn-xs" data-form-name="manpower-upload-file" data-save-in-system="1" type="button" style="font-size: 11px"><i class="fa fa-upload fa-fw"></i>
                                                 </button>
                                             </span>
                                         <input type="file" name="manpower-file">
