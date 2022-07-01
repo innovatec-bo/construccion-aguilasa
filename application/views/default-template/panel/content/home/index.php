@@ -23,7 +23,7 @@
 	if($isAdmin == 1)
 	{
 	?>
-	<div class="col-md-12">
+	<div class="col-md-12 hidden">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				Observaciones externas sin resolver
