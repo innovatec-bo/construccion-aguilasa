@@ -191,6 +191,7 @@ class ExcelBuilderProductivityReport
         $totalExecutedAmount = 0;
         $k++;
         $rowCounter = 1;
+        $fiscal['asSupport'] = $fiscal['asSupport']??[];
         foreach ($fiscal['asSupport'] as $row)
         {
             $spreadsheet->setActiveSheetIndex($index)
