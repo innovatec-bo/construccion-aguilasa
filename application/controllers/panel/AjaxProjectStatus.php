@@ -893,6 +893,9 @@ class AjaxProjectStatus extends PrivateController
             {
                 $formData = $this->input->post();
                 $projectId = $formData['project-id'];
+                $project = Model_project::getById($projectId);
+                $projectStatusLog = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, 'conciliation_reception');
+                $projectStatusLog = $projectStatusLog[0];
                 $projectBudgetId = $formData['project-budget-id']??"";
                 $projectRealBudgetId = $formData['project-real-budget-id']??"";
                 $fileHandler = new FileHandler();
@@ -900,7 +903,7 @@ class AjaxProjectStatus extends PrivateController
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($projectId, $document);
                 $manpowerFileReader->saveStructuresInDataBase();
-                if($projectRealBudgetId != "")
+                if($project->getStatus() == 34)//Conciliation reception
                 {
                     $manpowerFileReader->setManpowerStatusId(34);//Conciliation reception
                 }
@@ -932,18 +935,35 @@ class AjaxProjectStatus extends PrivateController
                     $projectBudget->setManpowerFileId($document->getId());
                     $projectBudget->save();
                 }
-                elseif($projectRealBudgetId != "")
+                //Incoming budget is for conciliation reception
+                elseif($project->getStatus() == 34)
                 {
-                    /** @var Model_project_real_budget $projectBudget */
-                    $projectRealBudget = Model_project_real_budget::getById($projectRealBudgetId);
-                    $projectRealBudget->setDesign($manpowerFileReader->getDesignBudget());
-                    $projectRealBudget->setBuilding($manpowerFileReader->getBuildingBudget());
-                    $projectRealBudget->setTransportation($manpowerFileReader->getTransportationBudget());
-                    $projectRealBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
-                    $projectRealBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
-                    $projectRealBudget->setManpowerFileId($document->getId());
-                    $projectRealBudget->save();
-
+                    //Already exists a budget Id
+                    if($projectRealBudgetId != "")
+                    {
+                        $projectRealBudget = Model_project_real_budget::getById($projectRealBudgetId);
+                        $projectRealBudget->setDesign($manpowerFileReader->getDesignBudget());
+                        $projectRealBudget->setBuilding($manpowerFileReader->getBuildingBudget());
+                        $projectRealBudget->setTransportation($manpowerFileReader->getTransportationBudget());
+                        $projectRealBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
+                        $projectRealBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
+                        $projectRealBudget->setManpowerFileId($document->getId());
+                        $projectRealBudget->save();
+                    }
+                    else
+                    {
+                        /** @var Model_project_real_budget $projectBudget */
+                        $projectRealBudget = new Model_project_real_budget(
+                            $projectStatusLog['id_psl'],
+                            $manpowerFileReader->getDesignBudget(),
+                            $manpowerFileReader->getBuildingBudget(), 
+                            $manpowerFileReader->getTransportationBudget(),
+                            $manpowerFileReader->getLiveLineBudget(),
+                            $manpowerFileReader->getRightOfWayBudget(),
+                            $document->getId()
+                        );
+                        $projectRealBudget->save();
+                    }
                 }
             }
             catch (Exception $e)

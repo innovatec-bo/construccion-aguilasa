@@ -434,7 +434,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 											WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 												then
 												FORMAT(
-													(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget))
+													(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget))
 												, 2)
 										END production_percentage", 'dependencies' => ['production','approved','payment_order_registered','conciliation_reception']],
 

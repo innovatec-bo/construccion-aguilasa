@@ -1608,14 +1608,14 @@ class Model_project extends Model_project_base
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON id_pst = status_id_psl
             WHERE
-                keyword_pst = 'conciliation_shipment'
+                keyword_pst = 'conciliation_reception'
             AND deleted_psl != 1
             GROUP BY
                 project_id_psl
         ) AS filter ON filter.entry_date = manual_entry_date_psl
             AND filter.project_id = project_id_psl
-        ) log_conciliation_shipment_budget on log_conciliation_shipment_budget.project_id_psl = id_pro
-        LEFT JOIN wfl_project_real_budgets on log_conciliation_shipment_budget.id_psl = status_log_id_reb
+        ) log_conciliation_reception_budget on log_conciliation_reception_budget.project_id_psl = id_pro
+        LEFT JOIN wfl_project_real_budgets on log_conciliation_reception_budget.id_psl = status_log_id_reb
         
         WHERE
         deleted_pro != 1
@@ -1740,7 +1740,7 @@ class Model_project extends Model_project_base
 			{
 				$approvedBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'schedule');
 			}
-			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_shipment');
+			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_reception');
 			if($statusKeyword != 'ready_to_send' && $statusKeyword != 'already_sent' && $statusKeyword != 'canceled')
 				$totalApprovedBudget += $approvedBudget;
 			$totalRealBudget += $realBudget;

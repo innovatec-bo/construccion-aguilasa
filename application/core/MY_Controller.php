@@ -240,11 +240,11 @@ class PublicController extends CI_Controller
 			case "completed":
 			case "project_energized":
 			case "as_built":
-			case "conciliation_reception":
 				$budget = $row['total_approved'];
 				break;
 			//Third budget stage - This stage search budgets in payments orders, then if does not exist use get the budgets from conciliation shipments
-			case 'conciliation_shipment':
+			case "conciliation_reception":
+            case 'conciliation_shipment':
 			case "cre_return_order":
 			case "project_return_materials":
 			case "project_real_budget_confirmation":
