@@ -146,9 +146,9 @@ class ExcelStakesReport
         foreach ($workflowDetail as $row)
         {
             $isBetweenDates = $this->isInGivenRange($row["approved_date"]);
+            $borderCoordinate1 = 'B2';
             if($isBetweenDates && $row["approved_date"] != "")
             {
-                $borderCoordinate1 = 'B2';
                 $spreadsheet->setActiveSheetIndex(1)
                     ->setCellValue('B2', 'PROYECTOS APROBADOS');
                 $spreadsheet->getActiveSheet()->mergeCells('B2:H2');
