@@ -387,23 +387,27 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										CASE
 											WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
 												then initial_design_budget_pro + initial_building_budget_pro
-											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing') 
 												then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
+											WHEN keyword_pst in('canceled') 
+												then canceled.design_prb \n
 											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built') 
 												then approved.total_budget\n
 											WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 												then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget)\n
-										END project_current_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_reception']],
+										END project_current_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
 			'project_current_design_budget' => ['column' => "CASE 
 													WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
 														then initial_design_budget_pro
-													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing') 
 														then schedulee.design_prb
+													WHEN keyword_pst in('canceled') 
+														then canceled.design_prb \n
 													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built') 
 														then approved.design_prb
 													WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 														then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb)
-												END project_current_design_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_reception']],
+												END project_current_design_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
 
 			'ready_to_send_date' => ['column' => 'ready_to_send.entry_date ready_to_send_date', 'dependencies' => ['ready_to_send']],
 
