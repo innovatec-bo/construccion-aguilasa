@@ -903,7 +903,7 @@ class AjaxProjectStatus extends PrivateController
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($projectId, $document);
                 $manpowerFileReader->saveStructuresInDataBase();
-                if($project->getStatus() == 34)//Conciliation reception
+                if($project->getStatus() == 34 || $projectRealBudgetId != '')//Conciliation reception
                 {
                     $manpowerFileReader->setManpowerStatusId(34);//Conciliation reception
                 }
@@ -936,7 +936,7 @@ class AjaxProjectStatus extends PrivateController
                     $projectBudget->save();
                 }
                 //Incoming budget is for conciliation reception
-                elseif($project->getStatus() == 34)
+                elseif($project->getStatus() == 34 || $projectRealBudgetId != "")
                 {
                     //Already exists a budget Id
                     if($projectRealBudgetId != "")
