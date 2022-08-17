@@ -378,7 +378,11 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 								$idListFilter .= $ci->db->escape($id).", ";
 							}
 							$idListFilter = substr($idListFilter,0, -2);
-							$query = str_replace("{material-ids}",' and id_mat in ('.$idListFilter.') ', $query);
+							if($idListFilter != "")
+							{
+								$query = str_replace("{material-ids}",' and id_mat in ('.$idListFilter.') ', $query);
+							}
+							
 						break;
 				}
 			}
