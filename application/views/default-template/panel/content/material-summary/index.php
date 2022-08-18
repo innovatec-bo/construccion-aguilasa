@@ -69,7 +69,12 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Solo pendientes por retirar de CRE</label>
+                            <input class="" type="checkbox" name="show-material-pending-in-cre" value="1">
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <button class="btn btn-success input-sm" id="send-filters" type="button" data-content-data="chart-property-offers-based-on-property-types"><i class="fa fa-fw fa-filter"></i> Filtrar</button>
