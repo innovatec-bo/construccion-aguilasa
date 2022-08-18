@@ -65,7 +65,8 @@ class ManpowerFileReader
                 break;
             default:
                 $reader = new Csv();
-                $reader->setDelimiter(';');       
+                $delimiter = $this->_detectDelimiter(FCPATH.$this->_file->getUrl());
+                $reader->setDelimiter($delimiter);
                 break;
         }
         $fileLocation = FCPATH.$this->_file->getUrl();
@@ -487,7 +488,7 @@ class ManpowerFileReader
     }
 
     public function validateFile()
-    {//dd($this->_manpowerStatusId, $this->_isBuildingFile);
+    {
         if(!$this->_isCorrectFile)
         {
             throw new Exception("El archivo no corresponde al proyecto");
@@ -500,5 +501,23 @@ class ManpowerFileReader
         {
             throw new Exception("Parece ser que este archivo debe ser cargado en la etapa de recepcion de conciliacion");
         }
+    }
+
+    /**
+    * @param string $csvFile Path to the CSV file
+    * @return string Delimiter
+    */
+    private function _detectDelimiter($csvFile)
+    {
+        $delimiters = [";" => 0, "," => 0, "\t" => 0, "|" => 0];
+
+        $handle = fopen($csvFile, "r");
+        $firstLine = fgets($handle);
+        fclose($handle); 
+        foreach ($delimiters as $delimiter => &$count) {
+            $count = count(str_getcsv($firstLine, $delimiter));
+        }
+
+        return array_search(max($delimiters), $delimiters);
     }
 }

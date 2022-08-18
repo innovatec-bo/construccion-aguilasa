@@ -64,7 +64,7 @@
 	}
 	?>
     <!-- /.row -->
-    <div class="col-lg-12">
+    <div class="col-md-12 col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <form class="form-inline stake-report-inline-form" name="work-plan-report" action="<?=base_url("panel/Project/getWorkPlanReport")?>" method="post">
@@ -87,7 +87,7 @@
         </div>
         <!-- /.panel -->
     </div>
-    <div class="col-lg-12">
+    <div class="col-md-12 col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 Todos los incidentes
