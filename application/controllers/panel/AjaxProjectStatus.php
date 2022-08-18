@@ -894,16 +894,14 @@ class AjaxProjectStatus extends PrivateController
                 $formData = $this->input->post();
                 $projectId = $formData['project-id'];
                 $project = Model_project::getById($projectId);
-                $projectStatusLog = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, 'conciliation_reception');
-                $projectStatusLog = $projectStatusLog[0];
+                
                 $projectBudgetId = $formData['project-budget-id']??"";
                 $projectRealBudgetId = $formData['project-real-budget-id']??"";
                 $fileHandler = new FileHandler();
                 $document = $fileHandler->fileUpload($_FILES['manpower-file'], "manpower_doc", "documents", "document");
                 $document->save();
                 $manpowerFileReader = new ManpowerFileReader($projectId, $document);
-                $manpowerFileReader->saveStructuresInDataBase();
-                if($project->getStatus() == 34 || $projectRealBudgetId != '')//Conciliation reception
+                if($project->getStatus() == 34 || $project->getStatus() == 33 || $projectRealBudgetId != '')//Conciliation reception
                 {
                     $manpowerFileReader->setManpowerStatusId(34);//Conciliation reception
                 }
@@ -911,6 +909,9 @@ class AjaxProjectStatus extends PrivateController
                 {
                     $manpowerFileReader->registerManpowerInSystem();
                 }
+                $manpowerFileReader->validateFile();
+                $manpowerFileReader->saveStructuresInDataBase();
+                
                     
                 $response['success'] = 1;
                 $response['message'] = '';
@@ -936,7 +937,7 @@ class AjaxProjectStatus extends PrivateController
                     $projectBudget->save();
                 }
                 //Incoming budget is for conciliation reception
-                elseif($project->getStatus() == 34 || $projectRealBudgetId != "")
+                elseif($project->getStatus() == 34 || $project->getStatus() == 33 || $projectRealBudgetId != "")
                 {
                     //Already exists a budget Id
                     if($projectRealBudgetId != "")
@@ -952,6 +953,8 @@ class AjaxProjectStatus extends PrivateController
                     }
                     else
                     {
+                        $projectStatusLog = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, 'conciliation_reception');
+                        $projectStatusLog = $projectStatusLog[0];
                         /** @var Model_project_real_budget $projectBudget */
                         $projectRealBudget = new Model_project_real_budget(
                             $projectStatusLog['id_psl'],

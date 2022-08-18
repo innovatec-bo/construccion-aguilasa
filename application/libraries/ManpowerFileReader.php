@@ -26,6 +26,8 @@ class ManpowerFileReader
     private $_pointList;
     private $_pointToPointToSave;
     private $_manpowerStatusId;
+    private $_isBuildingFile = FALSE;
+    private $_isCorrectFile = FALSE;
 
     public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
 	{
@@ -127,6 +129,7 @@ class ManpowerFileReader
 
     private function _setDataFromExcelFile()
     {
+        $project = Model_project::getById($this->_projectId);
         $startReadingData = FALSE;
         foreach($this->_excelArrayData as $index => $data)
         {
@@ -158,6 +161,14 @@ class ManpowerFileReader
                         break;
                     }
                 }
+            }
+            if(strpos(strtolower($data[0]),'construccion') !== FALSE)
+            {
+                $this->_isBuildingFile = TRUE;
+            }
+            if(strpos(strtolower($data[0]),strtolower($project->getCode())) !== FALSE)
+            {
+                $this->_isCorrectFile = TRUE;
             }
             //Setting approved budgets
             if($data[0] == 'ITEM')
@@ -473,5 +484,21 @@ class ManpowerFileReader
     private function _linkStructuresToPoints()
     {
         Model_point_to_point_master::linkStructuresToPoints($this->_projectId);   
+    }
+
+    public function validateFile()
+    {//dd($this->_manpowerStatusId, $this->_isBuildingFile);
+        if(!$this->_isCorrectFile)
+        {
+            throw new Exception("El archivo no corresponde al proyecto");
+        }
+        elseif ($this->_manpowerStatusId == 34 && !$this->_isBuildingFile) 
+        {
+            throw new Exception("Parece ser que este archivo debe ser cargado en la etapa de aprobacion");    
+        }
+        elseif($this->_manpowerStatusId == 11 && $this->_isBuildingFile)
+        {
+            throw new Exception("Parece ser que este archivo debe ser cargado en la etapa de recepcion de conciliacion");
+        }
     }
 }
