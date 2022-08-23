@@ -284,7 +284,8 @@ class ManpowerFileReader
     {
         $laborCostToSave = array();
         $laborDetail = Model_labor_detail::getByProjectId($this->_projectId, $this->_manpowerStatusId);
-        if($this->_manpowerStatusId != 11)//If the incoming status is distinct to 11 then let's create the if doesn't exist
+        //Delete existing labor datail if it is distinct to approved status
+        if($this->_manpowerStatusId != 11)
         {
             if($laborDetail instanceof Model_labor_detail)
             {

@@ -139,10 +139,12 @@ class MY_Model
         date_default_timezone_set('America/La_Paz');
         $now = new DateTime();
         $currentDate = $now->format( "Y-m-d H:i:s" );
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         if (!$makePhysicalDelete)
         {
             // Delete logically the row. Change the state.
-            $ci->db->update(static::TABLE_NAME, array('deleted_at' => $currentDate), array(static::TABLE_ID => $this->getId()));
+            $ci->db->update(static::TABLE_NAME, array('deleted_at' => $currentDate, 'deleted_by' => $currentUserId), array(static::TABLE_ID => $this->getId()));
             return $ci->db->update(static::TABLE_NAME, array(static::DELETE_FIELD . static::ATTRIB_SUFIX => 1), array(static::TABLE_ID => $this->getId()));
         }
         else
