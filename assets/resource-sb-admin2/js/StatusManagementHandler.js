@@ -810,12 +810,14 @@ var StatusManagementHandler = /** @class */ (function () {
         var transportation = $("input[name=transportation-budget]").val();
         var liveLine = $("input[name=live-line-budget]").val();
         var rightOfWay = $("input[name=right-of-way-budget]").val();
+        var manpowerFileId = $("input[name=manpower-construction-file-id]").val();
         var conciliationReception = {
             design: design,
             building: building,
             transportation: transportation,
             liveLine: liveLine,
             rightOfWay: rightOfWay,
+            manpowerFileId: manpowerFileId
         };
         var dataResult = Object.assign(data, conciliationReception);
         $.ajax({
@@ -1036,7 +1038,7 @@ var StatusManagementHandler = /** @class */ (function () {
                             var budget = response.data.budget;
                             var extraInfo = response.data.extraInfo;
                             var $form = $("#status-form-content");
-                            $form.find("input[name=manpower-file-id]").val(file.id);
+                            $form.find("input[name=manpower-construction-file-id]").val(file.id);
                             $form.find("input[name=design-budget]").val(budget.design);
                             $form.find("input[name=building-budget]").val(budget.building);
                             $form.find("input[name=transportation-budget]").val(budget.transportation);

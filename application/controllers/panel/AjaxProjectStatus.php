@@ -469,6 +469,7 @@ class AjaxProjectStatus extends PrivateController
     public function saveConciliationReception()
     {
         $formData = $this->input->post();
+        // dd($formData);
         $projectId = $formData["projectId"];
         $entryDate = $formData["entryDate"];
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
@@ -487,11 +488,27 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = $formData["rightOfWay"];
         $rightOfWay = str_replace(",","", $rightOfWay);
         $responsibleList = $formData["responsibleList"];
+        $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
         $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->save();
-        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+        $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds, $manpowerFileId);
+
+        //The manpower file is the main document
+        if(is_numeric($manpowerFileId))
+        {
+            $manpowerFile = Model_file::getById($manpowerFileId);
+            if($manpowerFile instanceof Model_file)
+            {
+                $manpowerFileReader = new ManpowerFileReader($projectId, $manpowerFile);
+                $manpowerFileReader->setManpowerStatusId(34);
+                $manpowerFileReader->saveStructuresInDataBase();
+                $manpowerFileReader->registerManpowerInSystem();
+                $manpowerFileReader->registerDesignBudgetOnLog();
+            }
+        }
+
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -922,50 +939,52 @@ class AjaxProjectStatus extends PrivateController
                 $response['data']['budget']['liveLine'] = $manpowerFileReader->getLiveLineBudget();
                 $response['data']['budget']['rightOfWay'] = $manpowerFileReader->getRightOfWayBudget();
                 $response['data']['extraInfo']['graphNumber'] = $manpowerFileReader->getGraphNumber();
-                
-                //If already exist a project budget id then lets assign the manpower file id
-                if($projectBudgetId != "")
+                if($registerManpowerInSystem == 1)
                 {
-                	/** @var Model_project_budget $projectBudget */
-                    $projectBudget = Model_project_budget::getById($projectBudgetId);
-					$projectBudget->setDesign($manpowerFileReader->getDesignBudget());
-					$projectBudget->setBuilding($manpowerFileReader->getBuildingBudget());
-					$projectBudget->setTransportation($manpowerFileReader->getTransportationBudget());
-					$projectBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
-					$projectBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
-                    $projectBudget->setManpowerFileId($document->getId());
-                    $projectBudget->save();
-                }
-                //Incoming budget is for conciliation reception
-                elseif($project->getStatus() == 34 || $project->getStatus() == 33 || $projectRealBudgetId != "")
-                {
-                    //Already exists a budget Id
-                    if($projectRealBudgetId != "")
+                    //If already exist a project budget id then lets assign the manpower file id
+                    if($projectBudgetId != "")
                     {
-                        $projectRealBudget = Model_project_real_budget::getById($projectRealBudgetId);
-                        $projectRealBudget->setDesign($manpowerFileReader->getDesignBudget());
-                        $projectRealBudget->setBuilding($manpowerFileReader->getBuildingBudget());
-                        $projectRealBudget->setTransportation($manpowerFileReader->getTransportationBudget());
-                        $projectRealBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
-                        $projectRealBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
-                        $projectRealBudget->setManpowerFileId($document->getId());
-                        $projectRealBudget->save();
+                        /** @var Model_project_budget $projectBudget */
+                        $projectBudget = Model_project_budget::getById($projectBudgetId);
+                        $projectBudget->setDesign($manpowerFileReader->getDesignBudget());
+                        $projectBudget->setBuilding($manpowerFileReader->getBuildingBudget());
+                        $projectBudget->setTransportation($manpowerFileReader->getTransportationBudget());
+                        $projectBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
+                        $projectBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
+                        $projectBudget->setManpowerFileId($document->getId());
+                        $projectBudget->save();
                     }
-                    else
+                    //Incoming budget is for conciliation reception
+                    elseif($project->getStatus() == 34 || $project->getStatus() == 33 || $projectRealBudgetId != "")
                     {
-                        $projectStatusLog = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, 'conciliation_reception');
-                        $projectStatusLog = $projectStatusLog[0];
-                        /** @var Model_project_real_budget $projectBudget */
-                        $projectRealBudget = new Model_project_real_budget(
-                            $projectStatusLog['id_psl'],
-                            $manpowerFileReader->getDesignBudget(),
-                            $manpowerFileReader->getBuildingBudget(), 
-                            $manpowerFileReader->getTransportationBudget(),
-                            $manpowerFileReader->getLiveLineBudget(),
-                            $manpowerFileReader->getRightOfWayBudget(),
-                            $document->getId()
-                        );
-                        $projectRealBudget->save();
+                        //Already exists a budget Id
+                        if($projectRealBudgetId != "")
+                        {
+                            $projectRealBudget = Model_project_real_budget::getById($projectRealBudgetId);
+                            $projectRealBudget->setDesign($manpowerFileReader->getDesignBudget());
+                            $projectRealBudget->setBuilding($manpowerFileReader->getBuildingBudget());
+                            $projectRealBudget->setTransportation($manpowerFileReader->getTransportationBudget());
+                            $projectRealBudget->setLiveLine($manpowerFileReader->getLiveLineBudget());
+                            $projectRealBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
+                            $projectRealBudget->setManpowerFileId($document->getId());
+                            $projectRealBudget->save();
+                        }
+                        else
+                        {
+                            $projectStatusLog = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, 'conciliation_reception');
+                            $projectStatusLog = $projectStatusLog[0];
+                            /** @var Model_project_real_budget $projectBudget */
+                            $projectRealBudget = new Model_project_real_budget(
+                                $projectStatusLog['id_psl'],
+                                $manpowerFileReader->getDesignBudget(),
+                                $manpowerFileReader->getBuildingBudget(), 
+                                $manpowerFileReader->getTransportationBudget(),
+                                $manpowerFileReader->getLiveLineBudget(),
+                                $manpowerFileReader->getRightOfWayBudget(),
+                                $document->getId()
+                            );
+                            $projectRealBudget->save();
+                        }
                     }
                 }
             }

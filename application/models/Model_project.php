@@ -89,14 +89,14 @@ class Model_project extends Model_project_base
 	 * @param array $responsibleList
 	 * @param array $fileIds
 	 */
-    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array()) : void
+    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array(), $manpowerFileId = null) : void
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectRealBudget = new Model_project_real_budget($projectStatus->getId(), $design, $building, $transportation, $liveLine, $rightOfWay);
+        $projectRealBudget = new Model_project_real_budget($projectStatus->getId(), $design, $building, $transportation, $liveLine, $rightOfWay, $manpowerFileId);
         $projectRealBudget->save();
 
         //Each statusLog needs to have a o more responsible by log

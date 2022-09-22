@@ -959,12 +959,14 @@ class StatusManagementHandler
         let transportation = $("input[name=transportation-budget]").val();
         let liveLine = $("input[name=live-line-budget]").val();
         let rightOfWay = $("input[name=right-of-way-budget]").val();
+        let manpowerFileId = $("input[name=manpower-construction-file-id]").val();
         let conciliationReception = {
             design: design,
             building: building,
             transportation:transportation,
             liveLine:liveLine,
             rightOfWay:rightOfWay,
+            manpowerFileId:manpowerFileId
         };
 
         let dataResult = Object.assign(data, conciliationReception);
@@ -1224,7 +1226,8 @@ class StatusManagementHandler
                             let budget = response.data.budget;
                             let extraInfo = response.data.extraInfo;
                             let $form = $("#status-form-content");
-                            $form.find("input[name=manpower-file-id]").val(file.id);
+
+                            $form.find("input[name=manpower-construction-file-id]").val(file.id);
                             $form.find("input[name=design-budget]").val(budget.design);
                             $form.find("input[name=building-budget]").val(budget.building);
                             $form.find("input[name=transportation-budget]").val(budget.transportation);
