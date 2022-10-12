@@ -398,6 +398,7 @@ class Model_project extends Model_project_base
             tentative_total_budget_prb,
             reservation_number_prb,
             graph_number_prb,
+            trim_tree_prb,
 			design_reb,
 			building_reb,			
 			transportation_reb,

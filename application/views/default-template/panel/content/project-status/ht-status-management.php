@@ -9,8 +9,11 @@
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
         <h1 class="page-header mb-0">{{viewData.statusName}}
-            <em class="subtext">{{viewData.project.code_pro}}</em> 
-            <a class="btn btn-warning pull-right add-incident" data-status-id="{{viewData.project.project_status_id}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-flag-o"></i></a>
+            <em class="subtext">{{viewData.project.code_pro}}</em>
+            {{#ifCond viewData.project.trim_tree '==' 1}}
+                <a class="btn btn-success pull-right">Con poda</a>
+            {{/ifCond}}
+            <a class="btn btn-warning pull-right add-incident mr-1" data-status-id="{{viewData.project.project_status_id}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa-regular fa-flag"></i></a>
             <a class="btn btn-info pull-right show-materials-summary mr-1" data-project-id="{{viewData.project.id_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-list"></i></a>
 		</h1>
     <div class="progress mb-0">

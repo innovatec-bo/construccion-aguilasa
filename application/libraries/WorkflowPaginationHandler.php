@@ -381,6 +381,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'drawing_date' => ['column' => 'drawing.entry_date drawing_date', 'dependencies' => ['drawing']],
 
 			'schedule_date' => ['column' => 'schedulee.entry_date schedule_date', 'dependencies' => ['schedulee']],
+			'trim_tree' => ['column' => 'schedulee.trim_tree_prb trim_tree', 'dependencies' => ['schedulee']],
             'schedule_design_budget' => ['column' => 'schedulee.design_prb schedule_design_budget', 'dependencies' => ['schedulee']],
 			'schedulee_tentative_total_budget' => ['column' => 'schedulee.tentative_total_budget_prb schedulee_tentative_total_budget', 'dependencies' => ['schedulee']],
 			'project_current_budget' => ['column' => "
