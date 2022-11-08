@@ -317,8 +317,8 @@ var StatusManagementHandler = /** @class */ (function () {
                 if (index === 0) {
                     var minDate = new Date(_this.viewData.projectLog[0].manual_entry_date_psl);
                     $(value).datetimepicker({
-                        ignoreReadonly: true,
-                        // defaultDate: minDate,
+                        // ignoreReadonly: true,
+                        defaultDate: moment(),
                         // minDate:minDate,
                         locale: "es",
                         format: 'DD-MM-YYYY'
