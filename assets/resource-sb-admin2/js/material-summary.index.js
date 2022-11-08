@@ -2,10 +2,11 @@ $(document).ready(function() {
     $('select[name=project-id]').select2({allowClear:true,placeholder:'Elija un proyecto'})
     var additionalParameter = new DTAdditionalParameterHandler("#extra-request-data","#material-summary-index");
     additionalParameter.addParameterObject('project-id','select');
+    additionalParameter.addParameterObject('material-ids','select');
     additionalParameter.setButtonFilter('#send-filters');
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
-    
+    startSelect2Materials('select.select2-materials','');
     //Horizontal Icons dataTable
     var oTable = $('#material-summary-index').dataTable({
         "processing" : true,
@@ -43,18 +44,12 @@ $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
             this.api().column(0).visible(false);
         },
-        "buttons": [{
-            extend: 'excel',
-            footer: true,
-            exportOptions: {
-                 columns: [1,2,3,4,5,6]
-             }
-        }]
+        "buttons": []
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Search');
     $('.dataTables_length select').addClass('form-control');
     oTable.fnSetFilteringDelay(1000);
-    var data = oTable.buttons.exportData( {
-        columns: ':visible'
-    } );
+    // var data = oTable.buttons.exportData( {
+    //     columns: ':visible'
+    // } );
 });

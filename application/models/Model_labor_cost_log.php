@@ -188,7 +188,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 			WHERE deleted_bld != 1
 			GROUP BY from_bld, to_bld 
         ) bui_blocked_log_date_ranges on manual_entry_date_lal between from_bld and to_bld 
-        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 ".$projectFilter."  ".$builderFilter." ".$dateFilter."
+        where deleted_lal != 1 and status_id_lad = 11 and (deleted_bim != 1 or deleted_bim is null) and deleted_wus != 1 ".$projectFilter."  ".$builderFilter." ".$dateFilter."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
         ";
@@ -246,7 +246,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
     {
         $ci = &get_instance();
         $ci->load->database();
-
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $escapedIds = "";
         foreach ($idsArray as $id) 
         {
@@ -254,7 +255,11 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         }
         $escapedIds = substr($escapedIds, 0, -2);
         $sql = "
-        update bui_labor_cost_log set deleted_lal = 1 where id_lal in (".$escapedIds.")
+        update bui_labor_cost_log set 
+        deleted_lal = 1,
+        deleted_at = now(), 
+        deleted_by = ".$currentUserId."  
+        where id_lal in (".$escapedIds.")
         ";
 
         $ci->db->query($sql);
@@ -403,7 +408,7 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 				and deleted_wus != 1
 				GROUP BY labor_cost_id_wus, point_id_lal
 		) bui_worked_up_structures_by_point on id_lac = bui_worked_up_structures_by_point.labor_cost_id_wus
-        where deleted_lal != 1 and (deleted_bim != 1 or deleted_bim is null) and wus.deleted_wus != 1 and id_lal = ".$ci->db->escape($logId)."
+        where deleted_lal != 1 and status_id_lad = 11 and (deleted_bim != 1 or deleted_bim is null) and wus.deleted_wus != 1 and id_lal = ".$ci->db->escape($logId)."
         GROUP BY id_lal, id_lac
         ORDER BY manual_entry_date_lal desc
         ";

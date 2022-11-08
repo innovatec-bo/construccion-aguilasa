@@ -544,7 +544,7 @@ var StatusManagementHandler = /** @class */ (function () {
                 this.saveAsBuilt(statusId, statusKeyword);
                 break;
             case "conciliation_reception":
-                this.saveBasicLog(statusId, statusKeyword);
+                this.saveConciliationReception(statusId, statusKeyword);
                 break;
             case "conciliation_shipment":
                 this.saveConciliationShipment(statusId, statusKeyword);
@@ -802,6 +802,34 @@ var StatusManagementHandler = /** @class */ (function () {
             }
         });
     };
+    StatusManagementHandler.prototype.saveConciliationReception = function (statusId, statusKeyword) {
+        var _this = this;
+        var data = this.prepareDataToSave(statusId, statusKeyword);
+        var design = $("input[name=design-budget]").val();
+        var building = $("input[name=building-budget]").val();
+        var transportation = $("input[name=transportation-budget]").val();
+        var liveLine = $("input[name=live-line-budget]").val();
+        var rightOfWay = $("input[name=right-of-way-budget]").val();
+        var manpowerFileId = $("input[name=manpower-construction-file-id]").val();
+        var conciliationReception = {
+            design: design,
+            building: building,
+            transportation: transportation,
+            liveLine: liveLine,
+            rightOfWay: rightOfWay,
+            manpowerFileId: manpowerFileId
+        };
+        var dataResult = Object.assign(data, conciliationReception);
+        $.ajax({
+            url: base_url + 'panel/AjaxProjectStatus/saveConciliationReception',
+            dataType: "json",
+            type: "POST",
+            data: dataResult,
+            success: function () {
+                _this.loadView();
+            }
+        });
+    };
     StatusManagementHandler.prototype.saveConciliationShipment = function (statusId, statusKeyword) {
         var _this = this;
         var data = this.prepareDataToSave(statusId, statusKeyword);
@@ -946,6 +974,7 @@ var StatusManagementHandler = /** @class */ (function () {
                     $(form).unblock();
                     if (response.success == 1) {
                         var projectBudgetId = $("input[name=project-budget-id]").val();
+                        //If projectBudgetId is setup then we are processing for a project with already budget data
                         if (projectBudgetId != "") {
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);
@@ -956,6 +985,60 @@ var StatusManagementHandler = /** @class */ (function () {
                             var extraInfo = response.data.extraInfo;
                             var $form = $("#status-form-content");
                             $form.find("input[name=manpower-file-id]").val(file.id);
+                            $form.find("input[name=design-budget]").val(budget.design);
+                            $form.find("input[name=building-budget]").val(budget.building);
+                            $form.find("input[name=transportation-budget]").val(budget.transportation);
+                            $form.find("input[name=live-line-budget]").val(budget.liveLine);
+                            $form.find("input[name=right-of-way-budget]").val(budget.rightOfWay);
+                            $form.find("input[name=graph-number-budget]").val(extraInfo.graphNumber);
+                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            console.log(response.data);
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Error',
+                            html: response.message
+                        });
+                        console.log(response.message);
+                    }
+                }
+            });
+        });
+        $(document).on("click", ".extract-construction-approved-budgets", function () {
+            var formName = $(this).data('form-name');
+            var saveInSystem = $(this).data('save-in-system');
+            var form = $('form[name=' + formName + ']')[0];
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: base_url + "panel/AjaxProjectStatus/readManpowerFile/" + saveInSystem,
+                data: data,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function () {
+                    blockArea($(form));
+                },
+                success: function (response) {
+                    $(form).unblock();
+                    if (response.success == 1) {
+                        var projectBudgetId = $("input[name=project-construction-budget-id]").val();
+                        //If projectBudgetId is setup then we are processing for a project with already budget data
+                        if (projectBudgetId != "") {
+                            _this.projectLog();
+                            _this.loadStatusForm('conciliation_reception', 0);
+                        }
+                        else {
+                            var file = response.data.file;
+                            var budget = response.data.budget;
+                            var extraInfo = response.data.extraInfo;
+                            var $form = $("#status-form-content");
+                            $form.find("input[name=manpower-construction-file-id]").val(file.id);
                             $form.find("input[name=design-budget]").val(budget.design);
                             $form.find("input[name=building-budget]").val(budget.building);
                             $form.find("input[name=transportation-budget]").val(budget.transportation);
@@ -1011,8 +1094,8 @@ var StatusManagementHandler = /** @class */ (function () {
                             var budget = response.data.budget;
                             var $form_1 = $("#status-form-content");
                             $form_1.find("input[name=point-to-point-file-id]").val(file.id);
-                            $form_1.find("input[name=building-budget]").val(budget.building);
-                            StatusManagementHandler.updateTotalOnApprovedForm();
+                            // $form.find("input[name=building-budget]").val(budget.building);
+                            // StatusManagementHandler.updateTotalOnApprovedForm();
                             console.log(response.data);
                         }
                     }

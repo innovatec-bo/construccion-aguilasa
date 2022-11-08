@@ -90,7 +90,10 @@ function DTAdditionalParameterHandler(objectContent, table) {
                 $(tableSelector).DataTable().ajax.reload();
             if($('#pagination-content').length > 0)
                 $('#pagination-content').pagination('go', 1);
+
+            $("select").hasClass('select2-hidden-accessible')
             $("#extra-request-data")[0].reset();
+            $("select.select2-hidden-accessible").val(null).trigger("change");
         });
     };
 }

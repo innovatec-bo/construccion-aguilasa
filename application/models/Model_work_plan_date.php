@@ -24,7 +24,9 @@ class Model_work_plan_date extends Model_work_plan_date_base
         $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
         update ".static::TABLE_NAME."
-        set deleted_wpd = 1,
+        set deleted_wpd = 1, 
+        deleted_at = now(), 
+        deleted_by = ".$currentUserId.",
         editedby_wpd = ".$currentUserId.",
         editedon_wpd = ".$ci->db->escape($currentDate)."
         where work_plan_id_wpd = ".$ci->db->escape($workPlanId)."

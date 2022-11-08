@@ -106,7 +106,7 @@ class Model_labor_cost_base extends MY_Model
                 LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
                 LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
                 LEFT JOIN wfl_projects on id_pro = project_id_lad
-                where '.static::notDeleted();
+                where '.static::notDeleted() ." and status_id_lad = 11 ";
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;
@@ -133,7 +133,7 @@ class Model_labor_cost_base extends MY_Model
                 LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
                 LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
                 LEFT JOIN wfl_projects on id_pro = project_id_lad
-                where '.static::notDeleted().'             
+                where '.static::notDeleted().' and status_id_lad = 11         
                 group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
         $query = $ci->db->query($sql);
         $result = $query->result();
@@ -154,7 +154,7 @@ class Model_labor_cost_base extends MY_Model
                 LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
                 LEFT JOIN wfl_projects on id_pro = project_id_lad
         ';
-        $sql .= ' where '.static::notDeleted().' and (';
+        $sql .= ' where '.static::notDeleted().' and status_id_lad = 11 and (';
         foreach ($colsArray as $var)
         {
             $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
@@ -177,7 +177,7 @@ class Model_labor_cost_base extends MY_Model
         LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
         LEFT JOIN bui_labor_details on labor_detail_id_lac = id_lad
         LEFT JOIN wfl_projects on id_pro = project_id_lad
-         where '.static::notDeleted().' and (';
+         where '.static::notDeleted().'  and status_id_lad = 11  and (';
 
         foreach ($colsArray as $var)
         {

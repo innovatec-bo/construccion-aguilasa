@@ -72,9 +72,14 @@ class Model_status_log_responsible extends Model_status_log_responsible_base
     {
         $ci = &get_instance();
         $ci->load->database();
-
+		$currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
-            update ".static::TABLE_NAME." set deleted_slr = 1 where status_log_id_slr = ".$ci->db->escape($statusLogId)."
+            update ".static::TABLE_NAME." set 
+			deleted_slr = 1,
+			deleted_at = now(),
+            deleted_by = ".$currentUserId."
+			where status_log_id_slr = ".$ci->db->escape($statusLogId)."
         ";
         $ci->db->query($sql);
     }

@@ -340,7 +340,7 @@ class Warehouse extends PrivateController
 						$currentUser = PrivateController::getSessionUser();
 						$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 						$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
-						$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], $currentUserId,1,"",null,$log[0]['reservation_number_prb']);
+						$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], NULL,1,"",null,$log[0]['reservation_number_prb']);
 					// }
 
 					$response['success'] = 1;

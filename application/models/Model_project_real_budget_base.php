@@ -18,8 +18,9 @@ class Model_project_real_budget_base extends MY_Model
     protected $_transportation;
     protected $_liveLine;
     protected $_rightOfWay;
+    protected $_manpowerFileId;
 
-    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $transportation = 0, $liveLine = 0, $rightOfWay)
+    public function __construct($statusLogId = NULL, $design = 0, $building = 0, $transportation = 0, $liveLine = 0, $rightOfWay, $manpowerFileId = null)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -28,6 +29,7 @@ class Model_project_real_budget_base extends MY_Model
         $this->_transportation = $transportation;
         $this->_liveLine = $liveLine;
         $this->_rightOfWay = $rightOfWay;
+        $this->_manpowerFileId = $manpowerFileId;
     }
 
     /**
@@ -44,6 +46,7 @@ class Model_project_real_budget_base extends MY_Model
             "transportation_reb" => $this->_transportation,
             "live_line_reb" => $this->_liveLine,
             "right_of_way_reb" => $this->_rightOfWay,
+            "manpower_file_id_reb" => $this->_manpowerFileId,
             "deleted_reb" => $this->_deleted,
             "createdon_reb" => $this->_createdOn,
             "createdby_reb" => $this->_createdBy,
@@ -73,7 +76,8 @@ class Model_project_real_budget_base extends MY_Model
                 $object->building_reb,
                 $object->transportation_reb,
                 $object->live_line_reb,
-                $object->right_of_way_reb
+                $object->right_of_way_reb,
+                $object->manpower_file_id_reb
             );
             $instance->_id = $object->id_reb;
 
@@ -85,5 +89,37 @@ class Model_project_real_budget_base extends MY_Model
             $response = $instance;
         }
         return $response;
+    }
+
+    //Setters
+
+    public function setDesign($design)
+    {
+        $this->_design = $design;
+    }
+
+    public function setBuilding($building)
+    {
+        $this->_building = $building;
+    }
+
+    public function setTransportation($transportation)
+    {
+        $this->_transportation = $transportation;
+    }
+
+    public function setLiveLine($liveLine)
+    {
+        $this->_liveLine = $liveLine;
+    }
+
+    public function setRightOfWay($rightOfWay)
+    {
+        $this->_rightOfWay = $rightOfWay;
+    }
+
+    public function setManpowerFileId($manpowerFileId)
+    {
+        $this->_manpowerFileId = $manpowerFileId;
     }
 }

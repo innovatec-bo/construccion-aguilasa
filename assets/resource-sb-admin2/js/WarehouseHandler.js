@@ -103,6 +103,7 @@ var WarehouseHandler = /** @class */ (function () {
             case 11:
             case 14:
             case 15:
+            case 17:
             case 18:
                 $component.slideDown();
                 break;

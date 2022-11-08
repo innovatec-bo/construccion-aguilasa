@@ -9,8 +9,11 @@
 <script id="ht-status-management" type="text/x-handlebars-template">
     <div class="col-lg-12">
         <h1 class="page-header mb-0">{{viewData.statusName}}
-            <em class="subtext">{{viewData.project.code_pro}}</em> 
-            <a class="btn btn-warning pull-right add-incident" data-status-id="{{viewData.project.project_status_id}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-flag-o"></i></a>
+            <em class="subtext">{{viewData.project.code_pro}}</em>
+            {{#ifCond viewData.project.trim_tree '==' 1}}
+                <a class="btn btn-success pull-right">Con poda</a>
+            {{/ifCond}}
+            <a class="btn btn-warning pull-right add-incident mr-1" data-status-id="{{viewData.project.project_status_id}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa-regular fa-flag"></i></a>
             <a class="btn btn-info pull-right show-materials-summary mr-1" data-project-id="{{viewData.project.id_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-list"></i></a>
 		</h1>
     <div class="progress mb-0">
@@ -46,7 +49,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-cogs fa-2x"></i>
+                            <i class="fa fa-cogs fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.system}}</div>
@@ -61,7 +64,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-calendar fa-2x"></i>
+                            <i class="fa fa-calendar fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{formatDate viewData.project.entry_date_pro "short"}}</div>
@@ -76,7 +79,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-user fa-2x"></i>
+                            <i class="fa fa-user fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.cre_fiscal_pro}}</div>
@@ -91,7 +94,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-map-marker fa-2x"></i>
+                            <i class="fa fa-map-marker fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class="">{{viewData.project.address_pro}}</div>
@@ -106,7 +109,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-2 col-xs-2">
-                            <i class="fa fa-arrows-alt fa-2x"></i>
+                            <i class="fa fa-arrows-alt fa-3x"></i>
                         </div>
                         <div class="col-md-9 col-xs-10 text-right">
                             <div class=""><span id="points">{{viewData.project.points_pro}}</span>p/<span id="distance">{{viewData.project.distance_pro}}</span>Km</div>
@@ -278,7 +281,7 @@ $this->load->view("default-template/panel/content/project-status/ht-status-proje
 $this->load->view("default-template/panel/content/project-status/ht-finished-stage-design");
 $this->load->view("default-template/panel/content/project-status/ht-status-saved-view");
 
-$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view");
+$this->load->view("default-template/panel/content/project-status/ht-status-project-log-quick-view.hbr");
 $this->load->view("default-template/panel/content/project-status/ht-modal-modify-log");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-form");
 $this->load->view("default-template/panel/content/project-status/ht-modal-incident-list");

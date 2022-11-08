@@ -111,13 +111,19 @@ class MY_Model
         {
             $this->_editedOn = $currentDate;
             $this->_editedBy = $currentUserId;
-            $ci->db->update( static::TABLE_NAME, $this->toArray(), array( static::TABLE_ID => $this->getId()));
+            $toArray = $this->toArray();
+            $toArray['updated_at'] = $currentDate;
+            $toArray['updated_by'] = $currentUserId;
+            $ci->db->update( static::TABLE_NAME, $toArray, array( static::TABLE_ID => $this->getId()));
         }
         else
         {
             $this->_createdOn = $currentDate;
             $this->_createdBy = $currentUserId;
-            $result = $ci->db->insert( static::TABLE_NAME, $this->toArray() );
+            $toArray = $this->toArray();
+            $toArray['created_by'] = $currentUserId;
+            $toArray['created_at'] = $currentDate;
+            $result = $ci->db->insert( static::TABLE_NAME, $toArray );
             if ( $result === true )
             {
                 $this->_id = $ci->db->insert_id();
@@ -130,9 +136,15 @@ class MY_Model
     {
         $ci = &get_instance();
         $ci->load->database();
+        date_default_timezone_set('America/La_Paz');
+        $now = new DateTime();
+        $currentDate = $now->format( "Y-m-d H:i:s" );
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         if (!$makePhysicalDelete)
         {
             // Delete logically the row. Change the state.
+            $ci->db->update(static::TABLE_NAME, array('deleted_at' => $currentDate, 'deleted_by' => $currentUserId), array(static::TABLE_ID => $this->getId()));
             return $ci->db->update(static::TABLE_NAME, array(static::DELETE_FIELD . static::ATTRIB_SUFIX => 1), array(static::TABLE_ID => $this->getId()));
         }
         else

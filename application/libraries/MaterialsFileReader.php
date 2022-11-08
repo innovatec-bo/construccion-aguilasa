@@ -164,7 +164,7 @@ class MaterialsFileReader
 	 * @param int|null $parentSummaryId
 	 * @param string $reservationNumber
 	 */
-    public function registerMaterialsInSystem(int $projectStatusLogId, string $entryDate, int $userResponsibleId, int $summaryTypeId, string $detail = "", ?int $parentSummaryId = NULL, ?string $reservationNumber = "") : void
+    public function registerMaterialsInSystem(int $projectStatusLogId, string $entryDate, ?int $userResponsibleId = NULL, int $summaryTypeId, string $detail = "", ?int $parentSummaryId = NULL, ?string $reservationNumber = "") : void
     {
         $materialSummaries = Model_material_summary::getByProjectId($this->_projectId);
         //If the material summary does not exist for the project then let's create it and add its project's material list

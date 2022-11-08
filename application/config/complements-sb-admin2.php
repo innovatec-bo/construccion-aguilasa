@@ -35,7 +35,8 @@ $config['complements']['sb-admin-2']['js'] = assets_url('resource-sb-admin2/dist
 $config['complements']['morris']['css'] = assets_url('resource-sb-admin2/vendor/morrisjs/morris.css');
 $config['complements']['morris']['js'] = assets_url('resource-sb-admin2/vendor/morrisjs/morris.js');
 
-$config['complements']['font-awesome']['css'] = assets_url('resource-sb-admin2/vendor/font-awesome/css/font-awesome.min.css');
+// $config['complements']['font-awesome']['css'] = assets_url('resource-sb-admin2/vendor/font-awesome/css/font-awesome.min.css');
+$config['complements']['font-awesome']['css'] = assets_url('resource-sb-admin2/vendor/fontawesome-free-6.2.0-web/css/font-awesome.min.css');
 
 $config['complements']['tinymce']['js'] = assets_url('resource-sb-admin2/vendor/bootstrap/plugins/tinymce/tinymce.min.js');
 

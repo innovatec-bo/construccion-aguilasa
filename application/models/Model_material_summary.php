@@ -1,7 +1,7 @@
 <?php
 class Model_material_summary extends Model_material_summary_base
 {
-    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL, ?int $canceledBy = NULL)
+    public function __construct(?int $projectStatusLogId, string $tensionLevel, int $projectId, int $applicantProjectId, string $graphNumber, string $destiny, string $entryDate, string $detail, ?int $builderResponsible = NULL, int $summaryTypeId, ?string $reservationNumber, ?int $fileId = NULL, ?int $parentSummaryId = NULL, ?int $isLoan = 0, ?int $loanClosed = NULL, ?string $loanClosedDate = NULL, ?int $correlativeCounter = NULL, ?int $fiscalResponsible = NULL, ?int $statusId = NULL, ?string $canceledOn = NULL, ?string $withrawnOn = NULL, ?int $canceledBy = NULL)
 	{
 		parent::__construct($projectStatusLogId, $tensionLevel, $projectId, $applicantProjectId, $graphNumber, $destiny, $entryDate, $detail, $builderResponsible, $summaryTypeId, $reservationNumber, $fileId, $parentSummaryId, $isLoan, $loanClosed, $loanClosedDate, $correlativeCounter, $fiscalResponsible, $statusId, $canceledOn, $withrawnOn, $canceledBy);
 	}

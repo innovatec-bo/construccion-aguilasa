@@ -131,7 +131,7 @@ class AjaxPaymentManagement extends PrivateController
 		}
         else
 		{
-			$originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "conciliation_shipment");
+			$originalBudgets = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "conciliation_reception");
 			if(count($originalBudgets) > 0)
 			{
 

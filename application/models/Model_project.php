@@ -89,14 +89,14 @@ class Model_project extends Model_project_base
 	 * @param array $responsibleList
 	 * @param array $fileIds
 	 */
-    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array()) : void
+    public function saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $fileIds = array(), $manpowerFileId = null) : void
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectRealBudget = new Model_project_real_budget($projectStatus->getId(), $design, $building, $transportation, $liveLine, $rightOfWay);
+        $projectRealBudget = new Model_project_real_budget($projectStatus->getId(), $design, $building, $transportation, $liveLine, $rightOfWay, $manpowerFileId);
         $projectRealBudget->save();
 
         //Each statusLog needs to have a o more responsible by log
@@ -398,6 +398,7 @@ class Model_project extends Model_project_base
             tentative_total_budget_prb,
             reservation_number_prb,
             graph_number_prb,
+            trim_tree_prb,
 			design_reb,
 			building_reb,			
 			transportation_reb,
@@ -426,7 +427,7 @@ class Model_project extends Model_project_base
             FROM
                 wfl_project_status_log
             WHERE		
-            status_id_psl = ".$ci->db->escape($statusId)."
+            status_id_psl = ".$ci->db->escape($statusId)." {id-list-psl}
             and deleted_psl != 1
             
             GROUP BY project_id_psl
@@ -446,7 +447,7 @@ class Model_project extends Model_project_base
                             wfl_incidents
                         where 
                             paused_inc = 1
-                        and deleted_inc != 1
+                        and deleted_inc != 1 {id-list-inc}
                         GROUP BY
                             project_id_inc
                     ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
@@ -465,7 +466,7 @@ class Model_project extends Model_project_base
                     wfl_incidents
                 where 
                     stopped_inc = 1
-                and deleted_inc != 1
+                and deleted_inc != 1 {id-list-inc}
                 GROUP BY
                     project_id_inc
             ) last_incidents on last_incidents.project_id = project_id_inc and last_incidents.entry_date = manual_entry_date_inc
@@ -1608,14 +1609,14 @@ class Model_project extends Model_project_base
                 wfl_project_status_log
             LEFT JOIN wfl_project_status ON id_pst = status_id_psl
             WHERE
-                keyword_pst = 'conciliation_shipment'
+                keyword_pst = 'conciliation_reception'
             AND deleted_psl != 1
             GROUP BY
                 project_id_psl
         ) AS filter ON filter.entry_date = manual_entry_date_psl
             AND filter.project_id = project_id_psl
-        ) log_conciliation_shipment_budget on log_conciliation_shipment_budget.project_id_psl = id_pro
-        LEFT JOIN wfl_project_real_budgets on log_conciliation_shipment_budget.id_psl = status_log_id_reb
+        ) log_conciliation_reception_budget on log_conciliation_reception_budget.project_id_psl = id_pro
+        LEFT JOIN wfl_project_real_budgets on log_conciliation_reception_budget.id_psl = status_log_id_reb
         
         WHERE
         deleted_pro != 1
@@ -1740,7 +1741,7 @@ class Model_project extends Model_project_base
 			{
 				$approvedBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'schedule');
 			}
-			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_shipment');
+			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_reception');
 			if($statusKeyword != 'ready_to_send' && $statusKeyword != 'already_sent' && $statusKeyword != 'canceled')
 				$totalApprovedBudget += $approvedBudget;
 			$totalRealBudget += $realBudget;
@@ -2236,6 +2237,7 @@ class Model_project extends Model_project_base
             ".$filterLogDateFrom."
             ".$filterLogDateTo."
             -- and project_id_lad = 653
+            and status_id_lad = 11
             ".$filterBuilder."
             order by project_id_lad, manual_entry_date_lal
         ";
@@ -2457,6 +2459,7 @@ class Model_project extends Model_project_base
             ".$filterLogDateFrom."
             ".$filterLogDateTo."
             ".$filterProjectId."
+            and status_id_lad = 11
             GROUP BY project_id_lad
         ";
         $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;

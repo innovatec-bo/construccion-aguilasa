@@ -16,14 +16,16 @@ class Model_labor_detail_base extends MY_Model
     protected $_graphNumber;
     protected $_levelOfTension;
     protected $_destiny;
+    protected $_statusId;
 
-    public function __construct($projectId = NULL, $graphNumber = "", $levelOfTension = "", $destiny = "")
+    public function __construct($projectId = NULL, $graphNumber = "", $levelOfTension = "", $destiny = "", $statusId = "")
     {
         parent::__construct();
         $this->_projectId = $projectId;
         $this->_graphNumber = $graphNumber;
         $this->_levelOfTension = $levelOfTension;
         $this->_destiny = $destiny;
+        $this->_statusId = $statusId;
     }
 
     /**
@@ -38,6 +40,7 @@ class Model_labor_detail_base extends MY_Model
             "graph_number_lad" => $this->_graphNumber,
             "level_of_tension_lad" => $this->_levelOfTension,
             "destiny_lad" => $this->_destiny,
+            "status_id_lad" => $this->_statusId,
             "deleted_lad" => $this->_deleted,
             "createdon_lad" => $this->_createdOn,
             "createdby_lad" => $this->_createdBy,
@@ -65,7 +68,8 @@ class Model_labor_detail_base extends MY_Model
                 $object->project_id_lad,
                 $object->graph_number_lad,
                 $object->level_of_tension_lad,
-                $object->destiny_lad
+                $object->destiny_lad,
+                $object->status_id_lad
             );
             $instance->_id = $object->id_lad;
 

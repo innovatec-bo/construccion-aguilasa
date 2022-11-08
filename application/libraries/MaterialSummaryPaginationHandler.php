@@ -8,8 +8,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
 	{
 		parent::__construct($limit, $offset, $orderBy, $orderType, $textToSearch, $colsArray);
+		// 'grouping-criteria' => ' project_id_msu, material_id_prm, tension_id_prm, status_id_prm '
 		$this->_additionalParameters = array(
-			'grouping-criteria' => ' project_id_msu, material_id_prm, tension_id_prm, status_id_prm '
+			'grouping-criteria' => ' project_id_msu, material_id_prm, status_id_prm '
 		);
 	}
 
@@ -25,6 +26,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					working_materials.*,
 					-- Filter by project
 					IFNULL(assigned_materials.quantity,0) quantity_assigned_materials,
+					IFNULL(additional_materials.quantity,0) quantity_additional_materials,
 					IFNULL(materials_picked_up_from_cre.quantity,0) quantity_picked_up_from_cre,
 					(IFNULL(materials_delivered_to_builder.quantity,0) + IFNULL(materials_delivered_to_builder_loan.quantity,0) )- IFNULL(non_used_materials.quantity,0) quantity_materials_delivered_to_builder,
 					IFNULL(materials_delivered_to_cre.quantity,0) quantity_materials_delivered_to_cre,
@@ -88,6 +90,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 						deleted_prm != 1
 						{project-id}
 						{reservation-number}
+						{material-ids}
 						and deleted_msu != 1
 						GROUP BY project_id_msu, material_id_prm
 						ORDER BY createdby_msu
@@ -95,6 +98,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 				LEFT JOIN (
 					{$this->_subQueryQuantity('1,2')}
 				) as assigned_materials on working_materials.material_id = assigned_materials.material_id and working_materials.project_id = assigned_materials.project_id
+				LEFT JOIN (
+					{$this->_subQueryQuantity('2')}
+				) as additional_materials on working_materials.material_id = additional_materials.material_id and working_materials.project_id = additional_materials.project_id
 				LEFT JOIN (
 					{$this->_subQueryQuantity('3')}
 				) materials_picked_up_from_cre on materials_picked_up_from_cre.material_id = working_materials.material_id and materials_picked_up_from_cre.project_id = working_materials.project_id
@@ -157,7 +163,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 					{$this->_subQueryQuantity('18')}
 				) builder_returns_materials on builder_returns_materials.material_id = working_materials.material_id and builder_returns_materials.project_id = working_materials.project_id
 			) ".static::TABLE_NAME."_master_detail
-		";
+		";//echo"<pre>";var_dump($this->_applyNestedFilters($coreQuery));exit;
 		return $this->_applyNestedFilters($coreQuery);
 	}
 
@@ -167,9 +173,9 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 	 */
 	private function _subQueryQuantity(string $summaryTypeId, $reservationNumber = TRUE, $project = TRUE, $summaryStatus = "") : string
 	{
-
 		$reservationNumberFilter = "";
-		if($reservationNumber)
+		//Include reservation number filter if the summary type is materials_initial_list, materials_additional_list, materials_picked_up_from_cre, materials_delivered_to_cre
+		if($reservationNumber && in_array($summaryTypeId,[1,2,3,8]))
 			$reservationNumberFilter = " {reservation-number} ";
 
 		$projectFilter = "";
@@ -281,7 +287,10 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 							// 	$sql .= " and pending_material_in_cre > 0 ";
 							// elseif($value == 0)
 							// 	$sql .= " and pending_material_in_cre = 0 ";
-							$sql .= " and pending_material_in_cre > 0 ";
+							if($value == 1)
+							{
+								$sql .= " and pending_material_in_cre > 0 ";	
+							}
 						break;
 					case "fiscal-responsible-id":
 						if(is_numeric($value))
@@ -316,6 +325,7 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 				"material_code" => $row->material_code,
 				"project_code" => $row->project_code,
 				"quantity_assigned" => $row->quantity_assigned_materials,
+				'quantity_additional' => $row->quantity_additional_materials,
 				"material_description" => $row->material_description,
 				"quantity_picked_up_from_cre" => $row->quantity_picked_up_from_cre,
 				"request_materials_quantity" => $row->request_materials_quantity,
@@ -364,6 +374,24 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 						break;
 					case "{grouping-criteria}":
 						$query = str_replace("{grouping-criteria}",$value, $query);
+						break;
+					case "{material-ids}":
+							$idList = $value;
+							$idList = str_replace("\r\n"," ", $idList);
+							$idList = str_replace(" ",PHP_EOL, $idList);
+							$idList = explode(PHP_EOL, $idList);
+							$idList = array_values(array_filter($idList));
+							$idListFilter = "";
+							foreach ($idList as $id)
+							{
+								$idListFilter .= $ci->db->escape($id).", ";
+							}
+							$idListFilter = substr($idListFilter,0, -2);
+							if($idListFilter != "")
+							{
+								$query = str_replace("{material-ids}",' and id_mat in ('.$idListFilter.') ', $query);
+							}
+							
 						break;
 				}
 			}

@@ -596,7 +596,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
 		$paginationHandler = new WorkflowPaginationHandler(1,0);
-		$paginationHandler->setAdditionalParameters(['code-list'=>$project->getCode()]);
+		$paginationHandler->setAdditionalParameters(['id-list'=>$project->getId()]);
 		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
 		$data['workflow'] = (array)$response[0];
@@ -641,7 +641,7 @@ class Project extends PrivateController
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
 
 		$paginationHandler = new WorkflowPaginationHandler(1,0);
-		$paginationHandler->setAdditionalParameters(['code-list'=>$project->getCode()]);
+		$paginationHandler->setAdditionalParameters(['id-list'=>$project->getId()]);
 		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
         $data['workflow'] = (array)$response[0];
@@ -741,7 +741,7 @@ class Project extends PrivateController
     public function getAllProjectsLog()
     {
 		set_time_limit(300);
-		ini_set('memory_limit','256M');
+		ini_set('memory_limit','500M');
         $report = new ExcelAllProjectsLog($this->sessionUser);
         $report->getReport();
     }

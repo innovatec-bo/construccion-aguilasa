@@ -25,6 +25,9 @@ class ManpowerFileReader
     private $_structureListFromExcelFile;
     private $_pointList;
     private $_pointToPointToSave;
+    private $_manpowerStatusId;
+    private $_isBuildingFile = FALSE;
+    private $_isCorrectFile = FALSE;
 
     public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
 	{
@@ -47,6 +50,7 @@ class ManpowerFileReader
         $this->_destiny = '';
         $this->_setStructureListFromExcelFile();
         $this->_setDataFromExcelFile();
+        $this->_manpowerStatusId = 11;//Approved
 	}
 
 	private function _setExcelArrayData()
@@ -61,7 +65,8 @@ class ManpowerFileReader
                 break;
             default:
                 $reader = new Csv();
-                $reader->setDelimiter(';');       
+                $delimiter = $this->_detectDelimiter(FCPATH.$this->_file->getUrl());
+                $reader->setDelimiter($delimiter);
                 break;
         }
         $fileLocation = FCPATH.$this->_file->getUrl();
@@ -125,6 +130,7 @@ class ManpowerFileReader
 
     private function _setDataFromExcelFile()
     {
+        $project = Model_project::getById($this->_projectId);
         $startReadingData = FALSE;
         foreach($this->_excelArrayData as $index => $data)
         {
@@ -156,6 +162,14 @@ class ManpowerFileReader
                         break;
                     }
                 }
+            }
+            if(strpos(strtolower($data[0]),'construccion') !== FALSE)
+            {
+                $this->_isBuildingFile = TRUE;
+            }
+            if(strpos(strtolower($data[0]),strtolower($project->getCode())) !== FALSE)
+            {
+                $this->_isCorrectFile = TRUE;
             }
             //Setting approved budgets
             if($data[0] == 'ITEM')
@@ -221,29 +235,34 @@ class ManpowerFileReader
         }
     }
 
+    public function setManpowerStatusId($statusId)
+    {
+        $this->_manpowerStatusId = $statusId;
+    }
+
     public function getDesignBudget()
     {
-        return $this->_designBudget;
+        return number_format($this->_designBudget,2,'.','');
     }
 
     public function getBuildingBudget()
     {
-        return $this->_buildingBudget;
+        return number_format($this->_buildingBudget, 2,'.','');
     }
 
     public function getTransportationBudget()
     {
-        return $this->_transportationBudget;
+        return number_format($this->_transportationBudget, 2,'.','');
     }
 
     public function getLiveLineBudget()
     {
-        return $this->_liveLineBudget;
+        return number_format($this->_liveLineBudget, 2,'.','');
     }
 
     public function getRightOfWayBudget()
     {
-        return $this->_rightOfWayBudget;
+        return number_format($this->_rightOfWayBudget,2,'.','');
     }
 
     public function getGraphNumber()
@@ -264,12 +283,22 @@ class ManpowerFileReader
     public function registerManpowerInSystem()
     {
         $laborCostToSave = array();
-        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId);
+        $laborDetail = Model_labor_detail::getByProjectId($this->_projectId, $this->_manpowerStatusId);
+        //Delete existing labor datail if it is distinct to approved status
+        if($this->_manpowerStatusId != 11)
+        {
+            if($laborDetail instanceof Model_labor_detail)
+            {
+                $laborDetail->delete();
+                $laborDetail = null;
+            }
+        }
+        
 
         //If the labor detail does not exist for the project then let's create it and add its labor cost list
         if(!$laborDetail instanceof Model_labor_detail)
         {
-            $laborDetail = new Model_labor_detail($this->_projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny);
+            $laborDetail = new Model_labor_detail($this->_projectId, $this->_graphNumber, $this->_levelOfTension, $this->_destiny, $this->_manpowerStatusId);
             $laborDetail->save();
             $structureCodeList = array_keys($this->_structureListFromExcelFile);
             $existingStructures = Model_building_structure::getMasterDetailByStructureCodeList($structureCodeList);
@@ -457,5 +486,39 @@ class ManpowerFileReader
     private function _linkStructuresToPoints()
     {
         Model_point_to_point_master::linkStructuresToPoints($this->_projectId);   
+    }
+
+    public function validateFile()
+    {
+        if(!$this->_isCorrectFile)
+        {
+            throw new Exception("El archivo no corresponde al proyecto");
+        }
+        elseif ($this->_manpowerStatusId == 34 && !$this->_isBuildingFile) 
+        {
+            throw new Exception("Parece ser que este archivo debe ser cargado en la etapa de aprobacion");    
+        }
+        elseif($this->_manpowerStatusId == 11 && $this->_isBuildingFile)
+        {
+            throw new Exception("Parece ser que este archivo debe ser cargado en la etapa de recepcion de conciliacion");
+        }
+    }
+
+    /**
+    * @param string $csvFile Path to the CSV file
+    * @return string Delimiter
+    */
+    private function _detectDelimiter($csvFile)
+    {
+        $delimiters = [";" => 0, "," => 0, "\t" => 0, "|" => 0];
+
+        $handle = fopen($csvFile, "r");
+        $firstLine = fgets($handle);
+        fclose($handle); 
+        foreach ($delimiters as $delimiter => &$count) {
+            $count = count(str_getcsv($firstLine, $delimiter));
+        }
+
+        return array_search(max($delimiters), $delimiters);
     }
 }

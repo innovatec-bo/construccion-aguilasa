@@ -58,8 +58,14 @@ class Model_user_role extends Model_user_role_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
-            update ".static::TABLE_NAME." set deleted_uro = 1 where userid_uro = ".$ci->db->escape($userId)."
+            update ".static::TABLE_NAME." set 
+            deleted_uro = 1, 
+            deleted_at = now(),
+            deleted_by = ".$currentUserId."
+            where userid_uro = ".$ci->db->escape($userId)."
         ";
         $ci->db->query($sql);
     }
@@ -68,8 +74,14 @@ class Model_user_role extends Model_user_role_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $currentUser = PrivateController::getSessionUser();
+        $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
         $sql = "
-            update ".static::TABLE_NAME." set deleted_uro = 1 where roleid_uro = ".$ci->db->escape($roleId)."
+            update ".static::TABLE_NAME." set 
+            deleted_uro = 1,
+            deleted_at = now(),
+            deleted_by = ".$currentUserId."
+            where roleid_uro = ".$ci->db->escape($roleId)."
         ";
         $ci->db->query($sql);
     }

@@ -153,6 +153,10 @@ div.dataTables_length {
 {
 	padding:3px 0px 2px 0px
 }
+
+th {
+    cursor: pointer;
+}
 @media (min-width: 768px) {
 	.event-list > li {
 		/*position: relative;*/

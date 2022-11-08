@@ -65,7 +65,7 @@
 								$columnsToShow = "material_code,material_description,movement,tension,status";
 							break;
 							case 'materials_delivered_to_builder':
-								$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,request_materials_quantity,quantity_in_warehouse,all_quantity_in_warehouse,movement,tension,status,delivered_to_builder_detail";
+								$columnsToShow = "material_code,material_description,quantity_assigned_materials,quantity_picked_up_from_cre,pending_material_in_cre,quantity_materials_delivered_to_builder,request_materials_quantity,quantity_in_warehouse,movement,tension,status,delivered_to_builder_detail";
 							break;
 							default:
 							//all_quantity_in_warehouse,

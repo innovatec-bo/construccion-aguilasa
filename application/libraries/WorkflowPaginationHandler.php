@@ -174,10 +174,10 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 				$sql .= " and approved.total_budget is null and approved.total_budget is null ";
 				break;
 			case "countRealBudgets":
-				$sql .= " and conciliation_shipment.total_real_budget is not null and conciliation_shipment.total_real_budget is not null ";
+				$sql .= " and conciliation_reception.total_real_budget is not null and conciliation_reception.total_real_budget is not null ";
 				break;
 			case "countWithoutRealBudgets":
-				$sql .= " and conciliation_shipment.total_real_budget is null and conciliation_shipment.total_real_budget is null ";
+				$sql .= " and conciliation_reception.total_real_budget is null and conciliation_reception.total_real_budget is null ";
 				break;
 		}
 
@@ -381,29 +381,34 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'drawing_date' => ['column' => 'drawing.entry_date drawing_date', 'dependencies' => ['drawing']],
 
 			'schedule_date' => ['column' => 'schedulee.entry_date schedule_date', 'dependencies' => ['schedulee']],
+			'trim_tree' => ['column' => 'schedulee.trim_tree_prb trim_tree', 'dependencies' => ['schedulee']],
             'schedule_design_budget' => ['column' => 'schedulee.design_prb schedule_design_budget', 'dependencies' => ['schedulee']],
 			'schedulee_tentative_total_budget' => ['column' => 'schedulee.tentative_total_budget_prb schedulee_tentative_total_budget', 'dependencies' => ['schedulee']],
 			'project_current_budget' => ['column' => "
 										CASE
 											WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
 												then initial_design_budget_pro + initial_building_budget_pro
-											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+											WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing') 
 												then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
-											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') 
+											WHEN keyword_pst in('canceled') 
+												then canceled.design_prb \n
+											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built') 
 												then approved.total_budget\n
-											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
-												then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget)\n
-										END project_current_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
+											WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+												then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget)\n
+										END project_current_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
 			'project_current_design_budget' => ['column' => "CASE 
 													WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
 														then initial_design_budget_pro
-													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
+													WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing') 
 														then schedulee.design_prb
-													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception') 
+													WHEN keyword_pst in('canceled') 
+														then canceled.design_prb \n
+													WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built') 
 														then approved.design_prb
-													WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
-														then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb)
-												END project_current_design_budget", 'dependencies' => ['schedulee','approved','payment_order_registered','conciliation_shipment']],
+													WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+														then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb)
+												END project_current_design_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
 
 			'ready_to_send_date' => ['column' => 'ready_to_send.entry_date ready_to_send_date', 'dependencies' => ['ready_to_send']],
 
@@ -419,24 +424,24 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             'right_of_way_budget' => ['column' => 'approved.right_of_way_prb right_of_way_budget', 'dependencies' => ['approved']],
             'total_approved' => ['column' => 'approved.total_budget total_approved', 'dependencies' => ['approved']],
             'manpower_file_id' => ['column' => 'approved.manpower_file_id', 'dependencies' => ['approved']],
-			'live_line_assigned' => ['column' => "if(status_pro >= 35,if(conciliation_shipment.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned", 'dependencies' => ['conciliation_shipment','approved']],
+			'live_line_assigned' => ['column' => "if(status_pro >= 34,if(conciliation_reception.live_line_reb > 0,'Si','No'),if(approved.live_line_prb > 0,'Si','No')) live_line_assigned", 'dependencies' => ['conciliation_reception','approved']],
 			'construction_assignment_id' => ['column' => 'IF(assign_to.construction_assignment_id is null, approved.construction_assignment_id, assign_to.construction_assignment_id) construction_assignment_id', 'dependencies' => ['assign_to','approved']],
             'project_manager_user_id' => ['column' => 'IF(assign_to.project_manager_id is null, approved.project_manager_id, assign_to.project_manager_id) project_manager_user_id', 'dependencies' => ['assign_to','approved']],
             'project_manager_assigned' => ['column' => 'IF(assign_to.project_manager_id is null, approved.project_manager_full_name, assign_to.project_manager_full_name) project_manager_assigned', 'dependencies' => ['assign_to','approved']],
 			'production_percentage' => ['column' => "CASE 
 											WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned','schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing','canceled') 
 												then 0.00
-											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built','conciliation_reception')
+											WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built')
 												then 
 												FORMAT(
 													(((IFNULL(production.total_bs,0) + approved.design_prb) * 100)/ approved.total_budget)
 												, 2)
-											WHEN keyword_pst in('conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+											WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 												then
 												FORMAT(
-													(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget))
+													(((IFNULL(production.total_bs,0) + if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb) ) * 100)/ if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget))
 												, 2)
-										END production_percentage", 'dependencies' => ['production','approved','payment_order_registered','conciliation_shipment']],
+										END production_percentage", 'dependencies' => ['production','approved','payment_order_registered','conciliation_reception']],
 
 			'canceled_date' => ['column' => 'canceled.entry_date canceled_date', 'dependencies' => ['canceled']],
 
@@ -477,12 +482,12 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'conciliation_reception_date' => ['column' => 'conciliation_reception.entry_date conciliation_reception_date', 'dependencies' => ['conciliation_reception']],
 
 			'conciliation_shipment_date' => ['column' => 'conciliation_shipment.entry_date conciliation_shipment_date', 'dependencies' => ['conciliation_shipment']],
-			'payment_order_registered_design_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_shipment.design_reb) payment_order_registered_design_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
-            'payment_order_registered_building_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.building_budget_pop, conciliation_shipment.building_reb) payment_order_registered_building_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
-            'payment_order_registered_transportation_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.transportation_budget_pop, conciliation_shipment.transportation_reb) payment_order_registered_transportation_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
-            'payment_order_registered_live_line_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.live_line_budget_pop, conciliation_shipment.live_line_reb) payment_order_registered_live_line_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
-            'payment_order_registered_right_of_way_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.right_of_way_budget_pop, conciliation_shipment.right_of_way_reb) payment_order_registered_right_of_way_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
-            'payment_order_registered_total_real_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_shipment.total_real_budget) payment_order_registered_total_real_budget", 'dependencies' => ['payment_order_registered','conciliation_shipment']],
+			'payment_order_registered_design_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb) payment_order_registered_design_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
+            'payment_order_registered_building_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.building_budget_pop, conciliation_reception.building_reb) payment_order_registered_building_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
+            'payment_order_registered_transportation_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.transportation_budget_pop, conciliation_reception.transportation_reb) payment_order_registered_transportation_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
+            'payment_order_registered_live_line_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.live_line_budget_pop, conciliation_reception.live_line_reb) payment_order_registered_live_line_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
+            'payment_order_registered_right_of_way_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.right_of_way_budget_pop, conciliation_reception.right_of_way_reb) payment_order_registered_right_of_way_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
+            'payment_order_registered_total_real_budget' => ['column' => "if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget) payment_order_registered_total_real_budget", 'dependencies' => ['payment_order_registered','conciliation_reception']],
 
 			'cre_return_order_date' => ['column' => 'cre_return_order.entry_date cre_return_order_date', 'dependencies' => ['cre_return_order']],
 
@@ -577,7 +582,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																FROM
 																	wfl_project_status_log
 																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
-																where deleted_psl != 1 and deleted_slr != 1
+																where deleted_psl != 1 and deleted_slr != 1 {id-list-psl}
 																GROUP BY id_psl
 															) statusLogAndResponsible group by project_id_psl
 													) as max_entry
@@ -594,7 +599,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																LEFT JOIN wfl_status_log_responsibles on status_log_id_slr = id_psl
 																LEFT JOIN wfl_status_responsibles on id_sre = responsible_id_slr
 																LEFT JOIN sec_users on id_usr = user_id_sre
-																where deleted_psl != 1  and deleted_slr != 1
+																where deleted_psl != 1  and deleted_slr != 1 {id-list-psl}
 																GROUP BY id_psl
 																) log on log.project_id_psl = max_entry.project_id and log.manual_entry_date_psl = max_entry.max_date
 												) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro ",
@@ -605,7 +610,12 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 											project_id_inc,
 											max(manual_entry_date_inc) manual_entry_date_inc
 											from wfl_incidents
-											where status_id_inc in (29) -- in_progress 
+											left join wfl_projects on id_pro = project_id_inc
+											where 
+											1 = 1 
+											and status_pro = status_id_inc
+											-- status_id_inc in (29)
+											{id-list-inc} -- in_progress 
 											GROUP BY project_id_inc
 									) as filtered inner join wfl_incidents as inc on inc.project_id_inc = filtered.project_id_inc and inc.manual_entry_date_inc = filtered.manual_entry_date_inc
 								) wfl_incidents on project_id_inc = id_pro ",
@@ -618,7 +628,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 								project_id_inc last_week_project_id,
 								max(manual_entry_date_inc) last_week_manual_entry_date
 								from wfl_incidents
-								where status_id_inc in (29) -- in_progress 
+								where status_id_inc in (29) {id-list-inc} -- in_progress 
 								and manual_entry_date_inc >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
 								AND manual_entry_date_inc < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY     
 								GROUP BY project_id_inc
@@ -639,6 +649,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 							FROM
 								wfl_incidents t1
 								LEFT JOIN wfl_incidents t2 ON t1.project_id_inc = t2.project_id_inc AND t2.manual_entry_date_inc < t1.manual_entry_date_inc 
+							where 1 {id-list-inc-t1}
 							GROUP BY
 								t1.project_id_inc
 						) current_and_previous
@@ -651,7 +662,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 																SUBSTRING_INDEX(GROUP_CONCAT(CONCAT(percentage_inc,' (',DATE_FORMAT(manual_entry_date_inc,'%d-%m-%Y'),')') ORDER BY manual_entry_date_inc desc SEPARATOR '\n'), '\n', 3) last_three_incidents
 															FROM
 																wfl_incidents
-															where deleted_inc != 1
+															where deleted_inc != 1 {id-list-inc}
 															GROUP BY project_id_inc
 														) wfl_incidents_last_three_incidents on wfl_incidents_last_three_incidents.project_id_inc = id_pro ",
 			'production' => " LEFT JOIN (
@@ -667,7 +678,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 								LEFT JOIN bui_building_points on point_id_lal = id_bpo
 								where
 									deleted_wus != 1
-									and deleted_lal != 1 
+									and deleted_lal != 1 {id-list-lad}
+									and status_id_lad = 11
 								GROUP BY project_id_lad
 							) production on production.project_id_lad = id_pro ",
 			'quantity_picked_up_from_cre' =>  "
@@ -682,6 +694,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (3)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) quantity_picked_up_from_cre on quantity_picked_up_from_cre.project_id = id_pro ",
 			'materials_delivered_to_cre' =>  "
@@ -696,6 +709,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (8)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) materials_delivered_to_cre on materials_delivered_to_cre.project_id = id_pro ",
 			'quantity_materials_assigned' =>  "
@@ -710,6 +724,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 										summary_type_id_msu in (1,2)
 										and deleted_msu != 1
 										and deleted_prm != 1
+										{id-list-msu}
 									GROUP BY project_id_msu
 								) quantity_materials_assigned on quantity_materials_assigned.project_id = id_pro ",
 		];
@@ -807,9 +822,12 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 						$idListFilter = substr($idListFilter,0, -2);
 						if($idListFilter != "")
 						{
-							$value = " and id_pro in (".$idListFilter.") ";
+							$query = str_replace("{id-list}"," and id_pro in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-inc}"," and project_id_inc in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-inc-t1}"," and t1.project_id_inc in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-lad}"," and project_id_lad in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-msu}"," and project_id_msu in (".$idListFilter.") ", $query);
 						}
-						$query = str_replace("{id-list}",$value, $query);
 				}
 			}
 		}
