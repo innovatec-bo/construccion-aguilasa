@@ -14,7 +14,7 @@
                 <a class="btn btn-success pull-right">Con poda</a>
             {{/ifCond}}
             <a class="btn btn-warning pull-right add-incident mr-1" data-status-id="{{viewData.project.project_status_id}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa-regular fa-flag"></i></a>
-            <a class="btn btn-info pull-right show-materials-summary mr-1" data-project-id="{{viewData.project.id_pro}}" data-project-id="{{viewData.project.id_pro}}"><i class="fa fa-list"></i></a>
+            <a class="btn btn-info pull-right show-materials-summary mr-1" data-project-id="{{viewData.project.id_pro}}" data-project-id="{{viewData.project.id_pro}}">Resumen de materiales</a>
 		</h1>
     <div class="progress mb-0">
 		{{var 'progress' 'sucess'}}

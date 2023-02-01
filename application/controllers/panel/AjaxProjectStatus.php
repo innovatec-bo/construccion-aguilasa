@@ -647,24 +647,35 @@ class AjaxProjectStatus extends PrivateController
     {
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusId = $formData["statusId"];
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
+        $paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
+		$paginationHandler->setAdditionalParameters(['project-id' => $projectId, 'show-material-pending-in-cre' => 1]);
+		$list = $paginationHandler->getAll();
+        if(count($list) > 0)
+        {
+            $response["success"] = 0;
+            $response["message"] = 'Este proyecto tiene materiales pendientes por retirar de CRE. Puede revisar los materiales con boton "Resumen de materiales" en la parte superior derecha.';
+        }
+        else
+        {
+            $entryDate = $formData["entryDate"];
+            $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d');
+            $entryDate = $entryDate." ".date("H:i:s");
+            $statusId = $formData["statusId"];
+            $statusDetail = $formData["statusDetail"];
+            $responsibleList = $formData["responsibleList"];
 
-        $projectPoints = $formData["projectPoints"];
-        $projectDistance = $formData["projectDistance"];
-        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-//        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-        $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
+            $projectPoints = $formData["projectPoints"];
+            $projectDistance = $formData["projectDistance"];
+            $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
+            $project = Model_project::getById($projectId);
+            $project->setStatus($statusId);
+            $project->save();
+            $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+            $response["success"] = 1;
+            $response["message"] = "Operacion realizada con exito.";
+        }
+        
         echo json_encode($response);exit;
     }
 
