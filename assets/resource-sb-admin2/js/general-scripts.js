@@ -606,7 +606,7 @@ function showSummaryList(projectId)
                     cancelButtonText:'Cerrar'
                 });
             }
-            elseif(response.success === 1 && response.data.list.length <= 0)
+            else if(response.success === 1 && response.data.list.length <= 0)
             {
                 Swal.fire({
                     type: 'error',
