@@ -1973,26 +1973,51 @@ class Model_project extends Model_project_base
 
             if($isInArray !== FALSE)
             {
+                switch ($row['keyword_pst']) 
+                {
+                    case 'project_return_materials':
+                        $reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
+                        $reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
+                        $reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
+                        break;
+                    case 'conciliation_shipment':
+                            $reminderList[1001]['creFiscalFullName'] = "Layonel Lujan";
+                            $reminderList[1001]['creFiscalEmail'] = "layonelrln@cre.com.bo";
+                            $reminderList[1001]['statusListToNotify'][$row['keyword_pst']][] = $row;
+                            break;
+                    default:
+                        foreach ($creFiscalList as $user)
+                        {
+                            /** @var  $user Model_user */
+                            if ($user->getId() == $row["cre_fiscal_id"])
+                            {
+                                $reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
+                                $reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
+                                $reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
+                            }
+                        }
+                        break;
+                }
             	//Returns materials has a special validation.
-            	if($row['keyword_pst'] != "project_return_materials")
-				{
-					foreach ($creFiscalList as $user)
-					{
-						/** @var  $user Model_user */
-						if ($user->getId() == $row["cre_fiscal_id"])
-						{
-							$reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
-							$reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
-							$reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
-						}
-					}
-				}
-                else
-				{
-					$reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
-					$reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
-					$reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
-				}
+            	// if($row['keyword_pst'] != "project_return_materials")
+				// {
+				// 	foreach ($creFiscalList as $user)
+				// 	{
+				// 		/** @var  $user Model_user */
+				// 		if ($user->getId() == $row["cre_fiscal_id"])
+				// 		{
+				// 			$reminderList[$user->getId()]['creFiscalFullName'] = $user->getFullName();
+				// 			$reminderList[$user->getId()]['creFiscalEmail'] = $user->getEmail();
+				// 			$reminderList[$user->getId()]['statusListToNotify'][$row['keyword_pst']][] = $row;
+				// 		}
+				// 	}
+				// }
+                // else
+				// {
+				// 	$reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
+				// 	$reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
+				// 	$reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
+				// }
             }
         }
         return $reminderList;
