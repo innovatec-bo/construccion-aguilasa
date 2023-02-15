@@ -27,29 +27,29 @@ class ExcelExternalExecutiveReport
         $this->_generalExecutiveReportToPrint = array();
         $this->_phpSpreadsheet = new Spreadsheet();
         $this->_dependency = array(
-			'juancgh@cre.com.bo' => 'Rudy Peredo',
-			'joseeba@cre.com.bo' => 'Rudy Peredo',
-			'miltonro@cre.com.bo' => 'Rudy Peredo',
-			'rclaure@cruztel.com' => 'Rudy Peredo',
-			'pablopdvm@gmail.com' => 'Rudy Peredo',
-			'layonelrlm@cre.com.bo' => 'Rudy Peredo',
-			'carlosagad@cre.com.bo' => 'Rudy Peredo',
-			'diegoasr@cre.com.bo' => 'Rudy Peredo',
-			'dariojfm@cre.com.bo' => 'Rudy Peredo',
-			'paulrs@cre.com.bo' => 'Rudy Peredo',
-			'robertomm@cre.com.bo' => 'Rudy Peredo',
-			'christianvr@cre.com.bo' => 'Rudy Peredo',
-			'luisdf@cre.com.bo' => 'Alberto Lobera',
-			'salviocm@cre.com.bo' => 'Alberto Lobera',
-			'rolandodc@cre.com.bo' => 'Alberto Lobera',
-			'juancmg@cre.com.bo' => 'Alberto Lobera',
-			'erlinac@cre.com.bo' => 'Alberto Lobera',
-			'mariodgr@cre.com.bo' => 'Alberto Lobera',
-			'josers@cre.com.bo' => 'Alberto Lobera',
-			'javiervm@cre.com.bo' => 'Alberto Lobera',
-			'miltonmr@cre.com.bo' => 'Alberto Lobera',
-			'jhonyvv@cre.com.bo' => 'Alberto Lobera',
-			'reneoom@cre.com.bo' => 'Alberto Lobera'
+			'juancgh@cre.com.bo' => 'Jorge Domínguez',
+			'joseeba@cre.com.bo' => 'Jorge Domínguez',
+			'miltonro@cre.com.bo' => 'Jorge Domínguez',
+			'rclaure@cruztel.com' => 'Jorge Domínguez',
+			'pablopdvm@gmail.com' => 'Jorge Domínguez',
+			'layonelrlm@cre.com.bo' => 'Jorge Domínguez',
+			'carlosagad@cre.com.bo' => 'Jorge Domínguez',
+			'diegoasr@cre.com.bo' => 'Jorge Domínguez',
+			'dariojfm@cre.com.bo' => 'Jorge Domínguez',
+			'paulrs@cre.com.bo' => 'Jorge Domínguez',
+			'robertomm@cre.com.bo' => 'Jorge Domínguez',
+			'christianvr@cre.com.bo' => 'Jorge Domínguez',
+			'luisdf@cre.com.bo' => 'Alberto Lovera',
+			'salviocm@cre.com.bo' => 'Alberto Lovera',
+			'rolandodc@cre.com.bo' => 'Alberto Lovera',
+			'juancmg@cre.com.bo' => 'Alberto Lovera',
+			'erlinac@cre.com.bo' => 'Alberto Lovera',
+			'mariodgr@cre.com.bo' => 'Alberto Lovera',
+			'josers@cre.com.bo' => 'Alberto Lovera',
+			'javiervm@cre.com.bo' => 'Alberto Lovera',
+			'miltonmr@cre.com.bo' => 'Alberto Lovera',
+			'jhonyvv@cre.com.bo' => 'Alberto Lovera',
+			'reneoom@cre.com.bo' => 'Alberto Lovera'
 		);
 		$this->_fileName = 'Informe Ejecutivo Externo - '.date("d.m.y h.i A").'.xlsx';
     }
@@ -74,10 +74,10 @@ class ExcelExternalExecutiveReport
 		$this->_phpSpreadsheet->removeSheetByIndex(0);
         $this->_generalDetail();
 		$this->_generalExecutiveReport();
-		$this->_generalDetail('Detalle-AREA GIS','Rudy Peredo');
-		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIS','Rudy Peredo');
-		$this->_generalDetail('Detalle-AREA GIR','Alberto Lobera');
-		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIR','Alberto Lobera');
+		$this->_generalDetail('Detalle-AREA GIS','gis');
+		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIS','gis');
+		$this->_generalDetail('Detalle-AREA GIR','gir');
+		$this->_generalExecutiveReport('Informe Ejecutivo-AREA GIR','gir');
 		$this->_phpSpreadsheet->setActiveSheetIndex(0);
 
 		if($save)
@@ -165,7 +165,7 @@ class ExcelExternalExecutiveReport
 			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
         	if($filterBy != "")
 			{
-				if($filterBy != $dependency)
+				if($filterBy != $row['work_area_pro'])
 					continue;
 			}
         	$creFiscal = $row['cre_fiscal_pro'];
@@ -381,7 +381,7 @@ class ExcelExternalExecutiveReport
 			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
 			if($filterBy != "")
 			{
-				if($filterBy != $dependency)
+				if($filterBy != $row['work_area_pro'])
 				{
 					continue;
 				}
