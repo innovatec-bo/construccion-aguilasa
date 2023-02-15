@@ -26,7 +26,7 @@ class ExcelExternalExecutiveReport
         $this->_workflowDetail = array();
         $this->_generalExecutiveReportToPrint = array();
         $this->_phpSpreadsheet = new Spreadsheet();
-        $this->_dependency = array(
+        $this->_dependency_deprecated = array(
 			'juancgh@cre.com.bo' => 'Jorge Domínguez',
 			'joseeba@cre.com.bo' => 'Jorge Domínguez',
 			'miltonro@cre.com.bo' => 'Jorge Domínguez',
@@ -51,6 +51,10 @@ class ExcelExternalExecutiveReport
 			'jhonyvv@cre.com.bo' => 'Alberto Lovera',
 			'reneoom@cre.com.bo' => 'Alberto Lovera'
 		);
+		$this->_dependency = [
+			'gis' => 'Jorge Domínguez',
+			'gir' => 'Alberto Lovera'
+		];
 		$this->_fileName = 'Informe Ejecutivo Externo - '.date("d.m.y h.i A").'.xlsx';
     }
 
@@ -162,7 +166,7 @@ class ExcelExternalExecutiveReport
         $totalTotalBudget = 0;
         foreach ($this->_workflowDetail as $row)
         {
-			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
+			$dependency = $this->_dependency[$row['work_area_pro']];
         	if($filterBy != "")
 			{
 				if($filterBy != $row['work_area_pro'])
@@ -378,7 +382,7 @@ class ExcelExternalExecutiveReport
 		$generalExecutiveReportToPrint = array();
 		foreach ($this->_workflowDetail as $row)
 		{
-			$dependency = $this->_dependency[$row['cre_fiscal_email']]??"Sin especificar";
+			$dependency = $this->_dependency[$row['work_area_pro']];
 			if($filterBy != "")
 			{
 				if($filterBy != $row['work_area_pro'])
