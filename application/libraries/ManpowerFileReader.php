@@ -184,10 +184,12 @@ class ManpowerFileReader
                 $execution = trim($data[3]);
                 $quantity = trim($data[6]);
                 $quantity = str_replace(",","",$quantity);
+                $quantity = str_replace("'","",$quantity);
                 $quantity = floatval($quantity);
 
 				$unitPrice = trim($data[7]);
 				$unitPrice = str_replace(",","",$unitPrice);
+                $unitPrice = str_replace("'","",$unitPrice);
 				$unitPrice = floatval($unitPrice);
                 $amount = round($quantity*$unitPrice, 2);
 
