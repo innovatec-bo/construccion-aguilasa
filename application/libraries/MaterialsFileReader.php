@@ -71,7 +71,9 @@ class MaterialsFileReader
                 $materialCode = trim($data[1]);
                 $description = trim($data[2]);
                 $unit = trim($data[3]);
+                $unit = str_replace("'", "", $unit);
                 $quantity = trim($data[4]);
+                $quantity = str_replace("'", "", $quantity);
                 $currentUser = PrivateController::getSessionUser();
                 $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
                 if($materialCode != "")
