@@ -581,7 +581,8 @@ class PrivateController extends PublicController
 			"in_progress_first_detail_date" => "1RA. FECHA DE INICIO DE CONSTRUC.",
 			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA",
 			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO",
-			'production_total_bs' => "PRODUCCION ACTUAL DEL PROYECTO"
+			'production_total_bs' => "PRODUCCION ACTUAL DEL PROYECTO",
+            'payment_order_registered_contract_number' => "CONTRATO FINAL"
         );
         return $columnList;
     }

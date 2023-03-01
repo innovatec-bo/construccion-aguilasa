@@ -499,6 +499,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 			'payment_order_registered_date' => ['column' => 'payment_order_registered.entry_date payment_order_registered_date', 'dependencies' => ['payment_order_registered',]],
             'payment_order_registered_order_number' => ['column' => 'payment_order_registered.order_number_pao payment_order_registered_order_number', 'dependencies' => ['payment_order_registered']],
+			'payment_order_registered_contract_number' => ['column' => 'payment_order_registered.end_contract_number payment_order_registered_contract_number', 'dependencies' => ['payment_order_registered']],
             'payment_status' => ['column' => "if(payment_order_registered.order_number_pao != '','Pagado','Pendiente de pago') payment_status", 'dependencies' => ['payment_order_registered']],
             'payment_order_registered_invoice_number' => ['column' => "payment_order_registered.invoice_number_pao payment_order_registered_invoice_number", 'dependencies' => ['payment_order_registered']],
 
