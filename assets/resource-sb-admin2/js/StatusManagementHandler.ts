@@ -157,7 +157,7 @@ class StatusManagementHandler
     statusSetList()
     {
         let statusSet = [];
-        statusSet["design"] = ["project_has_been_created", "stakes", "digitization", "drawing", "schedule","returned"];
+        statusSet["design"] = ["project_has_been_created", "stakes", "digitization", "drawing", "schedule","returned", "canceled"];
         statusSet["approvement"] = ["ready_to_send", "already_sent", "approved", "canceled", "rectify_design","rectify_illustration"];
         statusSet["rectify_design"] = ["rectify_design", "rd_stakes", "rd_digitization", "rd_drawing","returned"];
         statusSet["rectify_illustration"] = ["rectify_illustration", "ri_digitization", "ri_drawing"];

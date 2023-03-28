@@ -74,7 +74,7 @@ var getOption = function (options, prop, def) {
         return def;
     }
 };
-var MarkerClusterer = /** @class */ (function (_super) {
+var MarkerClusterer = exports.MarkerClusterer = /** @class */ (function (_super) {
     __extends(MarkerClusterer, _super);
     /**
      * Creates a MarkerClusterer object with the options specified in {@link MarkerClustererOptions}.
@@ -844,4 +844,3 @@ var MarkerClusterer = /** @class */ (function (_super) {
     MarkerClusterer.IMAGE_SIZES = [53, 56, 66, 78, 90];
     return MarkerClusterer;
 }(overlay_view_safe_1.OverlayViewSafe));
-exports.MarkerClusterer = MarkerClusterer;

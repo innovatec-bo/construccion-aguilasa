@@ -9,6 +9,7 @@ statusSet["20"] = "design";
 statusSet["3"] = "design";
 statusSet["5"] = "design";
 statusSet["6"] = "design";
+statusSet["12"] = "design";
 
 statusSet["9"] = "approvement";
 statusSet["10"] = "approvement";
