@@ -104,7 +104,7 @@ class InternalWarehouse extends PrivateController
 		$this->form_validation->set_rules('summary[]', 'Materiales','trim|required');
 
 		$materials = Model_material::getAll(10000,0);
-		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized']);
+		$projects = Model_project::getByStatusKeywordList(['approved','assign_to','in_progress','stopped','paused','completed','as_built','conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_energized','conciliation_reception','conciliation_shipment','cre_return_order','project_real_budget','project_return_materials','project_closed','payment_order_registered','payment_order_invoice_sent','payment_order_has_been_settled','payment_order_has_been_settled','project_real_budget_confirmation']);
 		$fiscals = Model_user::getByRoleKeyword('fiscal');
 		$builders = Model_user::getByRoleKeyword('builder');
 		if($this->form_validation->run() === FALSE)
