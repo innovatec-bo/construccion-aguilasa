@@ -250,10 +250,10 @@ class WarehouseHandler
 	public static validateQuantityToMove(element: any) : boolean
 	{
 		let summaryTypeKeyword : string = $('select[name=summary-type] option:selected').data('keyword');
-		let inputValue = $(element).val();
+		let inputValue = $(element).val().replace(',', '');
 		let $tr : any = $(element).closest('tr');
-		let pendingMaterialInCre : number = parseFloat($tr.data('pending-material-in-cre'));
-		let quantitInWarehouse : number = parseFloat($tr.data('quantity-in-warehouse'));
+		let pendingMaterialInCre : number = parseFloat($tr.data('pending-material-in-cre').replace(',', ''));
+		let quantitInWarehouse : number = parseFloat($tr.data('quantity-in-warehouse').replace(',', ''));
 		let quantityRequested = parseFloat($tr.find('.quantity').data('quantity-requested'));
 		let response : boolean;
 		let message : string;
@@ -269,6 +269,7 @@ class WarehouseHandler
 				break;
 			case 'request_materials':
 				response = inputValue <= quantitInWarehouse;
+				console.log(inputValue, quantitInWarehouse, inputValue <= quantitInWarehouse);
 				message = 'No puede solicitar mas materiales de los que tiene disponible el proyecto en almacen.'
 				break;
 			default:

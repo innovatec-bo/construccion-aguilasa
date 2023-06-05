@@ -194,10 +194,10 @@ var WarehouseHandler = /** @class */ (function () {
      */
     WarehouseHandler.validateQuantityToMove = function (element) {
         var summaryTypeKeyword = $('select[name=summary-type] option:selected').data('keyword');
-        var inputValue = $(element).val();
+        var inputValue = $(element).val().replace(',', '');
         var $tr = $(element).closest('tr');
-        var pendingMaterialInCre = parseFloat($tr.data('pending-material-in-cre'));
-        var quantitInWarehouse = parseFloat($tr.data('quantity-in-warehouse'));
+        var pendingMaterialInCre = parseFloat($tr.data('pending-material-in-cre').replace(',', ''));
+        var quantitInWarehouse = parseFloat($tr.data('quantity-in-warehouse').replace(',', ''));
         var quantityRequested = parseFloat($tr.find('.quantity').data('quantity-requested'));
         var response;
         var message;
@@ -212,6 +212,7 @@ var WarehouseHandler = /** @class */ (function () {
                 break;
             case 'request_materials':
                 response = inputValue <= quantitInWarehouse;
+                console.log(inputValue, quantitInWarehouse, inputValue <= quantitInWarehouse);
                 message = 'No puede solicitar mas materiales de los que tiene disponible el proyecto en almacen.';
                 break;
             default:
