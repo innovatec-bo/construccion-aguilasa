@@ -48,6 +48,20 @@
 	?>
 	<form method="post" name="materials-summary" data-parsley-validate>
 		<input type="hidden" name="show-assigned-materials-only" value="<?=$showAssignedMaterialsOnly?>">
+	<?php
+	if($viewTitle == 'Solicitar materiales')
+	{
+	?>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="alert alert-info" role="alert"><strong>Nota:</strong><br>
+				<strong>Solicitud de prestamo de materiales:</strong> Esta opcion solo trabaja con los materiales que no han sido retirados de CRE, si no existen pendientes por retirar entonces no se mostrar&aacute; ning&uacute;n item, en tal caso se debe utilizar la opci&oacute;n <strong>Solicitud de materiales</strong>
+			</div>
+		</div>
+	</div>
+	<?php
+	}
+	?>
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group">

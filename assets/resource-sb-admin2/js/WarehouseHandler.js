@@ -196,9 +196,9 @@ var WarehouseHandler = /** @class */ (function () {
         var summaryTypeKeyword = $('select[name=summary-type] option:selected').data('keyword');
         var inputValue = $(element).val().replace(',', '');
         var $tr = $(element).closest('tr');
-        var pendingMaterialInCre = parseFloat($tr.data('pending-material-in-cre').replace(',', ''));
-        var quantitInWarehouse = parseFloat($tr.data('quantity-in-warehouse').replace(',', ''));
-        var quantityRequested = parseFloat($tr.find('.quantity').data('quantity-requested'));
+        var pendingMaterialInCre = typeof $tr.data('pending-material-in-cre') == 'string' ? parseFloat($tr.data('pending-material-in-cre').replace(',', '')) : parseFloat($tr.data('pending-material-in-cre'));
+        var quantitInWarehouse = typeof $tr.data('quantity-in-warehouse') == 'string' ? parseFloat($tr.data('quantity-in-warehouse').replace(',', '')) : parseFloat($tr.data('quantity-in-warehouse'));
+        var quantityRequested = typeof $tr.find('.quantity') == 'string' ? parseFloat($tr.find('.quantity').data('quantity-requested').replace(',', '')) : parseFloat($tr.find('.quantity').data('quantity-requested'));
         var response;
         var message;
         switch (summaryTypeKeyword) {
