@@ -82,8 +82,8 @@ class Model_labor_cost_log_base extends MY_Model
     public function delete($makePhysicalDelete = false)
     {
         parent::delete($makePhysicalDelete);
-        static::deleteBuildersFromManpowerByLaborCostLogId($this->_id);
-        static::deleteWorkedUpStructuresByLaborCostLogId($this->_id);
+        Model_labor_cost_log::deleteBuildersFromManpowerByLaborCostLogId($this->_id);
+        Model_labor_cost_log::deleteWorkedUpStructuresByLaborCostLogId($this->_id);
     }
 
     //setters
