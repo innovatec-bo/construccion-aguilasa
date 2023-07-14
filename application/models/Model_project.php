@@ -2138,6 +2138,7 @@ class Model_project extends Model_project_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $currentContract = Model_contract::getLastContract();
         //log date filter
         $filterLogDateFrom = "";
         if(isset($logDateRange['from']))
@@ -2170,8 +2171,27 @@ class Model_project extends Model_project_base
                 building_responsibles.builder_responsible,
                 builders_in_manpower.builders,
                 builders_in_manpower.total_builders,
-                ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split,
-                ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder,
+                -- ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split,
+                CASE
+                    WHEN final_contract.id_con is not null && (initial_contract.id_con != final_contract.id_con or status_pro != 45) THEN 
+                        ROUND(
+                            worked_up_wus * 
+                            (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus 
+                            ,2)
+                    ELSE ROUND(worked_up_wus * price_wus,2)
+                 END 'total_amount_worked_to_split',
+                -- ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder,
+                CASE
+                    WHEN final_contract.id_con is not null && (initial_contract.id_con != final_contract.id_con or status_pro != 45) THEN 
+                    ROUND(
+                           (
+                               worked_up_wus * 
+                              (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus 
+                           ) / builders_in_manpower.total_builders
+                           ,2
+                       )
+                   ELSE ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2)
+                END 'total_amount_worked_by_builder',
                 id_bpo point_id,
 				label_bpo point_label,
                 structure_code_bus structure_code,
@@ -2189,6 +2209,8 @@ class Model_project extends Model_project_base
             LEFT JOIN bui_building_points on point_id_lal = id_bpo
             LEFT JOIN wfl_projects on id_pro = project_id_lad
             LEFT JOIN sec_users fiscals on fiscals.id_usr = user_id_lal
+            left join wfl_contracts initial_contract on contract_id_pro = initial_contract.id_con
+            left join wfl_contracts final_contract on end_contract_pro = final_contract.id_con
             LEFT JOIN(
                 select 
                         id_psl,
@@ -2371,7 +2393,9 @@ class Model_project extends Model_project_base
             SELECT
                 code_pro codigo,
                 status_name_pst estado,
-                sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual,
+                sum(ROUND(worked_up_wus * 
+                (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus                 
+                ,2)) produccion_actual,
                 IFNULL(design_prb,0) design_prb,
                 (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
                 IFNULL(design_reb,0) design_reb,
@@ -2386,6 +2410,8 @@ class Model_project extends Model_project_base
             LEFT JOIN bui_labor_cost_log on id_lal = labor_cost_log_id_wus
             LEFT JOIN bui_building_points on point_id_lal = id_bpo
             LEFT JOIN wfl_projects on id_pro = project_id_lad
+            left join wfl_contracts initial_contract on contract_id_pro = initial_contract.id_con
+            left join wfl_contracts final_contract on end_contract_pro = final_contract.id_con
             LEFT JOIN (
                 select 
                     wfl_project_status_log.* 

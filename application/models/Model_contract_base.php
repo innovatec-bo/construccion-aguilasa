@@ -16,14 +16,16 @@ class Model_contract_base extends MY_Model
     protected $_amount;
     protected $_startDate;
     protected $_expirationDate;
+    protected $_umbo;
 
-    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0)
     {
         parent::__construct();
         $this->_contractNumber = $contractNumber;
         $this->_amount = $amount;
         $this->_startDate = $startDate;
         $this->_expirationDate = $expirationDate;
+        $this->_umbo = $umbo;
     }
 
     /**
@@ -38,6 +40,7 @@ class Model_contract_base extends MY_Model
             "amount_con" => $this->_amount,
             "start_date_con" => $this->_startDate,
             "expiration_date_con" => $this->_expirationDate,
+            "umbo" => $this->_umbo,
             "deleted_con" => $this->_deleted,
             "createdon_con" => $this->_createdOn,
             "createdby_con" => $this->_createdBy,
@@ -65,7 +68,8 @@ class Model_contract_base extends MY_Model
                 $object->contract_number_con,
                 $object->amount_con,
                 $object->start_date_con,
-                $object->expiration_date_con
+                $object->expiration_date_con,
+                $object->umbo
             );
             $instance->_id = $object->id_con;
 
@@ -77,5 +81,10 @@ class Model_contract_base extends MY_Model
             $response = $instance;
         }
         return $response;
+    }
+
+    public function getUmbo()
+    {
+        return $this->_umbo;
     }
 }

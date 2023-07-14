@@ -24,6 +24,7 @@
                         <th>ID</th>
                         <th>Numero de contrato</th>
                         <th>Monto</th>
+                        <th>Activo</th>
                         <th>Fecha de expiracion</th>
                         <th>Options</th>
                     </tr>

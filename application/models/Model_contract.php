@@ -8,9 +8,9 @@
 
 class Model_contract extends Model_contract_base
 {
-    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0)
     {
-        parent::__construct($contractNumber, $amount, $startDate, $expirationDate);
+        parent::__construct($contractNumber, $amount, $startDate, $expirationDate, $umbo);
     }
 
     public static function getNotExpiredContracts()
@@ -25,4 +25,17 @@ class Model_contract extends Model_contract_base
     	$result = static::recastArray(get_called_class(), $query->result());
     	return $result;
     }
+
+	public static function getLastContract()
+	{
+		$ci = &get_instance();
+    	$ci->load->database();
+
+    	$sql = "
+    		select * from wfl_contracts where deleted_con != 1 order by id_con desc limit 1
+    	";
+    	$query = $ci->db->query($sql);
+    	$result = static::recast(get_called_class(), $query->row());
+    	return $result;
+	}
 }

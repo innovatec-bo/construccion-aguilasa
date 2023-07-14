@@ -33,6 +33,11 @@ $(document).ready(function() {
                 return row.amount_con.replace(/\d(?=(\d{3})+\.)/g, '$&,');
             }
         }, {
+            "data" : "active",
+            "render":function(data, type, row, meta){
+                return row.active==1?'Si':'No';
+            }
+        }, {
             "data" : "expiration_date_con",
             "render" : function(data, type, row, meta) {
                 var result = "";
