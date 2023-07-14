@@ -2138,7 +2138,8 @@ class Model_project extends Model_project_base
     {
         $ci = &get_instance();
         $ci->load->database();
-        $currentContract = Model_contract::getLastContract();
+        $activeContract = Model_contract::getActiveContract();
+        
         //log date filter
         $filterLogDateFrom = "";
         if(isset($logDateRange['from']))
@@ -2171,26 +2172,26 @@ class Model_project extends Model_project_base
                 building_responsibles.builder_responsible,
                 builders_in_manpower.builders,
                 builders_in_manpower.total_builders,
-                -- ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split,
-                CASE
-                    WHEN final_contract.id_con is not null && (initial_contract.id_con != final_contract.id_con or status_pro != 45) THEN 
+                ROUND(worked_up_wus * price_wus,2) total_amount_worked_to_split_old,
+                 CASE
+                    WHEN (final_contract.id_con != ".$activeContract->getId()." or status_pro != 45) THEN 
                         ROUND(
                             worked_up_wus * 
-                            (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus 
+                            (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo().")) 
                             ,2)
                     ELSE ROUND(worked_up_wus * price_wus,2)
                  END 'total_amount_worked_to_split',
-                -- ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder,
-                CASE
-                    WHEN final_contract.id_con is not null && (initial_contract.id_con != final_contract.id_con or status_pro != 45) THEN 
+                 ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) total_amount_worked_by_builder_old,
+                 CASE
+                    WHEN (final_contract.id_con != ".$activeContract->getId()." or status_pro != 45) THEN 
                     ROUND(
                            (
                                worked_up_wus * 
-                              (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus 
+                              (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo().")) 
                            ) / builders_in_manpower.total_builders
                            ,2
-                       )
-                   ELSE ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2)
+                        )
+                    ELSE ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2)
                 END 'total_amount_worked_by_builder',
                 id_bpo point_id,
 				label_bpo point_label,
@@ -2376,6 +2377,7 @@ class Model_project extends Model_project_base
     {
         $ci = &get_instance();
         $ci->load->database();
+        $activeContract = Model_contract::getActiveContract();
         //log date filter
         $filterLogDateFrom = "";
         if(isset($logDateRange['from']))
@@ -2393,8 +2395,9 @@ class Model_project extends Model_project_base
             SELECT
                 code_pro codigo,
                 status_name_pst estado,
+                sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual_old,
                 sum(ROUND(worked_up_wus * 
-                (((price_wus/initial_contract.umbo) * final_contract.umbo) - price_wus) + price_wus                 
+                (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo()."))                 
                 ,2)) produccion_actual,
                 IFNULL(design_prb,0) design_prb,
                 (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,

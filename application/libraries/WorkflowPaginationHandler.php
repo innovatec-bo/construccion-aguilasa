@@ -540,6 +540,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
 	private function _setQueryDependencies()
 	{
+		$activeContract = Model_contract::getActiveContract();
 		$this->_queryDependencies = [
 			'stakes' => " LEFT JOIN (".Model_project::_statusDetailQuery(2).") stakes on stakes.project_id_psl = id_pro ",
         	'rd_digitization' => "LEFT JOIN (".Model_project::_statusDetailQuery(16).") rd_digitization on rd_digitization.project_id_psl = id_pro",
@@ -669,7 +670,9 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'production' => " LEFT JOIN (
 								SELECT
 									project_id_lad,
-									sum(ROUND(worked_up_wus * price_wus,2)) total_bs
+									sum(ROUND(worked_up_wus * 
+									price_wus
+									,2)) total_bs
 								FROM
 									bui_worked_up_structures
 								LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus

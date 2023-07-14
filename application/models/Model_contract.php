@@ -26,13 +26,13 @@ class Model_contract extends Model_contract_base
     	return $result;
     }
 
-	public static function getLastContract()
+	public static function getActiveContract()
 	{
 		$ci = &get_instance();
     	$ci->load->database();
 
     	$sql = "
-    		select * from wfl_contracts where deleted_con != 1 order by id_con desc limit 1
+    		select * from wfl_contracts where active = 1 and deleted_con != 1
     	";
     	$query = $ci->db->query($sql);
     	$result = static::recast(get_called_class(), $query->row());
