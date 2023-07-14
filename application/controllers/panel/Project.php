@@ -161,6 +161,7 @@ class Project extends PrivateController
                 $managementBy, $qualityLevel, $creDesignCompletionDate, $creBuildingCompletionDate, $budgetaryPosition, $projectCode, $projectFolderDate, $contractId,$detail,0,0,$latitude, $longitude, $workArea, $projectYear);
             $project->setInitialDesignBudget($projectInitialDesignBudget);
             $project->setInitialBuildingBudget($projectInitialBuildingBudget);
+            $project->setEndContract($contractId);
             $project->save();
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
