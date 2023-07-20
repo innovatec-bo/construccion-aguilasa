@@ -463,4 +463,81 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 
         return $arrayLog[$logId];
     }
+
+    public static function updatePrices($projectId = null)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $projectFilter1 = "";
+        $projectFilter2 = "";
+        if(!is_null($projectId))
+        {
+            $projectFilter1 = " and id_pro = {$projectId} ";
+            $projectFilter2 = " and wfl_projects.id_pro = {$projectId} ";
+        }
+        $dataToUpdate = "
+        SELECT
+            wfl_projects.id_pro,
+            wfl_projects.code_pro,
+            id_wus,
+            bui_labor_cost.building_structure_id_lac,
+            price_wus 'current_price',
+            conciliation.unit_price_lac 'new_price'
+            -- bui_worked_up_structures.*
+        FROM
+            bui_worked_up_structures
+        LEFT JOIN bui_labor_cost ON bui_labor_cost.id_lac = bui_worked_up_structures.labor_cost_id_wus
+        left join bui_labor_details on bui_labor_details.id_lad = bui_labor_cost.labor_detail_id_lac
+        left join wfl_projects on id_pro = bui_labor_details.project_id_lad
+        left join (
+            SELECT
+                id_pro,
+                code_pro,
+                bui_labor_cost.building_structure_id_lac,
+                bui_labor_cost.unit_price_lac
+            FROM
+                bui_labor_details
+            left join bui_labor_cost on bui_labor_details.id_lad = bui_labor_cost.labor_detail_id_lac
+            left join wfl_projects on id_pro = bui_labor_details.project_id_lad
+            where 
+            1=1
+            -- and code_pro = 'ra.23.0885'
+            {$projectFilter1}
+            and bui_labor_details.deleted_lad != 1
+            and bui_labor_cost.deleted_lac != 1
+            and wfl_projects.deleted_pro != 1
+            and bui_labor_details.status_id_lad = 34
+            order by building_structure_id_lac
+        ) conciliation on conciliation.id_pro = wfl_projects.id_pro and conciliation.building_structure_id_lac = bui_labor_cost.building_structure_id_lac
+        where 
+            1=1
+            -- and wfl_projects.code_pro = 'ra.23.0885'
+            {$projectFilter2}
+            and bui_labor_cost.deleted_lac != 1
+            and bui_labor_details.deleted_lad != 1
+            and bui_worked_up_structures.deleted_wus != 1
+            and wfl_projects.deleted_pro != 1
+            and conciliation.unit_price_lac is not null
+            and conciliation.unit_price_lac != price_wus
+        order by wfl_projects.id_pro, building_structure_id_lac;
+        ";
+
+        $query = $ci->db->query($dataToUpdate);
+        $response = $query->result_array();
+        dd($response);
+        // foreach ($variable as $key => $value) 
+        // {
+        //     # code...
+        // }
+
+        $updatePrices = "
+        UPDATE bui_worked_up_structures
+            SET price_wus = (CASE id_wus 
+                            WHEN 1 THEN 'val1'
+                            WHEN 2 THEN 'val2'
+                            WHEN 3 THEN 'val3'
+                    END)
+            WHERE id_wus IN(1, 2 ,3);
+        ";
+    }
 }   

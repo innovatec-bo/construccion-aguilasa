@@ -59,4 +59,9 @@ class Login extends PublicController
         var_dump($passwordVerify);exit;
         echo "Coste apropiado encontrado: " . $coste . "\n".mcrypt_create_iv(22, MCRYPT_DEV_URANDOM);
     }
+
+    public function testConciliationUpdates()
+    {
+        Model_labor_cost_log::updatePrices(52);
+    }
 }

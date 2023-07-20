@@ -269,7 +269,7 @@ class MY_Model
         return $ci->db->affected_rows();
     }
 
-    public static function getAllInArrayIds($arrayIds = array(), $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllInArrayIds($arrayIds, $limit, $offset, $orderBy = null, $orderType = 'asc')
     {
         $ci = &get_instance();
         $ci->load->database();

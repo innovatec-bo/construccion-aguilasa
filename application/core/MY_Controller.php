@@ -491,7 +491,7 @@ class PrivateController extends PublicController
     {
         $columnList = array(
             "code_pro" => "CODIGO",
-            "contract_number_con" => "CONTRATO",
+            "initial_contract_number_con" => "CONTRATO",
             "work_area_pro" => "AREA DE TRABAJO",
             "detail_pro" => "DETALLE DEL PROYECTO",
             "production_percentage" => "CONSTRUCCION - % FISICO",
@@ -582,7 +582,8 @@ class PrivateController extends PublicController
 			'ready_to_send_date' => "POR ENVIAR A CRE - FECHA",
 			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO",
 			'production_total_bs' => "PRODUCCION ACTUAL DEL PROYECTO",
-            'payment_order_registered_contract_number' => "CONTRATO FINAL"
+            // 'payment_order_registered_contract_number' => "CONTRATO FINAL",
+            'final_contract_number_con' => "CONTRATO FINAL"
         );
         return $columnList;
     }

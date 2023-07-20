@@ -936,6 +936,7 @@ class AjaxProjectStatus extends PrivateController
                 if($registerManpowerInSystem == 1)
                 {
                     $manpowerFileReader->registerManpowerInSystem();
+                    // Model_labor_cost_log::updatePrices();
                 }
                 $manpowerFileReader->validateFile();
                 $manpowerFileReader->saveStructuresInDataBase();

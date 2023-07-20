@@ -515,8 +515,11 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'cre_fiscal_pro' => ['column' => " concat(cre_fiscal.firstname_usr,' ', cre_fiscal.lastname_usr) cre_fiscal_pro", 'dependencies' => ['cre_fiscal']],
             'cre_fiscal_email' => ['column' => 'email_usr cre_fiscal_email', 'dependencies' => ['cre_fiscal']],
 
-			'id_con' => ['column' => 'id_con', 'dependencies' => ['wfl_contracts']],
-            'contract_number_con' => ['column' => 'contract_number_con', 'dependencies' => ['wfl_contracts']],
+			'initial_id_con' => ['column' => 'initial_contract.id_con initial_id_con', 'dependencies' => ['initial_contract']],
+            'initial_contract_number_con' => ['column' => 'initial_contract.contract_number_con initial_contract_number_con', 'dependencies' => ['initial_contract']],
+
+			'final_id_con' => ['column' => 'final_contract.id_con final_id_con', 'dependencies' => ['final_contract']],
+            'final_contract_number_con' => ['column' => 'final_contract.contract_number_con final_contract_number_con', 'dependencies' => ['final_contract']],
 
 			'static_days' => ['column' => " TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days ", 'dependencies' => ['status_log_manual_entry_date']],
             'status_log_manual_entry_date' => ['column' => " status_log_manual_entry_date.manual_entry_date_psl status_log_manual_entry_date ", 'dependencies' => ['status_log_manual_entry_date']],
@@ -572,7 +575,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			'payment_order_has_been_settled' => " LEFT JOIN (".Model_project::_paymentOrderStatusDetailQuery(44).") payment_order_has_been_settled on payment_order_has_been_settled.project_id_pop = id_pro ",
 			'wfl_project_status' => " LEFT JOIN wfl_project_status on status_pro = id_pst ",
 			'cre_fiscal' => " left join sec_users cre_fiscal on id_usr = cre_fiscal_pro ",
-			'wfl_contracts' => " left join wfl_contracts on contract_id_pro = id_con ",
+			'initial_contract' => " left join wfl_contracts initial_contract on contract_id_pro = initial_contract.id_con ",
+			'final_contract' => " left join wfl_contracts final_contract on end_contract_pro = final_contract.id_con ",
 			'status_log_manual_entry_date' => " LEFT JOIN (
 													select * from (
 														select

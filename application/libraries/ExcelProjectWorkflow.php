@@ -91,7 +91,7 @@ class ExcelProjectWorkflow
                 ->setCellValue($projectCode.'1', "ETAPAS");
             $spreadsheet->getActiveSheet()->getStyle($projectCode.'1')->applyFromArray($titleStyleArray);
 
-            $contractNumber = $this->_getExcelColumnByDataKey("contract_number_con");
+            $contractNumber = $this->_getExcelColumnByDataKey("initial_contract_number_con");
             $projectDetail = $this->_getExcelColumnByDataKey("cre_building_completion_date_pro");
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue($contractNumber.'1', "INGRESO DE PROYECTOS");
@@ -257,7 +257,7 @@ class ExcelProjectWorkflow
                 else
                 {
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $rowData[$arrayKeys[$i]]);
-					if($arrayKeys[$i] == "contract_number_con" && $rowData[$arrayKeys[$i]] == "461-0002/199")
+					if($arrayKeys[$i] == "initial_contract_number_con" && $rowData[$arrayKeys[$i]] == "461-0002/199")
 					{
 						$columnPaymentStatus = $this->_getExcelColumnByDataKey("payment_status");
 						//Prevent highlight when column is hidden
