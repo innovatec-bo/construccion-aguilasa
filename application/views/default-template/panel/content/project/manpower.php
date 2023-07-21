@@ -54,10 +54,11 @@
                          
                         <?php
 						// $allowedStatusToRegisterActivity = array(29,30,31,32,33,47,34,35,38,39);
-                        $allowedStatusToRegisterActivity = array(29,32,47);
+                        // $allowedStatusToRegisterActivity = array(29,32,47);
+                        $allowedStatusToRegisterActivity = array(29,32,33,47,34,35,38,39);
 						if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
-							// echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: Construccion, completado, Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
-                            echo '<button class="btn btn-danger disabled" type="button" disabled data-original-title="El proyecto no esta en ninguna de las siguientes etapas: Construccion, completado, Energizado." data-toggle="tooltip" data-placement="top">Cargar formulario <i class="fa fa-upload"></i></button>';
+							// echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
+                            echo '<button class="btn btn-danger disabled" type="button" disabled data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top">Cargar formulario <i class="fa fa-upload"></i></button>';
 						else
 							echo '<button class="btn btn-danger" type="submit">Cargar formulario <i class="fa fa-upload"></i></button>';
 						?>
@@ -93,9 +94,10 @@
 <!--                        <a href="--><?//=base_url()?><!--" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>-->
 						<?php
 						// $allowedStatusToRegisterActivity = array(29,30,31,32,33,47,34,35,38,39);
-                        $allowedStatusToRegisterActivity = array(29,32,47);
+                        // $allowedStatusToRegisterActivity = array(29,32,47);
+                        $allowedStatusToRegisterActivity = array(29,32,33,47,34,35,38,39);
 						if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
-							echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: Construccion, completado, Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
+							echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
 						else
 							echo '<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
 						?>
