@@ -242,6 +242,11 @@ class ManpowerFileReader
         $this->_manpowerStatusId = $statusId;
     }
 
+    public function getManpowerStatusId()
+    {
+        return $this->_manpowerStatusId;
+    }
+
     public function getDesignBudget()
     {
         return number_format($this->_designBudget,2,'.','');

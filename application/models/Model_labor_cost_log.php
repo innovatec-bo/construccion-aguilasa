@@ -524,20 +524,36 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
 
         $query = $ci->db->query($dataToUpdate);
         $response = $query->result_array();
-        dd($response);
-        // foreach ($variable as $key => $value) 
-        // {
-        //     # code...
-        // }
-
+        $sql = "";
+        $idsToUpdate = '';
+        foreach ($response as $value) 
+        {
+            $idsToUpdate .= "{$value['id_wus']},";
+            $sql .= " WHEN {$value['id_wus']} THEN {$value['new_price']}\n";
+        }
+        $idsToUpdate = substr($idsToUpdate,0,-1);
         $updatePrices = "
         UPDATE bui_worked_up_structures
             SET price_wus = (CASE id_wus 
-                            WHEN 1 THEN 'val1'
-                            WHEN 2 THEN 'val2'
-                            WHEN 3 THEN 'val3'
+                            -- WHEN 1 THEN 'val1'
+                            -- WHEN 2 THEN 'val2'
+                            -- WHEN 3 THEN 'val3'
+                            {$sql}
                     END)
-            WHERE id_wus IN(1, 2 ,3);
+            WHERE id_wus IN({$idsToUpdate});
         ";
+        
+        $ci->db->query($updatePrices);
+
+        if ($projectId) 
+        {
+            $project = Model_project::getById($projectId);
+            $currentContract = Model_contract::getActiveContract();
+            if($currentContract instanceof Model_contract)
+            {
+                $project->setEndContract($currentContract->getId());
+                $project->save();
+            }
+        }
     }
 }   
