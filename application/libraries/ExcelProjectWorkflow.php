@@ -22,9 +22,9 @@ class ExcelProjectWorkflow
 	}
 
 	function getReport()
-	{
+	{   
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
-
+        // dd(count(PrivateController::getWorkflowColumns()), count($this->_columnDefinition));
         $projectWorkflow = Model_project::getWorkflowDetail($this->_additionalParameters);
         // echo"<pre>";var_dump($projectWorkflow);exit;
         $spreadsheet = new Spreadsheet();
@@ -35,7 +35,6 @@ class ExcelProjectWorkflow
             ->setDescription("This report allow see all workflow form all projects on system. Report generated on ".date("Y-m-d H:i:s"))
             ->setKeywords("report workflow projects")
             ->setCategory("Report");
-
         $this->_headerColumnGroup($spreadsheet);
         $this->_headerColumn($spreadsheet);
 
@@ -218,7 +217,6 @@ class ExcelProjectWorkflow
     public function setColumnDefinition($columnsToExport = array())
     {
         $this->_columnDefinition = PrivateController::getWorkflowColumns();
-
         //If there is a columnArray to export then execute this code.
         if(count($columnsToExport) > 1 && count($columnsToExport) != count($this->_columnDefinition))
         {
@@ -234,7 +232,6 @@ class ExcelProjectWorkflow
                                             ARRAY_FILTER_USE_KEY
                                         );
         }
-
     }
 
     private function _drawRow($spreadsheet, $rowNumber, $rowData = FALSE)
