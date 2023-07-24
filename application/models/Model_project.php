@@ -2177,7 +2177,7 @@ class Model_project extends Model_project_base
                     WHEN (final_contract.id_con != ".$activeContract->getId()." or status_pro != 45) THEN 
                         ROUND(
                             worked_up_wus * 
-                            (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo().")) 
+                            round(((price_wus/final_contract.umbo) * ".$activeContract->getUmbo()."),2) 
                             ,2)
                     ELSE ROUND(worked_up_wus * price_wus,2)
                  END 'total_amount_worked_to_split',
@@ -2187,7 +2187,7 @@ class Model_project extends Model_project_base
                     ROUND(
                            (
                                worked_up_wus * 
-                              (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo().")) 
+                              round(((price_wus/final_contract.umbo) * ".$activeContract->getUmbo()."),2) 
                            ) / builders_in_manpower.total_builders
                            ,2
                         )
@@ -2397,7 +2397,7 @@ class Model_project extends Model_project_base
                 status_name_pst estado,
                 sum(ROUND(worked_up_wus * price_wus,2)) produccion_actual_old,
                 sum(ROUND(worked_up_wus * 
-                (((price_wus/final_contract.umbo) * ".$activeContract->getUmbo()."))                 
+                round(((price_wus/final_contract.umbo) * ".$activeContract->getUmbo()."),2)                 
                 ,2)) produccion_actual,
                 IFNULL(design_prb,0) design_prb,
                 (IFNULL(design_prb,0) + IFNULL(building_prb,0) + IFNULL(transportation_prb,0) + IFNULL(live_line_prb,0) + IFNULL(right_of_way_prb,0)) as importe_aprobado,
