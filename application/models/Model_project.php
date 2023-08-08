@@ -1720,7 +1720,7 @@ class Model_project extends Model_project_base
 
 	public static function prepareCurrentStatusSummaryArray2($system = "", $management = "", $contract = "")
 	{
-		$workflow = Model_project::getWorkflowDetail(array('system'=>$system, 'management'=>$management,'contract-id'=>$contract));
+		$workflow = Model_project::getWorkflowDetail(['system'=>$system, 'management'=>$management,'contract-id'=>$contract]);
 		usort($workflow, function($a, $b) {
 			return $a['order_pst'] <=> $b['order_pst'];
 		});
@@ -1743,6 +1743,10 @@ class Model_project extends Model_project_base
 			{
 				$approvedBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'schedule');
 			}
+            //Overwrite $approvedBudget if the status is canceled
+            if($statusKeyword == 'canceled')
+                $approvedBudget = $row['project_current_design_budget'];
+
 			$realBudget = PublicController::getPaymentByStatusFromWorkflow($row, 'conciliation_reception');
 			if($statusKeyword != 'ready_to_send' && $statusKeyword != 'already_sent' && $statusKeyword != 'canceled')
 				$totalApprovedBudget += $approvedBudget;

@@ -25,7 +25,7 @@
 <!--                    <td class="text-center">{{totalProjects}}</td>-->
                     <td class="text-right">
                         {{#ifCond keyword "==" "canceled"}}
-                            <i class="fa fa-exclamation fa-fw" title="Monto no incluido en la suma"></i>
+                            <i class="fa fa-exclamation fa-fw" title="Monto no incluido en la suma tota. Este es el total de los dise&ntilde;os"></i>
                         {{/ifCond}}
                         {{#ifCond keyword "==" "ready_to_send"}}
                             <i class="fa fa-exclamation fa-fw" title="Monto no incluido en la suma"></i>
