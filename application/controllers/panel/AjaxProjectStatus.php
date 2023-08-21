@@ -646,7 +646,7 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveAsBuilt()
     {
-        $client = new Client(['base_uri' => 'http://serebo2.test']);
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
         $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
         $body = json_decode($apiResponse->getBody(), true);
         $settings = $body['data'];
