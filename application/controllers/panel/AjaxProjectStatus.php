@@ -7,6 +7,7 @@
  */
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use GuzzleHttp\Client;
 
 class AjaxProjectStatus extends PrivateController
 {
@@ -645,18 +646,25 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveAsBuilt()
     {
+        $client = new Client(['base_uri' => 'http://serebo2.test']);
+        $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
+        $body = json_decode($apiResponse->getBody(), true);
+        $settings = $body['data'];
+        $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'];
+        
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
 		$paginationHandler->setAdditionalParameters(['project-id' => $projectId, 'show-material-pending-in-cre' => 1]);
 		$list = $paginationHandler->getAll();
-        // if(count($list) > 0)
-        // {
-        //     $response["success"] = 0;
-        //     $response["message"] = 'Este proyecto tiene materiales pendientes por retirar de CRE. Puede revisar los materiales con boton "Resumen de materiales" en la parte superior derecha.';
-        // }
-        // else
-        // {
+
+        if($noPendingMaterialsInCreForAsBuilt && count($list) > 0)
+        {
+            $response["success"] = 0;
+            $response["message"] = 'Este proyecto tiene materiales pendientes por retirar de CRE. Puede revisar los materiales con boton "Resumen de materiales" en la parte superior derecha.';
+        }
+        else
+        {
             $entryDate = $formData["entryDate"];
             $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
             $entryDate = date_format($entryDate, 'Y-m-d');
@@ -674,7 +682,7 @@ class AjaxProjectStatus extends PrivateController
             $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
-        // }
+        }
         
         echo json_encode($response);exit;
     }
