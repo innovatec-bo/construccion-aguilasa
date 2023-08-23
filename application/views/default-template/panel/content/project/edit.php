@@ -49,13 +49,13 @@
                                     <input class="form-control" value="<?=set_value('project-code', $project["code_pro"])?>" required name="project-code" placeholder="Ingrese el codigo del proyecto">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>Codigo secundario</label>
                                 <div class="form-group">
                                     <input class="form-control" value="<?=set_value('project-secondary-code', $project["secondary_code_pro"])?>" name="project-secondary-code" placeholder="Codigo secundario" required="" data-parsley-group="approved">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Area de trabajo</label>
                                     <select  class="form-control" name="work-area">
@@ -65,7 +65,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Año del proyecto</label>
                                     <div class='input-group year'>
@@ -73,6 +73,15 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="minor-enlargement" value="1" <?=$project["minor_enlargement"] == "AM"?"checked":""?>>Ampliacion menor
+                                        </label>
                                     </div>
                                 </div>
                             </div>

@@ -41,10 +41,12 @@ class Model_project_base extends MY_Model
     protected ?string $_endContract;
     protected ?float $_initialDesignBudget;
     protected ?float $_initialBuildingBudget;
+    protected ?int $_projectHasReturnedMaterialsToCre;
+    protected ?string $_minorEnlargement;
 
     public function __construct($projectCode = "", $projectName = "", $system = NULL, $address = "", $entryDate = "", $creFiscal = "", $status = NULL, $projectStart = "", $projectEnd = "", $points = 0, $distance = 0,
                                 $managementBy = NULL, $qualityLevel = 0, $creDesignCompletionDate = "", $creBuildingCompletionDate = "", $budgetaryPosition = 0, $secondaryCode = "", $folderDate = "", $contractId = NULL, $detail = "", $energized = 0, $projectPercentage = 0, $latitude = "",
-                                $longitude = "", $workArea = "", $projectYear = "", $endContract = NULL, $initialDesignBudget = 0, $initialBuildingBudget = 0)
+                                $longitude = "", $workArea = "", $projectYear = "", $endContract = NULL, $initialDesignBudget = 0, $initialBuildingBudget = 0, $projectHasReturnedMaterialsToCre = 0, $minorEnlargement = NULL)
     {
         parent::__construct();
         $this->_projectCode = $projectCode;
@@ -76,6 +78,8 @@ class Model_project_base extends MY_Model
         $this->_endContract = $endContract;
         $this->_initialDesignBudget = $initialDesignBudget;
         $this->_initialBuildingBudget = $initialBuildingBudget;
+        $this->_projectHasReturnedMaterialsToCre = $projectHasReturnedMaterialsToCre;
+        $this->_minorEnlargement = $minorEnlargement;
     }
 
     /**
@@ -115,6 +119,8 @@ class Model_project_base extends MY_Model
             "end_contract_pro" => $this->_endContract,
             "initial_design_budget_pro" => $this->_initialDesignBudget,
             "initial_building_budget_pro" => $this->_initialBuildingBudget,
+            'project_has_returned_materials_to_cre' => $this->_projectHasReturnedMaterialsToCre,
+            'minor_enlargement' => $this->_minorEnlargement,
             "deleted_pro" => $this->_deleted,
             "createdon_pro" => $this->_createdOn,
             "createdby_pro" => $this->_createdBy,
@@ -167,7 +173,9 @@ class Model_project_base extends MY_Model
                 $object->project_year_pro,
                 $object->end_contract_pro,
                 $object->initial_design_budget_pro,
-                $object->initial_building_budget_pro
+                $object->initial_building_budget_pro,
+                $object->project_has_returned_materials_to_cre,
+                $object->minor_enlargement
             );
             $instance->_id = $object->id_pro;
 
@@ -311,6 +319,16 @@ class Model_project_base extends MY_Model
         $this->_initialBuildingBudget = $initialBuildingBudget;
     }
 
+    public function setProjectHasReturnedMaterialsToCre($projectHasReturnedMaterialsToCre)
+    {
+        $this->_projectHasReturnedMaterialsToCre = $projectHasReturnedMaterialsToCre;
+    }
+
+    public function setMinorEnlargement($minorEnlargement)
+    {
+        $this->_minorEnlargement = $minorEnlargement;
+    }
+
     public function getCode()
     {
         return $this->_projectCode;
@@ -374,6 +392,16 @@ class Model_project_base extends MY_Model
     public function getInitialBuildingBudget()
     {
         return $this->_initialBuildingBudget;
+    }
+
+    public function getProjectHasReturnedMaterialsToCre()
+    {
+        return $this->_projectHasReturnedMaterialsToCre;
+    }
+
+    public function getMinorEnlargement()
+    {
+        return $this->_minorEnlargement;
     }
 
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS

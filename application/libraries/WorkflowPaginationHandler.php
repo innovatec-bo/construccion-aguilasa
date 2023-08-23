@@ -45,7 +45,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             budgetary_position_pro,
             entry_date_pro,
             folder_date_pro,
-            
+            minor_enlargement,
 			CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'

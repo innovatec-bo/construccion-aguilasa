@@ -107,8 +107,8 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
-            $projectInitialDesignBudget = $formData['project-initial-design-budget'];
-            $projectInitialBuildingBudget = $formData['project-initial-building-budget'];
+            $projectInitialDesignBudget =  str_replace(',','',$formData['project-initial-design-budget']);
+            $projectInitialBuildingBudget = str_replace(',','',$formData['project-initial-building-budget']);
 
             $projectCode = $formData["project-code"];
             $projectName = $formData["project-name"];
@@ -148,6 +148,13 @@ class Project extends PrivateController
             $longitude = $formData["longitude"];
             $workArea = $formData['work-area'];
             $projectYear = $formData['project-year'];
+
+            $minorEnlargement = NULL;
+            if(isset($formData['minor-enlargement']))
+            {
+                $minorEnlargement = 'AM';
+            }
+
 			//Let's search the status responsible
 			$responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created", $this->sessionUser->id);
 			if(count($responsibleList) <= 0)
@@ -162,6 +169,7 @@ class Project extends PrivateController
             $project->setInitialDesignBudget($projectInitialDesignBudget);
             $project->setInitialBuildingBudget($projectInitialBuildingBudget);
             $project->setEndContract($contractId);
+            $project->setMinorEnlargement($minorEnlargement);
             $project->save();
             $responsibleList = $responsibleList[0];//array_column($responsibleList,'id_sre');
             $responsibleList = array($responsibleList['id_sre']);
@@ -238,8 +246,8 @@ class Project extends PrivateController
         else
         {
             $formData = $this->input->post();
-            $projectInitialDesignBudget = $formData['project-initial-design-budget'];
-            $projectInitialBuildingBudget = $formData['project-initial-building-budget'];
+            $projectInitialDesignBudget =  str_replace(',','',$formData['project-initial-design-budget']);
+            $projectInitialBuildingBudget = str_replace(',','',$formData['project-initial-building-budget']);
 
             $projectCode = $formData["project-code"];
             $secondaryCode = $formData["project-secondary-code"];
@@ -312,6 +320,12 @@ class Project extends PrivateController
             $project->setProjectYear($projectYear);
             $project->setInitialDesignBudget($projectInitialDesignBudget);
             $project->setInitialBuildingBudget($projectInitialBuildingBudget);
+            $minorEnlargement = NULL;
+            if(isset($formData['minor-enlargement']))
+            {
+                $minorEnlargement = 'AM';
+            }
+            $project->setMinorEnlargement($minorEnlargement);
             $project->save();
             //The status isn't empty when is send to design
             if($projectStatus != "")

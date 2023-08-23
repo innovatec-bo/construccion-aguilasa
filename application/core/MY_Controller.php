@@ -583,7 +583,8 @@ class PrivateController extends PublicController
 			'project_current_budget' => "IMPORTE ACTUAL DEL PROYECTO",
 			'production_total_bs' => "PRODUCCION ACTUAL DEL PROYECTO",
             // 'payment_order_registered_contract_number' => "CONTRATO FINAL",
-            'final_contract_number_con' => "CONTRATO FINAL"
+            'final_contract_number_con' => "CONTRATO FINAL",
+            'minor_enlargement' => 'AMPLIACION MENOR'
         );
         return $columnList;
     }
