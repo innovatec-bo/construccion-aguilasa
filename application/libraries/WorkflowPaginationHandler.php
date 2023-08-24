@@ -251,7 +251,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		if(isset($filters["contract-id"]) && $filters["contract-id"] != "")
 		{
 			$contractId = $filters["contract-id"];
-			$sql .= " and id_con = ".$ci->db->escape($contractId)." ";
+			$sql .= " and final_id_con = ".$ci->db->escape($contractId)." ";
 		}
 		if(isset($filters["system"]) && $filters["system"] != "")
 		{

@@ -193,7 +193,7 @@ $monthList = array(
 <div class="row">
     <div class="col-lg-3 col-md-6">
         <form class="form-inline builder-general-report" method="post">
-            <div class="panel panel-primary" id="panel-days-progress-chart">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     Reporte general
                 </div>
@@ -238,7 +238,7 @@ $monthList = array(
     </div>
     <div class="col-lg-6 col-md-6">
         <form class="form-inline builder-manpower-productivity-report" method="post">
-            <div class="panel panel-primary" id="panel-days-progress-chart">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     Reporte de productividad
                 </div>
@@ -296,7 +296,7 @@ $monthList = array(
     </div>
     <div class="col-lg-3 col-md-6">
         <form class="form-inline projects-and-current-production" method="post">
-            <div class="panel panel-primary" id="panel-days-progress-chart">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     Costo y producci&oacute;n
                 </div>
