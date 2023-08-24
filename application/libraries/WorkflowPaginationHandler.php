@@ -46,6 +46,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             entry_date_pro,
             folder_date_pro,
             minor_enlargement,
+			end_contract_pro,
 			CASE
                 WHEN system_pro = 1 then 'Sistema Santa Cruz'
                 WHEN system_pro = 2 then 'Sistema Velasco'
@@ -251,7 +252,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		if(isset($filters["contract-id"]) && $filters["contract-id"] != "")
 		{
 			$contractId = $filters["contract-id"];
-			$sql .= " and final_id_con = ".$ci->db->escape($contractId)." ";
+			$sql .= " and end_contract_pro = ".$ci->db->escape($contractId)." ";
 		}
 		if(isset($filters["system"]) && $filters["system"] != "")
 		{

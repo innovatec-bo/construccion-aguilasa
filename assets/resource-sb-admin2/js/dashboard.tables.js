@@ -343,27 +343,28 @@ function startSelect2TrackingList(selector)
 }
 function getExecutiveSummary(system, management, contract)
 {
-    var system = typeof system !== 'undefined' ? system : "";
-    var management = typeof management !== 'undefined' ? management : "";
-    var contract = typeof contract !== 'undefined' ? contract : "";
-    var $content = $("#executive-summary-report");
-    blockArea($content);
-    $.ajax({
-        url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
-        dataType  :"json",
-        type : "POST",
-        data:{system:system, management:management, contract:contract},
-        success:function(response){
-            // if(response.success === 1)
-            // {
-            var htmlSource   = $("#ht-report-executive-summary").html();
-            var template = Handlebars.compile(htmlSource);
-            var data = {executiveSummary:response};
-            var html = template(data);
-            // }
-            $content.html(html);
-        }
-    });
+    //Disabled
+    // var system = typeof system !== 'undefined' ? system : "";
+    // var management = typeof management !== 'undefined' ? management : "";
+    // var contract = typeof contract !== 'undefined' ? contract : "";
+    // var $content = $("#executive-summary-report");
+    // blockArea($content);
+    // $.ajax({
+    //     url : base_url + 'panel/AjaxDashboard/getExecutiveSummary',
+    //     dataType  :"json",
+    //     type : "POST",
+    //     data:{system:system, management:management, contract:contract},
+    //     success:function(response){
+    //         // if(response.success === 1)
+    //         // {
+    //         var htmlSource   = $("#ht-report-executive-summary").html();
+    //         var template = Handlebars.compile(htmlSource);
+    //         var data = {executiveSummary:response};
+    //         var html = template(data);
+    //         // }
+    //         $content.html(html);
+    //     }
+    // });
 }
 
 function deleteTrackingList(trackingListId)
