@@ -253,6 +253,15 @@ class Project extends PrivateController
             $secondaryCode = $formData["project-secondary-code"];
             $projectName = $formData["project-name"];
 
+            $entryDate = NULL;
+            if($formData["project-entry-date"] != "")
+            {
+                $entryDate = $formData["project-entry-date"];
+                $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+                $entryDate = date_format($entryDate, 'Y-m-d');
+                $entryDate = $entryDate." ".date("H:i:s");
+            }
+            
             $folderDate = NULL;
             if($formData["project-folder-date"] != "")
             {
@@ -305,6 +314,7 @@ class Project extends PrivateController
             }
             $project->setSecondaryCode($secondaryCode);
             $project->setFolderDate($folderDate);
+            $project->setEntryDate($entryDate);
             $project->setCREFiscal($projectCreFiscal);
             $project->setSystem($projectSystem);
             $project->setAddress($projectAddress);

@@ -106,7 +106,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Fecha de ingreso</label>
-                                    <div class='input-group'>
+                                    <div class='input-group date'>
                                         <?php
                                         $entryDate = "";
                                         if(isset($project["entry_date_pro"]))

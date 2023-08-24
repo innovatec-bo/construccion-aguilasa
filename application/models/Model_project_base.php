@@ -259,6 +259,11 @@ class Model_project_base extends MY_Model
         $this->_secondaryCode = $secondaryCode;
     }
 
+    public function setEntryDate($entryDate)
+    {
+        $this->_entryDate = $entryDate;
+    }
+
     public function setFolderDate($folderDate)
     {
         $this->_folderDate = $folderDate;
