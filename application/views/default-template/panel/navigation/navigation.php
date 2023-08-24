@@ -220,6 +220,14 @@
                     <input class="form-control" id="quick-project-search-input" placeholder="Buscar proyecto">
                 </div> 
                 <button type="submit" class="btn btn-primary btn-sm" data-original-title="ABRIR ADMINISTRACION DE ESTADOS" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-eye"></i></button>
+                <?php
+                if($showEditButton)
+                {
+                ?>
+                <button type="button" id="quick-button-edit-project" class="btn btn-primary btn-sm" data-original-title="ABRIR FORMULARIO DE EDICION" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-edit"></i></button>
+                <?php
+                }
+                ?>
             </form>
             <?php
             }
