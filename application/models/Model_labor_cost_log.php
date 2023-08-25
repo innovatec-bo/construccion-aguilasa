@@ -532,18 +532,21 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             $sql .= " WHEN {$value['id_wus']} THEN {$value['new_price']}\n";
         }
         $idsToUpdate = substr($idsToUpdate,0,-1);
-        $updatePrices = "
-        UPDATE bui_worked_up_structures
-            SET price_wus = (CASE id_wus 
-                            -- WHEN 1 THEN 'val1'
-                            -- WHEN 2 THEN 'val2'
-                            -- WHEN 3 THEN 'val3'
-                            {$sql}
-                    END)
-            WHERE id_wus IN({$idsToUpdate});
-        ";
-        
-        $ci->db->query($updatePrices);
+        if ($idsToUpdate != "") 
+        {
+            $updatePrices = "
+            UPDATE bui_worked_up_structures
+                SET price_wus = (CASE id_wus 
+                                -- WHEN 1 THEN 'val1'
+                                -- WHEN 2 THEN 'val2'
+                                -- WHEN 3 THEN 'val3'
+                                {$sql}
+                        END)
+                WHERE id_wus IN({$idsToUpdate});
+            ";
+            
+            $ci->db->query($updatePrices);
+        }
 
         if ($projectId) 
         {
