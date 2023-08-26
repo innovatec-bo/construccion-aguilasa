@@ -228,6 +228,15 @@
                 <?php
                 }
                 ?>
+                
+                <?php
+                if($showAddProgressButton)
+                {
+                ?>
+                <button type="button" id="quick-button-add-progress-project" class="btn btn-primary btn-sm" data-original-title="ABRIR FORMULARIO DE REGISTRO DE AVANCE" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-file"></i></button>
+                <?php
+                }
+                ?>
             </form>
             <?php
             }
