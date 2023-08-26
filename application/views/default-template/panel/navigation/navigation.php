@@ -237,6 +237,15 @@
                 <?php
                 }
                 ?>
+
+                <?php
+                if($showAssignProjectButton)
+                {
+                ?>
+                <button type="button" id="quick-button-assign-project" class="btn btn-primary btn-sm" data-original-title="ABRIR FORMULARIO DE ASIGNACION DE PROYECTOS" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-user"></i></button>
+                <?php
+                }
+                ?>
             </form>
             <?php
             }

@@ -398,6 +398,7 @@ class PrivateController extends PublicController
         $contentData["showProjectQuickSearch"] = $this->_validateFeature('project_quick_search', TRUE);
         $contentData['showEditButton'] = $this->_validateFeature('project_edit', TRUE);
         $contentData['showAddProgressButton'] = $this->_validateFeature('project_manpower', TRUE);
+        $contentData['showAssignProjectButton'] = $this->_validateFeature('project_status_ready_to_assign', TRUE);
         $featureList = unserialize($this->sessionUser->featureList);
         $treeFeatureHtml = Model_feature::drawTreeHtml(NULL,$featureList,array());
         $contentData["treeFeatureHtml"] = $treeFeatureHtml;

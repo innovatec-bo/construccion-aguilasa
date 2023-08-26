@@ -121,6 +121,27 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on("click","#quick-button-assign-project",function(e){
+        e.preventDefault();
+        let codeList = $("#quick-project-search-input").val();
+        $.ajax({
+            url : base_url + 'panel/ajaxProject/getByCodeList',
+            dataType  :"json",
+            type : "POST",
+            data:{codeList:codeList},
+            success:function(response){
+                if(response.success === 1)
+                {
+                    $.each(response.data.projectList, function(index, value){
+                        let url = base_url + "panel/ProjectStatus/assignProject/"+value.id;
+                        window.open(url, '_blank');
+                    });
+                    
+                }
+            }
+        });
+    });
+
     $(document).on('click','.show-materials-summary', function(){
         let projectId = $(this).data('project-id');
         showSummaryList(projectId);

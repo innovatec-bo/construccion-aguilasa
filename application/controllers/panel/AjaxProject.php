@@ -25,7 +25,7 @@ class AjaxProject extends PrivateController
 
 		$dt = new JqdtHandler($this->input->post());
 		$paginationHandler = new WorkflowPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
-		$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id','quantity_picked_up_from_cre','materials_delivered_to_cre','quantity_materials_assigned','pending_material_in_cre','stake_responsible']);
+		//$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id','quantity_picked_up_from_cre','materials_delivered_to_cre','quantity_materials_assigned','pending_material_in_cre','stake_responsible']);
         $paginationHandler->setAdditionalParameters($additionalParameters);
         $response = $paginationHandler->getResponseForDataTable();
 
