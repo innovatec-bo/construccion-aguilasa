@@ -35,7 +35,7 @@
                             </select>    
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         <div class="form-group">
                             <label>Fiscales</label>
                             <select class="form-control" name="fiscal-responsible-id">
@@ -66,7 +66,7 @@
                                 ?>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Mano de obra</label>
@@ -77,7 +77,7 @@
                             </select>
                         </div>
                     </div>
-					<div class="col-md-2">
+					<!-- <div class="col-md-2">
 						<div class="form-group">
 							<label>Estado</label>
 							<select class="form-control" name="status">
@@ -96,8 +96,8 @@
 								?>
 							</select>
 						</div>
-					</div>
-                    <div class="col-md-12">
+					</div> -->
+                    <!-- <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="checkbox my-0">
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         
-                    </div>
+                    </div> -->
                     
                     <div class="col-md-12">
                         <div class="form-group mb-0">
@@ -160,18 +160,18 @@
                         <th class="text-center">ORDEN</th>
                         <th class="text-center">CODIGO</th>
                         <th class="text-center">INGRESO<br>EN SISTEMA</th>
-                        <th class="text-center">INGRESO<br>EN ESTADO</th>
-                        <th class="text-center">DIAS<br>ESTATICO</th>
+                        <!-- <th class="text-center">INGRESO<br>EN ESTADO</th> -->
+                        <!-- <th class="text-center">DIAS<br>ESTATICO</th> -->
                         <th class="text-center">ESTADO</th>
                         <th class="text-center">SISTEMA</th>
                         <th class="text-center">DISTANCIA Y<br>PUNTOS</th>
                         <th class="text-center">FISCAL<br>DE CRE</th>
-                        <th class="text-center">RESPONSABLE<br>DE ESTACADO</th>
-                        <th class="text-center">RESPONSABLE</th>
-                        <th class="text-center">FISCAL</th>
-                        <th class="text-center">CONSTRUCTOR</th>
+                        <!-- <th class="text-center">RESPONSABLE<br>DE ESTACADO</th> -->
+                        <!-- <th class="text-center">RESPONSABLE</th> -->
+                        <!-- <th class="text-center">FISCAL</th> -->
+                        <!-- <th class="text-center">CONSTRUCTOR</th> -->
                         <th class="text-center">UBICACION</th>
-                        <th class="text-center">IMPORTE<br>Bs.</th>
+                        <!-- <th class="text-center">IMPORTE<br>Bs.</th> -->
                         <th class="text-center"><i class="fa fa-cogs fa-2x"></i></th>
                     </tr>
                     </thead>

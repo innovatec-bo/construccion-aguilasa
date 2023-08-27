@@ -53,6 +53,7 @@ function DTAdditionalParameterHandler(objectContent, table) {
 				}
             });
         }
+        
     };
 
     this.setButtonFilter = function(selector)

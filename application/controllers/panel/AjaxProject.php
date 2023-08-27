@@ -19,7 +19,7 @@ class AjaxProject extends PrivateController
 //        $this->_validateFeature("project_index");
     }
 
-    public function ajaxDtAllProjects()
+    public function ajaxDtAllProjects_old()
 	{
 		$additionalParameters = $this->input->post('additionalParameters')??array();
 
@@ -74,7 +74,7 @@ class AjaxProject extends PrivateController
 		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
 	}
 
-    public function ajaxDtAllProjects_old()
+    public function ajaxDtAllProjects()
     {
         $additionalParameters = $this->input->post("additionalParameters");
         $response = $this->_is("fiscal");
@@ -169,7 +169,7 @@ class AjaxProject extends PrivateController
                 $list[] = array(
                     "id" => $project->id_pro,
                     "text" => $project->code_pro,
-                    "responsible" => $project->responsible,
+                    // "responsible" => $project->responsible,
                     "points" => $project->points_pro,
                     "distance" => $project->distance_pro
                 );

@@ -426,7 +426,7 @@ class Model_project_base extends MY_Model
                     '.static::_dataTableColumns().'
                 FROM
                     wfl_projects
-                LEFT JOIN (
+                /*LEFT JOIN (
                     select * from (
                         select
                             project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -491,7 +491,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
                 LEFT JOIN wfl_project_status on status_pro = id_pst
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
@@ -593,7 +593,7 @@ class Model_project_base extends MY_Model
                     ".static::_dataTableColumns()."
                 FROM
                     wfl_projects
-                LEFT JOIN (
+                /*LEFT JOIN (
                     select * from (
                         select
                             project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -658,7 +658,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
                 LEFT JOIN wfl_project_status on status_pro = id_pst
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
@@ -776,7 +776,7 @@ class Model_project_base extends MY_Model
                 ".static::_dataTableColumns()."
             FROM
                 wfl_projects
-            LEFT JOIN (
+            /*LEFT JOIN (
                 select * from (
                     select
                         project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -841,7 +841,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
             LEFT JOIN (
@@ -953,7 +953,7 @@ class Model_project_base extends MY_Model
                 ".static::_dataTableColumns()."
             FROM
                 wfl_projects
-            LEFT JOIN (
+            /*LEFT JOIN (
                 select * from (
                     select
                         project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -1018,7 +1018,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro */
 
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN (
@@ -1110,15 +1110,15 @@ class Model_project_base extends MY_Model
                         IFNULL(percentage_inc,0) percentage_inc,
                         detail_inc,
                         order_pst,
-                        status_log_manual_entry_date.manual_entry_date_psl,
-                        status_log_manual_entry_date.responsible,
-                        status_log_manual_entry_date.responsible_ids,
-                        status_log_manual_entry_date.fiscal_responsible,
-                        status_log_manual_entry_date.fiscal_responsible_id,
-                        status_log_manual_entry_date.builder_responsible,
-                        status_log_manual_entry_date.builder_responsible_ids,
+                        -- status_log_manual_entry_date.manual_entry_date_psl,
+                        -- status_log_manual_entry_date.responsible,
+                        -- status_log_manual_entry_date.responsible_ids,
+                        -- status_log_manual_entry_date.fiscal_responsible,
+                        -- status_log_manual_entry_date.fiscal_responsible_id,
+                        -- status_log_manual_entry_date.builder_responsible,
+                        -- status_log_manual_entry_date.builder_responsible_ids,
                         manpower.manpower_file_id,
-                        status_log_manual_entry_date.id_psl,
+                        -- status_log_manual_entry_date.id_psl,
                         id_war,
                         design_prb design_budget,
 						building_prb building_budget,			

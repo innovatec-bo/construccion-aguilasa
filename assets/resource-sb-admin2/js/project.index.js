@@ -10,7 +10,7 @@ $(document).ready(function() {
     additionalParameter.addParameterObject('fiscal-responsible-id','select');
     additionalParameter.addParameterObject('builder-responsible-id','select');
     additionalParameter.addParameterObject('manpower-uploaded','select');
-    additionalParameter.addParameterObject('status','select');
+    // additionalParameter.addParameterObject('status','select');
     additionalParameter.addParameterObject('all-materials-picked-up-from-cre','checkbox');
     additionalParameter.addParameterObject('none-materials-picked-up-from-cre','checkbox');
     additionalParameter.setButtonFilter('#send-filters');
@@ -64,7 +64,7 @@ $(document).ready(function() {
             $form.submit();
         }
     };
-    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport, buttonWorkflow, buttonProjectsLog];
+    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport/*, buttonWorkflow*/, buttonProjectsLog];
     if($("input[name=is-super-admin]").val() != 1)
     {
         buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport];
@@ -88,14 +88,18 @@ $(document).ready(function() {
         "dom": "<'row'<'col-sm-7'Bl><'col-sm-5 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
         "columns" : [{
-            "data" : "id_pro"
+            "data" : "id_pro",
+            "searchable" : false
         }, {
-            "data" : "order_pst"
+            "data" : "order_pst",
+            "searchable" : false
         }, {
-            "data" : "code_pro"
+            "data" : "code_pro",
+            "searchable" : true
         }, {
             "data" : "entry_date_pro",
 			"className": 'text-center',
+            "searchable" : false,
             "render" : function(data, type, row, meta) {
                 let date = moment(row.entry_date_pro,'YYYY-MM-DD HH:mm:ss');
                 let result = "";
@@ -104,10 +108,11 @@ $(document).ready(function() {
                     result = date.format('DD-MM-YYYY');
                 }
                 return result;
-            }
-        }, {
+            },
+        }/*, {
             "data" : "status_log_manual_entry_date",
 			"className": 'text-center',
+            "searchable" : false,
             "render" : function(data, type, row, meta) {
                 let date = moment(row.status_log_manual_entry_date,'YYYY-MM-DD HH:mm:ss');
                 let result = "";
@@ -117,12 +122,42 @@ $(document).ready(function() {
                 }
                 return result;
             }
-        }, {
+        }*//*, {
             "data" : "static_days"
+        }*/, {
+            "data" : "status_name_pst",
+            "searchable" : false
         }, {
-            "data" : "status_name_pst"
-        }, {
-            "data" : "system_pro"
+            "data" : "system_pro",
+            "searchable" : false,
+            "render" : function(data, type, row, meta) {
+                var result = '';
+                switch (row.system_pro) 
+                {
+                    case '1':
+                        result = 'Santa Cruz';
+                    break;
+                    case '2':
+                        result = 'Velasco';
+                    break;
+                    case '3':
+                        result = 'Misiones';
+                    break;
+                    case '4':
+                        result = 'Camiri';
+                    break;
+                    case '5':
+                        result = 'German bush';
+                    break;
+                    case '6':
+                        result = 'Robore';
+                    break;
+                    case '7':
+                        result = 'Valles';
+                    break;
+                }
+                return result;
+            }
         }, {
             "defaultContent" : "",
             "searchable" : false,
@@ -136,8 +171,9 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-			"data" : "cre_fiscal_pro"
-		}, {
+			"data" : "cre_fiscal_pro",
+            "searchable" : false
+		}/*, {
             "data" : "stake_responsible",
         }, {
             "data" : "assign_to_responsible"
@@ -145,10 +181,10 @@ $(document).ready(function() {
             "data" : "fiscal_responsible"
         }, {
             "data" : "builder_responsible"
-        }, {
+        }*/, {
             "data" : "address_pro",
             "defaultContent" : "",
-            "searchable" : true,
+            "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 var address = row.address_pro;
@@ -165,8 +201,9 @@ $(document).ready(function() {
 
                 return response;
             }
-        }, {
+        }/*, {
 			"data" : "project_current_budget",
+            "searchable" : false,
 			"className": 'text-right',
 			// "orderable" : false,
 			"searchable" : false,
@@ -175,14 +212,14 @@ $(document).ready(function() {
                 let html = "<span style='font-weight:bold'>"+amount+"</span>";
                 return html;
             }
-		}, {
+		}*/, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
                 let currentStatusSet = $("input[name=status-set]").val();
                 let showStatusManagementProjectBtn = 0;
-                let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.project_status_id]+'/'+row.id_pro;
+                let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.status_pro]+'/'+row.id_pro;
                 let showStatusManagementWarehouseBtn = 0;
                 let statusManagementWarehouseUrl = base_url + 'panel/Warehouse/statusManagement/'+row.id_war;
                 let showAddIncidentBtn = 0;
@@ -255,7 +292,7 @@ $(document).ready(function() {
     });
     $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Buscar');
     $('.dataTables_length select').addClass('form-control');
-    oTable.fnSetFilteringDelay(1000);
+    oTable.fnSetFilteringDelay(1500);
 });
 
 function columnVisibility(_this)
@@ -274,18 +311,18 @@ function columnVisibility(_this)
     }
     let statusSet = $("input[name=status-set]").val();
     
-    switch(statusSet)
-    {
-        case "building":
-            _this.api().column(9).visible(false);
-            _this.api().column(11).visible(true);
-            _this.api().column(12).visible(true);
-            break;
-        default:
-            _this.api().column(9).visible(true);
-            _this.api().column(11).visible(false);
-            _this.api().column(12).visible(false);
-    }
+    // switch(statusSet)
+    // {
+    //     case "building":
+    //         _this.api().column(9).visible(false);
+    //         _this.api().column(11).visible(true);
+    //         _this.api().column(12).visible(true);
+    //         break;
+    //     default:
+    //         _this.api().column(9).visible(true);
+    //         _this.api().column(11).visible(false);
+    //         _this.api().column(12).visible(false);
+    // }
 
 }
 
