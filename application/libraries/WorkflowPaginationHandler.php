@@ -836,6 +836,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 							$query = str_replace("{id-list-inc-t1}"," and t1.project_id_inc in (".$idListFilter.") ", $query);
 							$query = str_replace("{id-list-lad}"," and project_id_lad in (".$idListFilter.") ", $query);
 							$query = str_replace("{id-list-msu}"," and project_id_msu in (".$idListFilter.") ", $query);
+							$query = str_replace("{id-list-psl}"," and project_id_psl in (".$idListFilter.") ", $query);
 						}
 				}
 			}

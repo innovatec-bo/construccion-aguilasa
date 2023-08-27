@@ -61,7 +61,24 @@ class ExcelExternalExecutiveReport
     function getReport($save = FALSE) : void
     {
 		$additionalParameters = array('status-keyword' => 'already_sent,as_built,conciliation_shipment,project_return_materials');
-        $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
+		$columnsToShow = [
+			'code_pro',
+			'status_name_pst',
+			'status_log_manual_entry_date',
+			'fiscal_responsible',
+			'address_pro',
+			'already_sent',
+			'work_area_pro',
+			'cre_fiscal_id',
+			'cre_fiscal_pro',
+			'keyword_pst',
+			'static_days',
+			'total_approved',
+			'payment_order_registered_total_real_budget',
+			'schedule_design_budget',
+			'schedulee_tentative_total_budget'
+		];
+        $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters, $columnsToShow);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
 		});

@@ -197,6 +197,7 @@ class AjaxDashboard extends PrivateController
         foreach ($this->_projectSystems as $id => $system)
         {
             $currentStatusSummary = Model_project::projectCurrentStatusSummary($id, $management, $contract);
+            dd($currentStatusSummary);
             $totalProjects = 0;
             $totalBudget = 0;
             foreach ($currentStatusSummary as $summary)

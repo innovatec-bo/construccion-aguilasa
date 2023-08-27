@@ -60,7 +60,20 @@ class ExcelInternalExecutiveReport
 //		$additionalParameters = array('status-keyword' => "project_return_materials");
 		$this->_fileName = 'Informe Ejecutivo Interno - '.date("d.m.y h.i A").'.xlsx';
 
-        $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters);
+		$columsToShow = [
+			'cre_fiscal_pro',
+			'keyword_pst',
+			'payment_order_registered_total_real_budget',
+			'fiscal_responsible',
+			'status_name_pst',
+			'status_log_manual_entry_date',
+			'static_days',
+			'total_approved',
+			'schedule_design_budget',
+			'schedulee_tentative_total_budget',
+			'fiscal_responsible_id'
+		];
+        $this->_workflowDetail = Model_project::getWorkflowDetail($additionalParameters, $columsToShow);
 		usort($this->_workflowDetail, function($a, $b) {
 			return $a['cre_fiscal_pro'] <=> $b['cre_fiscal_pro'];
 		});

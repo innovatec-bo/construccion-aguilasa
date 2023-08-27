@@ -352,10 +352,15 @@ class Model_project extends Model_project_base
         }
     }
 
-	public static function getWorkflowDetail($additionalFilters = array())
+	public static function getWorkflowDetail($additionalFilters = [], $columnsToShow = [])
 	{
 		$paginationHandler = new WorkflowPaginationHandler(10000,0);
 		$paginationHandler->setReturnAsObjectCollection(FALSE);
+        if (count($columnsToShow) > 0) 
+        {
+            $paginationHandler->setColumnsToShow($columnsToShow);
+        }
+        
 		$paginationHandler->setAdditionalParameters($additionalFilters);
 		return $paginationHandler->getAll();
 	}
@@ -1720,7 +1725,18 @@ class Model_project extends Model_project_base
 
 	public static function prepareCurrentStatusSummaryArray2($system = "", $management = "", $contract = "")
 	{
-		$workflow = Model_project::getWorkflowDetail(['system'=>$system, 'management'=>$management,'contract-id'=>$contract]);
+        $columnsToShow = [
+            'keyword_pst',
+            'status_name_pst',
+            'schedule_design_budget',
+            'schedulee_tentative_total_budget',
+            'total_approved',
+            'payment_order_registered_total_real_budget',
+            'project_current_design_budget',
+            'order_pst'
+        ];
+		$workflow = Model_project::getWorkflowDetail(['system'=>$system, 'management'=>$management,'contract-id'=>$contract], $columnsToShow);
+        // dd($workflow);
 		usort($workflow, function($a, $b) {
 			return $a['order_pst'] <=> $b['order_pst'];
 		});
