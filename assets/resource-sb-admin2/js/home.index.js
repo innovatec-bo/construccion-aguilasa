@@ -8,11 +8,15 @@ $(function() {
     incidentHandler.getAllIncidents();
     $("#days-without-incidents").text(incidentHandler.daysWithoutIncidents);
 
-    let startMonth = moment().format("YYYY-MM-01");
-    let endMonth = moment().endOf('month').format("YYYY-MM-DD");
-    let workPlanHandler = new WorkPlanHandler();
-    workPlanHandler.printWorkPlanSummary(startMonth, endMonth);
-    workPlanHandler.loadEventHandlers();
+    if ($('[name=show-work-plan]').val() == 1) 
+    {
+        let startMonth = moment().format("YYYY-MM-01");
+        let endMonth = moment().endOf('month').format("YYYY-MM-DD");
+        let workPlanHandler = new WorkPlanHandler();
+        workPlanHandler.printWorkPlanSummary(startMonth, endMonth);
+        workPlanHandler.loadEventHandlers();    
+    }
+    
     // $("#incident-content").perfectScrollbar({
     //     wheelPropagation: true
     // });

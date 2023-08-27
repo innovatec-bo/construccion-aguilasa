@@ -63,7 +63,11 @@
 	<?php
 	}
 	?>
-    <!-- /.row -->
+    <input type="hidden" name="show-work-plan" value="<?=$showWorkPlan?>">
+    <?php
+	if($showWorkPlan)
+    {
+	?>
     <div class="col-md-12 col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -87,6 +91,9 @@
         </div>
         <!-- /.panel -->
     </div>
+    <?php
+    }
+    ?>
     <div class="col-md-12 col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">

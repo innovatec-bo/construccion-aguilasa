@@ -37,6 +37,7 @@ class Home extends PrivateController
         $externalObservations = Model_external_fiscal_observations::getMasterDetail();
         $data['externalObservations'] = $externalObservations;
         $data['isAdmin'] = $this->_is('super_admin');
+        $data['showWorkPlan'] = $this->_validateFeature('work_plan', true);
         $this->_loadPanelView('home/index', $data);
     }
 
