@@ -80,7 +80,7 @@ class AjaxProject extends PrivateController
         $response = $this->_is("fiscal");
         if($response == 1)
         {
-            // $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
+            $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
         }
         $dt = new JqdtHandler($this->input->post());
         

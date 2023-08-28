@@ -426,7 +426,8 @@ class Model_project_base extends MY_Model
                     '.static::_dataTableColumns().'
                 FROM
                     wfl_projects
-                /*LEFT JOIN (
+                left join sec_users cre_fiscals on cre_fiscals.id_usr = cre_fiscal_pro
+                LEFT JOIN (
                     select * from (
                         select
                             project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -491,8 +492,9 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id = id_pro
                 LEFT JOIN wfl_project_status on status_pro = id_pst
+                
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
                     select inc.*
@@ -593,7 +595,8 @@ class Model_project_base extends MY_Model
                     ".static::_dataTableColumns()."
                 FROM
                     wfl_projects
-                /*LEFT JOIN (
+                left join sec_users cre_fiscals on cre_fiscals.id_usr = cre_fiscal_pro
+                LEFT JOIN (
                     select * from (
                         select
                             project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -658,7 +661,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id = id_pro
                 LEFT JOIN wfl_project_status on status_pro = id_pst
                 LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
                 LEFT JOIN (
@@ -776,7 +779,8 @@ class Model_project_base extends MY_Model
                 ".static::_dataTableColumns()."
             FROM
                 wfl_projects
-            /*LEFT JOIN (
+            left join sec_users cre_fiscals on cre_fiscals.id_usr = cre_fiscal_pro
+            LEFT JOIN (
                 select * from (
                     select
                         project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -841,7 +845,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro*/
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id = id_pro
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN wfl_warehouses on project_id_war = id_pro and deleted_war != 1
             LEFT JOIN (
@@ -953,7 +957,8 @@ class Model_project_base extends MY_Model
                 ".static::_dataTableColumns()."
             FROM
                 wfl_projects
-            /*LEFT JOIN (
+            left join sec_users cre_fiscals on cre_fiscals.id_usr = cre_fiscal_pro
+            LEFT JOIN (
                 select * from (
                     select
                         project_id_psl project_id, max(manual_entry_date_psl) max_date
@@ -1018,7 +1023,7 @@ class Model_project_base extends MY_Model
                     where deleted_psl != 1  and deleted_slr != 1 and roleid_uro = 9
                     GROUP BY id_psl
                 ) log_builder on log_builder.builder_project_id_psl = max_entry.project_id and log_builder.builder_manual_entry_date_psl = max_entry.max_date
-            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id_psl = id_pro */
+            ) as status_log_manual_entry_date on status_log_manual_entry_date.project_id = id_pro
 
             LEFT JOIN wfl_project_status on status_pro = id_pst
             LEFT JOIN (
@@ -1113,9 +1118,9 @@ class Model_project_base extends MY_Model
                         -- status_log_manual_entry_date.manual_entry_date_psl,
                         -- status_log_manual_entry_date.responsible,
                         -- status_log_manual_entry_date.responsible_ids,
-                        -- status_log_manual_entry_date.fiscal_responsible,
+                        status_log_manual_entry_date.fiscal_responsible,
                         -- status_log_manual_entry_date.fiscal_responsible_id,
-                        -- status_log_manual_entry_date.builder_responsible,
+                        status_log_manual_entry_date.builder_responsible,
                         -- status_log_manual_entry_date.builder_responsible_ids,
                         manpower.manpower_file_id,
                         -- status_log_manual_entry_date.id_psl,
@@ -1131,7 +1136,8 @@ class Model_project_base extends MY_Model
 						transportation_reb transportation_real_budget,
 						live_line_reb live_line_real_budget,
 						right_of_way_reb right_of_way_real_budget,
-						(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget
+						(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget,
+                        concat(cre_fiscals.firstname_usr,' ',cre_fiscals.lastname_usr) cre_fiscal_full_name
         ";
         return $columns;
     }

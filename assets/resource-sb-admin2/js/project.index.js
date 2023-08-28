@@ -171,17 +171,17 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-			"data" : "cre_fiscal_pro",
+			"data" : "cre_fiscal_full_name",
             "searchable" : false
 		}/*, {
             "data" : "stake_responsible",
         }, {
             "data" : "assign_to_responsible"
-        }, {
+        }*/, {
             "data" : "fiscal_responsible"
         }, {
             "data" : "builder_responsible"
-        }*/, {
+        }, {
             "data" : "address_pro",
             "defaultContent" : "",
             "searchable" : false,
