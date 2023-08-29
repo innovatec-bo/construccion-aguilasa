@@ -646,11 +646,11 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveAsBuilt()
     {
-        // $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
-        // $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
-        // $body = json_decode($apiResponse->getBody(), true);
-        // $settings = $body['data'];
-        // $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'];
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+        $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
+        $body = json_decode($apiResponse->getBody(), true);
+        $settings = $body['data'];
+        $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'];
         
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
@@ -658,8 +658,7 @@ class AjaxProjectStatus extends PrivateController
 		$paginationHandler->setAdditionalParameters(['project-id' => $projectId, 'show-material-pending-in-cre' => 1]);
 		$list = $paginationHandler->getAll();
 
-        //if($noPendingMaterialsInCreForAsBuilt && count($list) > 0)
-        if(1==2)
+        if($noPendingMaterialsInCreForAsBuilt && count($list) > 0)
         {
             $response["success"] = 0;
             $response["message"] = 'Este proyecto tiene materiales pendientes por retirar de CRE. Puede revisar los materiales con boton "Resumen de materiales" en la parte superior derecha.';
