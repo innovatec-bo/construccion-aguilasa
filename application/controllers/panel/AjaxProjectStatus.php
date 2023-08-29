@@ -607,7 +607,7 @@ class AjaxProjectStatus extends PrivateController
         $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
-        // $project->save();
+        $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
         if($statusKeyword == "completed")
