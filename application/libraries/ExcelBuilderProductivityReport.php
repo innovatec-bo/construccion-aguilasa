@@ -131,7 +131,11 @@ class ExcelBuilderProductivityReport
         $totalExecutedAmount = 0;
         $i = 12;
         $rowCounter = 1;
-        foreach ($fiscal['asAssigned'] as $row)
+        // if(!isset($fiscal['asAssigned']))
+        // {
+        //     dd($fiscal);
+        // }
+        foreach ($fiscal['asAssigned']??[] as $row)
         {
             $spreadsheet->setActiveSheetIndex($index)
                     ->setCellValue('D'.$i, $rowCounter)
@@ -149,7 +153,7 @@ class ExcelBuilderProductivityReport
         $spreadsheet->setActiveSheetIndex($index)
             ->setCellValue('G'.$i, 'A) TOTAL')
             // ->setCellValue('H'.$i, '=SUM(H12:H'.($i-1).')');
-            ->setCellValue('H'.$i, '=SUM(H'.(($i-1)-(count($fiscal['asAssigned']))).':H'.($i-1).')');
+            ->setCellValue('H'.$i, '=SUM(H'.(($i-1)-(count($fiscal['asAssigned']??[]))).':H'.($i-1).')');
         $spreadsheet->getActiveSheet()->getStyle('G'.$i)->getFont()->setBold(true);
         $spreadsheet->getActiveSheet()->getStyle('G'.$i.':H'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         //Currency format
