@@ -1124,6 +1124,7 @@ class Model_project_base extends MY_Model
                         -- status_log_manual_entry_date.builder_responsible_ids,
                         manpower.manpower_file_id,
                         -- status_log_manual_entry_date.id_psl,
+                        TIMESTAMPDIFF(DAY, status_log_manual_entry_date.manual_entry_date_psl, now()) static_days,
                         id_war,
                         design_prb design_budget,
 						building_prb building_budget,			
@@ -1137,7 +1138,19 @@ class Model_project_base extends MY_Model
 						live_line_reb live_line_real_budget,
 						right_of_way_reb right_of_way_real_budget,
 						(IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as total_real_budget,
-                        concat(cre_fiscals.firstname_usr,' ',cre_fiscals.lastname_usr) cre_fiscal_full_name
+                        concat(cre_fiscals.firstname_usr,' ',cre_fiscals.lastname_usr) cre_fiscal_full_name,
+                        CASE
+                            WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
+                                then initial_design_budget_pro + initial_building_budget_pro
+                            WHEN keyword_pst in('schedule','ready_to_send','already_sent','rectify_design','rectify_illustration','rd_stakes','rd_digitization','rd_drawing','ri_digitization','ri_drawing') 
+                                then if(schedulee.tentative_total_budget_prb is not null && schedulee.tentative_total_budget_prb > 0,schedulee.tentative_total_budget_prb,schedulee.design_prb)\n
+                            WHEN keyword_pst in('canceled') 
+                                then canceled.design_prb \n
+                            WHEN keyword_pst in('approved','assign_to','in_progress','paused','stopped','completed','project_energized','as_built') 
+                                then approved.total_budget\n
+                            WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
+                                then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget)
+                        END project_current_budget
         ";
         return $columns;
     }

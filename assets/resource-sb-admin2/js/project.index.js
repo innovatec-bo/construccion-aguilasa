@@ -122,9 +122,9 @@ $(document).ready(function() {
                 }
                 return result;
             }
-        }*//*, {
-            "data" : "static_days"
         }*/, {
+            "data" : "static_days"
+        }, {
             "data" : "status_name_pst",
             "searchable" : false
         }, {

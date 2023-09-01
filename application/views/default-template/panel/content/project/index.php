@@ -161,7 +161,7 @@
                         <th class="text-center">CODIGO</th>
                         <th class="text-center">INGRESO<br>EN SISTEMA</th>
                         <!-- <th class="text-center">INGRESO<br>EN ESTADO</th> -->
-                        <!-- <th class="text-center">DIAS<br>ESTATICO</th> -->
+                        <th class="text-center">DIAS<br>ESTATICO</th>
                         <th class="text-center">ESTADO</th>
                         <th class="text-center">SISTEMA</th>
                         <th class="text-center">DISTANCIA Y<br>PUNTOS</th>
