@@ -366,6 +366,10 @@ class Model_user extends Model_user_base
 //        $sereboFiscalFullName = $dataToSend['sereboFiscalFullName'];
         // echo"<pre>";var_dump($dataToSend['sereboFiscalFullName']);exit;
         $sereboFiscalFullName = is_array($dataToSend['sereboFiscalFullName'])?implode(",",$dataToSend['sereboFiscalFullName']):$dataToSend['sereboFiscalFullName'];
+        if(!isset($dataToSend['statusListToNotify']))
+        {
+            $dataToSend['statusListToNotify'] = [];
+        }
         $statusListToNotify = $dataToSend['statusListToNotify'];
         $responseList = array();
         foreach($statusListToNotify as $status => $projectList)

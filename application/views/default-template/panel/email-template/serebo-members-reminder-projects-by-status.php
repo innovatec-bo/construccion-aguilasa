@@ -78,7 +78,7 @@
                                                                                         '.$project["code_pro"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["contract_number_con"].'
+                                                                                        '.$project["final_contract_number_con"].'
                                                                                     </td>
                                                                                     <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
                                                                                         '.$date.'
