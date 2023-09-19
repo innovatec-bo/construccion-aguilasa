@@ -251,6 +251,13 @@
                                 <?php
                                 }
                                 ?>
+                                <?php
+                                if ($showEditButton) {
+                                ?>
+                                    <li><a href="javascript:void(0);" id="quick-setup-button">Quick Setup</a></li>
+                                <?php
+                                }
+                                ?>
                             </ul>
                         </div><!-- /btn-group -->
                     </div>
