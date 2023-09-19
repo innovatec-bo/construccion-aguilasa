@@ -517,8 +517,27 @@ class AjaxProjectStatus extends PrivateController
     
     public function saveConciliationShipment()
     {
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+        $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
+        $body = json_decode($apiResponse->getBody(), true);
+        $settings = $body['data'];
+        $enableManualApprovementForConciliations = $settings['enable_manual_approvement_for_conciliations'];
+        
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
+        $project = Model_project::getById($projectId);
+        
+        if ($enableManualApprovementForConciliations)
+        {
+            if($project->getProjectHasReturnedMaterialsToCre() == 0)
+            {
+                $response["success"] = 0;
+                $response["message"] = "El encargado de almacen no ha aprobado este proyecto para que pase a envio de conciliacion";
+                echo json_encode($response);exit;
+            }
+        }
+
+        
         $entryDate = $formData["entryDate"];
         $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
         $entryDate = date_format($entryDate, 'Y-m-d');
@@ -537,7 +556,7 @@ class AjaxProjectStatus extends PrivateController
         $rightOfWay = str_replace(",","", $rightOfWay);
         $responsibleList = $formData["responsibleList"];
         $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
-        $project = Model_project::getById($projectId);
+        
         $project->setStatus($statusId);
         $project->save();
         $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
