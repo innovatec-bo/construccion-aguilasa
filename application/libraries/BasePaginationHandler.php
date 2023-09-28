@@ -97,11 +97,15 @@ class BasePaginationHandler
 				where
 				1 = 1
 				'.$this->_additionalParameters().'                    
-                group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' limit ' . $this->_limit . ' offset ' . $this->_offset;
+                group by '.static::TABLE_ID.' order by ' . $this->_orderBy . ' ' . $this->_orderType . ' 
+				-- limit ' . $this->_limit . ' offset ' . $this->_offset.' ';
 ;
 		$query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
 		if($this->_returnAsObjectCollection)
+		{
 			return $query->result();
+		}
+			
 		else
 			return $query->result_array();
 	}
@@ -194,8 +198,9 @@ class BasePaginationHandler
 	/**
 	 * Return the single data to draw the jquery data table
 	 * @return array
+	 * @deprecated
 	 */
-	public function getResponseForDataTable() : array
+	public function getResponseForDataTable_old() : array
 	{
 		$recordsTotal = $this->countAll();
 		$recordsFiltered = $recordsTotal;
@@ -207,6 +212,34 @@ class BasePaginationHandler
 		{
 			$resultArray = $this->search();
 			$recordsFiltered = $this->searchTotalCount();
+		}
+		$result['recordsTotal'] = $recordsTotal;
+		$result['recordsFiltered'] = $recordsFiltered;
+		$result['resultArray'] = $resultArray;
+		return $result;
+	}
+
+	/**
+	 * Return the single data to draw the jquery data table
+	 * @return array
+	 */
+	public function getResponseForDataTable() : array
+	{
+		$allRecords = $this->getAll();
+		$recordsTotal = count($allRecords);
+		$recordsFiltered = $recordsTotal;
+		if ($this->_textToSearch === "")
+		{
+			$resultArray = array_slice($allRecords, $this->_offset, $this->_limit);
+		}
+		else
+		{
+			$search = "/".$this->_textToSearch."/i";
+			$allResultArray = array_filter($allRecords, function($a) use($search)  {
+				return preg_grep($search, $a);
+			});
+			$resultArray = array_slice($allResultArray, $this->_offset, $this->_limit);//[$allRecords[$position]];
+			$recordsFiltered = count($allResultArray);
 		}
 		$result['recordsTotal'] = $recordsTotal;
 		$result['recordsFiltered'] = $recordsFiltered;

@@ -64,16 +64,40 @@ $(document).ready(function() {
             $form.submit();
         }
     };
-    var buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport/*, buttonWorkflow*/, buttonProjectsLog];
+    var buttons = [
+            {
+                extend: 'excelHtml5',
+                filename: 'Lista de proyectos - '+moment().format('DD.MM.YYYY.HH:mm:ss'),
+                title: 'Lista de proyectos',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            buttonMainDesignReport,
+            buttonProjectsLog
+        ];
     if($("input[name=is-super-admin]").val() != 1)
     {
-        buttons= ['excel', 'csv','pdf','print', buttonMainDesignReport];
+        buttons = [
+            {
+                extend: 'excelHtml5',
+                filename: 'Lista de proyectos - '+moment().format('DD.MM.YYYY.HH:mm:ss'),
+                title: 'Lista de proyectos',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            buttonMainDesignReport
+        ];
     }
+    
     //Horizontal Icons dataTable
     // var statusSet = $("input[name=status-set]").val();
     var oTable = $('#project-index').dataTable({
         "processing" : true,
         "serverSide" : true,
+        // "info": false,
+        // "pagingType": 'simple',
         "ajax" : {
             url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
             type : 'POST',
@@ -83,11 +107,13 @@ $(document).ready(function() {
         },
         "order": [[ 3, "desc" ]],
         "language": {
+                "search": "COD. Proyecto:",
                 processing: '<h1><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></h1>'
         },
         "dom": "<'row'<'col-sm-7'Bl><'col-sm-5 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
-        "columns" : [{
+        "columns" : [
+        {
             "data" : "id_pro",
             "searchable" : false
         }, {
@@ -109,7 +135,7 @@ $(document).ready(function() {
                 }
                 return result;
             },
-        }/*, {
+        }, {
             "data" : "status_log_manual_entry_date",
 			"className": 'text-center',
             "searchable" : false,
@@ -122,7 +148,7 @@ $(document).ready(function() {
                 }
                 return result;
             }
-        }*/, {
+        }, {
             "data" : "static_days"
         }, {
             "data" : "status_name_pst",
@@ -130,34 +156,6 @@ $(document).ready(function() {
         }, {
             "data" : "system_pro",
             "searchable" : false,
-            "render" : function(data, type, row, meta) {
-                var result = '';
-                switch (row.system_pro) 
-                {
-                    case '1':
-                        result = 'Santa Cruz';
-                    break;
-                    case '2':
-                        result = 'Velasco';
-                    break;
-                    case '3':
-                        result = 'Misiones';
-                    break;
-                    case '4':
-                        result = 'Camiri';
-                    break;
-                    case '5':
-                        result = 'German bush';
-                    break;
-                    case '6':
-                        result = 'Robore';
-                    break;
-                    case '7':
-                        result = 'Valles';
-                    break;
-                }
-                return result;
-            }
         }, {
             "defaultContent" : "",
             "searchable" : false,
@@ -171,7 +169,7 @@ $(document).ready(function() {
                 return response;
             }
         }, {
-			"data" : "cre_fiscal_full_name",
+			"data" : "cre_fiscal_pro",
             "searchable" : false
 		}/*, {
             "data" : "stake_responsible",
@@ -201,18 +199,17 @@ $(document).ready(function() {
 
                 return response;
             }
-        }/*, {
+        }, {
 			"data" : "project_current_budget",
-            "searchable" : false,
 			"className": 'text-right',
-			// "orderable" : false,
+			"orderable" : true,
 			"searchable" : false,
             "render": function(data, type, row, meta){
                 let amount = new Intl.NumberFormat('en',{minimumFractionDigits:2,maximumFractionDigits:2}).format(row.project_current_budget);
                 let html = "<span style='font-weight:bold'>"+amount+"</span>";
                 return html;
             }
-		}*/, {
+		}, {
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,

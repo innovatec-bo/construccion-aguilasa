@@ -160,7 +160,7 @@
                         <th class="text-center">ORDEN</th>
                         <th class="text-center">CODIGO</th>
                         <th class="text-center">INGRESO<br>EN SISTEMA</th>
-                        <!-- <th class="text-center">INGRESO<br>EN ESTADO</th> -->
+                        <th class="text-center">INGRESO<br>EN ESTADO</th>
                         <th class="text-center">DIAS<br>ESTATICO</th>
                         <th class="text-center">ESTADO</th>
                         <th class="text-center">SISTEMA</th>
@@ -171,7 +171,7 @@
                         <th class="text-center">FISCAL</th>
                         <th class="text-center">CONSTRUCTOR</th>
                         <th class="text-center">UBICACION</th>
-                        <!-- <th class="text-center">IMPORTE<br>Bs.</th> -->
+                        <th class="text-center">IMPORTE<br>Bs.</th>
                         <th class="text-center"><i class="fa fa-cogs fa-2x"></i></th>
                     </tr>
                     </thead>
