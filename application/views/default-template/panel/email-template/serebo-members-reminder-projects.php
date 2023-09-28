@@ -91,7 +91,7 @@
                                                             '.$project["code_pro"].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                            '.$project["contract_number_con"].'
+                                                            '.$project["final_contract_number_con"].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                             '.$project["status_name_pst"].'
@@ -128,7 +128,7 @@
                                                             '.$project["code_pro"].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                            '.$project["contract_number_con"].'
+                                                            '.$project["final_contract_number_con"].'
                                                         </td>
                                                         <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
                                                             '.$project["static_days"].'

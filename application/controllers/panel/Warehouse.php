@@ -500,6 +500,15 @@ class Warehouse extends PrivateController
 		// dd($materialSummary, $materialList);
 	}
 
+	public function downloadExcelRequestAdditionalToCREV2()
+	{
+		$summaryId = $this->input->post('summary-id');
+		// $summaryId = 16;
+		$excelRequestMaterialToCRE = new ExcelRequestMaterialToCREV2($this->sessionUser, $summaryId);
+		$excelRequestMaterialToCRE->getReport();
+		// dd($materialSummary, $materialList);
+	}
+
 	public function movementsLog()
 	{
 		$projectCode = $this->input->get('project-code');

@@ -858,7 +858,14 @@ var StatusManagementHandler = /** @class */ (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function () {
+            success: function (response) {
+                if (response.success == !1) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'No se puede crear el registro',
+                        text: response.message,
+                    });
+                }
                 _this.loadView();
             }
         });
