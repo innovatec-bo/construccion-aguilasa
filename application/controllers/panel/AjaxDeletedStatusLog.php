@@ -53,19 +53,30 @@ class AjaxDeletedStatusLog extends PrivateController
 			if($project->getStatus() != $projectLog[0]['status_id_psl'])
 			{
                 //If the previous status is 'approvement' then let's also delete it.
-                if($projectLog[0]['status_id_psl'] == 8)
+                switch ($projectLog[0]['status_id_psl']) 
                 {
-                    $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);
-			        $projectStatusLog->delete();
-                    $project->setStatus($projectLog[1]['status_id_psl']);
-				    $project->save();
+                    case 8:
+                        // dd('8');
+                        $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);//Delete approvement
+                        $projectStatusLog->delete();
+                        $projectStatusLog = Model_project_status_log::getById($projectLog[1]['id_psl']);//Delete Schedule
+                        $projectStatusLog->delete();
+                        $project->setStatus($projectLog[2]['status_id_psl']);
+                        $project->save();
+                        break;
+                    // case 9:
+                    //     dd('9');
+                    //     $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);
+                    //     $projectStatusLog->delete();
+                    //     $project->setStatus($projectLog[1]['status_id_psl']);
+                    //     $project->save();
+                    //     break;
+                    default:
+                        dd('default');
+                        $project->setStatus($projectLog[0]['status_id_psl']);
+                        $project->save();
+                        break;
                 }
-                else
-                {
-                    $project->setStatus($projectLog[0]['status_id_psl']);
-				    $project->save();
-                }
-				
 			}
 
             $detail = $formData["detail"];
