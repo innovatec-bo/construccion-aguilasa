@@ -49,18 +49,18 @@
         <form class="form-inline" action="<?=base_url("panel/Project/uploadActivityByExcelFile/".$project['id_pro'])?>" method='post' enctype="multipart/form-data">
             <div class="form-group">
                 <div class="input-group"> 
-                    <input type="file" name="file" class="form-control" placeholder="Search for..."> 
+                    <!-- <input type="file" name="file" class="form-control" placeholder="Search for...">  -->
                     <span class="input-group-btn"> 
                          
                         <?php
 						// $allowedStatusToRegisterActivity = array(29,30,31,32,33,47,34,35,38,39);
                         // $allowedStatusToRegisterActivity = array(29,32,47);
                         $allowedStatusToRegisterActivity = array(29,32,33,47,34,35,38,39);
-						if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
+						// if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
 							// echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
-                            echo '<button class="btn btn-danger disabled" type="button" disabled data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top">Cargar formulario <i class="fa fa-upload"></i></button>';
-						else
-							echo '<button class="btn btn-danger" type="submit">Cargar formulario <i class="fa fa-upload"></i></button>';
+                            // echo '<button class="btn btn-danger disabled" type="button" disabled data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top">Cargar formulario <i class="fa fa-upload"></i></button>';
+						// else
+							// echo '<button class="btn btn-danger" type="submit">Cargar formulario <i class="fa fa-upload"></i></button>';
 						?>
                     </span> 
                 </div>
@@ -68,12 +68,12 @@
         </form>
         <br>
     </div>
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
         <form class="form-inline pull-right" action="<?=base_url("panel/Project/getManpowerActivityForm/".$project['id_pro'])?>" method="post">
             <button type="submit" class="btn btn-info">Descargar formulario <i class="fa fa-download"></i></button>
         </form>
         <br>
-    </div>
+    </div> -->
 	<div class="col-md-12">
 		<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto tomando en cuenta su actividad y ejecucion." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
 		<br><em class="block">Puede agregar una estructura sin repetir la actividad y ejecucion de otra existente. Ejem: Si el proyecto ya posee la estructura PH11B para retiro en linea muerta, puede volver a agregar la estructura
