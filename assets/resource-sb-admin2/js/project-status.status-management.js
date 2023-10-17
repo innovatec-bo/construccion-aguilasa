@@ -69,12 +69,8 @@ function deleteLog(logId)
 				success:function(response){
 					if(response.success === 1)
 					{
-						let url = $(location).attr('href').split("/");
-						let statusSet = url[url.length - 2];
-						let projectId = url[url.length - 1];
-						let statusManagementHandler = new StatusManagementHandler(statusSet, projectId);
-						statusManagementHandler.loadView();
-						toastr.success(response.message, '', {"progressBar": true});
+                        var redirectTo = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[response.data.projectStatusId]+'/'+response.data.projectId;
+                        window.location.href = redirectTo;
 					}
 					else
 					{

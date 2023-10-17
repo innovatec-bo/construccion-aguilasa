@@ -52,11 +52,9 @@ class AjaxDeletedStatusLog extends PrivateController
 			$project = Model_project::getById($projectStatusLog->getProjectId());
 			if($project->getStatus() != $projectLog[0]['status_id_psl'])
 			{
-                //If the previous status is 'approvement' then let's also delete it.
                 switch ($projectLog[0]['status_id_psl']) 
                 {
                     case 8:
-                        // dd('8');
                         $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);//Delete approvement
                         $projectStatusLog->delete();
                         $projectStatusLog = Model_project_status_log::getById($projectLog[1]['id_psl']);//Delete Schedule
@@ -64,15 +62,7 @@ class AjaxDeletedStatusLog extends PrivateController
                         $project->setStatus($projectLog[2]['status_id_psl']);
                         $project->save();
                         break;
-                    // case 9:
-                    //     dd('9');
-                    //     $projectStatusLog = Model_project_status_log::getById($projectLog[0]['id_psl']);
-                    //     $projectStatusLog->delete();
-                    //     $project->setStatus($projectLog[1]['status_id_psl']);
-                    //     $project->save();
-                    //     break;
                     default:
-                        dd('default');
                         $project->setStatus($projectLog[0]['status_id_psl']);
                         $project->save();
                         break;
@@ -85,6 +75,8 @@ class AjaxDeletedStatusLog extends PrivateController
             $deletedStatusLog = new Model_deleted_status_log($currentUserId, $projectStatusLogId, $detail);
 			$deletedStatusLog->save();
             $response["success"] = 1;
+            $response['data']['projectId'] = $projectStatusLog->getProjectId();
+            $response['data']['projectStatusId'] = $projectStatusLog->getProjectStatus();
             $response["message"] = "Se elimino un registro del log";
         }
         echo json_encode($response);exit;
