@@ -6,6 +6,7 @@
  * Time: 2:01 PM
  */
 
+use GuzzleHttp\Client;
 
 class AjaxLaborCost extends PrivateController
 {
@@ -87,16 +88,54 @@ class AjaxLaborCost extends PrivateController
             //This section is validated in callback to prevent duplicated structure, activity and execution
             else
             {
-            	$structureId = $formData["structure-id"];
-				/** @var Model_building_structure $structure */
-				$structure = Model_building_structure::getById($structureId);
-				$laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice, 1);
-				$laborCost->save();
+                $structureId = $formData["structure-id"];
+                if(isset($formData['change-quantity']))
+                {
+                    $laborCost = Model_labor_cost::getByProjectStructureExecutionActivity($projectId, $structureId, $execution, $activity);
+                    $laborCostId = $laborCost[0]['id_lac'];
+                    $quantityFrom = $laborCost[0]['quantity_lac'];
+                    $quantityApplied = $quantity;
+                    $currentUser = PrivateController::getSessionUser();
+                    $userId = isset($currentUser) ? $currentUser->id:NULL;
 
-				$response["success"] = 1;
-				$response["message"] = "La estructura ".$structure->getCode()." se agreg&oacute; para ".$activityString[strtolower($activity)]." en ".$executionString[strtolower($execution)];
-				$response["data"]["laborCost"] = $laborCost->toArray();
-				$response["data"]["structure"] = $structure->toArray();
+                    $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+                    $apiResponse = $client->request('POST', 'api/v1/labor-cost-change-log',[
+                        'form_params' => [
+                            "labor_cost_id" => $laborCostId,
+                            "user_id" => $userId,
+                            "quantity_applied" => $quantityApplied,
+                            "quantity_from" => $quantityFrom
+                            
+                        ]
+                    ]);
+                    // $body = json_decode($apiResponse->getBody(), true);
+                    // dd($body);
+                    // $settings = $body['data'];
+                    
+                    $laborCost = Model_labor_cost::getById($laborCostId);
+                    $laborCost->setQuantity( ($quantityFrom) +($quantityApplied) );
+                    $laborCost->save();
+
+                    $structure = Model_building_structure::getById($structureId);
+
+                    $response["success"] = 1;
+                    $response["message"] = "Se modific&oacute; la cantidad a la esctructura ".$structure->getCode()." para ".$activityString[strtolower($activity)]." en ".$executionString[strtolower($execution)];
+                    $response["data"]["laborCost"] = $laborCost->toArray();
+                    $response["data"]["structure"] = $structure->toArray();
+                    
+                }
+                else
+                {
+                    /** @var Model_building_structure $structure */
+                    $structure = Model_building_structure::getById($structureId);
+                    $laborCost = new Model_labor_cost($laborDetail->getId(), $structure->getId(), $activity, $execution, $quantity, $unitPrice, 1);
+                    $laborCost->save();
+    
+                    $response["success"] = 1;
+                    $response["message"] = "La estructura ".$structure->getCode()." se agreg&oacute; para ".$activityString[strtolower($activity)]." en ".$executionString[strtolower($execution)];
+                    $response["data"]["laborCost"] = $laborCost->toArray();
+                    $response["data"]["structure"] = $structure->toArray();
+                }
             }
 
         }
@@ -141,7 +180,7 @@ class AjaxLaborCost extends PrivateController
 		$laborCostFound = array_search($incomingLaborCostUnique, array_column($laborCostList,'labor_cost_unique'));
 		$response = TRUE;
 		//If it is distinct to FALSE then the labor cost already exist in manpower
-		if($laborCostFound !== FALSE)
+		if($laborCostFound !== FALSE && !isset($formData['change-quantity']))
 		{
 			$laborCost = $laborCostList[$laborCostFound];
 			$structureCode = $laborCost['structure_code'];

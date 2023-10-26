@@ -91,6 +91,11 @@ class Model_labor_cost_base extends MY_Model
         return $response;
     }
 
+    public function setQuantity($quantity)
+    {
+        $this->_quantity = $quantity;
+    }
+
     ################################################################################################# BEGIN - DATATABLE AJAX METHODS
     /**
      * @return mixed

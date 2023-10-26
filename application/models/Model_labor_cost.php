@@ -112,4 +112,34 @@ class Model_labor_cost extends Model_labor_cost_base
         ";
         $ci->db->query($sql);
     }
+
+    public static function getByProjectStructureExecutionActivity($projectId, $structureId, $execution, $activity)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        SELECT
+            structure_code_bus,
+            description_bus,
+            bui_labor_cost.*
+        FROM
+            bui_labor_details
+        LEFT JOIN bui_labor_cost on labor_detail_id_lac = id_lad
+        LEFT JOIN bui_building_structures on building_structure_id_lac = id_bus
+        WHERE
+            deleted_bus != 1
+            and deleted_lac != 1
+            and deleted_lad != 1
+            and status_id_lad = 11
+            and project_id_lad = ".$ci->db->escape($projectId)."
+            and building_structure_id_lac = ".$ci->db->escape($structureId)."
+            and execution_lac = ".$ci->db->escape($execution)."
+            and activity_lac = ".$ci->db->escape($activity)."
+        ";
+
+        $query = $ci->db->query($sql);
+        $response = $query->result_array();
+        return $response;
+    }
 }

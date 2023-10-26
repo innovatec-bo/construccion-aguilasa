@@ -425,6 +425,19 @@ $projectSystems = array(
                                     <input class="form-control input-masked" name='price' data-inputmask="'alias': 'decimal','digits':'2', 'groupSeparator': ',', 'autoGroup': true">
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="checkbox text-warning">
+                                    <label>
+                                        <input type="checkbox" name="change-quantity"> Quiero afectar solo la cantidad de la estructura en la actividad y ejecuci&oacute;n seleccionada
+                                        <u class="small">Considerar lo siguiente:</u>
+                                        <ol class="small">
+                                            <li>Es posible aplicar valores negativos.</li>
+                                            <li>De no encontrarse la estructura con la actividad y la ejecuci&oacute;n seleccionada, no se efectuara ning&uacute;n cambio.</li>
+                                            <li>Esta funcionalidad genera un registro de cambios aplicados a las cantidades de las estructuras.</li>
+                                        </ol>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
