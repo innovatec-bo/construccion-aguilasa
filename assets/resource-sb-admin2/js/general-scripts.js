@@ -15,7 +15,7 @@ statusSet["9"] = "approvement";
 statusSet["10"] = "approvement";
 statusSet["11"] = "approvement";
 statusSet["12"] = "approvement";
-statusSet["20"] = "design";
+statusSet["20"] = "approvement";
 
 statusSet["13"] = "rectify_design";
 statusSet["15"] = "rectify_design";
