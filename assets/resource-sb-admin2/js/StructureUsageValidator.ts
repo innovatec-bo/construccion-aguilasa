@@ -23,7 +23,7 @@ class StructureUsageValidator
     	// this._tableSelector = tableSelector;
 		this._formName = formName;
     	this._manpowerHasPoint = false;
-		this._overflowPercentage = 1000;
+		this._overflowPercentage = 0;
     }
 
     public hasPoint()
@@ -60,13 +60,13 @@ class StructureUsageValidator
 					$(e.element).closest('tr').find('input').css('color','');
 				}
 				//warning
-				else if( (currentValue + totalWorkedUp) > quantityToUse && currentValue <= maxQuantityToUse)
-				{
-					$(e.element).closest('tr')
-						.css('background','#f0ad4e')
-						.css('color','#ffffff');
-					$(e.element).closest('tr').find('input').css('color','#545454');
-				}
+				// else if( (currentValue + totalWorkedUp) > quantityToUse && currentValue <= maxQuantityToUse)
+				// {
+				// 	$(e.element).closest('tr')
+				// 		.css('background','#f0ad4e')
+				// 		.css('color','#ffffff');
+				// 	$(e.element).closest('tr').find('input').css('color','#545454');
+				// }
 				//error
 				else if((currentValue + totalWorkedUp) > maxQuantityToUse)
 				{
@@ -76,7 +76,7 @@ class StructureUsageValidator
 					$(e.element).closest('tr').find('input').css('color','#545454');
 
 				}
-				// console.log(currentValue, maxQuantityToUse);
+				console.log(currentValue, maxQuantityToUse);
 			}
 		});
 	}
