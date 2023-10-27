@@ -218,7 +218,7 @@ class ManpowerHandler
 					let buttons = ['excel', 'csv','pdf','print'];
 					$('#manpower-table table').DataTable({"buttons": buttons});
 				}
-                console.log('loaded manpower list');
+                // console.log('loaded manpower list');
             }
         });
     }

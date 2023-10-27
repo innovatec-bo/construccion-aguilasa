@@ -8,6 +8,7 @@
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use GuzzleHttp\Client;
 
 class Project extends PrivateController
 {
@@ -1162,5 +1163,13 @@ class Project extends PrivateController
     {
         $data['viewTitle'] = "Actualizacion Masiva";
         $this->_loadPanelView("project/batch-status-update", $data);       
+    }
+
+    public function downloadLaborCostChangeLogReport($projectId)
+    {
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+        $apiResponse = $client->request('GET', 'api/v1/labor-cost-change-log/'.$projectId);
+        $body = json_decode($apiResponse->getBody(), true);
+        dd($body);
     }
 }
