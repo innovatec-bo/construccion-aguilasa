@@ -1170,8 +1170,8 @@ class Project extends PrivateController
         $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
         $apiResponse = $client->request('GET', 'api/v1/labor-cost-change-log/'.$projectId);
         $arrayResponse = json_decode($apiResponse->getBody(),true);
-        $file="demo.xls";
-        $test="<table><tr><td>Cell 1</td><td>Cell 2</td></tr></table>";
+        $project = Model_project::getById($projectId);
+        $file="Reporte de modificacion de cantidades - mano de obra ".$project->getCode()." - ".date("d-m-Y H.i.s").".xls";
         header('Content-type: application/excel');
         header("Content-Disposition: attachment; filename=$file");
         echo utf8_decode($arrayResponse['data']['file']);

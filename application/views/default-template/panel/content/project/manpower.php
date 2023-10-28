@@ -45,7 +45,7 @@
 			</table>
 		</div>
 	</div>
-    <div class="col-md-6">
+    <div class="col-md-6 hidden">
         <form class="form-inline" action="<?=base_url("panel/Project/uploadActivityByExcelFile/".$project['id_pro'])?>" method='post' enctype="multipart/form-data">
             <div class="form-group">
                 <div class="input-group"> 
@@ -75,8 +75,9 @@
         <br>
     </div> -->
 	<div class="col-md-12">
-		<button type="button" class="btn btn-warning btn-sm add-building-structure mb-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto tomando en cuenta su actividad y ejecucion." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
+		
         <form action="<?=base_url("panel/Project/downloadLaborCostChangeLogReport/".$project['id_pro'])?>" method="post" class="form-inline">
+            <button type="button" class="btn btn-warning btn-sm add-building-structure mb-1 mr-1" data-project-id="<?=$project['id_pro']?>" data-original-title="Agregue una estructura que no exista en el proyecto tomando en cuenta su actividad y ejecucion." data-toggle="tooltip" data-placement="top">Agregar estrucura al proyecto</button>
             <button type="submit" class="btn btn-info btn-sm mb-1">Descargar reporte de cambio de cantidades</button>
         </form>
 		<br><em class="block">Puede agregar una estructura sin repetir la actividad y ejecucion de otra existente. Ejem: Si el proyecto ya posee la estructura PH11B para retiro en linea muerta, puede volver a agregar la estructura
