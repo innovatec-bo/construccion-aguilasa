@@ -626,6 +626,7 @@ class Project extends PrivateController
 		$response = $paginationHandler->getAll();
         $data['project'] = $project->toArray();
 		$data['workflow'] = (array)$response[0];
+        $data['hasChangeLog'] = Model_labor_cost::hasChangeLog($projectId);
         $this->_loadPanelView('project/manpower', $data);
     }
 

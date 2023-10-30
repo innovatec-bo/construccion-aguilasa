@@ -142,4 +142,31 @@ class Model_labor_cost extends Model_labor_cost_base
         $response = $query->result_array();
         return $response;
     }
+
+    public static function hasChangeLog(int $projectId) : bool
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+        select 
+            labor_cost_change_logs.* 
+        from
+        wfl_projects
+        left join bui_labor_details on bui_labor_details.project_id_lad = id_pro
+        left join bui_labor_cost on bui_labor_cost.labor_detail_id_lac = id_lad
+        left join labor_cost_change_logs on labor_cost_change_logs.labor_cost_id = id_lac
+        where 
+            id_pro = ".$ci->db->escape($projectId)."
+            and deleted_pro != 1
+            and deleted_lad != 1
+            and deleted_lac != 1
+            and labor_cost_change_logs.deleted_at is null
+            and labor_cost_change_logs.id is not null;
+        ";
+
+        $query = $ci->db->query($sql);
+        $response = $query->result_array();
+        return count($response) > 0;
+    }
 }
