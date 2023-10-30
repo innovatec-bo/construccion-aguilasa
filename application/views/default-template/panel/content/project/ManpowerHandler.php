@@ -242,7 +242,7 @@ $projectSystems = array(
         <td class="text-center"><span class="unit-of-measurement"></span></td>
         <td class="text-right"><span class="quantity"></span></td>
         <td class="text-center" style="padding:1px">
-            <input class="input-masked quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
+            <input class="input-maskedd quantity-to-use" name="worked-up[{{index}}][quantity]" size="10" data-parsley-required="">
         </td>
         <td class="text-center" style="padding:1px">
             <input class="input-masked-price unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
