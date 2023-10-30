@@ -441,10 +441,10 @@ var ManpowerHandler = /** @class */ (function () {
             var execution = $optionElement.data('execution');
             var description = $optionElement.data('description');
             var unitPrice = $optionElement.data('unit-price');
-            var quantity = $optionElement.data('quantity');
-            var totalWorkedUp = $optionElement.data('workedUp');
+            var quantity = $optionElement.data('quantity').replace(/,/g, "");
+            var totalWorkedUp = $optionElement.data('workedUp').replace(/,/g, "");
             $tr.attr('data-quantity-to-use', quantity);
-            $tr.find('.quantity-to-use').attr('data-parsley-max', quantity - totalWorkedUp);
+            $tr.find('.quantity-to-use').attr('data-parsley-max', parseFloat(quantity) - parseFloat(totalWorkedUp));
             $tr.attr('data-total-worked-up', totalWorkedUp);
             $tr.attr('data-unit-of-measurement', unitOfMeasurement);
             $optionElement.closest('tr').find('.activity').text(activity);
