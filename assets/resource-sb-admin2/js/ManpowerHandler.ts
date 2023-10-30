@@ -531,8 +531,8 @@ class ManpowerHandler
             let execution = $optionElement.data('execution');
             let description = $optionElement.data('description');
             let unitPrice = $optionElement.data('unit-price');
-            let quantity = $optionElement.data('quantity').replace(/,/g,"");
-            let totalWorkedUp = $optionElement.data('workedUp').replace(/,/g,"");
+            let quantity = typeof $optionElement.data('quantity') == 'number'? $optionElement.data('quantity'): $optionElement.data('quantity').replace(/,/g,"");
+            let totalWorkedUp = typeof $optionElement.data('workedUp') == 'number'?$optionElement.data('workedUp'): $optionElement.data('workedUp').replace(/,/g,"");
 			$tr.attr('data-quantity-to-use', quantity);
             $tr.find('.quantity-to-use').attr('data-parsley-max', parseFloat(quantity) - parseFloat(totalWorkedUp));
 			$tr.attr('data-total-worked-up', totalWorkedUp);
