@@ -71,7 +71,7 @@ class Model_building_point extends Model_building_point_base
         LEFT JOIN bui_labor_cost_log on point_id_lal = point_id_sbp
         LEFT JOIN bui_worked_up_structures on labor_cost_id_wus = labor_cost_id_sbp and id_lal = labor_cost_log_id_wus and deleted_wus !=1                        
         WHERE project_id_bpo = ".$ci->db->escape($projectId)." and deleted_bpo != 1
-        GROUP BY id_bpo, id_sbp 
+        GROUP BY id_bpo, id_sbp order by id_sbp 
         ";
 
         $query = $ci->db->query($sql);
