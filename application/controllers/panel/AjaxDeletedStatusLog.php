@@ -37,16 +37,23 @@ class AjaxDeletedStatusLog extends PrivateController
         else
         {
             $formData = $this->input->post();
+            
             $projectStatusLogId = $formData["project-status-log-id"];
 
             //Let's get and delete the status log ID
             /** @var Model_project_status_log $projectStatusLog */
 			$projectStatusLog = Model_project_status_log::getById($projectStatusLogId);
-			$projectStatusLog->delete();
+            if($projectStatusLog->getProjectStatus() == 11 && $this->sessionUser->id != 1)
+            {
+                $response["success"] = 0;
+                $response["message"] = "No tiene permiso para borrar el estado de 'Aprobado'";
+                echo json_encode($response);exit;
+            }
+			
+            $projectStatusLog->delete();
 
 			//Let's get the current project log after deleted project status log
 			$projectLog = Model_project_status_log::getLogByProjectId($projectStatusLog->getProjectId());
-
 			//Update the project with the first status in Project Log
 			/** @var Model_project $project */
 			$project = Model_project::getById($projectStatusLog->getProjectId());
@@ -65,6 +72,23 @@ class AjaxDeletedStatusLog extends PrivateController
                     default:
                         $project->setStatus($projectLog[0]['status_id_psl']);
                         $project->save();
+                        if ($projectLog[0]['status_id_psl'] == 10) //Approved status
+                        {
+                            //Deleting labor cost logs
+                            $logIdsToDelete = Model_labor_cost_log::getLogByProjectId($project->getId());
+                            if(count($logIdsToDelete) > 0)
+                            {
+                                Model_labor_cost_log::deleteLogsByIdsArray($logIdsToDelete);
+                            }
+                            
+                            //Deleting labor details and its costs
+                            $laborDetail = Model_labor_detail::getByProjectId($project->getId());
+                            $laborDetail->delete();
+                            //Deleting points
+                            Model_building_point::deleteByProjectId($project->getId());
+                            //Deleting point to point master
+                            Model_point_to_point_master::deleteByProjectCode($project->getCode());
+                        }
                         break;
                 }
 			}

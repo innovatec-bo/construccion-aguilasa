@@ -120,4 +120,21 @@ class Model_building_point extends Model_building_point_base
 
         return $arrayPoints;
     }
+
+    public static function deleteByProjectId(int $projectId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            update bui_building_points set deleted_at = now(), deleted_bpo = 1 where project_id_bpo = ".$ci->db->escape($projectId)."
+        ";
+        $ci->db->query($sql);
+
+        $sql = "
+            update bui_structure_by_points set deleted_at = now(), deleted_sbp = 1 where project_id_sbp = ".$ci->db->escape($projectId)."
+        ";
+        $ci->db->query($sql);
+
+    }
 }

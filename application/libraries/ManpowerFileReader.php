@@ -402,6 +402,10 @@ class ManpowerFileReader
             unset($data[0]);
             unset($data[1]);
             $data = array_values($data);
+            
+            $createdDate = date('Y-m-d H:i:s');
+            $currentUser = PrivateController::getSessionUser();
+            $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 
             foreach ($data as $key => $value)
             {
@@ -437,6 +441,7 @@ class ManpowerFileReader
                 );
                 $this->_pointList[$pointLabel]["structureList"][] = $structureToUse;
 
+                
                 $pointToPointRow = array(
                     "project_code_ptp" => $projectCode,
                     "point_ptp" => $pointLabel,
@@ -455,7 +460,11 @@ class ManpowerFileReader
                     "building_structure_code_ptp" => $structureCode,
                     "execution_ptp" => $execution,
                     "unit_of_measurement_ptp" => $unitOfMeasurement,
-                    "building_structure_detail_ptp" => $structureDetail
+                    "building_structure_detail_ptp" => $structureDetail,
+                    "createdon_ptp" => $createdDate,
+                    "createdby_ptp" => $currentUserId,
+                    "created_at" => $createdDate,
+                    'created_by' => $currentUserId
                 );
                 $this->_pointToPointToSave[] = $pointToPointRow;
             }

@@ -89,4 +89,16 @@ class Model_point_to_point_master extends Model_point_to_point_master_base
 
         $ci->db->query($sql);   
     }
+
+    public static function deleteByProjectCode(string $projectCode)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+
+        $sql = "
+            UPDATE bui_point_to_point_master set deleted_ptp = 1, deleted_at = now() where project_code_ptp = ".$ci->db->escape($projectCode)."
+        ";
+
+        $ci->db->query($sql);   
+    }
 }

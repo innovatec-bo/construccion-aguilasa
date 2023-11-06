@@ -254,6 +254,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             $escapedIds .= $ci->db->escape($id).", ";
         }
         $escapedIds = substr($escapedIds, 0, -2);
+        
+        //Deleting logs
         $sql = "
         update bui_labor_cost_log set 
         deleted_lal = 1,
@@ -261,7 +263,26 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
         deleted_by = ".$currentUserId."  
         where id_lal in (".$escapedIds.")
         ";
+        $ci->db->query($sql);
 
+        //Deleting worked up structures
+        $sql = "
+        update bui_worked_up_structures set 
+        deleted_wus = 1,
+        deleted_at = now(), 
+        deleted_by = ".$currentUserId."  
+        where labor_cost_id_wus in (".$escapedIds.")
+        ";
+        $ci->db->query($sql);
+
+        //Deleting builders in manpower
+        $sql = "
+        update bui_builders_in_manpower set 
+        deleted_bim = 1,
+        deleted_at = now(), 
+        deleted_by = ".$currentUserId."  
+        where labor_cost_id_bim in (".$escapedIds.")
+        ";
         $ci->db->query($sql);
     }
 
