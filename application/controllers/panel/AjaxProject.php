@@ -617,6 +617,7 @@ class AjaxProject extends PrivateController
 		$paginationHandler = new WorkflowPaginationHandler($pageSize, $pageNumber, '', 'asc',$textToSearch, ['code_pro']);
 		//$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','responsible','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id']);
         $paginationHandler->setColumnsToShow(['status_name_pst','fiscal_responsible','responsible']);
+        $paginationHandler->setReturnAsObjectCollection(false);
         $paginationHandler->setAdditionalParameters($additionalParameters);
         $response = $paginationHandler->getResponseForDataTable();
 
