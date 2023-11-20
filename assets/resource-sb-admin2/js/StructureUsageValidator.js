@@ -70,7 +70,7 @@ var StructureUsageValidator = /** @class */ (function () {
         var additionalProductionText = incomingPercentage > 0 ? "+ " + incomingPercentage.toFixed(2) + "% = " + (currentPercentage + incomingPercentage).toFixed(2) + "%" : "";
         $('#additional-production-text').text(additionalProductionText);
         $('#incoming-percentage').css('width', incomingPercentage + "%");
-        $('input[name=production-limit]').val((currentPercentage + incomingPercentage).toFixed(2)).parsley().validate();
+        // $('input[name=production-limit]').val((currentPercentage + incomingPercentage).toFixed(2)).parsley().validate();
     };
     StructureUsageValidator.prototype.loadEventHandlers = function () {
         var _this = this;
