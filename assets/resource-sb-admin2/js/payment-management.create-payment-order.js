@@ -218,19 +218,19 @@ function updateTotalBudgets()
     var rows = $("tr[data-row-index]");
 
     $.each(rows,function(index,value){
-        var designBudget = $(value).find("input[name=design-budget]").val().replace(",","");
+        var designBudget = $(value).find("input[name=design-budget]").val().replaceAll(",","");
         totalDesign += parseFloat(designBudget);
         subTotal += parseFloat(designBudget);
-        var transportationBudget = $(value).find("input[name=transportation-budget]").val().replace(",","");
+        var transportationBudget = $(value).find("input[name=transportation-budget]").val().replaceAll(",","");
         totalTransportation += parseFloat(transportationBudget);
         subTotal += parseFloat(transportationBudget);
-        var buildingBudget = $(value).find("input[name=building-budget]").val().replace(",","");
+        var buildingBudget = $(value).find("input[name=building-budget]").val().replaceAll(",","");
         totalBuilding += parseFloat(buildingBudget);
         subTotal += parseFloat(buildingBudget);
-        var liveLineBudget = $(value).find("input[name=live-line-budget]").val().replace(",","");
+        var liveLineBudget = $(value).find("input[name=live-line-budget]").val().replaceAll(",","");
         totalLiveLine += parseFloat(liveLineBudget);
         subTotal += parseFloat(liveLineBudget);
-        var rightOfWayBudget = $(value).find("input[name=right-of-way-budget]").val().replace(",","");
+        var rightOfWayBudget = $(value).find("input[name=right-of-way-budget]").val().replaceAll(",","");
         totalRightOfWayBudget += parseFloat(rightOfWayBudget);
         subTotal += parseFloat(rightOfWayBudget);
         $(value).find(".sub-total").text(parseFloat(subTotal).toLocaleString('en'));
