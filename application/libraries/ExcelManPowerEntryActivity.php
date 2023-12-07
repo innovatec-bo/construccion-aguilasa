@@ -38,8 +38,8 @@ class ExcelManPowerEntryActivity
         
         // echo"<pre>";var_dump($laborCostMasterDetail);exit;
         $spreadsheet = $this->_manPower($spreadsheet, $laborCostMasterDetail, $project);
-        $spreadsheet = $this->_builders($spreadsheet, $builders);
-        $spreadsheet = $this->_activityForms($spreadsheet, $laborCostMasterDetail);
+        // $spreadsheet = $this->_builders($spreadsheet, $builders);
+        // $spreadsheet = $this->_activityForms($spreadsheet, $laborCostMasterDetail);
 
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');

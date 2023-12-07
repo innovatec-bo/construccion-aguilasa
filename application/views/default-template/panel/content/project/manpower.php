@@ -68,12 +68,12 @@
         </form>
         <br>
     </div>
-    <!-- <div class="col-md-6">
+    <div class="col-md-6">
         <form class="form-inline pull-right" action="<?=base_url("panel/Project/getManpowerActivityForm/".$project['id_pro'])?>" method="post">
-            <button type="submit" class="btn btn-info">Descargar formulario <i class="fa fa-download"></i></button>
+            <button type="submit" class="btn btn-info">Descargar actividad <i class="fa fa-download"></i></button>
         </form>
         <br>
-    </div> -->
+    </div> 
 	<div class="col-md-12">
 		
         <form action="<?=base_url("panel/Project/downloadLaborCostChangeLogReport/".$project['id_pro'])?>" method="post" class="form-inline">
@@ -100,7 +100,7 @@
                 Hist. de avance
                 <div class="pull-right">
                     <div class="btn-group">
-<!--                        <a href="--><?//=base_url()?><!--" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a>-->
+                        <!-- <a href="<?=base_url()?>" class="btn btn-default btn-xs download-manpower-progress"><i class="fa fa-download fa-fw"></i></a> -->
 						<?php
 						// $allowedStatusToRegisterActivity = array(29,30,31,32,33,47,34,35,38,39);
                         // $allowedStatusToRegisterActivity = array(29,32,47);
