@@ -25,7 +25,7 @@ class AjaxWorkflow extends PrivateController
       echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
     }
 
-    public function select2()
+    public function select2_old()
     {
         $term = $this->input->post("term");
         $limit = $this->input->post("limit");
@@ -36,6 +36,19 @@ class AjaxWorkflow extends PrivateController
         $wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
 		    $wokflowPaginationHandler->setAdditionalParameters($additionalParameters);
         $result = $wokflowPaginationHandler->getResponseForSelect2($page);
-		    echo json_encode($result);exit;
+		echo json_encode($result);exit;
+    }
+
+    public function infoForRequestAdditionalToCRE()
+    {
+        $projectId = $this->input->post("projectId");
+        $wokflowPaginationHandler = new WorkflowPaginationHandler(1,0,'code_pro','asc','',array('code_pro'));
+        $wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
+		$wokflowPaginationHandler->setAdditionalParameters(['id-list' => $projectId]);
+        $data = $wokflowPaginationHandler->getAll()[0];
+        $response['data'] = $data;
+        $response['success'] = 1;
+        $response['message'] = '';
+        echo json_encode($response);exit;
     }
 }

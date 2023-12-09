@@ -560,6 +560,15 @@ class AjaxProject extends PrivateController
 
     }
 
+    public function projectQuickSelect2()
+    {
+        $term = $this->input->post("term");
+        $limit = $this->input->post("limit");
+        $page = $this->input->post("page");
+        $data = Model_project::projectQuickSelect2($term, $limit, $page);
+        echo json_encode($data);exit;
+    }
+
     /**
      * @deprecated
      */

@@ -29,7 +29,7 @@
 		<div class="col-md-3" id="extra-request-data">
 			<div class="form-group">
 				<label>Proyecto</label>
-				<select class="form-control input-sm select2 workflow" name="project">
+				<select class="form-control input-sm project-quick-select2" name="project">
 					<option></option>
 				</select>
 			</div>

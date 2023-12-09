@@ -2,7 +2,7 @@ $(document).ready(function() {
 		
 	printView();
 	startSelect2Materials('select.select2-materials','');
-	select2Workflow();
+	projectQuickSelect2();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,
 		defaultDate: moment(),
@@ -14,13 +14,33 @@ $(document).ready(function() {
 	$('.wh-add-new-material').on('click',function(){
 		addMaterial();
 	});
-	$(document).on('change','.select2.workflow', function (e) {
+	$(document).on('change','.project-quick-select2', function (e) {
 		let data = $(this).select2('data')[0];
-		$('input[name=fiscal-name]').val(data.fiscal_responsible);
-		$('select[name=builder-id]').val(data.builder_responsible_id);
-		$('input[name=reservation-number]').val(data.approved_reservation_number);
+		$.ajax({
+			url : base_url + 'panel/AjaxWorkflow/infoForRequestAdditionalToCRE',
+			dataType  :"json",
+			type : 'post',
+			data:{projectId:data.id},
+			success:function(response){
+				if(response.success === 1)
+				{
+					$('input[name=fiscal-name]').val(response.data.fiscal_responsible);
+					$('select[name=builder-id]').val(response.data.builder_responsible_id);
+					$('input[name=reservation-number]').val(response.data.approved_reservation_number);
+				}
+				else
+				{
+					bootbox.alert({
+						title:"Algo salio mal!",
+						message: response.message,
+						size:"medium"
+					});
+				}
+			}
+		});
+		
 	});
-	$(document).on('select2:clear','.select2.workflow', function (e) {
+	$(document).on('select2:clear','.project-quick-select2', function (e) {
 		$('input[name=fiscal-name]').val('');
 		$('input[name=builder-id]').val('');
 		$('input[name=reservation-number]').val('');

@@ -1360,4 +1360,33 @@ class Model_project_base extends MY_Model
         return $totalCount;
     }
     ################################################################################################# END - DATATABLE AJAX METHODS
+    public static function projectQuickSelect2($term, $limit, $page)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $count_filtered = $ci->db->select('*')
+                            ->from('wfl_projects')
+                            ->where("code_pro like '%".$term."%' ")
+                            ->where("deleted_pro","!=",1)
+                            ->count_all_results();
+        
+
+        $fetched_records = $ci->db->select('*')
+                            ->from('wfl_projects')
+                            ->where("code_pro like '%".$term."%' ")
+                            ->where("deleted_pro","!=",1)
+                            ->limit($limit)
+                            ->get();
+
+        $projects = $fetched_records->result_array();
+
+        $data = array();
+        foreach($projects as $project)
+        {
+            $data[] = array("id"=>$project['id_pro'], "text"=>$project['code_pro']);
+        }
+        $response['list'] = $data;
+        $response['count_filtered'] = $count_filtered;
+        return $response;
+    }
 }

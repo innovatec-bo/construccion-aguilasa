@@ -653,6 +653,7 @@ function select2MaterialsResponse (response)
 	return template(data);
 }
 
+//Deprecated - This method is not longer used
 function select2Workflow(selector)
 {
     selector = selector || '.select2.workflow';
@@ -685,6 +686,43 @@ function select2Workflow(selector)
         width : "100%"
         //escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         //templateResult: select2ProjectGeneralListFormatResponse
+    });
+}
+
+function projectQuickSelect2(selector)
+{
+    selector = selector || '.project-quick-select2';
+    //select2 ajax for projects
+    $(selector).select2({
+        placeholder: "Codigo de proyecto",
+        containerCssClass: 'select-xs',
+        allowClear : true,
+        ajax : {
+            url : base_url + 'panel/AjaxProject/projectQuickselect2',
+            dataType : "json",
+            type : "post",
+            delay : 1200,
+            data : function(params) {
+                
+                return {
+                    term : params.term || "", //search term
+                    limit : 10, // page size
+                    page: params.page || 1
+                };
+            },
+
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: data.list,
+                    // pagination: data.pagination
+                    pagination: {
+                        more: (params.page * 10) < data.count_filtered
+                    }
+                };
+            }
+        },
+        width : "100%"
     });
 }
 
