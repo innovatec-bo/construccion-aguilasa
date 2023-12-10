@@ -135,6 +135,7 @@ class AjaxPaymentManagement extends PrivateController
 			if(count($originalBudgets) > 0)
 			{
 
+                
 				$response["design"] = $originalBudgets[0]["design_prb"];
 				$response["transportation"] = $originalBudgets[0]["transportation_prb"];
 				$response["building"] = $originalBudgets[0]["building_prb"];
@@ -145,9 +146,11 @@ class AjaxPaymentManagement extends PrivateController
 				$response["rbBuilding"] = $originalBudgets[0]["building_reb"];
 				$response["rbLiveLine"] = $originalBudgets[0]["live_line_reb"];
 				$response["rbRightOfWay"] = $originalBudgets[0]["right_of_way_reb"];
+                
 			}
 		}
-
+        $response['projectCode'] = $project->getCode();
+        $response["status"] = $project->getStatus();
         echo json_encode($response);exit;
     }
 

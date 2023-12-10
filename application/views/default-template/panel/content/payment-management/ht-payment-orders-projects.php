@@ -61,7 +61,7 @@
     <tr data-row-index="{{index}}" data-payment-order-project-id="{{payment_order_project}}">
         <th scope="row"><span class="row-counter">{{index}}</span></th>
         <td>
-            <select class="form-control input-sm select2 project" data-select-index="{{index}}">
+            <select class="form-control input-sm project-quick-select2" data-select-index="{{index}}">
 				<option value="{{projectId}}">{{projectCode}}</option>
 			</select>
         </td>

@@ -26,8 +26,8 @@ $(document).ready(function() {
         var html = template(data);
         $("#project-list-content").append(html);
         evaluateVisibilityBtnRemove();
-        var projectSelect2 = ".project[data-select-index="+data.index+"]";
-        startSelect2Projects(projectSelect2);
+        var projectSelect2 = ".project-quick-select2[data-select-index="+data.index+"]";
+        projectQuickSelect2(projectSelect2);
         $(".input-masked").inputmask();
     });
 
@@ -45,7 +45,7 @@ $(document).ready(function() {
         });
     });
     //reset brand list from select2 after change company
-    $(document).on("change",".select2.project",function(e){
+    $(document).on("change",".project-quick-select2",function(e){
         e.preventDefault();
         var projectId = $(this).val();
         var $row = $(this).closest("tr");
@@ -87,7 +87,7 @@ function loadTable()
 			var data = {projectList:projectList};
 			var html = template(data);
 			$("#table-payment-orders-projects").html(html);
-			startSelect2Projects();
+            projectQuickSelect2();
 			evaluateVisibilityBtnRemove();
 			$(".input-masked").inputmask();
             updateTotalBudgets();
@@ -110,45 +110,6 @@ function evaluateVisibilityBtnRemove()
     }
 }
 
-function startSelect2Projects(selector)
-{
-    selector = selector || '.select2.project';
-    //select2 ajax for projects
-    $(selector).select2({
-        placeholder: "Escriba un codigo de proyecto",
-        containerCssClass: 'select-xs',
-        allowClear : true,
-        ajax : {
-            url : base_url + 'panel/AjaxProject/select2ProjectsThatReturnedMaterials',
-            dataType : "json",
-            type : "post",
-            delay : 600,
-            data : function(params) {
-                var currentIds = [];
-                $.each($(".select2.project"),function(index, value){
-                    currentIds.push($(value).val());
-                    // console.log($(value).val())
-                });
-                return {
-                    currentIds:currentIds,
-                    term : params.term || "", //search term
-                    limit : 5, // page size
-                    page: params.page || 1
-                };
-            },
-
-            processResults: function (data) {
-                return {
-                    results: data.list,
-                    pagination: data.pagination
-                };
-            }
-        },
-        width : "100px",
-        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-        templateResult: formatRepo
-    });
-}
 function deletePaymentOrderProject(paymentOrderProject)
 {
     var paymentOrderProjectId = paymentOrderProject.data("payment-order-project-id");
@@ -189,20 +150,61 @@ function formatRepo (response) {
 
 function getOriginalBudgets(projectId, row)
 {
-    $.ajax({
-        url : base_url + 'panel/AjaxPaymentManagement/getOriginalBudgets',
-        type : "POST",
-        dataType  :"json",
-        data : {projectId:projectId},
-        success:function(response){
-            row.find("input[name=design-budget]").val(response.rbDesign);
-            row.find("input[name=transportation-budget]").val(response.rbTransportation);
-            row.find("input[name=building-budget]").val(response.rbBuilding);
-            row.find("input[name=live-line-budget]").val(response.rbLiveLine);
-            row.find("input[name=right-of-way-budget]").val(response.rbRightOfWay);
-            updateTotalBudgets();
+    var currentIds = []; 
+    var countProjectId = 0;
+    var pos = "";
+    $.each($(".project-quick-select2"),function(index, value){
+        currentIds.push($(value).val());
+        
+        if($(value).val() == projectId)
+        {
+            countProjectId++;
+            if(countProjectId == 1)
+            {
+                pos = (index+1);
+            }
         }
     });
+    
+    if(countProjectId <= 1)
+    {
+        $.ajax({
+            url : base_url + 'panel/AjaxPaymentManagement/getOriginalBudgets',
+            type : "POST",
+            dataType  :"json",
+            data : {projectId:projectId},
+            success:function(response){
+    
+                if(response.status == 39 || response.status == 12 )
+                {
+                    row.find("input[name=design-budget]").val(response.rbDesign);
+                    row.find("input[name=transportation-budget]").val(response.rbTransportation);
+                    row.find("input[name=building-budget]").val(response.rbBuilding);
+                    row.find("input[name=live-line-budget]").val(response.rbLiveLine);
+                    row.find("input[name=right-of-way-budget]").val(response.rbRightOfWay);
+                    updateTotalBudgets();
+                }
+                else
+                {
+                    row.find('.project-quick-select2').val(null).trigger('change');    
+                    bootbox.alert({
+                        title:"Algo salio mal!",
+                        message: 'El proyecto '+response.projectCode+' no esta en la etapa de Mate. dev. a CRE ni en la etapa de Cancelado',
+                        size:"medium"
+                    });
+                }
+            }
+        });
+    }
+    else
+    {
+        row.find('.project-quick-select2').val(null).trigger('change');    
+        bootbox.alert({
+            title:"Algo salio mal!",
+            message: 'El proyecto que intenta elegir ya esta en la lista en la posicion #'+pos,
+            size:"medium"
+        });
+    } 
 }
 
 function updateNumbering()
