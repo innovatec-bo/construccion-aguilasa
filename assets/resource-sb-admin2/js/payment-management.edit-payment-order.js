@@ -49,7 +49,10 @@ $(document).ready(function() {
         e.preventDefault();
         var projectId = $(this).val();
         var $row = $(this).closest("tr");
-        getOriginalBudgets(projectId, $row);
+        if($.isNumeric(projectId))
+        {
+            getOriginalBudgets(projectId, $row);
+        }
 
     });
     $(document).on("keyup","input[name=design-budget], input[name=transportation-budget], input[name=building-budget], input[name=live-line-budget], input[name=right-of-way-budget]",function(){
