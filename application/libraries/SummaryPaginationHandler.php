@@ -98,6 +98,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 							$scaped = substr($scaped,0,-2);
 							$sql .= " and summary_type_keyword in ({$scaped})";
 						}
+						break;
 					case "created-by":
 						if($value != "")
 							$sql .= " or createdby_msu = ".$ci->db->escape($value);
