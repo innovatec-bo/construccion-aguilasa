@@ -20,7 +20,7 @@ class AjaxSummary extends PrivateController
 		{
 			$additionalParameters["fiscal-id"] = $this->sessionUser->id;
 		}
-		
+		$additionalParameters["created-by"] = $this->sessionUser->id;
 		$additionalParameters['summary-type-keyword'] = $type;
 		$dt = new JqdtHandler($this->input->post());
 		$paginationHandler = new SummaryPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());

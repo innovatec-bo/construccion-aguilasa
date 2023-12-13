@@ -39,7 +39,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 				left join sec_users builder on builder_responsible_msu = builder.id_usr
 				left join mat_materials_summary_types on id_mqt = summary_type_id_msu
 				left join wfl_projects on id_pro = project_id_msu
-				where deleted_msu != 1 and createdby_msu = ".$currentUserId."
+				where deleted_msu != 1
 				GROUP BY ".static::TABLE_ID."	 
 			) ".static::TABLE_NAME."_master_detail
 		";
@@ -77,10 +77,6 @@ class SummaryPaginationHandler extends BasePaginationHandler
 						if($value != "")
 							$sql .= " and ( fiscal_responsible_msu = ".$ci->db->escape($value);
 						break;
-					// case "created-by":
-					// 	if($value != "")
-					// 		$sql .= " or createdby_msu = ".$ci->db->escape($value);
-					// 	break;
 					case "builder-id":
 						if($value != "")
 							$sql .= " and builder_responsible_msu = ".$ci->db->escape($value);
@@ -102,7 +98,10 @@ class SummaryPaginationHandler extends BasePaginationHandler
 							$scaped = substr($scaped,0,-2);
 							$sql .= " and summary_type_keyword in ({$scaped})";
 						}
-							
+					case "created-by":
+						if($value != "")
+							$sql .= " or createdby_msu = ".$ci->db->escape($value);
+						break;		
 				}
 			}
 		}
