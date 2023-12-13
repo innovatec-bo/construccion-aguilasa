@@ -16,6 +16,7 @@ class AjaxSummary extends PrivateController
 	{
 		$additionalParameters = $this->input->post('additionalParameters')??[];
 		$response = $this->_is("fiscal");
+		$additionalParameters["created-by"] = $this->sessionUser->id;
 		if($response == 1)
 		{
 			$additionalParameters["fiscal-id"] = $this->sessionUser->id;

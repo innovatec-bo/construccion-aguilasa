@@ -74,6 +74,10 @@ class SummaryPaginationHandler extends BasePaginationHandler
 						if($value != "")
 							$sql .= " and fiscal_responsible_msu = ".$ci->db->escape($value);
 						break;
+					case "created-by":
+						if($value != "")
+							$sql .= " and createdby_msu = ".$ci->db->escape($value);
+						break;
 					case "builder-id":
 						if($value != "")
 							$sql .= " and builder_responsible_msu = ".$ci->db->escape($value);
