@@ -31,6 +31,8 @@
                         <dd><?= $materialSummary['builder_full_name'] ?></dd>
                         <dt>Proyecto</dt>
                         <dd><?= $materialSummary['project_code'] ?></dd>
+                        <dt>Autor del registro:</dt>
+                        <dd><?= $materialSummary['creator_full_name'] ?></dd>
                     </dl>
                 </div>
             </div>

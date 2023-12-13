@@ -60,6 +60,8 @@ class Model_material_summary extends Model_material_summary_base
                 concat(fiscal.firstname_usr,' ',fiscal.lastname_usr) fiscal_full_name,
 			   	builder.id_usr builder_id,
                 concat(builder.firstname_usr,' ',builder.lastname_usr) builder_full_name,
+				creator.id_usr creator_id,
+                concat(creator.firstname_usr,' ',creator.lastname_usr) creator_full_name,
                 summary_type_id_msu summary_type,
 				name_mqt summary_type_name,
                 id_pro project_id,
@@ -68,6 +70,7 @@ class Model_material_summary extends Model_material_summary_base
 			".static::TABLE_NAME." 
 			left join sec_users fiscal on fiscal.id_usr = fiscal_responsible_msu
 			left join sec_users builder on builder.id_usr = builder_responsible_msu
+			left join sec_users creator on creator.id_usr = createdby_msu
 			left join mat_materials_summary_types on id_mqt = summary_type_id_msu
 			left join wfl_projects on id_pro = project_id_msu
 			where 
