@@ -76,7 +76,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 						break;
 					case "created-by":
 						if($value != "")
-							$sql .= " and createdby_msu = ".$ci->db->escape($value);
+							$sql .= " or createdby_msu = ".$ci->db->escape($value);
 						break;
 					case "builder-id":
 						if($value != "")
