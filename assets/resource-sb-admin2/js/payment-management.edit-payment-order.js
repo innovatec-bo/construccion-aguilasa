@@ -287,7 +287,7 @@ function savePaymentOrder()
         paymentOrderProjects = {
             index:index+1,
             paymentOrderId: $row.data("payment-order-project-id"),
-            projectId: $row.find("select.project").val(),
+            projectId: $row.find("select.project-quick-select2").val(),
             designBudget: $row.find("input[name=design-budget]").val(),
             transportationBudget: $row.find("input[name=transportation-budget]").val(),
             buildingBudget: $row.find("input[name=building-budget]").val(),
