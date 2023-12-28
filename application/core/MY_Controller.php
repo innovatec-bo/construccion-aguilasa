@@ -157,14 +157,14 @@ class PublicController extends CI_Controller
             'jhonyvv@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
             'reneoom@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
             'christianvr@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo'),//Not in excel list
-			'victormg@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo','martinlp@cre.com.bo'),//Not in excel list
+			//'victormg@cre.com.bo' => array('albertol@cre.com.bo','nicolaps@cre.com.bo','martinlp@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             'juancgh@cre.com.bo' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
             'joseeba@cre.com.bo' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
             'miltonro@cre.com.bo' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
             'rclaure@cruztel.com' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
             'pablopdvm@gmail.com' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),
-            'layonelrlm@cre.com.bo' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo'),//Not in excel list
+            'layonelrlm@cre.com.bo' => array('jorgedo@cre.com.bo','sergiommp@cre.com.bo','percygg@cre.com.bo','albertol@cre.com.bo','nicolaps@cre.com.bo','martinlp@cre.com.bo'),//Not in excel list
 //            SISTEMA INTEGRADO
             'carlosagad@cre.com.bo' => array('jorgedo@cre.com.bo','carlosmc@cre.com.bo','percygg@cre.com.bo'),
             'diegoasr@cre.com.bo' => array('jorgedo@cre.com.bo','carlosmc@cre.com.bo','percygg@cre.com.bo'),

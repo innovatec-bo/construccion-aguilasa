@@ -282,7 +282,7 @@ class Model_user extends Model_user_base
             $data['shipmentDate'] = $shipmentDateList[$status];
             $data['projectList'] = $projectList;
 			$showBudget = 0;
-            if($creFiscalEmail == 'victormg@cre.com.bo')
+            if($creFiscalEmail == 'layonelrlm@cre.com.bo')
 			{
 				$showBudget = 1;
 			}

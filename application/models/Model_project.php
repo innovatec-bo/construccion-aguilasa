@@ -1998,8 +1998,8 @@ class Model_project extends Model_project_base
                 switch ($row['keyword_pst']) 
                 {
                     case 'project_return_materials':
-                        $reminderList[1000]['creFiscalFullName'] = "Victor Miranda";
-                        $reminderList[1000]['creFiscalEmail'] = "victormg@cre.com.bo";
+                        $reminderList[1000]['creFiscalFullName'] = "Layonel Lujan";
+                        $reminderList[1000]['creFiscalEmail'] = "layonelrln@cre.com.bo";
                         $reminderList[1000]['statusListToNotify'][$row['keyword_pst']][] = $row;
                         break;
                     case 'conciliation_shipment':
