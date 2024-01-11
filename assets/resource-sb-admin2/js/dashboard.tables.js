@@ -70,13 +70,7 @@ $(document).ready(function() {
         // console.log(data);
     });
 
-    $("form[name=workflow-report]").on("submit", function(){
-        var additionalActions = $("input[name=workflow-additional-actions]:checked").val();
-        if(additionalActions !== "3")
-        {
-            saveTrackingList();
-        }
-    });
+    
 
     $(".delete-tracking-list").on("click", function(){
         var select2 = $("select[name=tracking-list-id]").select2("data");
@@ -90,10 +84,7 @@ $(document).ready(function() {
         }
     });
 
-    $("form[name=workflow-report] button").on("click", function(e){
-        var response = chooseWorkflowColumnsToDownload();
-        // console.log(response);
-    });
+    
 
     var toggleCheckbox = 0;
     $(document).on("click", ".toggle-checkbox-status", function(e){
@@ -250,67 +241,7 @@ function getCurrentStatusSummary(system, management, contract)
     });
 }
 
-function saveTrackingList()
-{
-    var $formData = $("form[name=workflow-report]");
-    blockArea($formData);
-    $.ajax({
-        url : base_url + 'panel/AjaxTrackingList/saveTrackingList',
-        dataType  :"json",
-        type : "POST",
-        data:$formData.serialize(),
-        success:function(response){
-            $formData.unblock();
-            var messageType = "error";
-            if(response.success == 1)
-            {
-                messageType = "success";
-                swal({ title:'', text:response.message, type:messageType});
-                $("#workflow-additional-actions3").prop("checked", true);
-                $("input[name=override-list]").val("0");
-                $("input[name=tracking-list-name]").closest("div").slideUp();
-                $('.select2.tracking-list').select2('destroy');
-                startSelect2TrackingList();
-            }
-            else
-            {
-                if(response.overrideExisting !== undefined)
-                {
-                    swal({
-                        title:'La lista ya existe',
-                        html:response.message,
-                        showCancelButton: true,
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonText: 'Sobre escribir!',
-                        allowOutsideClick:false
-                    }).then((result) => {
-                        if (result.value)
-                        {
-                            $("input[name=override-list]").val("1");
-                            saveTrackingList();
-                        }
-                        else
-                        {
-                            $("#workflow-additional-actions3").prop("checked", true);
-                            $("input[name=override-list]").val("0");
-                            $("input[name=tracking-list-name]").closest("div").slideUp();
-                            $('.select2.tracking-list').select2('destroy');
-                            startSelect2TrackingList();
-                        }
-                    });
-                }
-                else
-                {
-                    messageType = "error";
-                    swal({ title:'', text:response.message, type:messageType});
-                }
-            }
-           
-            
 
-        }
-    });
-}
 function startSelect2TrackingList(selector)
 {
     selector = selector || '.select2.tracking-list';
@@ -365,70 +296,6 @@ function getExecutiveSummary(system, management, contract)
     //         $content.html(html);
     //     }
     // });
-}
-
-function deleteTrackingList(trackingListId)
-{
-    var $formData = $("form[name=workflow-report]");
-    blockArea($formData);
-    $.ajax({
-        url : base_url + 'panel/AjaxTrackingList/deleteTrackingList',
-        dataType  :"json",
-        type : "POST",
-        data:{trackingListId:trackingListId},
-        success:function(response){
-            $formData.unblock();
-            var messageType = "error";
-            if(response.success == 1)
-                messageType = "success";
-
-            swal({ title:'', text:response.message, type:messageType});
-            $("#workflow-additional-actions3").prop("checked", true);
-            $("input[name=tracking-list-name]").closest("div").slideUp();
-
-            $("select[name=tracking-list-id]").val(null).trigger("change");
-            $formData.find("textarea[name=code-list]").val("");
-            $('.select2.tracking-list').select2('destroy');
-            startSelect2TrackingList();
-        }
-    });
-}
-
-function chooseWorkflowColumnsToDownload()
-{
-    var $form = $("form[workflow-report]");
-    var data = $("input[name=workflow-column-list]").val();
-    data = jQuery.parseJSON(data);
-    var columnList = [];
-    $.each(data, function(index, value){
-        columnList.push({key:index, title:value});
-    });
-    var htmlSource   = $("#ht-workflow-report-columns-to-download").html();
-    var template = Handlebars.compile(htmlSource);
-    var data = {columnList:columnList};
-    var html = template(data);
-    var columnListToDownload = [];
-    swal({
-        title:'COLUMNAS A DESCARGAR',
-        html:html,
-        width:"80%",
-        customClass:"columns-to-download",
-        showCancelButton: true,
-        confirmButtonText: 'Descargar!',
-        allowOutsideClick:false,
-    }).then((result) => {
-        if (result.value)
-        {
-            var checkboxList = $(".workflow-columns-to-download:checked");
-            $.each(checkboxList, function(index, value){
-                columnListToDownload.push($(value).val());
-            });
-            $("input[name=columns-to-download]").val(columnListToDownload);
-            $("form[name=workflow-report]").submit();
-        }
-    });
-    $('[data-toggle="tooltip"]').tooltip();
-    enableSelect2ColumnsGroupsName();
 }
 
 function enableSelect2ColumnsGroupsName()

@@ -185,7 +185,10 @@ class AjaxProject extends PrivateController
 
     public function getTotalProjects()
     {
-        $recordsTotal = Model_project::countAll();
+        $paginationHandler = new WorkflowPaginationHandler(10000);
+        $paginationHandler->setColumnsToShow(['']);
+        $recordsTotal = $paginationHandler->countAll();
+        // $recordsTotal = Model_project::countAll();
         $response["total"] = $recordsTotal;
         echo json_encode($response);exit;
     }

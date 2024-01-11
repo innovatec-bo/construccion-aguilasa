@@ -130,21 +130,6 @@ $(document).ready(function() {
         $form.submit();
     });
 
-    $('input[name=stake-report-from]').datetimepicker({
-        defaultDate: moment().startOf('month').format('YYYY-MM-DD'),
-        ignoreReadonly: true,
-        format: 'DD-MM-YYYY',
-        locale:'es'
-    });
-
-    $('input[name=stake-report-to]').datetimepicker({
-        ignoreReadonly: true,
-        defaultDate:moment().endOf('month').format('YYYY-MM-DD'),
-        format: 'DD-MM-YYYY',
-        locale:'es',
-        useCurrent: false
-    });
-
     $('input[name=builder-report-from]').datetimepicker({
         defaultDate: moment().startOf('month').format('YYYY-MM-DD'),
         ignoreReadonly: true,
@@ -159,72 +144,6 @@ $(document).ready(function() {
         locale:'es',
         useCurrent: false
     });
-
-    $(document).on("submit","form.builder-manpower-productivity-report", function(e){
-        e.preventDefault();
-        let builderId = $("select[name=builder-productivity-report-builder] option:selected").val();
-        let month = $("select[name=builder-productivity-report-month] option:selected").val();
-        let year = $("select[name=builder-productivity-report-year] option:selected").val();
-        if(builderId == "" || month == "" || year == "" )
-        {
-            toastr.error("Debe especificar un constructor, mes y anio para descagar el reporte", '', {'progressBar':true});
-        }
-        else
-        {
-            window.location.href = base_url+"panel/Dashboard/productivityReport/"+builderId+"/"+month+"/"+year;
-        }
-    });
-
-    $(document).on("submit","form.builder-general-report", function(e){
-        e.preventDefault();
-        let month = $("select[name=builder-general-report-month] option:selected").val();
-        let year = $("select[name=builder-general-report-year] option:selected").val();
-        if(month == "" || year == "")
-        {
-            toastr.error("Debe especificar un mes y anio para descargar el reporte", '', {'progressBar':true});
-        }
-        else
-        {
-            window.location.href = base_url+"panel/Dashboard/builderGeneralReport/"+month+"/"+year;
-        }
-        
-    });
-
-    $(document).on("submit","form.projects-and-current-production", function(e){
-        e.preventDefault();
-        let month = $("select[name=projects-and-current-production-month] option:selected").val();
-        let year = $("select[name=projects-and-current-production-year] option:selected").val();
-        if(month == "" || year == "")
-        {
-            toastr.error("Debe especificar un mes y a&ntilde;io para descargar el reporte", '', {'progressBar':true});
-        }
-        else
-        {
-            window.location.href = base_url+"panel/Project/projectBudgets/"+month+"/"+year;
-        }
-        
-    });
-
-    $(document).on("submit","form.daily-production", function(e){
-        e.preventDefault();
-        let month = $("select[name=daily-production-month] option:selected").val();
-        let year = $("select[name=daily-production-year] option:selected").val();
-        if(month == "" || year == "")
-        {
-            toastr.error("Debe especificar un mes y a&ntilde;io para descargar el reporte", '', {'progressBar':true});
-        }
-        else
-        {
-            window.location.href = base_url+"panel/Project/dailyProductivityReport/"+month+"/"+year;
-        }
-        
-    });
-
-	$(document).on("submit","form.executive-report", function(e){
-		e.preventDefault();
-		let type = $('form.executive-report').find('select[name=executive-report-type] option:selected').val();
-		window.location.href = base_url+"panel/Project/executiveReport/"+type;
-	});
 });
 
 function getUsersQuantity()

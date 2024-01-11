@@ -13,7 +13,7 @@ class Dashboard extends PrivateController
         parent::__construct();
     }
 
-    public function index($view = "charts")
+    public function index($view = "tables")
     {
         $this->_validateFeature("dashboard_index");
 
@@ -29,8 +29,11 @@ class Dashboard extends PrivateController
                 break;
             case "executiveSummaryDifferential":
                 $this->_executiveSummaryDifferential();
+                break;
+            case "reports":
+                $this->complementHandler->addViewComplement("jquery.sticky");
+                $this->_reports();
         }
-
     }
 
     private function _tables()
@@ -51,12 +54,11 @@ class Dashboard extends PrivateController
 
         $trackingList = Model_tracking_list::getAll(100, 0);
         $contractList = Model_contract::getAll(100, 0);
-        $workflowColumnList = static::getWorkflowColumns();
+        
         $builderList = Model_user::getByRoleKeyword('builder');
         $data["systemList"] = $this->_projectSystems;
         $data["trackingList"] = $trackingList;
         $data["contractList"] = $contractList;
-        $data["workflowColumnList"] = $workflowColumnList;
         $data['builderList'] = $builderList;
         $data["view"] = "tables";
         $this->_loadPanelView('dashboard/tables', $data);
@@ -86,6 +88,34 @@ class Dashboard extends PrivateController
         $data['builderList'] = $builderList;
         $data["view"] = "charts";
         $this->_loadPanelView('dashboard/charts', $data);
+    }
+
+    private function _reports()
+    {
+        //        $this->_validateFeature("dashboard_charts");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addViewComplement('select2');
+        $this->complementHandler->addViewComplement("core");
+        $this->complementHandler->addViewComplement("charts");
+        $this->complementHandler->addViewComplement("themes.kelly");
+        $this->complementHandler->addViewComplement("themes.animated");
+        $this->complementHandler->addProjectJs('ChartHandler', TRUE);
+        $this->complementHandler->addProjectCss('dashboard.index', TRUE);
+        $this->complementHandler->addProjectJs('dashboard.index', TRUE);
+        $this->complementHandler->addProjectCss('dashboard.charts', TRUE);
+        $this->complementHandler->addProjectJs('dashboard.reports', TRUE);
+
+        $workflowColumnList = static::getWorkflowColumns();
+        $trackingList = Model_tracking_list::getAll(100, 0);
+        $contractList = Model_contract::getAll(100, 0);
+        $builderList = Model_user::getByRoleKeyword('builder');
+        $data["systemList"] = $this->_projectSystems;
+        $data["trackingList"] = $trackingList;
+        $data["contractList"] = $contractList;
+        $data["workflowColumnList"] = $workflowColumnList;
+        $data['builderList'] = $builderList;
+        $data["view"] = "reports";
+        $this->_loadPanelView('dashboard/reports', $data);   
     }
 
     private function _executiveSummaryDifferential()

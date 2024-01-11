@@ -11,78 +11,6 @@
     $this->load->view("default-template/panel/content/dashboard/heading");
     ?>
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary" id="panel-workflow-report">
-                <div class="panel-heading">
-                    <i class="fa fa-table fa-fw"></i> Workflow report
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12" id="workflow-report">
-                            <form name="workflow-report" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
-                                <input type="hidden" name="workflow-column-list" value='<?=json_encode($workflowColumnList)?>'>
-                                <input type="hidden" name="columns-to-download" value=''>
-                                <input type="hidden" name="override-list" value="0">
-                                <div class="form-group input-group">
-                                    <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">
-                                        <option value="" selected></option>
-                                    </select>
-                                    <span class="input-group-btn">
-<!--                                        <button class="btn btn-primary btn-sm" type="button"><i class="fa fa-plus"></i>-->
-<!--                                        </button>-->
-                                        <button class="btn btn-danger btn-sm delete-tracking-list" type="button"><i class="fa fa-trash"></i>
-                                        </button>
-<!--                                        <button class="btn btn-info btn-sm" type="button"><i class="fa fa-floppy-o"></i>-->
-<!--                                        </button>-->
-                                    </span>
-                                </div>
-                                <div class="form-group">
-                                    <label>Listas de seguimiento</label>
-<!--                                    <select class="form-control input-sm select2 tracking-list" name="tracking-list-id">-->
-<!--                                    </select>-->
-                                </div>
-                                <div class="form-group">
-                                    <label>Pegue aqui los Proyectos(Códigos) que para que sean exportados en el reporte.<br><em>Los códigos deben estar separados por un espacio.</em></label>
-                                    <textarea name="code-list" class="form-control" rows="3" placeholder="Este campo no es obligatorio"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Acciones adicionales</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="workflow-additional-actions" id="workflow-additional-actions1" value="1">Guardar como nueva lista de seguimiento
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="workflow-additional-actions" id="workflow-additional-actions2" value="2">Actualizar lista de seguimiento
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="workflow-additional-actions" id="workflow-additional-actions3" value="3" checked>Ninguna
-                                        </label>
-                                    </div>
-                                    <div class="form-group" style="display: none">
-                                        <label>Nombre de la nueva lista de seguimiento</label>
-                                        <input class="form-control" name="tracking-list-name" placeholder="Ingrese un nombre para su lista de seguimiento">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary">Descargar reporte</button>
-                                </div>
-                            </form>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.col-lg-4 (nested) -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.panel-body -->
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-6">
             <div class="panel panel-primary" id="panel-current-status-summary-report">
                 <div class="panel-heading">
@@ -142,7 +70,7 @@
                 <!-- /.panel-body -->
             </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="panel panel-primary hide" id="panel-executive-summary-report">
                 <div class="panel-heading">
                     <form name="report" action="<?=base_url("panel/Project/getExecutiveSummaryReport")?>" method="post">
@@ -155,20 +83,15 @@
                         </div>
                     </form>
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12" id="executive-summary-report">
 
-                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.col-lg-4 (nested) -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.panel-body -->
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="row">

@@ -23,7 +23,7 @@ $monthList = array(
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            Dashboard
+            Dashboard - 
             <?php
             switch($view)
             {
@@ -32,17 +32,22 @@ $monthList = array(
                     $chartsActive = "";
                     $tablesUrl = "#";
                     $chartsUrl = base_url("panel/Dashboard/charts");
+                    $title = "Tablas";
                     break;
                 case "charts":
                     $tablesActive = "";
                     $chartsActive = "active";
                     $tablesUrl = base_url("panel/Dashboard/tables");
                     $chartsUrl = "#";
+                    $title = "Graficos";
                     break;
-                default:
+                case 'executiveSummaryDifferential':
+                    $title = "Diferencial de resumen ejecutivo";
+                case 'reports':
+                    $title = "Reportes descargables";
             }
             ?>
-            <ul class="nav nav-pills dashboard-navigation">
+            <!-- <ul class="nav nav-pills dashboard-navigation">
                 <li class="<?=$chartsActive?>">
                     <a class='p-0' href="<?=$chartsUrl?>">
                         <?php
@@ -63,7 +68,8 @@ $monthList = array(
                         <img src="<?=$imageSrc?>" style='padding-top: 4px;padding-bottom: 0px;padding-right: 0px;padding-left: 4px;'>
                     </a>
                 </li>
-            </ul>
+            </ul> -->
+            <?=$title?>
         </h1>
     </div>
     <!-- /.col-lg-12 -->
@@ -190,244 +196,7 @@ $monthList = array(
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-3 col-md-6">
-        <form class="form-inline builder-general-report" method="post">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Reporte general
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="builder-general-report-month">
-									<?php
-									$html = '';
-									foreach($monthList as $key => $value)
-									{
-										$selected = '';
-										if($key == date('m'))
-											$selected = ' selected ';
-										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="builder-general-report-year">
-									<?php
-									$html = '';
-									foreach(range(date("Y"), 2017) as $year)
-									{
-										$html .= '<option value="'.$year.'">'.$year.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer p-0">
-                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <form class="form-inline builder-manpower-productivity-report" method="post">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Reporte de productividad
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="builder-productivity-report-builder">
-                                    <option value="">Constructor</option>
-                                    <?php
-                                    $html = "";
-                                    foreach ($builderList as $builder)
-                                    {
-                                        $html .= '<option value="'.$builder->getId().'" >'.$builder->getFullName().'</option>';
-                                    }
-                                    echo $html;
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="builder-productivity-report-month">
-									<?php
-									$html = '';
-									foreach($monthList as $key => $value)
-									{
-										$selected = '';
-										if($key == date('m'))
-											$selected = ' selected ';
-										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="builder-productivity-report-year">
-									<?php
-									$html = '';
-									foreach(range(date("Y"), 2017) as $year)
-									{
-										$html .= '<option value="'.$year.'">'.$year.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer p-0">
-                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <form class="form-inline projects-and-current-production" method="post">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Costo y producci&oacute;n
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="projects-and-current-production-month">
-									<?php
-									$html = '';
-									foreach($monthList as $key => $value)
-									{
-										$selected = '';
-										if($key == date('m'))
-											$selected = ' selected ';
-										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="projects-and-current-production-year">
-									<?php
-									$html = '';
-									foreach(range(date("Y"), 2017) as $year)
-									{
-										$html .= '<option value="'.$year.'">'.$year.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer p-0">
-                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <form class="form-inline daily-production" method="post">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Producci&oacute;n diaria
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="daily-production-month">
-									<?php
-									$html = '';
-									foreach($monthList as $key => $value)
-									{
-										$selected = '';
-										if($key == date('m'))
-											$selected = ' selected ';
-										$html .= '<option '.$selected.' value="'.$key.'">'.$value.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control input-sm" name="daily-production-year">
-									<?php
-									$html = '';
-									foreach(range(date("Y"), 2017) as $year)
-									{
-										$html .= '<option value="'.$year.'">'.$year.'</option>';
-									}
-									echo $html;
-									?>
-                                </select>    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer p-0">
-                    <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-	<div class="col-lg-3 col-md-6">
-		<form class="form-inline executive-report" method="post">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					Informe Ejecutivo
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<div class="form-group">
-								<select class="form-control input-sm" name="executive-report-type">
-									<option value="1" selected>Externo</option>
-									<option value="2">Interno</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="panel-footer p-0">
-					<button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" id="">
-            <div class="panel-heading">
-                <form class="form-inline stake-report-inline-form" action="<?=base_url("panel/Project/getStakeReport")?>" method="post">
-                    <i class="fa fa-file-excel-o fa-fw"></i> Reporte de estaqueado
-                    <div class="form-group">
-                        <label class="sr-only input-sm" for="exampleInputEmail3">Desde</label>
-                        <input type="text" class="form-control input-sm date-time-stake-report" name="stake-report-from">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control input-sm date-time-stake-report" name="stake-report-to">
-                    </div>
-                    <button type="submit" class="btn btn-default btn-xs">Descargar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary" id="">
@@ -446,7 +215,7 @@ $monthList = array(
         </div>
     </div>
 </div> -->
-<div class="row">
+<div class="row hidden">
     <div class="col-md-12">
         <div class="panel panel-primary" id="panel-main-report-control-filter">
             <div class="panel-heading">
