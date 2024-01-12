@@ -133,7 +133,6 @@
                 </fieldset>
             </form>
         </div>
-        <form name="all-projects-log" action="<?=base_url("panel/Project/getAllProjectsLog")?>" method="post"></form>
         <form name="workflow-with-parameters" action="<?=base_url("panel/Project/getProjectWorkFlowReport")?>" method="post">
             <input type="hidden" name="is-super-admin" value="<?=$isSuperAdmin?>">
             <input type="hidden" name="code-list" value="">

@@ -17,16 +17,6 @@ $(document).ready(function() {
     additionalParameter.setButtonRest('#remove-additional-parameters');
     additionalParameter.loadEventHandlers();
 
-    var buttonProjectsLog = {
-        text: "Logs",
-        action: function ( e, dt, node, config )
-        {
-            var rowData = $('#project-index').DataTable().rows().data();
-            var codeList = "";
-            var $form = $("form[name=all-projects-log]");
-            $form.submit();
-        }
-    };
     var buttonWorkflow = {
         text: "Workflow",
         action: function ( e, dt, node, config )
@@ -73,8 +63,7 @@ $(document).ready(function() {
                     columns: 'th:not(:last-child)'
                 }
             },
-            buttonMainDesignReport,
-            buttonProjectsLog
+            buttonMainDesignReport
         ];
     if($("input[name=is-super-admin]").val() != 1)
     {

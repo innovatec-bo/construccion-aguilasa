@@ -351,6 +351,25 @@ $monthList = array(
                         </div>
                     </form>
                 </div>
+                <div class="col-lg-6 col-md-6">
+                    <form class="form-inline" action="<?=base_url("panel/Project/getAllProjectsLog")?>" method="post">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Log de estados
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <p class="mb-0">Se descargar&aacute;n todos los logs de todos los proyectos. Este reporte puede demorar algo de tiempo</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer p-0">
+                                <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
