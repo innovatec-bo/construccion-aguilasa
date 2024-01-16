@@ -686,7 +686,7 @@ class Model_user extends Model_user_base
 
 		$data = array();
 		$sendTo = array(
-			"jair@twiiti.com",
+			"gilbertof@serebo.com",
 		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
