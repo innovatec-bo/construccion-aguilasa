@@ -177,4 +177,37 @@ class CronJob extends PublicController
 			$this->_saveInLog($response);
 		}
 	}
+
+	public function sendDailyReports($challenge)
+	{
+		if($challenge == 'sendDailyReports2024')
+		{
+			$response = Model_user::sendDailyReports();
+			if($response['success'] == 1)
+			{
+				
+			}
+			/** @var ExcelBuildersGeneralReport $builderGeneralReport */
+			$builderGeneralReport = $response['builderGeneralReport'];
+			$builderGeneralReport->removeFile();
+
+			/** @var ExcelDailyProductivityReport $dailyProductivityReport */
+			$dailyProductivityReport = $response['dailyProductivityReport'];
+			$dailyProductivityReport->removeFile();
+
+			/** @var ExcelProjectWorkflow $workflowReport */
+			$workflowReport = $response['workflowReport'];
+			$workflowReport->removeFile();
+
+			/** @var ExcelAllProjectsLog $allProjectsLog */
+			$allProjectsLog = $response['allProjectsLog'];
+			$allProjectsLog->removeFile();
+			
+			unset($response['builderGeneralReport']);
+			unset($response['dailyProductivityReport']);
+			unset($response['workflowReport']);
+			unset($response['allProjectsLog']);
+			$this->_saveInLog($response);
+		}
+	}
 }

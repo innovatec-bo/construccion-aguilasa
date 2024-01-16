@@ -5,17 +5,19 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class ExcelAllProjectsLog
 {
     private $_sessionUser;
+    private string $_fileName;
 
     public function __construct($sessionUser)
     {
         $this->_sessionUser = $sessionUser;
     }
 
-    function getReport()
+    function getReport($save = FALSE) : void
     {
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
         $list = Model_project::allProjectsLog();
 
+        $this->_fileName = 'Log de proyectos - '.date("d.m.y h.i A");
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -26,14 +28,29 @@ class ExcelAllProjectsLog
             ->setCategory("Reporte");
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         $spreadsheet = $this->_projects($spreadsheet, $list);
-    
-        // redirect output to client browser
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Log de proyectos - '.date("d.m.y h.i A").'.xls"');
-        header('Cache-Control: max-age=0');
 
-        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save('php://output');
+        if($save)
+		{
+			try
+			{
+				$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+				$writer->save(FCPATH.'assets/'.$this->_fileName.'.xlsx');
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
+		}
+        else
+        {
+            // redirect output to client browser
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$this->_fileName.'.xlsx"');
+            header('Cache-Control: max-age=0');
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Xls');
+            $writer->save('php://output');
+        }
     }
 
     private function _projects($spreadsheet, $workflowDetail)
@@ -96,7 +113,6 @@ class ExcelAllProjectsLog
             $spreadsheet->getActiveSheet()->getStyle('E'.($i+1))->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DATETIME);
             $i++;
             $counter++;
-            
         }
         
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -109,4 +125,17 @@ class ExcelAllProjectsLog
         $spreadsheet->getActiveSheet()->getStyle('A1:G'.$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         return $spreadsheet;
     }
+
+    public function removeFile()
+	{
+		if(file_exists($this->getFilePath()))
+		{
+			unlink($this->getFilePath());
+		}
+	}
+
+	public function getFilePath()
+	{
+		return FCPATH.'assets/'.$this->_fileName.'.xlsx';
+	}
 }

@@ -10,6 +10,8 @@ class ExcelBuildersGeneralReport
     private $_fiscalList;
     private $_builderList;
     private $_fiscalAssignments;
+    private string $_fileName;
+
 	public function __construct($sessionUser, $startDate, $endDate)
 	{
         $this->_sessionUser = $sessionUser;
@@ -33,7 +35,7 @@ class ExcelBuildersGeneralReport
         $this->_builderList = Model_user::getByRoleKeyword('builder');
 	}
 
-	function getReport()
+	function getReport($save = FALSE) : void
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 		$this->_fiscalAssignments = Model_user_supervisor_by_period::getAssignmentByDateRange(array('from' =>$this->_startDate, 'to'=>$this->_endDate));
@@ -42,6 +44,7 @@ class ExcelBuildersGeneralReport
         $month = date_format($date, 'F');
         $month = $this->_months[strtolower($month)];
         $year = date_format($date, 'Y');
+        $this->_fileName = 'Reporte general de constructores - '.$month.' del '.$year.'.xlsx';
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -54,15 +57,34 @@ class ExcelBuildersGeneralReport
         $worksheet1->setTitle('Resumen');
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
 
-        $spreadsheet = $this->_buildersGeneralReport($spreadsheet, $projectProductivity);
+        if (count($projectProductivity) > 0) 
+        {
+            $spreadsheet = $this->_buildersGeneralReport($spreadsheet, $projectProductivity);
+            $spreadsheet->setActiveSheetIndex(0);
+        }
 
-        // redirect output to client browser
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Reporte general de constructores - '.$month.' del '.$year.'.xls"');
-        header('Cache-Control: max-age=0');
+        if($save)
+		{
+			try
+			{
+				$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+				$writer->save(FCPATH.'assets/'.$this->_fileName);
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
+		}
+        else
+        {
+            // redirect output to client browser
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$this->_fileName.'"');
+            header('Cache-Control: max-age=0');
 
-        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save('php://output');
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        }
 	}
 
 	private function _buildersGeneralReport($spreadsheet, $projectProductivity)
@@ -468,5 +490,18 @@ class ExcelBuildersGeneralReport
 			}
 		}
 		return $supervisorId;
+	}
+
+    public function removeFile()
+	{
+		if(file_exists($this->getFilePath()))
+		{
+			unlink($this->getFilePath());
+		}
+	}
+
+	public function getFilePath()
+	{
+		return FCPATH.'assets/'.$this->_fileName;
 	}
 }

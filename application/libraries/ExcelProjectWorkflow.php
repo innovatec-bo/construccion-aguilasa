@@ -12,6 +12,8 @@ class ExcelProjectWorkflow
     private $_columnDefinition;
     private $_arrayColumnDataCounter;
     private $_hideHeaderColumnGroup;
+    private $_fileName;
+
 	public function __construct($sessionUser)
 	{
         $this->_sessionUser = $sessionUser;
@@ -19,9 +21,10 @@ class ExcelProjectWorkflow
         $this->_arrayColumnDataCounter = array();
         $this->_hideHeaderColumnGroup = FALSE;
         $this->setColumnDefinition();
+        $this->_fileName = 'Workflow report';
 	}
 
-	function getReport()
+	function getReport($save = FALSE) : void
 	{   
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
         // dd(count(PrivateController::getWorkflowColumns()), count($this->_columnDefinition));
@@ -58,16 +61,30 @@ class ExcelProjectWorkflow
         $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
         ;
         $this->_hideColumns($spreadsheet, $this->_getNotEmptyColumns());
-        // redirect output to client browser
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="projects_workflow.xls"');
-        header('Cache-Control: max-age=0');
 
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save('php://output');
 
-        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save('php://output');
+        if($save)
+		{
+			try
+			{
+				$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+				$writer->save(FCPATH.'assets/'.$this->_fileName.'.xlsx');
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
+		}
+        else
+        {
+            // redirect output to client browser
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$this->_fileName.'.xlsx"');
+            header('Cache-Control: max-age=0');
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        }
 	}
 
 	private function _headerColumnGroup($spreadsheet)
@@ -424,4 +441,17 @@ class ExcelProjectWorkflow
         }
         return $response;
     }
+
+    public function removeFile()
+	{
+		if(file_exists($this->getFilePath()))
+		{
+			unlink($this->getFilePath());
+		}
+	}
+
+	public function getFilePath()
+	{
+		return FCPATH.'assets/'.$this->_fileName.'.xlsx';
+	}
 }

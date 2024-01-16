@@ -633,7 +633,6 @@ class Model_user extends Model_user_base
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
 		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
-		$email->bcc('jair@twiiti.com');
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
@@ -658,6 +657,74 @@ class Model_user extends Model_user_base
 			$sendMessageResponse['success'] = 0;
 			$sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
 		}
+		return $sendMessageResponse;
+	}
+
+    public static function sendDailyReports()
+	{
+        set_time_limit(600);
+		ini_set('memory_limit','700M');
+		$ci = &get_instance();
+        $sessionUser = [
+            'fullName' => 'CronJob'
+        ];
+        $sessionUser = (object)$sessionUser;
+        $startDate = date('Y')."-".date("m")."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
+		$builderGeneralReport = new ExcelBuildersGeneralReport($sessionUser, $startDate, $endDate);
+		$builderGeneralReport->getReport(TRUE);
+        
+        $logDateRange = array("from" => $startDate, "to" => $endDate);
+        $dailyProductivityReport = new ExcelDailyProductivityReport($sessionUser, $logDateRange);
+        $dailyProductivityReport->getReport(TRUE);
+
+        $workflowReport = new ExcelProjectWorkflow($sessionUser);
+        $workflowReport->getReport(TRUE);
+        
+        $allProjectsLog = new ExcelAllProjectsLog($sessionUser);
+        $allProjectsLog->getReport(TRUE);
+
+		$data = array();
+		$sendTo = array(
+			"jair@twiiti.com",
+		);
+		$emailHandler = new EmailHandler();
+		$email = $emailHandler->initialize();
+		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
+		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+		$email->to($emailHandler->getEmailByEnvironment($sendTo));
+		$email->subject("Reportes diarios");
+		$email->attach($builderGeneralReport->getFilePath());
+        $email->attach($dailyProductivityReport->getFilePath());
+        $email->attach($workflowReport->getFilePath());
+        $email->attach($allProjectsLog->getFilePath());
+		$email->message($ci->load->view("default-template/panel/email-template/daily-reports.php", $data, true));
+		$messageDetail = "\nSubject: Reportes diarios\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
+//        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+		try
+		{
+			if($email->Send())
+			{
+				$sendMessageResponse['success'] = 1;
+				$sendMessageResponse['message'] = "\nNotice sent successfully.".$messageDetail;
+			}
+			else
+			{
+				$sendMessageResponse['success'] = 0;
+				$sendMessageResponse['message'] = "\nSomething went wrong!\n".$email->print_debugger().$messageDetail;
+			}
+		}
+		catch (Exception $e)
+		{
+			$sendMessageResponse['success'] = 0;
+			$sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
+		}
+
+        $sendMessageResponse['builderGeneralReport'] = $builderGeneralReport;
+        $sendMessageResponse['dailyProductivityReport'] = $dailyProductivityReport;
+        $sendMessageResponse['workflowReport'] = $workflowReport;
+        $sendMessageResponse['allProjectsLog'] = $allProjectsLog;
+
 		return $sendMessageResponse;
 	}
 }

@@ -8,6 +8,8 @@ class ExcelDailyProductivityReport
     private $_months;
     private $_builders;
     private $_daysOfWeek;
+    private string $_fileName;
+
 	public function __construct($sessionUser, $logDateRange)
 	{
         $this->_sessionUser = $sessionUser;
@@ -38,7 +40,7 @@ class ExcelDailyProductivityReport
         $this->_builders = Model_user::getByRoleKeyword('builder');
 	}
 
-	function getReport()
+	function getReport($save = FALSE) : void
 	{
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
 
@@ -47,6 +49,8 @@ class ExcelDailyProductivityReport
         $month = date_format($date, 'F');
         $month = $this->_months[strtolower($month)];
         $year = date_format($date, 'Y');
+
+        $this->_fileName = 'Reporte diario de production - '.$month.' del '.$year.'.xlsx';
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -60,13 +64,29 @@ class ExcelDailyProductivityReport
         
         $spreadsheet = $this->_dailyLog($spreadsheet, $individualProductivityLog);
 		$spreadsheet->setActiveSheetIndex(0);
-        // redirect output to client browser
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Reporte diario de production - '.$month.' del '.$year.'.xls"');
-        header('Cache-Control: max-age=0');
 
-        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save('php://output');
+        if($save)
+		{
+			try
+			{
+				$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+				$writer->save(FCPATH.'assets/'.$this->_fileName);
+			}
+			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
+			{
+				exit($e->getMessage());
+			}
+		}
+        else
+        {
+            // redirect output to client browser
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$this->_fileName.'"');
+            header('Cache-Control: max-age=0');
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        }
 	}
 
     private function _dailyLog($spreadsheet, $data)
@@ -366,5 +386,18 @@ class ExcelDailyProductivityReport
 		$total = array_sum($default);
 		array_unshift($default, $total);
 		return $default;
+	}
+
+    public function removeFile()
+	{
+		if(file_exists($this->getFilePath()))
+		{
+			unlink($this->getFilePath());
+		}
+	}
+
+	public function getFilePath()
+	{
+		return FCPATH.'assets/'.$this->_fileName;
 	}
 }
