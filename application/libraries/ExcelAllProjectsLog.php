@@ -33,8 +33,8 @@ class ExcelAllProjectsLog
 		{
 			try
 			{
-				$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-				$writer->save(FCPATH.'assets/'.$this->_fileName.'.xlsx');
+				$writer = IOFactory::createWriter($spreadsheet, 'Xls');
+				$writer->save(FCPATH.'assets/'.$this->_fileName.'.xls');
 			}
 			catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e)
 			{
@@ -45,7 +45,7 @@ class ExcelAllProjectsLog
         {
             // redirect output to client browser
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="'.$this->_fileName.'.xlsx"');
+            header('Content-Disposition: attachment;filename="'.$this->_fileName.'.xls"');
             header('Cache-Control: max-age=0');
 
             $writer = IOFactory::createWriter($spreadsheet, 'Xls');
@@ -136,6 +136,6 @@ class ExcelAllProjectsLog
 
 	public function getFilePath()
 	{
-		return FCPATH.'assets/'.$this->_fileName.'.xlsx';
+		return FCPATH.'assets/'.$this->_fileName.'.xls';
 	}
 }
