@@ -663,7 +663,7 @@ class Model_user extends Model_user_base
     public static function sendDailyReports()
 	{
         set_time_limit(600);
-		ini_set('memory_limit','700M');
+		ini_set('memory_limit','750M');
 		$ci = &get_instance();
         $sessionUser = [
             'fullName' => 'CronJob'
