@@ -44,6 +44,19 @@ class CronJob extends PublicController
 		file_put_contents($log,$data,FILE_APPEND);
 	}
 
+	private function _saveInLogV2($text)
+	{
+		$trace = debug_backtrace();
+		$caller = $trace[1];
+
+		$log = $this->_logPath;
+		ob_start();
+		echo $text;
+		$data = ob_get_contents();
+		ob_end_clean();
+		file_put_contents($log,$data,FILE_APPEND);
+	}
+
 	public function netBuildingEmail($challenge = "nbreport2019")
     {
         if($challenge == "nbreport2019")
@@ -180,13 +193,11 @@ class CronJob extends PublicController
 
 	public function sendDailyReports($challenge)
 	{
+		$this->_saveInLogV2("==================== Starting SendDailyreports at ".date("Y-m-d H:i:s")." ====================\n");
 		if($challenge == 'sendDailyReports2024')
 		{
 			$response = Model_user::sendDailyReports();
-			if($response['success'] == 1)
-			{
-				
-			}
+
 			/** @var ExcelBuildersGeneralReport $builderGeneralReport */
 			$builderGeneralReport = $response['builderGeneralReport'];
 			$builderGeneralReport->removeFile();
@@ -207,7 +218,9 @@ class CronJob extends PublicController
 			unset($response['dailyProductivityReport']);
 			unset($response['workflowReport']);
 			unset($response['allProjectsLog']);
-			$this->_saveInLog($response);
+			$response = print_r($response, true);
+			$this->_saveInLogV2($response);
 		}
+		$this->_saveInLogV2("==================== Ending SendDailyreports at ".date("Y-m-d H:i:s")." ====================\n");
 	}
 }
