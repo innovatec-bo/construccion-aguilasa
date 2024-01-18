@@ -117,6 +117,17 @@ $monthList = array(
         </div>
         <div class="col-md-6">
             <div class="row">
+                <div class="col-md-12">
+                    <!-- <form action="<?=base_url("panel/Project/downloadDailyReports")?>" method="post"> -->
+                        <!-- <input type="hidden" value=""> -->
+                        <button type="button" id="download-daily-reports" class="btn btn-danger btn-xs btn-block p-1 mb-2">
+                            <strong>Descargar reportes diarios</strong><br>
+                            La capacidad del servidor podr&iacute;a no ser suficiente para descargar los 4 reportes al mismo tiempo
+                        </button>
+                    <!-- </form> -->
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-5 col-md-5">
                     <form class="form-inline builder-general-report" method="post">
                         <div class="panel panel-primary">

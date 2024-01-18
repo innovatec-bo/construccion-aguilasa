@@ -1177,4 +1177,37 @@ class Project extends PrivateController
         header("Content-Disposition: attachment; filename=$file");
         echo utf8_decode($arrayResponse['data']['file']);
     }
+
+    public function downloadDailyReportsP1()
+    {
+        $startDate = date('Y')."-".date("m")."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
+		$builderGeneralReport = new ExcelBuildersGeneralReport($this->sessionUser, $startDate, $endDate);
+		$builderGeneralReport->getReport();
+    }
+
+    public function downloadDailyReportsP2()
+    {
+        $startDate = date('Y')."-".date("m")."-01 00:00:00";
+        $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
+        $logDateRange = array("from" => $startDate, "to" => $endDate);
+        $dailyProductivityReport = new ExcelDailyProductivityReport($this->sessionUser, $logDateRange);
+        $dailyProductivityReport->getReport();
+    }
+
+    public function downloadDailyReportsP3()
+    {
+        set_time_limit(300);
+		ini_set('memory_limit','524M');
+        $workflowReport = new ExcelProjectWorkflow($this->sessionUser);
+        $workflowReport->getReport();
+    }
+
+    public function downloadDailyReportsP4()
+    {
+        set_time_limit(300);
+		ini_set('memory_limit','500M');
+        $allProjectsLog = new ExcelAllProjectsLog($this->sessionUser);
+        $allProjectsLog->getReport();
+    }
 }

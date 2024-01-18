@@ -91,6 +91,24 @@ $(document).ready(function() {
         // console.log(response);
     });
 
+    $(document).on('click','#download-daily-reports', function(){
+        console.log('downloading p1');
+        let url1 = base_url + 'panel/Project/downloadDailyReportsP1';
+        window.open(url1);
+        
+        console.log('downloading p2');
+        let url2 = base_url + 'panel/Project/downloadDailyReportsP2';
+        window.open(url2);
+
+        console.log('downloading p3');
+        let url3 = base_url + 'panel/Project/downloadDailyReportsP3';
+        window.open(url3);
+
+        console.log('downloading p4');
+        let url4 = base_url + 'panel/Project/downloadDailyReportsP4';
+        window.open(url4);
+    });
+
     function saveTrackingList()
     {
         var $formData = $("form[name=workflow-report]");
