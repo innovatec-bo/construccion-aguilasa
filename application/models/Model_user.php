@@ -681,8 +681,8 @@ class Model_user extends Model_user_base
         $workflowReport = new ExcelProjectWorkflow($sessionUser);
         $workflowReport->getReport(TRUE);
         
-        $allProjectsLog = new ExcelAllProjectsLog($sessionUser);
-        $allProjectsLog->getReport(TRUE);
+        // $allProjectsLog = new ExcelAllProjectsLog($sessionUser);
+        // $allProjectsLog->getReport(TRUE);
 
 		$data = array();
 		$sendTo = array(
@@ -697,7 +697,7 @@ class Model_user extends Model_user_base
 		$email->attach($builderGeneralReport->getFilePath());
         $email->attach($dailyProductivityReport->getFilePath());
         $email->attach($workflowReport->getFilePath());
-        $email->attach($allProjectsLog->getFilePath());
+        // $email->attach($allProjectsLog->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/daily-reports.php", $data, true));
 		$messageDetail = "\nSubject: Reportes diarios\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
 //        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
@@ -723,7 +723,7 @@ class Model_user extends Model_user_base
         $sendMessageResponse['builderGeneralReport'] = $builderGeneralReport;
         $sendMessageResponse['dailyProductivityReport'] = $dailyProductivityReport;
         $sendMessageResponse['workflowReport'] = $workflowReport;
-        $sendMessageResponse['allProjectsLog'] = $allProjectsLog;
+        // $sendMessageResponse['allProjectsLog'] = $allProjectsLog;
 
 		return $sendMessageResponse;
 	}

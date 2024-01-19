@@ -210,14 +210,14 @@ class CronJob extends PublicController
 			$workflowReport = $response['workflowReport'];
 			$workflowReport->removeFile();
 
-			/** @var ExcelAllProjectsLog $allProjectsLog */
-			$allProjectsLog = $response['allProjectsLog'];
-			$allProjectsLog->removeFile();
+			// /** @var ExcelAllProjectsLog $allProjectsLog */
+			// $allProjectsLog = $response['allProjectsLog'];
+			// $allProjectsLog->removeFile();
 			
 			unset($response['builderGeneralReport']);
 			unset($response['dailyProductivityReport']);
 			unset($response['workflowReport']);
-			unset($response['allProjectsLog']);
+			// unset($response['allProjectsLog']);
 			$response = print_r($response, true);
 			$this->_saveInLogV2($response);
 		}
