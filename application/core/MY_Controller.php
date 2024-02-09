@@ -4,6 +4,7 @@ use Assert\Assertion;
 use Assert\Assert;
 use Assert\LazyAssertionException;
 use Assert\AssertionFailedException;
+use GuzzleHttp\Client;
 
 class PublicController extends CI_Controller
 {
@@ -677,5 +678,15 @@ class PrivateController extends PublicController
         
         // Display the decrypted string
         // dump("Decrypted String: " . $decryption);
+    }
+
+    public static function updateWorkflow($projectIds)
+    {
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+        $apiResponse = $client->request('POST', 'api/v1/workflows',[
+            'form_params' => [
+                "projects" => $projectIds,
+            ]
+        ]);
     }
 }

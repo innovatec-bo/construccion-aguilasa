@@ -693,6 +693,7 @@ class Model_user extends Model_user_base
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
 		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
+        $email->cc($emailHandler->getEmailByEnvironment('jcussy@toqueeltimbre.com'));
 		$email->subject("Reportes diarios");
 		$email->attach($builderGeneralReport->getFilePath());
         $email->attach($dailyProductivityReport->getFilePath());

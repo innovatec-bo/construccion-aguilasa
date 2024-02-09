@@ -760,7 +760,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			{
 				$dependencyList[$dependency] = $dependency;
 			}
-		}
+		}//dd($this->_columnsAndDependencies);
+		
 		// $columns = substr($columns,0,-1);
 		$dependencyList = array_values($dependencyList);
 		foreach($this->_queryDependencies as $key => $query)

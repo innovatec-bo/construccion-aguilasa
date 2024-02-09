@@ -348,6 +348,7 @@ class Project extends PrivateController
             }
 
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");
+            PrivateController::updateWorkflow([$project->getId()]);
             redirect(base_url("panel/Project/edit/".$project->getId()));
         }
     }
