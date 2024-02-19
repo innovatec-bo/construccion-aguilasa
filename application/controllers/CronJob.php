@@ -196,31 +196,39 @@ class CronJob extends PublicController
 		$this->_saveInLogV2("==================== Starting SendDailyreports at ".date("Y-m-d H:i:s")." ====================\n");
 		if($challenge == 'sendDailyReports2024')
 		{
-			$response = Model_user::sendDailyReports();
+			$reports = ['builderGeneralReport','dailyProductivityReport', 'workflowReport'];
+			$response = Model_user::sendDailyReports($reports, 'Reportes diarios parte 1');
+			foreach ($reports as $name) 
+			{
+				$report = $response[$name];
+				$report->removeFile();
+				unset($response[$name]);
+			}
 
-			/** @var ExcelBuildersGeneralReport $builderGeneralReport */
-			$builderGeneralReport = $response['builderGeneralReport'];
-			$builderGeneralReport->removeFile();
-
-			/** @var ExcelDailyProductivityReport $dailyProductivityReport */
-			$dailyProductivityReport = $response['dailyProductivityReport'];
-			$dailyProductivityReport->removeFile();
-
-			/** @var ExcelProjectWorkflow $workflowReport */
-			$workflowReport = $response['workflowReport'];
-			$workflowReport->removeFile();
-
-			// /** @var ExcelAllProjectsLog $allProjectsLog */
-			// $allProjectsLog = $response['allProjectsLog'];
-			// $allProjectsLog->removeFile();
-			
-			unset($response['builderGeneralReport']);
-			unset($response['dailyProductivityReport']);
-			unset($response['workflowReport']);
-			// unset($response['allProjectsLog']);
 			$response = print_r($response, true);
 			$this->_saveInLogV2($response);
 		}
 		$this->_saveInLogV2("==================== Ending SendDailyreports at ".date("Y-m-d H:i:s")." ====================\n");
+	}
+
+	public function sendDailyReportsP2($challenge)
+	{
+		$this->_saveInLogV2("==================== Starting SendDailyreportsP2 at ".date("Y-m-d H:i:s")." ====================\n");
+		if($challenge == 'sendDailyReportsP22024')
+		{
+			$reports = ['allProjectsLog'];
+			$response = Model_user::sendDailyReports($reports, 'Reportes diarios parte 2');
+
+			// foreach ($reports as $name) 
+			// {
+			// 	$report = $response[$name];
+			// 	$report->removeFile();
+			// 	unset($response[$name]);
+			// }
+
+			$response = print_r($response, true);
+			$this->_saveInLogV2($response);
+		}
+		$this->_saveInLogV2("==================== Ending SendDailyreportsP2 at ".date("Y-m-d H:i:s")." ====================\n");
 	}
 }

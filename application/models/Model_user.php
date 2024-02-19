@@ -660,7 +660,7 @@ class Model_user extends Model_user_base
 		return $sendMessageResponse;
 	}
 
-    public static function sendDailyReports()
+    public static function sendDailyReports(array $reports, $subject)
 	{
         set_time_limit(600);
 		ini_set('memory_limit','750M');
@@ -671,18 +671,30 @@ class Model_user extends Model_user_base
         $sessionUser = (object)$sessionUser;
         $startDate = date('Y')."-".date("m")."-01 00:00:00";
         $endDate = date("Y-m-t 23:59:59", strtotime($startDate));
-		$builderGeneralReport = new ExcelBuildersGeneralReport($sessionUser, $startDate, $endDate);
-		$builderGeneralReport->getReport(TRUE);
+        if (in_array('builderGeneralReport', $reports)) 
+        {
+            $builderGeneralReport = new ExcelBuildersGeneralReport($sessionUser, $startDate, $endDate);
+		    $builderGeneralReport->getReport(TRUE);
+        }
+		
+        if(in_array('dailyProductivityReport', $reports))
+        {
+            $logDateRange = array("from" => $startDate, "to" => $endDate);
+            $dailyProductivityReport = new ExcelDailyProductivityReport($sessionUser, $logDateRange);
+            $dailyProductivityReport->getReport(TRUE);
+        }
         
-        $logDateRange = array("from" => $startDate, "to" => $endDate);
-        $dailyProductivityReport = new ExcelDailyProductivityReport($sessionUser, $logDateRange);
-        $dailyProductivityReport->getReport(TRUE);
-
-        $workflowReport = new ExcelProjectWorkflow($sessionUser);
-        $workflowReport->getReport(TRUE);
+        if(in_array('workflowReport', $reports))
+        {
+            $workflowReport = new ExcelProjectWorkflow($sessionUser);
+            $workflowReport->getReport(TRUE);
+        }
         
-        // $allProjectsLog = new ExcelAllProjectsLog($sessionUser);
-        // $allProjectsLog->getReport(TRUE);
+        if(in_array('allProjectsLog', $reports))
+        {
+            $allProjectsLog = new ExcelAllProjectsLog($sessionUser);
+            $allProjectsLog->getReport(TRUE);
+        }
 
 		$data = array();
 		$sendTo = array(
@@ -694,11 +706,25 @@ class Model_user extends Model_user_base
 		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
         $email->cc($emailHandler->getEmailByEnvironment('jcussy@toqueeltimbre.com'));
-		$email->subject("Reportes diarios");
-		$email->attach($builderGeneralReport->getFilePath());
-        $email->attach($dailyProductivityReport->getFilePath());
-        $email->attach($workflowReport->getFilePath());
-        // $email->attach($allProjectsLog->getFilePath());
+		$email->subject($subject);
+
+        if (in_array('builderGeneralReport',$reports)) 
+        {
+            $email->attach($builderGeneralReport->getFilePath());
+        }
+        if(in_array('dailyProductivityReport', $reports))
+		{
+            $email->attach($dailyProductivityReport->getFilePath());
+        }
+        if(in_array('workflowReport', $reports))
+        {
+            $email->attach($workflowReport->getFilePath());
+        }
+        if(in_array('allProjectsLog', $reports))
+        {
+            $email->attach($allProjectsLog->getFilePath());
+        }
+        
 		$email->message($ci->load->view("default-template/panel/email-template/daily-reports.php", $data, true));
 		$messageDetail = "\nSubject: Reportes diarios\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
 //        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
@@ -721,11 +747,26 @@ class Model_user extends Model_user_base
 			$sendMessageResponse['message'] = "\nInternal server error, please try again.".$messageDetail;
 		}
 
-        $sendMessageResponse['builderGeneralReport'] = $builderGeneralReport;
-        $sendMessageResponse['dailyProductivityReport'] = $dailyProductivityReport;
-        $sendMessageResponse['workflowReport'] = $workflowReport;
-        // $sendMessageResponse['allProjectsLog'] = $allProjectsLog;
+        if (in_array('builderGeneralReport',$reports)) 
+        {
+            $sendMessageResponse['builderGeneralReport'] = $builderGeneralReport;
+        }
 
+        if(in_array('dailyProductivityReport', $reports))
+        {
+            $sendMessageResponse['dailyProductivityReport'] = $dailyProductivityReport;
+        }
+        
+        if(in_array('workflowReport', $reports))
+        {
+            $sendMessageResponse['workflowReport'] = $workflowReport;
+        }
+        
+        if(in_array('allProjectsLog', $reports))
+        {
+            $sendMessageResponse['allProjectsLog'] = $allProjectsLog;
+        }
+        
 		return $sendMessageResponse;
 	}
 }

@@ -59,9 +59,7 @@ class ExcelProjectWorkflow
         $columnList = array("stake_date","stake_responsible","digitization_points_quantity","digitization_distance","schedule_date","design_budget","building_budget","transportation_budget","live_line_budget","right_of_way_budget","total_approved","assign_to_date","builder_responsible","fiscal_responsible","in_progress_date","completed_date","payment_order_registered_date","payment_order_registered_order_number","payment_order_registered_design_budget","payment_order_registered_transportation_budget","payment_order_registered_live_line_budget","payment_order_registered_building_budget","payment_order_registered_right_of_way_budget","payment_order_registered_total_real_budget","payment_order_invoice_sent_date");
         $columnList = $this->_getExcelColumnListByArrayDataKey($columnList);
         $this->_highlightColumns($spreadsheet,$i,$columnList,'DDEBF7');
-        ;
         $this->_hideColumns($spreadsheet, $this->_getNotEmptyColumns());
-
 
         if($save)
 		{
