@@ -158,11 +158,12 @@ class Project extends PrivateController
 
 			//Let's search the status responsible
 			$responsibleList = Model_status_responsible::getUsersResponsible("project_has_been_created", $this->sessionUser->id);
-			if(count($responsibleList) <= 0)
-			{
-				$this->session->set_flashdata("errorMessage", "No esta habilitado como responsable para la creacion de proyectos");
-				redirect(base_url("panel/Project"));
-			}
+			//Removed old validation
+            // if(count($responsibleList) <= 0)
+			// {
+			// 	$this->session->set_flashdata("errorMessage", "No esta habilitado como responsable para la creacion de proyectos");
+			// 	redirect(base_url("panel/Project"));
+			// }
             //Our first project status is 'project_has_been_created'
             $statusHasBeenCreated = "46";
             $project = new Model_project($projectCode, $projectName, $projectSystem, $projectAddress, $projectEntryDate, $projectCreFiscal, $statusHasBeenCreated,NULL,NULL,$projectPoints,$projectMetersDistance,
