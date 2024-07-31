@@ -9,7 +9,7 @@
 <script id="ht-status-project-log-quick-view" type="text/x-handlebars-template">
     {{#each projectLog}}
         {{#ifCond keyword_pst "!=" "approvement"}}
-            {{#ifCond keyword_pst "!=" "schedule"}}
+            {{!-- {{#ifCond keyword_pst "!=" "schedule"}} --}}
                 {{var "className" ""}}
                 {{var "className2" ""}}
                 {{#ifCond ../allowUpdateHistory "==" 1}}
@@ -50,6 +50,16 @@
                             <dt>Area del proyecto</dt>
                             <dd data-log-id="{{id_psl}}" data-status-name="{{status_name_pst}}" class="{{className2}}">{{points_quantity_prp}}p / {{distance_prp}}Km - <span class="original-area">{{points_pro}}p / {{distance_pro}}Km</span></dd>
                         {{/ifCond}}
+
+                        {{#ifCond keyword_pst "==" "schedule"}}
+
+                            <dt>Total Importe Tentativo</dt>
+                            <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat tentative_total_budget_prb}}</span></dd>
+                            <dt>Importe de diseño Tentativo</dt>
+                            <dd>{{numberFormat design_prb}}</dd>
+
+                        {{/ifCond}}
+
                         {{#ifCond keyword_pst "==" "approved"}}
                             {{#ifCond manpower_file_id_prb "!=" null}}
                                 <dt>Revisar Mano de obra</dt>
@@ -74,22 +84,7 @@
                                     </form>
                                 </dd>
                             {{/ifCond}}
-                            {{#ifCond manpower_file_id_prb "!=" null}}
-<!--                                <dt>Cargar Materiales</dt>-->
-<!--                                <dd>-->
-<!--                                    <form name="manpower-upload-file" enctype="multipart/form-data">-->
-<!--                                        <input type="hidden" value="{{project_id_psl}}" name="project-id">-->
-<!--                                        <input type="hidden" value="{{project_budget_id}}" name="project-budget-id">-->
-<!--											<div class="form-group input-group hide">-->
-<!--											<span class="input-group-btn">-->
-<!--												<button class="btn btn-primary extract-approved-materials btn-xs" data-form-name="status-management" data-save-in-system="0" type="button">{{buttonText}}-->
-<!--												</button>-->
-<!--											</span>-->
-<!--											<input type="file" name="materials-file" accept=".xlsx, .xls, .csv">-->
-<!--										</div>-->
-<!--                                    </form>-->
-<!--                                </dd>-->
-                            {{/ifCond}}
+
                             <dt>Total Importe</dt>
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat total_budget}}</span></dd>
                             <dt>Importe de diseño</dt>
@@ -177,7 +172,7 @@
                         {{/ifCond}}
                     </dl>
                 </blockquote>
-            {{/ifCond}}
+            {{!-- {{/ifCond}} --}}
         {{/ifCond}}
     {{/each}}
 </script>

@@ -48,6 +48,7 @@ class Model_project_status_log extends Model_project_status_log_base
             points_pro,
             distance_pro,
             design_prb,
+            tentative_total_budget_prb,
             building_prb,
             graph_number_prb,
             reservation_number_prb,
