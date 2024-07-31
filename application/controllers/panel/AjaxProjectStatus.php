@@ -772,6 +772,30 @@ class AjaxProjectStatus extends PrivateController
         $response["success"] = 0;
         $response["message"] = "Ocurrio un problema, por favor intente de nuevo.";
 
+        if(isset($formData["tentativeTotalBudget"]))
+        {
+            $logId = $formData["logId"];
+            $tentativeTotalBudget = $formData["tentativeTotalBudget"];
+
+            $projectBudget = Model_project_budget::getByStatusLogId($logId);
+            $projectBudget->setTentativeTotalBudget($tentativeTotalBudget);
+            $projectBudget->save();
+            $response["success"] = 1;
+            $response["message"] = "Se modifico la fecha del registro.";
+        }
+
+        if(isset($formData["designBudget"]))
+        {
+            $logId = $formData["logId"];
+            $designBudget = $formData["designBudget"];
+
+            $projectBudget = Model_project_budget::getByStatusLogId($logId);
+            $projectBudget->setDesign($designBudget);
+            $projectBudget->save();
+            $response["success"] = 1;
+            $response["message"] = "Se modifico la fecha del registro.";
+        }
+        
         if(isset($formData["entryDate"]))
         {
             $logId = $formData["logId"];

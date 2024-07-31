@@ -57,6 +57,7 @@
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat tentative_total_budget_prb}}</span></dd>
                             <dt>Importe de diseño Tentativo</dt>
                             <dd>{{numberFormat design_prb}}</dd>
+                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-schedule-budget">Editar importes</a>
 
                         {{/ifCond}}
 

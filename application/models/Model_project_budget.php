@@ -11,4 +11,20 @@ class Model_project_budget extends Model_project_budget_base
 	{
 		parent::__construct($statusLogId, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $manpowerFileId, $buildingStructureFileId, $materialsFileId, $trimTree);
 	}
+
+	public static function getByStatusLogId($statusLogId)
+    {
+        $ci = &get_instance();
+        $ci->load->database();
+        $sql = "
+            select ".static::TABLE_NAME.".* 
+            from ".static::TABLE_NAME."
+            where
+                ".static::notDeleted()."
+                and status_log_id_prb = ".$ci->db->escape($statusLogId)."
+        ";
+        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
+        $result = static::recast(get_called_class(), $query->row());
+        return $result;
+    }
 }

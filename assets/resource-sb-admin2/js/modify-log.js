@@ -3,6 +3,48 @@
  */
 $(document).ready(function() {
 
+    $(document).on("click",".edit-schedule-budget",function(e){
+        e.preventDefault();
+        var logId = $(this).data("log-id");
+        var statusName = $(this).data("status-name");
+        var htmlSource   = $("#ht-modal-modify-schedule-budget").html();
+        var template = Handlebars.compile(htmlSource);
+        var data = {statusName:statusName};
+        var html = template(data);
+        bootbox.confirm({
+            title: "Modificar importes tentativos",
+            message: html,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Modificar'
+                }
+            },
+            callback: function (result) {
+                if(result)
+                {
+                    var tentativeTotalBudget = $("input[name=tentative-total-budget]").val();
+                    var designBudget = $("input[name=design-budget]").val();
+                    var data = {
+                        logId: logId,
+                        tentativeTotalBudget: tentativeTotalBudget,
+                        designBudget:designBudget
+                    };
+                    updateLog(data);
+                }
+            }
+        });
+
+        var date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            // defaultDate: date,
+            format: 'DD-MM-YYYY HH:mm:ss'
+        });
+    });
+
     $(document).on("click",".edit-date",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");

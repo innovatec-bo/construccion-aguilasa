@@ -159,4 +159,9 @@ class Model_project_budget_base extends MY_Model
 	{
 		$this->_trimTree = $trimTree;
 	}
+
+    public function setTentativeTotalBudget($tentativeTotalBudget)
+    {
+        $this->_tentativeTotalBudget = $tentativeTotalBudget;
+    }
 }
