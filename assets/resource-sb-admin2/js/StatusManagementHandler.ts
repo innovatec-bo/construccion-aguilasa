@@ -203,8 +203,11 @@ class StatusManagementHandler
         let breadCrumb = [];
         $.each(this._breadCrumb,function(index: any, value: { stepKeyword: any; }){
             if(value.stepKeyword !== null)
+            {
                 breadCrumb.push(value.stepKeyword);
+            }
         });
+        
         this.processTree(this.viewData.stepTree,0, breadCrumb);
     }
 
@@ -1085,7 +1088,17 @@ class StatusManagementHandler
                     {
                         for(let j = 0; j < step.next.length; j++)
                         {
-                            this.nextStep.push(step.next[j].name);
+                            if (step.next[j].name == 'returned') 
+                            {
+                                if (this.viewData.project.minor_enlargement == 'AM') 
+                                {
+                                    this.nextStep.push(step.next[j].name);
+                                }
+                            }
+                            else
+                            {
+                                this.nextStep.push(step.next[j].name);
+                            }
                         }
                     }
                 }

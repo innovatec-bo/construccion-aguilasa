@@ -26,7 +26,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WmsMapType = exports.xyzToBounds = exports.DEFAULT_WMS_PARAMS = exports.EPSG_3857_EXTENT = void 0;
+exports.WmsMapType = exports.DEFAULT_WMS_PARAMS = exports.EPSG_3857_EXTENT = void 0;
+exports.xyzToBounds = xyzToBounds;
 /// <reference types="@types/googlemaps" />
 var query_string_1 = require("query-string");
 /**
@@ -67,7 +68,6 @@ function xyzToBounds(x, y, zoom) {
     var maxy = ORIG_Y - y * tileSize;
     return [minx, miny, maxx, maxy];
 }
-exports.xyzToBounds = xyzToBounds;
 /**
  *
  * @param {WmsMapTypeOptions} params

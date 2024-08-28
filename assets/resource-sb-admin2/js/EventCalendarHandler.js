@@ -113,7 +113,7 @@ var EventCalendarHandler = /** @class */ (function () {
             },
             locale: 'es',
             defaultDate: defaultDate,
-            navLinks: true,
+            navLinks: true, // can click day/week names to navigate views
             selectable: true,
             selectMirror: false,
             select: function (selectInfo) {
@@ -128,7 +128,7 @@ var EventCalendarHandler = /** @class */ (function () {
                 _this.edit();
             },
             editable: true,
-            eventLimit: true,
+            eventLimit: true, // allow "more" link when too many events
             events: {
                 url: base_url + 'panel/AjaxEvent/calendarAllEvents',
                 failure: function () {

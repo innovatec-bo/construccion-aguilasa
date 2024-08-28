@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latLngToPixel = void 0;
+exports.latLngToPixel = latLngToPixel;
 /**
  * @ignore
  *
@@ -43,4 +43,3 @@ function latToY(lat) {
 function latLngToPixel(latlng, zoom) {
     return new google.maps.Point(~~(0.5 + lngToX(latlng.lng()) * (2 << (zoom + 6))), ~~(0.5 + latToY(latlng.lat()) * (2 << (zoom + 6))));
 }
-exports.latLngToPixel = latLngToPixel;

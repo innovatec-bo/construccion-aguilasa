@@ -154,8 +154,9 @@ var StatusManagementHandler = /** @class */ (function () {
     StatusManagementHandler.prototype._defineNextStep = function () {
         var breadCrumb = [];
         $.each(this._breadCrumb, function (index, value) {
-            if (value.stepKeyword !== null)
+            if (value.stepKeyword !== null) {
                 breadCrumb.push(value.stepKeyword);
+            }
         });
         this.processTree(this.viewData.stepTree, 0, breadCrumb);
     };
@@ -914,7 +915,14 @@ var StatusManagementHandler = /** @class */ (function () {
                     this.processTree(step.next, index, breadCrumb);
                     if (index == breadCrumb.length) {
                         for (var j = 0; j < step.next.length; j++) {
-                            this.nextStep.push(step.next[j].name);
+                            if (step.next[j].name == 'returned') {
+                                if (this.viewData.project.minor_enlargement == 'AM') {
+                                    this.nextStep.push(step.next[j].name);
+                                }
+                            }
+                            else {
+                                this.nextStep.push(step.next[j].name);
+                            }
                         }
                     }
                 }
