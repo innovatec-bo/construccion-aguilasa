@@ -448,7 +448,9 @@ class Model_user extends Model_user_base
             "vhsuarez@serebo.com",
             "gilbertof@serebo.com",
             "vh.suarez@serebo.com",
-            "jcussy@toqueeltimbre.com"
+            "jcussy@toqueeltimbre.com",
+            "carloseduardol@serebo.com",
+            "cpocube@serebo.com"
         );
 
         $subjectList = array(
