@@ -446,7 +446,9 @@ class Model_user extends Model_user_base
         $data = array();
         $sendToCC = array(
             "vhsuarez@serebo.com",
-            "gilbertof@serebo.com","vh.suarez@serebo.com"
+            "gilbertof@serebo.com",
+            "vh.suarez@serebo.com",
+            "jcussy@toqueeltimbre.com"
         );
 
         $subjectList = array(
