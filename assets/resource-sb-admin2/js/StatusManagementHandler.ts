@@ -1088,7 +1088,7 @@ class StatusManagementHandler
                     {
                         for(let j = 0; j < step.next.length; j++)
                         {
-                            if (step.next[j].name == 'returned') 
+                            if (this.viewData.project.keyword_pst == "project_has_been_created" && step.next[j].name == 'returned') 
                             {
                                 if (this.viewData.project.minor_enlargement == 'AM') 
                                 {
