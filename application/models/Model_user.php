@@ -448,7 +448,7 @@ class Model_user extends Model_user_base
             "vhsuarez@serebo.com",
             "gilbertof@serebo.com",
             "vh.suarez@serebo.com",
-            "jcussy@toqueeltimbre.com",
+            "javier.jair.cussy.saucedo@gmail.com",
             "carloseduardol@serebo.com",
             "cpocube@serebo.com"
         );
