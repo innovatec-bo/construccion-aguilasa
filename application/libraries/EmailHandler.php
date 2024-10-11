@@ -48,7 +48,9 @@ class EmailHandler
                             'smtp_pass' => 'p9VOu&X6n!tD',
                             'mailtype' => 'html',
                             'charset' => 'utf-8',
-                            'newline' => "\r\n"
+                            'newline' => "\r\n",
+							'wordwrap' => TRUE,
+    						'wrapchars' => 76,
                         );
                     break;
                 }
