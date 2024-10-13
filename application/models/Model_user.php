@@ -450,7 +450,6 @@ class Model_user extends Model_user_base
             // "vh.suarez@serebo.com",
             // "carloseduardol@serebo.com",
             // "cpocube@serebo.com",
-            "javier.jair.cussy.saucedo@gmail.com",
         );
 
         $subjectList = array(
@@ -490,8 +489,9 @@ class Model_user extends Model_user_base
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-            $email->to($emailHandler->getEmailByEnvironment($sendTo));
-            $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
+            // $email->to($emailHandler->getEmailByEnvironment($sendTo));
+            $email->to("javier.jair.cussy.saucedo@gmail.com");
+            // $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true));
