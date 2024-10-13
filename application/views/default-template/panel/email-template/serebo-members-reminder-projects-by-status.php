@@ -1,7 +1,4 @@
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb18030">
-</head>
 <body>
 <table 
         align="center" 
@@ -13,7 +10,6 @@
         style="background: url(<?php echo base_url("assets/images/bg-body.jpg")?>);opacity: 1;position: relative;z-index: 0;" 
         width="100%" 
         class="">
-        
         <tbody>
             <tr>
                 <td>
@@ -126,10 +122,6 @@
                                             
                                             foreach ($projectList as $key => $project)
                                             {
-                                                //#ff0000 danger
-                                                //#FFA87D warning
-                                                //#404E67 default
-//                                                echo"<pre>";var_dump($project);exit;
                                                 $staticDays = $project["static_days"];
                                                 if($staticDays < 7)
                                                     $color = "#404E67";
