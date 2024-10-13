@@ -49,8 +49,6 @@ class EmailHandler
                             'mailtype' => 'html',
                             'charset' => 'utf-8',
                             'newline' => "\r\n",
-							'wordwrap' => TRUE,
-    						'wrapchars' => 76,
                         );
                     break;
                 }

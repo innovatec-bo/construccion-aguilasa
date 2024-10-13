@@ -443,7 +443,7 @@ class Model_user extends Model_user_base
     public static function notifyProjectByStatusToSereboMembers($statusList = array())
     {
         $ci = &get_instance();
-        $data = array();
+        $data = [];
         $sendToCC = array(
             "vhsuarez@serebo.com",
             "gilbertof@serebo.com",
@@ -464,10 +464,23 @@ class Model_user extends Model_user_base
         $responseList = array();
         foreach($statusList as $status => $projectList)
         {
+            $projectList = array_map(function($project) use($shipmentDateList,$status){
+                return [
+                    'static_days' => $project['static_days'],
+                    $shipmentDateList[$status] => $project[$shipmentDateList[$status]],
+                    'code_pro' => $project['code_pro'],
+                    'final_contract_number_con' => $project['final_contract_number_con'],
+                    'cre_fiscal_pro' => $project['cre_fiscal_pro'],
+                    'total_approved' => $project['total_approved'],
+                    'address_pro' => $project['address_pro']
+                ];
+            }, $projectList);
+
             $supervisionList = PublicController::internalNoticeByStatus($status);
             $sendTo = $supervisionList["to"];
             $data['subject'] = $subjectList[$status];
             $data['shipmentDate'] = $shipmentDateList[$status];
+            
             $data['projectList'] = $projectList;
             $listManagementBy = array_column($projectList, 'management_by_pro');
             $listManagementBy = array_unique($listManagementBy);
