@@ -49,6 +49,7 @@ class EmailHandler
                             'mailtype' => 'html',
                             'charset' => 'utf-8',
                             'newline' => "\r\n",
+							'crlf' => "\r\n"
                         );
                     break;
                 }
