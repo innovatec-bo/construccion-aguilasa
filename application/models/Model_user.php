@@ -445,12 +445,12 @@ class Model_user extends Model_user_base
         $ci = &get_instance();
         $data = [];
         $sendToCC = array(
-            "vhsuarez@serebo.com",
-            "gilbertof@serebo.com",
-            "vh.suarez@serebo.com",
+            // "vhsuarez@serebo.com",
+            // "gilbertof@serebo.com",
+            // "vh.suarez@serebo.com",
+            // "carloseduardol@serebo.com",
+            // "cpocube@serebo.com",
             "javier.jair.cussy.saucedo@gmail.com",
-            "carloseduardol@serebo.com",
-            "cpocube@serebo.com"
         );
 
         $subjectList = array(
@@ -472,7 +472,8 @@ class Model_user extends Model_user_base
                     'final_contract_number_con' => $project['final_contract_number_con'],
                     'cre_fiscal_pro' => $project['cre_fiscal_pro'],
                     'total_approved' => $project['total_approved'],
-                    'address_pro' => $project['address_pro']
+                    'address_pro' => $project['address_pro'],
+                    'management_by_pro' => $project['management_by_pro']
                 ];
             }, $projectList);
 
