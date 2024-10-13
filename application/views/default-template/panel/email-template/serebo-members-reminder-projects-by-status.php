@@ -10,9 +10,10 @@
         cellspacing="0" 
         data-bgcolor="background" 
         data-module="module1" 
-        style="background: url(<?=base_url("assets/images/bg-body.jpg")?>);opacity: 1;position: relative;z-index: 0;" 
+        style="background: url(<?php echo base_url("assets/images/bg-body.jpg")?>);opacity: 1;position: relative;z-index: 0;" 
         width="100%" 
         class="">
+        
         <tbody>
             <tr>
                 <td>
@@ -63,7 +64,7 @@
                                                                                         font-weight: 800;
                                                                                         line-height: 18px;
                                                                                         text-align: center">
-                                                                                <multiline label="ab1"><?=$subject?></multiline>
+                                                                                <multiline label="ab1"><?php echo $subject?></multiline>
                                                                             </td>
                                                                             </tr>
                                                                         </tbody>
@@ -105,7 +106,7 @@
                                                         editable="" 
                                                         label="ph1" 
                                                         mc:edit="ph1" 
-                                                        src="<?=base_url("assets/images/favicon.png")?>" 
+                                                        src="<?php echo base_url("assets/images/favicon.png")?>" 
                                                         style="border: 0px; 
                                                             display: block; 
                                                             font-size: 0px; 
@@ -139,41 +140,42 @@
                                                 $date = new DateTime($project[$shipmentDate]);
                                                 $date = $date->format("d-m-Y");
                                                 $row .= '
-                                                                                <tr style="font-size: 12px; color:'.$color.'">
-                                                                                    <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
-                                                                                        '.$i.'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["code_pro"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project["final_contract_number_con"].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$date.'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.$project['static_days'].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['cre_fiscal_pro'].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
-                                                                                        '.$project['address_pro'].'
-                                                                                    </td>
-                                                                                    <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
-                                                                                        '.number_format($project['total_approved'],2,",",".").'
-                                                                                    </td>
-                                                                                </tr>
-                                                                            '. "\n";
+                                                        <tr style="font-size: 12px; color:'.$color.'">
+                                                            <td style="border: 1px solid #b5babf;text-align: center;line-height: 16px;">
+                                                                '.$i.'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                '.$project["code_pro"].'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                '.$project["final_contract_number_con"].'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                '.$date.'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                '.$project['static_days'].'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                '.$project['cre_fiscal_pro'].'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: left;line-height: 16px;">
+                                                                '.$project['address_pro'].'
+                                                            </td>
+                                                            <td style="border: 1px solid #b5babf;text-align: right;line-height: 16px;">
+                                                                '.number_format($project['total_approved'],2,",",".").'
+                                                            </td>
+                                                        </tr>
+                                                    '. "\n";
                                                 $totalAmount += $project['total_approved'];
                                                 $i++;
                                         }
                                             $totalAmount = number_format($totalAmount,2,",",".");
                                             ?>
-                                            <tr style="display: block">
+                                            <tr>
                                                 <td 
-                                                    align="center" 
+                                                    align="center"
+                                                    colspan="2" 
                                                     data-color="module1_text3" 
                                                     data-size="module1_text3" 
                                                     mc:edit="ab5" 
@@ -187,7 +189,7 @@
                                                         padding-top: 12px;">
                                                     <multiline label="ab5">
                                                         Estimado,<br>
-                                                        SEREBO le detalla los <?=strtolower($subject)?>.
+                                                        SEREBO le detalla los <?php echo strtolower($subject)?>.
                                                     </multiline>
                                                 </td>
                                             </tr>
@@ -225,7 +227,7 @@
                                                         line-height: 25px;
                                                         padding-top: 12px;
                                                         text-align:right">
-                                                    <span style="font-size: 25px">Bs. <?=$totalAmount?></span><br>
+                                                    <span style="font-size: 25px">Bs. <?php echo $totalAmount?></span><br>
                                                     <span style="color: #404E67;">Monto aprobado</span>
                                                 </td>
                                             </tr>
@@ -256,7 +258,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <?=$row;?>
+                                                        <?php echo $row ?>
                                                         </tbody>
                                                         <tfoot>
                                                         </tfoot>
@@ -290,7 +292,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td height="35" style="background: url(<?=base_url("assets/images/bg-body.jpg")?>);" colspan="2">
+                                                <td height="35" style="background: url(<?php echo base_url("assets/images/bg-body.jpg")?>);" colspan="2">
                                                 </td>
                                             </tr>
                                         </tbody>
