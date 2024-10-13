@@ -445,11 +445,11 @@ class Model_user extends Model_user_base
         $ci = &get_instance();
         $data = [];
         $sendToCC = array(
-            // "vhsuarez@serebo.com",
-            // "gilbertof@serebo.com",
-            // "vh.suarez@serebo.com",
-            // "carloseduardol@serebo.com",
-            // "cpocube@serebo.com",
+            "vhsuarez@serebo.com",
+            "gilbertof@serebo.com",
+            "vh.suarez@serebo.com",
+            "carloseduardol@serebo.com",
+            "cpocube@serebo.com",
         );
 
         $subjectList = array(
@@ -489,13 +489,11 @@ class Model_user extends Model_user_base
             $email = $emailHandler->initialize();
             $email->from(EmailHandler::getSender(), 'Serebo.Admin');
             $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
-            // $email->to($emailHandler->getEmailByEnvironment($sendTo));
-            $email->to("javier.jair.cussy.saucedo@gmail.com");
-            // $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
+            $email->to($emailHandler->getEmailByEnvironment($sendTo));
+            $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
             $email->subject($subject);
             $message = $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects-by-status", $data, true);
-            // $message = wordwrap($message, 70, "\r\n");
             $email->message($message);
 			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
             // echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $message);
