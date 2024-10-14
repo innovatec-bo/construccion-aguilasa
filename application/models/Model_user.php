@@ -723,7 +723,7 @@ class Model_user extends Model_user_base
 		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
 		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
-        $email->cc($emailHandler->getEmailByEnvironment('jcussy@toqueeltimbre.com'));
+        $email->cc($emailHandler->getEmailByEnvironment('javier.jair.cussy.saucedo@gmail.com'));
 		$email->subject($subject);
 
         if (in_array('builderGeneralReport',$reports)) 
