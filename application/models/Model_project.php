@@ -2066,7 +2066,8 @@ class Model_project extends Model_project_base
                     if ($user->getId() == $row["fiscal_responsible_id"])
                     {
                         //Special validation for retired fiscals
-                        switch ($user->getEmail()) {
+                        switch ($user->getEmail()) 
+                        {
                             case 'walvarez@serebo.com':
                                 $userFullName = "Mauro Leonel Litt Garcia";
                                 $userEmail = "maurol@serebo.com";    
@@ -2074,6 +2075,11 @@ class Model_project extends Model_project_base
                             case 'rubenaf@serebo.com':
                                 $userFullName = "Mario Aguilera";
                                 $userEmail = "maguilera@serebo.com";
+                                break;
+                            case 'maurol_deactive@serebo.com':
+                            case 'pmendoza@serebo.com':
+                                $userFullName = "Pepe Vargas";
+                                $userEmail = "pvargas@serebo.com";
                                 break;
                             default:
                             $userFullName = $user->getFullName();

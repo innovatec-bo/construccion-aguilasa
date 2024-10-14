@@ -412,11 +412,11 @@ class Model_user extends Model_user_base
             if($status == 'completed')
                 $sendToCC[] = 'pvargas@serebo.com';
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
-            $subject = $subjectList[$status].'('.$listManagementBy.')';
+            $subject = $subjectList[$status].'('.$sereboFiscalFullName.')';
             $email->subject($subject);
             $email->message($ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
 			$messageDetail = "\nSubject: ".$subject."\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo))."\nCC: ".implode(", ",$emailHandler->getEmailByEnvironment($sendToCC));
-        //    echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));exit;
+            // echo "<pre>";var_dump('SUBJECT: '.$subject,"TO: ".implode(",",$sendTo),"CC: ".implode(",",$sendToCC), $ci->load->view("default-template/panel/email-template/serebo-members-reminder-projects", $data, true));
             try
             {
                 if($email->Send())
