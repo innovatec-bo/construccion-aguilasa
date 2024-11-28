@@ -128,7 +128,7 @@ class Model_user extends Model_user_base
             "eddysonca@serebo.com",
 //            "genaromj@serebo.com",
 //            "walvarez@serebo.com",
-            "pmendoza@serebo.com",
+            "pablo.a.mendoza.v@gmail.com",
 //            "rubenaf@serebo.com"
         );
         $TCPDFHandler = new NetBuildingReportPDF();
@@ -210,7 +210,7 @@ class Model_user extends Model_user_base
 			"vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
-            "pmendoza@serebo.com"
+            "pablo.a.mendoza.v@gmail.com"
         );
 
         $sendToCC = array_merge($sendToCC, $supervisionList);
@@ -544,7 +544,7 @@ class Model_user extends Model_user_base
 			"vh.suarez@serebo.com",
             "maguilera@serebo.com",
             "eddysonca@serebo.com",
-            "pmendoza@serebo.com"
+            "pablo.a.mendoza.v@gmail.com"
         );
         $sendTo = array_merge($sendTo, $creFiscalEmails, $supervisingEmails);
         $emailHandler = new EmailHandler();

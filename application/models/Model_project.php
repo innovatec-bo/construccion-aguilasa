@@ -578,7 +578,7 @@ class Model_project extends Model_project_base
 			
 		from 
 			wfl_payment_orders_status_log
-		RIGHT JOIN(
+		RIGHT JOIN (
 				SELECT			
 					payment_order_id_pos payment_order_id,
 					max(manual_entry_date_pos) entry_date
