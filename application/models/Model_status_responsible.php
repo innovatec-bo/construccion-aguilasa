@@ -8,9 +8,9 @@
 
 class Model_status_responsible extends Model_status_responsible_base
 {
-    public function __construct($userId = "", $statusId = "")
+    public function __construct($userId = "", $statusId = "", $active = TRUE)
     {
-        parent::__construct($userId, $statusId);
+        parent::__construct($userId, $statusId, $active);
     }
 
     public static function getUsersResponsible($keyword = "", $userId = NULL)
@@ -42,6 +42,7 @@ class Model_status_responsible extends Model_status_responsible_base
             WHERE 
             deleted_usr != 1
             and deleted_sre != 1
+            and active_sre = 1
             ".$keywordFilter."
             ".$userIdFilter."
         ";

@@ -14,12 +14,14 @@ class Model_status_responsible_base extends MY_Model
 
     protected $_userId;
     protected $_statusId;
+    protected $_active;
 
-    public function __construct($userId = "", $statusId = "")
+    public function __construct($userId = "", $statusId = "", $active = TRUE)
     {
         parent::__construct();
         $this->_userId = $userId;
         $this->_statusId = $statusId;
+        $this->_active = $active;
     }
 
     /**
@@ -32,6 +34,7 @@ class Model_status_responsible_base extends MY_Model
             "id_sre" => $this->_id,
             "user_id_sre" => $this->_userId,
             "status_id_sre" => $this->_statusId,
+            "active_sre" => $this->_active,
             "deleted_sre" => $this->_deleted,
             "createdon_sre" => $this->_createdOn,
             "createdby_sre" => $this->_createdBy,
@@ -57,7 +60,8 @@ class Model_status_responsible_base extends MY_Model
             //Let's set the values to payment object using the data from stdObject
             $instance = new $className(
                 $object->user_id_sre,
-                $object->status_id_sre
+                $object->status_id_sre,
+                $object->active_sre
             );
             $instance->_id = $object->id_sre;
 
