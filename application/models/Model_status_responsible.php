@@ -155,7 +155,7 @@ class Model_status_responsible extends Model_status_responsible_base
             wfl_status_responsibles
         LEFT JOIN sec_users on user_id_sre = id_usr
         LEFT JOIN wfl_project_status on status_id_sre = id_pst
-        where deleted_sre != 1
+        where deleted_sre != 1 and active_sre = 1
         order by order_pst
         ";
     }
