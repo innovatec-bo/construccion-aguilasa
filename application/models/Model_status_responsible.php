@@ -81,7 +81,7 @@ class Model_status_responsible extends Model_status_responsible_base
             LEFT JOIN sec_roles on id_rol = roleid_uro
             WHERE keyword_rol in (".$roleKeywordSql.") and deleted_uro != 1
         ) role on role.userid_uro = id_usr
-        where keyword_pst = ".$ci->db->escape($statusKeyword)." and role.keyword_rol is not null
+        where keyword_pst = ".$ci->db->escape($statusKeyword)." and role.keyword_rol is not null and active = 1
         ";
 //echo"<pre>";var_dump($sql);exit;
         $query = $ci->db->query($sql);
