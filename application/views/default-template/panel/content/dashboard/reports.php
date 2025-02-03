@@ -125,6 +125,7 @@ $monthList = array(
                             La capacidad del servidor podr&iacute;a no ser suficiente para descargar los 4 reportes al mismo tiempo
                         </button>
                     <!-- </form> -->
+                    <div id="download-status-container"></div>
                 </div>
             </div>
             <div class="row">

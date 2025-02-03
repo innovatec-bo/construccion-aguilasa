@@ -91,23 +91,65 @@ $(document).ready(function() {
         // console.log(response);
     });
 
-    $(document).on('click','#download-daily-reports', function(){
-        console.log('downloading p1');
-        let url1 = base_url + 'panel/Project/downloadDailyReportsP1';
-        window.open(url1);
-        
-        console.log('downloading p2');
-        let url2 = base_url + 'panel/Project/downloadDailyReportsP2';
-        window.open(url2);
-
-        console.log('downloading p3');
-        let url3 = base_url + 'panel/Project/downloadDailyReportsP3';
-        window.open(url3);
-
-        console.log('downloading p4');
-        let url4 = base_url + 'panel/Project/downloadDailyReportsP4';
-        window.open(url4);
+    async function downloadFile(url, index) 
+    {
+        let statusElement = document.getElementById(`download-status-${index}`);
+        if (statusElement) statusElement.textContent = `Descargando ${url.split('/').pop()}...`;
+    
+        console.log(`Downloading from: ${url}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.error(`Error downloading ${url}: ${response.statusText}`);
+            if (statusElement) statusElement.textContent = `Error al descargar`;
+            return;
+        }
+    
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = url.split('/').pop(); // Nombre del archivo basado en la URL
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    
+        console.log(`Download complete: ${url}`);
+        if (statusElement) statusElement.textContent = `Descarga completa de ${url.split('/').pop()} ✅`;
+    }
+    
+    async function downloadSequentially(urls) 
+    {
+        let statusContainer = document.getElementById("download-status-container");
+        statusContainer.innerHTML = ""; // Limpiar el contenedor antes de iniciar
+    
+        // Crear elementos de estado para cada archivo
+        urls.forEach((url, index) => {
+            let statusElement = document.createElement("p");
+            statusElement.id = `download-status-${index}`;
+            statusElement.textContent = `Esperando para descargar ${url.split('/').pop()}...`;
+            statusContainer.appendChild(statusElement);
+        });
+    
+        // Descargar archivos en secuencia
+        for (let i = 0; i < urls.length; i++) 
+        {
+            await downloadFile(urls[i], i);
+        }
+    
+        console.log("All downloads completed.");
+        $('#download-daily-reports').prop('disabled',false);
+    }
+    
+    $(document).on('click', '#download-daily-reports', function () {
+        $(this).prop('disabled',true);
+        let urls = [
+            base_url + 'panel/Project/downloadDailyReportsP1',
+            base_url + 'panel/Project/downloadDailyReportsP2',
+            base_url + 'panel/Project/downloadDailyReportsP3',
+            base_url + 'panel/Project/downloadDailyReportsP4'
+        ];
+        downloadSequentially(urls);
     });
+    
 
     function saveTrackingList()
     {
