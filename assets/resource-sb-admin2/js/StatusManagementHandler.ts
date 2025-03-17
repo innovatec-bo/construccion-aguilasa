@@ -688,7 +688,15 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : data,
-            success:function(){
+            success:function(response){
+                if (response.success ==! 1) 
+                {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Ocurrio un error',
+                        text: response.message,
+                        });
+                }
                 _this.loadView();
             }
         });

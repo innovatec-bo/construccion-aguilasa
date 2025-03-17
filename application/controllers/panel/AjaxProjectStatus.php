@@ -613,30 +613,39 @@ class AjaxProjectStatus extends PrivateController
     public function saveBasicLog()
     {
         $formData = $this->input->post();
-        $projectId = $formData["projectId"];
-        $entryDate = $formData["entryDate"];
-        $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-        $entryDate = date_format($entryDate, 'Y-m-d');
-        $entryDate = $entryDate." ".date("H:i:s");
-        $statusKeyword = $formData["statusKeyword"];
-        $status = Model_project_status::getByStatusKeyword($statusKeyword);
-        $statusId = $status->getId();
-        $statusDetail = $formData["statusDetail"];
-        $responsibleList = $formData["responsibleList"];
-        $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
-        $project = Model_project::getById($projectId);
-        $project->setStatus($statusId);
-        $project->save();
-        $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
-        //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
-        if($statusKeyword == "completed")
+        if ($formData["statusKeyword"] == 'already_sent' && $this->sessionUser->id == 111) 
         {
-            $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId,0,0,9);
-            $incident->save();
+            $response["success"] = 0;
+            $response["message"] = 'Su cuenta de usuario no posee los permisos necesario para realizar esta accion.';
         }
-
-        $response["success"] = 1;
-        $response["message"] = "Operacion realizada con exito.";
+        else
+        {
+            $projectId = $formData["projectId"];
+            $entryDate = $formData["entryDate"];
+            $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
+            $entryDate = date_format($entryDate, 'Y-m-d');
+            $entryDate = $entryDate." ".date("H:i:s");
+            $statusKeyword = $formData["statusKeyword"];
+            $status = Model_project_status::getByStatusKeyword($statusKeyword);
+            $statusId = $status->getId();
+            $statusDetail = $formData["statusDetail"];
+            $responsibleList = $formData["responsibleList"];
+            $fileIds = isset($formData["statusFilesIdsToSave"])?$formData["statusFilesIdsToSave"]:array();
+            $project = Model_project::getById($projectId);
+            $project->setStatus($statusId);
+            $project->save();
+            $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+            //If the status is "completed", then lets add an incident to "in_progress" as completed percentage
+            if($statusKeyword == "completed")
+            {
+                $incident = new Model_incident(29, 100, "Construccion completada", $entryDate, $projectId,0,0,9);
+                $incident->save();
+            }
+    
+            $response["success"] = 1;
+            $response["message"] = "Operacion realizada con exito.";
+        }
+        
         echo json_encode($response);exit;
     }
 
