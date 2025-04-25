@@ -2184,6 +2184,7 @@ class Model_project extends Model_project_base
                 id_lad,
                 project_id_lad,
                 code_pro,
+                work_area_pro,
                 address_pro,
                 latitude_pro,
                 longitude_pro,
@@ -2430,7 +2431,8 @@ class Model_project extends Model_project_base
                 IFNULL(design_reb,0) design_reb,
                 (IFNULL(design_reb,0) + IFNULL(building_reb,0) + IFNULL(transportation_reb,0) + IFNULL(live_line_reb,0) + IFNULL(right_of_way_reb,0)) as importe_real,
                 in_progress_responsible.fiscal_responsible,
-                in_progress_responsible.builder_responsible
+                in_progress_responsible.builder_responsible,
+                work_area_pro
             FROM
                 bui_worked_up_structures
             LEFT JOIN bui_labor_cost on id_lac = labor_cost_id_wus

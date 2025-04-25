@@ -382,6 +382,25 @@ $monthList = array(
                         </div>
                     </form>
                 </div>
+                <div class="col-lg-6 col-md-6">
+                    <form class="form-inline gis-gir-monthly-production" method="post">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Produccion mensual: GIS y GIR
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 text-center">
+                                        <p class="mb-0">Detalle mensualizado basado en proyectos GIS y GIR</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer p-0">
+                                <button type="submit" class="btn btn-info btn-xs btn-block p-1"><i class="fa fa-download fa-fw"></i>Descargar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

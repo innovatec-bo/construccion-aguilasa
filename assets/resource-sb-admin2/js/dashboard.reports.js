@@ -43,6 +43,11 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on("submit","form.gis-gir-monthly-production", function(e){
+        e.preventDefault();
+        window.location.href = base_url+"panel/Project/gisGirMonthlyReport";
+    });
+
     $(document).on("submit","form.daily-production", function(e){
         e.preventDefault();
         let month = $("select[name=daily-production-month] option:selected").val();
