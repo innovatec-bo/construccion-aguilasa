@@ -206,7 +206,19 @@ class ExcelGisGirMonthlyDetail
                 }
             }
         }
-        // dd($formatted);
+
+        $monthsOrder = [
+            'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+        ];
+        // Sort months
+        foreach ($formatted as &$yearData) {
+            uksort($yearData, function ($a, $b) use ($monthsOrder) {
+                return array_search(strtolower($a), $monthsOrder) <=> array_search(strtolower($b), $monthsOrder);
+            });
+        }
+
+        ksort($formatted);
         return $formatted;
     }
 }
