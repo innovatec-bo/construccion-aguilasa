@@ -30,8 +30,9 @@ class ExcelGisGirMonthlyDetail
     {
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
         // $list = Model_project::productionGeneralSummary();
+        // $list = Model_project::getProductivityBaseReport(['from' => '2025-01-01 00:00:00', 'to' => '2025-01-31 23:59:59']);
         $list = Model_project::getProductivityBaseReport();
-
+        // dd($list);
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -106,6 +107,7 @@ class ExcelGisGirMonthlyDetail
         $counter = 1;
         $i = 2;
         $dataFormatted = $this->_formatData($list);
+        // $dataFormatted = $this->_formatDataByBuilder($list);
         foreach ($dataFormatted as $year => $months)
         {
             foreach ($months as $month => $workArea) 
@@ -114,14 +116,14 @@ class ExcelGisGirMonthlyDetail
                 $gisBudget = 0;
                 if (isset($workArea['gis'])) 
                 {
-                    $gisProjects = $workArea['gis']['projects'];
+                    $gisProjects = count($workArea['gis']['projects']);
                     $gisBudget = $workArea['gis']['budget'];
                 }
                 $girProjects = 0;
                 $girBudget = 0;
                 if (isset($workArea['gir'])) 
                 {
-                    $girProjects = $workArea['gir']['projects'];
+                    $girProjects = count($workArea['gir']['projects']);
                     $girBudget = $workArea['gir']['budget'];
                 }
                 $totalProjects = $gisProjects + $girProjects;
@@ -165,17 +167,18 @@ class ExcelGisGirMonthlyDetail
         foreach ($list as $row) 
         {
             if (!isset($row['manual_entry_date_lal']) || !isset($row['work_area_pro'])) {
-                continue; // let's skit if there aren't date or work_are
+                continue; // let's skip if there aren't date or work_area
             }
 
             $date = new \DateTime($row['manual_entry_date_lal']);
             $year = $date->format('Y');
-            $month = strtolower($date->format('F')); // return month in english (january, february...)
+            $month = strtolower($date->format('F')); // return month in English (January, February...)
             $month = $this->_months[$month];
             $workArea = strtolower($row['work_area_pro']); // gis or gir
+            $day = (int) $date->format('j'); // Día del mes sin ceros a la izquierda
 
             if (!in_array($workArea, ['gis', 'gir'])) {
-                continue; // let's skip unknow 
+                continue; // let's skip unknown
             }
 
             // Start structure if it doesn't exist
@@ -193,16 +196,39 @@ class ExcelGisGirMonthlyDetail
             // Sum budget
             $budget = floatval($row['total_amount_worked_to_split']);
             $formatted[$year][$month][$workArea]['budget'] += $budget;
+
+            // Ahora también registramos la producción diaria
+            if (!isset($formatted[$year][$month]['days'][$day])) {
+                $formatted[$year][$month]['days'][$day] = [
+                    'projects' => [],
+                    'budget' => 0.0
+                ];
+            }
+
+            $formatted[$year][$month]['days'][$day]['projects'][$projectId] = true;
+            $formatted[$year][$month]['days'][$day]['budget'] += $budget;
         }
 
-        //Now let's count the projects
+        // Ahora vamos a contar los proyectos y redondear budgets
         foreach ($formatted as $year => &$months) 
         {
-            foreach ($months as $month => &$areas) {
-                foreach ($areas as $area => &$data) {
-                    $data['projects'] = count($data['projects']);
-                    //Let's round the budget
-                    $data['budget'] = round($data['budget'], 2);
+            foreach ($months as $month => &$areas) 
+            {
+                foreach (['gis', 'gir'] as $area) 
+                {
+                    if (isset($areas[$area])) {
+                        $areas[$area]['budget'] = round($areas[$area]['budget'], 2);
+                        $areas[$area]['budget'] = $areas[$area]['budget'];
+                    }
+                }
+
+                // También para los días
+                if (isset($areas['days'])) {
+                    foreach ($areas['days'] as $day => &$dayData) {
+                        $dayData['projects'] = count($dayData['projects']);
+                        $dayData['budget'] = round($dayData['budget'], 2);
+                    }
+                    ksort($areas['days']); // Ordenar los días por número
                 }
             }
         }
@@ -212,6 +238,79 @@ class ExcelGisGirMonthlyDetail
             'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
         ];
         // Sort months
+        foreach ($formatted as &$yearData) {
+            uksort($yearData, function ($a, $b) use ($monthsOrder) {
+                return array_search(strtolower($a), $monthsOrder) <=> array_search(strtolower($b), $monthsOrder);
+            });
+        }
+
+        ksort($formatted);
+        return $formatted;
+    }
+
+    private function _formatDataByBuilder(array $list): array
+    {
+        $formatted = [];
+
+        foreach ($list as $row) 
+        {
+            if (!isset($row['manual_entry_date_lal']) || !isset($row['work_area_pro'])) {
+                continue; // saltar si falta fecha o área
+            }
+            
+            $date = new \DateTime($row['manual_entry_date_lal']);
+            $year = $date->format('Y');
+            $month = strtolower($date->format('F')); // mes en inglés
+            $month = $this->_months[$month];
+            $workArea = strtolower($row['work_area_pro']); // puede ser 'gis' o 'gir'
+
+            if (!in_array($workArea, ['gis', 'gir'])) {
+                continue; // saltar áreas desconocidas
+            }
+
+            // Inicializar estructura si no existe
+            if (!isset($formatted[$year][$month][$workArea])) {
+                $formatted[$year][$month][$workArea] = [
+                    'projects' => [],
+                    'budget' => 0.0,
+                ];
+            }
+
+            // Registrar proyecto
+            $projectId = $row['project_id_lad'];
+            $formatted[$year][$month][$workArea]['projects'][$projectId] = true;
+
+            // Calcular monto basado en builders
+            $builders = isset($row['builders']) ? explode(',', $row['builders']) : [];
+            $builderCount = count($builders);
+
+            if ($builderCount > 0) {
+                $amountPerBuilder = floatval($row['total_amount_worked_by_builder']);
+                $totalAmount = $amountPerBuilder * $builderCount;
+            } else {
+                // No hay builders, considerar el total directamente
+                $totalAmount = floatval($row['total_amount_worked_by_builder']);
+            }
+
+            // Sumar al presupuesto del área
+            $formatted[$year][$month][$workArea]['budget'] += $totalAmount;
+        }
+
+        // Ahora contar proyectos y redondear presupuestos
+        foreach ($formatted as $year => &$months) {
+            foreach ($months as $month => &$areas) {
+                foreach ($areas as $area => &$data) {
+                    $data['projects'] = count($data['projects']);
+                    $data['budget'] = round($data['budget'], 2);
+                }
+            }
+        }
+
+        // Ordenar meses
+        $monthsOrder = [
+            'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+        ];
         foreach ($formatted as &$yearData) {
             uksort($yearData, function ($a, $b) use ($monthsOrder) {
                 return array_search(strtolower($a), $monthsOrder) <=> array_search(strtolower($b), $monthsOrder);
