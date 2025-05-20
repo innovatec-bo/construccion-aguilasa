@@ -2220,6 +2220,7 @@ class Model_project extends Model_project_base
                         )
                     ELSE ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2)
                 END 'total_amount_worked_by_builder',
+                ROUND(worked_up_wus * price_wus,2) - (ROUND((worked_up_wus * price_wus)/builders_in_manpower.total_builders,2) * builders_in_manpower.total_builders) AS round_adjustment,
                 id_bpo point_id,
 				label_bpo point_label,
                 structure_code_bus structure_code,
@@ -2331,6 +2332,7 @@ class Model_project extends Model_project_base
         $projectList = array();
         $totalWorkedUpAmount = 0;
         $totalBuilderProductivity = 0;
+        $totalRoundAdjustment = 0;
         $totalDates = array();
         $totalBuilderDates = array();
         $buildersInProject = array();
@@ -2352,6 +2354,7 @@ class Model_project extends Model_project_base
                 $logId = $productivityBaseReport[$i]["id_lal"];
                 $totalAmountWorkedToSplit = $productivityBaseReport[$i]["total_amount_worked_to_split"];
                 $totalAmountWorkedByBuilder = $productivityBaseReport[$i]["total_amount_worked_by_builder"];
+                $roundAdjustment = $productivityBaseReport[$i]["round_adjustment"];
                 $manualEntryDate = $productivityBaseReport[$i]["manual_entry_date_lal"];
                 $projectList[$logId] = array(
                                 "id" => $projectId,
@@ -2365,10 +2368,11 @@ class Model_project extends Model_project_base
                                 );
                 $totalWorkedUpAmount += $totalAmountWorkedToSplit;
                 $totalBuilderProductivity += $totalAmountWorkedByBuilder;
+                $totalRoundAdjustment += $roundAdjustment;
                 $date = DateTime::createFromFormat('Y-m-d H:i:s', $manualEntryDate);
                 $date = $date->format('Y-m-d');
                 $totalDates[$date] = $date;
-                foreach ($builderIds as $id) 
+                foreach ($builderIds as $key => $id) 
                 {
                     if(!isset($buildersInProject[$id]))
                     {
@@ -2377,9 +2381,22 @@ class Model_project extends Model_project_base
                         // $buildersInProject[$id]['totalDatesInProject'][] = array();
                     }
                     if($id == $responsibleBuilderId)
+                    {
                         $buildersInProject[$id]['totalWorked'] += $totalAmountWorkedByBuilder;
+                        if (count($builderIds) == ($key + 1)) 
+                        {
+                            $buildersInProject[$id]['totalWorked'] += $roundAdjustment;
+                        }
+                    }
                     else
+                    {
                         $buildersInProject[$id]['totalWorkedAsSupport'] += $totalAmountWorkedByBuilder;
+                        if (count($builderIds) == ($key + 1)) 
+                        {
+                            $buildersInProject[$id]['totalWorkedAsSupport'] += $roundAdjustment;
+                        }
+                    }
+                        
                     $buildersInProject[$id]['totalDatesInProject'][$date] = $date;
                 }
                 
