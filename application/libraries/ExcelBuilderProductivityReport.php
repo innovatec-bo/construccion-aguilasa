@@ -8,6 +8,7 @@ class ExcelBuilderProductivityReport
     private $_startDate;
     private $_endDate;
     private $_months;
+    private $_userBuilder;
 	public function __construct($sessionUser, $builderId, $startDate, $endDate)
 	{
         $this->_sessionUser = $sessionUser;
