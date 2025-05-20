@@ -294,12 +294,16 @@ class ExcelDailyProductivityReport
             $buildersProductivity[$dateNumberAsKey]['dayOfWeek'] = $dayOfWeek;
             $buildersProductivity[$dateNumberAsKey]['totalInDay'] += $value['total_amount_worked_to_split'];
             $arrayIds = explode(",", $value['builders']);
-            foreach ($arrayIds as $builderId) 
+            foreach ($arrayIds as $key => $builderId) 
             {
                 if(!isset($buildersProductivity[$dateNumberAsKey][$builderId]))
                     $buildersProductivity[$dateNumberAsKey][$builderId] = 0;
 
                 $buildersProductivity[$dateNumberAsKey][$builderId] += $value['total_amount_worked_by_builder'];
+                if(count($arrayIds) == ($key + 1))
+                {
+                    $buildersProductivity[$dateNumberAsKey][$builderId] += $value['round_adjustment'];
+                }
             }
             $index++;
         }
