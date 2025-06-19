@@ -65,7 +65,7 @@ var StructureUsageValidator = /** @class */ (function () {
         });
         var $progressBar = $('#production-percentage');
         var currentBudget = $progressBar.data('project-current-budget');
-        var currentPercentage = $progressBar.data('production-percentage');
+        var currentPercentage = parseFloat($progressBar.data('production-percentage'));
         var incomingPercentage = (incomingProduction * 100) / parseFloat(currentBudget);
         var additionalProductionText = incomingPercentage > 0 ? "+ " + incomingPercentage.toFixed(2) + "% = " + (currentPercentage + incomingPercentage).toFixed(2) + "%" : "";
         $('#additional-production-text').text(additionalProductionText);

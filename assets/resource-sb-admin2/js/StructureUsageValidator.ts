@@ -100,7 +100,7 @@ class StructureUsageValidator
 		
 		let $progressBar = $('#production-percentage');
 		let currentBudget = $progressBar.data('project-current-budget');
-		let currentPercentage = $progressBar.data('production-percentage');
+		let currentPercentage = parseFloat($progressBar.data('production-percentage'));
 		let incomingPercentage = (incomingProduction*100)/ parseFloat(currentBudget);
 		let additionalProductionText = incomingPercentage>0?"+ "+incomingPercentage.toFixed(2)+"% = "+(currentPercentage + incomingPercentage).toFixed(2)+"%":"";
 		$('#additional-production-text').text(additionalProductionText);
