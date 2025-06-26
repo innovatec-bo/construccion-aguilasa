@@ -61,6 +61,7 @@
 												<select name="project-manager" class="form-control" parsley-trigger="change" required="">
 													<option value="22">Eddyson Copa</option>
 													<option value="2">Mario Aguilera</option>
+                                                    <option value="8">Pepe Vargas</option>
 												</select>
 											</div>
 										</fieldset>
