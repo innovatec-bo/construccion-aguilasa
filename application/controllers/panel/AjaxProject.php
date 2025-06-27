@@ -244,6 +244,7 @@ class AjaxProject extends PrivateController
             $response["message"] = $validationErrors;
             $template = $this->loadView('panel/content/project/ManpowerHandler', array(), TRUE);
             $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
+            $totalLaborCostMasterDetail = array_sum(array_map('floatval', array_column($laborCostMasterDetail, 'total_price_by_structure')));
             $i = 0;
             foreach($laborCostMasterDetail as &$laborCost)
             {
@@ -287,6 +288,7 @@ class AjaxProject extends PrivateController
             }
             $project = $workflowPagination->getAll();
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
+            $response['data']['showAddAllButton'] = $totalLaborCostMasterDetail <= 15000;
             $response["data"]["builders"] = $arrayBuilder;
             $response["data"]["fiscals"] = $arrayFiscal;
             $response["data"]["template"] = $template;

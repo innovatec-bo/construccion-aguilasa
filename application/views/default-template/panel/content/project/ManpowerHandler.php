@@ -168,7 +168,18 @@ $projectSystems = array(
                 </div>
             </div>
         </div>
-
+        {{#ifCond showAddAllButton '==' true}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-sm add-all">
+                        Agregar todas las estructuras a la lista
+                    </button>
+                    <br>Esta bot&oacute;n esta disponible para proyectos con presupestos iguales o inferiores a 15K y agrega todas las estructuras pendientes a la lista.
+                </div>
+            </div>
+        </div>
+        {{/ifCond}}
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -230,9 +241,15 @@ $projectSystems = array(
             <select class="form-control input-sm select2-structure-code" name="worked-up[{{index}}][labor-cost-id]" data-parsley-required="">
                 <option value=""></option>
                 {{#each laborCostList}}
-                    <option value="{{labor_cost_id}}" data-activity="{{activity}}" data-execution="{{execution}}" data-description="{{description}}" data-quantity="{{quantity}}" 
+                    <option value="{{labor_cost_id}}" 
+                    data-activity="{{activity}}" 
+                    data-execution="{{execution}}" 
+                    data-description="{{description}}" 
+                    data-quantity="{{quantity}}"
+                    data-diff="{{diff}}" 
                     data-unit-price="{{unit_price}}" 
-                    data-unit-of-measurement="{{unit_of_measurement}}" data-worked-up="{{worked_up}}">{{structure_code}}</option>
+                    data-unit-of-measurement="{{unit_of_measurement}}" 
+                    data-worked-up="{{worked_up}}">{{structure_code}}</option>
                 {{/each}}
             </select>
         </td>
@@ -248,7 +265,7 @@ $projectSystems = array(
             <input class="input-masked-price unit-price" name="worked-up[{{index}}][unit-price]" size="10" data-parsley-required="">
         </td>
         <td class="text-center">
-            <a href="#" class="remove-row"><i class="fa fa-times"></i></a>
+            <a href="javascript:void(0);" class="remove-row"><i class="fa fa-times"></i></a>
         </td>
     </tr>
 </script>

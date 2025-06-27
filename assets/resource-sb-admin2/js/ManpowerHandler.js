@@ -95,7 +95,14 @@ var ManpowerHandler = /** @class */ (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
-        var data = { structureList: structureList, builders: response.data.builders, fiscals: response.data.fiscals, project: response.data.project, productionLimit: response.data.productionLimit };
+        var data = {
+            structureList: structureList,
+            builders: response.data.builders,
+            fiscals: response.data.fiscals,
+            project: response.data.project,
+            productionLimit: response.data.productionLimit,
+            showAddAllButton: response.data.showAddAllButton
+        };
         var html = template(data);
         var _this = this;
         Swal({
@@ -431,7 +438,34 @@ var ManpowerHandler = /** @class */ (function () {
             e.preventDefault();
             _this._addRow();
         });
+        $(document).on('click', ".add-all", function (e) {
+            e.preventDefault();
+            $('#structure-item-list-content').html('');
+            $.each(_this._laborCostMasterDetail, function (index, value) {
+                if (parseFloat(value.diff) > 0) {
+                    setTimeout(function () {
+                        _this._addRow();
+                        var selectorSelect2 = $('.select2-structure-code').last();
+                        var $option = selectorSelect2.find('option[value="' + value.labor_cost_id + '"]');
+                        if ($option.length) {
+                            selectorSelect2.val(value.labor_cost_id).trigger('change'); // por si acaso
+                            selectorSelect2.trigger({
+                                type: 'select2:select',
+                                params: {
+                                    data: {
+                                        id: value.labor_cost_id,
+                                        text: $option.text(),
+                                        element: $option[0]
+                                    }
+                                }
+                            });
+                        }
+                    }, 500);
+                }
+            });
+        });
         $(document).on('select2:select', '.select2-structure-code', function (e) {
+            console.log(e);
             $(this).parsley().validate();
             var $tr = $(this).closest('tr');
             $(".table-error-message").addClass("hide");
@@ -441,6 +475,8 @@ var ManpowerHandler = /** @class */ (function () {
             var execution = $optionElement.data('execution');
             var description = $optionElement.data('description');
             var unitPrice = $optionElement.data('unit-price');
+            var diff = $optionElement.data('diff');
+            console.log(diff);
             var quantity = typeof $optionElement.data('quantity') == 'number' ? $optionElement.data('quantity') : $optionElement.data('quantity').replace(/,/g, "");
             var totalWorkedUp = typeof $optionElement.data('workedUp') == 'number' ? $optionElement.data('workedUp') : $optionElement.data('workedUp').replace(/,/g, "");
             $tr.attr('data-quantity-to-use', quantity);
@@ -451,6 +487,7 @@ var ManpowerHandler = /** @class */ (function () {
             $optionElement.closest('tr').find('.execution').text(execution);
             $optionElement.closest('tr').find('.description').text(description);
             $optionElement.closest('tr').find('.unit-of-measurement').text(unitOfMeasurement);
+            $optionElement.closest('tr').find('.quantity-to-use').val(diff);
             $optionElement.closest('tr').find('.unit-price').val(unitPrice);
             $optionElement.closest('tr').find('.quantity').text(quantity);
         });
