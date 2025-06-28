@@ -650,6 +650,22 @@ $projectSystems = array(
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label>Fiscal</label><br>
+                    <select class="form-control select2-fiscals" data-parsley-required="" parsley-trigger="change" name="fiscal">
+                        {{#each data.fiscals}}
+                            {{var 'selected' ''}}
+                            {{#ifCond id "==" ../data.logMasterDetail.fiscalId}}
+                                {{var 'selected' 'selected'}}
+                            {{/ifCond}}
+                            <option value="{{id}}" {{selected}}>{{firstName}} {{lastName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Constructores</label><br>
                     <select class="form-control select2-builders" multiple="multiple" data-parsley-required="" parsley-trigger="change" name="builders[]">
                         {{#each buildersSelected}}

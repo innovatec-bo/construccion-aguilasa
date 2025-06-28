@@ -442,8 +442,8 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
     public static function prepareArrayLogMasterDetal($logId = NULL)
     {
         $laborCostLog = Model_labor_cost_log::getMasterDetailById($logId);
-        $singleList = array();
-        $arrayLog = array();
+        $singleList = [];
+        $arrayLog = [];
         $index = 1;
         for ($i = 0; $i < count($laborCostLog); $i++)
         {
@@ -455,24 +455,28 @@ class Model_labor_cost_log extends Model_labor_cost_log_base
             {
                 if($laborCostLog[$i]["log_id"] != $laborCostLog[$i+1]["log_id"])
                 {
+                    $arrayLog[$logId]['projectId'] = $laborCostLog[$i]['project_id'];
                     $arrayLog[$logId]['pointId'] = $laborCostLog[$i]["point_id"];
                     $arrayLog[$logId]['pointLabel'] = $laborCostLog[$i]["point_label"];
                     $arrayLog[$logId]['logId'] = $laborCostLog[$i]["log_id"];
+                    $arrayLog[$logId]['fiscalId'] = $laborCostLog[$i]['fiscal_id'];
                     $arrayLog[$logId]['fiscal'] = $laborCostLog[$i]["fiscal_full_name"];
                     $arrayLog[$logId]['detail'] = $laborCostLog[$i]["detail"];
                     $arrayLog[$logId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];
                     $arrayLog[$logId]['builders'] = $laborCostLog[$i]["builders"];
                     $arrayLog[$logId]['builderWithId'] = $laborCostLog[$i]["builder_with_id"];
                     $arrayLog[$logId]['itemList'] = $singleList;
-                    $singleList = array();
+                    $singleList = [];
                     $index = 0;
                 }
             }
             else
             {
+                $arrayLog[$logId]['projectId'] = $laborCostLog[$i]['project_id'];
                 $arrayLog[$logId]['pointId'] = $laborCostLog[$i]["point_id"];
                 $arrayLog[$logId]['pointLabel'] = $laborCostLog[$i]["point_label"];
                 $arrayLog[$logId]['logId'] = $laborCostLog[$i]["log_id"];
+                $arrayLog[$logId]['fiscalId'] = $laborCostLog[$i]['fiscal_id'];
                 $arrayLog[$logId]['fiscal'] = $laborCostLog[$i]["fiscal_full_name"];
                 $arrayLog[$logId]['detail'] = $laborCostLog[$i]["detail"];
                 $arrayLog[$logId]['manualEntryDate'] = $laborCostLog[$i]["manual_entry_date"];

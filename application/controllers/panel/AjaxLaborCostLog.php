@@ -34,6 +34,17 @@ class AjaxLaborCostLog extends PrivateController
 
 			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $logMasterDetail = Model_labor_cost_log::prepareArrayLogMasterDetal($laborCostLogId);
+            $fiscals = Model_user::getByRoleKeyword('fiscal');
+            $arrayFiscal = [];
+            foreach($fiscals as $fiscal)
+            {
+                $fiscal = $fiscal->toArray();
+                $arrayFiscal[] = [
+                    'id' => $fiscal['id_usr'],
+                    'firstName' => $fiscal['firstname_usr'],
+                    'lastName' => $fiscal['lastname_usr']
+                ];
+            }
             $builders = Model_user::getByRoleKeyword('builder');
             $arrayBuilder = array();
             foreach($builders as $builder)
@@ -45,8 +56,21 @@ class AjaxLaborCostLog extends PrivateController
                     'lastName' => $builder['lastname_usr']
                 );
             }
-            $response["data"]["builders"] = $arrayBuilder;
 
+            $projectId = $logMasterDetail['projectId'];
+            $workflowPagination = new WorkflowPaginationHandler(1);
+            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
+            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
+            $productionLimit = Model_production_limit::getByProjectId($projectId);
+            if(!$productionLimit instanceof Model_production_limit)
+            {
+                $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
+                $productionLimit->save();
+            }
+            $project = $workflowPagination->getAll();
+
+            $response["data"]["fiscals"] = $arrayFiscal;
+            $response["data"]["builders"] = $arrayBuilder;
             $response["success"] = $success;
             $response["message"] = $validationErrors;
             $response["data"]["logMasterDetail"] = $logMasterDetail;
@@ -54,6 +78,7 @@ class AjaxLaborCostLog extends PrivateController
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-edit-point-to-point-progress";
             $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
+            $response['data']['project'] = $project[0];
         } 
         else
         {
@@ -66,7 +91,9 @@ class AjaxLaborCostLog extends PrivateController
             $detail = $formData["detail"];
             $workedUp = $formData["worked-up"];
             $builders = $formData["builders"];
+            $fiscalId = $formData['fiscal'];
             $laborCostLog = Model_labor_cost_log::getById($laborCostLogId);
+            $laborCostLog->setFiscalId($fiscalId);
             $laborCostLog->setDetail($detail);
             $laborCostLog->setManualEntryDate($manualEntryDate);
             $laborCostLog->save();

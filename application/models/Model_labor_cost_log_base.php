@@ -87,6 +87,11 @@ class Model_labor_cost_log_base extends MY_Model
     }
 
     //setters
+    public function setFiscalId($fiscalId)
+    {
+        $this->_userId = $fiscalId;
+    }
+
     public function setDetail($detail)
     {
         $this->_detail = $detail;
@@ -98,7 +103,6 @@ class Model_labor_cost_log_base extends MY_Model
     }
 
     //getters
-
     public function getPointId()
     {
         return $this->_pointId;

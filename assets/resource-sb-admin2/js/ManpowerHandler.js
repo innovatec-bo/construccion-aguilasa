@@ -95,6 +95,7 @@ var ManpowerHandler = /** @class */ (function () {
             laborCostList: this._laborCostMasterDetail
         };
         var structureList = [item];
+        console.log(response.data.fiscals);
         var data = {
             structureList: structureList,
             builders: response.data.builders,

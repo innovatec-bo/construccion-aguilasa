@@ -137,7 +137,7 @@ class ManpowerHandler
             laborCostList:this._laborCostMasterDetail
         };
         let structureList = [item];
-
+        console.log(response.data.fiscals);
         let data = {
             structureList:structureList, 
             builders:response.data.builders, 

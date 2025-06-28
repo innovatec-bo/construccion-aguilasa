@@ -121,7 +121,10 @@ var LaborCostLogHandler = /** @class */ (function () {
         var $template = $("<div>" + htmlTemplate + "</div>");
         var htmlSource = $template.find(response.data.templateName).html();
         var template = Handlebars.compile(htmlSource);
-        var data = { data: response.data, buildersSelected: builderList };
+        var data = {
+            data: response.data,
+            buildersSelected: builderList
+        };
         var html = template(data);
         var _this = this;
         swal({

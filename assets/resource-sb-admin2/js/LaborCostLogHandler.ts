@@ -161,7 +161,10 @@ class LaborCostLogHandler
         let $template = $("<div>"+htmlTemplate+"</div>");
         let htmlSource = $template.find(response.data.templateName).html();
         let template = Handlebars.compile(htmlSource);
-        let data = {data:response.data, buildersSelected:builderList};
+        let data = {
+            data:response.data,
+            buildersSelected:builderList
+        };
         let html = template(data);
         let _this = this;
         swal({
