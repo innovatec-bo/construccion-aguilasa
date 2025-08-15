@@ -30,7 +30,7 @@ class MaterialsFileReader
 		$this->_isAdditional = 1;
 	}
 
-	private function _setExcelArrayData() : void
+	private function _setExcelArrayData_deprecated() : void
     {
         switch (strtolower($this->_file->getExtension()))
         {
@@ -52,6 +52,59 @@ class MaterialsFileReader
         $sheetList = $spreadsheet->getAllSheets();
         $sheetData = $sheetList[0];
         $this->_excelArrayData = $sheetData->toArray();
+    }
+
+    private function _setExcelArrayData() : void
+    {
+        switch (strtolower($this->_file->getExtension()))
+        {
+            case 'xlsx':
+                $reader = new Xlsx();
+                break;
+            case 'xls':
+                $reader = new Xls();
+                break;
+            default:
+                $reader = new Csv();
+                $fileLocation = FCPATH.$this->_file->getUrl();
+                $detectedDelimiter = $this->detectCsvDelimiter($fileLocation);
+                $reader->setDelimiter($detectedDelimiter);
+                $reader->setInputEncoding('ISO-8859-1');
+                break;
+        }
+        
+        if (!isset($fileLocation)) {
+            $fileLocation = FCPATH.$this->_file->getUrl();
+        }
+
+        $spreadsheet = $reader->load($fileLocation);
+        $sheetList = $spreadsheet->getAllSheets();
+        $sheetData = $sheetList[0];
+        $this->_excelArrayData = $sheetData->toArray();
+    }
+
+    private function detectCsvDelimiter(string $filePath): string
+    {
+        $possibleDelimiters = [",", ";", "\t", "|"];
+        $counts = array_fill_keys($possibleDelimiters, 0);
+
+        $handle = fopen($filePath, 'r');
+        if ($handle) {
+            // Leer solo la primera línea para detectar el delimitador
+            $line = fgets($handle);
+            fclose($handle);
+
+            foreach ($possibleDelimiters as $delimiter) {
+                $counts[$delimiter] = substr_count($line, $delimiter);
+            }
+
+            // Elegir el delimitador con más coincidencias
+            arsort($counts);
+            return key($counts);
+        }
+
+        // Por defecto, coma
+        return ",";
     }
 
 	private function _setMaterialListFromExcelFile() : void
