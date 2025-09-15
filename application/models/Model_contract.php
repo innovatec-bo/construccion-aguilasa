@@ -8,9 +8,9 @@
 
 class Model_contract extends Model_contract_base
 {
-    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0, $active = 0)
     {
-        parent::__construct($contractNumber, $amount, $startDate, $expirationDate, $umbo);
+        parent::__construct($contractNumber, $amount, $startDate, $expirationDate, $umbo, $active);
     }
 
     public static function getNotExpiredContracts()
@@ -37,5 +37,16 @@ class Model_contract extends Model_contract_base
     	$query = $ci->db->query($sql);
     	$result = static::recast(get_called_class(), $query->row());
     	return $result;
+	}
+
+	public static function deactiveExceptThis($contractId)
+	{
+		$ci = &get_instance();
+    	$ci->load->database();
+
+    	$sql = "
+    		update wfl_contracts set active = 0 where id_con != ".$ci->db->escape($contractId)."
+    	";
+    	$ci->db->query($sql);
 	}
 }

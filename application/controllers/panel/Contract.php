@@ -1,4 +1,7 @@
 <?php
+
+use Carbon\Carbon;
+
 /**
  * Created by PhpStorm.
  * User: Jair
@@ -37,52 +40,101 @@ class Contract extends PrivateController
 
     public function add()
     {
-        //TODO:add feature validation
         $this->_validateFeature('contract_add');
         /** View complements */
         $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addProjectJs('contract.add');
         /** Server Side Validations **/
-        $this->form_validation->set_rules('first-name', 'Email', 'trim|required');
-        $this->form_validation->set_rules('last-name', 'Email', 'trim|required');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_unique_email');
-        $this->form_validation->set_rules('roles[]', 'Roles', 'callback_validate_roles');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required');
-        $this->form_validation->set_rules('confirm-password', 'Confirm password', 'trim|required|matches[password]');
-
-        $roleList = Model_role::getAll(100,0);
-        $data["roleList"] = $roleList;
+        $this->form_validation->set_rules('number', 'numero', 'trim|required');
+        $this->form_validation->set_rules('amount', 'monto', 'trim|required');
+        $this->form_validation->set_rules('start-date', 'desde', 'trim|required');
+        $this->form_validation->set_rules('end-date', 'hasta', 'trim|required');
+        $this->form_validation->set_rules('UMBO', 'UMBO', 'trim|required');
 
         if($this->form_validation->run() === FALSE)
         {
-            $this->_loadPanelView("user/add",$data);
+            $this->_loadPanelView("contract/add",[]);
         }
         else
         {
             $formData = $this->input->post();
-            $firstName = $formData["first-name"];
-            $lastName = $formData["last-name"];
-            $email = $formData["email"];
-            $password = $formData["password"];
-            $userRoleList = $formData["roles"];
-            $user = new Model_user(
-                $firstName,
-                $lastName,
-                $email,
-                NULL,
-                NULL,
-                $this->_encryptPassword($password)
+
+            $number = $formData["number"];
+            $amount = $formData["amount"];
+            $startDate = Carbon::createFromFormat('d-m-Y',$formData["start-date"])->format('Y-m-d');
+            $endDate = Carbon::createFromFormat('d-m-Y',$formData["end-date"])->format('Y-m-d');
+            $UMBO = $formData["UMBO"];
+            $active = isset($formData['active']) && $formData['active']?1:0;
+            $contract = new Model_contract(
+                $number,
+                $amount,
+                $startDate,
+                $endDate,
+                $UMBO,
+                $active
             );
-            $user->save();
-            Model_user_role::saveUserRoleList($user->getId(), $userRoleList, $this->sessionUser);
-            $this->session->set_flashdata("successMessage", "User was added successfully");
-            redirect(base_url("panel/User"));
+
+            $contract->save();
+            if ($active == 1) 
+            {
+                Model_contract::deactiveExceptThis($contract->getId());
+            }
+            $this->session->set_flashdata("successMessage", "Nuevo contrato agregado existosamente!");
+            redirect(base_url("panel/Contract"));
         }
     }
 
-    public function edit($userId = NULL)
+    public function edit($contractId = NULL)
     {
-        $this->_validateFeature('user_edit');
-        $this->_formEditUser($userId);
+        $this->_validateFeature('contract_edit');
+        $contract = $this->_validateObjectToEdit($contractId,"Model_contract","panel/Contract");
+        /** View complements */
+        $this->complementHandler->addViewComplement("parsley");
+        $this->complementHandler->addViewComplement("parsley.spanish");
+        $this->complementHandler->addViewComplement("date-time-picker");
+        $this->complementHandler->addProjectJs('contract.add');
+        /** Server Side Validations **/
+        $this->form_validation->set_rules('number', 'numero', 'trim|required');
+        $this->form_validation->set_rules('amount', 'monto', 'trim|required');
+        $this->form_validation->set_rules('start-date', 'desde', 'trim|required');
+        $this->form_validation->set_rules('end-date', 'hasta', 'trim|required');
+        $this->form_validation->set_rules('UMBO', 'UMBO', 'trim|required');
+        
+        $data['startDate'] = Carbon::createFromFormat('Y-m-d H:i:s',$contract->getStartDate())->format('d-m-Y');
+        $data['expirationDate'] = Carbon::createFromFormat('Y-m-d H:i:s',$contract->getExpirationDate())->format('d-m-Y');
+        
+        $data['contract'] = $contract->toArray();
+        if($this->form_validation->run() === FALSE)
+        {
+            $this->_loadPanelView("contract/edit", $data);
+        }
+        else
+        {
+            $formData = $this->input->post();
 
+            $number = $formData["number"];
+            $amount = $formData["amount"];
+            $startDate = Carbon::createFromFormat('d-m-Y',$formData["start-date"])->format('Y-m-d');
+            $endDate = Carbon::createFromFormat('d-m-Y',$formData["end-date"])->format('Y-m-d');
+            $UMBO = $formData["UMBO"];
+            $active = isset($formData['active']) && $formData['active']?1:0;
+
+            $contract->setContractNumber($number);
+            $contract->setAmount($amount);
+            $contract->setStartDate($startDate);
+            $contract->setExpirationDate($endDate);
+            $contract->setUmbo($UMBO);
+            $contract->setActive($active);
+            $contract->save();
+            if ($active == 1) 
+            {
+                Model_contract::deactiveExceptThis($contract->getId());
+            }
+            
+            $this->session->set_flashdata("successMessage", "Contrato editado existosamente!");
+            redirect(base_url("panel/Contract"));
+        }
     }
 }

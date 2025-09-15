@@ -17,8 +17,9 @@ class Model_contract_base extends MY_Model
     protected $_startDate;
     protected $_expirationDate;
     protected $_umbo;
+    protected $_active;
 
-    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0)
+    public function __construct($contractNumber = "", $amount = 0, $startDate = NULL, $expirationDate = NULL, $umbo = 0, $active = 0)
     {
         parent::__construct();
         $this->_contractNumber = $contractNumber;
@@ -26,6 +27,7 @@ class Model_contract_base extends MY_Model
         $this->_startDate = $startDate;
         $this->_expirationDate = $expirationDate;
         $this->_umbo = $umbo;
+        $this->_active = $active;
     }
 
     /**
@@ -41,6 +43,7 @@ class Model_contract_base extends MY_Model
             "start_date_con" => $this->_startDate,
             "expiration_date_con" => $this->_expirationDate,
             "umbo" => $this->_umbo,
+            "active" => $this->_active,
             "deleted_con" => $this->_deleted,
             "createdon_con" => $this->_createdOn,
             "createdby_con" => $this->_createdBy,
@@ -69,7 +72,8 @@ class Model_contract_base extends MY_Model
                 $object->amount_con,
                 $object->start_date_con,
                 $object->expiration_date_con,
-                $object->umbo
+                $object->umbo,
+                $object->active
             );
             $instance->_id = $object->id_con;
 
@@ -86,5 +90,50 @@ class Model_contract_base extends MY_Model
     public function getUmbo()
     {
         return $this->_umbo;
+    }
+
+    public function getActive()
+    {
+        return $this->_active;
+    }
+
+    public function getExpirationDate()
+    {
+        return $this->_expirationDate;
+    }
+
+    public function getStartDate()
+    {
+        return $this->_startDate;
+    }
+
+    public function setContractNumber($value)
+    {
+        $this->_contractNumber = $value;
+    }
+
+    public function setAmount($value)
+    {
+        $this->_amount = $value;
+    }
+    
+    public function setStartDate($value)
+    {
+        $this->_startDate = $value;
+    }
+
+    public function setExpirationDate($value)
+    {
+        $this->_expirationDate = $value;
+    }
+
+    public function setUMBO($value)
+    {
+        $this->_umbo = $value;
+    }
+
+    public function setActive($value)
+    {
+        $this->_active = $value;
     }
 }

@@ -26,6 +26,7 @@
                         <th>Monto</th>
                         <th>Activo</th>
                         <th>Fecha de expiracion</th>
+                        <th>UMBO</th>
                         <th>Options</th>
                     </tr>
                     </thead>

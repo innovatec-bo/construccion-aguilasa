@@ -23,6 +23,10 @@ $(document).ready(function() {
         },
         "dom": "<'row'<'col-sm-6'Bl><'col-sm-6 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
+        columnDefs: [
+            { className: 'text-right', targets: [2,5] },
+            { className: 'text-center', targets: [1,3,4] }
+        ],
         "columns" : [{
             "data" : "id_con"
         }, {
@@ -51,6 +55,8 @@ $(document).ready(function() {
                 }
                 return result;
             }
+        }, {
+            "data" : "umbo"
         }, {
             "defaultContent" : " ",
             "searchable" : false,
