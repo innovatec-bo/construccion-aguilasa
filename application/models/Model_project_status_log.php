@@ -228,4 +228,17 @@ class Model_project_status_log extends Model_project_status_log_base
 //        $log = static::getLogByProjectId($projectId);
 //
 //    }
+
+    public function delete($makePhysicalDelete = FALSE)
+    {
+        //Delete dependencies
+        switch ($this->getProjectStatus()) 
+        {
+            case 6://Cronograma/Por enviar
+                $projectBudget = Model_project_budget::getByStatusLogId($this->getId());
+                $projectBudget->delete();
+                break;
+        }
+        parent::delete();
+    }
 }

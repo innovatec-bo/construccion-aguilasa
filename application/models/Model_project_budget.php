@@ -27,4 +27,17 @@ class Model_project_budget extends Model_project_budget_base
         $result = static::recast(get_called_class(), $query->row());
         return $result;
     }
+
+    public function delete($makePhysicalDelete = FALSE)
+    {
+        //Delete dependencies
+        $ci = &get_instance();
+        $ci->load->database();
+        //Delete tree_prunings
+        $sql = "
+            update tree_prunings set deleted_at = now() where budget_id = ".$this->_id."
+        ";
+        $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
+        parent::delete();
+    }
 }
