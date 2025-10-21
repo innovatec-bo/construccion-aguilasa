@@ -38,21 +38,6 @@ class Home extends PrivateController
         $data['externalObservations'] = $externalObservations;
         $data['isAdmin'] = $this->_is('super_admin');
         $data['showWorkPlan'] = $this->_validateFeature('work_plan', true);
-        // $project = Model_project::getById(5060);//5060,5061
-        // $startDate = NULL; 
-        // $endDate = NULL; 
-        // $estimatedTime = 0; 
-        // $liveLine = 0;
-        // $powerDown = 0;
-        // $maneuver = 0;
-        // $statusId = 21;
-        // $statusDetail = "";
-        // $entryDate = '2025-10-21';
-        // $responsibleList = [674];//Mario Aguilera
-        // $projectManager = 2;
-        // $project->saveConstructionAssignments($startDate, $endDate, $estimatedTime, $liveLine, $powerDown, $maneuver, $statusId, $statusDetail, $entryDate, $responsibleList, $projectManager);
-        // $result = Model_project::_statusDetailQuery(21);
-        // echo"<pre>";var_dump($result);exit;
 
         $this->_loadPanelView('home/index', $data);
     }
