@@ -948,6 +948,18 @@ class AjaxProjectStatus extends PrivateController
         $data["statusSet"] = $statusSet;
         $data["stepTree"] = $stepTree;
         $projectLog = Model_project_status_log::getLogByProjectId($projectId);
+        if (isset($projectId) && $projectId == 5212)//5212 project has included returned in design stage 
+        {
+            foreach ($projectLog as $key => $value) 
+            {
+                if($statusSet == 'approvement' && $value['status_id_psl'] == 20)
+                {
+                    // dd($key,$value);       
+                    unset($projectLog[$key]);
+                }
+            }
+            
+        }
         $data["projectLog"] = $projectLog;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
         $data["deleteStatusLog"] = $this->_validateFeature("deleted_status_log_add",TRUE);
