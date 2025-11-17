@@ -770,7 +770,7 @@ class Project extends PrivateController
     public function getAllProjectsLog()
     {
 		set_time_limit(300);
-		ini_set('memory_limit','600M');
+		ini_set('memory_limit','700M');
         $report = new ExcelAllProjectsLog($this->sessionUser);
         $report->getReport();
     }
@@ -787,7 +787,7 @@ class Project extends PrivateController
     public function gisGirMonthlyReport()
     {
         set_time_limit(300);
-		ini_set('memory_limit','600M');
+		ini_set('memory_limit','700M');
         $report = new ExcelGisGirMonthlyDetail($this->sessionUser);
         $report->getReport();
     }

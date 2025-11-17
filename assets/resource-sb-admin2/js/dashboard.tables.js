@@ -241,37 +241,6 @@ function getCurrentStatusSummary(system, management, contract)
     });
 }
 
-
-function startSelect2TrackingList(selector)
-{
-    selector = selector || '.select2.tracking-list';
-    $(selector).select2({
-        placeholder: "",
-        containerCssClass: 'select-xs',
-        allowClear : true,
-        ajax : {
-            url : base_url + 'panel/AjaxTrackingList/select2',
-            dataType : "json",
-            type : "post",
-            delay : 600,
-            data : function(params) {
-                return {
-                    term : params.term || "", //search term
-                    limit : 5, // page size
-                    page: params.page || 1
-                };
-            },
-
-            processResults: function (data) {
-                return {
-                    results: data.list,
-                    pagination: data.pagination
-                };
-            }
-        },
-        width : "100%"
-    });
-}
 function getExecutiveSummary(system, management, contract)
 {
     //Disabled
