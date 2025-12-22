@@ -48,6 +48,11 @@ $(document).ready(function() {
         window.location.href = base_url+"panel/Project/gisGirMonthlyReport";
     });
 
+    $(document).on("submit","form.post-production-balance", function(e){
+        e.preventDefault();
+        window.location.href = base_url+"panel/Project/postProductionBalance";
+    });
+
     $(document).on("submit","form.daily-production", function(e){
         e.preventDefault();
         let month = $("select[name=daily-production-month] option:selected").val();

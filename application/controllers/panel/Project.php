@@ -792,6 +792,14 @@ class Project extends PrivateController
         $report->getReport();
     }
 
+    public function postProductionBalance()
+    {
+        set_time_limit(300);
+		ini_set('memory_limit','700M');
+        $report = new PostProductionBalance($this->sessionUser);
+        $report->getReport();
+    }
+
     public function dailyProductivityReport($month, $year)
     {
         $startDate = $year."-".$month."-01 00:00:00";

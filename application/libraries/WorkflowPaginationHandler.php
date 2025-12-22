@@ -397,7 +397,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 												then approved.total_budget\n
 											WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 												then if(payment_order_registered.order_number_pao != '',payment_order_registered.total_real_budget, conciliation_reception.total_real_budget)\n
-										END project_current_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
+										END project_current_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception','wfl_project_status']],
 			'project_current_design_budget' => ['column' => "CASE 
 													WHEN keyword_pst in('project_has_been_created','drawing','stakes','digitization','returned') 
 														then initial_design_budget_pro
@@ -409,7 +409,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 														then approved.design_prb
 													WHEN keyword_pst in('conciliation_reception','conciliation_shipment','cre_return_order','project_return_materials','project_real_budget_confirmation') 
 														then if(payment_order_registered.order_number_pao != '',payment_order_registered.design_budget_pop, conciliation_reception.design_reb)
-												END project_current_design_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception']],
+												END project_current_design_budget", 'dependencies' => ['schedulee','canceled','approved','payment_order_registered','conciliation_reception','wfl_project_status']],
 
 			'ready_to_send_date' => ['column' => 'ready_to_send.entry_date ready_to_send_date', 'dependencies' => ['ready_to_send']],
 
@@ -534,7 +534,7 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 
             'previous_manual_entry_date' => ['column' => 'previous_incident.previous_manual_entry_date', 'dependencies' => ['previous_incident']],
 			'last_three_incidents' => ['column' => 'wfl_incidents_last_three_incidents.last_three_incidents', 'dependencies' => ['wfl_incidents_last_three_incidents']],
-			'production_total_bs' => ['column' => 'production.total_bs production_total_bs', 'dependencies' => ['production']],
+			'production_total_bs' => ['column' => 'production.total_bs production_total_bs', 'dependencies' => ['production','wfl_project_status']],
 			'quantity_picked_up_from_cre' => ['column' => 'IFNULL(quantity_picked_up_from_cre.quantity, 0) quantity_picked_up_from_cre', 'dependencies' => ['quantity_picked_up_from_cre']],
 			'materials_delivered_to_cre' => ['column' => 'IFNULL(materials_delivered_to_cre.quantity, 0) materials_delivered_to_cre', 'dependencies' => ['materials_delivered_to_cre']],
 			'quantity_materials_assigned' => ['column' => 'IFNULL(quantity_materials_assigned.quantity, 0) quantity_materials_assigned', 'dependencies' => ['quantity_materials_assigned']],

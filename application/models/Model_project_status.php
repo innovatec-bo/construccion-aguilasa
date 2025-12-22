@@ -223,4 +223,15 @@ class Model_project_status extends Model_project_status_base
 		$query = $ci->db->query($sql);
 		return static::recastArray(get_called_class(),$query->result());
 	}
+
+    public static function postProductionStatus()
+    {
+        $ci = &get_instance();
+		$ci->load->database();
+		$sql = "
+        select wfl_project_status.* from wfl_project_status where order_pst > 26 and keyword_pst not in ('paused','stopped');
+        ";
+		$query = $ci->db->query($sql);
+		return static::recastArray(get_called_class(),$query->result());
+    }
 }
