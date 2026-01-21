@@ -344,9 +344,91 @@ function incidentInsertBatch()
         }
     });
 }
+
 function savingIncidents(formData)
 {
     console.log(formData);
+}
+
+function LaborCostComponent(customConfig)  
+{
+    this.settings = $.extend(true, {
+        container: ".select2-labor-cost",
+        size: "",
+        placeholder: "Buscar estructura",
+        url: base_url + 'panel/AjaxLaborCost/select2',
+        extraData: {} 
+    }, customConfig);
+
+    this.disable = function() {
+        $(this.settings.container).prop('disabled', true).trigger('change.select2');
+    };
+
+    this.enable = function() {
+        $(this.settings.container).prop('disabled', false).trigger('change.select2');
+    };
+
+    // this.clear = function() {
+    //     $(this.settings.container).val(null).trigger('change');
+    // };
+    this.clear = function() {
+        const $el = $(this.settings.container);
+        // Limpia el valor seleccionado, vacía las opciones cacheadas y notifica a Select2
+        $el.val(null).empty().trigger('change');
+    };
+
+    this.init = function() {
+        const _this = this;
+        const $el = $(this.settings.container);
+        
+        let $content = $(document.body);
+        if ($('.modal-content').length > 0) $content = $('.modal-content');
+        else if ($('.swal2-content').length > 0) $content = $('.swal2-content');
+
+        $el.select2({
+            placeholder: this.settings.placeholder,
+            containerCssClass: this.settings.size,
+            dropdownParent: $content,
+            width: "100%",
+            ajax: {
+                url: this.settings.url,
+                dataType: "json",
+                type: "post",
+                cache: false,
+                data: function(params) {
+                    let dynamicData = typeof _this.settings.extraData === 'function' 
+                                      ? _this.settings.extraData() 
+                                      : _this.settings.extraData;
+
+                    return $.extend({
+                        term: params.term || "",
+                        limit: 5,
+                        page: params.page || 1
+                    }, dynamicData);
+                },
+                // --- BLOQUEO DURANTE LA CARGA ---
+                transport: function (params, success, failure) {
+                    // Antes de enviar la petición, podemos disparar un estado visual
+                    $el.next().find('.select2-selection').css('opacity', '0.5'); 
+                    return $.ajax(params).always(function() {
+                        $el.next().find('.select2-selection').css('opacity', '1');
+                    }).done(success).fail(failure);
+                },
+                processResults: data => ({ results: data.list, pagination: data.pagination })
+            },
+            escapeMarkup: m => m,
+            templateResult: typeof formatRepo === 'function' ? formatRepo : (repo) => repo.text
+        });
+
+        // Verificación inicial de proyecto
+        // const initialData = typeof this.settings.extraData === 'function' ? this.settings.extraData() : this.settings.extraData;
+        // if(!initialData.projectId) 
+        // {
+        //     this.disable();
+        // }
+
+        return this;
+    };
 }
 
 function startSelect2LaborCost(containerCssClass, size)

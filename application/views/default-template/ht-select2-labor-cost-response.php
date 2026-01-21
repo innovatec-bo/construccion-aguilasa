@@ -7,7 +7,7 @@
  */
 ?>
 <script id="ht-select2-labor-cost-response" type="text/x-handlebars-template">
-    <div class="" style="padding-left:0px; padding-right:0px;width:100%">
+    <div class="" style="padding-left:0px; padding-right:0px;width:100%;color:#000">
         <ul class="event-list">
             <li style="margin-bottom:3px">
                 <div class="info">

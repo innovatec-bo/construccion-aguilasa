@@ -9,15 +9,53 @@ $(document).ready(function() {
 	// else
 	// 	startSelect2Materials('select.select2-materials','');
 	startSelect2Materials('select.select2-materials','');
+	// startSelect2LaborCost('select.select2-labor-cost','');
+	const selectLaborCost = new LaborCostComponent().init();
 	// startSelect2MaterialsSummary('select.select2-materials','');
-	$('select[name=project]').select2({allowClear:true,placeholder:'Elija un proyecto'})
+	$('select[name=project]').select2({allowClear:true, placeholder:'Elija un proyecto'});
+	
+	$('select[name=project]').on('change', function() {
+		const newProjectId = $(this).val();
+		const $laborSelect = $(selectLaborCost.settings.container);
+		$(selectLaborCost.settings.container).empty().trigger('change');
+		// 1. Actualizar el ID en la configuración
+		selectLaborCost.settings.extraData.projectId = newProjectId;
+		
+		// 2. Limpieza visual y de opciones
+		selectLaborCost.clear(); // Esto ahora debería incluir el .empty() que vimos antes
+
+		// 3. REINICIO DE CACHÉ DE SELECT2
+		if ($laborSelect.data('select2')) 
+		{
+			// Cerramos el dropdown por si estaba abierto
+			$laborSelect.select2('close');
+			
+			// Eliminamos los resultados que Select2 guarda en su búfer interno
+			// y forzamos a que se limpie el contenedor de resultados
+			$laborSelect.data('select2').results.clear(); 
+		}
+
+		// 4. Estado de habilitación
+		if (newProjectId) 
+		{
+			selectLaborCost.enable();
+		} 
+		else 
+		{
+			selectLaborCost.disable();
+		}
+		$.blockUI({ message: '<h2>Cargando estructuras...</h2>' });
+		setTimeout(() => {
+			$.unblockUI();
+		}, 3000);
+	});
 	let warehouse = new WarehouseHandler();
 	warehouse.loadEventHandlers();
 	warehouse.reservationNumberVisibility();
 	warehouse.loadRequestedData();
 	WarehouseHandler.columnsVisibility();
 	WarehouseHandler.builderSelectionVisibility();
-	select2ProjectGeneralList();
+	// select2ProjectGeneralList();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,
 		defaultDate: moment(),

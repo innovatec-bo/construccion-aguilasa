@@ -34,13 +34,13 @@ class WarehouseHandler
 		WarehouseHandler.columnsDefinition['delivered_to_builder_detail'] = 13;
     }
 
-	private _addRow()
+	private _addRow(rowData)
 	{
-		let rowData = $('.select2-materials').select2('data')[0];
 		//Search summary from next array by code added to table
 		let rowDataSummary = this._projectMaterialSummary.filter((p: { material_code: any; }) => p.material_code == rowData.material_code);
 		let htmlSource   = $('#table-row').html();
 		let template = Handlebars.compile(htmlSource);
+		console.log('rowData', rowData);
 		let data = {data:rowData, rowId: Date.now()};
 		if(rowDataSummary.length > 0)
 			data.data = rowDataSummary[0];
@@ -195,7 +195,7 @@ class WarehouseHandler
 			if(optionSelected == 14)
 			{
 				if(value.quantity_picked_up_from_cre > 0)
-					data.rowClass = "bg-danger text-white";	
+					data.rowClass = "bg-danger text-white";
 			}
 			html += template(data);
 		});
@@ -203,6 +203,46 @@ class WarehouseHandler
 		WarehouseHandler.emptyTable($tableBody);
 		$tableBody.append(html);
 
+	}
+
+	public addMaterialsFromStructureId()
+	{
+		let structureData = $('.select2-labor-cost').select2('data')[0];
+		let laborCostId = structureData.labor_cost_id;
+		let _this = this;
+		$.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
+		$.ajax({
+			url : base_url + 'panel/AjaxLaborCost/getByIdFromV2/'+laborCostId,
+			dataType  :"json",
+			type : "GET",
+			success:function(response: any)
+			{
+				console.log(response.data.custom_structure_materials);
+				$.each(response.data.custom_structure_materials, function(index: any, value: { material_id: any; material_code: string; material_description: string; request_materials_quantity: any; material_quantity: any; material_tension_id: any; material_status_id: any; quantity_in_warehouse: any, all_quantity_in_warehouse: any}){
+					let $select2Materials = $(".select2-materials");
+					let data = { 
+						id: value.material.id_mat, 
+						text: "("+value.material.code_mat+") "+value.material.description_mat, 
+						material_code: value.material.code_mat,
+						material_description: value.material.description_mat
+					};
+					$select2Materials.select2("trigger", "select", {data: data});
+					$select2Materials.trigger('change');
+					let rowData = $select2Materials.select2('data')[0];
+					_this._addRow(rowData);
+					//After add a new row, let's assign the default values
+					$select2Materials.val(null).trigger('change');
+					// let $rowAdded = $('#table-body tr:last');
+					// $rowAdded.find('.quantity').val(value.material_quantity);
+					// $rowAdded.find('.quantity').data('quantity-requested',value.material_quantity);
+					// $rowAdded.find('.tension').val(value.material_tension_id);
+					// $rowAdded.find('.status').val(value.material_status_id);
+					// $rowAdded.find('.material').val(value.material_id);
+				});
+				$('.select2-labor-cost').val(null).trigger('change');
+				$.unblockUI();
+			}
+		});
 	}
 
 	public static emptyTable(tableBody: { html: (arg0: string) => void; })
@@ -309,8 +349,8 @@ class WarehouseHandler
 					};
 					$select2Materials.select2("trigger", "select", {data: data});
 					$select2Materials.trigger('change');
-					_this._addRow();
-					//Luego de agregar un row se debe asignar los valores por defecto
+					let rowData = $select2Materials.select2('data')[0];
+					_this._addRow(rowData);
 					//After add a new row, let's assign the default values
 					$select2Materials.val(null).trigger('change');
 					let $rowAdded = $('#table-body tr:last');
@@ -350,7 +390,8 @@ class WarehouseHandler
 					}
 					else
 					{
-						_this._addRow();
+						let rowData = $('.select2-materials').select2('data')[0];
+						_this._addRow(rowData);
 					}
 				}
 			}
@@ -412,6 +453,28 @@ class WarehouseHandler
 			}
 		});
 
+		$(document).on('click','.wh-add-from-structure-id',function(){
+			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
+			let reservationNumber = $('select[name=reservation-number]').val();
+			let project = $('select[name=project]').val();
+			if(project == "")
+			{
+				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+			}
+			else
+			{
+				if(reservationNumberVisible && reservationNumber == "")
+				{
+					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
+				}
+				else
+				{
+					_this.addMaterialsFromStructureId();
+					WarehouseHandler.columnsVisibility();
+				}
+			}
+		});
+
 		$(document).on('select2:opening', '.select2-materials',function(){
 			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
 			let reservationNumber = $('select[name=reservation-number]').val();
@@ -430,6 +493,15 @@ class WarehouseHandler
 				}
 			}
 		});
+
+		$(document).on('select2:opening', '.select2-labor-cost',function(){
+			let project = $('select[name=project]').val();
+			if(project == "")
+			{
+				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+				return false;
+			}
+		});
 		$(document).on('click','.wh-clear-table',function(){
 			let $tableBody = $('#table-body');
 			WarehouseHandler.emptyTable($tableBody);
@@ -438,5 +510,26 @@ class WarehouseHandler
 		$(document).on('click','.wh-set-cero-as-movement', function(){
 			$("input.quantity").val("0.00");
 		});
+
+		$(document).on('change','input[name=radio-by-material]', function(){
+			let value = $(this).val();
+			if (value == 'radio-by-structure') 
+			{
+				$('.wh-add-row').hide();
+				$('.wh-add-from-structure-id').show();
+				$('.select2-materials').next('.select2-container').hide();
+				$('.select2-labor-cost').next('.select2-container').show();	
+				
+			}
+			else
+			{
+				$('.wh-add-row').show();
+				$('.wh-add-from-structure-id').hide();
+				$('.select2-materials').next('.select2-container').show();
+				$('.select2-labor-cost').next('.select2-container').hide();	
+			}
+			
+		});
+		$('input[name=radio-by-material]').eq(0).trigger('change');
 	}
 }

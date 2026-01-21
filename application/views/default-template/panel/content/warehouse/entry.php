@@ -171,13 +171,23 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<label><?=$materialsTitle?></label>
+			<!-- <label><?=$materialsTitle?></label> -->
+			<label class="radio-inline mb-1">
+				<input type="radio" name="radio-by-material" id="radio-by-material" value="radio-by-material" checked> <b><?=$materialsTitle?></b>
+			</label>
+			<label class="radio-inline mb-1">
+				<input type="radio" name="radio-by-material" id="radio-by-structure" value="radio-by-structure"> <b>Por estructura</b>
+			</label>
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" parsley-trigger="change" name="materials">
 					<option></option>
 				</select>
+				<select class="form-control select2-labor-cost" parsley-trigger="change" name="labor-cost">
+					<option></option>
+				</select>
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
+					<button class="btn btn-default btn-sm wh-add-from-structure-id" type="button" style="padding: 4px 10px;">Agregar desde la estructura</button>
 					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>
 					<?php
 					if($showBtnListAll == 1)

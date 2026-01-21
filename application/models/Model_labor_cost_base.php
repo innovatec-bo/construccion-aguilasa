@@ -167,8 +167,7 @@ class Model_labor_cost_base extends MY_Model
 
         $sql = substr($sql, 0, -3);
         $sql .= ') '.static::_additionalParameters($additionalParameters).' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
-
-        $query = $ci->db->query($sql);//echo"<pre>";var_dump($sql);exit;
+        $query = $ci->db->query($sql);
         return $query->result();
     }
 

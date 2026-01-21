@@ -238,5 +238,13 @@ class AjaxLaborCost extends PrivateController
         $resultArray['pagination'] = array("more" => $moreResults);
         echo json_encode($resultArray);exit;
 
-    }    
+    }
+
+    public function getByIdFromV2($laborCostId)
+    {
+        $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
+        $apiResponse = $client->request('GET', 'api/v1/labor-costs/'.$laborCostId);
+        $arrayResponse = json_decode($apiResponse->getBody(),true);
+        echo json_encode($arrayResponse);exit;
+    }
 }
