@@ -2,6 +2,7 @@ $(document).ready(function() {
 		
 	printView();
 	startSelect2Materials('select.select2-materials','');
+	const select2BuildingStructure = new BuildingStructureSelect2Component().init();
 	projectQuickSelect2();
 	$('.date-time-picker').datetimepicker({
 		ignoreReadonly: true,
@@ -55,11 +56,32 @@ $(document).ready(function() {
 		let html = template(data);
 		$('#table-body').append(html);
 		$(".input-masked").inputmask();
-		console.log(data);
 		// $('input[name=fiscal-name]').val(data.fiscal_responsible);
 		// $('input[name=builder-id]').val(data.builder_responsible);
 		// $('input[name=reservation-number]').val(data.approved_reservation_number);
 	});
+
+	$(document).on('click','.wh-add-from-structure-id',function(){
+		let project = $('select[name=project]').val();
+		let structureData = $('.select2-building-structure').select2('data')[0];
+		let structureId = structureData.id;
+		if(project == "")
+		{
+			toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
+		}
+		else
+		{
+			if(structureId == "")
+			{
+				toastr.error('Seleccione una estructura', '', {'progressBar':true});
+			}
+			else
+			{
+				addMaterialsFromStructureId(structureId);
+			}
+		}
+	});
+
 	$(document).on('click','.wh-quit-row',function(){
 		$(this).closest('tr').remove();
 	});
@@ -71,9 +93,49 @@ $(document).ready(function() {
 		this.asc = !this.asc
 		if (!this.asc){rows = rows.reverse()}
 		for (var i = 0; i < rows.length; i++){table.append(rows[i])}
-	})
-	
+	});
 });
+
+function addMaterialsFromStructureId(structureId)
+{
+	let _this = this;
+	$.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
+	$.ajax({
+		url : base_url + 'panel/AjaxBuildingStructure/getByIdFromV2/'+structureId,
+		dataType  :"json",
+		type : "GET",
+		success:function(response){
+			$.each(response.data.default_structure_materials, function(index, value){
+				let $select2Materials = $(".select2-materials");
+				let rowData = { 
+					id: value.material.id_mat, 
+					text: "("+value.material.code_mat+") "+value.material.description_mat, 
+					material_id: value.material.id_mat,
+					material_code: value.material.code_mat,
+					material_description: value.material.description_mat
+				};
+				// _this._addRow(rowData);
+				// let select2Data = $('.select2-materials').select2('data')[0];
+				
+				let htmlSource   = $('#table-row-request-materials-to-cre').html();
+				let template = Handlebars.compile(htmlSource);
+				let data = {data:rowData, rowId: Date.now()+index};
+				let html = template(data);
+				$('#table-body').append(html);
+				
+			});
+			$(".input-masked").inputmask();
+			$('.select2-building-structure').val(null).trigger('change');
+		},
+		error: function(xhr, status, error) {
+			console.error("Error obteniendo materiales:", error);
+			toastr.error('No se pudieron obtener los materiales de la estructura', '', {'progressBar':true});
+		},
+		complete: function() {
+			$.unblockUI();
+		}
+	});
+}
 
 function comparer(index) 
 {

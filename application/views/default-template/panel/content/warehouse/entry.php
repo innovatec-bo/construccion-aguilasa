@@ -182,12 +182,8 @@
 				<select class="form-control select2-materials" parsley-trigger="change" name="materials">
 					<option></option>
 				</select>
-				<select class="form-control select2-building-structure" parsley-trigger="change" name="building-structure">
-					<option></option>
-				</select>
 				<span class="input-group-btn">
 					<button class="btn btn-default btn-sm wh-add-row" type="button" style="padding: 4px 10px;">Agregar a la lista</button>
-					<button class="btn btn-default btn-sm wh-add-from-structure-id" type="button" style="padding: 4px 10px;">Agregar desde la estructura</button>
 					<button class="btn btn-warning btn-sm wh-add-new-material" type="button" style="padding: 4px 10px;">Crear material</button>
 					<?php
 					if($showBtnListAll == 1)

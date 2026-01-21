@@ -204,37 +204,6 @@ class WarehouseHandler
 
 	}
 
-	public addMaterialsFromStructureId(structureId)
-	{
-		let _this = this;
-		$.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
-		$.ajax({
-			url : base_url + 'panel/AjaxBuildingStructure/getByIdFromV2/'+structureId,
-			dataType  :"json",
-			type : "GET",
-			success:function(response: any){
-				$.each(response.data.default_structure_materials, function(index: any, value: { material: any}){
-					let $select2Materials = $(".select2-materials");
-					let rowData = { 
-						id: value.material.id_mat, 
-						text: "("+value.material.code_mat+") "+value.material.description_mat, 
-						material_code: value.material.code_mat,
-						material_description: value.material.description_mat
-					};
-					_this._addRow(rowData);
-				});
-				$('.select2-building-structure').val(null).trigger('change');
-			},
-			error: function(xhr, status, error) {
-				console.error("Error obteniendo materiales:", error);
-				toastr.error('No se pudieron obtener los materiales de la estructura', '', {'progressBar':true});
-			},
-			complete: function() {
-				$.unblockUI();
-			}
-		});
-	}
-
 	public static emptyTable(tableBody: { html: (arg0: string) => void; })
 	{
 		tableBody.html('');
@@ -438,34 +407,6 @@ class WarehouseHandler
 				else
 				{
 					_this.fillTable();
-					WarehouseHandler.columnsVisibility();
-				}
-			}
-		});
-
-		$(document).on('click','.wh-add-from-structure-id',function(){
-			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
-			let reservationNumber = $('select[name=reservation-number]').val();
-			let project = $('select[name=project]').val();
-			let structureData = $('.select2-building-structure').select2('data')[0];
-			let structureId = structureData.id;
-			if(project == "")
-			{
-				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
-			}
-			else
-			{
-				if(reservationNumberVisible && reservationNumber == "")
-				{
-					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
-				}
-				else if(structureId == "")
-				{
-					toastr.error('Seleccione una estructura', '', {'progressBar':true});
-				}
-				else
-				{
-					_this.addMaterialsFromStructureId(structureId);
 					WarehouseHandler.columnsVisibility();
 				}
 			}

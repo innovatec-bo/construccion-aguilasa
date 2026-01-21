@@ -158,35 +158,6 @@ var WarehouseHandler = /** @class */ (function () {
         WarehouseHandler.emptyTable($tableBody);
         $tableBody.append(html);
     };
-    WarehouseHandler.prototype.addMaterialsFromStructureId = function (structureId) {
-        var _this = this;
-        $.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
-        $.ajax({
-            url: base_url + 'panel/AjaxBuildingStructure/getByIdFromV2/' + structureId,
-            dataType: "json",
-            type: "GET",
-            success: function (response) {
-                $.each(response.data.default_structure_materials, function (index, value) {
-                    var $select2Materials = $(".select2-materials");
-                    var rowData = {
-                        id: value.material.id_mat,
-                        text: "(" + value.material.code_mat + ") " + value.material.description_mat,
-                        material_code: value.material.code_mat,
-                        material_description: value.material.description_mat
-                    };
-                    _this._addRow(rowData);
-                });
-                $('.select2-building-structure').val(null).trigger('change');
-            },
-            error: function (xhr, status, error) {
-                console.error("Error obteniendo materiales:", error);
-                toastr.error('No se pudieron obtener los materiales de la estructura', '', { 'progressBar': true });
-            },
-            complete: function () {
-                $.unblockUI();
-            }
-        });
-    };
     WarehouseHandler.emptyTable = function (tableBody) {
         tableBody.html('');
     };
@@ -355,28 +326,6 @@ var WarehouseHandler = /** @class */ (function () {
                 }
                 else {
                     _this.fillTable();
-                    WarehouseHandler.columnsVisibility();
-                }
-            }
-        });
-        $(document).on('click', '.wh-add-from-structure-id', function () {
-            var reservationNumberVisible = $("#reservation-number-selection").is(':visible');
-            var reservationNumber = $('select[name=reservation-number]').val();
-            var project = $('select[name=project]').val();
-            var structureData = $('.select2-building-structure').select2('data')[0];
-            var structureId = structureData.id;
-            if (project == "") {
-                toastr.error('Debe especificar un proyecto', '', { 'progressBar': true });
-            }
-            else {
-                if (reservationNumberVisible && reservationNumber == "") {
-                    toastr.error('Seleccione un Nro. de reserva', '', { 'progressBar': true });
-                }
-                else if (structureId == "") {
-                    toastr.error('Seleccione una estructura', '', { 'progressBar': true });
-                }
-                else {
-                    _this.addMaterialsFromStructureId(structureId);
                     WarehouseHandler.columnsVisibility();
                 }
             }
