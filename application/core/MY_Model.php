@@ -205,14 +205,19 @@ class MY_Model
         $ci->load->database();
 
         $sql = 'select '.static::_dataTableColumns().' from ' . static::TABLE_NAME;
-        $sql .= ' where '.static::notDeleted().' and (';
-        foreach ($colsArray as $var)
+        $sql .= ' where '.static::notDeleted().' ';
+        if (is_array($colsArray) && count($colsArray) > 0 && $text != "") 
         {
-            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            $cols = " and (";
+            foreach ($colsArray as $var)
+            {
+                $cols .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            }
+            $sql .= substr($cols, 0, -3);
+            $sql .= ") ";
         }
-
-        $sql = substr($sql, 0, -3);
-        $sql .= ') group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
+        
+        $sql .= ' group by '.static::TABLE_ID.' order by ' . $orderBy . ' ' . $orderType . ' limit ' . $limit . ' offset ' . $offset;
 
         $query = $ci->db->query($sql);
         return $query->result();
@@ -224,15 +229,18 @@ class MY_Model
         $ci->load->database();
 
         $sql = 'select count(' . static::TABLE_ID . ') as total from ' . static::TABLE_NAME;
-        $sql .= ' where '.static::notDeleted().' and (';
+        $sql .= ' where '.static::notDeleted().' ';
 
-        foreach ($colsArray as $var)
+        if (is_array($colsArray) && count($colsArray) > 0 && $text != "") 
         {
-            $sql .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            $cols = " and (";
+            foreach ($colsArray as $var)
+            {
+                $cols .= ' ' . $var . ' like \'%' . $text . '%\' or ';
+            }
+            $sql .= substr($cols, 0, -3);
+            $sql .= ")";
         }
-
-        $sql = substr($sql, 0, -3);
-        $sql .= ')';
 
         $query = $ci->db->query($sql);
         $totalCount = $query->row()->total;

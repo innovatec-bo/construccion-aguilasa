@@ -40,7 +40,6 @@ class WarehouseHandler
 		let rowDataSummary = this._projectMaterialSummary.filter((p: { material_code: any; }) => p.material_code == rowData.material_code);
 		let htmlSource   = $('#table-row').html();
 		let template = Handlebars.compile(htmlSource);
-		console.log('rowData', rowData);
 		let data = {data:rowData, rowId: Date.now()};
 		if(rowDataSummary.length > 0)
 			data.data = rowDataSummary[0];
@@ -205,41 +204,32 @@ class WarehouseHandler
 
 	}
 
-	public addMaterialsFromStructureId()
+	public addMaterialsFromStructureId(structureId)
 	{
-		let structureData = $('.select2-labor-cost').select2('data')[0];
-		let laborCostId = structureData.labor_cost_id;
 		let _this = this;
 		$.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
 		$.ajax({
-			url : base_url + 'panel/AjaxLaborCost/getByIdFromV2/'+laborCostId,
+			url : base_url + 'panel/AjaxBuildingStructure/getByIdFromV2/'+structureId,
 			dataType  :"json",
 			type : "GET",
-			success:function(response: any)
-			{
-				console.log(response.data.custom_structure_materials);
-				$.each(response.data.custom_structure_materials, function(index: any, value: { material_id: any; material_code: string; material_description: string; request_materials_quantity: any; material_quantity: any; material_tension_id: any; material_status_id: any; quantity_in_warehouse: any, all_quantity_in_warehouse: any}){
+			success:function(response: any){
+				$.each(response.data.default_structure_materials, function(index: any, value: { material: any}){
 					let $select2Materials = $(".select2-materials");
-					let data = { 
+					let rowData = { 
 						id: value.material.id_mat, 
 						text: "("+value.material.code_mat+") "+value.material.description_mat, 
 						material_code: value.material.code_mat,
 						material_description: value.material.description_mat
 					};
-					$select2Materials.select2("trigger", "select", {data: data});
-					$select2Materials.trigger('change');
-					let rowData = $select2Materials.select2('data')[0];
 					_this._addRow(rowData);
-					//After add a new row, let's assign the default values
-					$select2Materials.val(null).trigger('change');
-					// let $rowAdded = $('#table-body tr:last');
-					// $rowAdded.find('.quantity').val(value.material_quantity);
-					// $rowAdded.find('.quantity').data('quantity-requested',value.material_quantity);
-					// $rowAdded.find('.tension').val(value.material_tension_id);
-					// $rowAdded.find('.status').val(value.material_status_id);
-					// $rowAdded.find('.material').val(value.material_id);
 				});
-				$('.select2-labor-cost').val(null).trigger('change');
+				$('.select2-building-structure').val(null).trigger('change');
+			},
+			error: function(xhr, status, error) {
+				console.error("Error obteniendo materiales:", error);
+				toastr.error('No se pudieron obtener los materiales de la estructura', '', {'progressBar':true});
+			},
+			complete: function() {
 				$.unblockUI();
 			}
 		});
@@ -457,6 +447,8 @@ class WarehouseHandler
 			let reservationNumberVisible = $("#reservation-number-selection").is(':visible');
 			let reservationNumber = $('select[name=reservation-number]').val();
 			let project = $('select[name=project]').val();
+			let structureData = $('.select2-building-structure').select2('data')[0];
+			let structureId = structureData.id;
 			if(project == "")
 			{
 				toastr.error('Debe especificar un proyecto', '', {'progressBar':true});
@@ -467,9 +459,13 @@ class WarehouseHandler
 				{
 					toastr.error('Seleccione un Nro. de reserva', '', {'progressBar':true});
 				}
+				else if(structureId == "")
+				{
+					toastr.error('Seleccione una estructura', '', {'progressBar':true});
+				}
 				else
 				{
-					_this.addMaterialsFromStructureId();
+					_this.addMaterialsFromStructureId(structureId);
 					WarehouseHandler.columnsVisibility();
 				}
 			}
@@ -518,7 +514,7 @@ class WarehouseHandler
 				$('.wh-add-row').hide();
 				$('.wh-add-from-structure-id').show();
 				$('.select2-materials').next('.select2-container').hide();
-				$('.select2-labor-cost').next('.select2-container').show();	
+				$('.select2-building-structure').next('.select2-container').show();	
 				
 			}
 			else
@@ -526,7 +522,7 @@ class WarehouseHandler
 				$('.wh-add-row').show();
 				$('.wh-add-from-structure-id').hide();
 				$('.select2-materials').next('.select2-container').show();
-				$('.select2-labor-cost').next('.select2-container').hide();	
+				$('.select2-building-structure').next('.select2-container').hide();	
 			}
 			
 		});

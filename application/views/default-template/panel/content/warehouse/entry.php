@@ -182,7 +182,7 @@
 				<select class="form-control select2-materials" parsley-trigger="change" name="materials">
 					<option></option>
 				</select>
-				<select class="form-control select2-labor-cost" parsley-trigger="change" name="labor-cost">
+				<select class="form-control select2-building-structure" parsley-trigger="change" name="building-structure">
 					<option></option>
 				</select>
 				<span class="input-group-btn">

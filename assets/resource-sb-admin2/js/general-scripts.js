@@ -431,6 +431,58 @@ function LaborCostComponent(customConfig)
     };
 }
 
+function BuildingStructureSelect2Component(customConfig)  
+{
+    this.settings = $.extend(true, {
+        container: ".select2-building-structure",
+        size: "",
+        placeholder: "Buscar estructura",
+        url: base_url + 'panel/AjaxBuildingStructure/select2',
+    }, customConfig);
+
+    this.init = function() {
+        const _this = this;
+        const $el = $(this.settings.container);
+        
+        let $content = $(document.body);
+        if ($('.modal-content').length > 0) $content = $('.modal-content');
+        else if ($('.swal2-content').length > 0) $content = $('.swal2-content');
+
+        $el.select2({
+            placeholder: this.settings.placeholder,
+            containerCssClass: this.settings.size,
+            dropdownParent: $content,
+            width: "100%",
+            ajax: {
+                url: this.settings.url,
+                dataType: "json",
+                type: "post",
+                cache: false,
+                delay: 700,
+                data: function(params) {
+                    return {
+                        term: params.term || "",
+                        limit: 6,
+                        page: params.page || 1
+                    };
+                },
+                processResults: (data, params) => {
+                    params.page = params.page || 1; // Aseguramos que params tenga la página
+                    return {
+                        results: data.list, 
+                        pagination: {
+                            // Esto es vital: si el servidor dice que hay más, Select2 habilitará el scroll
+                            more: data.pagination.more 
+                        }
+                    };
+                }
+            },
+        });
+
+        return this;
+    };
+}
+
 function startSelect2LaborCost(containerCssClass, size)
 {
     containerCssClass = containerCssClass === undefined?".select2-labor-cost":containerCssClass;
