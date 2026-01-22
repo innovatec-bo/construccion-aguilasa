@@ -69,11 +69,18 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" id="combine-materials"> Combinar materiales en una sola fila(las cantidades se suman)
+				</label>
+			</div>
+		</div>
+		<div class="col-md-8">
 			<label class="radio-inline mb-1">
 				<input type="radio" name="radio-by-material" id="radio-by-material" value="radio-by-material" checked> <b>Materiales</b>
 			</label>
 			<label class="radio-inline mb-1">
-				<input type="radio" name="radio-by-material" id="radio-by-structure" value="radio-by-structure"> <b>Por estructura</b>
+				<input type="radio" name="radio-by-material" id="radio-by-structure" value="radio-by-structure"> <b>Por estructura <small>(Los materiales de la estructura agregada se combinar&aacute;n con los materiales de la lista)</small> </b>
 			</label>
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" parsley-trigger="change" name="materials">

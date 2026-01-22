@@ -1,3 +1,4 @@
+var additionalList = [];
 $(document).ready(function() {
 		
 	printView();
@@ -56,10 +57,46 @@ $(document).ready(function() {
 		let html = template(data);
 		$('#table-body').append(html);
 		$(".input-masked").inputmask();
-		// $('input[name=fiscal-name]').val(data.fiscal_responsible);
-		// $('input[name=builder-id]').val(data.builder_responsible);
-		// $('input[name=reservation-number]').val(data.approved_reservation_number);
+		additionalList.push(select2Data);
 	});
+
+	// $(document).on('click', '.wh-add-row', function (e) {
+	// 	let select2Data = $('.select2-materials').select2('data')[0];
+	// 	let materialCode = select2Data.material_code;
+		
+	// 	// 1. Buscamos si ya existe una fila con ese código de material
+	// 	let existingRow = $(`input[value="${materialCode}"].material[name*="[code]"]`).closest('tr');
+
+	// 	if (existingRow.length > 0) {
+	// 		// --- LÓGICA DE SUMA (YA EXISTE) ---
+			
+	// 		let inputQty = existingRow.find('.quantity');
+	// 		console.log(inputQty.val());
+	// 		// Obtenemos la cantidad actual (quitando máscaras si es necesario) y la nueva
+	// 		let currentQty = parseFloat(inputQty.val()) || 0;
+	// 		let newQtyToAdd = parseFloat(select2Data.material_quantity) || 0;
+			
+	// 		// Actualizamos solo el valor de la cantidad
+	// 		inputQty.val(currentQty + newQtyToAdd).trigger('input');
+			
+	// 		// Aplicamos la máscara de nuevo por si acaso
+	// 		inputQty.inputmask();
+
+	// 		console.log(`Material ${materialCode} actualizado. Nueva cantidad: ${currentQty + newQtyToAdd}`);
+
+	// 	} else {
+	// 		// --- LÓGICA DE INSERCIÓN (ES NUEVO) ---
+			
+	// 		let htmlSource = $('#table-row-request-materials-to-cre').html();
+	// 		let template = Handlebars.compile(htmlSource);
+	// 		let data = {data: select2Data, rowId: Date.now()};
+	// 		let html = template(data);
+			
+	// 		$('#table-body').append(html);
+	// 		$(".input-masked").inputmask();
+	// 		additionalList.push(select2Data);
+	// 	}
+	// });
 
 	$(document).on('click','.wh-add-from-structure-id',function(){
 		let project = $('select[name=project]').val();
@@ -119,6 +156,61 @@ $(document).ready(function() {
 
 function addMaterialsFromStructureId(structureId)
 {
+    let _this = this;
+    $.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
+    $.ajax({
+        url : base_url + 'panel/AjaxBuildingStructure/getByIdFromV2/'+structureId,
+        dataType  :"json",
+        type : "GET",
+        success:function(response){
+            $.each(response.data.default_structure_materials, function(index, value){
+                let rowData = {
+                    id: value.material.id_mat, 
+                    text: "("+value.material.code_mat+") "+value.material.description_mat, 
+                    material_id: value.material.id_mat,
+                    material_code: value.material.code_mat,
+                    material_description: value.material.description_mat,
+                    material_quantity: value.quantity
+                };
+
+                // 1. Intentar localizar una fila existente por el código de material
+                let existingRow = $(`input[value="${rowData.material_code}"].material[name*="[code]"]`).closest('tr');
+
+                if (existingRow.length > 0) {
+                    // --- SUMAR SI YA EXISTE ---
+                    let inputQty = existingRow.find('.quantity');
+                    let currentQty = parseFloat(inputQty.val()) || 0;
+                    let qtyToAppend = parseFloat(rowData.material_quantity) || 0;
+                    
+                    inputQty.val(currentQty + qtyToAppend).trigger('input');
+                } else {
+                    // --- INSERTAR SI ES NUEVO ---
+                    additionalList.push(rowData);
+                    let htmlSource = $('#table-row-request-materials-to-cre').html();
+                    let template = Handlebars.compile(htmlSource);
+                    
+                    // Usamos Date.now() + index para asegurar IDs únicos en el bucle rápido
+                    let data = {data: rowData, rowId: Date.now() + index};
+                    let html = template(data);
+                    $('#table-body').append(html);
+                }
+            });
+
+            $(".input-masked").inputmask();
+            $('.select2-building-structure').val(null).trigger('change');
+        },
+        error: function(xhr, status, error) {
+            console.error("Error obteniendo materiales:", error);
+            toastr.error('No se pudieron obtener los materiales de la estructura', '', {'progressBar':true});
+        },
+        complete: function() {
+            $.unblockUI();
+        }
+    });
+}
+
+function addMaterialsFromStructureId__(structureId)
+{
 	let _this = this;
 	$.blockUI({ message: '<h2>Obteniendo materiales...</h2>' });
 	$.ajax({
@@ -127,8 +219,7 @@ function addMaterialsFromStructureId(structureId)
 		type : "GET",
 		success:function(response){
 			$.each(response.data.default_structure_materials, function(index, value){
-				let $select2Materials = $(".select2-materials");
-				let rowData = { 
+				let rowData = {
 					id: value.material.id_mat, 
 					text: "("+value.material.code_mat+") "+value.material.description_mat, 
 					material_id: value.material.id_mat,
@@ -136,9 +227,7 @@ function addMaterialsFromStructureId(structureId)
 					material_description: value.material.description_mat,
 					material_quantity: value.quantity
 				};
-				// _this._addRow(rowData);
-				// let select2Data = $('.select2-materials').select2('data')[0];
-				
+				additionalList.push(rowData);
 				let htmlSource   = $('#table-row-request-materials-to-cre').html();
 				let template = Handlebars.compile(htmlSource);
 				let data = {data:rowData, rowId: Date.now()+index};
