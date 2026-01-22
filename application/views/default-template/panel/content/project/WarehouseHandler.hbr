@@ -73,7 +73,7 @@
 			type="text" 
 			class="quantity quantity-{{data.material_code}} text-right input-masked" 
 			name="summary[{{rowId}}][quantity]" 
-			value="" 
+			value="{{data.material_quantity}}" 
 			size="7" 
 			data-parsley-trigger="input" 
 			data-parsley-validate-quantity-to-request-to-cre=""

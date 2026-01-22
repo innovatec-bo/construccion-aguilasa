@@ -447,26 +447,5 @@ class WarehouseHandler
 		$(document).on('click','.wh-set-cero-as-movement', function(){
 			$("input.quantity").val("0.00");
 		});
-
-		$(document).on('change','input[name=radio-by-material]', function(){
-			let value = $(this).val();
-			if (value == 'radio-by-structure') 
-			{
-				$('.wh-add-row').hide();
-				$('.wh-add-from-structure-id').show();
-				$('.select2-materials').next('.select2-container').hide();
-				$('.select2-building-structure').next('.select2-container').show();	
-				
-			}
-			else
-			{
-				$('.wh-add-row').show();
-				$('.wh-add-from-structure-id').hide();
-				$('.select2-materials').next('.select2-container').show();
-				$('.select2-building-structure').next('.select2-container').hide();	
-			}
-			
-		});
-		$('input[name=radio-by-material]').eq(0).trigger('change');
 	}
 }

@@ -94,6 +94,27 @@ $(document).ready(function() {
 		if (!this.asc){rows = rows.reverse()}
 		for (var i = 0; i < rows.length; i++){table.append(rows[i])}
 	});
+
+	$(document).on('change','input[name=radio-by-material]', function(){
+		let value = $(this).val();
+		if (value == 'radio-by-structure') 
+		{
+			$('.wh-add-row').hide();
+			$('.wh-add-from-structure-id').show();
+			$('.select2-materials').next('.select2-container').hide();
+			$('.select2-building-structure').next('.select2-container').show();	
+			
+		}
+		else
+		{
+			$('.wh-add-row').show();
+			$('.wh-add-from-structure-id').hide();
+			$('.select2-materials').next('.select2-container').show();
+			$('.select2-building-structure').next('.select2-container').hide();	
+		}
+		
+	});
+	$('input[name=radio-by-material]').eq(0).trigger('change');
 });
 
 function addMaterialsFromStructureId(structureId)
@@ -112,7 +133,8 @@ function addMaterialsFromStructureId(structureId)
 					text: "("+value.material.code_mat+") "+value.material.description_mat, 
 					material_id: value.material.id_mat,
 					material_code: value.material.code_mat,
-					material_description: value.material.description_mat
+					material_description: value.material.description_mat,
+					material_quantity: value.quantity
 				};
 				// _this._addRow(rowData);
 				// let select2Data = $('.select2-materials').select2('data')[0];

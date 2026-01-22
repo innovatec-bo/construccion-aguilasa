@@ -69,7 +69,12 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<label>Materiales</label>
+			<label class="radio-inline mb-1">
+				<input type="radio" name="radio-by-material" id="radio-by-material" value="radio-by-material" checked> <b>Materiales</b>
+			</label>
+			<label class="radio-inline mb-1">
+				<input type="radio" name="radio-by-material" id="radio-by-structure" value="radio-by-structure"> <b>Por estructura</b>
+			</label>
 			<div class="form-group input-group">
 				<select class="form-control select2-materials" parsley-trigger="change" name="materials">
 					<option></option>
