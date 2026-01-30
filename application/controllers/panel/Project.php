@@ -1224,7 +1224,7 @@ class Project extends PrivateController
     public function downloadDailyReportsP4()
     {
         set_time_limit(300);
-		ini_set('memory_limit','500M');
+		ini_set('memory_limit','700M');
         $allProjectsLog = new ExcelAllProjectsLog($this->sessionUser);
         $allProjectsLog->getReport();
     }
