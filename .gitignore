@@ -37,3 +37,5 @@ timthumb/
 serebo.code-workspace
 .htaccess
 error_log
+.user.ini
+php.ini
