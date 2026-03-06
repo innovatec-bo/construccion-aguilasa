@@ -4,6 +4,9 @@
             <h1 class="page-header">Resumen de materiales</h1>
         </div>
         <div class="col-md-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Nota!</strong> Para obtener resultados por favor seleccione un <b>c&oacute;digo de proyecto</b>
+            </div>
             <?php
             $this->load->view("default-template/flash-data-basic-messages");
             ?>

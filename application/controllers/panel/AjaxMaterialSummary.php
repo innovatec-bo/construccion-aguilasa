@@ -13,11 +13,19 @@ class AjaxMaterialSummary extends PrivateController
 
 	public function ajaxDtAllMaterialSummary()
 	{
-		$additionalParameters = $this->input->post('additionalParameters')??array();
+		$additionalParameters = $this->input->post('additionalParameters')??[];
 		$dt = new JqdtHandler($this->input->post());
-		$paginationHandler = new MaterialSummaryPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
-		$paginationHandler->setAdditionalParameters($additionalParameters);
-		$response = $paginationHandler->getResponseForDataTable();
+		if (isset($additionalParameters['project-id'])) 
+		{
+			$paginationHandler = new MaterialSummaryPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
+			$paginationHandler->setAdditionalParameters($additionalParameters);
+			$response = $paginationHandler->getResponseForDataTable();
+		}
+		else
+		{
+			$response = ['recordsTotal' => 0, 'recordsFiltered' => 0, 'resultArray' => []];
+		}
+		
 		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
 	}
 
