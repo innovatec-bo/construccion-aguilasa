@@ -47,28 +47,6 @@ $monthList = array(
                     $title = "Reportes descargables";
             }
             ?>
-            <!-- <ul class="nav nav-pills dashboard-navigation">
-                <li class="<?=$chartsActive?>">
-                    <a class='p-0' href="<?=$chartsUrl?>">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/analysis.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=30";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='padding-top: 4px;padding-bottom: 0px;padding-right: 0px;padding-left: 4px;'>
-                    </a>
-                </li>
-                <li class="<?=$tablesActive?>">
-                    <a class='p-0' href="<?=$tablesUrl?>">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/frequency.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=30";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='padding-top: 4px;padding-bottom: 0px;padding-right: 0px;padding-left: 4px;'>
-                    </a>
-                </li>
-            </ul> -->
             <?=$title?>
         </h1>
     </div>
@@ -89,12 +67,7 @@ $monthList = array(
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/business-and-finance.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
+                        <img src="<?=assets_url("images/flaticon/business-and-finance.png")?>" style='filter: invert(100%);height:76px'>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><span id="dashboard-total-projects"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></div>
@@ -116,12 +89,7 @@ $monthList = array(
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/money.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
+                        <img src="<?=assets_url("images/flaticon/money.png")?>" style='filter: invert(100%);height:76px'>
                     </div>
                     <div class="col-xs-9 text-right" id="serebo-thermometer-chart-content"  style="height: 76px">
                     </div>
@@ -149,12 +117,7 @@ $monthList = array(
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/deadline.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
+                        <img src="<?=assets_url("images/flaticon/deadline.png")?>" style='filter: invert(100%);height:76px'>
                     </div>
                     <div class="col-xs-9 text-right" id="days-progress-chart-content"  style="height: 76px">
                     </div>
@@ -174,12 +137,7 @@ $monthList = array(
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <?php
-                        $timthumbUrl = base_url("timthumb/timthumb.php");
-                        $imageUrl = assets_url("images/flaticon/balance.png");
-                        $imageSrc = $timthumbUrl."?src=".$imageUrl."&h=76";
-                        ?>
-                        <img src="<?=$imageSrc?>" style='filter: invert(100%);'>
+                        <img src="<?=assets_url("images/flaticon/balance.png")?>" style='filter: invert(100%);height:76px'>
                     </div>
                     <div class="col-xs-9 text-right">
                         <h4><span id="dashboard-total-amount-worked"><i class="fa fa-spinner fa-pulse fa-fw"></i></span></h4>
