@@ -271,6 +271,7 @@ var StatusManagementHandler = /** @class */ (function () {
                         assignmentResponsible: assignmentResponsible,
                         assignmentResponsibleFiscal: assignmentResponsibleFiscal,
                         assignmentResponsibleBuilder: assignmentResponsibleBuilder,
+                        validateSaveEnergized: response.validateSaveEnergized,
                         viewData: _this.viewData
                     };
                     html = _this.getHandlebarHtml("#ht-status-" + statusKeyword + "-form", data);

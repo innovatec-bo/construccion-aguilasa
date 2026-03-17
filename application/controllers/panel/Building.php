@@ -204,7 +204,7 @@ class Building extends PrivateController
 
     public function energized()
     {
-        $this->_validateFeature('building_completed');
+        $this->_validateFeature('building_energized');
         $this->complementHandler->addViewComplement("bootbox");
         $this->complementHandler->addViewComplement("jquery.datatables");
         $this->complementHandler->addViewComplement("jquery.datatables.bootstrap");

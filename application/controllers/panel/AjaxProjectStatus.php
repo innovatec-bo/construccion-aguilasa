@@ -729,9 +729,9 @@ class AjaxProjectStatus extends PrivateController
         $statusKeyword = $formData["statusKeyword"];
         $statusSet = $formData["statusSet"];
         $previousEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword);
-        $scheduleEntry = array();
-        $assignmentEntry = array();
-
+        $scheduleEntry = [];
+        $assignmentEntry = [];
+        $validateSaveEnergized = $this->_validateFeature('save_energized', TRUE);
         if($statusSet == "design")
         {
             $scheduleEntry = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId, "schedule");
@@ -762,6 +762,7 @@ class AjaxProjectStatus extends PrivateController
         $response["previousEntry"] = $previousEntry;
         $response["scheduleEntry"] = $scheduleEntry;
         $response["assignmentEntry"] = $assignmentEntry;
+        $response['validateSaveEnergized'] = $validateSaveEnergized;
         echo json_encode($response);exit;
     }
 
