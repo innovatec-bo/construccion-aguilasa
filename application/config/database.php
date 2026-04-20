@@ -76,7 +76,7 @@ $query_builder = TRUE;
 $db['default'] = [
 	'dsn'	=> '',
 	'hostname' => getenv('DB_HOST'),
-	'username' => getenv('DB_USER'),
+	'username' => getenv('DB_USERNAME'),
 	'password' => getenv('DB_PASSWORD'),
 	'database' => getenv('DB_NAME'),
 	'dbdriver' => 'mysqli',
@@ -91,6 +91,6 @@ $db['default'] = [
 	'encrypt' => FALSE,
 	'compress' => FALSE,
 	'stricton' => FALSE,
-	'failover' => [],
+	'failover' => ,
 	'save_queries' => TRUE
 ];
