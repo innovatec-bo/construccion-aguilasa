@@ -27,12 +27,12 @@ class EmailHandler
                     case 'development':
                     case 'testing':
                     $config = array(
-						'protocol' => 'smtp',
+						'protocol' => getenv('MAIL_MAILER'),
 						'_smtp_auth' => TRUE,
-						'smtp_host' => 'smtp.mailtrap.io',
-						'smtp_port' => 2525,
-						'smtp_user' => '9f71c5a16ae3bf',
-						'smtp_pass' => 'e6c6895ce29011',
+						'smtp_host' => getenv('MAIL_HOST'),
+						'smtp_port' => getenv('MAIL_PORT'),
+						'smtp_user' => getenv('MAIL_USERNAME'),
+						'smtp_pass' => getenv('MAIL_PASSWORD'),
 						'mailtype' => 'html',
 						'charset' => 'utf-8',
 						'newline' => "\r\n"
@@ -40,12 +40,12 @@ class EmailHandler
                     break;
                     case 'production':
                         $config = array(
-                            'protocol' => 'smtp',
+                            'protocol' => getenv('MAIL_MAILER'),
                             '_smtp_auth' => TRUE,
-                            'smtp_host' => 'ssl://serebo.toqueeltimbre.com',
-                            'smtp_port' => 465,
-                            'smtp_user' => 'noreply@serebo.toqueeltimbre.com',
-                            'smtp_pass' => 'i=1b-VBb0#GsrbSU',
+                            'smtp_host' => 'ssl://'.getenv('MAIL_HOST'),
+                            'smtp_port' => getenv('MAIL_PORT'),
+                            'smtp_user' => getenv('MAIL_USERNAME'),
+							'smtp_pass' => getenv('MAIL_PASSWORD'),
                             'mailtype' => 'html',
                             'charset' => 'utf-8',
                             'newline' => "\r\n",

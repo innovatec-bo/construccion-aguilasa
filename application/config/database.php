@@ -70,15 +70,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = ENVIRONMENT;
+$active_group = 'default';
 $query_builder = TRUE;
 
-$db['development'] = array(
+$db['default'] = [
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'admin',
-	'password' => '123456',
-	'database' => 'serebo2',
+	'hostname' => getenv('DB_HOST'),
+	'username' => getenv('DB_USER'),
+	'password' => getenv('DB_PASSWORD'),
+	'database' => getenv('DB_NAME'),
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -91,28 +91,6 @@ $db['development'] = array(
 	'encrypt' => FALSE,
 	'compress' => FALSE,
 	'stricton' => FALSE,
-	'failover' => array(),
+	'failover' => [],
 	'save_queries' => TRUE
-);
-
-$db['production'] = array(
-    'dsn'	=> '',
-    'hostname' => 'localhost',
-    'username' => 'toqueelt_serebo2',
-    'password' => 'EC?693W3C?pv',
-    'database' => 'toqueelt_serebo2',
-    'dbdriver' => 'mysqli',
-    'dbprefix' => '',
-    'pconnect' => FALSE,
-    'db_debug' => (ENVIRONMENT !== 'production'),
-    'cache_on' => FALSE,
-    'cachedir' => '',
-    'char_set' => 'utf8',
-    'dbcollat' => 'utf8_general_ci',
-    'swap_pre' => '',
-    'encrypt' => FALSE,
-    'compress' => FALSE,
-    'stricton' => FALSE,
-    'failover' => array(),
-    'save_queries' => TRUE
-);
+];
