@@ -45,7 +45,7 @@ class EmailHandler
                             'smtp_host' => 'ssl://serebo.toqueeltimbre.com',
                             'smtp_port' => 465,
                             'smtp_user' => 'noreply@serebo.toqueeltimbre.com',
-                            'smtp_pass' => 'p9VOu&X6n!tD',
+                            'smtp_pass' => 'i=1b-VBb0#GsrbSU',
                             'mailtype' => 'html',
                             'charset' => 'utf-8',
                             'newline' => "\r\n",
