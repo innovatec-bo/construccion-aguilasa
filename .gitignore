@@ -34,7 +34,7 @@ assets/uploads/
 assets/cronjob/
 .env
 serebo.code-workspace
-.htaccess
+/.htaccess
 error_log
 .user.ini
 php.ini
