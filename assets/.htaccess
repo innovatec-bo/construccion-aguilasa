@@ -1,13 +1,13 @@
-php_flag engine off
-
+# 1. Deshabilitar listado de directorios
 Options -Indexes
 
-<Files *.php>
-    Order deny,allow
-    Deny from all
-</Files>
-
-<Files ~ "\.(cgi|pl|py|sh|phtml|php5|php7|php8)$">
-    Order allow,deny
-    Deny from all
-</Files>
+# 2. Bloquear ejecución de scripts (Solo bloquea los ejecutables, NO toca css/js/imágenes)
+<FilesMatch "\.(php|php5|php7|php8|phtml|cgi|pl|py|sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
