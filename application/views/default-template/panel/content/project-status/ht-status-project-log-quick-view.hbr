@@ -53,6 +53,15 @@
 
                         {{#ifCond keyword_pst "==" "schedule"}}
 
+                            <dt>Con poda</dt>
+                            <dd>
+                                {{#ifCond trim_tree_prb "==" 1}}
+                                     Si
+                                {{/ifCond}}
+                                {{#ifCond trim_tree_prb "==" 0}}
+                                    No
+                                {{/ifCond}}
+                            </dd>
                             <dt>Total Importe Tentativo</dt>
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat tentative_total_budget_prb}}</span></dd>
                             <dt>Importe de diseño Tentativo</dt>

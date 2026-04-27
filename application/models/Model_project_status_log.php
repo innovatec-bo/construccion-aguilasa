@@ -56,6 +56,7 @@ class Model_project_status_log extends Model_project_status_log_base
             live_line_prb,
             right_of_way_prb,
             manpower_file_id_prb,
+            trim_tree_prb,
             mpf.hash_fil file_hash,
             start_date_cas,
             end_date_cas,
