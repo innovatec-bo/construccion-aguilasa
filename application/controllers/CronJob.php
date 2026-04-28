@@ -219,12 +219,12 @@ class CronJob extends PublicController
 			$reports = ['allProjectsLog'];
 			$response = Model_user::sendDailyReports($reports, 'Reportes diarios parte 2');
 
-			// foreach ($reports as $name) 
-			// {
-			// 	$report = $response[$name];
-			// 	$report->removeFile();
-			// 	unset($response[$name]);
-			// }
+			foreach ($reports as $name) 
+			{
+				$report = $response[$name];
+				$report->removeFile();
+				unset($response[$name]);
+			}
 
 			$response = print_r($response, true);
 			$this->_saveInLogV2($response);
