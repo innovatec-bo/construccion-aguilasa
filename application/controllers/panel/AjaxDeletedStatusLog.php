@@ -43,7 +43,8 @@ class AjaxDeletedStatusLog extends PrivateController
             //Let's get and delete the status log ID
             /** @var Model_project_status_log $projectStatusLog */
 			$projectStatusLog = Model_project_status_log::getById($projectStatusLogId);
-            if($projectStatusLog->getProjectStatus() == 11 && $this->sessionUser->id != 1)
+            //Only Jair and Mario can delete 'Aprobado' status log
+            if($projectStatusLog->getProjectStatus() == 11 && !in_array($this->sessionUser->id, [1,2]))
             {
                 $response["success"] = 0;
                 $response["message"] = "No tiene permiso para borrar el estado de 'Aprobado'";

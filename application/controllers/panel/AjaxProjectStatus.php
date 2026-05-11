@@ -972,7 +972,7 @@ class AjaxProjectStatus extends PrivateController
         $response["success"] = 1;
         $response["message"] = "";
         $response["data"] = $data;
-        echo json_encode($response);
+        echo json_encode($response);exit;
 
     }
 
