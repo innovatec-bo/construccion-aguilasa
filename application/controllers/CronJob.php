@@ -59,7 +59,7 @@ class CronJob extends PublicController
 
 	public function netBuildingEmail($challenge = "nbreport2019")
     {
-        if($challenge == "nbreport2019###")
+        if($challenge == "nbreport2019")
         {
             // Model_user::netBuildingEmail();
         }
@@ -67,7 +67,7 @@ class CronJob extends PublicController
 
     public function registerExecutiveSummaryLog($challenge = "eslog")
     {
-        if($challenge == "eslog###")
+        if($challenge == "eslog")
         {
             $executiveSummary = Model_project::prepareExecutiveSummaryArray();
             Model_executive_summary_log::saveLog($executiveSummary);
@@ -76,7 +76,7 @@ class CronJob extends PublicController
 
     public function clarificationEmail($challenge)
     {
-        if($challenge == 'clarificationEmail2019###')
+        if($challenge == 'clarificationEmail2019')
         {
 //            Model_user::emailClarification();
         }
@@ -86,7 +86,7 @@ class CronJob extends PublicController
     { 
 		set_time_limit(240);
 		ini_set('memory_limit','512M');
-        if($challenge == 'notifyProjectStatusToCreFiscal2019###')
+        if($challenge == 'notifyProjectStatusToCreFiscal2019')
         {
             $fiscalListToNotify = Model_project::creFiscalProjectStatusReminder();
 //            $codeList = array_column($fiscalListToNotify[1000]['statusListToNotify']['project_return_materials'],'code_pro');
@@ -109,7 +109,7 @@ class CronJob extends PublicController
     { 
 		set_time_limit(240);
 		ini_set('memory_limit','512M');
-        if($challenge == 'notifyProjectStatusToSereboFiscal2019###')
+        if($challenge == 'notifyProjectStatusToSereboFiscal2019')
         {
             $fiscalListToNotify = Model_project::sereboFiscalProjectStatusReminder();
 			$response = array();
@@ -128,7 +128,7 @@ class CronJob extends PublicController
 
     public function notifyProjectsByStatusToInternalMembers($challenge)
     { 
-        if($challenge == 'notifyProjectsByStatusToInternalMembers2019###')
+        if($challenge == 'notifyProjectsByStatusToInternalMembers2019')
         {
             $statusToNotify = array("approved","project_has_been_created");
             $projectListFiltered = array();
@@ -161,7 +161,7 @@ class CronJob extends PublicController
 
 	public function sendExecutiveReport($challenge)
 	{ 
-		if($challenge == 'sendExecutiveReport2020###')
+		if($challenge == 'sendExecutiveReport2020')
 		{
 			$response = Model_user::sendExecutiveReport();
 			if($response['success'] == 1)
@@ -177,7 +177,7 @@ class CronJob extends PublicController
 
 	public function sendInternalExecutiveReport($challenge)
 	{
-		if($challenge == 'sendInternalExecutiveReport2020###')
+		if($challenge == 'sendInternalExecutiveReport2020')
 		{
 			$response = Model_user::sendInternalExecutiveReport();
 			if($response['success'] == 1)
