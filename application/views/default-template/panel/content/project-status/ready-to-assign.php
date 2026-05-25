@@ -151,28 +151,26 @@ foreach($responsibleListBuilder as $responsible)
                         <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
-                                    <label>Fiscal(es)</label>
-                                    <br><em>El constructor será asignado por el fiscal.</em>
+                                    <label>Fiscal(es)</label><em>El constructor será asignado por el fiscal.</em>
                                     <div class="form-group">
-                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1">
-                                            <?php
-                                            echo $fiscalHtml;
-                                            ?>
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list1" required="" data-parsley-errors-container="#error-fiscal-list">
+                                            <?php echo $fiscalHtml; ?>
                                         </select>
+                                        <div id="error-fiscal-list"></div>
                                     </div>
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="row hide">
+                        <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
-                                    <label>Constructore(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label>
+                                    <!-- <label>Constructor(s) <a href="#" class="check-stakes-team"><i class="fa fa-question-circle"></i></a></label> -->
+                                    <label>Constructor(es)</label><em>El campo "fiscal" se actualiza al elegir un constructor, esto por que cada constructor tiene un fiscal y el sistema trata de emparejarlos, por supuesto, se puede colocar un fiscal distinto al que sugiere el sistema.</em>
                                     <div class="form-group">
-                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list2">
-                                            <?php
-                                            echo $builderHtml;
-                                            ?>
+                                        <select class="form-control ajax-get-responsible-list" multiple="multiple" parsley-trigger="change" id="ajax-get-responsible-list2" required="" data-parsley-errors-container="#error-builder-list">
+                                            <?php echo $builderHtml; ?>
                                         </select>
+                                        <div id="error-builder-list"></div>
                                         <input type="hidden" name="responsible-list" value="">
                                     </div>
                                 </fieldset>
