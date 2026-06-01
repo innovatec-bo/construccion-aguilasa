@@ -17,10 +17,12 @@ class AjaxSummary extends PrivateController
 		ini_set('memory_limit', '512M');
 		$additionalParameters = $this->input->post('additionalParameters')??[];
 		$response = $this->_is("fiscal");
-		if($response == 1)
+		$specialPermissions = [2,116,128];//Mario Aguilera, Fernando Baigorria, Santiago Heredia
+		if($response == 1 && !in_array($this->sessionUser->id, $specialPermissions))
 		{
 			$additionalParameters["fiscal-id"] = $this->sessionUser->id;
 		}
+		
 		$additionalParameters["created-by"] = $this->sessionUser->id;
 		$additionalParameters['summary-type-keyword'] = $type;
 		$dt = new JqdtHandler($this->input->post());
