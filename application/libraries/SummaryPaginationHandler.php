@@ -19,7 +19,7 @@ class SummaryPaginationHandler extends BasePaginationHandler
 		$currentUser = PrivateController::getSessionUser();
         $currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 
-		return "
+		$sql = "
 			(
 				SELECT
 					".static::TABLE_NAME.".*,
@@ -43,6 +43,8 @@ class SummaryPaginationHandler extends BasePaginationHandler
 				GROUP BY ".static::TABLE_ID."	 
 			) ".static::TABLE_NAME."_master_detail
 		";
+
+		return $sql;
 	}
 
 	/**

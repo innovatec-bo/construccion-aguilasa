@@ -14,6 +14,7 @@ class AjaxSummary extends PrivateController
 
 	public function ajaxDtAllSummaries($type)
 	{
+		ini_set('memory_limit', '512M');
 		$additionalParameters = $this->input->post('additionalParameters')??[];
 		$response = $this->_is("fiscal");
 		if($response == 1)
