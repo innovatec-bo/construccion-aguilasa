@@ -124,13 +124,17 @@ class MaterialSummary extends PrivateController
         $summaryType = array_values($summaryType);
         $this->_tabTitle = $summaryType[0]->getName();
         $isFiscal = $this->_is('fiscal');
-        if($isFiscal == 1)
+        $isAdmin = $this->_is('admin');
+        $isSuperAdmin = $this->_is('super_admin');
+
+        $specialPermissions = [2,116,128];//Mario Aguilera, Fernando Baigorria, Santiago Heredia
+        if($isAdmin == 1 || $isSuperAdmin == 1 || in_array($this->sessionUser->id, $specialPermissions))
         {
-            $fiscalList = [Model_user::getById($this->sessionUser->id)];
+            $fiscalList = Model_user::getByRoleKeyword('fiscal');
         }
         else
         {
-            $fiscalList = Model_user::getByRoleKeyword('fiscal');
+            $fiscalList = [Model_user::getById($this->sessionUser->id)];
         }
         $data['fiscalList'] = $fiscalList;
         $data['builderList'] = Model_user::getByRoleKeyword('builder');
