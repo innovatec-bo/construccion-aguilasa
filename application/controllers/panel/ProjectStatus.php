@@ -267,7 +267,7 @@ class ProjectStatus extends PrivateController
         $this->_loadPanelView("project/index",$data);
     }
 
-    public function assignProject($projectId)
+    public function assignProject(int $projectId)
     {
         $this->_validateFeature('project_status_assign_project');
         $project = $this->_validateObjectToEdit($projectId, "Model_project", "panel/Home");
