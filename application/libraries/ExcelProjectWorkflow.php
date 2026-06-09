@@ -271,7 +271,7 @@ class ExcelProjectWorkflow
                     $cellValue = $rowData[$arrayKeys[$i]];
                     if ($arrayKeys[$i] == "trim_tree") 
                     {
-                        $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'Si' : 'No';
+                        $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'si' : 'no';
                     }
 
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $cellValue);
@@ -286,18 +286,6 @@ class ExcelProjectWorkflow
 								->getStartColor()->setRGB('fb9901');
 						}
 					}
-
-                    // if($arrayKeys[$i] == "trim_tree")
-                    // {
-                    //     if(isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1")
-                    //     {
-                    //         $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'Si');
-                    //     }
-                    //     else
-                    //     {
-                    //         $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'No');
-                    //     }
-                    // }
 
                     if ($rowNumber == ($this->startDataRow() + 1))
                     {
