@@ -590,7 +590,7 @@ class PrivateController extends PublicController
             // 'payment_order_registered_contract_number' => "CONTRATO FINAL",
             'final_contract_number_con' => "CONTRATO FINAL",
             'minor_enlargement' => 'AMPLIACION MENOR',
-            // 'trim_tree' => 'PODA DE ARBOL'
+            'trim_tree' => 'PODA DE ARBOL'
         );
         return $columnList;
     }
