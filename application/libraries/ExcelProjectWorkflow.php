@@ -251,7 +251,7 @@ class ExcelProjectWorkflow
 
     private function _drawRow($spreadsheet, $rowNumber, $rowData = FALSE)
     {
-        $arrayRounds = array("","A","B","C");
+        $arrayRounds = array("","A","B","C","D");
         $arrayAlphabet = range("A","Z");
         $maxColumn = count($this->_columnDefinition);
         $arrayTitles = array_values($this->_columnDefinition);
