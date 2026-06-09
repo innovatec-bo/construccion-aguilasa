@@ -281,6 +281,18 @@ class ExcelProjectWorkflow
 						}
 					}
 
+                    if($arrayKeys[$i] == "trim_tree")
+                    {
+                        if($rowData[$arrayKeys[$i]] == "1")
+                        {
+                            $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'Si');
+                        }
+                        else
+                        {
+                            $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'No');
+                        }
+                    }
+
                     if ($rowNumber == ($this->startDataRow() + 1))
                     {
                         //Let's start our counter
