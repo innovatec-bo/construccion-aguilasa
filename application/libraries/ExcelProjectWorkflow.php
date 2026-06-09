@@ -268,7 +268,13 @@ class ExcelProjectWorkflow
                 }
                 else
                 {
-                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $rowData[$arrayKeys[$i]]);
+                    $cellValue = $rowData[$arrayKeys[$i]];
+                    if ($arrayKeys[$i] == "trim_tree") 
+                    {
+                        $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'Si' : 'No';
+                    }
+
+                    $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $cellValue);
 					if($arrayKeys[$i] == "initial_contract_number_con" && $rowData[$arrayKeys[$i]] == "461-0002/199")
 					{
 						$columnPaymentStatus = $this->_getExcelColumnByDataKey("payment_status");
@@ -281,17 +287,17 @@ class ExcelProjectWorkflow
 						}
 					}
 
-                    if($arrayKeys[$i] == "trim_tree")
-                    {
-                        if(isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1")
-                        {
-                            $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'Si');
-                        }
-                        else
-                        {
-                            $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'No');
-                        }
-                    }
+                    // if($arrayKeys[$i] == "trim_tree")
+                    // {
+                    //     if(isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1")
+                    //     {
+                    //         $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'Si');
+                    //     }
+                    //     else
+                    //     {
+                    //         $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, 'No');
+                    //     }
+                    // }
 
                     if ($rowNumber == ($this->startDataRow() + 1))
                     {
