@@ -113,7 +113,7 @@ class ProjectsLocationHandler
         let latitude = parseFloat(project.project_latitude);
         let longitude = parseFloat(project.project_longitude);
         let position = {lat: latitude, lng: longitude};
-        let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png', 35);
+        let markerImage = base_url+'assets/images/google-maps-marker.png';
         let marker = new google.maps.Marker({
             position: position,
             map: _this._map,

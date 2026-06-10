@@ -79,7 +79,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
         var latitude = parseFloat(project.project_latitude);
         var longitude = parseFloat(project.project_longitude);
         var position = { lat: latitude, lng: longitude };
-        var markerImage = timbthumbImage(base_url + 'assets/images/google-maps-marker.png', 35);
+        var markerImage = base_url + 'assets/images/google-maps-marker.png';
         var marker = new google.maps.Marker({
             position: position,
             map: _this._map,
