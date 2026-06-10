@@ -17,7 +17,7 @@ var MapsHandler = /** @class */ (function () {
         if (centerMarker === void 0) { centerMarker = false; }
         var _this = this;
         var position = { lat: latitude, lng: longitude };
-        var markerImage = timbthumbImage(base_url + 'assets/images/google-maps-marker.png', 35);
+        var markerImage = base_url + 'assets/images/google-maps-marker.png';
         this._uniqueMarker = new google.maps.Marker({
             position: position,
             map: _this._map,

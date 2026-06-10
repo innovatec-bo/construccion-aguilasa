@@ -39,7 +39,7 @@ class MapsHandler
     {
         let _this : MapsHandler = this;
         let position = {lat: latitude, lng: longitude};
-        let markerImage = timbthumbImage(base_url+'assets/images/google-maps-marker.png',35);
+        let markerImage = base_url+'assets/images/google-maps-marker.png';
         this._uniqueMarker = new google.maps.Marker({
             position: position,
             map: _this._map,
