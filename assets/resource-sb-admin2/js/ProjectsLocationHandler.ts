@@ -118,7 +118,15 @@ class ProjectsLocationHandler
             position: position,
             map: _this._map,
             // animation: google.maps.Animation.DROP,
-            icon: markerImage
+            icon: {
+                url: markerImage,
+                // 1. Tamaño visual en el mapa (Ancho, Alto)
+                scaledSize: new google.maps.Size(32, 32), 
+                // 2. Tamaño original del archivo (opcional, igual al anterior si se escala)
+                size: new google.maps.Size(32, 32),       
+                // 3. Punto de anclaje (opcional: '0,32' sitúa la base del icono en la coordenada )
+                anchor: new google.maps.Point(16, 32)     
+            }
           });
 
         let htmlSource = $("#location-info-window").html();
