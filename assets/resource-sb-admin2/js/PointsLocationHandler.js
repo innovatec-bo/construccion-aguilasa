@@ -1,3 +1,4 @@
+"use strict";
 var PointsLocationHandler = /** @class */ (function () {
     function PointsLocationHandler(divContent, projectId) {
         this.divContent = divContent;

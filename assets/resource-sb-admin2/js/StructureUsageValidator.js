@@ -1,3 +1,4 @@
+"use strict";
 var StructureUsageValidator = /** @class */ (function () {
     function StructureUsageValidator(formName) {
         this.formName = formName;

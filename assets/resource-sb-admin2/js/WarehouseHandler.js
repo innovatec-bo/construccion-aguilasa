@@ -1,3 +1,4 @@
+"use strict";
 var WarehouseHandler = /** @class */ (function () {
     function WarehouseHandler() {
         this._projectMaterialSummary = [];

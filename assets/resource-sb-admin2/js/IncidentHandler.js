@@ -1,3 +1,4 @@
+"use strict";
 var IncidentHandler = /** @class */ (function () {
     function IncidentHandler() {
         this._buttonAdd = ".add-incident";

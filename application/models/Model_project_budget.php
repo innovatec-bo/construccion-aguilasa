@@ -12,7 +12,7 @@ class Model_project_budget extends Model_project_budget_base
 		parent::__construct($statusLogId, $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $manpowerFileId, $buildingStructureFileId, $materialsFileId, $trimTree);
 	}
 
-	public static function getByStatusLogId($statusLogId)
+	public static function getByStatusLogId(int $statusLogId)
     {
         $ci = &get_instance();
         $ci->load->database();

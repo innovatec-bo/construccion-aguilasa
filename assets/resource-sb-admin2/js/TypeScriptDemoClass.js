@@ -1,3 +1,4 @@
+"use strict";
 var TypeScriptDemoClass = /** @class */ (function () {
     function TypeScriptDemoClass() {
     }

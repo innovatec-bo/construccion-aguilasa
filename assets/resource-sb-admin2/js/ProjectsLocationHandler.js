@@ -1,3 +1,4 @@
+"use strict";
 var ProjectsLocationHandler = /** @class */ (function () {
     function ProjectsLocationHandler(divContent) {
         this.divContent = divContent;

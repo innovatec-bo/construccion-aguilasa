@@ -6,40 +6,44 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class ManpowerFileReader
 {
-    private $_projectId;
-    private $_file;
-    private $_excelArrayData;
-    private $_designBudgetIdentifiers;
-    private $_buildingBudgetIdentifiers;
-    private $_transportationBudgetIdentifiers;
-    private $_liveLineBudgetIdentifiers;
-    private $_rightOfWayBudgetIdentifiers;
-    private $_designBudget;
-    private $_buildingBudget;
-    private $_transportationBudget;
-    private $_liveLineBudget;
-    private $_rightOfWayBudget;
-    private $_graphNumber;
-    private $_levelOfTension;
-    private $_destiny;
-    private $_structureListFromExcelFile;
-    private $_pointList;
-    private $_pointToPointToSave;
-    private $_manpowerStatusId;
-    private $_isBuildingFile = FALSE;
-    private $_isCorrectFile = FALSE;
+    private int $_projectId;
+    private Model_file $_file;
+    private array $_excelArrayData;
+    private array $_designBudgetIdentifiers;
+    private array $_buildingBudgetIdentifiers;
+    private array $_transportationBudgetIdentifiers;
+    private array $_liveLineBudgetIdentifiers;
+    private array $_rightOfWayBudgetIdentifiers;
+    private array $_trimTreeIdentifiers;
+    private float $_designBudget;
+    private float $_buildingBudget;
+    private float $_transportationBudget;
+    private float $_liveLineBudget;
+    private float $_rightOfWayBudget;
+    private string $_graphNumber;
+    private string $_levelOfTension;
+    private string $_destiny;
+    private array $_structureListFromExcelFile;
+    private array $_pointList;
+    private array $_pointToPointToSave;
+    private int $_manpowerStatusId;
+    private bool $_isBuildingFile = FALSE;
+    private bool $_isCorrectFile = FALSE;
+    private string $_message;
+    private bool $_hasTrimTree = FALSE;
 
-    public function __construct($projectId, Model_file $file, Model_file $pointToPointFile = NULL)
+    public function __construct(int $projectId, Model_file $file, ?Model_file $pointToPointFile = NULL)
 	{
 	    $this->_projectId = $projectId;
         $this->_file = $file;
         $this->_setExcelArrayData();
-        $this->_designBudgetIdentifiers = array('ERU', 'ERU_B', 'ERR');
-        $this->_pointList = array();
+        $this->_designBudgetIdentifiers = ['ERU', 'ERU_B', 'ERR'];
+        $this->_pointList = [];
         $this->_setBuildingBudgetIdentifiers($pointToPointFile);
-        $this->_transportationBudgetIdentifiers = array('CTPH-M', 'CTPH-B');
-        $this->_liveLineBudgetIdentifiers = array('lv');
-        $this->_rightOfWayBudgetIdentifiers = array('R1');
+        $this->_transportationBudgetIdentifiers = ['CTPH-M', 'CTPH-B'];
+        $this->_liveLineBudgetIdentifiers = ['lv'];
+        $this->_rightOfWayBudgetIdentifiers = ['R1'];
+        $this->_trimTreeIdentifiers = ['M22-2M','M22-1B','M22-2B','M22-1M'];
         $this->_designBudget = 0;
         $this->_buildingBudget = 0;
         $this->_transportationBudget = 0;
@@ -51,6 +55,7 @@ class ManpowerFileReader
         $this->_setStructureListFromExcelFile();
         $this->_setDataFromExcelFile();
         $this->_manpowerStatusId = 11;//Approved
+        $this->_message = "";
 	}
 
 	private function _setExcelArrayData()
@@ -138,27 +143,27 @@ class ManpowerFileReader
             if(strpos(strtolower($data[0]),'grafo') !== FALSE)
             {
                 $haystack = array_values(array_filter(explode(" ",$data[0])));
-                foreach ($haystack as $index => $value)
+                foreach ($haystack as $j => $value)
                 {
                     if (preg_match('/.*grafo.*/i', strtolower($value)))
                     {
-                        $this->_graphNumber = trim($haystack[$index+1]);
+                        $this->_graphNumber = trim($haystack[$j+1]);
                     }
 
                     if (preg_match('/.*tension.*/i', strtolower($value)))
                     {
-                        $this->_levelOfTension = trim($haystack[$index+1]);
+                        $this->_levelOfTension = trim($haystack[$j+1]);
                     }
                 }
             }
             if(strpos(strtolower($data[0]),'destino') !== FALSE)
             {
                 $haystack = array_values(array_filter(explode(":",$data[0])));
-                foreach ($haystack as $index => $value)
+                foreach ($haystack as $j => $value)
                 {
                     if(preg_match('/.*destino.*/i', strtolower($value)))
                     {
-                        $this->_destiny = trim($haystack[$index+1]);
+                        $this->_destiny = trim($haystack[$j+1]);
                         break;
                     }
                 }
@@ -217,27 +222,31 @@ class ManpowerFileReader
                 //If the point to point file is playing then out building budget identifier array is filled
                 if(count($this->_buildingBudgetIdentifiers) > 0)
                 {
-
                     if(in_array($structure, $this->_buildingBudgetIdentifiers))
                     {
-//                        echo "<pre>";var_dump($this->_buildingBudgetIdentifiers, $structure, $amount, $this->_buildingBudget);exit;
+                        //echo "<pre>";var_dump($this->_buildingBudgetIdentifiers, $structure, $amount, $this->_buildingBudget);exit;
                         $this->_buildingBudget += $amount;
                     }
                 }
                 else
                 {
-//                    echo"<pre>";var_dump('there is not data in building budget identifiers');exit;
+                    //echo"<pre>";var_dump('there is not data in building budget identifiers');exit;
                     //If the line isn't in the others budgets then add to building budget
                     if($addToBuildingBudget)
                     {
                         $this->_buildingBudget += $amount;
                     }
                 }
+
+                if(in_array($structure, $this->_trimTreeIdentifiers))
+                {
+                    $this->_hasTrimTree = TRUE;
+                }
             }
         }
     }
 
-    public function setManpowerStatusId($statusId)
+    public function setManpowerStatusId(int $statusId)
     {
         $this->_manpowerStatusId = $statusId;
     }
@@ -287,9 +296,14 @@ class ManpowerFileReader
         return $this->_destiny;
     }
 
+    public function getMessage()
+    {
+        return $this->_message;
+    }
+
     public function registerManpowerInSystem()
     {
-        $laborCostToSave = array();
+        $laborCostToSave = [];
         $laborDetail = Model_labor_detail::getByProjectId($this->_projectId, $this->_manpowerStatusId);
         //Delete existing labor datail if it is distinct to approved status
         if($this->_manpowerStatusId != 11)
@@ -301,7 +315,6 @@ class ManpowerFileReader
             }
         }
         
-
         //If the labor detail does not exist for the project then let's create it and add its labor cost list
         if(!$laborDetail instanceof Model_labor_detail)
         {
@@ -352,6 +365,31 @@ class ManpowerFileReader
             }
             if(count($laborCostToSave))
                 Model_labor_cost::insertBatch($laborCostToSave);
+        }
+
+        $schedule = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($this->_projectId, 'schedule');
+        if (is_array($schedule) && count($schedule) > 0)
+        {
+            $projectBudget = Model_project_budget::getByStatusLogId($schedule[0]['id_psl']);
+            if($this->_hasTrimTree && $projectBudget->getTrimTree() == 0)
+            {
+                $projectBudget->setTrimTree(1);
+                $projectBudget->save();
+                $this->_message = "Poda corregida de 'Sin Poda' a 'Con Poda'.";
+            }
+            elseif(!$this->_hasTrimTree && $projectBudget->getTrimTree() == 1)
+            {
+                $projectBudget->setTrimTree(0);
+                $projectBudget->save();
+                $this->_message = "Poda corregida de 'Con Poda' a 'Sin Poda'.";
+            }
+        }
+        else
+        {
+            if ($this->_hasTrimTree) 
+            {
+                $this->_message = "La mano de obra indica PODA, pero el proyecto no tiene datos de cronograma.";
+            }
         }
     }
 

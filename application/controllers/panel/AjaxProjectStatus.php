@@ -405,7 +405,7 @@ class AjaxProjectStatus extends PrivateController
         $manpowerFileId = $formData["manpowerFileId"] == ''?NULL:$formData["manpowerFileId"];
         $pointToPointFileId = $formData["pointToPointFileId"] == ''?NULL:$formData["pointToPointFileId"];
         $materialsFileId = $formData["materialsFileId"] == ''?NULL:$formData["materialsFileId"];
-        /** @var $project Model_project*/
+
         $project = Model_project::getById($projectId);
         $project->setStatus($statusId);
         $project->setSecondaryCode($secondaryCode);
@@ -464,6 +464,7 @@ class AjaxProjectStatus extends PrivateController
         }
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
+        $response['manpowerFileMessage'] = isset($manpowerFileReader)?$manpowerFileReader->getMessage():'';
         echo json_encode($response);exit;
     }
 
@@ -1027,6 +1028,7 @@ class AjaxProjectStatus extends PrivateController
                     
                 $response['success'] = 1;
                 $response['message'] = '';
+                $response['manpowerFileMessage'] = isset($manpowerFileReader)?$manpowerFileReader->getMessage():'';
                 $response['data']['file']['id'] = $document->getId();
                 $response['data']['budget']['design'] = $manpowerFileReader->getDesignBudget();
                 $response['data']['budget']['building'] = $manpowerFileReader->getBuildingBudget();

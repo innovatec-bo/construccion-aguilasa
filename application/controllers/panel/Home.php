@@ -17,7 +17,6 @@ class Home extends PrivateController
 
     public function index()
     {
-
 		$this->_validateFeature("home");
         $this->_tabTitle = 'Home';
         $this->complementHandler->addViewComplement("swiper");

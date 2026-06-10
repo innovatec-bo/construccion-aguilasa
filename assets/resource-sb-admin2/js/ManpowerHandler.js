@@ -1,3 +1,4 @@
+"use strict";
 var ManpowerHandler = /** @class */ (function () {
     function ManpowerHandler(projectID) {
         this.projectID = projectID;

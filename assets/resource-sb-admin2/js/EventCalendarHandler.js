@@ -1,3 +1,4 @@
+"use strict";
 var EventCalendarHandler = /** @class */ (function () {
     function EventCalendarHandler() {
         moment.locale('es');

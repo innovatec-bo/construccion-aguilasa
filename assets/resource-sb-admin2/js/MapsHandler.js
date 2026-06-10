@@ -1,3 +1,4 @@
+"use strict";
 var MapsHandler = /** @class */ (function () {
     function MapsHandler(divContent) {
         this.divContent = divContent;

@@ -1,3 +1,4 @@
+"use strict";
 var PointToPointHandler = /** @class */ (function () {
     function PointToPointHandler(projectID) {
         this.projectID = projectID;

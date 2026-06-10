@@ -59,7 +59,8 @@ $(document).ready(function() {
         deleteObject(objectId, url);
     });
     $("[data-toggle=tooltip]").tooltip();
-    // $(document).on("submit","#quick-project-search-form",function(e){
+
+    // $(document).on("click","#quick-button-edit-project",function(e){
     //     e.preventDefault();
     //     let codeList = $("#quick-project-search-input").val();
     //     $.ajax({
@@ -71,7 +72,7 @@ $(document).ready(function() {
     //             if(response.success === 1)
     //             {
     //                 $.each(response.data.projectList, function(index, value){
-    //                     let url = base_url + "panel/ProjectStatus/statusManagement/"+statusSet[value.status]+"/"+value.id;
+    //                     let url = base_url + "panel/Project/edit/"+value.id;
     //                     window.open(url, '_blank');
     //                 });
                     
@@ -80,109 +81,194 @@ $(document).ready(function() {
     //     });
     // });
 
-    $(document).on("click","#quick-button-edit-project",function(e){
-        e.preventDefault();
-        let codeList = $("#quick-project-search-input").val();
-        $.ajax({
-            url : base_url + 'panel/ajaxProject/getByCodeList',
-            dataType  :"json",
-            type : "POST",
-            data:{codeList:codeList},
-            success:function(response){
-                if(response.success === 1)
-                {
-                    $.each(response.data.projectList, function(index, value){
-                        let url = base_url + "panel/Project/edit/"+value.id;
-                        window.open(url, '_blank');
-                    });
+    // $(document).on("click","#quick-button-add-progress-project",function(e){
+    //     e.preventDefault();
+    //     let codeList = $("#quick-project-search-input").val();
+    //     $.ajax({
+    //         url : base_url + 'panel/ajaxProject/getByCodeList',
+    //         dataType  :"json",
+    //         type : "POST",
+    //         data:{codeList:codeList},
+    //         success:function(response){
+    //             if(response.success === 1)
+    //             {
+    //                 $.each(response.data.projectList, function(index, value){
+    //                     let url = base_url + "panel/Project/manpower/"+value.id;
+    //                     window.open(url, '_blank');
+    //                 });
                     
+    //             }
+    //         }
+    //     });
+    // });
+
+    // $(document).on("click","#quick-button-assign-project",function(e){
+    //     e.preventDefault();
+    //     let codeList = $("#quick-project-search-input").val();
+    //     $.ajax({
+    //         url : base_url + 'panel/ajaxProject/getByCodeList',
+    //         dataType  :"json",
+    //         type : "POST",
+    //         data:{codeList:codeList},
+    //         success:function(response){
+    //             if(response.success === 1)
+    //             {
+    //                 $.each(response.data.projectList, function(index, value){
+    //                     let url = base_url + "panel/ProjectStatus/assignProject/"+value.id;
+    //                     window.open(url, '_blank');
+    //                 });
+                    
+    //             }
+    //         }
+    //     });
+    // });
+
+    // $(document).on("click","#quick-button-project-status-management",function(e){
+    //     e.preventDefault();
+    //     let codeInput = $("#quick-project-search-input").val();
+        
+    //     // 1. Convertimos la entrada del usuario en un array de códigos limpios
+    //     // split(/\s+/) divide por uno o más espacios, y filter(Boolean) elimina elementos vacíos
+    //     let searchedCodes = codeInput.trim().split(/\s+/).filter(Boolean);
+
+    //     $.ajax({
+    //         url : base_url + 'panel/ajaxProject/getByCodeList',
+    //         dataType  :"json",
+    //         type : "POST",
+    //         data:{codeList:codeInput},
+    //         success:function(response){
+    //             if(response.success === 1)
+    //             {
+    //                 // 2. Creamos un array con los códigos que SÍ devolvió el servidor
+    //                 let foundCodes = response.data.projectList.map(function(project) {
+    //                     return project.code; 
+    //                 });
+
+    //                 // 3. Abrimos las pestañas para los proyectos encontrados
+    //                 $.each(response.data.projectList, function(index, value){
+    //                     let url = base_url + "panel/ProjectStatus/statusManagement/"+statusSet[value.status]+"/"+value.id;
+    //                     window.open(url, '_blank');
+    //                 });
+
+    //                 // 4. Comparamos lo buscado con lo encontrado para alertar los faltantes
+    //                 $.each(searchedCodes, function(index, code){
+    //                     if (foundCodes.indexOf(code) === -1) {
+    //                         toastr.error('Proyecto no encontrado: ' + code);
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //     });
+    // });
+
+    // $(document).on("click","#quick-setup-button",function(e){
+    //     e.preventDefault();
+    //     let codeList = $("#quick-project-search-input").val();
+    //     $.ajax({
+    //         url : base_url + 'panel/ajaxProject/getByCodeList',
+    //         dataType  :"json",
+    //         type : "POST",
+    //         data:{codeList:codeList},
+    //         success:function(response){
+    //             if(response.success === 1)
+    //             {
+    //                 $.each(response.data.projectList, function(index, value){
+    //                     let url = base_url + "panel/Project/quickSetup/"+value.id;
+    //                     window.open(url, '_blank');
+    //                 });
+                    
+    //             }
+    //         }
+    //     });
+    // });
+
+    // Función genérica para procesar la búsqueda y apertura de proyectos
+    function processProjectAction(actionType) {
+        let codeInput = $("#quick-project-search-input").val();
+        let searchedCodes = codeInput.trim().split(/\s+/).filter(Boolean);
+
+        if (searchedCodes.length === 0) {
+            toastr.warning('Por favor, ingresa al menos un código de proyecto.');
+            return;
+        }
+
+        $.ajax({
+            url: base_url + 'panel/ajaxProject/getByCodeList',
+            dataType: "json",
+            type: "POST",
+            data: { codeList: codeInput },
+            success: function(response) {
+                if (response.success === 1) {
+                    let foundCodes = response.data.projectList.map(function(project) {
+                        return project.code; // Cambiar por tu propiedad real si es distinta (ej: project.codigo)
+                    });
+
+                    // 1. Abrir pestañas dinámicamente según la acción
+                    $.each(response.data.projectList, function(index, value) {
+                        let url = "";
+                        
+                        switch (actionType) {
+                            case 'status-management':
+                                url = base_url + "panel/ProjectStatus/statusManagement/" + statusSet[value.status] + "/" + value.id;
+                                break;
+                            case 'edit':
+                                url = base_url + "panel/Project/edit/" + value.id;
+                                break;
+                            case 'add-progress':
+                                url = base_url + "panel/Project/manpower/" + value.id;
+                                break;
+                            case 'assign':
+                                url = base_url + "panel/ProjectStatus/assignProject/" + value.id;
+                                break;
+                            case 'quick-setup':
+                                url = base_url + "panel/Project/quickSetup/" + value.id;
+                                break;
+                        }
+
+                        if (url !== "") {
+                            window.open(url, '_blank');
+                        }
+                    });
+
+                    // 2. Control de proyectos no encontrados (Válido para cualquier botón)
+                    $.each(searchedCodes, function(index, code) {
+                        if (foundCodes.indexOf(code) === -1) {
+                            toastr.error('Proyecto no encontrado: ' + code);
+                        }
+                    });
                 }
             }
         });
+    }
+
+    // Botón anterior (Gestión de Estado)
+    $(document).on("click", "#quick-button-project-status-management", function(e) {
+        e.preventDefault();
+        processProjectAction('status-management');
     });
 
-    $(document).on("click","#quick-button-add-progress-project",function(e){
+    // Botón de Editar
+    $(document).on("click", "#quick-button-edit-project", function(e) {
         e.preventDefault();
-        let codeList = $("#quick-project-search-input").val();
-        $.ajax({
-            url : base_url + 'panel/ajaxProject/getByCodeList',
-            dataType  :"json",
-            type : "POST",
-            data:{codeList:codeList},
-            success:function(response){
-                if(response.success === 1)
-                {
-                    $.each(response.data.projectList, function(index, value){
-                        let url = base_url + "panel/Project/manpower/"+value.id;
-                        window.open(url, '_blank');
-                    });
-                    
-                }
-            }
-        });
+        processProjectAction('edit');
     });
 
-    $(document).on("click","#quick-button-assign-project",function(e){
+    // Botón de Registrar Progreso
+    $(document).on("click", "#quick-button-add-progress-project", function(e) {
         e.preventDefault();
-        let codeList = $("#quick-project-search-input").val();
-        $.ajax({
-            url : base_url + 'panel/ajaxProject/getByCodeList',
-            dataType  :"json",
-            type : "POST",
-            data:{codeList:codeList},
-            success:function(response){
-                if(response.success === 1)
-                {
-                    $.each(response.data.projectList, function(index, value){
-                        let url = base_url + "panel/ProjectStatus/assignProject/"+value.id;
-                        window.open(url, '_blank');
-                    });
-                    
-                }
-            }
-        });
+        processProjectAction('add-progress');
     });
 
-    $(document).on("click","#quick-button-project-status-management",function(e){
+    // Botón de Asignar Proyecto
+    $(document).on("click", "#quick-button-assign-project", function(e) {
         e.preventDefault();
-        let codeList = $("#quick-project-search-input").val();
-        $.ajax({
-            url : base_url + 'panel/ajaxProject/getByCodeList',
-            dataType  :"json",
-            type : "POST",
-            data:{codeList:codeList},
-            success:function(response){
-                if(response.success === 1)
-                {
-                    $.each(response.data.projectList, function(index, value){
-                        let url = base_url + "panel/ProjectStatus/statusManagement/"+statusSet[value.status]+"/"+value.id;
-                        window.open(url, '_blank');
-                    });
-                    
-                }
-            }
-        });
+        processProjectAction('assign');
     });
 
-    $(document).on("click","#quick-setup-button",function(e){
+    //Quick setup
+    $(document).on("click", "#quick-setup-button", function(e) {
         e.preventDefault();
-        let codeList = $("#quick-project-search-input").val();
-        $.ajax({
-            url : base_url + 'panel/ajaxProject/getByCodeList',
-            dataType  :"json",
-            type : "POST",
-            data:{codeList:codeList},
-            success:function(response){
-                if(response.success === 1)
-                {
-                    $.each(response.data.projectList, function(index, value){
-                        let url = base_url + "panel/Project/quickSetup/"+value.id;
-                        window.open(url, '_blank');
-                    });
-                    
-                }
-            }
-        });
+        processProjectAction('quick-setup');
     });
 
     $(document).on('click','.show-materials-summary', function(){

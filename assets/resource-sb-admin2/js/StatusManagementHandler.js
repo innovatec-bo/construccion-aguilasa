@@ -1,3 +1,4 @@
+"use strict";
 var StatusManagementHandler = /** @class */ (function () {
     function StatusManagementHandler(projectStatusSet, projectID) {
         this.projectStatusSet = projectStatusSet;
@@ -727,7 +728,10 @@ var StatusManagementHandler = /** @class */ (function () {
             dataType: "json",
             type: "POST",
             data: dataResult,
-            success: function () {
+            success: function (response) {
+                if (response.manpowerFileMessage != "") {
+                    toastr.info(response.manpowerFileMessage);
+                }
                 _this.loadView();
             }
         });
@@ -1006,6 +1010,9 @@ var StatusManagementHandler = /** @class */ (function () {
                         var projectBudgetId = $("input[name=project-budget-id]").val();
                         //If projectBudgetId is setup then we are processing for a project with already budget data
                         if (projectBudgetId != "") {
+                            if (response.manpowerFileMessage != "") {
+                                toastr.info(response.manpowerFileMessage);
+                            }
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);
                         }

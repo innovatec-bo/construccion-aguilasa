@@ -863,7 +863,12 @@ class StatusManagementHandler
             dataType  :"json",
             type : "POST",
             data : dataResult,
-            success:function(){
+            success:function(response){
+                if (response.manpowerFileMessage != "") 
+                {
+                    toastr.info(response.manpowerFileMessage);
+                }
+
                 _this.loadView();
             }
         });
@@ -1196,6 +1201,11 @@ class StatusManagementHandler
                         //If projectBudgetId is setup then we are processing for a project with already budget data
                         if(projectBudgetId != "")
                         {
+                            if (response.manpowerFileMessage != "") 
+                            {
+                                toastr.info(response.manpowerFileMessage);
+                            }
+
                             _this.projectLog();
                             _this.loadStatusForm('approved', 0);
                         }

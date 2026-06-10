@@ -30,7 +30,7 @@ class Model_project_status_log extends Model_project_status_log_base
         return $result;
     }
 
-    public static function getLogByProjectId($projectId)
+    public static function getLogByProjectId(int $projectId)
     {
         $ci = &get_instance();
         $ci->load->database();
@@ -138,7 +138,7 @@ class Model_project_status_log extends Model_project_status_log_base
         return $result;
     }
 
-    public static function getLogByProjectIdAndStatusKeyWord($projectId, $statusKeyword)
+    public static function getLogByProjectIdAndStatusKeyWord(int $projectId, string $statusKeyword)
     {
         $ci = &get_instance();
         $ci->load->database();

@@ -1,3 +1,4 @@
+"use strict";
 var WorkPlanHandler = /** @class */ (function () {
     function WorkPlanHandler() {
         moment.locale('es');

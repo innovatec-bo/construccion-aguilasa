@@ -520,7 +520,8 @@ class AjaxProject extends PrivateController
             $row = $row->toArray();
             $projectData[] = array(
                 "id" => $row["id_pro"],
-                "status" => $row["status_pro"]
+                "status" => $row["status_pro"],
+                'code' => $row['code_pro']
             );
         }
         $result['success'] = 1;
