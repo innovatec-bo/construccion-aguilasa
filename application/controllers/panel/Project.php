@@ -958,7 +958,7 @@ class Project extends PrivateController
 			Model_default_structure_material::insertBatch($dataToSave);
 	}
 
-	public function quickSetup($projectId)
+	public function quickSetup(int $projectId)
 	{
 		$this->_validateFeature('project_edit');
 		/** @var Model_project $project */

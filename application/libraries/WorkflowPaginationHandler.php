@@ -461,8 +461,8 @@ class WorkflowPaginationHandler extends BasePaginationHandler
             'end_date_assigned' => ['column' => 'assign_to.end_date_cas end_date_assigned', 'dependencies' => ['assign_to']],
             'estimated_time_assigned' => ['column' => 'assign_to.estimated_time_cas estimated_time_assigned', 'dependencies' => ['assign_to']],
 
-            'builder_responsible' => ['column' => 'in_progress.builder_responsible builder_responsible', 'dependencies' => ['in_progress']],
-            'builder_responsible_id' => ['column' => 'in_progress.builder_responsible_id builder_responsible_id', 'dependencies' => ['in_progress']],
+            'builder_responsible' => ['column' => 'IF(in_progress.builder_responsible is NULL, assign_to.builder_responsible, in_progress.builder_responsible) builder_responsible', 'dependencies' => ['in_progress', 'assign_to']],
+            'builder_responsible_id' => ['column' => 'IF(in_progress.builder_responsible_id is null, assign_to.builder_responsible_id, in_progress.builder_responsible_id) builder_responsible_id', 'dependencies' => ['in_progress','assign_to']],
             'builder_responsible_user_id' => ['column' => 'in_progress.responsible_user_id builder_responsible_user_id', 'dependencies' => ['in_progress']],
             'in_progress_date' => ['column' => 'in_progress.entry_date in_progress_date', 'dependencies' => ['in_progress']],
 
