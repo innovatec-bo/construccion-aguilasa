@@ -17,6 +17,20 @@ class Home extends PrivateController
 
     public function index()
     {
+        // $builders = Model_user::getByRoleKeyword('builder');
+        // $buildersEmail = [];
+        // foreach ($builders as $key => $value) 
+        // {
+        //     $buildersEmail[] = $value->getEmail();
+        // }
+        
+        // $fiscals = Model_user::getByRoleKeyword('fiscal');
+        // $fiscalsEmail = [];
+        // foreach ($fiscals as $key => $value) 
+        // {
+        //     $fiscalsEmail[] = $value->getEmail();
+        // }
+        // dd($buildersEmail, $fiscalsEmail);
 		$this->_validateFeature("home");
         $this->_tabTitle = 'Home';
         $this->complementHandler->addViewComplement("swiper");

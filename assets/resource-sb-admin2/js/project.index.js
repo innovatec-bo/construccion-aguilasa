@@ -88,7 +88,8 @@ $(document).ready(function() {
         // "info": false,
         // "pagingType": 'simple',
         "ajax" : {
-            url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
+            // url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
+            url : base_url + 'panel/AjaxProject/json_api',
             type : 'POST',
             data:function ( data ) {
                 data.additionalParameters = additionalParameter.getList();
@@ -102,16 +103,16 @@ $(document).ready(function() {
         "dom": "<'row'<'col-sm-7'Bl><'col-sm-5 text-right'f>>rt<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
         "lengthMenu": [ [10, 25, 50, 100, 100000], [10, 25, 50,100, 100000] ],
         "columns" : [
-        {
+        {//0
             "data" : "id_pro",
             "searchable" : false
-        }, {
+        }, {//1
             "data" : "order_pst",
             "searchable" : false
-        }, {
+        }, {//2
             "data" : "code_pro",
             "searchable" : true
-        }, {
+        }, {//3
             "data" : "entry_date_pro",
 			"className": 'text-center',
             "searchable" : false,
@@ -124,7 +125,7 @@ $(document).ready(function() {
                 }
                 return result;
             },
-        }, {
+        }, {//4
             "data" : "status_log_manual_entry_date",
 			"className": 'text-center',
             "searchable" : false,
@@ -137,15 +138,15 @@ $(document).ready(function() {
                 }
                 return result;
             }
-        }, {
+        }, {//5
             "data" : "static_days"
-        }, {
+        }, {//6
             "data" : "status_name_pst",
             "searchable" : false
-        }, {
+        }, {//7
             "data" : "system_pro",
             "searchable" : false,
-        }, {
+        }, {//8
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,
@@ -157,7 +158,7 @@ $(document).ready(function() {
                 }
                 return response;
             }
-        }, {
+        }, {//9
 			"data" : "cre_fiscal_pro",
             "searchable" : false
 		}/*, {
@@ -166,9 +167,9 @@ $(document).ready(function() {
             "data" : "assign_to_responsible"
         }*/, {
             "data" : "fiscal_responsible"
-        }, {
+        }, {//10
             "data" : "builder_responsible"
-        }, {
+        }, {//11
             "data" : "address_pro",
             "defaultContent" : "",
             "searchable" : false,
@@ -188,7 +189,7 @@ $(document).ready(function() {
 
                 return response;
             }
-        }, {
+        }, {//12
 			"data" : "project_current_budget",
 			"className": 'text-right',
 			"orderable" : true,
@@ -198,7 +199,7 @@ $(document).ready(function() {
                 let html = "<span style='font-weight:bold'>"+amount+"</span>";
                 return html;
             }
-		}, {
+		}, {//13
             "defaultContent" : "",
             "searchable" : false,
             "orderable" : false,

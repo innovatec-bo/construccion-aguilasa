@@ -787,4 +787,41 @@ class Model_user extends Model_user_base
         
 		return $sendMessageResponse;
 	}
+
+    public function disparar_sincronizacion_roles_a_laravel() {
+        // 1. Consultar los roles actuales del usuario directamente en las tablas de CodeIgniter
+        $ci =&get_instance();
+        $ci->load->database();
+        $sql = "SELECT r.rolename_rol 
+        FROM sec_userroles ur 
+        INNER JOIN sec_roles r ON r.id_rol = ur.roleid_uro 
+        WHERE ur.userid_uro = " . $this->_id;
+
+        $query = $ci->db->query($sql);
+        
+        $roles_actuales = [];
+        foreach ($query->result() as $row) {
+            $roles_actuales[] = $row->rolename_rol;
+        }
+
+        // 2. Enviar la información a Laravel mediante Guzzle
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => getenv('SEREBO2_URL').'/api/v1/',
+            'timeout'  => 3.0,
+        ]);
+
+        try {
+            $response = $client->request('POST', 'users/sync-roles', [
+                'json' => [
+                    'id_usr'       => $this->_id,
+                    'serebo_roles' => $roles_actuales
+                ]
+            ]);
+            
+            log_message('debug', 'Sincronización de roles exitosa para el usuario ID: ' . $this->_id);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Falló la sincronización de roles hacia Laravel: ' . $e->getMessage());
+        }
+    }
 }

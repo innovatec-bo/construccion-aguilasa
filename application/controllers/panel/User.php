@@ -86,7 +86,6 @@ class User extends PrivateController
     {
         $this->_validateFeature('user_edit');
         $this->_formEditUser($userId);
-
     }
 
     public function myProfile()
@@ -145,6 +144,7 @@ class User extends PrivateController
             {
                 Model_user_role::saveUserRoleList($user->getId(), $roleListToSave, $this->sessionUser);
             }
+            $user->disparar_sincronizacion_roles_a_laravel();
             $this->session->set_flashdata("successMessage", "User was updated successfully.");
 			redirect(current_url());
 

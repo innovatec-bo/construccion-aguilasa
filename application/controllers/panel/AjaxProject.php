@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Created by PhpStorm.
  * User: Jair
@@ -6,6 +7,7 @@
  * Time: 2:01 PM
  */
 
+use GuzzleHttp\Client;
 
 class AjaxProject extends PrivateController
 {
@@ -17,6 +19,34 @@ class AjaxProject extends PrivateController
             redirect('404');
         }
 //        $this->_validateFeature("project_index");
+    }
+
+    public function json_api() {
+        // Capturar los datos que envía DataTables de manera nativa
+        $params = $this->input->get() ? $this->input->get() : $this->input->post();
+
+        $client = new Client([
+            'base_uri' => getenv('SEREBO2_URL').'/api/v1/', // URL de tu Laravel
+            // 'timeout'  => 5.0,
+        ]);
+
+        try {
+            // Reenviamos todos los parámetros de orden, búsqueda y paginación a Laravel
+            $response = $client->request('GET', 'projects', [
+                'query' => $params,
+                // 'headers' => ['Authorization' => 'Bearer ' . $token] // Si usas Sanctum
+            ]);
+
+            $body = $response->getBody()->getContents();
+            
+            $this->output
+                 ->set_content_type('application/json')
+                 ->set_output($body);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error conectando con la API de Laravel: ' . $e->getMessage());
+            echo json_encode(['draw' => 0, 'recordsTotal' => 0, 'recordsFiltered' => 0, 'data' => []]);
+        }
     }
 
     public function ajaxDtAllProjects()
