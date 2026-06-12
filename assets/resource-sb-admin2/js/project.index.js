@@ -88,8 +88,8 @@ $(document).ready(function() {
         // "info": false,
         // "pagingType": 'simple',
         "ajax" : {
-            // url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
-            url : base_url + 'panel/AjaxProject/json_api',
+            url : base_url + 'panel/AjaxProject/ajaxDtAllProjects',
+            // url : base_url + 'panel/AjaxProject/json_api',
             type : 'POST',
             data:function ( data ) {
                 data.additionalParameters = additionalParameter.getList();
