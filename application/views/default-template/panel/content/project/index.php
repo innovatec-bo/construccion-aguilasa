@@ -77,6 +77,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Poda</label>
+                            <select class="form-control" name="trim-tree">
+                                <option value="">--Todos--</option>
+                                <option value="1">Con Poda</option>
+                                <option value="0">Sin Poda</option>
+                            </select>
+                        </div>
+                    </div>
 					<!-- <div class="col-md-2">
 						<div class="form-group">
 							<label>Estado</label>

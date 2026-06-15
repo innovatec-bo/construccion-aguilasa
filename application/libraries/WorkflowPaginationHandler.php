@@ -289,6 +289,16 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 			else
 				$sql .= " ";
 		}
+		if(isset($filters["trim-tree"]) && $filters["trim-tree"] != "")
+		{
+			$trimTree = $filters["trim-tree"];
+			if($trimTree == 1)
+				$sql .= " and trim_tree=1";
+			else if($trimTree == 0)
+				$sql .= " and (trim_tree is null or trim_tree=0) ";
+			else
+				$sql .= " ";
+		}
 		if(isset($filters["has-location"]) && $filters["has-location"] != "")
 		{
 			$hasLocation = $filters["has-location"];

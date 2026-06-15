@@ -10,6 +10,7 @@ $(document).ready(function() {
     additionalParameter.addParameterObject('fiscal-responsible-id','select');
     additionalParameter.addParameterObject('builder-responsible-id','select');
     additionalParameter.addParameterObject('manpower-uploaded','select');
+    additionalParameter.addParameterObject('trim-tree','select');
     // additionalParameter.addParameterObject('status','select');
     additionalParameter.addParameterObject('all-materials-picked-up-from-cre','checkbox');
     additionalParameter.addParameterObject('none-materials-picked-up-from-cre','checkbox');
