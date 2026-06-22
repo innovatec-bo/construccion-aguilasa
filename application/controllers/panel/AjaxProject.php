@@ -21,35 +21,7 @@ class AjaxProject extends PrivateController
 //        $this->_validateFeature("project_index");
     }
 
-    public function json_api() {
-        // Capturar los datos que envía DataTables de manera nativa
-        $params = $this->input->get() ? $this->input->get() : $this->input->post();
-
-        $client = new Client([
-            'base_uri' => getenv('SEREBO2_URL').'/api/v1/', // URL de tu Laravel
-            // 'timeout'  => 5.0,
-        ]);
-
-        try {
-            // Reenviamos todos los parámetros de orden, búsqueda y paginación a Laravel
-            $response = $client->request('GET', 'projects', [
-                'query' => $params,
-                // 'headers' => ['Authorization' => 'Bearer ' . $token] // Si usas Sanctum
-            ]);
-
-            $body = $response->getBody()->getContents();
-            
-            $this->output
-                 ->set_content_type('application/json')
-                 ->set_output($body);
-
-        } catch (\Exception $e) {
-            log_message('error', 'Error conectando con la API de Laravel: ' . $e->getMessage());
-            echo json_encode(['draw' => 0, 'recordsTotal' => 0, 'recordsFiltered' => 0, 'data' => []]);
-        }
-    }
-
-    public function ajaxDtAllProjects()
+    public function ajaxDtAllProjects_old()
 	{
 		$additionalParameters = $this->input->post('additionalParameters')??array();
 
@@ -76,63 +48,133 @@ class AjaxProject extends PrivateController
 		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
 	}
 
-    public function ajaxDtAllProjects_old2()
-	{
-		$additionalParameters = $this->input->post('additionalParameters')??array();
-//		$response = $this->_is("fiscal");
-//		if($response == 1)
-//		{
-//			$additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
-//		}
-		$dt = new JqdtHandler($this->input->post());
-		$paginationHandler = new ProjectPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
-		$paginationHandler->setAdditionalParameters($additionalParameters);
-        
-		$response = $paginationHandler->getResponseForDataTable();
-
-		$codeList = "";
-		foreach ($response['resultArray'] as $row)
-		{
-			$codeList .= $row->code_pro." ";
-
-		}
-		$projectWorkflow = Model_project::getWorkflowDetail(['code-list' => $codeList]);
-		foreach ($response['resultArray'] as &$row)
-		{
-			$positionInWorkFlow = array_search($row->id_pro,array_column($projectWorkflow,'id_pro'));
-			$projectBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkflow[$positionInWorkFlow]);
-			$row->projectBudget = number_format($projectBudget, 2, '.', ',');
-		}
-		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
-	}
-
-    public function ajaxDtAllProjects_old()
+    /**
+     * Reemplazar el método ajaxDtAllProjects en AjaxProject.php (Serebo - CI3)
+     * 
+     * Este método ahora consume la API de Serebo2 en lugar de llamar
+     * directamente al WorkflowPaginationHandler.
+     */
+    
+    public function ajaxDtAllProjects()
     {
-        $additionalParameters = $this->input->post("additionalParameters");
-        $response = $this->_is("fiscal");
-        if($response == 1)
-        {
-            // $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
-        }
+        $additionalParameters = $this->input->post('additionalParameters') ?? [];
         $dt = new JqdtHandler($this->input->post());
-        
-        $recordsTotal = Model_project::countAll($additionalParameters);
-        $recordsFiltered = $recordsTotal;
-        // echo"<pre>";var_dump($additionalParameters);exit;
-        if (!$dt->hasSearchValue())
+    
+        // ── Construir query params para la API de Serebo2 ────────────────────
+        $queryParams = [
+            'per_page' => $dt->getLength(),
+            'page'     => $dt->getStart() > 0 ? (int)($dt->getStart() / $dt->getLength()) + 1 : 1,
+            'order_by' => $dt->getOrderName(0) ?: 'entry_date_pro',
+            'order_type' => $dt->getOrderDir(0) ?: 'desc',
+        ];
+    
+        // Búsqueda de texto
+        if ($dt->hasSearchValue())
         {
-            $resultArray = Model_project::getAll($dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $additionalParameters);
+            $queryParams['search'] = $dt->getSearchValue();
         }
-        else
+    
+        // Mapear additionalParameters de Serebo → query params de Serebo2
+        $paramMap = [
+            'status'                          => 'status',
+            'status-keyword'                  => 'keyword',
+            'work-area'                       => 'work_area',
+            'system'                          => 'system',
+            'management-by'                   => 'management_by',
+            'contract-id'                     => 'contract_id',
+            'fiscal-responsible-id'           => 'fiscal_id',
+            'builder-responsible-id'          => 'builder_id',
+            'manpower-uploaded'               => 'manpower_uploaded',
+            'trim-tree'                       => 'trim_tree',
+            'has-location'                    => 'has_location',
+            'quantity-picked-up-from-cre'     => 'quantity_picked_up_from_cre',
+            'quantity-pending-in-cre'         => 'quantity_pending_in_cre',
+            'all-materials-picked-up-from-cre'=> 'all_materials_picked_up_from_cre',
+            'none-materials-picked-up-from-cre'=> 'none_materials_picked_up_from_cre',
+            'keyword'                         => 'keyword',
+            'year'                            => 'year',
+            'month'                           => 'month',
+        ];
+    
+        foreach ($paramMap as $serebroKey => $serebo2Key)
         {
-            $resultArray = Model_project::search($dt->getSearchValue(), $dt->getLength(), $dt->getStart(), $dt->getOrderName(0), $dt->getOrderDir(0), $dt->getSearchableColumnDefs(), $additionalParameters);
-            $recordsFiltered = Model_project::searchTotalCount($dt->getSearchValue(),$dt->getSearchableColumnDefs(), $additionalParameters);
-            
+            if (isset($additionalParameters[$serebroKey]) && $additionalParameters[$serebroKey] !== '')
+            {
+                $queryParams[$serebo2Key] = $additionalParameters[$serebroKey];
+            }
         }
+    
+        // Listas de códigos e IDs — las pasamos como parámetros especiales
+        if (isset($additionalParameters['code-list']) && $additionalParameters['code-list'] !== '')
+        {
+            $queryParams['code_list'] = $additionalParameters['code-list'];
+        }
+        if (isset($additionalParameters['id-list']) && $additionalParameters['id-list'] !== '')
+        {
+            $queryParams['id_list'] = $additionalParameters['id-list'];
+        }
+    
+        // ── Llamar a la API de Serebo2 ────────────────────────────────────────
+        $apiUrl  = getenv('SEREBO2_URL') . '/api/v1/workflows?' . http_build_query($queryParams);
+        $response = $this->_callSerebo2Api($apiUrl);
 
-        echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $resultArray);
+        if (!$response['success'])
+        {
+            // Si la API falla, devolvemos un DataTables vacío con error
+            echo $dt->getJsonResponse(0, 0, []);
+            exit;
+        }
+    
+        $apiData         = $response['data'];
+        $recordsTotal    = $apiData['meta']['total']        ?? 0;
+        $recordsFiltered = $apiData['meta']['total']        ?? 0;
+        $rows            = $apiData['data']                 ?? [];
+    
+        // ── Devolver en formato DataTables ────────────────────────────────────
+        echo $dt->getJsonResponse($recordsTotal, $recordsFiltered, $rows);
         exit;
     }
+    
+    /**
+     * Realiza una llamada GET a la API de Serebo2 via cURL.
+     *
+     * @param  string $url  URL completa con query params
+     * @return array        ['success' => bool, 'data' => array]
+     */
+    private function _callSerebo2Api(string $url) : array
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+                'Content-Type: application/json',
+            ],
+        ]);
+    
+        $responseBody = curl_exec($ch);
+        $httpCode     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError    = curl_error($ch);
+        curl_close($ch);
+        // echo var_dump($responseBody);exit;
+        if ($curlError || $httpCode !== 200)
+        {
+            log_message('error', "Serebo2 API error [{$httpCode}]: {$curlError} — URL: {$url}");
+            return ['success' => false, 'data' => []];
+        }
+    
+        $decoded = json_decode($responseBody, true);
+        if (json_last_error() !== JSON_ERROR_NONE)
+        {
+            log_message('error', "Serebo2 API JSON decode error — URL: {$url}");
+            return ['success' => false, 'data' => []];
+        }
+    
+        return ['success' => true, 'data' => $decoded];
+    }
+
 
 	/**
 	 * @deprecated
@@ -341,6 +383,7 @@ class AjaxProject extends PrivateController
             $pointId = !isset($formData["point-id"])?NULL:$formData["point-id"];
             $userId = $this->sessionUser->id;
             Model_labor_cost_log::addLog($fiscalId, $detail, $manualEntryDate, $workedUp, $builders);
+            WorkflowSyncNotifier::notify($projectId);
             $response["success"] = 1;
             $response["message"] = "Avance registrado correctamente.";
         }

@@ -38,7 +38,7 @@ class AjaxLaborCost extends PrivateController
         exit;
     }
     
-    public function add($projectId)
+    public function add(int $projectId)
     {
         //$this->_validateFeature('qb_create_invoice');
         /** Server Side Validations **/
@@ -137,7 +137,7 @@ class AjaxLaborCost extends PrivateController
                     $response["data"]["structure"] = $structure->toArray();
                 }
             }
-
+            WorkflowSyncNotifier::notify($projectId);
         }
         echo json_encode($response);
         exit;

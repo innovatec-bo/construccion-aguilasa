@@ -13,7 +13,7 @@ class Model_payment_order_project extends Model_payment_order_project_base
         parent::__construct($orderId, $projectId);
     }
 
-	public static function getDetailByPaymentOrderId($paymentOrderId)
+	public static function getDetailByPaymentOrderId(int $paymentOrderId)
 	{
 		$ci = &get_instance();
 		$ci->load->database();

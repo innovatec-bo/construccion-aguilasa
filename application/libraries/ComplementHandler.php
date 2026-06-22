@@ -118,13 +118,12 @@ class ComplementHandler
     {
         if(!empty($this->_viewCss))
         {
-            foreach ($this->_viewCss as $css)
+            foreach ($this->_viewCss as $key => $css)
             {
                 echo "\n";
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css . "\" />";
+                echo "<link rel='stylesheet' type='text/css' href='".$css."' />";
             }
         }
-
     }
 
     public function addReactComponent($name)

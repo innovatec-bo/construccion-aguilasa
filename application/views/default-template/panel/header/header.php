@@ -1,9 +1,3 @@
-<?php
-/**
- * @var GN_ComplementHandler
- */
- $gnComplementHandler;
-?>
 <!DOCTYPE html>
 <html lang="es">
 

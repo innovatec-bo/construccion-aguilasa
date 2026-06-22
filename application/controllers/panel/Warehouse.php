@@ -145,6 +145,7 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->setFiscalResponsible($fiscal);
 			$newMaterialSummary->save();
 			$newMaterialSummary->saveMaterials($materials);
+			WorkflowSyncNotifier::notify($projectId);
 			$requestID = "";
 			if($newMaterialSummary->getSummaryType() == 14 || $newMaterialSummary->getSummaryType() == 15)
 				$requestID = "<strong>Su c&oacute;digo de solicitud es : ".$newMaterialSummary->getId()."</strong> <a href='javascript:void(0)' onclick='window.print();'>Imprimir</a>";
@@ -342,7 +343,7 @@ class Warehouse extends PrivateController
 						$log = Model_project_status_log::getLogByProjectIdAndStatusKeyWord($projectId,'approved');
 						$materialsFileReader->registerMaterialsInSystem($log[0]['id_psl'], $log[0]['manual_entry_date_psl'], NULL,1,"",null,$log[0]['reservation_number_prb']);
 					// }
-
+					WorkflowSyncNotifier::notify($projectId);
 					$response['success'] = 1;
 					$response['message'] = '';
 					$response['data']['file']['id'] = $materialsFile->getId();

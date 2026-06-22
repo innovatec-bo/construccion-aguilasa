@@ -31,6 +31,7 @@ class Home extends PrivateController
         //     $fiscalsEmail[] = $value->getEmail();
         // }
         // dd($buildersEmail, $fiscalsEmail);
+        
 		$this->_validateFeature("home");
         $this->_tabTitle = 'Home';
         $this->complementHandler->addViewComplement("swiper");

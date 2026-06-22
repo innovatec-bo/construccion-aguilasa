@@ -99,6 +99,8 @@ class AjaxDeletedStatusLog extends PrivateController
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
             $deletedStatusLog = new Model_deleted_status_log($currentUserId, $projectStatusLogId, $detail);
 			$deletedStatusLog->save();
+
+            WorkflowSyncNotifier::notify($projectStatusLog->getProjectId());
             $response["success"] = 1;
             $response['data']['projectId'] = $projectStatusLog->getProjectId();
             $response['data']['projectStatusId'] = $projectStatusLog->getProjectStatus();

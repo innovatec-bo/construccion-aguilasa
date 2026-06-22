@@ -18,7 +18,7 @@ class AjaxLaborCostLog extends PrivateController
         }
     }
 
-    public function edit($laborCostLogId)
+    public function edit(int $laborCostLogId)
     {
         /** Server Side Validations **/
         $this->form_validation->set_rules('detail', 'Detalle', 'trim');
@@ -83,6 +83,8 @@ class AjaxLaborCostLog extends PrivateController
         else
         {
             $formData = $this->input->post();
+            $logMasterDetail = Model_labor_cost_log::prepareArrayLogMasterDetal($laborCostLogId);
+            $projectId = $logMasterDetail['projectId'];
             // echo"<pre>";var_dump($formData);exit;
             $manualEntryDate = $formData["entry-date"];
             $manualEntryDate = DateTime::createFromFormat('d-m-Y', $manualEntryDate);
@@ -102,12 +104,13 @@ class AjaxLaborCostLog extends PrivateController
             $response["success"] = 1;
             $response["message"] = "Avance editado correctamente.";
             $response["data"]['pointId'] = $laborCostLog->getPointId();
+            WorkflowSyncNotifier::notify($projectId);
         }
         echo json_encode($response);
         exit;
     }
 
-    public function delete($laborCostLogId)
+    public function delete(int $laborCostLogId)
     {
         /** Server Side Validations **/
         $this->form_validation->set_rules('detail', 'Detalle', 'trim');
@@ -127,11 +130,14 @@ class AjaxLaborCostLog extends PrivateController
         else
         {
             $formData = $this->input->post();
+            $logMasterDetail = Model_labor_cost_log::prepareArrayLogMasterDetal($laborCostLogId);
+            $projectId = $logMasterDetail['projectId'];
             $laborCostLog = Model_labor_cost_log::getById($laborCostLogId);
             $laborCostLog->delete();
             $response["success"] = 1;
             $response["message"] = "Registro eliminado.";
             $response['data']['pointId'] = $laborCostLog->getPointId();
+            WorkflowSyncNotifier::notify($projectId);
         }
         echo json_encode($response);
         exit;

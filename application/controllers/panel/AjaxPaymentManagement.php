@@ -185,6 +185,8 @@ class AjaxPaymentManagement extends PrivateController
             $paymentOrder->save();
             $paymentOrder->addStatusToLog($statusId, $detail, $entryDate);
             $paymentOrder->saveProjects($formData["projectList"]);
+            $projectIds = array_column($formData["projectList"], "projectId");
+            WorkflowSyncNotifier::notifyMany($projectIds);
             $response = array("success" => 1, "message" => "Orden de pago registrada correctamente!","paymentOrderId" => $paymentOrder->getId());
             $this->session->set_flashdata("successMessage", "Orden de pago registrada correctamente!");
         }
@@ -226,8 +228,11 @@ class AjaxPaymentManagement extends PrivateController
 			$paymentOrder->setEndContractId($endContractId);
 			$paymentOrder->setEntryDate($entryDate);
 			$paymentOrder->setInvoiceNumber($invoiceNumber);
+            $paymentOrder->setDetail($detail);
 			$paymentOrder->save();
 			$paymentOrder->saveProjects($formData["projectList"]);
+            $projectIds = array_column($formData["projectList"], "projectId");
+            WorkflowSyncNotifier::notifyMany($projectIds);
 			$response = array("success" => 1, "message" => "Orden de pago actualizada correctamente!", "paymentOrderId" => $paymentOrder->getId());
 			$this->session->set_flashdata("successMessage", "Orden de pago actualizada correctamente!");
 		}
@@ -362,6 +367,9 @@ class AjaxPaymentManagement extends PrivateController
 //        echo "<pre>";var_dump($paymentOrder->toArray());exit;
         $paymentOrder->save();
         $paymentOrder->addStatusToLog($statusId, $statusDetail, $entryDate);
+        $paymentOrdersProjectsList = Model_payment_order_project::getDetailByPaymentOrderId($orderId);
+        $projectIds = array_column($paymentOrdersProjectsList,'id_pro');
+        WorkflowSyncNotifier::notifyMany($projectIds);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -381,6 +389,9 @@ class AjaxPaymentManagement extends PrivateController
         $paymentOrder->setStatus($statusId);
         $paymentOrder->save();
         $paymentOrder->addStatusToLog($statusId, $statusDetail, $entryDate);
+        $paymentOrdersProjectsList = Model_payment_order_project::getDetailByPaymentOrderId($orderId);
+        $projectIds = array_column($paymentOrdersProjectsList,'id_pro');
+        WorkflowSyncNotifier::notifyMany($projectIds);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;

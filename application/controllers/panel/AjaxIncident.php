@@ -36,7 +36,7 @@ class AjaxIncident extends PrivateController
         exit;
     }
 
-    public function add($statusId, $projectId = NULL)
+    public function add(int $statusId, $projectId = NULL)
     {
         /** Server Side Validations **/
         $this->form_validation->set_rules('projectId', 'ID proyecto', 'trim|required');
@@ -115,6 +115,7 @@ class AjaxIncident extends PrivateController
             $incident = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId, $pauseProject, $stopProject, $incidentType);
             $incident->save();
             $incident->pauseStopProject($statusId);
+            WorkflowSyncNotifier::notify($projectId);
             $response = array("success" => 1, "message" => "Incidente añadido correctamente");
         }
         echo json_encode($response);exit;

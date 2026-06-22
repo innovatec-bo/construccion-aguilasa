@@ -272,12 +272,14 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 		if(isset($filters["fiscal-responsible-id"]) && $filters["fiscal-responsible-id"] != "")
 		{
 			$fiscalId = $filters["fiscal-responsible-id"];
-			$sql .= " and fiscal_responsible_id = ".$ci->db->escape($fiscalId)." ";
+			//$sql .= " and fiscal_responsible_id = ".$ci->db->escape($fiscalId)." ";
+			$sql .= " and FIND_IN_SET(".$ci->db->escape($fiscalId).", fiscal_responsible_id) > 0";
 		}
 		if(isset($filters["builder-responsible-id"]) && $filters["builder-responsible-id"] != "")
 		{
 			$builderId = $filters["builder-responsible-id"];
-			$sql .= " and builder_responsible_id = ".$ci->db->escape($builderId)." ";
+			// $sql .= " and builder_responsible_id = ".$ci->db->escape($builderId)." ";
+			$sql .= " and FIND_IN_SET(".$ci->db->escape($builderId).", builder_responsible_id) > 0";
 		}
 		if(isset($filters["manpower-uploaded"]) && $filters["manpower-uploaded"] != "")
 		{

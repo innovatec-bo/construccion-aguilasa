@@ -158,7 +158,7 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
-
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -180,6 +180,7 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -213,6 +214,7 @@ class AjaxProjectStatus extends PrivateController
             $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
             $project->addStatusToLog(9, $statusDetail, $approvementEntryDate, $responsibleList);
         }
+        WorkflowSyncNotifier::notify($projectId);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -245,6 +247,7 @@ class AjaxProjectStatus extends PrivateController
             $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
             $project->addStatusToLog(9, "Proyecto por enviar", $approvementEntryDate, array(11));
         }
+        WorkflowSyncNotifier::notify($projectId);
 
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
@@ -291,6 +294,7 @@ class AjaxProjectStatus extends PrivateController
         $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
         $project->addStatusToLog(9, "Proyecto por enviar", $approvementEntryDate, array(11));
 
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -313,6 +317,7 @@ class AjaxProjectStatus extends PrivateController
         $project = Model_project::getById($projectId);
         $project->addStatusToLog($statusId, $statusDetail, $alreadySentEntryDate, $responsibleList);
 
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -331,6 +336,8 @@ class AjaxProjectStatus extends PrivateController
 //        $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(15));
+        
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -352,6 +359,7 @@ class AjaxProjectStatus extends PrivateController
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList);
 
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -370,6 +378,8 @@ class AjaxProjectStatus extends PrivateController
 //        $responsibleList = $formData["responsibleList"];
         $project = Model_project::getById($projectId);
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, array(16));
+
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -462,6 +472,8 @@ class AjaxProjectStatus extends PrivateController
                 }
             }
         }
+        WorkflowSyncNotifier::notify($projectId);
+
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         $response['manpowerFileMessage'] = isset($manpowerFileReader)?$manpowerFileReader->getMessage():'';
@@ -511,6 +523,7 @@ class AjaxProjectStatus extends PrivateController
             }
         }
 
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -561,6 +574,8 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->saveRealBudget($design, $building, $transportation, $liveLine, $rightOfWay, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -583,6 +598,8 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->saveBudget($design, 0, 0, 0, 0, 0, 0, 0,$statusId, $statusDetail, $entryDate, $responsibleList);
+
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -606,6 +623,8 @@ class AjaxProjectStatus extends PrivateController
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
         $warehouse = Model_warehouse::getByProjectId($project->getId());
         $warehouse->addStatusToLog(37, "El fiscal ha recibido la orden de devolucion a CRE", $entryDate);
+
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -643,6 +662,7 @@ class AjaxProjectStatus extends PrivateController
                 $incident->save();
             }
     
+            WorkflowSyncNotifier::notify($projectId);
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
         }
@@ -668,6 +688,8 @@ class AjaxProjectStatus extends PrivateController
         $project->setStatus($statusId);
         $project->save();
         $project->addStatusToLog($statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+
+        WorkflowSyncNotifier::notify($projectId);
         $response["success"] = 1;
         $response["message"] = "Operacion realizada con exito.";
         echo json_encode($response);exit;
@@ -709,6 +731,8 @@ class AjaxProjectStatus extends PrivateController
             $project->setStatus($statusId);
             $project->save();
             $project->savePoints($projectPoints, $projectDistance, $statusId, $statusDetail, $entryDate, $responsibleList, $fileIds);
+
+            WorkflowSyncNotifier::notify($projectId);
             $response["success"] = 1;
             $response["message"] = "Operacion realizada con exito.";
         }
@@ -838,7 +862,7 @@ class AjaxProjectStatus extends PrivateController
         {
 			$response = Model_status_log_responsible::reAssignResponsibleIds($formData["responsibleIds"],$formData["projectId"]);
         }
-
+        WorkflowSyncNotifier::notify($formData["projectId"]);
         echo json_encode($response);exit;
     }
 
@@ -887,7 +911,7 @@ class AjaxProjectStatus extends PrivateController
             $project->save();
             $project->addStatusToLog($statusId, $detail, $entryDate, $responsibleList);
         }
-
+        WorkflowSyncNotifier::notify($projectId);
 
         echo json_encode($formData);exit;
     }
@@ -1050,6 +1074,7 @@ class AjaxProjectStatus extends PrivateController
                         $projectBudget->setRightOfWay($manpowerFileReader->getRightOfWayBudget());
                         $projectBudget->setManpowerFileId($document->getId());
                         $projectBudget->save();
+                        WorkflowSyncNotifier::notify($projectId);
                     }
                     //Incoming budget is for conciliation reception
                     elseif($project->getStatus() == 34 || $project->getStatus() == 33 || $projectRealBudgetId != "")
@@ -1082,6 +1107,7 @@ class AjaxProjectStatus extends PrivateController
                             );
                             $projectRealBudget->save();
                         }
+                        WorkflowSyncNotifier::notify($projectId);
                     }
                 }
             }

@@ -116,6 +116,11 @@ class Model_payment_order_base extends MY_Model
 		$this->_endContractId = $endContractId;
 	}
 
+    public function setDetail(string $detail)
+    {
+        $this->_detail = $detail;
+    }
+
     public function getInvoiceNumber()
 	{
 		return $this->_invoiceNumber;

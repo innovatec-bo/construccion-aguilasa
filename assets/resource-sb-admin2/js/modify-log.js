@@ -6,6 +6,7 @@ $(document).ready(function() {
     $(document).on("click",".edit-schedule-budget",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");
+        var projectId = $("input[name=project-id]").val();
         var statusName = $(this).data("status-name");
         var htmlSource   = $("#ht-modal-modify-schedule-budget").html();
         var template = Handlebars.compile(htmlSource);
@@ -29,6 +30,7 @@ $(document).ready(function() {
                     var designBudget = $("input[name=design-budget]").val();
                     var data = {
                         logId: logId,
+                        projectId: projectId,
                         tentativeTotalBudget: tentativeTotalBudget,
                         designBudget:designBudget
                     };
@@ -48,6 +50,7 @@ $(document).ready(function() {
     $(document).on("click",".edit-date",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");
+        var projectId = $("input[name=project-id]").val();
         var statusName = $(this).data("status-name");
         var htmlSource   = $("#ht-modal-modify-history-manual-entry-date").html();
         var template = Handlebars.compile(htmlSource);
@@ -70,6 +73,7 @@ $(document).ready(function() {
                     var entryDate = $("input[name=modify-manual-entry-date]").val()
                     var data = {
                         logId: logId,
+                        projectId:projectId,
                         entryDate: entryDate
                     };
                     updateLog(data);
@@ -88,6 +92,7 @@ $(document).ready(function() {
     $(document).on("click",".edit-points-distance",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");
+        var projectId = $("input[name=project-id]").val();
         var statusName = $(this).data("status-name");
         var htmlSource   = $("#ht-modal-modify-history-points-distance").html();
         var template = Handlebars.compile(htmlSource);
@@ -111,6 +116,7 @@ $(document).ready(function() {
                     var distance = $("input[name=log-project-distance]").val();
                     var data = {
                         logId: logId,
+                        projectId:projectId,
                         points:points,
                         distance:distance
                     };

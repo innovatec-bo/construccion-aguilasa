@@ -17,7 +17,7 @@ class Model_payment_order extends Model_payment_order_base
 		parent::__construct($orderNumber, $status, $invoiceNumber, $entryDate, $detail, $invoiceDate, $endContractId);
 	}
 
-	public function saveProjects($projectList = array())
+	public function saveProjects(array $projectList = [])
     {
     	static::deleteProjectsFromPaymentOrder($this->_id);
         $arrayToInsert = array();
@@ -76,7 +76,7 @@ class Model_payment_order extends Model_payment_order_base
 
     }
 
-    public static function deleteProjectsFromPaymentOrder($paymentOrderId)
+    public static function deleteProjectsFromPaymentOrder(int $paymentOrderId)
 	{
 		$ci = &get_instance();
 		$ci->load->database();
@@ -199,7 +199,7 @@ class Model_payment_order extends Model_payment_order_base
      * @return mixed
      *
      */
-    public static function getAllPaymentOrders($statusId = "42,43,44", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllPaymentOrders($statusId = "42,43,44", $limit = 1, $offset = 0, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {
@@ -215,7 +215,7 @@ class Model_payment_order extends Model_payment_order_base
         return $result;
     }
 
-    public static function searchPaymentOrders($statusId = "42,43,44", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchPaymentOrders($statusId = "42,43,44", $text = "", $limit = 1, $offset = 0, $orderBy = null, $orderType = 'asc', $colsArray = null)
     {
         if ($orderBy === null)
         {
@@ -238,7 +238,7 @@ class Model_payment_order extends Model_payment_order_base
         return $query->result();
     }
 
-    public static function searchTotalCountPaymentOrders($statusId = "42,43,44", $text, $colsArray = null)
+    public static function searchTotalCountPaymentOrders($statusId = "42,43,44", $text = "", $colsArray = null)
     {
         $ci = &get_instance();
         $ci->load->database();

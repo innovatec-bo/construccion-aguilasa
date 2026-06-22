@@ -195,6 +195,7 @@ class Project extends PrivateController
             }
 
             $this->session->set_flashdata("successMessage", "Proyecto agregado exitosamente!");
+            WorkflowSyncNotifier::notify($project->getId());
             redirect(base_url("panel/Project"));
         }
     }
@@ -350,6 +351,7 @@ class Project extends PrivateController
 
             $this->session->set_flashdata("successMessage", "Proyecto editado correctamente!");
             // PrivateController::updateWorkflow([$project->getId()]);
+            WorkflowSyncNotifier::notify($project->getId());
             redirect(base_url("panel/Project/edit/".$project->getId()));
         }
     }
@@ -590,9 +592,8 @@ class Project extends PrivateController
         $fileHandler->download($file, $fileName);
     }
 
-    public function manpower($projectId)
+    public function manpower(int $projectId)
     {
-
         $this->_validateFeature('project_manpower');
         /** @var Model_project $project */
         $project = $this->_validateObjectToEdit($projectId,"Model_project","panel/Project");

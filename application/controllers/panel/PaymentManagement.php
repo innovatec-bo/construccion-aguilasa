@@ -63,7 +63,7 @@ class PaymentManagement extends PrivateController
         $this->_loadPanelView("payment-management/add", $data);
     }
 
-	public function editPaymentOrder($paymentOrderId)
+	public function editPaymentOrder(int $paymentOrderId)
 	{
         $this->complementHandler->addViewComplement('sweet-alert2');
 		$this->complementHandler->addViewComplement("date-time-picker");
