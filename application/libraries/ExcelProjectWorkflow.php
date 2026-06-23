@@ -27,6 +27,8 @@ class ExcelProjectWorkflow
 	function getReport($save = FALSE) : void
 	{   
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
+        // require_once APPPATH . 'libraries/FileSystemCellCache.php';
+        // \PhpOffice\PhpSpreadsheet\Settings::setCache(new FileSystemCellCache());
         // dd(count(PrivateController::getWorkflowColumns()), count($this->_columnDefinition));
         $projectWorkflow = Model_project::getWorkflowDetail($this->_additionalParameters);
         // echo"<pre>";var_dump($projectWorkflow);exit;

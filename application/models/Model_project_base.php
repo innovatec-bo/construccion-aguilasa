@@ -1295,7 +1295,7 @@ class Model_project_base extends MY_Model
      * @param string $orderType
      * @return mixed
      */
-    public static function getAllProjects_deprecated($statusId = "", $userId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllProjects_deprecated($statusId = "", $userId = "", $limit = 1, $offset = 0, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {
@@ -1323,7 +1323,7 @@ class Model_project_base extends MY_Model
      * @param null $colsArray
      * @return mixed
      */
-    public static function searchProject_deprecated($statusId = "", $userId = "", $text, $limit, $offset, $orderBy = null, $orderType = 'asc', $colsArray = null)
+    public static function searchProject_deprecated($statusId = "", $userId = "", $text = "", $limit = 1, $offset = 0, $orderBy = null, $orderType = 'asc', $colsArray = null)
     {
         if ($orderBy === null)
         {
