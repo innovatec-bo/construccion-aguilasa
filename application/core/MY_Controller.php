@@ -417,6 +417,8 @@ class PrivateController extends PublicController
         }
         else
         {
+            // Store the requested URI (e.g., "dashboard/settings") in session
+            $this->session->set_userdata('redirect_url', uri_string());
             $this->session->set_flashdata("errorMessage","Your session has expired!");
             redirect(base_url("Login"));
         }

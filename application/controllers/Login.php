@@ -30,7 +30,13 @@ class Login extends PublicController
             if($user instanceof Model_user)
             {
                 $user->startSession();
-                redirect(base_url('panel/Home'));
+                // Get the intended URL
+                $intended_url = $this->session->userdata('redirect_url');
+                if ($intended_url) {
+                    redirect($intended_url);
+                } else {
+                    redirect(base_url('panel/Home'));
+                }
             }
             else
             {

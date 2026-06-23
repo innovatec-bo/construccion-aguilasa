@@ -1,0 +1,196 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * WorkflowApiClient
+ *
+ * Reads workflow data from Serebo2's API. This is the read counterpart
+ * of WorkflowSyncNotifier (which only writes/notifies changes).
+ *
+ * Usage:
+ *   $workflow = WorkflowApiClient::getOne($projectId);
+ *   $page     = WorkflowApiClient::getPaginated($queryParams);
+ *
+ * Suggested location: application/libraries/WorkflowApiClient.php
+ */
+class WorkflowApiClient
+{
+    /**
+     * Timeout in seconds for single-project lookups.
+     */
+    const TIMEOUT = 10;
+
+    /**
+     * Timeout in seconds for paginated/list lookups, which can take a
+     * bit longer depending on filters and page size.
+     */
+    const LIST_TIMEOUT = 15;
+
+    /**
+     * Fetches a single project's workflow data. This triggers Serebo2 to
+     * recalculate the workflow and update the `workflows` table before
+     * returning the data — so the result is always fresh.
+     *
+     * @param int $projectId  id_pro of the project to fetch
+     * @return array|null     associative array with workflow data, or null on failure/not found
+     */
+    public static function getOne(int $projectId) : ?array
+    {
+        $apiUrl = self::_getBaseUrl() . "/workflows/{$projectId}";
+
+        $startTime = microtime(true);
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $apiUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => self::TIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => self::TIMEOUT,
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+            ],
+        ]);
+
+        $responseBody = curl_exec($ch);
+        $httpCode     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError    = curl_error($ch);
+        $curlErrno    = curl_errno($ch);
+        curl_close($ch);
+
+        $elapsedMs = round((microtime(true) - $startTime) * 1000);
+
+        // ── Failure ────────────────────────────────────────────────────────
+        if ($curlError || $httpCode !== 200)
+        {
+            $reason = $curlError
+                ? "cURL error [{$curlErrno}]: {$curlError}"
+                : "HTTP {$httpCode}: " . self::_truncate($responseBody);
+
+            log_message(
+                'error',
+                "[WorkflowApiClient] FAILED — could not fetch project {$projectId} from Serebo2. "
+                . "Reason: {$reason}. URL: {$apiUrl}. Elapsed: {$elapsedMs}ms."
+            );
+
+            return null;
+        }
+
+        $decoded = json_decode($responseBody, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE || !isset($decoded['data']))
+        {
+            log_message(
+                'error',
+                "[WorkflowApiClient] FAILED — invalid JSON response for project {$projectId}. URL: {$apiUrl}."
+            );
+            return null;
+        }
+
+        log_message(
+            'info',
+            "[WorkflowApiClient] OK — fetched project {$projectId} from Serebo2 ({$elapsedMs}ms)."
+        );
+
+        return $decoded['data'];
+    }
+
+    /**
+     * Fetches a paginated, filtered list of workflows directly from the
+     * `workflows` table on Serebo2 (does NOT trigger a recalculation —
+     * this is meant for listings/datatables, not StatusManagement).
+     *
+     * @param array $queryParams  e.g. ['per_page' => 100, 'page' => 1, 'search' => 'RA.26', 'status' => '10,11']
+     * @return array|null         ['data' => [...], 'meta' => [...]] or null on failure
+     */
+    public static function getPaginated(array $queryParams = []) : ?array
+    {
+        $apiUrl = self::_getBaseUrl() . '/workflows';
+        if (!empty($queryParams))
+        {
+            $apiUrl .= '?' . http_build_query($queryParams);
+        }
+
+        $startTime = microtime(true);
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $apiUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => self::LIST_TIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => self::TIMEOUT,
+            CURLOPT_HTTPHEADER     => [
+                'Accept: application/json',
+            ],
+        ]);
+
+        $responseBody = curl_exec($ch);
+        $httpCode     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError    = curl_error($ch);
+        $curlErrno    = curl_errno($ch);
+        curl_close($ch);
+
+        $elapsedMs = round((microtime(true) - $startTime) * 1000);
+
+        // ── Failure ────────────────────────────────────────────────────────
+        if ($curlError || $httpCode !== 200)
+        {
+            $reason = $curlError
+                ? "cURL error [{$curlErrno}]: {$curlError}"
+                : "HTTP {$httpCode}: " . self::_truncate($responseBody);
+
+            log_message(
+                'error',
+                "[WorkflowApiClient] FAILED — could not fetch workflow list from Serebo2. "
+                . "Reason: {$reason}. URL: {$apiUrl}. Elapsed: {$elapsedMs}ms."
+            );
+
+            return null;
+        }
+
+        $decoded = json_decode($responseBody, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE)
+        {
+            log_message(
+                'error',
+                "[WorkflowApiClient] FAILED — invalid JSON response for workflow list. URL: {$apiUrl}."
+            );
+            return null;
+        }
+
+        log_message(
+            'info',
+            "[WorkflowApiClient] OK — fetched workflow list from Serebo2 ({$elapsedMs}ms)."
+        );
+
+        return $decoded;
+    }
+
+    /**
+     * Resolves the Serebo2 API base URL from the environment.
+     *
+     * @return string
+     */
+    private static function _getBaseUrl() : string
+    {
+        // SEREBO2_URL must be defined in the .env file.
+        // Example: SEREBO2_URL=http://serebo2.test
+        $baseUrl = getenv('SEREBO2_URL') ?: '';
+        return rtrim($baseUrl, '/') . '/api/v1';
+    }
+
+    /**
+     * Truncates the response body so it doesn't bloat the log.
+     *
+     * @param string|null $body
+     * @return string
+     */
+    private static function _truncate(?string $body) : string
+    {
+        if (empty($body))
+        {
+            return '(empty response)';
+        }
+        return mb_substr($body, 0, 300);
+    }
+}

@@ -950,11 +950,7 @@ class AjaxProjectStatus extends PrivateController
             $statusListArray[$status->getId()] = $status->toArray();
         }
 
-        $wokflowPaginationHandler = new WorkflowPaginationHandler(1);
-        $wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$projectId]);
-        // $wokflowPaginationHandler->setColumnsToShow(['keyword_pst','production_percentage','project_current_budget','production_total_bs','manpower_file_id','cre_fiscal_pro','trim_tree']);
-        $projectWorkFlow = $wokflowPaginationHandler->getAll()[0];
-        $projectWorkFlow = (array)$projectWorkFlow;
+        $projectWorkFlow = WorkflowApiClient::getOne($projectId) ?? [];
 
         // $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
         // $apiResponse = $client->request('GET', 'api/v1/workflows/'.$projectId);
