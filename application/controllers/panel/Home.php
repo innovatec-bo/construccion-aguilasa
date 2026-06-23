@@ -17,6 +17,13 @@ class Home extends PrivateController
 
     public function index()
     {
+        // $t0 = microtime(true);
+        // $handler = new WorkflowPaginationHandler(1, 0);
+        // $handler->setAdditionalParameters(['id-list' => 5543]);
+        // $result = $handler->getAll();
+        // $t1 = microtime(true);
+        // log_message('info', "Serebo handler: " . round($t1 - $t0, 3) . "s para " . count($result) . " filas");
+        // dd('info', "Serebo handler: " . round($t1 - $t0, 3) . "s para " . count($result) . " filas");
         // $builders = Model_user::getByRoleKeyword('builder');
         // $buildersEmail = [];
         // foreach ($builders as $key => $value) 
