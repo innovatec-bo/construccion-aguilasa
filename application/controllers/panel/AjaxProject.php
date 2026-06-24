@@ -21,40 +21,6 @@ class AjaxProject extends PrivateController
 //        $this->_validateFeature("project_index");
     }
 
-    public function ajaxDtAllProjects_old()
-	{
-		$additionalParameters = $this->input->post('additionalParameters')??array();
-
-		$dt = new JqdtHandler($this->input->post());
-		$paginationHandler = new WorkflowPaginationHandler($dt->getLength(), $dt->getStart(),$dt->getOrderName(0), $dt->getOrderDir(0),$dt->getSearchValue(),$dt->getSearchableColumnDefs());
-		$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id','quantity_picked_up_from_cre','materials_delivered_to_cre','quantity_materials_assigned','pending_material_in_cre','stake_responsible','trim_tree']);
-        $paginationHandler->setReturnAsObjectCollection(false);
-        $paginationHandler->setAdditionalParameters($additionalParameters);
-        $response = $paginationHandler->getResponseForDataTable();
-
-		// $codeList = "";
-		// foreach ($response['resultArray'] as $row)
-		// {
-		// 	$codeList .= $row->code_pro." ";
-
-		// }
-		// $projectWorkflow = Model_project::getWorkflowDetail(['code-list' => $codeList]);
-		// foreach ($response['resultArray'] as &$row)
-		// {
-		// 	$positionInWorkFlow = array_search($row->id_pro,array_column($projectWorkflow,'id_pro'));
-		// 	$projectBudget = PublicController::getPaymentByStatusFromWorkflow($projectWorkflow[$positionInWorkFlow]);
-		// 	$row->projectBudget = number_format($projectBudget, 2, '.', ',');
-		// }
-		echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
-	}
-
-    /**
-     * Reemplazar el método ajaxDtAllProjects en AjaxProject.php (Serebo - CI3)
-     * 
-     * Este método ahora consume la API de Serebo2 en lugar de llamar
-     * directamente al WorkflowPaginationHandler.
-     */
-    
     public function ajaxDtAllProjects()
     {
         $additionalParameters = $this->input->post('additionalParameters') ?? [];
@@ -75,26 +41,7 @@ class AjaxProject extends PrivateController
         }
     
         // Mapear additionalParameters de Serebo → query params de Serebo2
-        $paramMap = [
-            'status'                          => 'status',
-            'status-keyword'                  => 'keyword',
-            'work-area'                       => 'work_area',
-            'system'                          => 'system',
-            'management-by'                   => 'management_by',
-            'contract-id'                     => 'contract_id',
-            'fiscal-responsible-id'           => 'fiscal_id',
-            'builder-responsible-id'          => 'builder_id',
-            'manpower-uploaded'               => 'manpower_uploaded',
-            'trim-tree'                       => 'trim_tree',
-            'has-location'                    => 'has_location',
-            'quantity-picked-up-from-cre'     => 'quantity_picked_up_from_cre',
-            'quantity-pending-in-cre'         => 'quantity_pending_in_cre',
-            'all-materials-picked-up-from-cre'=> 'all_materials_picked_up_from_cre',
-            'none-materials-picked-up-from-cre'=> 'none_materials_picked_up_from_cre',
-            'keyword'                         => 'keyword',
-            'year'                            => 'year',
-            'month'                           => 'month',
-        ];
+        $paramMap = PrivateController::serebo2ApiParamNames();
     
         foreach ($paramMap as $serebroKey => $serebo2Key)
         {
@@ -257,15 +204,16 @@ class AjaxProject extends PrivateController
 
     public function getTotalProjects()
     {
-        $paginationHandler = new WorkflowPaginationHandler(10000);
-        $paginationHandler->setColumnsToShow(['']);
-        $recordsTotal = $paginationHandler->countAll();
-        // $recordsTotal = Model_project::countAll();
-        $response["total"] = $recordsTotal;
-        echo json_encode($response);exit;
+        $apiResponse = WorkflowApiClient::getPaginated(['per_page' => 1, 'page' => 1]);
+    
+        $recordsTotal = $apiResponse['meta']['total'] ?? 0;
+    
+        $response = ['total' => $recordsTotal];
+        echo json_encode($response);
+        exit;
     }
 
-    public function getManpower($projectId)
+    public function getManpower(int $projectId)
     {
         $laborCostMasterDetail = Model_labor_cost::getMasterDetailByProjectId($projectId);
         $i = 0;
@@ -349,16 +297,15 @@ class AjaxProject extends PrivateController
                     'lastName' => $fiscal['lastname_usr']
                 );
             }
-            $workflowPagination = new WorkflowPaginationHandler(1);
-            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
-            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
+            
             $productionLimit = Model_production_limit::getByProjectId($projectId);
             if(!$productionLimit instanceof Model_production_limit)
             {
                 $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
                 $productionLimit->save();
             }
-            $project = $workflowPagination->getAll();
+            $project = WorkflowApiClient::getOne($projectId) ?? [];
+
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response['data']['showAddAllButton'] = $totalLaborCostMasterDetail <= 15000;
             $response["data"]["builders"] = $arrayBuilder;
@@ -366,7 +313,7 @@ class AjaxProject extends PrivateController
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-add-manpower-progress";
             $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
-            $response['data']['project'] = $project[0];
+            $response['data']['project'] = $project;
             $response['data']['productionLimit'] = $productionLimit->toArray();
         }
         else
@@ -433,18 +380,15 @@ class AjaxProject extends PrivateController
 			$dateRangesToBlock = Model_blocked_log_date_range::getAll(100, 0);
             $buildingPoints = Model_building_point::getMasterDetail($projectId, $pointId);
 
-            $workflowPagination = new WorkflowPaginationHandler(1);
-            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
-            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
             $productionLimit = Model_production_limit::getByProjectId($projectId);
             if(!$productionLimit instanceof Model_production_limit)
             {
                 $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
                 $productionLimit->save();
             }
-            $project = $workflowPagination->getAll();
+            $project = WorkflowApiClient::getOne($projectId) ?? [];
 
-            $response["data"]["project"] = $project[0];
+            $response["data"]["project"] = $project;
             $response['data']['productionLimit'] = $productionLimit->toArray();
             $response["data"]["laborCostMasterDetail"] = $laborCostMasterDetail;
             $response["data"]["builders"] = $arrayBuilder;
@@ -683,10 +627,7 @@ class AjaxProject extends PrivateController
         echo json_encode($response);exit;
     }
 
-    /**
-     * Used to paginated the locations view
-     */
-    public function paginationJs()
+    public function paginationJs__()
     {
         $formData = $this->input->post();
         $pageSize = $formData['pageSize'];
@@ -695,21 +636,80 @@ class AjaxProject extends PrivateController
         $additionalParameters = isset($formData["additionalParameters"])?$formData["additionalParameters"]:[];
         $additionalParameters["has-location"] = 1;
         $response = $this->_is("fiscal");
-        //Line commente because the map now show all projects
-        // if($response == 1)
-        // {
-        //     $additionalParameters["fiscal-responsible-id"] = $this->sessionUser->id;
-        // }
 
-		//$dt = new JqdtHandler($this->input->post());
-		$paginationHandler = new WorkflowPaginationHandler($pageSize, $pageNumber, '', 'asc',$textToSearch, ['code_pro']);
-		//$paginationHandler->setColumnsToShow(['order_pst','cre_fiscal_pro','responsible','assign_to_responsible','fiscal_responsible','builder_responsible','project_current_budget','status_log_manual_entry_date','static_days','status_name_pst','manpower_file_id','builder_responsible_id','fiscal_responsible_id']);
+        $paginationHandler = new WorkflowPaginationHandler($pageSize, $pageNumber, '', 'asc',$textToSearch, ['code_pro']);
         $paginationHandler->setColumnsToShow(['status_name_pst','fiscal_responsible','responsible']);
         $paginationHandler->setReturnAsObjectCollection(false);
         $paginationHandler->setAdditionalParameters($additionalParameters);
         $response = $paginationHandler->getResponseForDataTable();
 
         echo json_encode($response);exit;
-		//echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
+        //echo $dt->getJsonResponse($response['recordsTotal'], $response['recordsFiltered'], $response['resultArray']);exit;
+    }
+
+
+    /**
+     * Used to paginated the locations view
+     */
+    public function paginationJs()
+    {
+        $formData   = $this->input->post();
+        $pageSize   = (int) $formData['pageSize'];
+        $pageNumber = (int) $formData['pageNumber'];
+    
+        // Same logic as before (page 1 -> offset 0, otherwise standard
+        // offset math), but using the real $pageSize instead of a
+        // hardcoded 20 — keeps working today since the front-end always
+        // sends pageSize=20, but won't silently break if that ever changes.
+        $offset = $pageNumber == 1 ? 0 : (($pageNumber - 1) * $pageSize);
+    
+        $textToSearch = $formData['textToSearch'] ?? "";
+        $additionalParameters = $formData["additionalParameters"] ?? [];
+        $additionalParameters["has-location"] = 1;
+    
+        $queryParams = [
+            'per_page'   => $pageSize,
+            'page'       => $pageNumber,
+            'order_by'   => 'code_pro',
+            'order_type' => 'asc',
+        ];
+    
+        if ($textToSearch !== "")
+        {
+            $queryParams['search'] = $textToSearch;
+        }
+    
+        $filterMap = PrivateController::serebo2ApiParamNames();
+        foreach ($filterMap as $oldKey => $newKey)
+        {
+            if (isset($additionalParameters[$oldKey]) && $additionalParameters[$oldKey] !== '')
+            {
+                $queryParams[$newKey] = $additionalParameters[$oldKey];
+            }
+        }
+    
+        $apiResponse = WorkflowApiClient::getPaginated($queryParams);
+    
+        if ($apiResponse === null || !isset($apiResponse['data']))
+        {
+            $response = [
+                'recordsTotal'    => 0,
+                'recordsFiltered' => 0,
+                'resultArray'     => [],
+            ];
+            echo json_encode($response);
+            exit;
+        }
+    
+        $recordsTotal = $apiResponse['meta']['total'] ?? 0;
+    
+        $response = [
+            'recordsTotal'    => $recordsTotal,
+            'recordsFiltered' => $recordsTotal,
+            'resultArray'     => $apiResponse['data'],
+        ];
+    
+        echo json_encode($response);
+        exit;
     }
 }

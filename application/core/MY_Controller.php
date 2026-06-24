@@ -597,6 +597,56 @@ class PrivateController extends PublicController
         return $columnList;
     }
 
+    /**
+     * Centralized mapping between the OLD WorkflowPaginationHandler filter
+     * keys (the ones _additionalParameters() used to understand, like
+     * 'code-list', 'status-keyword', etc.) and the query param names that
+     * Serebo2's API (GET /api/v1/workflows) expects.
+     *
+     * Every place in Serebo that used to call the local WorkflowPaginationHandler
+     * and now calls WorkflowApiClient instead should pull this map from here,
+     * instead of redeclaring the same array locally. That way, if a new filter
+     * is added to Serebo2's API in the future, it only needs to be added once.
+     *
+     * Usage:
+     *   $filterMap = PrivateController::serebo2ApiParamNames();
+     *   foreach ($filterMap as $oldKey => $newKey)
+     *   {
+     *       if (isset($additionalParameters[$oldKey]) && $additionalParameters[$oldKey] !== '')
+     *       {
+     *           $queryParams[$newKey] = $additionalParameters[$oldKey];
+     *       }
+     *   }
+     *
+     * @return array
+     */
+    public static function serebo2ApiParamNames()
+    {
+        $filterMap = [
+            'code-list'                          => 'code_list',
+            'id-list'                             => 'id_list',
+            'status-keyword'                      => 'keyword',
+            'status'                               => 'status',
+            'contract-id'                          => 'contract_id',
+            'system'                               => 'system',
+            'management-by'                       => 'management_by',
+            'work-area'                            => 'work_area',
+            'fiscal-responsible-id'                => 'fiscal_id',
+            'builder-responsible-id'               => 'builder_id',
+            'manpower-uploaded'                    => 'manpower_uploaded',
+            'trim-tree'                            => 'trim_tree',
+            'has-location'                         => 'has_location',
+            'quantity-picked-up-from-cre'          => 'quantity_picked_up_from_cre',
+            'quantity-pending-in-cre'              => 'quantity_pending_in_cre',
+            'all-materials-picked-up-from-cre'     => 'all_materials_picked_up_from_cre',
+            'none-materials-picked-up-from-cre'    => 'none_materials_picked_up_from_cre',
+            'keyword'                              => 'keyword',
+            'year'                                 => 'year',
+            'month'                                => 'month',
+        ];
+        return $filterMap;
+    }
+
 	public function testMailServer($to = 'jair@twiiti.com')
 	{
 		$ci = &get_instance();

@@ -25,9 +25,11 @@ var IncidentHandler = /** @class */ (function () {
             },
             success: function (response) {
                 if (response.success === 1 && !formData) {
+                    console.log('1');
                     _this._launchForm(response);
                 }
                 else if (response.success === 1 && formData) {
+                    console.log('2');
                     var $tableProject = $("#project-index");
                     if ($tableProject.length <= 0) {
                         if (formData.pauseProject == 1 || formData.stopProject == 1) {
@@ -56,6 +58,7 @@ var IncidentHandler = /** @class */ (function () {
         var $template = $("<div>" + this._htmlTemplate + "</div>");
         var htmlSource = $template.find("#ht-modal-incident-form").html();
         var template = Handlebars.compile(htmlSource);
+        console.log(response.projectList);
         $.each(response.projectList, function (index, value) {
             var data = { projectData: value };
             var html = template(data);

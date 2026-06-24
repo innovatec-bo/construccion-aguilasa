@@ -46,11 +46,11 @@ class IncidentHandler
 			},
             success:function(response){
                 if(response.success === 1 && !formData)
-                {
+                {console.log('1');
                     _this._launchForm(response)
                 }
                 else if(response.success === 1 && formData)
-                {
+                {console.log('2');
                     let $tableProject = $("#project-index");
                     if($tableProject.length <= 0)
                     {
@@ -83,9 +83,9 @@ class IncidentHandler
         this._serverResponse = response;
         this._htmlTemplate = response.template;
         let $template = $("<div>"+this._htmlTemplate+"</div>");
-        let htmlSource   = $template.find("#ht-modal-incident-form").html();
+        let htmlSource = $template.find("#ht-modal-incident-form").html();
         let template = Handlebars.compile(htmlSource);
-
+        console.log(response.projectList);
         $.each(response.projectList, function(index, value){
             let data = {projectData:value};
             let html = template(data);

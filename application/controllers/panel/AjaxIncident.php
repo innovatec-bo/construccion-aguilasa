@@ -36,7 +36,7 @@ class AjaxIncident extends PrivateController
         exit;
     }
 
-    public function add(int $statusId, $projectId = NULL)
+    public function add($statusId = NULL, $projectId = NULL)
     {
         /** Server Side Validations **/
         $this->form_validation->set_rules('projectId', 'ID proyecto', 'trim|required');
@@ -47,79 +47,80 @@ class AjaxIncident extends PrivateController
         $this->form_validation->set_rules('percentage', 'Porcentage', 'trim');
         $this->form_validation->set_rules('detail', 'Detalle', 'trim');
         $this->form_validation->set_rules('incidentType', 'Tipo incidente', 'trim|required');
-
-        if($this->form_validation->run() === FALSE)
+    
+        if ($this->form_validation->run() === FALSE)
         {
             $validationErrors = validation_errors();
-            $validationErrors = str_replace("<p>","",$validationErrors);
-            $validationErrors = str_replace("</p>","<br>",$validationErrors);
+            $validationErrors = str_replace("<p>", "", $validationErrors);
+            $validationErrors = str_replace("</p>", "<br>", $validationErrors);
             $response = array("success" => 0, "message" => $validationErrors);
-            $success = $validationErrors != ""?0:1;
+            $success = $validationErrors != "" ? 0 : 1;
             $response["success"] = $success;
             $response["message"] = $validationErrors;
-            $response["template"] = $this->load->view('default-template/panel/content/project-status/ht-modal-incident-form', array(), TRUE);
-            $response["incident"] = array();
-            if(!is_numeric($projectId))
-            {
-                $additionalParameters['status'] = $statusId;
-                // $projectList = Model_project::getAll(100, 0, "entry_date_pro","desc", $additionalParameters);
+            $response["template"] = $this->load->view('default-template/panel/content/project-status/ht-modal-incident-form', [], TRUE);
+            $response["incident"] = [];
 
-                $paginationHandler = new WorkflowPaginationHandler(100,0);
-				$paginationHandler->setAdditionalParameters($additionalParameters);
-                $paginationHandler->setColumnsToShow(['status_name_pst','keyword_pst','production_percentage']);
-				$projectList = $paginationHandler->getAll();
+            if (!is_numeric($projectId))
+            {
+                // "Add incident to all projects in this status" button —
+                // fetch every project currently sitting in $statusId.
+                $apiResponse = WorkflowApiClient::getPaginated([
+                    'status'   => $statusId,
+                    'per_page' => 100,
+                ]);
+                $projectList = $apiResponse['data'] ?? [];
             }
             else
             {
-                $project = Model_project::getById($projectId)->toArray();
-
-                $incident = Model_incident::getAllByProjectId($project["id_pro"]);
-                $incident = count($incident) > 0?$incident[0]:array("percentage_inc" => 0);
-
-                $status = Model_project_status::getById($project["status_pro"])->toArray();
-                $projectList = array_merge($project, $incident,$status);
-
-				$paginationHandler = new WorkflowPaginationHandler(1);
-                $paginationHandler->setColumnsToShow(['status_name_pst','keyword_pst','production_percentage']);
-				$paginationHandler->setAdditionalParameters(['code-list'=>$project['code_pro']]);
-				$projectList = $paginationHandler->getAll();
+                // "New incident" button on a single project.
+                // $project = Model_project::getById($projectId)->toArray();
+    
+                $apiResponse = WorkflowApiClient::getPaginated([
+                    'id_list' => $projectId,
+                    'per_page'  => 1,
+                ]);
+                $projectList = $apiResponse['data'] ?? [];
+                
             }
             $response["projectList"] = $projectList;
         }
         else
         {
-            $formData = $this->input->post();
-            $projectId = $formData["projectId"];
-            $statusId = $formData["statusId"];
-            $entryDate = $formData["entryDate"];
+            $formData     = $this->input->post();
+            $projectId    = $formData["projectId"];
+            $statusId     = $formData["statusId"];
+            $entryDate    = $formData["entryDate"];
             $pauseProject = $formData["pauseProject"];
-            $stopProject = $formData["stopProject"];
-            $entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
-            $entryDate = date_format($entryDate, 'Y-m-d');
-            $entryDate = $entryDate." ".date("H:i:s");
-            $percentage = isset($formData["percentage"])?$formData["percentage"]:NULL;
-            //If the UI does not send the percentage then let's search the las incident percentage
-            if(is_null($percentage))
+            $stopProject  = $formData["stopProject"];
+            $entryDate    = DateTime::createFromFormat('d-m-Y', $entryDate);
+            $entryDate    = date_format($entryDate, 'Y-m-d');
+            $entryDate    = $entryDate . " " . date("H:i:s");
+            $percentage   = isset($formData["percentage"]) ? $formData["percentage"] : NULL;
+    
+            // If the UI does not send the percentage then let's search the last incident percentage
+            if (is_null($percentage))
             {
                 $percentage = 0;
                 $incidentList = Model_incident::getAllByProjectId($projectId);
-                //if there are not previous incidents then lets assign 0
-                if(count($incidentList) > 0)
+                // if there are not previous incidents then lets assign 0
+                if (count($incidentList) > 0)
                 {
                     $percentage = $incidentList[0]["percentage_inc"];
                 }
             }
-
-            $detail = $formData["detail"];
+    
+            $detail       = $formData["detail"];
             $incidentType = $formData["incidentType"];
-            $incident = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId, $pauseProject, $stopProject, $incidentType);
+            $incident     = new Model_incident($statusId, $percentage, $detail, $entryDate, $projectId, $pauseProject, $stopProject, $incidentType);
             $incident->save();
             $incident->pauseStopProject($statusId);
             WorkflowSyncNotifier::notify($projectId);
             $response = array("success" => 1, "message" => "Incidente añadido correctamente");
         }
-        echo json_encode($response);exit;
+        echo json_encode($response);
+        exit;
     }
+
 
     public function getTotalRoles()
     {

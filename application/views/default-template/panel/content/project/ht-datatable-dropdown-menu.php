@@ -26,7 +26,7 @@
             {{/ifCond}}
             {{#ifCond visibility.showAddIncidentBtn "==" 1}}
                 <li>
-                    <a href="#" class="pl-1 add-incident"  data-project-id="{{row.id_pro}}" data-status-id="{{row.status_pro}}" ><i class="fa fa-flag-o fa-fw"></i> Nuevo incidente</a>
+                    <a href="#" class="pl-1 add-incident"  data-project-id="{{row.id_pro}}" data-status-id="{{row.project_status_id}}" ><i class="fa fa-flag-o fa-fw"></i> Nuevo incidente</a>
                 </li>
             {{/ifCond}}
             {{#ifCond visibility.showManpowerBtn "==" 1}}

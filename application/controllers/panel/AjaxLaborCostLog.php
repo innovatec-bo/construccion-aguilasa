@@ -58,16 +58,14 @@ class AjaxLaborCostLog extends PrivateController
             }
 
             $projectId = $logMasterDetail['projectId'];
-            $workflowPagination = new WorkflowPaginationHandler(1);
-            $workflowPagination->setAdditionalParameters(['id-list'=>$projectId]);
-            $workflowPagination->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','keyword_pst','production_total_bs','project_current_design_budget','production_percentage','project_current_budget']);
+            
             $productionLimit = Model_production_limit::getByProjectId($projectId);
             if(!$productionLimit instanceof Model_production_limit)
             {
                 $productionLimit = new Model_production_limit($projectId, 110, date('Y-m-d H:i:s'), null);
                 $productionLimit->save();
             }
-            $project = $workflowPagination->getAll();
+            $project = WorkflowApiClient::getOne($projectId) ?? [];
 
             $response["data"]["fiscals"] = $arrayFiscal;
             $response["data"]["builders"] = $arrayBuilder;
@@ -78,7 +76,7 @@ class AjaxLaborCostLog extends PrivateController
             $response["data"]["template"] = $template;
             $response["data"]["templateName"] = "#ht-modal-form-edit-point-to-point-progress";
             $response["data"]["dateRangesToBlock"] = $dateRangesToBlock;
-            $response['data']['project'] = $project[0];
+            $response['data']['project'] = $project;
         } 
         else
         {

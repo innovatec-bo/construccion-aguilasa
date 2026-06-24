@@ -205,7 +205,6 @@ $(document).ready(function() {
             "searchable" : false,
             "orderable" : false,
             "render" : function(data, type, row, meta) {
-                console.log(row);
                 let currentStatusSet = $("input[name=status-set]").val();
                 let showStatusManagementProjectBtn = 0;
                 let statusManagementProjectUrl = base_url + 'panel/ProjectStatus/statusManagement/' +statusSet[row.project_status_id]+'/'+row.id_pro;
