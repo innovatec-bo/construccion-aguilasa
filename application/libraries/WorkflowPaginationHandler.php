@@ -12,6 +12,10 @@ class WorkflowPaginationHandler extends BasePaginationHandler
 	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
 	{
 		parent::__construct($limit, $offset, $orderBy, $orderType, $textToSearch, $colsArray);
+		throw new \Exception(
+			'WorkflowPaginationHandler is deprecated and must not be used anymore. '
+			. 'Use WorkflowApiClient (getOne / getPaginated / getAllPages) to read from Serebo2 instead.'
+		);
 		$this->_setColumnsAndDependencies();
 		$this->_setQueryDependencies();
 		$this->_columnsToShow = [];
