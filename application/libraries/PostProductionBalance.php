@@ -29,21 +29,19 @@ class PostProductionBalance
     function getReport()
     {
         require FCPATH . 'application/libraries/PhpSpreadsheet/vendor/autoload.php';
-        // $list = Model_project::productionGeneralSummary();
-        // $list = Model_project::getProductivityBaseReport(['from' => '2025-01-01 00:00:00', 'to' => '2025-01-31 23:59:59']);
+    
         $postProductionStatus = Model_project_status::postProductionStatus();
         $keywords = "";
-        foreach ($postProductionStatus as $status) 
+        foreach ($postProductionStatus as $status)
         {
-            $keywords .= $status->getKeyword().",";
+            $keywords .= $status->getKeyword() . ",";
         }
-        $keywords = substr($keywords,0,-1);
-        
+        $keywords = substr($keywords, 0, -1);
+    
         $list = Model_project::getProductivityBaseReport();
-        $paginationHandler = new WorkflowPaginationHandler(4000,0);
-		$paginationHandler->setColumnsToShow(['status_name_pst','keyword_pst','project_current_budget','production_total_bs','project_current_design_budget']);
-        $paginationHandler->setAdditionalParameters(['status-keyword'=>$keywords]);
-		$response = $paginationHandler->getAll();
+    
+        $response = WorkflowApiClient::getAllPages(['keyword' => $keywords]);
+    
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
@@ -52,18 +50,19 @@ class PostProductionBalance
             ->setDescription("Detalle sobre proyectos que pasaron la etapa de producción y tienen saldos en sus manos de obra")
             ->setKeywords("proyectos, saldos")
             ->setCategory("Reporte");
-        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
-        
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
+    
         $spreadsheet = $this->_projects($spreadsheet, $response);
-
+    
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Saldos Post-Produccion - '.date('Y.m.d.H.i.s').'.xls"');
+        header('Content-Disposition: attachment;filename="Saldos Post-Produccion - ' . date('Y.m.d.H.i.s') . '.xls"');
         header('Cache-Control: max-age=0');
-
+    
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
     }
+
 
     private function _projects($spreadsheet, $list)
     {

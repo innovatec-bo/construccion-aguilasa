@@ -952,13 +952,6 @@ class AjaxProjectStatus extends PrivateController
 
         $projectWorkFlow = WorkflowApiClient::getOne($projectId) ?? [];
 
-        // $client = new Client(['base_uri' => getenv('SEREBO2_URL')]);
-        // $apiResponse = $client->request('GET', 'api/v1/workflows/'.$projectId);
-        // $body = json_decode($apiResponse->getBody(), true);
-        // $projectWorkFlow = $body['data'];
-        
-        // dd($projectWorkFlow1);
-
         $statusSetHandler = new StatusSetHandler($statusSet);
         $stepTree = $statusSetHandler->getStepTree();
         $data["statusList"] = $statusListArray;

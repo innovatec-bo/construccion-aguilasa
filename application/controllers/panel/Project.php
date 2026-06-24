@@ -528,12 +528,6 @@ class Project extends PrivateController
        	set_time_limit(300);
 		ini_set('memory_limit','256M');
         $additionalParameters = $this->input->post();
-        // $additionalParameters['status-keyword'] = "";
-        // $additionalParameters['keyword'] = "project_has_been_created";
-        // $additionalParameters['year'] = "2020";
-        // $additionalParameters['month'] = "01";
-        // $additionalParameters['rowKey'] = "countWithoutDigitizationPoints";
-        // $additionalParameters['contract-id'] = "";
         // echo"<pre>";var_dump($additionalParameters);exit;
         $excel = new ExcelProjectWorkflow($this->sessionUser);
         $excel->setAdditionalParameters($additionalParameters);
@@ -582,7 +576,7 @@ class Project extends PrivateController
         $excel->getReport();
     }
 
-    public function downloadManPowerFile($fileHash)
+    public function downloadManPowerFile(string $fileHash)
     {
         /** @var Model_file $file */
         $file = Model_file::getByHash($fileHash);
@@ -624,16 +618,14 @@ class Project extends PrivateController
         $this->complementHandler->addProjectCss('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
-		$paginationHandler = new WorkflowPaginationHandler(1,0);
-		$paginationHandler->setAdditionalParameters(['id-list'=>$project->getId()]);
-		$response = $paginationHandler->getAll();
+        $projectWorkflow = WorkflowApiClient::getOne($projectId) ?? [];
         $data['project'] = $project->toArray();
-		$data['workflow'] = (array)$response[0];
+		$data['workflow'] = $projectWorkflow;
         $data['hasChangeLog'] = Model_labor_cost::hasChangeLog($projectId);
         $this->_loadPanelView('project/manpower', $data);
     }
 
-    public function buildingPoints($projectId)
+    public function buildingPoints(int $projectId)
     {
         $this->_validateFeature('project_manpower');
         /** @var Model_project $project */
@@ -670,11 +662,9 @@ class Project extends PrivateController
 		$this->complementHandler->addProjectJs('ManpowerHandler', TRUE);
         $this->complementHandler->addProjectJs('LaborCostLogHandler', TRUE);
 
-		$paginationHandler = new WorkflowPaginationHandler(1,0);
-		$paginationHandler->setAdditionalParameters(['id-list'=>$project->getId()]);
-		$response = $paginationHandler->getAll();
+        $projectWorkflow = WorkflowApiClient::getOne($projectId) ?? [];
         $data['project'] = $project->toArray();
-        $data['workflow'] = (array)$response[0];
+        $data['workflow'] = $projectWorkflow;
 
         $this->_loadPanelView('project/building-points', $data);
     }

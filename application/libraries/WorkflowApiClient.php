@@ -169,6 +169,54 @@ class WorkflowApiClient
     }
 
     /**
+     * Fetches EVERY page of the workflows endpoint matching the given
+     * filters and returns the full, flat list of rows.
+     *
+     * Use this instead of getPaginated() whenever the caller needs the
+     * complete result set (e.g. building an Excel export) and doesn't
+     * know in advance how many rows will match the filters. Asking
+     * Serebo2 for everything in a single huge per_page value risks
+     * memory exhaustion on its side — this fetches in safe-sized pages
+     * and accumulates them here instead.
+     *
+     * @param array $queryParams  base query params (filters), without 'page'/'per_page'
+     * @param int   $pageSize     how many rows to request per page (default 2000)
+     * @return array              full list of workflow rows across all pages
+     */
+    public static function getAllPages(array $queryParams, int $pageSize = 2000) : array
+    {
+        $accumulated = [];
+        $page        = 1;
+
+        do
+        {
+            $params              = $queryParams;
+            $params['per_page']  = $pageSize;
+            $params['page']      = $page;
+
+            $response = self::getPaginated($params);
+
+            if ($response === null || !isset($response['data']))
+            {
+                log_message(
+                    'error',
+                    "[WorkflowApiClient::getAllPages] Stopped at page {$page} — Serebo2 did not return valid data."
+                );
+                break;
+            }
+
+            $accumulated = array_merge($accumulated, $response['data']);
+
+            $currentPage = $response['meta']['current_page'] ?? $page;
+            $lastPage    = $response['meta']['last_page']    ?? $page;
+            $page++;
+        }
+        while ($currentPage < $lastPage);
+
+        return $accumulated;
+    }
+
+    /**
      * Resolves the Serebo2 API base URL from the environment.
      *
      * @return string

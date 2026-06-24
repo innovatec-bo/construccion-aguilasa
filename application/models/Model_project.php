@@ -352,70 +352,12 @@ class Model_project extends Model_project_base
         }
     }
 
-	/**
-     * BEFORE (old code using the local handler):
-     *
-     * public static function getWorkflowDetail($additionalFilters = [], $columnsToShow = [])
-     * {
-     *     $paginationHandler = new WorkflowPaginationHandler(10000,0);
-     *     $paginationHandler->setReturnAsObjectCollection(FALSE);
-     *     if (count($columnsToShow) > 0)
-     *     {
-     *         $paginationHandler->setColumnsToShow($columnsToShow);
-     *     }
-     *     $paginationHandler->setAdditionalParameters($additionalFilters);
-     *     return $paginationHandler->getAll();
-     * }
-     *
-     *
-     * AFTER (consuming Serebo2's API):
-     *
-     * Note: $columnsToShow is intentionally ignored here. Serebo2's
-     * GET /api/v1/workflows endpoint always returns the full row — there's
-     * no per-call column selection on the API side. Since this method is
-     * mainly used by ExcelProjectWorkflow, which needs almost every column
-     * anyway, returning everything is not a real loss. If a future caller
-     * truly needs a lighter payload, that's a separate concern to revisit.
-     *
-     * $additionalFilters keeps the OLD filter key names (the ones the
-     * WorkflowPaginationHandler understood, like 'code-list', 'id-list',
-     * 'status-keyword', etc.) so existing call sites don't need to change.
-     * This method translates them internally to the query param names that
-     * Serebo2's API expects.
-     *
-     * IMPORTANT: Serebo2 ran out of memory when asked for per_page=10000 in
-     * a single call (the whole result set gets built in memory before being
-     * serialized). To avoid that, we fetch the data in pages of $pageSize
-     * (2000 by default) and recursively accumulate the results until there
-     * are no more pages left.
-     */
     public static function getWorkflowDetail($additionalFilters = [], $columnsToShow = [])
     {
         $queryParams = [];
     
         // Translate old handler filter keys -> Serebo2 API query param names
-        $filterMap = [
-            'code-list'                          => 'code_list',
-            'id-list'                             => 'id_list',
-            'status-keyword'                      => 'keyword',
-            'status'                               => 'status',
-            'contract-id'                          => 'contract_id',
-            'system'                               => 'system',
-            'management-by'                       => 'management_by',
-            'work-area'                            => 'work_area',
-            'fiscal-responsible-id'                => 'fiscal_id',
-            'builder-responsible-id'               => 'builder_id',
-            'manpower-uploaded'                    => 'manpower_uploaded',
-            'trim-tree'                            => 'trim_tree',
-            'has-location'                         => 'has_location',
-            'quantity-picked-up-from-cre'          => 'quantity_picked_up_from_cre',
-            'quantity-pending-in-cre'              => 'quantity_pending_in_cre',
-            'all-materials-picked-up-from-cre'     => 'all_materials_picked_up_from_cre',
-            'none-materials-picked-up-from-cre'    => 'none_materials_picked_up_from_cre',
-            'keyword'                              => 'keyword',
-            'year'                                 => 'year',
-            'month'                                => 'month',
-        ];
+        $filterMap = PrivateController::serebo2ApiParamNames();
     
         foreach ($filterMap as $oldKey => $newKey)
         {
@@ -425,55 +367,7 @@ class Model_project extends Model_project_base
             }
         }
     
-        $response =  self::_fetchAllWorkflowPages($queryParams);
-        return $response;
-    }
-    
-    /**
-     * Recursively fetches every page of the workflows endpoint and
-     * accumulates the results into a single flat array.
-     *
-     * @param array $queryParams  base query params (filters), without 'page'
-     * @param int   $page         current page being fetched (1-indexed)
-     * @param int   $pageSize     how many rows to request per page
-     * @param array $accumulated  results collected so far across recursive calls
-     * @return array              full list of workflow rows across all pages
-     */
-    private static function _fetchAllWorkflowPages(
-        array $queryParams,
-        int $page = 1,
-        int $pageSize = 1500,
-        array $accumulated = []
-    ) : array
-    {
-        $params           = $queryParams;
-        $params['per_page'] = $pageSize;
-        $params['page']     = $page;
-    
-        $response = WorkflowApiClient::getPaginated($params);
-    
-        if ($response === null || !isset($response['data']))
-        {
-            // If a page fails, stop here and return whatever we've gathered
-            // so far instead of losing everything collected up to this point.
-            log_message(
-                'error',
-                "[Model_project::getWorkflowDetail] Stopped at page {$page} — Serebo2 did not return valid data."
-            );
-            return $accumulated;
-        }
-    
-        $accumulated = array_merge($accumulated, $response['data']);
-    
-        $currentPage = $response['meta']['current_page'] ?? $page;
-        $lastPage    = $response['meta']['last_page']    ?? $page;
-    
-        if ($currentPage < $lastPage)
-        {
-            return self::_fetchAllWorkflowPages($queryParams, $page + 1, $pageSize, $accumulated);
-        }
-    
-        return $accumulated;
+        return WorkflowApiClient::getAllPages($queryParams);
     }
 
 	/**

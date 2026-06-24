@@ -8,7 +8,7 @@ class ExcelRequestMaterialToCREV2
     private int $_summaryId;
     private array $_materialSummary;
     private array $_materialList;
-    private object $_projectWorkflow;
+    private array $_projectWorkflow;
 
     public function __construct(object $sessionUser, int $summaryId)
     {
@@ -35,16 +35,14 @@ class ExcelRequestMaterialToCREV2
 		$this->_materialSummary = Model_material_summary::getMasterDetailByListId($this->_summaryId);
 		$this->_materialList = Model_project_material::getBySummaryId($this->_summaryId);	
 
-        $wokflowPaginationHandler = new WorkflowPaginationHandler(1);
-        $wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$this->_materialSummary['project_id']]);
-        $wokflowPaginationHandler->setColumnsToShow(['approved_reservation_number','approved_graph_number','cre_fiscal_pro']);
-        $this->_projectWorkflow = $wokflowPaginationHandler->getAll()[0];
-        // dd($this->_projectWorkflow, $this->_materialSummary, $this->_materialList);
+        $projectId = $this->_materialSummary['project_id'];
+        $this->_projectWorkflow = WorkflowApiClient::getOne($projectId) ?? [];
+
         $spreadsheet = $this->_summary($spreadsheet);
     
         // redirect output to client browser
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$this->_projectWorkflow->code_pro.' ADICIONAL - ('.strtoupper($this->_projectWorkflow->cre_fiscal_pro).') '.date("d.m.y h.i A").'.xls"');
+        header('Content-Disposition: attachment;filename="'.$this->_projectWorkflow['code_pro'].' ADICIONAL - ('.strtoupper($this->_projectWorkflow['cre_fiscal_pro']).') '.date("d.m.y h.i A").'.xls"');
         header('Cache-Control: max-age=0');
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
@@ -93,13 +91,13 @@ class ExcelRequestMaterialToCREV2
         ];
 
         $manPowerWorkSheet = $spreadsheet->createSheet(0);
-        $manPowerWorkSheet->setTitle(strtoupper($this->_projectWorkflow->code_pro));
+        $manPowerWorkSheet->setTitle(strtoupper($this->_projectWorkflow['code_pro']));
 
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A5', 'REF: MATERIAL ADICIONAL');
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A6', 'Proyecto '.strtoupper($this->_projectWorkflow->code_pro));
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A7', 'Grafo '.$this->_projectWorkflow->approved_graph_number);
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A8', 'Reserva '.$this->_projectWorkflow->approved_reservation_number);
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A9', 'Fiscal '.strtoupper($this->_projectWorkflow->cre_fiscal_pro));
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A6', 'Proyecto '.strtoupper($this->_projectWorkflow['code_pro']));
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A7', 'Grafo '.$this->_projectWorkflow['approved_graph_number']);
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A8', 'Reserva '.$this->_projectWorkflow['approved_reservation_number']);
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A9', 'Fiscal '.strtoupper($this->_projectWorkflow['cre_fiscal_pro']));
         $spreadsheet->getActiveSheet()->mergeCells('A5:H5');
         $spreadsheet->getActiveSheet()->mergeCells('A6:H6');
         $spreadsheet->getActiveSheet()->mergeCells('A7:H7');
@@ -178,7 +176,7 @@ class ExcelRequestMaterialToCREV2
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('C'.($i+4), ucwords($this->_sessionUser->fullName));
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('C'.($i+5), 'DEPARTAMENTO REDES');
 
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.($i+4), ucwords($this->_projectWorkflow->cre_fiscal_pro));
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.($i+4), ucwords($this->_projectWorkflow['cre_fiscal_pro']));
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('E'.($i+5), 'FISCAL DE CRE');
         $spreadsheet->getActiveSheet()->mergeCells('E'.($i+4).':G'.($i+4));
         $spreadsheet->getActiveSheet()->mergeCells('E'.($i+5).':G'.($i+5));

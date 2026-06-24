@@ -65,18 +65,6 @@ class Test extends PublicController
 		}
 	}
 
-	public function wfImprovement()
-	{
-		$workflow = new WorkflowPaginationHandler(10);
-		$wfColumns = PrivateController::getWorkflowColumns();
-		$wfColumns = array_keys($wfColumns);
-		// $workflow->setColumnsToShow(['stake_date','rd_digitization_points_quantity']);
-		$workflow->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id']);
-		// $workflow->setColumnsToShow($wfColumns);
-		$result = $workflow->getAll();
-		dd($result);
-	}
-
 	public function summary()
 	{
 		$materialSummary = new SummaryPaginationHandler();

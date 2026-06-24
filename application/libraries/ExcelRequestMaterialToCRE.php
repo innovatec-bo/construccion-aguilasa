@@ -8,7 +8,7 @@ class ExcelRequestMaterialToCRE
     private int $_summaryId;
     private array $_materialSummary;
     private array $_materialList;
-    private object $_projectWorkflow;
+    private array $_projectWorkflow;
 
     public function __construct(object $sessionUser, int $summaryId)
     {
@@ -35,11 +35,9 @@ class ExcelRequestMaterialToCRE
 		$this->_materialSummary = Model_material_summary::getMasterDetailByListId($this->_summaryId);
 		$this->_materialList = Model_project_material::getBySummaryId($this->_summaryId);	
 
-        $wokflowPaginationHandler = new WorkflowPaginationHandler(1);
-        $wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$this->_materialSummary['project_id']]);
-        $wokflowPaginationHandler->setColumnsToShow(['approved_reservation_number','approved_graph_number','cre_fiscal_pro']);
-        $this->_projectWorkflow = $wokflowPaginationHandler->getAll()[0];
-        // dd($this->_projectWorkflow, $this->_materialSummary, $this->_materialList);
+        $projectId = $this->_materialSummary['project_id'];
+        $this->_projectWorkflow = WorkflowApiClient::getOne($projectId) ?? [];
+
         $spreadsheet = $this->_summary($spreadsheet);
     
         // redirect output to client browser

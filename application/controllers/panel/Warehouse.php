@@ -280,11 +280,7 @@ class Warehouse extends PrivateController
 			$entryDate = $formData['entry-date'];
 			$projectId = $formData['project'];
 			$builderId = $formData['builder-id'];
-			$wokflowPaginationHandler = new WorkflowPaginationHandler(1);
-			$wokflowPaginationHandler->setAdditionalParameters(['id-list'=>$projectId]);
-			$wokflowPaginationHandler->setColumnsToShow(['fiscal_responsible_id','fiscal_responsible','builder_responsible','builder_responsible_id','approved_reservation_number']);
-			$projectWorkflow = $wokflowPaginationHandler->getAll()[0];
-			// dd($projectWorkflow, $formData);
+			$projectWorkflow = WorkflowApiClient::getOne($projectId) ?? [];
 			$entryDate = DateTime::createFromFormat('d-m-Y', $entryDate);
 			$entryDate = date_format($entryDate, 'Y-m-d');
 			$entryDate = $entryDate." ".date("H:i:s");
@@ -298,7 +294,7 @@ class Warehouse extends PrivateController
 			$newMaterialSummary = new Model_material_summary(NULL,'TODOS',$projectId,$projectId,'','',$entryDate,'',$currentUserId, $summaryType->getId(), NULL);
 			//13/01/2022 - se modificaron las asignaciones
 			$newMaterialSummary->setBuilderResponsible($builderId);
-			$newMaterialSummary->setFiscalResponsible($projectWorkflow->fiscal_responsible_id);
+			$newMaterialSummary->setFiscalResponsible($projectWorkflow['fiscal_responsible_id']);
 			
 			$summariesByProjectAndType = Model_material_summary::getSummariesByProjectAndType($newMaterialSummary->getProjectId(),$newMaterialSummary->getSummaryType());
 			$correlativeCounter = count($summariesByProjectAndType) + 1;
