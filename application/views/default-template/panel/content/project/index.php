@@ -87,26 +87,6 @@
                             </select>
                         </div>
                     </div>
-					<!-- <div class="col-md-2">
-						<div class="form-group">
-							<label>Estado</label>
-							<select class="form-control" name="status">
-								<option value="">--Todos--</option>
-								<?php
-								$excludedStatusId = array(1,8,13,22);
-								$html = '';
-								/** @var Model_project_status $status */
-								foreach ($statusInLog as $status)
-								{
-									if(array_search($status->getId(),$excludedStatusId) !== FALSE)
-										continue;
-									$html .= '<option value="'.$status->getId().'">'.$status->getName().'</option>';
-								}
-								echo $html;
-								?>
-							</select>
-						</div>
-					</div> -->
                     <!-- <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
