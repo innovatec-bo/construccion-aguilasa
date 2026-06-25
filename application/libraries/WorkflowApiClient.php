@@ -185,6 +185,8 @@ class WorkflowApiClient
      */
     public static function getAllPages(array $queryParams, int $pageSize = 2000) : array
     {
+        set_time_limit(300);
+		ini_set('memory_limit','1024M');
         $accumulated = [];
         $page        = 1;
 
