@@ -180,10 +180,10 @@ class WorkflowApiClient
      * and accumulates them here instead.
      *
      * @param array $queryParams  base query params (filters), without 'page'/'per_page'
-     * @param int   $pageSize     how many rows to request per page (default 2000)
+     * @param int   $pageSize     how many rows to request per page (default 1500)
      * @return array              full list of workflow rows across all pages
      */
-    public static function getAllPages(array $queryParams, int $pageSize = 2000) : array
+    public static function getAllPages(array $queryParams, int $pageSize = 1500) : array
     {
         set_time_limit(300);
 		ini_set('memory_limit','1024M');
