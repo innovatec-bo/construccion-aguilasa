@@ -113,11 +113,13 @@
                         // {
                         //     $allowedStatusToRegisterActivity[] = 45;
                         // }
+
 						// if(array_search($project['status_pro'], $allowedStatusToRegisterActivity) === FALSE)
-                        if(array_search($project['status_pro']))
-							echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
-						else
-							echo '<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
+							// echo '<button type="button" class="btn btn-default btn-xs disabled"  data-original-title="El proyecto no esta en ninguna de las siguientes etapas: En construccion,Completado,As built,Recep. de Concil.,Envio de Concil.,Recep. orden dev.,Mate. dev. a CRE,Energizado." data-toggle="tooltip" data-placement="top"><i class="fa fa-plus fa-fw"></i></button>';
+						// else
+							// echo '<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
+
+                        echo '<button type="button" class="btn btn-default btn-xs add-manpower-progress"><i class="fa fa-plus fa-fw"></i></button>';
 						?>
                     </div>
                 </div>
