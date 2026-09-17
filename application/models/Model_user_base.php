@@ -141,6 +141,11 @@ class Model_user_base extends MY_Model
 	{
 		return $this->_umbo;
 	}
+
+    public function getPassword()
+    {
+        return $this->_password;
+    }
     ################################################################################### end getters
 
     ################################################################################### begin setters

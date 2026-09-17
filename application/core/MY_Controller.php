@@ -411,9 +411,17 @@ class PrivateController extends PublicController
 
     private function _validateSession()
     {
+        
         if ($this->session->has_userdata("authenticated") && $this->session->userdata("authenticated") === 1)
         {
             $this->sessionUser = $this->session->userdata("sessionUser");
+            $user = Model_user::getById($this->sessionUser->id);
+
+            if (is_null($user->getPassword()) || empty($user->getPassword())) {
+                $this->session->sess_destroy();
+                $this->session->set_flashdata("errorMessage","Your session has expired!");
+                redirect(base_url("Login"));
+            }
         }
         else
         {
