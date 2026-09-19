@@ -804,6 +804,108 @@ class AjaxProjectStatus extends PrivateController
         $this->_validateFeature("project_update_history");
         $formData = $this->input->post();
 
+        $response = [
+            "success" => 0,
+            "message" => "Ocurrio un problema, por favor intente de nuevo."
+        ];
+
+        $logId = isset($formData["logId"]) ? $formData["logId"] : null;
+        $projectId = isset($formData["projectId"]) ? $formData["projectId"] : null;
+
+        // ----------------------------------------------------
+        // 1. Manejo dinámico de Model_project_budget
+        // Mapeo: [nombre_campo_post => metodo_setter]
+        // ----------------------------------------------------
+        $budgetFieldMapping = [
+            'tentativeTotalBudget' => 'setTentativeTotalBudget',
+            'designBudget'         => 'setDesign',
+            'buildingBudget'       => 'setBuilding',
+            'transportBudget'      => 'setTransportation',
+            'liveLineBudget'       => 'setLiveLine',
+            'rightOfWayBudget'     => 'setRightOfWay',
+        ];
+
+        if ($logId) {
+            $projectBudget = null;
+
+            foreach ($budgetFieldMapping as $postKey => $setterMethod) {
+                if (isset($formData[$postKey])) {
+                    // Instanciamos el modelo solo si aún no lo hemos obtenido
+                    if ($projectBudget === null) {
+                        $projectBudget = Model_project_budget::getByStatusLogId($logId);
+                    }
+
+                    if ($projectBudget && method_exists($projectBudget, $setterMethod)) {
+                        $projectBudget->$setterMethod($formData[$postKey]);
+                    }
+                }
+            }
+
+            // Si se modificó algún campo de presupuesto, persistimos los cambios
+            if ($projectBudget !== null) {
+                $projectBudget->save();
+                $response["success"] = 1;
+                $response["message"] = "Se actualizaron los datos del presupuesto correctamente.";
+            }
+        }
+
+        // ----------------------------------------------------
+        // 2. Manejo de fecha de entrada (Model_project_status_log)
+        // ----------------------------------------------------
+        if ($logId && !empty($formData["entryDate"])) {
+            $dateObj = DateTime::createFromFormat('d-m-Y H:i:s', $formData["entryDate"]);
+            if ($dateObj) {
+                $entryDateFormatted = $dateObj->format('Y-m-d H:i:s');
+                $projectStatusLog = Model_project_status_log::getById($logId);
+                if ($projectStatusLog) {
+                    $projectStatusLog->setManualEntryDate($entryDateFormatted);
+                    $projectStatusLog->save();
+                    $response["success"] = 1;
+                    $response["message"] = "Se modificó la fecha del registro.";
+                }
+            }
+        }
+
+        // ----------------------------------------------------
+        // 3. Manejo de puntos y distancia (Model_project_points)
+        // ----------------------------------------------------
+        if ($logId && isset($formData["points"], $formData["distance"])) {
+            $projectPoints = Model_project_points::getByStatusLogId($logId);
+            if ($projectPoints) {
+                $projectPoints->setPoints($formData["points"]);
+                $projectPoints->setDistance($formData["distance"]);
+                $projectPoints->save();
+                $response["success"] = 1;
+                $response["message"] = "Se actualizaron los puntos y distancia.";
+            }
+        }
+
+        // ----------------------------------------------------
+        // 4. Reasignación de responsables
+        // ----------------------------------------------------
+        if (isset($formData["responsibleIds"]) && $projectId) {
+            $response = Model_status_log_responsible::reAssignResponsibleIds(
+                $formData["responsibleIds"],
+                $projectId
+            );
+        }
+
+        // ----------------------------------------------------
+        // 5. Notificación y respuesta
+        // ----------------------------------------------------
+        if ($projectId) {
+            WorkflowSyncNotifier::notify($projectId);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function updateLog_old()
+    {
+        $this->_validateFeature("project_update_history");
+        $formData = $this->input->post();
+
         $response["success"] = 0;
         $response["message"] = "Ocurrio un problema, por favor intente de nuevo.";
 

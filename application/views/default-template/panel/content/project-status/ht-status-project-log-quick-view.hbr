@@ -111,6 +111,7 @@
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
+                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-approved-budget">Editar importes</a>
                         {{/ifCond}}
 
                         {{#ifCond keyword_pst "==" "conciliation_reception"}}

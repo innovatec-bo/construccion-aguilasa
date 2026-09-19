@@ -6,6 +6,47 @@
  * Time: 10:34 AM
  */
 ?>
+<script id="ht-modal-modify-approved-budget" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-md-12 status-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label>Importe de dise&ntilde;o</label>
+                                <input name="design-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-design-budget">
+                                <div id="error-design-budget"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Importe de construcci&oacute;n</label>
+                                <input name="building-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-building-budget">
+                                <div id="error-building-budget"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Importe de transporte</label>
+                                <input name="transport-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-tranport-budget">
+                                <div id="error-transport-budget"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Importe de linea viva</label>
+                                <input name="live-line-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-live-line-budget">
+                                <div id="error-live-line-budget"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Importe derecho de v&iacute;a</label>
+                                <input name="right-of-way-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-right-of-way-budget">
+                                <div id="error-right-of-way-budget"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 <script id="ht-modal-modify-schedule-budget" type="text/x-handlebars-template">
     <div class="row">
         <div class="col-md-12 status-content">
@@ -20,7 +61,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Total importe tentativo</label>
+                                <label>Total importe tentativo de dise&ntilde;o</label>
                                 <input name="design-budget" data-parsley-type="number" class="form-control" type="number" required="" data-parsley-errors-container="#error-design-budget">
                                 <div id="error-design-budget"></div>
                             </div>

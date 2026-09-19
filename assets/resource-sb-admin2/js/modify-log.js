@@ -3,6 +3,57 @@
  */
 $(document).ready(function() {
 
+    $(document).on("click",".edit-approved-budget",function(e){
+        e.preventDefault();
+        var logId = $(this).data("log-id");
+        var projectId = $("input[name=project-id]").val();
+        var statusName = $(this).data("status-name");
+        var htmlSource   = $("#ht-modal-modify-approved-budget").html();
+        var template = Handlebars.compile(htmlSource);
+        var data = {statusName:statusName};
+        var html = template(data);
+        bootbox.confirm({
+            title: "Modificar importes aprobados",
+            message: html,
+            size: 'small',
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Modificar'
+                }
+            },
+            callback: function (result) {
+                if(result)
+                {
+                    var designBudget = $("input[name=design-budget]").val();
+                    var buildingBudget = $("input[name=building-budget]").val();
+                    var transportBudget = $("input[name=transport-budget]").val();
+                    var liveLineBudget = $("input[name=live-line-budget]").val();
+                    var rightOfWayBudget = $("input[name=right-of-way-budget]").val();
+                    var data = {
+                        logId: logId,
+                        projectId: projectId,
+                        designBudget:designBudget,
+                        buildingBudget:buildingBudget,
+                        transportBudget:transportBudget,
+                        liveLineBudget:liveLineBudget,
+                        rightOfWayBudget:rightOfWayBudget
+                    };
+                    updateLog(data);
+                }
+            }
+        });
+
+        var date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            // defaultDate: date,
+            format: 'DD-MM-YYYY HH:mm:ss'
+        });
+    });
+    
     $(document).on("click",".edit-schedule-budget",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");
