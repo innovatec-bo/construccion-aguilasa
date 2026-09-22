@@ -66,7 +66,10 @@
                             <dd><span class="label label-primary" style="font-size: 80%;">{{numberFormat tentative_total_budget_prb}}</span></dd>
                             <dt>Importe de diseño Tentativo</dt>
                             <dd>{{numberFormat design_prb}}</dd>
-                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-schedule-budget">Editar importes</a>
+                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-schedule-budget"
+                            data-tentative-total-budget="{{tentative_total_budget_prb}}"
+                            data-design-budget="{{design_prb}}"
+                            >Editar importes</a>
 
                         {{/ifCond}}
 
@@ -111,7 +114,13 @@
                             <dd>{{graph_number_prb}}</dd>
                             <dt>Numero de reserva</dt>
                             <dd>{{reservation_number_prb}}</dd>
-                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-approved-budget">Editar importes</a>
+                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-approved-budget" 
+                                data-design-budget="{{design_prb}}"
+                                data-building-budget="{{building_prb}}"
+                                data-transport-budget="{{transportation_prb}}"
+                                data-live-line-budget="{{live_line_prb}}"
+                                data-right-of-way-budget="{{right_of_way_prb}}"
+                            >Editar importes</a>
                         {{/ifCond}}
 
                         {{#ifCond keyword_pst "==" "conciliation_reception"}}
@@ -160,6 +169,9 @@
                         {{#ifCond keyword_pst "==" "canceled"}}
                             <dt>Importe de diseño</dt>
                             <dd>{{design_prb}}</dd>
+                            <a href="javascript:void(0)" data-log-id="{{id_psl}}" class="edit-canceled-budget" 
+                                data-design-budget="{{design_prb}}"
+                            >Editar importes</a>
                         {{/ifCond}}
                         {{#ifCond log_detail_psl "!=" ""}}
                             <dt>Observaciones</dt>

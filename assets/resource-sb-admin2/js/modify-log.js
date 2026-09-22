@@ -3,6 +3,54 @@
  */
 $(document).ready(function() {
 
+    $(document).on("click",".edit-canceled-budget",function(e){
+        e.preventDefault();
+        var logId = $(this).data("log-id");
+        var projectId = $("input[name=project-id]").val();
+        var statusName = $(this).data("status-name");
+        var htmlSource   = $("#ht-modal-modify-canceled-budget").html();
+        var template = Handlebars.compile(htmlSource);
+
+        var designBudget = $(this).data('design-budget');
+        var data = {
+            statusName:statusName,
+            designBudget:designBudget
+        };
+        var html = template(data);
+        bootbox.confirm({
+            title: "Modificar importes cancelados",
+            message: html,
+            size: 'small',
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Modificar'
+                }
+            },
+            callback: function (result) {
+                if(result)
+                {
+                    var designBudget = $("input[name=design-budget]").val();
+                    var data = {
+                        logId: logId,
+                        projectId: projectId,
+                        designBudget:designBudget,
+                    };
+                    updateLog(data);
+                }
+            }
+        });
+
+        var date = new Date();
+        $('.date-time-picker').datetimepicker({
+            ignoreReadonly: true,
+            // defaultDate: date,
+            format: 'DD-MM-YYYY HH:mm:ss'
+        });
+    });
+
     $(document).on("click",".edit-approved-budget",function(e){
         e.preventDefault();
         var logId = $(this).data("log-id");
@@ -10,7 +58,20 @@ $(document).ready(function() {
         var statusName = $(this).data("status-name");
         var htmlSource   = $("#ht-modal-modify-approved-budget").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {statusName:statusName};
+
+        var designBudget = $(this).data('design-budget');
+        var buildingBudget = $(this).data('building-budget');
+        var transportBudget = $(this).data('transport-budget');
+        var liveLineBudget = $(this).data('live-line-budget');
+        var rightOfWayBudget = $(this).data('right-of-way-budget');
+        var data = {
+            statusName:statusName,
+            designBudget:designBudget,
+            buildingBudget:buildingBudget,
+            transportBudget:transportBudget,
+            liveLineBudget:liveLineBudget,
+            rightOfWayBudget:rightOfWayBudget
+        };
         var html = template(data);
         bootbox.confirm({
             title: "Modificar importes aprobados",
@@ -61,7 +122,13 @@ $(document).ready(function() {
         var statusName = $(this).data("status-name");
         var htmlSource   = $("#ht-modal-modify-schedule-budget").html();
         var template = Handlebars.compile(htmlSource);
-        var data = {statusName:statusName};
+        var tentativeTotalBudget = $(this).data('tentative-total-budget');
+        var designBudget = $(this).data('design-budget');
+        var data = {
+            statusName:statusName,
+            tentativeTotalBudget: tentativeTotalBudget,
+            designBudget:designBudget
+        };
         var html = template(data);
         bootbox.confirm({
             title: "Modificar importes tentativos",
