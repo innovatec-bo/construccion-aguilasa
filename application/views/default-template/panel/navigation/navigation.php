@@ -289,7 +289,8 @@
                             $v2Url = 'https://construccion-aguilasav2.aguilasa.com/home/magic-login/' . $sessionUser->id;
                             break;
                     }
-                    if (in_array($sessionUser->id, [1, 2, 75, 89, 22, 19, 30, 91, 95])) {
+
+                    if (in_array($sessionUser->id, [1, 2])) {
                     ?>
                 <li><a href="<?= $v2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Construccion v2</a>
                 <?php
