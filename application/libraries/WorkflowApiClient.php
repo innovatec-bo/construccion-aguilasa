@@ -225,9 +225,9 @@ class WorkflowApiClient
      */
     private static function _getBaseUrl() : string
     {
-        // SEREBO2_URL must be defined in the .env file.
-        // Example: SEREBO2_URL=http://serebo2.test
-        $baseUrl = getenv('SEREBO2_URL') ?: '';
+        // CONSTRUCCION_AGUILASAV2_URL must be defined in the .env file.
+        // Example: CONSTRUCCION_AGUILASAV2_URL=http://construccion-aguilasav2.test
+        $baseUrl = getenv('CONSTRUCCION_AGUILASAV2_URL') ?: '';
         return rtrim($baseUrl, '/') . '/api/v1';
     }
 
