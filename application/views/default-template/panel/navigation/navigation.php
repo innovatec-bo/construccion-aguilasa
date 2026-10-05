@@ -282,16 +282,16 @@
 
                     switch (getenv('ENVIRONMENT')) {
                         case 'development':
-                            $serebo2Url = 'http://serebo2.test/home/magic-login/' . $sessionUser->id;
+                            $v2Url = 'http://construccion-aguilasav2.test/home/magic-login/' . $sessionUser->id;
                             break;
 
                         case 'production':
-                            $serebo2Url = 'https://serebo2.toqueeltimbre.com/home/magic-login/' . $sessionUser->id;
+                            $v2Url = 'https://construccion-aguilasav2.aguilasa.com/home/magic-login/' . $sessionUser->id;
                             break;
                     }
                     if (in_array($sessionUser->id, [1, 2, 75, 89, 22, 19, 30, 91, 95])) {
                     ?>
-                <li><a href="<?= $serebo2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> SEREBO2</a>
+                <li><a href="<?= $v2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Construccion v2</a>
                 <?php
                     }
                 ?>
