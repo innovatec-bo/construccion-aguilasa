@@ -286,7 +286,7 @@
                             break;
 
                         case 'production':
-                            $v2Url = 'https://construccion-aguilasav2.aguilasa.com/home/magic-login/' . $sessionUser->id;
+                            $v2Url = 'https://construccionv2.aguilasa.com/home/magic-login/' . $sessionUser->id;
                             break;
                     }
 
