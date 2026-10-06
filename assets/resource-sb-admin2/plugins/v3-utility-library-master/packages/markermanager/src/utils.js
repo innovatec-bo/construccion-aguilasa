@@ -31,7 +31,7 @@ function lngToX(lng) {
  * @returns {number}
  */
 function latToY(lat) {
-    var sinofphi = Math.sin((lat * Math.PI) / 180);
+    const sinofphi = Math.sin((lat * Math.PI) / 180);
     return 1 - (0.5 / Math.PI) * Math.log((1 + sinofphi) / (1 - sinofphi));
 }
 /**

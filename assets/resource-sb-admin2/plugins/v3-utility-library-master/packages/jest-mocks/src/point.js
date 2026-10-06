@@ -16,17 +16,16 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Point = void 0;
-var Point = /** @class */ (function () {
-    function Point(x, y) {
-        this.toString = jest.fn().mockImplementation(function () {
+class Point {
+    constructor(x, y) {
+        this.toString = jest.fn().mockImplementation(() => {
             return "";
         });
         this.x = x;
         this.y = y;
     }
-    Point.prototype.equals = function (other) {
+    equals(other) {
         return other.x === this.x && other.y === this.y;
-    };
-    return Point;
-}());
+    }
+}
 exports.Point = Point;

@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title><?=$tabTitle?></title>
+    <title>
+        <?=$tabTitle == "Construccion" ? " Construccion" : "Construccion | ".$tabTitle?>
+    </title>
     <link rel="shortcut icon" href="<?=assets_url("images/favicon.png")?>">
     <link rel="apple-touch-icon" href="<?=assets_url("images/favicon.png")?>">
     <link rel="apple-touch-icon" sizes="72x72" href="<?=assets_url("images/favicon.png")?>">

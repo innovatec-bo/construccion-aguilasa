@@ -1,30 +1,30 @@
 "use strict";
-var PointToPointHandler = /** @class */ (function () {
-    function PointToPointHandler(projectID) {
+class PointToPointHandler {
+    constructor(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
         this.viewData = {};
     }
-    PointToPointHandler.prototype.setStructureUsageValidator = function (structureUsageValidator) {
+    setStructureUsageValidator(structureUsageValidator) {
         this._structureUsageValidator = structureUsageValidator;
-    };
-    PointToPointHandler.prototype.add = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    add(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxProject/addPointToPointProgress/' + _this._projectId + "/" + _this._pointId,
             dataType: "json",
             method: method,
             data: formData,
             beforeSend: function () {
-                var message = "Cargando formulario..";
+                let message = "Cargando formulario..";
                 if (formData) {
                     message = "Procesando..";
                 }
                 Swal({
                     html: "<h3>" + message + "</h3>",
                     allowOutsideClick: false,
-                    onBeforeOpen: function () {
+                    onBeforeOpen: () => {
                         Swal.showLoading();
                     }
                 });
@@ -44,24 +44,24 @@ var PointToPointHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    PointToPointHandler.prototype._addMassiveProgress = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    _addMassiveProgress(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxProject/addMassivePointToPointProgress/' + _this._projectId,
             dataType: "json",
             method: method,
             data: formData,
             beforeSend: function () {
-                var message = "Cargando formulario..";
+                let message = "Cargando formulario..";
                 if (formData) {
                     message = "Procesando..";
                 }
                 Swal({
                     html: "<h3>" + message + "</h3>",
                     allowOutsideClick: false,
-                    onBeforeOpen: function () {
+                    onBeforeOpen: () => {
                         Swal.showLoading();
                     }
                 });
@@ -81,25 +81,25 @@ var PointToPointHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    PointToPointHandler.prototype.launchForm = function (response, formTitle) {
+    }
+    launchForm(response, formTitle) {
         this._loadViewTemplate = response.data.template;
         this._laborCostMasterDetail = response.data.laborCostMasterDetail;
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var structureItemList = $template.find("#ht-structure-item-list").html();
+        let $template = $("<div>" + this._loadViewTemplate + "</div>");
+        let structureItemList = $template.find("#ht-structure-item-list").html();
         Handlebars.registerPartial("ht-structure-item-list", structureItemList);
-        var structureItem = $template.find("#ht-structure-item").html();
+        let structureItem = $template.find("#ht-structure-item").html();
         Handlebars.registerPartial("ht-structure-item", structureItem);
-        var htmlSource = $template.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var item = {
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let item = {
             index: 1,
             laborCostList: this._laborCostMasterDetail
         };
-        var structureList = [item];
-        var data = { point: response.data.point, builders: response.data.builders, response: response, productionLimit: response.data.productionLimit, project: response.data.project };
-        var html = template(data);
-        var _this = this;
+        let structureList = [item];
+        let data = { point: response.data.point, builders: response.data.builders, response: response, productionLimit: response.data.productionLimit, project: response.data.project };
+        let html = template(data);
+        let _this = this;
         Swal({
             title: formTitle,
             html: html,
@@ -111,9 +111,9 @@ var PointToPointHandler = /** @class */ (function () {
             showLoaderOnConfirm: true,
             customClass: "modal-manpower-form",
             width: '100%',
-            preConfirm: function () {
-                var $listContent = $("#structure-item-list-content");
-                var $form = $("form[name=point-to-point-progress-form]");
+            preConfirm: () => {
+                let $listContent = $("#structure-item-list-content");
+                let $form = $("form[name=point-to-point-progress-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
@@ -123,14 +123,14 @@ var PointToPointHandler = /** @class */ (function () {
                     return false;
                 }
             },
-        }).then(function (result) {
+        }).then((result) => {
             if (result.value) {
-                var $form = $("form[name=point-to-point-progress-form]");
+                let $form = $("form[name=point-to-point-progress-form]");
                 _this.add($form.serialize());
             }
         });
-        var date = new Date();
-        var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
+        let date = new Date();
+        let datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             locale: 'es',
@@ -142,25 +142,25 @@ var PointToPointHandler = /** @class */ (function () {
         $(".select2-builders").select2({ dropdownCssClass: "dd-select2-builders" });
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
-    };
-    PointToPointHandler.prototype.launchFormMassiveProgress = function (response, formTitle) {
+    }
+    launchFormMassiveProgress(response, formTitle) {
         this._loadViewTemplate = response.data.template;
         this._laborCostMasterDetail = response.data.laborCostMasterDetail;
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var structureItemList = $template.find("#ht-structure-item-list").html();
+        let $template = $("<div>" + this._loadViewTemplate + "</div>");
+        let structureItemList = $template.find("#ht-structure-item-list").html();
         Handlebars.registerPartial("ht-structure-item-list", structureItemList);
-        var structureItem = $template.find("#ht-structure-item").html();
+        let structureItem = $template.find("#ht-structure-item").html();
         Handlebars.registerPartial("ht-structure-item", structureItem);
-        var htmlSource = $template.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var item = {
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let item = {
             index: 1,
             laborCostList: this._laborCostMasterDetail
         };
-        var structureList = [item];
-        var data = { point: response.data.point, builders: response.data.builders, response: response };
-        var html = template(data);
-        var _this = this;
+        let structureList = [item];
+        let data = { point: response.data.point, builders: response.data.builders, response: response };
+        let html = template(data);
+        let _this = this;
         Swal({
             title: formTitle,
             html: html,
@@ -172,20 +172,20 @@ var PointToPointHandler = /** @class */ (function () {
             showLoaderOnConfirm: true,
             customClass: "modal-manpower-form",
             width: '100%',
-            preConfirm: function () {
-                var $form = $("form[name=point-to-point-massive-progress-form]");
+            preConfirm: () => {
+                let $form = $("form[name=point-to-point-massive-progress-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
                 }
             },
-        }).then(function (result) {
+        }).then((result) => {
             if (result.value) {
-                var $form = $("form[name=point-to-point-massive-progress-form]");
+                let $form = $("form[name=point-to-point-massive-progress-form]");
                 _this._addMassiveProgress($form.serialize());
             }
         });
-        var date = new Date();
+        let date = new Date();
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             defaultDate: date,
@@ -198,10 +198,10 @@ var PointToPointHandler = /** @class */ (function () {
         if ($('#select2-points').length > 0) {
             $('#select2-points').select2();
         }
-    };
-    PointToPointHandler.prototype.loadBuildingPoints = function () {
-        var _this = this;
-        var $buildingPointsContent = $("#building-points");
+    }
+    loadBuildingPoints() {
+        let _this = this;
+        let $buildingPointsContent = $("#building-points");
         blockArea($buildingPointsContent);
         $.ajax({
             url: base_url + 'panel/AjaxProject/getBuildingPoints/' + _this._projectId,
@@ -218,11 +218,11 @@ var PointToPointHandler = /** @class */ (function () {
             },
             success: function (response) {
                 // console.log(response);
-                var $template = $("<div>" + response.data.template + "</div>");
-                var htmlSource = $template.find(response.data.templateName).html();
-                var template = Handlebars.compile(htmlSource);
+                let $template = $("<div>" + response.data.template + "</div>");
+                let htmlSource = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
                 // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
-                var html = template({ buildingPoints: response.data.buildingPoints });
+                let html = template({ buildingPoints: response.data.buildingPoints });
                 if (response.data.buildingPoints.length > 0)
                     $buildingPointsContent.html(html);
                 else
@@ -232,9 +232,9 @@ var PointToPointHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    PointToPointHandler.prototype._startSelect2 = function (selector) {
-        var _this = this;
+    }
+    _startSelect2(selector) {
+        let _this = this;
         selector = selector || '.select2-structure-code';
         $(selector).select2({
             containerCssClass: "select-xs",
@@ -242,7 +242,7 @@ var PointToPointHandler = /** @class */ (function () {
             width: '100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function (state) {
-                var alreadySelected = [];
+                let alreadySelected = [];
                 $.each($(".select2-structure-code"), function (index, value) {
                     alreadySelected.push($(value).val());
                     // console.log($(value).val());
@@ -252,8 +252,8 @@ var PointToPointHandler = /** @class */ (function () {
                 }
                 else {
                     if (alreadySelected.indexOf(state.id) < 0) {
-                        var $originalOption = $(state.element);
-                        var data = {
+                        let $originalOption = $(state.element);
+                        let data = {
                             structureCode: state.text,
                             activity: $originalOption.data('activity'),
                             execution: $originalOption.data('execution'),
@@ -261,11 +261,11 @@ var PointToPointHandler = /** @class */ (function () {
                             unitOfMeasurement: $originalOption.data('unit-of-measurement'),
                             description: $originalOption.data('description')
                         };
-                        var $template = $("<div>" + _this._loadViewTemplate + "</div>");
-                        var htmlSource = $template.find('#ht-select2-template-result').html();
-                        var template = Handlebars.compile(htmlSource);
-                        var html = template(data);
-                        var $state = $(html);
+                        let $template = $("<div>" + _this._loadViewTemplate + "</div>");
+                        let htmlSource = $template.find('#ht-select2-template-result').html();
+                        let template = Handlebars.compile(htmlSource);
+                        let html = template(data);
+                        let $state = $(html);
                         return $state;
                     }
                 }
@@ -279,9 +279,9 @@ var PointToPointHandler = /** @class */ (function () {
                 return markup;
             },
         });
-    };
-    PointToPointHandler.prototype.loadManpowerLog = function () {
-        var _this = this;
+    }
+    loadManpowerLog() {
+        let _this = this;
         $.ajax({
             url: base_url + 'panel/AjaxProject/getManpowerLog/' + _this._projectId,
             dataType: "json",
@@ -296,30 +296,30 @@ var PointToPointHandler = /** @class */ (function () {
                 // });
             },
             success: function (response) {
-                var $template = $("<div>" + response.data.template + "</div>");
-                var htmlSource = $template.find(response.data.templateName).html();
-                var template = Handlebars.compile(htmlSource);
-                var html = template({ log: response.data.log });
+                let $template = $("<div>" + response.data.template + "</div>");
+                let htmlSource = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template({ log: response.data.log });
                 $("#status-project-log-content").html(html);
                 $('[data-toggle="tooltip"]').tooltip();
             }
         });
-    };
-    PointToPointHandler.prototype._datesToBlock = function (list) {
-        var dates = [];
+    }
+    _datesToBlock(list) {
+        let dates = [];
         $.each(list, function (index, dateRange) {
-            var startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
-            var endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
-            var range = moment.range(startDate, endDate);
-            var arrayMoment = Array.from(range.by('day'));
+            let startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+            let endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+            let range = moment.range(startDate, endDate);
+            let arrayMoment = Array.from(range.by('day'));
             $.each(arrayMoment, function (index, moment) {
                 dates.push(moment.format('YYYY-MM-DD'));
             });
         });
         return dates;
-    };
-    PointToPointHandler.prototype.loadEventHandler = function () {
-        var _this = this;
+    }
+    loadEventHandler() {
+        let _this = this;
         this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".add-point-to-point-progress", function (e) {
             e.preventDefault();
@@ -337,6 +337,5 @@ var PointToPointHandler = /** @class */ (function () {
         $(document).on("click", '[data-toggle="tooltip"]', function (e) {
             e.preventDefault();
         });
-    };
-    return PointToPointHandler;
-}());
+    }
+}

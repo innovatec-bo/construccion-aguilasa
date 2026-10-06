@@ -17,20 +17,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MarkerManager = void 0;
 /// <reference types="@types/googlemaps" />
-var utils_1 = require("./utils");
-var gridbounds_1 = require("./gridbounds");
+const utils_1 = require("./utils");
+const gridbounds_1 = require("./gridbounds");
 /**
  * Creates a new MarkerManager that will show/hide markers on a map.
  */
-var MarkerManager = /** @class */ (function () {
+class MarkerManager {
     /**
      * @constructor
      * @param map The map to manage.
      * @param {Options} options
      */
-    function MarkerManager(map, _a) {
-        var _b = _a.maxZoom, maxZoom = _b === void 0 ? 19 : _b, trackMarkers = _a.trackMarkers, _c = _a.shown, shown = _c === void 0 ? true : _c, _d = _a.borderPadding, borderPadding = _d === void 0 ? 100 : _d;
-        var _this = this;
+    constructor(map, { maxZoom = 19, trackMarkers, shown = true, borderPadding = 100 }) {
         this._tileSize = 1024;
         this._map = map;
         this._mapZoom = map.getZoom();
@@ -46,19 +44,19 @@ var MarkerManager = /** @class */ (function () {
         this._numMarkers[this._maxZoom] = 0;
         this.shownMarkers = 0;
         this.shown = shown;
-        google.maps.event.addListenerOnce(map, "idle", function () {
-            _this._initialize();
+        google.maps.event.addListenerOnce(map, "idle", () => {
+            this._initialize();
         });
     }
-    MarkerManager.prototype._initialize = function () {
-        var mapTypes = this._map.mapTypes;
+    _initialize() {
+        const mapTypes = this._map.mapTypes;
         // Find max zoom level
-        var mapMaxZoom = 1;
-        for (var sType in mapTypes) {
+        let mapMaxZoom = 1;
+        for (const sType in mapTypes) {
             if (sType in mapTypes &&
                 mapTypes.get(sType) &&
                 mapTypes.get(sType).maxZoom === "number") {
-                var mapTypeMaxZoom = this._map.mapTypes.get(sType).maxZoom;
+                const mapTypeMaxZoom = this._map.mapTypes.get(sType).maxZoom;
                 if (mapTypeMaxZoom > mapMaxZoom) {
                     mapMaxZoom = mapTypeMaxZoom;
                 }
@@ -70,48 +68,48 @@ var MarkerManager = /** @class */ (function () {
         this.resetManager();
         this._shownBounds = this._getMapGridBounds();
         google.maps.event.trigger(this, "loaded");
-    };
+    }
     /**
      * This closure provide easy access to the map.
      * They are used as callbacks, not as methods.
      * @param marker Marker to be removed from the map
      */
-    MarkerManager.prototype._removeOverlay = function (marker) {
+    _removeOverlay(marker) {
         marker.setMap(null);
         this.shownMarkers--;
-    };
+    }
     /**
      * This closure provide easy access to the map.
      * They are used as callbacks, not as methods.
      * @param marker Marker to be added to the map
      */
-    MarkerManager.prototype._addOverlay = function (marker) {
+    _addOverlay(marker) {
         if (this.shown) {
             marker.setMap(this._map);
             this.shownMarkers++;
         }
-    };
+    }
     /**
      * Initializes MarkerManager arrays for all zoom levels
      * Called by constructor and by clearAllMarkers
      */
-    MarkerManager.prototype.resetManager = function () {
-        var mapWidth = 256;
-        for (var zoom = 0; zoom <= this._maxZoom; ++zoom) {
+    resetManager() {
+        let mapWidth = 256;
+        for (let zoom = 0; zoom <= this._maxZoom; ++zoom) {
             this._grid[zoom] = [];
             this._numMarkers[zoom] = 0;
             this._gridWidth[zoom] = Math.ceil(mapWidth / this._tileSize);
             mapWidth <<= 1;
         }
-    };
+    }
     /**
      * Removes all markers in the manager, and
      * removes any visible markers from the map.
      */
-    MarkerManager.prototype.clearMarkers = function () {
+    clearMarkers() {
         this._processAll(this._shownBounds, this._removeOverlay.bind(this));
         this.resetManager();
-    };
+    }
     /**
      * Gets the tile coordinate for a given latlng point.
      *
@@ -123,11 +121,11 @@ var MarkerManager = /** @class */ (function () {
      * @return {GPoint} The point in tile coordinates.
      *
      */
-    MarkerManager.prototype._getTilePoint = function (latlng, zoom, padding) {
-        var pixelPoint = (0, utils_1.latLngToPixel)(latlng, zoom);
-        var point = new google.maps.Point(Math.floor((pixelPoint.x + padding.width) / this._tileSize), Math.floor((pixelPoint.y + padding.height) / this._tileSize));
+    _getTilePoint(latlng, zoom, padding) {
+        const pixelPoint = (0, utils_1.latLngToPixel)(latlng, zoom);
+        const point = new google.maps.Point(Math.floor((pixelPoint.x + padding.width) / this._tileSize), Math.floor((pixelPoint.y + padding.height) / this._tileSize));
         return point;
-    };
+    }
     /**
      * Finds the appropriate place to add the marker to the grid.
      * Optimized for speed; does not actually add the marker to the map.
@@ -137,8 +135,8 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} minZoom The minimum zoom for displaying the marker.
      * @param {Number} maxZoom The maximum zoom for displaying the marker.
      */
-    MarkerManager.prototype._addMarkerBatch = function (marker, minZoom, maxZoom) {
-        var mPoint = marker.getPosition();
+    _addMarkerBatch(marker, minZoom, maxZoom) {
+        const mPoint = marker.getPosition();
         marker.set("__minZoom", minZoom);
         // Tracking markers is expensive, so we do this only if the
         // user explicitly requested it when creating marker manager.
@@ -147,14 +145,14 @@ var MarkerManager = /** @class */ (function () {
                 this._onMarkerMoved(a, b, c);
             });
         }
-        var gridPoint = this._getTilePoint(mPoint, maxZoom, new google.maps.Size(0, 0));
-        for (var zoom = maxZoom; zoom >= minZoom; zoom--) {
-            var cell = this._getGridCellCreate(gridPoint.x, gridPoint.y, zoom);
+        const gridPoint = this._getTilePoint(mPoint, maxZoom, new google.maps.Size(0, 0));
+        for (let zoom = maxZoom; zoom >= minZoom; zoom--) {
+            const cell = this._getGridCellCreate(gridPoint.x, gridPoint.y, zoom);
             cell.push(marker);
             gridPoint.x = gridPoint.x >> 1;
             gridPoint.y = gridPoint.y >> 1;
         }
-    };
+    }
     /**
      * Returns whether or not the given point is visible in the shown bounds. This
      * is a helper method that takes care of the corner case, when shownBounds have
@@ -164,18 +162,18 @@ var MarkerManager = /** @class */ (function () {
      * @return {Boolean} Whether or not the given point is visible in the currently
      * shown bounds.
      */
-    MarkerManager.prototype._isGridPointVisible = function (point) {
-        var vertical = this._shownBounds.minY <= point.y && point.y <= this._shownBounds.maxY;
-        var minX = this._shownBounds.minX;
-        var horizontal = minX <= point.x && point.x <= this._shownBounds.maxX;
+    _isGridPointVisible(point) {
+        const vertical = this._shownBounds.minY <= point.y && point.y <= this._shownBounds.maxY;
+        const minX = this._shownBounds.minX;
+        let horizontal = minX <= point.x && point.x <= this._shownBounds.maxX;
         if (!horizontal && minX < 0) {
             // Shifts the negative part of the rectangle. As point.x is always less
             // than grid width, only test shifted minX .. 0 part of the shown bounds.
-            var width = this._gridWidth[this._shownBounds.z];
+            const width = this._gridWidth[this._shownBounds.z];
             horizontal = minX + width <= point.x && point.x <= width - 1;
         }
         return vertical && horizontal;
-    };
+    }
     /**
      * Reacts to a notification from a marker that it has moved to a new location.
      * It scans the grid all all zoom levels and moves the marker from the old grid
@@ -185,16 +183,16 @@ var MarkerManager = /** @class */ (function () {
      * @param {LatLng} oldPoint The old position of the marker.
      * @param {LatLng} newPoint The new position of the marker.
      */
-    MarkerManager.prototype._onMarkerMoved = function (marker, oldPoint, newPoint) {
+    _onMarkerMoved(marker, oldPoint, newPoint) {
         // NOTE: We do not know the minimum or maximum zoom the marker was
         // added at, so we start at the absolute maximum. Whenever we successfully
         // remove a marker at a given zoom, we add it at the new grid coordinates.
-        var zoom = this._maxZoom;
-        var changed = false;
-        var oldGrid = this._getTilePoint(oldPoint, zoom, new google.maps.Size(0, 0));
-        var newGrid = this._getTilePoint(newPoint, zoom, new google.maps.Size(0, 0));
+        let zoom = this._maxZoom;
+        let changed = false;
+        const oldGrid = this._getTilePoint(oldPoint, zoom, new google.maps.Size(0, 0));
+        const newGrid = this._getTilePoint(newPoint, zoom, new google.maps.Size(0, 0));
         while (zoom >= 0 && (oldGrid.x !== newGrid.x || oldGrid.y !== newGrid.y)) {
-            var cell = this._getGridCellNoCreate(oldGrid.x, oldGrid.y, zoom);
+            const cell = this._getGridCellNoCreate(oldGrid.x, oldGrid.y, zoom);
             if (cell) {
                 if (this._removeMarkerFromCell(cell, marker)) {
                     this._getGridCellCreate(newGrid.x, newGrid.y, zoom).push(marker);
@@ -227,19 +225,19 @@ var MarkerManager = /** @class */ (function () {
         if (changed) {
             this._notifyListeners();
         }
-    };
+    }
     /**
      * Removes marker from the manager and from the map
      * (if it's currently visible).
      * @param {GMarker} marker The marker to delete.
      */
-    MarkerManager.prototype.removeMarker = function (marker) {
-        var zoom = this._maxZoom;
-        var changed = false;
-        var point = marker.getPosition();
-        var grid = this._getTilePoint(point, zoom, new google.maps.Size(0, 0));
+    removeMarker(marker) {
+        let zoom = this._maxZoom;
+        let changed = false;
+        const point = marker.getPosition();
+        const grid = this._getTilePoint(point, zoom, new google.maps.Size(0, 0));
         while (zoom >= 0) {
-            var cell = this._getGridCellNoCreate(grid.x, grid.y, zoom);
+            const cell = this._getGridCellNoCreate(grid.x, grid.y, zoom);
             if (cell) {
                 this._removeMarkerFromCell(cell, marker);
             }
@@ -260,7 +258,7 @@ var MarkerManager = /** @class */ (function () {
             this._notifyListeners();
         }
         this._numMarkers[marker.get("__minZoom")]--;
-    };
+    }
     /**
      * Add many markers at once.
      * Does not actually update the map, just the internal grid.
@@ -269,13 +267,13 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} minZoom The minimum zoom level to display the markers.
      * @param {Number} maxZoom The maximum zoom level to display the markers.
      */
-    MarkerManager.prototype.addMarkers = function (markers, minZoom, maxZoom) {
+    addMarkers(markers, minZoom, maxZoom) {
         maxZoom = this._getOptmaxZoom(maxZoom);
-        for (var i = markers.length - 1; i >= 0; i--) {
+        for (let i = markers.length - 1; i >= 0; i--) {
             this._addMarkerBatch(markers[i], minZoom, maxZoom);
         }
         this._numMarkers[minZoom] += markers.length;
-    };
+    }
     /**
      * Returns the value of the optional maximum zoom. This method is defined so
      * that we have just one place where optional maximum zoom is calculated.
@@ -283,22 +281,22 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} maxZoom The optinal maximum zoom.
      * @return The maximum zoom.
      */
-    MarkerManager.prototype._getOptmaxZoom = function (maxZoom) {
+    _getOptmaxZoom(maxZoom) {
         return maxZoom || this._maxZoom;
-    };
+    }
     /**
      * Calculates the total number of markers potentially visible at a given
      * zoom level.
      *
      * @param {Number} zoom The zoom level to check.
      */
-    MarkerManager.prototype.getMarkerCount = function (zoom) {
-        var total = 0;
-        for (var z = 0; z <= zoom; z++) {
+    getMarkerCount(zoom) {
+        let total = 0;
+        for (let z = 0; z <= zoom; z++) {
             total += this._numMarkers[z];
         }
         return total;
-    };
+    }
     /**
      * Returns a marker given latitude, longitude and zoom. If the marker does not
      * exist, the method will return a new marker. If a new marker is created,
@@ -309,13 +307,13 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} zoom - the zoom level
      * @return {GMarker} marker - the marker found at lat and lng
      */
-    MarkerManager.prototype.getMarker = function (lat, lng, zoom) {
-        var mPoint = new google.maps.LatLng(lat, lng);
-        var gridPoint = this._getTilePoint(mPoint, zoom, new google.maps.Size(0, 0));
-        var marker = new google.maps.Marker({ position: mPoint });
-        var cell = this._getGridCellNoCreate(gridPoint.x, gridPoint.y, zoom);
+    getMarker(lat, lng, zoom) {
+        const mPoint = new google.maps.LatLng(lat, lng);
+        const gridPoint = this._getTilePoint(mPoint, zoom, new google.maps.Size(0, 0));
+        let marker = new google.maps.Marker({ position: mPoint });
+        const cell = this._getGridCellNoCreate(gridPoint.x, gridPoint.y, zoom);
         if (cell !== undefined) {
-            for (var i = 0; i < cell.length; i++) {
+            for (let i = 0; i < cell.length; i++) {
                 if (lat === cell[i].getPosition().lat() &&
                     lng === cell[i].getPosition().lng()) {
                     marker = cell[i];
@@ -323,7 +321,7 @@ var MarkerManager = /** @class */ (function () {
             }
         }
         return marker;
-    };
+    }
     /**
      * Add a single marker to the map.
      *
@@ -331,10 +329,10 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} minZoom The minimum zoom level to display the marker.
      * @param {Number} maxZoom The maximum zoom level to display the marker.
      */
-    MarkerManager.prototype.addMarker = function (marker, minZoom, maxZoom) {
+    addMarker(marker, minZoom, maxZoom) {
         maxZoom = this._getOptmaxZoom(maxZoom);
         this._addMarkerBatch(marker, minZoom, maxZoom);
-        var gridPoint = this._getTilePoint(marker.getPosition(), this._mapZoom, new google.maps.Size(0, 0));
+        const gridPoint = this._getTilePoint(marker.getPosition(), this._mapZoom, new google.maps.Size(0, 0));
         if (this._isGridPointVisible(gridPoint) &&
             minZoom <= this._shownBounds.z &&
             this._shownBounds.z <= maxZoom) {
@@ -342,7 +340,7 @@ var MarkerManager = /** @class */ (function () {
             this._notifyListeners();
         }
         this._numMarkers[minZoom]++;
-    };
+    }
     /**
      * Get a cell in the grid, creating it first if necessary.
      *
@@ -353,7 +351,7 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} z The z coordinate of the cell.
      * @return {Array} The cell in the array.
      */
-    MarkerManager.prototype._getGridCellCreate = function (x, y, z) {
+    _getGridCellCreate(x, y, z) {
         // TODO(jpoehnelt) document this
         if (x < 0) {
             x += this._gridWidth[z];
@@ -368,7 +366,7 @@ var MarkerManager = /** @class */ (function () {
             this._grid[z][x][y] = [];
         }
         return this._grid[z][x][y];
-    };
+    }
     /**
      * Get a cell in the grid, returning undefined if it does not exist.
      *
@@ -379,7 +377,7 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} z The z coordinate of the cell.
      * @return {Array} The cell in the array.
      */
-    MarkerManager.prototype._getGridCellNoCreate = function (x, y, z) {
+    _getGridCellNoCreate(x, y, z) {
         if (x < 0) {
             x += this._gridWidth[z];
         }
@@ -393,7 +391,7 @@ var MarkerManager = /** @class */ (function () {
             return null;
         }
         return this._grid[z][x][y];
-    };
+    }
     /**
      * Turns at geographical bounds into a grid-space bounds.
      *
@@ -405,13 +403,13 @@ var MarkerManager = /** @class */ (function () {
      * given bounds.
      * @return {GridBounds} The bounds in grid space.
      */
-    MarkerManager.prototype._getGridBounds = function (bounds, zoom, swPadding, nePadding) {
+    _getGridBounds(bounds, zoom, swPadding, nePadding) {
         zoom = Math.min(zoom, this._maxZoom);
-        var bl = bounds.getSouthWest();
-        var tr = bounds.getNorthEast();
-        var sw = this._getTilePoint(bl, zoom, swPadding);
-        var ne = this._getTilePoint(tr, zoom, nePadding);
-        var gw = this._gridWidth[zoom];
+        const bl = bounds.getSouthWest();
+        const tr = bounds.getNorthEast();
+        const sw = this._getTilePoint(bl, zoom, swPadding);
+        const ne = this._getTilePoint(tr, zoom, nePadding);
+        const gw = this._gridWidth[zoom];
         // Crossing the prime meridian requires correction of bounds.
         if (tr.lng() < bl.lng() || ne.x < sw.x) {
             sw.x -= gw;
@@ -421,18 +419,18 @@ var MarkerManager = /** @class */ (function () {
             sw.x = 0;
             ne.x = gw - 1;
         }
-        var gridBounds = new gridbounds_1.GridBounds([sw, ne], zoom);
+        const gridBounds = new gridbounds_1.GridBounds([sw, ne], zoom);
         gridBounds.z = zoom;
         return gridBounds;
-    };
+    }
     /**
      * Gets the grid-space bounds for the current map viewport.
      *
      * @return {Bounds} The bounds in grid space.
      */
-    MarkerManager.prototype._getMapGridBounds = function () {
+    _getMapGridBounds() {
         return this._getGridBounds(this._map.getBounds(), this._mapZoom, this._swPadding, this._nePadding);
-    };
+    }
     /**
      * Event listener for map:movend.
      * NOTE: Use a timeout so that the user is not blocked
@@ -440,9 +438,9 @@ var MarkerManager = /** @class */ (function () {
      *
      * Removed this because a a lack of a scopy override/callback function on events.
      */
-    MarkerManager.prototype._onMapMoveEnd = function () {
+    _onMapMoveEnd() {
         window.setTimeout(this._updateMarkers.bind(this), 0);
-    };
+    }
     /**
      * Is this layer visible?
      *
@@ -450,38 +448,38 @@ var MarkerManager = /** @class */ (function () {
      *
      * @return {Boolean} Visible
      */
-    MarkerManager.prototype.visible = function () {
+    visible() {
         return this.shown ? true : false;
-    };
+    }
     /**
      * Returns true if the manager is hidden.
      * Otherwise returns false.
      * @return {Boolean} Hidden
      */
-    MarkerManager.prototype.isHidden = function () {
+    isHidden() {
         return !this.shown;
-    };
+    }
     /**
      * Shows the manager if it's currently hidden.
      */
-    MarkerManager.prototype.show = function () {
+    show() {
         this.shown = true;
         this.refresh();
-    };
+    }
     /**
      * Hides the manager if it's currently visible
      */
-    MarkerManager.prototype.hide = function () {
+    hide() {
         this.shown = false;
         this.refresh();
-    };
+    }
     /**
      * Toggles the visibility of the manager.
      */
-    MarkerManager.prototype.toggle = function () {
+    toggle() {
         this.shown = !this.shown;
         this.refresh();
-    };
+    }
     /**
      * Refresh forces the marker-manager into a good state.
      * <ol>
@@ -489,7 +487,7 @@ var MarkerManager = /** @class */ (function () {
      *   <li>If previously initialized, removes and re-adds all markers.</li>
      * </ol>
      */
-    MarkerManager.prototype.refresh = function () {
+    refresh() {
         if (this.shownMarkers > 0) {
             this._processAll(this._shownBounds, this._removeOverlay.bind(this));
         }
@@ -498,13 +496,13 @@ var MarkerManager = /** @class */ (function () {
             this._processAll(this._shownBounds, this._addOverlay.bind(this));
         }
         this._notifyListeners();
-    };
+    }
     /**
      * After the viewport may have changed, add or remove markers as needed.
      */
-    MarkerManager.prototype._updateMarkers = function () {
+    _updateMarkers() {
         this._mapZoom = this._map.getZoom();
-        var newBounds = this._getMapGridBounds();
+        const newBounds = this._getMapGridBounds();
         // If the move does not include new grid sections,
         // we have no work to do:
         if (newBounds.equals(this._shownBounds) &&
@@ -529,26 +527,26 @@ var MarkerManager = /** @class */ (function () {
         }
         this._shownBounds = newBounds;
         this._notifyListeners();
-    };
+    }
     /**
      * Notify listeners when the state of what is displayed changes.
      */
-    MarkerManager.prototype._notifyListeners = function () {
+    _notifyListeners() {
         google.maps.event.trigger(this, "changed", this._shownBounds, this.shownMarkers);
-    };
+    }
     /**
      * Process all markers in the bounds provided, using a callback.
      *
      * @param {Bounds} bounds The bounds in grid space.
      * @param {Function} callback The function to call for each marker.
      */
-    MarkerManager.prototype._processAll = function (bounds, callback) {
-        for (var x = bounds.minX; x <= bounds.maxX; x++) {
-            for (var y = bounds.minY; y <= bounds.maxY; y++) {
+    _processAll(bounds, callback) {
+        for (let x = bounds.minX; x <= bounds.maxX; x++) {
+            for (let y = bounds.minY; y <= bounds.maxY; y++) {
                 this._processCellMarkers(x, y, bounds.z, callback);
             }
         }
-    };
+    }
     /**
      * Process all markers in the grid cell, using a callback.
      *
@@ -557,14 +555,14 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} z The z coordinate of the cell.
      * @param {Function} callback The function to call for each marker.
      */
-    MarkerManager.prototype._processCellMarkers = function (x, y, z, callback) {
-        var cell = this._getGridCellNoCreate(x, y, z);
+    _processCellMarkers(x, y, z, callback) {
+        const cell = this._getGridCellNoCreate(x, y, z);
         if (cell) {
-            for (var i = cell.length - 1; i >= 0; i--) {
+            for (let i = cell.length - 1; i >= 0; i--) {
                 callback(cell[i]);
             }
         }
-    };
+    }
     /**
      * Remove all markers in a grid cell.
      *
@@ -572,9 +570,9 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} y The y coordinate of the cell.
      * @param {Number} z The z coordinate of the cell.
      */
-    MarkerManager.prototype._removeCellMarkers = function (x, y, z) {
+    _removeCellMarkers(x, y, z) {
         this._processCellMarkers(x, y, z, this._removeOverlay.bind(this));
-    };
+    }
     /**
      * Add all markers in a grid cell.
      *
@@ -582,9 +580,9 @@ var MarkerManager = /** @class */ (function () {
      * @param {Number} y The y coordinate of the cell.
      * @param {Number} z The z coordinate of the cell.
      */
-    MarkerManager.prototype._addCellMarkers = function (x, y, z) {
+    _addCellMarkers(x, y, z) {
         this._processCellMarkers(x, y, z, this._addOverlay.bind(this));
-    };
+    }
     /**
      * Use the _rectangleDiffCoords function to process all grid cells
      * that are in bounds1 but not bounds2, using a callback, and using
@@ -597,11 +595,11 @@ var MarkerManager = /** @class */ (function () {
      * @param {Function} callback The callback function to call
      *                   for each grid coordinate (x, y, z).
      */
-    MarkerManager.prototype._rectangleDiff = function (bounds1, bounds2, callback) {
+    _rectangleDiff(bounds1, bounds2, callback) {
         this._rectangleDiffCoords(bounds1, bounds2, function (x, y) {
             callback(x, y, bounds1.z);
         });
-    };
+    }
     /**
      * Calls the function for all points in bounds1, not in bounds2
      *
@@ -610,16 +608,16 @@ var MarkerManager = /** @class */ (function () {
      * @param {Function} callback The callback function to call
      *                   for each grid coordinate.
      */
-    MarkerManager.prototype._rectangleDiffCoords = function (bounds1, bounds2, callback) {
-        var minX1 = bounds1.minX;
-        var minY1 = bounds1.minY;
-        var maxX1 = bounds1.maxX;
-        var maxY1 = bounds1.maxY;
-        var minX2 = bounds2.minX;
-        var minY2 = bounds2.minY;
-        var maxX2 = bounds2.maxX;
-        var maxY2 = bounds2.maxY;
-        var x, y;
+    _rectangleDiffCoords(bounds1, bounds2, callback) {
+        const minX1 = bounds1.minX;
+        const minY1 = bounds1.minY;
+        const maxX1 = bounds1.maxX;
+        const maxY1 = bounds1.maxY;
+        const minX2 = bounds2.minX;
+        const minY2 = bounds2.minY;
+        const maxX2 = bounds2.maxX;
+        const maxY2 = bounds2.maxY;
+        let x, y;
         for (x = minX1; x <= maxX1; x++) {
             // All x in R1
             // All above:
@@ -646,20 +644,19 @@ var MarkerManager = /** @class */ (function () {
                 callback(x, y);
             }
         }
-    };
+    }
     /**
      * Removes marker from cell. O(N).
      */
-    MarkerManager.prototype._removeMarkerFromCell = function (cell, marker) {
-        var shift = 0;
-        for (var i = 0; i < cell.length; ++i) {
+    _removeMarkerFromCell(cell, marker) {
+        let shift = 0;
+        for (let i = 0; i < cell.length; ++i) {
             if (cell[i] === marker) {
                 cell.splice(i--, 1);
                 shift++;
             }
         }
         return shift;
-    };
-    return MarkerManager;
-}());
+    }
+}
 exports.MarkerManager = MarkerManager;

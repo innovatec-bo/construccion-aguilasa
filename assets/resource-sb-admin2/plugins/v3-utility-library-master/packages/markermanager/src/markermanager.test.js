@@ -18,24 +18,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference types="@types/jest" />
 /// <reference types="@types/googlemaps" />
 /* eslint-disable @typescript-eslint/no-explicit-any */
-var markermanager_1 = require("./markermanager");
-var jest_mocks_1 = require("@googlemaps/jest-mocks");
-var gridbounds_1 = require("./gridbounds");
-beforeEach(function () {
+const markermanager_1 = require("./markermanager");
+const jest_mocks_1 = require("@googlemaps/jest-mocks");
+const gridbounds_1 = require("./gridbounds");
+beforeEach(() => {
     (0, jest_mocks_1.initialize)();
 });
-test("can construct MarkerManager", function () {
-    var zoom = 10;
-    var map = new google.maps.Map(null);
+test("can construct MarkerManager", () => {
+    const zoom = 10;
+    const map = new google.maps.Map(null);
     map.getZoom.mockReturnValueOnce(zoom);
-    var mm = new markermanager_1.MarkerManager(map, {});
+    const mm = new markermanager_1.MarkerManager(map, {});
     expect(map.getZoom).toHaveBeenCalledTimes(1);
     expect(mm["_mapZoom"]).toBe(zoom);
 });
-test("can add and remove markers", function () {
-    var map = new google.maps.Map(null);
-    var mm = new markermanager_1.MarkerManager(map, {});
-    var marker = new google.maps.Marker();
+test("can add and remove markers", () => {
+    const map = new google.maps.Map(null);
+    const mm = new markermanager_1.MarkerManager(map, {});
+    const marker = new google.maps.Marker();
     marker.setPosition({ lat: 0, lng: 0 });
     mm["_shownBounds"] = new gridbounds_1.GridBounds([new google.maps.Point(-10, -10), new google.maps.Point(10, 10)], 6);
     mm.addMarker(marker, 0, 10);

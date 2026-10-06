@@ -1,23 +1,22 @@
 "use strict";
-var MapsHandler = /** @class */ (function () {
-    function MapsHandler(divContent) {
+class MapsHandler {
+    constructor(divContent) {
         this.divContent = divContent;
         moment.locale('es');
         this._mapContent = divContent;
         this._uniqueMarker = null;
         this._uniqueInfoWindow = null;
     }
-    MapsHandler.prototype.startMap = function () {
+    startMap() {
         this._map = new google.maps.Map(document.getElementById(this._mapContent), {
             center: { lat: -17.784146, lng: -63.181738 },
             zoom: 12
         });
-    };
-    MapsHandler.prototype.addUniqueMarker = function (latitude, longitude, centerMarker) {
-        if (centerMarker === void 0) { centerMarker = false; }
-        var _this = this;
-        var position = { lat: latitude, lng: longitude };
-        var markerImage = base_url + 'assets/images/google-maps-marker.png';
+    }
+    addUniqueMarker(latitude, longitude, centerMarker = false) {
+        let _this = this;
+        let position = { lat: latitude, lng: longitude };
+        let markerImage = base_url + 'assets/images/google-maps-marker.png';
         this._uniqueMarker = new google.maps.Marker({
             position: position,
             map: _this._map,
@@ -25,9 +24,9 @@ var MapsHandler = /** @class */ (function () {
             icon: {
                 url: markerImage,
                 // 1. Tamaño visual en el mapa (Ancho, Alto)
-                scaledSize: new google.maps.Size(32, 32),
+                scaledSize: new google.maps.Size(32, 42),
                 // 2. Tamaño original del archivo (opcional, igual al anterior si se escala)
-                size: new google.maps.Size(32, 32),
+                size: new google.maps.Size(32, 42),
                 // 3. Punto de anclaje (opcional: '0,32' sitúa la base del icono en la coordenada )
                 anchor: new google.maps.Point(16, 32)
             },
@@ -53,18 +52,18 @@ var MapsHandler = /** @class */ (function () {
             _this._map.panTo(position);
             // _this._map.setCenter(position);
         }
-    };
-    MapsHandler.prototype._updateUniqueInfoWindow = function (latitude, longitude) {
+    }
+    _updateUniqueInfoWindow(latitude, longitude) {
         this._uniqueInfoWindow.setContent('<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q=' + latitude + ',' + longitude + '">Enviar por Whatsapp</a>');
-    };
-    MapsHandler.prototype._updateFormInput = function (latitude, longitude) {
+    }
+    _updateFormInput(latitude, longitude) {
         $("input[name=latitude]").val(latitude);
         $("input[name=longitude]").val(longitude);
-    };
-    MapsHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         this._map.addListener('click', function (e) {
-            var position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+            let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
             if (_this._uniqueMarker === null) {
                 _this.addUniqueMarker(e.latLng.lat(), e.latLng.lng(), true);
             }
@@ -78,13 +77,13 @@ var MapsHandler = /** @class */ (function () {
         });
         $(document).on('click', '.search-coordinate-button', function (e) {
             e.preventDefault();
-            var latitude = parseFloat($("input[name=latitude]").val());
-            var longitude = parseFloat($("input[name=longitude]").val());
+            let latitude = parseFloat($("input[name=latitude]").val());
+            let longitude = parseFloat($("input[name=longitude]").val());
             if (_this._uniqueMarker === null) {
                 _this.addUniqueMarker(latitude, longitude, true);
             }
             else {
-                var position = { lat: latitude, lng: longitude };
+                let position = { lat: latitude, lng: longitude };
                 _this._uniqueMarker.setPosition(position);
                 _this._map.setZoom(15);
                 _this._map.panTo(_this._uniqueMarker.getPosition());
@@ -92,6 +91,5 @@ var MapsHandler = /** @class */ (function () {
                 // _this._map.setCenter(_this._uniqueMarker.getPosition());
             }
         });
-    };
-    return MapsHandler;
-}());
+    }
+}

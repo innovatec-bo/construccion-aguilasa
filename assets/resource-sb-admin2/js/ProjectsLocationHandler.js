@@ -1,6 +1,6 @@
 "use strict";
-var ProjectsLocationHandler = /** @class */ (function () {
-    function ProjectsLocationHandler(divContent) {
+class ProjectsLocationHandler {
+    constructor(divContent) {
         this.divContent = divContent;
         moment.locale('es');
         this._mapContent = divContent;
@@ -8,14 +8,14 @@ var ProjectsLocationHandler = /** @class */ (function () {
         this._bounds = new google.maps.LatLngBounds();
         this._markerCluster = new MarkerClusterer(this._map, this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     }
-    ProjectsLocationHandler.prototype.startPaginationJs = function (additionalParameter) {
-        var _this = this;
+    startPaginationJs(additionalParameter) {
+        let _this = this;
         $('#pagination-content').pagination({
             dataSource: base_url + 'panel/AjaxProject/paginationJs',
             locator: 'resultArray',
             totalNumberLocator: function (response) {
                 // you can return totalNumber by analyzing response content
-                var text = "Se encontraron " + response.recordsFiltered + " proyectos";
+                let text = "Se encontraron " + response.recordsFiltered + " proyectos";
                 if (response.recordsFiltered == 1)
                     text = "Se encontro 1 proyecto";
                 else if (response.recordsFiltered == 0)
@@ -44,10 +44,10 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
                 _this._markerCluster.clearMarkers();
-                var marker = {};
+                let marker = {};
                 $.each(data, function (index, project) {
                     console.log(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
-                    var loc = new google.maps.LatLng(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
+                    let loc = new google.maps.LatLng(parseFloat(project.project_latitude), parseFloat(project.project_longitude));
                     _this._bounds.extend(loc);
                     marker = _this.addMarker(project);
                     _this._currentMarkers.push(marker);
@@ -55,7 +55,7 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 _this._markerCluster.setMap(_this._map);
                 _this._markerCluster.addMarkers(_this._currentMarkers);
                 if (data.length == 1) {
-                    var coordinate = data[0];
+                    let coordinate = data[0];
                     _this._map.setZoom(15);
                     _this._map.panTo(marker.getPosition());
                 }
@@ -67,20 +67,20 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 $("#" + _this._mapContent).unblock();
             }
         });
-    };
-    ProjectsLocationHandler.prototype.startMap = function () {
+    }
+    startMap() {
         this._map = new google.maps.Map(document.getElementById(this._mapContent), {
             center: { lat: -17.784146, lng: -63.181738 },
             zoom: 12
         });
-    };
-    ProjectsLocationHandler.prototype.addMarker = function (project) {
-        var _this = this;
-        var latitude = parseFloat(project.project_latitude);
-        var longitude = parseFloat(project.project_longitude);
-        var position = { lat: latitude, lng: longitude };
-        var markerImage = base_url + 'assets/images/google-maps-marker.png';
-        var marker = new google.maps.Marker({
+    }
+    addMarker(project) {
+        let _this = this;
+        let latitude = parseFloat(project.project_latitude);
+        let longitude = parseFloat(project.project_longitude);
+        let position = { lat: latitude, lng: longitude };
+        let markerImage = base_url + 'assets/images/google-maps-marker.png';
+        let marker = new google.maps.Marker({
             position: position,
             map: _this._map,
             // animation: google.maps.Animation.DROP,
@@ -94,10 +94,10 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 anchor: new google.maps.Point(16, 32)
             }
         });
-        var htmlSource = $("#location-info-window").html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({ project: project });
-        var infoWindow = new google.maps.InfoWindow({
+        let htmlSource = $("#location-info-window").html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({ project: project });
+        let infoWindow = new google.maps.InfoWindow({
             // content: '<a target="_blank" href="https://wa.me/?text=https://www.google.com/maps/search/?q='+latitude+','+longitude+'">Enviar por Whatsapp</a>'
             content: html
         });
@@ -105,9 +105,9 @@ var ProjectsLocationHandler = /** @class */ (function () {
             infoWindow.open(_this._map, marker);
         });
         return marker;
-    };
-    ProjectsLocationHandler.prototype._delay = function (callback, ms) {
-        var timer = 0;
+    }
+    _delay(callback, ms) {
+        let timer = 0;
         return function () {
             var context = this, args = arguments;
             clearTimeout(timer);
@@ -115,9 +115,9 @@ var ProjectsLocationHandler = /** @class */ (function () {
                 callback.apply(context, args);
             }, ms || 0);
         };
-    };
-    ProjectsLocationHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         $(document).on("click", "#search-text-on-map", function () {
             if ($('#pagination-content').length > 0)
                 $('#pagination-content').pagination('go', 1);
@@ -126,6 +126,5 @@ var ProjectsLocationHandler = /** @class */ (function () {
             if ($('#pagination-content').length > 0)
                 $('#pagination-content').pagination('go', 1);
         }, 2000));
-    };
-    return ProjectsLocationHandler;
-}());
+    }
+}

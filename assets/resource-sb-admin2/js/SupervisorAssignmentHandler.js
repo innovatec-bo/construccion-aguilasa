@@ -1,10 +1,10 @@
 "use strict";
-var SupervisorAssignmentHandler = /** @class */ (function () {
-    function SupervisorAssignmentHandler() {
+class SupervisorAssignmentHandler {
+    constructor() {
         this._scrollBarList = [];
     }
-    SupervisorAssignmentHandler.prototype.loadDistribution = function (month, year) {
-        var _this = this;
+    loadDistribution(month, year) {
+        let _this = this;
         $.ajax({
             url: base_url + 'panel/AjaxSupervisorAssignment/loadDistribution/' + month + '/' + year,
             dataType: "json",
@@ -17,16 +17,16 @@ var SupervisorAssignmentHandler = /** @class */ (function () {
                 if (response.success === 1) {
                     _this._masterTemplate = $("<div>" + response.data.template + "</div>");
                     //Available builders
-                    var htmlSource = _this._masterTemplate.find('#ht-available-builders-list').html();
-                    var template = Handlebars.compile(htmlSource);
-                    var html = template({ data: response.data });
-                    var $availableBuilderContent = $('#available-builders-content');
+                    let htmlSource = _this._masterTemplate.find('#ht-available-builders-list').html();
+                    let template = Handlebars.compile(htmlSource);
+                    let html = template({ data: response.data });
+                    let $availableBuilderContent = $('#available-builders-content');
                     $availableBuilderContent.html(html);
                     //Distribution list
                     htmlSource = _this._masterTemplate.find('#ht-distribution-list').html();
                     template = Handlebars.compile(htmlSource);
                     html = template({ data: response.data });
-                    var $distributionContent = $('#distribution-content');
+                    let $distributionContent = $('#distribution-content');
                     $distributionContent.html(html);
                     _this._applyPerfectScrollBar();
                     _this._startDragula();
@@ -36,11 +36,11 @@ var SupervisorAssignmentHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    SupervisorAssignmentHandler.prototype._startDragula = function () {
-        var $list = $('.perfect-scroll-bar');
-        var _this = this;
-        var $contentList = [];
+    }
+    _startDragula() {
+        let $list = $('.perfect-scroll-bar');
+        let _this = this;
+        let $contentList = [];
         $.each($list, function (index, value) {
             $contentList.push(value);
         });
@@ -73,32 +73,32 @@ var SupervisorAssignmentHandler = /** @class */ (function () {
         }).on('cancel', function (el) {
             $(el).removeClass("draggable-cursor");
         });
-    };
-    SupervisorAssignmentHandler.prototype._applyPerfectScrollBar = function () {
-        var $list = $('.perfect-scroll-bar');
-        var _this = this;
+    }
+    _applyPerfectScrollBar() {
+        let $list = $('.perfect-scroll-bar');
+        let _this = this;
         $.each($list, function (index, value) {
             //Apply perfect scroll bar
-            var dataValue = $(value).data('scroll-bar-identifier');
-            var ps = new PerfectScrollbar('.perfect-scroll-bar[data-scroll-bar-identifier=' + dataValue + ']', {
+            let dataValue = $(value).data('scroll-bar-identifier');
+            let ps = new PerfectScrollbar('.perfect-scroll-bar[data-scroll-bar-identifier=' + dataValue + ']', {
                 wheelSpeed: 2,
                 wheelPropagation: true,
                 minScrollbarLength: 50
             });
             _this._scrollBarList.push(ps);
         });
-    };
-    SupervisorAssignmentHandler.prototype._updateScrollBars = function () {
+    }
+    _updateScrollBars() {
         $.each(this._scrollBarList, function (index, value) {
             value.destroy();
         });
         this._applyPerfectScrollBar();
-    };
-    SupervisorAssignmentHandler.prototype.saveDistribution = function () {
-        var _this = this;
-        var month = $('select[name=month] option:selected').val();
-        var year = $('select[name=year] option:selected').val();
-        var dataToSave = this._prepareDataToSave();
+    }
+    saveDistribution() {
+        let _this = this;
+        let month = $('select[name=month] option:selected').val();
+        let year = $('select[name=year] option:selected').val();
+        let dataToSave = this._prepareDataToSave();
         $.ajax({
             url: base_url + 'panel/AjaxSupervisorAssignment/saveDistribution/',
             dataType: "json",
@@ -117,35 +117,34 @@ var SupervisorAssignmentHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    SupervisorAssignmentHandler.prototype._prepareDataToSave = function () {
-        var $panelList = $('.fiscal-panel');
-        var fiscalList = [];
+    }
+    _prepareDataToSave() {
+        let $panelList = $('.fiscal-panel');
+        let fiscalList = [];
         $.each($panelList, function (index, value) {
-            var fiscalId = $(value).data('fiscal-id');
-            var $builderListGroup = $(value).find('.builder-list-group').children('.list-group-item');
-            var fiscal = { 'fiscalId': fiscalId, 'builderList': [] };
-            var builderList = [];
+            let fiscalId = $(value).data('fiscal-id');
+            let $builderListGroup = $(value).find('.builder-list-group').children('.list-group-item');
+            let fiscal = { 'fiscalId': fiscalId, 'builderList': [] };
+            let builderList = [];
             $.each($builderListGroup, function (index, value) {
-                var builderId = $(value).data('builder-id');
-                var builder = { 'builderId': builderId };
+                let builderId = $(value).data('builder-id');
+                let builder = { 'builderId': builderId };
                 builderList.push(builder);
             });
             fiscal.builderList = builderList;
             fiscalList.push(fiscal);
         });
         return fiscalList;
-    };
-    SupervisorAssignmentHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         $(document).on('click', '.load-distribution-list', function () {
-            var month = $('select[name=month] option:selected').val();
-            var year = $('select[name=year] option:selected').val();
+            let month = $('select[name=month] option:selected').val();
+            let year = $('select[name=year] option:selected').val();
             _this.loadDistribution(month, year);
         });
         $(document).on('click', '.save-distribution-list', function () {
             _this.saveDistribution();
         });
-    };
-    return SupervisorAssignmentHandler;
-}());
+    }
+}

@@ -1,31 +1,31 @@
 "use strict";
-var ManpowerHandler = /** @class */ (function () {
-    function ManpowerHandler(projectID) {
+class ManpowerHandler {
+    constructor(projectID) {
         this.projectID = projectID;
         this._structureUsageValidator = null;
         this._projectId = projectID;
         this.viewData = {};
     }
-    ManpowerHandler.prototype.setStructureUsageValidator = function (structureUsageValidator) {
+    setStructureUsageValidator(structureUsageValidator) {
         this._structureUsageValidator = structureUsageValidator;
-    };
-    ManpowerHandler.prototype.add = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    add(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxProject/addManpowerProgress/' + _this._projectId,
             dataType: "json",
             method: method,
             data: formData,
             beforeSend: function () {
-                var message = "Cargando formulario..";
+                let message = "Cargando formulario..";
                 if (formData) {
                     message = "Procesando..";
                 }
                 Swal({
                     html: "<h3>" + message + "</h3>",
                     allowOutsideClick: false,
-                    onBeforeOpen: function () {
+                    onBeforeOpen: () => {
                         Swal.showLoading();
                     }
                 });
@@ -45,24 +45,24 @@ var ManpowerHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    ManpowerHandler.prototype.edit = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    edit(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxProject/edit/' + _this._questionId,
             dataType: "json",
             method: method,
             data: formData,
             beforeSend: function () {
-                var message = "Opening form..";
+                let message = "Opening form..";
                 if (formData) {
                     message = "Processing..";
                 }
                 Swal({
                     html: "<h3>" + message + "</h3>",
                     allowOutsideClick: false,
-                    onBeforeOpen: function () {
+                    onBeforeOpen: () => {
                         Swal.showLoading();
                     }
                 });
@@ -80,24 +80,24 @@ var ManpowerHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    ManpowerHandler.prototype.launchForm = function (response, formTitle) {
+    }
+    launchForm(response, formTitle) {
         this._loadViewTemplate = response.data.template;
         this._laborCostMasterDetail = response.data.laborCostMasterDetail;
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var structureItemList = $template.find("#ht-structure-item-list").html();
+        let $template = $("<div>" + this._loadViewTemplate + "</div>");
+        let structureItemList = $template.find("#ht-structure-item-list").html();
         Handlebars.registerPartial("ht-structure-item-list", structureItemList);
-        var structureItem = $template.find("#ht-structure-item").html();
+        let structureItem = $template.find("#ht-structure-item").html();
         Handlebars.registerPartial("ht-structure-item", structureItem);
-        var htmlSource = $template.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var item = {
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let item = {
             index: 1,
             laborCostList: this._laborCostMasterDetail
         };
-        var structureList = [item];
+        let structureList = [item];
         console.log(response.data.fiscals);
-        var data = {
+        let data = {
             structureList: structureList,
             builders: response.data.builders,
             fiscals: response.data.fiscals,
@@ -105,8 +105,8 @@ var ManpowerHandler = /** @class */ (function () {
             productionLimit: response.data.productionLimit,
             showAddAllButton: response.data.showAddAllButton
         };
-        var html = template(data);
-        var _this = this;
+        let html = template(data);
+        let _this = this;
         Swal({
             title: formTitle,
             html: html,
@@ -118,9 +118,9 @@ var ManpowerHandler = /** @class */ (function () {
             showLoaderOnConfirm: true,
             customClass: "modal-manpower-form",
             width: '100%',
-            preConfirm: function () {
-                var $listContent = $("#structure-item-list-content");
-                var $form = $("form[name=manpower-progress-form]");
+            preConfirm: () => {
+                let $listContent = $("#structure-item-list-content");
+                let $form = $("form[name=manpower-progress-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
@@ -130,14 +130,14 @@ var ManpowerHandler = /** @class */ (function () {
                     return false;
                 }
             },
-        }).then(function (result) {
+        }).then((result) => {
             if (result.value) {
-                var $form = $("form[name=manpower-progress-form]");
+                let $form = $("form[name=manpower-progress-form]");
                 _this.add($form.serialize());
             }
         });
-        var date = new Date();
-        var datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
+        let date = new Date();
+        let datesToBlock = _this._datesToBlock(response.data.dateRangesToBlock);
         $('.date-time-picker').datetimepicker({
             ignoreReadonly: true,
             format: 'DD-MM-YYYY',
@@ -150,9 +150,9 @@ var ManpowerHandler = /** @class */ (function () {
         this._startSelect2();
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
         $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
-    };
-    ManpowerHandler.prototype.loadManpower = function () {
-        var _this = this;
+    }
+    loadManpower() {
+        let _this = this;
         $.ajax({
             url: base_url + 'panel/AjaxProject/getManpower/' + _this._projectId,
             dataType: "json",
@@ -168,21 +168,21 @@ var ManpowerHandler = /** @class */ (function () {
             },
             success: function (response) {
                 // console.log(response);
-                var $template = $("<div>" + response.data.template + "</div>");
-                var htmlSource = $template.find(response.data.templateName).html();
-                var template = Handlebars.compile(htmlSource);
-                var html = template({ laborCostMasterDetail: response.data.laborCostMasterDetail });
+                let $template = $("<div>" + response.data.template + "</div>");
+                let htmlSource = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template({ laborCostMasterDetail: response.data.laborCostMasterDetail });
                 $("#manpower-table").html(html);
                 if (response.data.laborCostMasterDetail.length > 10) {
-                    var buttons = ['excel', 'csv', 'pdf', 'print'];
+                    let buttons = ['excel', 'csv', 'pdf', 'print'];
                     $('#manpower-table table').DataTable({ "buttons": buttons });
                 }
                 // console.log('loaded manpower list');
             }
         });
-    };
-    ManpowerHandler.prototype.loadBuildingPoints = function () {
-        var _this = this;
+    }
+    loadBuildingPoints() {
+        let _this = this;
         $.ajax({
             url: base_url + 'panel/AjaxProject/getBuildingPoints/' + _this._projectId,
             dataType: "json",
@@ -198,42 +198,42 @@ var ManpowerHandler = /** @class */ (function () {
             },
             success: function (response) {
                 // console.log(response);
-                var $template = $("<div>" + response.data.template + "</div>");
-                var htmlSource = $template.find(response.data.templateName).html();
-                var template = Handlebars.compile(htmlSource);
+                let $template = $("<div>" + response.data.template + "</div>");
+                let htmlSource = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
                 // let html = template({laborCostMasterDetail:response.data.laborCostMasterDetail});
-                var html = template({ buildingPoints: response.data.buildingPoints });
+                let html = template({ buildingPoints: response.data.buildingPoints });
                 $("#building-points").html(html);
             }
         });
-    };
-    ManpowerHandler.prototype._addRow = function () {
+    }
+    _addRow() {
         $(".table-error-message").addClass("hide");
-        var $listContent = $("#structure-item-list-content");
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var htmlSource = $template.find('#ht-structure-item').html();
-        var template = Handlebars.compile(htmlSource);
-        var index = $listContent.children().length + 1;
-        var data = {
+        let $listContent = $("#structure-item-list-content");
+        let $template = $("<div>" + this._loadViewTemplate + "</div>");
+        let htmlSource = $template.find('#ht-structure-item').html();
+        let template = Handlebars.compile(htmlSource);
+        let index = $listContent.children().length + 1;
+        let data = {
             index: index,
             laborCostList: this._laborCostMasterDetail
         };
-        var html = template(data);
+        let html = template(data);
         $listContent.append(html);
         // evaluateVisibilityBtnRemove();
-        var selectorSelect2 = "[data-row-index='" + index + "'] select";
+        let selectorSelect2 = "[data-row-index='" + index + "'] select";
         this._startSelect2(selectorSelect2);
         $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
         $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
-        var $form = $("form[name=manpower-progress-form]");
+        let $form = $("form[name=manpower-progress-form]");
         $form.parsley()._refreshFields();
         // $form.parsley('addItem',$(html).find('input.quantity-to-use'));
         // this._structureUsageValidator.loadFieldEvents();
-    };
-    ManpowerHandler.prototype._removeRow = function () {
-    };
-    ManpowerHandler.prototype._startSelect2 = function (selector) {
-        var _this = this;
+    }
+    _removeRow() {
+    }
+    _startSelect2(selector) {
+        let _this = this;
         selector = selector || '.select2-structure-code';
         $(selector).select2({
             containerCssClass: "select-xs",
@@ -241,7 +241,7 @@ var ManpowerHandler = /** @class */ (function () {
             width: '100%',
             // escapeMarkup: function (markup) { return markup; },
             templateResult: function (state) {
-                var alreadySelected = [];
+                let alreadySelected = [];
                 $.each($(".select2-structure-code"), function (index, value) {
                     alreadySelected.push($(value).val());
                     // console.log($(value).val());
@@ -251,8 +251,8 @@ var ManpowerHandler = /** @class */ (function () {
                 }
                 else {
                     if (alreadySelected.indexOf(state.id) < 0) {
-                        var $originalOption = $(state.element);
-                        var data = {
+                        let $originalOption = $(state.element);
+                        let data = {
                             structureCode: state.text,
                             activity: $originalOption.data('activity'),
                             execution: $originalOption.data('execution'),
@@ -260,11 +260,11 @@ var ManpowerHandler = /** @class */ (function () {
                             unitOfMeasurement: $originalOption.data('unit-of-measurement'),
                             description: $originalOption.data('description')
                         };
-                        var $template = $("<div>" + _this._loadViewTemplate + "</div>");
-                        var htmlSource = $template.find('#ht-select2-template-result').html();
-                        var template = Handlebars.compile(htmlSource);
-                        var html = template(data);
-                        var $state = $(html);
+                        let $template = $("<div>" + _this._loadViewTemplate + "</div>");
+                        let htmlSource = $template.find('#ht-select2-template-result').html();
+                        let template = Handlebars.compile(htmlSource);
+                        let html = template(data);
+                        let $state = $(html);
                         return $state;
                     }
                 }
@@ -278,9 +278,9 @@ var ManpowerHandler = /** @class */ (function () {
                 return markup;
             },
         });
-    };
-    ManpowerHandler.prototype.loadManpowerLog = function () {
-        var _this = this;
+    }
+    loadManpowerLog() {
+        let _this = this;
         $.ajax({
             url: base_url + 'panel/AjaxProject/getManpowerLog/' + _this._projectId,
             dataType: "json",
@@ -295,20 +295,20 @@ var ManpowerHandler = /** @class */ (function () {
                 // });
             },
             success: function (response) {
-                var $template = $("<div>" + response.data.template + "</div>");
-                var htmlSource = $template.find(response.data.templateName).html();
-                var template = Handlebars.compile(htmlSource);
-                var html = template({ log: response.data.log });
+                let $template = $("<div>" + response.data.template + "</div>");
+                let htmlSource = $template.find(response.data.templateName).html();
+                let template = Handlebars.compile(htmlSource);
+                let html = template({ log: response.data.log });
                 $("#status-project-log-content").html(html);
                 $('[data-toggle="tooltip"]').tooltip();
-                var builderList = [];
-                var builder = {};
+                let builderList = [];
+                let builder = {};
                 $.each(response.data.log, function (index, string) {
-                    var splitBuilderString = string.builderWithId;
+                    let splitBuilderString = string.builderWithId;
                     splitBuilderString = splitBuilderString.split(",");
                     $.each(splitBuilderString, function (index, value) {
-                        var string = value;
-                        var result = string.split("-");
+                        let string = value;
+                        let result = string.split("-");
                         builder = { "id": result[0].trim(), "fullName": result[1].trim() };
                         builderList[result[0]] = builder;
                         builder = {};
@@ -323,19 +323,19 @@ var ManpowerHandler = /** @class */ (function () {
                 // $("#builder-list").html(tag);
             }
         });
-    };
-    ManpowerHandler.prototype.arrayValues = function (arrayObj) {
-        var tempObj = {};
-        Object.keys(arrayObj).forEach(function (prop) {
+    }
+    arrayValues(arrayObj) {
+        let tempObj = {};
+        Object.keys(arrayObj).forEach((prop) => {
             if (arrayObj[prop]) {
                 tempObj[prop] = arrayObj[prop];
             }
         });
         return tempObj;
-    };
-    ManpowerHandler.prototype._addBuildingStructure = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    _addBuildingStructure(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxLaborCost/add/' + _this._projectId,
             dataType: "json",
@@ -371,16 +371,16 @@ var ManpowerHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    ManpowerHandler.prototype.launchFormBuildingStructureForm = function (response, formTitle) {
+    }
+    launchFormBuildingStructureForm(response, formTitle) {
         this._loadViewTemplate = response.data.template;
         this._laborCostMasterDetail = response.data.laborCostMasterDetail;
-        var $template = $("<div>" + this._loadViewTemplate + "</div>");
-        var htmlSource = $template.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var data = { project: response.data.project };
-        var html = template(data);
-        var _this = this;
+        let $template = $("<div>" + this._loadViewTemplate + "</div>");
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let data = { project: response.data.project };
+        let html = template(data);
+        let _this = this;
         bootbox.confirm({
             title: formTitle,
             message: html,
@@ -396,9 +396,9 @@ var ManpowerHandler = /** @class */ (function () {
             },
             callback: function (result) {
                 if (result) {
-                    var $formExisting = $("form[name=add-existing-structure]");
-                    var $formNew = $("form[name=add-new-structure]");
-                    var formSerialized = "";
+                    let $formExisting = $("form[name=add-existing-structure]");
+                    let $formNew = $("form[name=add-new-structure]");
+                    let formSerialized = "";
                     if ($formExisting.is(":visible")) {
                         formSerialized = $formExisting.serialize();
                     }
@@ -410,26 +410,26 @@ var ManpowerHandler = /** @class */ (function () {
             }
         });
         startSelect2LaborCost();
-        var $inputMasked = $(".input-masked");
+        let $inputMasked = $(".input-masked");
         if ($inputMasked.length > 0) {
             $inputMasked.inputmask();
         }
-    };
-    ManpowerHandler.prototype._datesToBlock = function (list) {
-        var dates = [];
+    }
+    _datesToBlock(list) {
+        let dates = [];
         $.each(list, function (index, dateRange) {
-            var startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
-            var endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
-            var range = moment.range(startDate, endDate);
-            var arrayMoment = Array.from(range.by('day'));
+            let startDate = moment(dateRange.from_bld, 'YYYY-MM-DD hh:mm:ss').format('YYYY-MM-DD');
+            let endDate = moment(dateRange.to_bld, "YYYY-MM-DD hh:mm:ss").format('YYYY-MM-DD');
+            let range = moment.range(startDate, endDate);
+            let arrayMoment = Array.from(range.by('day'));
             $.each(arrayMoment, function (index, moment) {
                 dates.push(moment.format('YYYY-MM-DD'));
             });
         });
         return dates;
-    };
-    ManpowerHandler.prototype.loadEventHandler = function () {
-        var _this = this;
+    }
+    loadEventHandler() {
+        let _this = this;
         if (this._structureUsageValidator !== null)
             this._structureUsageValidator.loadEventHandlers();
         $(document).on("click", ".add-manpower-progress", function (e) {
@@ -445,10 +445,10 @@ var ManpowerHandler = /** @class */ (function () {
             $('#structure-item-list-content').html('');
             $.each(_this._laborCostMasterDetail, function (index, value) {
                 if (parseFloat(value.diff) > 0) {
-                    setTimeout(function () {
+                    setTimeout(() => {
                         _this._addRow();
-                        var selectorSelect2 = $('.select2-structure-code').last();
-                        var $option = selectorSelect2.find('option[value="' + value.labor_cost_id + '"]');
+                        let selectorSelect2 = $('.select2-structure-code').last();
+                        let $option = selectorSelect2.find('option[value="' + value.labor_cost_id + '"]');
                         if ($option.length) {
                             selectorSelect2.val(value.labor_cost_id).trigger('change'); // por si acaso
                             selectorSelect2.trigger({
@@ -469,18 +469,18 @@ var ManpowerHandler = /** @class */ (function () {
         $(document).on('select2:select', '.select2-structure-code', function (e) {
             console.log(e);
             $(this).parsley().validate();
-            var $tr = $(this).closest('tr');
+            let $tr = $(this).closest('tr');
             $(".table-error-message").addClass("hide");
-            var $optionElement = $(e.params.data.element);
-            var unitOfMeasurement = $optionElement.data('unit-of-measurement');
-            var activity = $optionElement.data('activity');
-            var execution = $optionElement.data('execution');
-            var description = $optionElement.data('description');
-            var unitPrice = $optionElement.data('unit-price');
-            var diff = $optionElement.data('diff');
+            let $optionElement = $(e.params.data.element);
+            let unitOfMeasurement = $optionElement.data('unit-of-measurement');
+            let activity = $optionElement.data('activity');
+            let execution = $optionElement.data('execution');
+            let description = $optionElement.data('description');
+            let unitPrice = $optionElement.data('unit-price');
+            let diff = $optionElement.data('diff');
             console.log(diff);
-            var quantity = typeof $optionElement.data('quantity') == 'number' ? $optionElement.data('quantity') : $optionElement.data('quantity').replace(/,/g, "");
-            var totalWorkedUp = typeof $optionElement.data('workedUp') == 'number' ? $optionElement.data('workedUp') : $optionElement.data('workedUp').replace(/,/g, "");
+            let quantity = typeof $optionElement.data('quantity') == 'number' ? $optionElement.data('quantity') : $optionElement.data('quantity').replace(/,/g, "");
+            let totalWorkedUp = typeof $optionElement.data('workedUp') == 'number' ? $optionElement.data('workedUp') : $optionElement.data('workedUp').replace(/,/g, "");
             $tr.attr('data-quantity-to-use', quantity);
             $tr.find('.quantity-to-use').attr('data-parsley-max', parseFloat(quantity) - parseFloat(totalWorkedUp));
             $tr.attr('data-total-worked-up', totalWorkedUp);
@@ -510,14 +510,13 @@ var ManpowerHandler = /** @class */ (function () {
         });
         $(document).on("select2:select", 'select.select2-labor-cost', function (e) {
             console.log(e);
-            var data = e.params.data;
-            var $form = $("form[name=add-existing-structure]");
+            let data = e.params.data;
+            let $form = $("form[name=add-existing-structure]");
             $form.find("select[name=activity]").val(data.structure_activity);
             $form.find("select[name=execution]").val(data.structure_execution);
             // $form.find("input[name=quantity]").val(data.structure_quantity);
             $form.find("input[name=price]").val(data.structure_unit_price);
             console.log(data);
         });
-    };
-    return ManpowerHandler;
-}());
+    }
+}

@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var markerclusterer_1 = require("./markerclusterer");
+const markerclusterer_1 = require("./markerclusterer");
 exports.default = markerclusterer_1.MarkerClusterer;

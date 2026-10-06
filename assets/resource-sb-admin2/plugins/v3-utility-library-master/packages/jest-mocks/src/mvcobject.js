@@ -17,22 +17,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MVCObject = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
-var MVCObject = /** @class */ (function () {
-    function MVCObject() {
+class MVCObject {
+    constructor() {
         this.addListener = jest
             .fn()
-            .mockImplementation(function (eventName, handler) { });
+            .mockImplementation((eventName, handler) => { });
         this.bindTo = jest
             .fn()
-            .mockImplementation(function (key, target, targetKey, noNotify) { });
-        this.changed = jest.fn().mockImplementation(function (key) { });
-        this.get = jest.fn().mockImplementation(function (key) { });
-        this.notify = jest.fn().mockImplementation(function (key) { });
-        this.set = jest.fn().mockImplementation(function (key, value) { });
-        this.setValues = jest.fn().mockImplementation(function (values) { });
-        this.unbind = jest.fn().mockImplementation(function (key) { });
-        this.unbindAll = jest.fn().mockImplementation(function () { });
+            .mockImplementation((key, target, targetKey, noNotify) => { });
+        this.changed = jest.fn().mockImplementation((key) => { });
+        this.get = jest.fn().mockImplementation((key) => { });
+        this.notify = jest.fn().mockImplementation((key) => { });
+        this.set = jest.fn().mockImplementation((key, value) => { });
+        this.setValues = jest.fn().mockImplementation((values) => { });
+        this.unbind = jest.fn().mockImplementation((key) => { });
+        this.unbindAll = jest.fn().mockImplementation(() => { });
     }
-    return MVCObject;
-}());
+}
 exports.MVCObject = MVCObject;

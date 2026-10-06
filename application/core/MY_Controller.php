@@ -357,7 +357,7 @@ class PrivateController extends PublicController
         parent::__construct();
         //Add General Components
         $this->complementHandler = new ComplementHandler();
-        $this->_tabTitle = "Panel";
+        $this->_tabTitle = "Construccion";
 
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");

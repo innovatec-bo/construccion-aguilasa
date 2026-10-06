@@ -16,17 +16,16 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Size = void 0;
-var Size = /** @class */ (function () {
-    function Size(width, height, widthUnit, heightUnit) {
-        this.toString = jest.fn().mockImplementation(function () {
+class Size {
+    constructor(width, height, widthUnit, heightUnit) {
+        this.toString = jest.fn().mockImplementation(() => {
             return "";
         });
         this.width = width;
         this.height = height;
     }
-    Size.prototype.equals = function (other) {
+    equals(other) {
         return other.height === this.height && other.width === this.width;
-    };
-    return Size;
-}());
+    }
+}
 exports.Size = Size;

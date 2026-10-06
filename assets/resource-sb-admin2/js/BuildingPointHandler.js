@@ -1,16 +1,16 @@
 "use strict";
-var BuildingPointHandler = /** @class */ (function () {
-    function BuildingPointHandler(projectID) {
+class BuildingPointHandler {
+    constructor(projectID) {
         this.projectID = projectID;
         this._projectId = projectID;
         this._structuresInPoint = [];
     }
-    BuildingPointHandler.prototype.setPointToPointHandler = function (pointToPointHandler) {
+    setPointToPointHandler(pointToPointHandler) {
         this._pointToPointHandler = pointToPointHandler;
-    };
-    BuildingPointHandler.prototype.add = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    add(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxBuildingPoint/add/' + _this._projectId,
             dataType: "json",
@@ -33,10 +33,10 @@ var BuildingPointHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    BuildingPointHandler.prototype.addStructureToPoint = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    addStructureToPoint(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxBuildingPoint/addStructureToPoint/' + _this._buildingPointId,
             dataType: "json",
@@ -60,12 +60,12 @@ var BuildingPointHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    BuildingPointHandler.prototype._launchFormAddStructureToPoint = function (response, title) {
-        var _this = this;
-        var htmlSource = _this._masterTemplate.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({ buildingPoint: response.data.buildingPoint });
+    }
+    _launchFormAddStructureToPoint(response, title) {
+        let _this = this;
+        let htmlSource = _this._masterTemplate.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({ buildingPoint: response.data.buildingPoint });
         swal.fire({
             title: title,
             html: html,
@@ -78,16 +78,16 @@ var BuildingPointHandler = /** @class */ (function () {
             showLoaderOnConfirm: true,
             customClass: "modal-building-point-form",
             width: '100%',
-            preConfirm: function () {
-                var $form = $("form[name=building-point-structure-form]");
+            preConfirm: () => {
+                let $form = $("form[name=building-point-structure-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
                 }
             },
-        }).then(function (result) {
+        }).then((result) => {
             if (result.value) {
-                var $form = $("form[name=building-point-structure-form]");
+                let $form = $("form[name=building-point-structure-form]");
                 _this.addStructureToPoint($form.serialize());
                 // let buildingPointId = parseInt($form.find("input[name=building-point-id]").val());
                 // if(isNaN(buildingPointId))
@@ -97,14 +97,14 @@ var BuildingPointHandler = /** @class */ (function () {
             }
         });
         startSelect2LaborCost('.select2-search-labor-cost');
-    };
-    BuildingPointHandler.prototype._addRow = function (data) {
+    }
+    _addRow(data) {
         $(".table-error-message").addClass("hide");
-        var $listContent = $(".building-point-structure-add-form-item-list");
-        var htmlSource = this._masterTemplate.find('#building-point-structure-add-form-item').html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template(data);
-        var structureAlreadyInList = this._structureAlreadyInList(data);
+        let $listContent = $(".building-point-structure-add-form-item-list");
+        let htmlSource = this._masterTemplate.find('#building-point-structure-add-form-item').html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template(data);
+        let structureAlreadyInList = this._structureAlreadyInList(data);
         if (structureAlreadyInList.alreadyInList) {
             toastr.error(structureAlreadyInList.message, '', { 'progressBar': true });
         }
@@ -113,16 +113,16 @@ var BuildingPointHandler = /** @class */ (function () {
             $(".input-masked").inputmask('decimal', { min: 1, max: 999999, groupSeparator: ',', autoGroup: true });
             $(".input-masked-price").inputmask('decimal', { min: 0, max: 999999, groupSeparator: ',', autoGroup: true });
         }
-    };
+    }
     /**
      * Eval if the structure is already in list
      * @param data
      * @private
      */
-    BuildingPointHandler.prototype._structureAlreadyInList = function (data) {
-        var response = { alreadyInList: false, message: "" };
+    _structureAlreadyInList(data) {
+        let response = { alreadyInList: false, message: "" };
         $.each($('.building-point-structure-add-form-item-list tr'), function (index, value) {
-            var laborCostInList = $(value).data('labor-cost-id');
+            let laborCostInList = $(value).data('labor-cost-id');
             if (laborCostInList == parseInt(data.labor_cost_id)) {
                 response.alreadyInList = true;
                 response.message = "Ya escogi&oacute; la estructura " + data.text + ".";
@@ -136,12 +136,12 @@ var BuildingPointHandler = /** @class */ (function () {
             }
         });
         return response;
-    };
-    BuildingPointHandler.prototype._launchForm = function (response, title) {
-        var _this = this;
-        var htmlSource = _this._masterTemplate.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({ buildingPoint: response.data.buildingPoint });
+    }
+    _launchForm(response, title) {
+        let _this = this;
+        let htmlSource = _this._masterTemplate.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({ buildingPoint: response.data.buildingPoint });
         swal.fire({
             title: title,
             html: html,
@@ -154,17 +154,17 @@ var BuildingPointHandler = /** @class */ (function () {
             showLoaderOnConfirm: true,
             customClass: "modal-building-point-form",
             width: '100%',
-            preConfirm: function () {
-                var $form = $("form[name=building-point-form]");
+            preConfirm: () => {
+                let $form = $("form[name=building-point-form]");
                 if (!$form.parsley().isValid()) {
                     $form.parsley().validate();
                     return false;
                 }
             },
-        }).then(function (result) {
+        }).then((result) => {
             if (result.value) {
-                var $form = $("form[name=building-point-form]");
-                var buildingPointId = parseInt($form.find("input[name=building-point-id]").val());
+                let $form = $("form[name=building-point-form]");
+                let buildingPointId = parseInt($form.find("input[name=building-point-id]").val());
                 if (isNaN(buildingPointId)) {
                     _this.add($form.serialize());
                 }
@@ -174,9 +174,9 @@ var BuildingPointHandler = /** @class */ (function () {
                 // }
             }
         });
-    };
-    BuildingPointHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         $(document).on("click", ".add-building-point", function (e) {
             e.preventDefault();
             _this.add();
@@ -188,14 +188,13 @@ var BuildingPointHandler = /** @class */ (function () {
         });
         $(document).on("select2:select", '.select2-search-labor-cost', function (e) {
             console.log(e);
-            var data = e.params.data;
+            let data = e.params.data;
             _this._addRow(data);
         });
         $(document).on("click", ".remove-structure-from-building-point-form-add", function (e) {
             e.preventDefault();
-            var $tr = $(this).closest('tr');
+            let $tr = $(this).closest('tr');
             $tr.remove();
         });
-    };
-    return BuildingPointHandler;
-}());
+    }
+}
