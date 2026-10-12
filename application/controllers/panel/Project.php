@@ -1219,4 +1219,11 @@ class Project extends PrivateController
         $allProjectsLog = new ExcelAllProjectsLog($this->sessionUser);
         $allProjectsLog->getReport();
     }
+
+    public function setUserResponsible(int $userId, string $responsibleGroup)
+    {
+        // Model_status_responsible::saveUserResponsible($userId, $responsibleGroup);
+        $result = Model_status_responsible::getUsersResponsible("", $userId);
+        dd($result);
+    }
 }
