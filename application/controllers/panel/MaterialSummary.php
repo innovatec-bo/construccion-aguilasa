@@ -141,7 +141,7 @@ class MaterialSummary extends PrivateController
         $this->_loadPanelView("material-summary/type",$data);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $data['materialSummary'] = Model_material_summary::getMasterDetailByListId($id);
 		$data['materialList'] = Model_project_material::getBySummaryId($id);

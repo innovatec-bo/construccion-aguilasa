@@ -3,6 +3,16 @@
         <div class="col-lg-12">
             <h1 class="page-header">Detalle</h1>
             <a class="btn btn-info hidden-print pull-right" href='javascript:void(0)' onclick='window.print();'><i class="fa fa-print fa-fw"></i>Imprimir</a>
+            <!-- <a class="btn btn-info hidden-print pull-right download-excel" style="margin-right: 4px;" href='javascript:void(0)'><i class="fa fa-file-excel fa-fw"></i>Descargar</a> -->
+             <?= form_open(
+                'panel/Warehouse/downloadExcelRequestAdditionalToCREV2',
+                ['class' => 'hidden-print pull-right', 'style' => 'margin-right: 4px;']
+            ) ?>
+                <input type="hidden" name="summary-id" value="<?= $materialSummary['summary_id'] ?>">
+                <button type="submit" class="btn btn-info">
+                    <i class="fa fa-file-excel fa-fw"></i>Descargar
+                </button>
+            <?= form_close() ?>
         </div>
         <div class="col-md-12">
             <?php
