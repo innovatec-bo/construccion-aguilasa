@@ -112,7 +112,7 @@ class ExcelRequestMaterialToCRE
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setPath(FCPATH.'assets/images/fullLogo.png');
         $drawing->setHeight(100);
         $drawing->setCoordinates('G1');
         $drawing->setWorksheet($spreadsheet->getActiveSheet());

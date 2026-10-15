@@ -108,7 +108,7 @@ class ExcelRequestMaterialToCREV2
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Serebo-Logo');
         $drawing->setDescription('Serebo-Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setPath(FCPATH.'assets/images/fullLogo.png');
         $drawing->setHeight(150);
         $drawing->setOffsetX(0);
         $drawing->setOffsetY(80);

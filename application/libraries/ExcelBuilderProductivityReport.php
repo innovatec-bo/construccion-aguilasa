@@ -268,7 +268,7 @@ class ExcelBuilderProductivityReport
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setPath(FCPATH.'assets/images/fullLogo.png');
         $drawing->setHeight(60);
         $drawing->setCoordinates('D4');
 
