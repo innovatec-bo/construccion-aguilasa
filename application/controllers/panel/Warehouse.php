@@ -18,7 +18,7 @@ class Warehouse extends PrivateController
         parent::__construct();
     }
 
-	private function _index($metaData) : void
+	private function _index(array $metaData) : void
 	{
 		$materialSummary = NULL;
 		if(isset($_GET['request-id']))
@@ -103,8 +103,6 @@ class Warehouse extends PrivateController
 					$this->session->set_flashdata("errorMessage", "La lista inicial de materiales no cuenta con el numero de reserva, por favor contacte con soporte.");
 					redirect(base_url("panel/Warehouse/".$method));
 				}
-					
-
 			}
 
 			$summaryType = $formData['summary-type'];
@@ -115,8 +113,8 @@ class Warehouse extends PrivateController
 			$entryDate = date_format($entryDate, 'Y-m-d');
 			$entryDate = $entryDate." ".date("H:i:s");
 			$materials = array_values($formData['summary']);
-			$summaryWithBuilderAndFiscal = array(4,10,11,14,15,18);
-			$summaryWithReservationNumber = array(2,3,8);
+			$summaryWithBuilderAndFiscal = [4,10,11,14,15,17,18];
+			$summaryWithReservationNumber = [2,3,8];
 			$currentUser = PrivateController::getSessionUser();
 			$currentUserId = isset($currentUser) ? $currentUser->id:NULL;
 
@@ -129,13 +127,13 @@ class Warehouse extends PrivateController
 				$newMaterialSummary->setBuilderResponsible($builder);
 				$newMaterialSummary->setFiscalResponsible($fiscal);
 			}
+
 			if(isset($_GET['request-id']))
 			{
 				$newMaterialSummary->setParentSummaryId($_GET['request-id']);
 			}
 			if(array_search($summaryType, $summaryWithReservationNumber) !== FALSE)
 			{
-				
 				$newMaterialSummary->setReservationNumber($reservationNumber);
 			}
 
