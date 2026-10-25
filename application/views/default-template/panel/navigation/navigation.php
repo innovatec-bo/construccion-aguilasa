@@ -16,7 +16,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand logo-link" href="<?= base_url() ?>">
-            <img class="img-responsive logo-image" src="<?= assets_url("images/logo.png") ?>">
+            <img class="img-responsive logo-image" style="width: 140px; height: auto;" src="<?= assets_url("images/logo.png") ?>">
         </a>
     </div>
     <!-- /.navbar-header -->
@@ -279,19 +279,10 @@
                 <li class="divider"></li>
                 <li><a href="<?= base_url("Logout") ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     <?php
-
-                    switch (getenv('ENVIRONMENT')) {
-                        case 'development':
-                            $serebo2Url = 'http://serebo2.test/home/magic-login/' . $sessionUser->id;
-                            break;
-
-                        case 'production':
-                            $serebo2Url = 'https://serebo2.toqueeltimbre.com/home/magic-login/' . $sessionUser->id;
-                            break;
-                    }
+                    $magicLoginSystemV2Url = getenv('BASE_URL').'/home/magic-login/' . $sessionUser->id;
                     if (in_array($sessionUser->id, [1, 2, 75, 89, 22, 19, 30, 91, 95])) {
                     ?>
-                <li><a href="<?= $serebo2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> SEREBO2</a>
+                <li><a href="<?= $magicLoginSystemV2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Sistema v2</a>
                 <?php
                     }
                 ?>
