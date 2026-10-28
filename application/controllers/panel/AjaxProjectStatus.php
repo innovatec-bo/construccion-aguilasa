@@ -531,11 +531,25 @@ class AjaxProjectStatus extends PrivateController
     
     public function saveConciliationShipment()
     {
-        $client = new Client(['base_uri' => getenv('SYSTEM_V2_URL')]);
-        $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
-        $body = json_decode($apiResponse->getBody(), true);
-        $settings = $body['data'];
-        $enableManualApprovementForConciliations = $settings['enable_manual_approvement_for_conciliations'];
+        try {
+            $client = new Client([
+                'base_uri' => rtrim(getenv('SYSTEM_V2_URL'), '/') . '/',
+                'timeout'  => 5.0,
+            ]);
+
+            $apiResponse = $client->request('GET', 'api/v1/settings/status-management');
+            $body = json_decode($apiResponse->getBody()->getContents(), true);
+
+            $settings = $body['data'] ?? [];
+            $enableManualApprovementForConciliations = $settings['enable_manual_approvement_for_conciliations'] ?? false;
+        } catch (\Exception $e) {
+            $errorMessage = 'Error consultando settings de conciliaciones: ' . $e->getMessage();
+            log_message('error', $errorMessage);
+
+            $response["success"] = 0;
+            $response["message"] = $errorMessage;
+            echo json_encode($response);exit;
+        }
         
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
@@ -697,12 +711,26 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveAsBuilt()
     {
-        $client = new Client(['base_uri' => getenv('SYSTEM_V2_URL')]);
-        $apiResponse = $client->request('GET', 'api/v1/status-management-settings');
-        $body = json_decode($apiResponse->getBody(), true);
-        $settings = $body['data'];
-        $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'];
-        
+        try {
+            $client = new Client([
+                'base_uri' => rtrim(getenv('SYSTEM_V2_URL'), '/') . '/',
+                'timeout'  => 5.0,
+            ]);
+
+            $apiResponse = $client->request('GET', 'api/v1/settings/status-management');
+            $body = json_decode($apiResponse->getBody()->getContents(), true);
+
+            $settings = $body['data'] ?? [];
+            $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'] ?? false;
+        } catch (\Exception $e) {
+            $errorMessage = 'Error consultando settings de estados: ' . $e->getMessage();
+            log_message('error', $errorMessage);
+
+            $response["success"] = 0;
+            $response["message"] = $errorMessage;
+            echo json_encode($response);exit;
+        }
+
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
