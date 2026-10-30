@@ -531,31 +531,11 @@ class AjaxProjectStatus extends PrivateController
     
     public function saveConciliationShipment()
     {
-        try {
-            $client = new Client([
-                'base_uri' => rtrim(getenv('SYSTEM_V2_URL'), '/') . '/',
-                'timeout'  => 5.0,
-            ]);
-
-            $apiResponse = $client->request('GET', 'api/v1/settings/status-management');
-            $body = json_decode($apiResponse->getBody()->getContents(), true);
-
-            $settings = $body['data'] ?? [];
-            $enableManualApprovementForConciliations = $settings['enable_manual_approvement_for_conciliations'] ?? false;
-        } catch (\Exception $e) {
-            $errorMessage = 'Error consultando settings de conciliaciones: ' . $e->getMessage();
-            log_message('error', $errorMessage);
-
-            $response["success"] = 0;
-            $response["message"] = $errorMessage;
-            echo json_encode($response);exit;
-        }
-        
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $project = Model_project::getById($projectId);
         
-        if ($enableManualApprovementForConciliations)
+        if ($this->_enableManualApprovementForConciliations)
         {
             if($project->getProjectHasReturnedMaterialsToCre() == 0)
             {
@@ -711,33 +691,12 @@ class AjaxProjectStatus extends PrivateController
 
     public function saveAsBuilt()
     {
-        try {
-            $client = new Client([
-                'base_uri' => rtrim(getenv('SYSTEM_V2_URL'), '/') . '/',
-                'timeout'  => 5.0,
-            ]);
-
-            $apiResponse = $client->request('GET', 'api/v1/settings/status-management');
-            $body = json_decode($apiResponse->getBody()->getContents(), true);
-
-            $settings = $body['data'] ?? [];
-            $noPendingMaterialsInCreForAsBuilt = $settings['no_pending_materials_in_cre_for_as_built'] ?? false;
-        } catch (\Exception $e) {
-            $errorMessage = 'Error consultando settings de estados: ' . $e->getMessage();
-            log_message('error', $errorMessage);
-
-            $response["success"] = 0;
-            $response["message"] = $errorMessage;
-            echo json_encode($response);exit;
-        }
-
         $formData = $this->input->post();
         $projectId = $formData["projectId"];
         $paginationHandler = new MaterialSummaryPaginationHandler(2000, 0);
 		$paginationHandler->setAdditionalParameters(['project-id' => $projectId, 'show-material-pending-in-cre' => 1]);
 		$list = $paginationHandler->getAll();
-
-        if($noPendingMaterialsInCreForAsBuilt && count($list) > 0)
+        if($this->_noPendingMaterialsInCreForAsBuilt && count($list) > 0)
         {
             $response["success"] = 0;
             $response["message"] = 'Este proyecto tiene materiales pendientes por retirar de CRE. Puede revisar los materiales con boton "Resumen de materiales" en la parte superior derecha.';

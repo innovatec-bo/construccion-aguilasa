@@ -89,21 +89,9 @@ class EmailHandler
 
 	public static function getSender($emailType = "noreply")
     {
-        $emails = array();
-        switch(ENVIRONMENT)
-        {
-            CASE "development":
-            CASE "testing":
-                $emails = array(
-                    "noreply" => "noreply@serebo.toqueeltimbre.com"
-                    );
-                break;
-            CASE "production":
-                $emails = array(
-                    "noreply" => "noreply@serebo.toqueeltimbre.com"
-                );
-                break;
-        }
+        $emails = [
+            "noreply" => getenv('MAIL_FROM_ADDRESS')
+		];
         return $emails[$emailType];
     }
 

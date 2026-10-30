@@ -119,7 +119,13 @@ class Model_user extends Model_user_base
     public static function netBuildingEmail()
     {
         $ci = &get_instance();
-        $data = array();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
         $pathToFile = FCPATH.'assets/documents/ReporteDeConstruccionDeRedes_'.date("Y-m-d").".pdf";
         $sendTo = array(
             "vhsuarez@serebo.com",
@@ -136,8 +142,8 @@ class Model_user extends Model_user_base
 
         $emailHandler = new EmailHandler();
         $email = $emailHandler->initialize();
-        $email->from(EmailHandler::getSender(), 'Serebo.Admin');
-        $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+        $email->from(EmailHandler::getSender(), $ci->system_settings->getFaviconUrl());
+        $email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getFaviconUrl());
         $email->to($emailHandler->getEmailByEnvironment($sendTo));
         $email->attach($pathToFile);
         $email->subject("¡Reporte De Construccion De Redes!");
@@ -201,7 +207,14 @@ class Model_user extends Model_user_base
     public static function notifyProjectStatusToCreFiscal($dataToSend = array())
     {
         $ci = &get_instance();
-        $data = array();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
+
         $creFiscalEmail = $dataToSend['creFiscalEmail'];
         $supervisionList = PublicController::creFiscalSupervisingList($creFiscalEmail);
         $sendToCC = array(
@@ -293,8 +306,8 @@ class Model_user extends Model_user_base
             $listManagementBy = implode(',',$listManagementBy);
             $emailHandler = new EmailHandler();
             $email = $emailHandler->initialize();
-            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
-            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+            $email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
 			$email->to($emailHandler->getEmailByEnvironment($creFiscalEmail));
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
@@ -328,7 +341,14 @@ class Model_user extends Model_user_base
     public static function notifyProjectStatusToSereboMembers($dataToSend = array())
     {
         $ci = &get_instance();
-        $data = array();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
+
         $sereboFiscalEmail = $dataToSend['sereboFiscalEmail'];
 
         $subjectList = array(
@@ -406,8 +426,8 @@ class Model_user extends Model_user_base
             $listManagementBy = implode(',',$listManagementBy);
             $emailHandler = new EmailHandler();
             $email = $emailHandler->initialize();
-            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
-            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+            $email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
             $email->to($emailHandler->getEmailByEnvironment($sendTo));
             if($status == 'completed')
                 $sendToCC[] = 'pvargas@serebo.com';
@@ -443,7 +463,13 @@ class Model_user extends Model_user_base
     public static function notifyProjectByStatusToSereboMembers($statusList = array())
     {
         $ci = &get_instance();
-        $data = [];
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
         $sendToCC = array(
             "vhsuarez@serebo.com",
             "gilbertof@serebo.com",
@@ -487,8 +513,8 @@ class Model_user extends Model_user_base
             $listManagementBy = implode(',',$listManagementBy);
             $emailHandler = new EmailHandler();
             $email = $emailHandler->initialize();
-            $email->from(EmailHandler::getSender(), 'Serebo.Admin');
-            $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+            $email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+            $email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
             $email->to($emailHandler->getEmailByEnvironment($sendTo));
             $email->cc($emailHandler->getEmailByEnvironment($sendToCC));
             $subject = $subjectList[$status].'('.$listManagementBy.')';
@@ -537,7 +563,13 @@ class Model_user extends Model_user_base
         $supervisingEmails = array_unique($supervisingEmails);
 
         $ci = &get_instance();
-        $data = array();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
         $sendTo = array(
             "vhsuarez@serebo.com",
             "gilbertof@serebo.com",
@@ -549,8 +581,8 @@ class Model_user extends Model_user_base
         $sendTo = array_merge($sendTo, $creFiscalEmails, $supervisingEmails);
         $emailHandler = new EmailHandler();
         $email = $emailHandler->initialize();
-        $email->from(EmailHandler::getSender(), 'Serebo.Admin');
-        $email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+        $email->from(EmailHandler::getSender(), $ci->system_settings->getFaviconUrl());
+        $email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getFaviconUrl());
         $email->to($emailHandler->getEmailByEnvironment($sendTo));
         $email->subject("Aclaraci&oacute;n de reportes autom&aacute;ticos");
         $email->message($ci->load->view("default-template/panel/email-template/clarification.php", $data, true));
@@ -593,24 +625,32 @@ class Model_user extends Model_user_base
 	{
 		set_time_limit(300);
 		ini_set('memory_limit','512M');
-		$ci = &get_instance();
 		$report = new ExcelExternalExecutiveReport();
 		$report->getReport(TRUE);
-		$data = array();
-		$sendTo = array(
+
+        $ci = &get_instance();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
+
+		$sendTo = [
 			"gilbertof@serebo.com",
 			"vh.suarez@serebo.com"
-		);
+        ];
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
-		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
-		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+		$email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+		$email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
 		$messageDetail = "\nSubject: Reporte ejecutivo\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
-//        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+    //    $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
 		try
 		{
 			if($email->Send())
@@ -638,24 +678,32 @@ class Model_user extends Model_user_base
 		$ci = &get_instance();
 		$report = new ExcelInternalExecutiveReport();
 		$report->getReport(TRUE);
-		$data = array();
-		$sendTo = array(
+
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
+
+		$sendTo = [
 			"gilbertof@serebo.com",
 			"vhsuarez@serebo.com",
 			"vh.suarez@serebo.com",
 			"maguilera@serebo.com",
 			"eddysonca@serebo.com"
-		);
+        ];
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
-		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
-		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+		$email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+		$email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
 		$email->subject("Reporte ejecutivo");
 		$email->attach($report->getFilePath());
 		$email->message($ci->load->view("default-template/panel/email-template/executive-report.php", $data, true));
 		$messageDetail = "\nSubject: Reporte ejecutivo\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
-//        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+    //    $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
 		try
 		{
 			if($email->Send())
@@ -714,14 +762,21 @@ class Model_user extends Model_user_base
             $allProjectsLog->getReport(TRUE);
         }
 
-		$data = array();
+		if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+		$data = [
+            'appFaviconUrl' => $ci->system_settings->getFaviconUrl(),
+            'emailFooterText' => $ci->system_settings->getEmailFooterText()
+        ];
+
 		$sendTo = array(
 			"gilbertof@serebo.com",
 		);
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
-		$email->from(EmailHandler::getSender(), 'Serebo.Admin');
-		$email->reply_to('noreply@serebo.toqueeltimbre.com', 'Serebo.Admin');
+		$email->from(EmailHandler::getSender(), $ci->system_settings->getEmailFooterText());
+		$email->reply_to(getenv('MAIL_FROM_ADDRESS'), $ci->system_settings->getEmailFooterText());
 		$email->to($emailHandler->getEmailByEnvironment($sendTo));
         $email->cc($emailHandler->getEmailByEnvironment('javier.jair.cussy.saucedo@gmail.com'));
 		$email->subject($subject);
@@ -745,7 +800,7 @@ class Model_user extends Model_user_base
         
 		$email->message($ci->load->view("default-template/panel/email-template/daily-reports.php", $data, true));
 		$messageDetail = "\nSubject: Reportes diarios\nTo: ".implode(", ",$emailHandler->getEmailByEnvironment($sendTo));
-//        $ci->load->view("default-template/panel/email-template/executive-report.php", $data);
+//        $ci->load->view("default-template/panel/email-template/daily-reports.php", $data);
 		try
 		{
 			if($email->Send())

@@ -19,18 +19,38 @@ class PublicController extends CI_Controller
      */
     protected $_panelTmpl;
     protected $_tabTitle;
+    protected ?string $_appLogoUrl = null;
+    protected ?string $_appFaviconUrl = null;
+    protected ?string $_documentLogoUrl = null;
+    protected ?string $_documentLogoRealPath = null;
+    protected ?string $_pinMarkerUrl = null;
+    protected bool $_enableManualApprovementForConciliations;
+    protected bool $_noPendingMaterialsInCreForAsBuilt;
+    protected ?string $_emailFooterText;
 
     public function __construct()
     {
         parent::__construct();
         date_default_timezone_set('America/La_Paz');
         $this->load->helper("ssl_helper");
+        $this->load->library('system_settings');
         $this->_evalSslUsage();
         $this->_ci = &get_instance();
         $this->load->driver('session');
         $this->load->library('form_validation');
         $this->_panelTmpl = "default-template";
         $this->_tabTitle = "Login";
+
+        $this->_appLogoUrl           = $this->_ci->system_settings->getAppLogoUrl();
+        $this->_appFaviconUrl        = $this->_ci->system_settings->getFaviconUrl();
+        $this->_documentLogoUrl      = $this->_ci->system_settings->getDocumentLogoUrl();
+        $this->_documentLogoRealPath = $this->_ci->system_settings->getDocumentLogoRealPath();
+        $this->_pinMarkerUrl         = $this->_ci->system_settings->getPinMarkerUrl();
+        $this->_emailFooterText      = $this->_ci->system_settings->getEmailFooterText();
+
+        $this->_enableManualApprovementForConciliations = $this->_ci->system_settings->getEnableManualApprovementForConciliations();
+        $this->_noPendingMaterialsInCreForAsBuilt       = $this->_ci->system_settings->getNoPendingMaterialsInCreForAsBuilt();
+
         $this->complementHandler = new ComplementHandler();
         $this->complementHandler->addViewComplement("jquery");
         $this->complementHandler->addViewComplement("bootstrap");
@@ -45,6 +65,8 @@ class PublicController extends CI_Controller
     {
         $contentData["complementHandler"] = $this->complementHandler;
         $contentData["tabTitle"] = $this->_tabTitle;
+        $contentData["appLogoUrl"] = $this->_appLogoUrl;
+        $contentData["appFaviconUrl"] = $this->_appFaviconUrl;
         $contentData["contentView"] = $contentView;
         $this->load->view($this->_panelTmpl."/public/master/master", array("contentData" => $contentData));
     }
@@ -405,7 +427,8 @@ class PrivateController extends PublicController
         $treeFeatureHtml = Model_feature::drawTreeHtml(NULL,$featureList,array());
         $contentData["treeFeatureHtml"] = $treeFeatureHtml;
         $contentData["magicLogin"] = $this->magicLoginEncryption($this->sessionUser->id);
-
+        $contentData["appLogoUrl"] = $this->_appLogoUrl;
+        $contentData["appFaviconUrl"] = $this->_appFaviconUrl;
         $this->load->view($this->_panelTmpl."/panel/master/master", array("contentData" => $contentData));
     }
 
@@ -662,8 +685,8 @@ class PrivateController extends PublicController
 		$emailHandler = new EmailHandler();
 		$email = $emailHandler->initialize();
 		$config = $emailHandler->getConfig();
-		$email->from(EmailHandler::getSender(), 'Serebo admin');
-		$email->reply_to('info@serebo.com', 'Serebo admin');
+		$email->from(EmailHandler::getSender(), $this->_emailFooterText);
+		$email->reply_to(getenv('MAIL_FROM_ADDRESS'), $this->_emailFooterText);
 		$email->to($emailHandler->getEmailByEnvironment($to));
 		$email->subject("Prueba de servidor de correos");
 //		$message = json_encode($config);

@@ -78,7 +78,7 @@ class CronJob extends PublicController
     {
         if($challenge == 'clarificationEmail2019')
         {
-//            Model_user::emailClarification();
+        //    Model_user::emailClarification();
         }
     }
 

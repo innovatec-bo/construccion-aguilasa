@@ -43,7 +43,7 @@
                                     </tr>
                                     <!-- Image -->
                                     <tr>
-                                        <td align="center" valign="top" colspan="2"><img alt="img" data-crop="false" editable="" label="ph1" mc:edit="ph1" src="<?=base_url("assets/images/favicon.png")?>" style="border: 0px; display: block; font-size: 0px; line-height: 0px;" width="80"></td>
+                                        <td align="center" valign="top" colspan="2"><img alt="img" data-crop="false" editable="" label="ph1" mc:edit="ph1" src="<?=$appFaviconUrl?>" style="border: 0px; display: block; font-size: 0px; line-height: 0px;" width="80"></td>
                                     </tr>
                                     <!-- End Image -->
                                     <!-- Content -->
@@ -172,7 +172,7 @@
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>DE CRE</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIRECCIÓN</th>
                                                     <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">DIAS DE<BR>ENERGIZADO</th>
-                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL DE<br>SEREBO</th>
+                                                    <th style="border: 1px solid #b5babf;color: #404E67;text-align: left">FISCAL<br>INTERNO</th>
 													<?php
 													if($showBudget == 1)
 													{
@@ -194,7 +194,7 @@
                                     <tr>
                                         <td align="center" colspan="2" data-color="module1_text3" data-size="module1_text3" mc:edit="ab5" style="padding-left:25px;padding-right:25px;color: #404E67;font-family: 'Open Sans', sans-serif;font-size: 15px;line-height: 25px;padding-top: 12px;">
                                             <multiline label="ab5">
-                                                Serebo.Admin
+                                                <?=$emailFooterText ?>
                                             </multiline>
 
                                         </td>

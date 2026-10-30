@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 /**
  * Created by PhpStorm.
  * User: Jair
@@ -20,6 +22,14 @@ class MY_Model
     protected $_editedOn;
     protected $_editedBy;
 
+    protected static ?array $_cachedSystemSettings = null;
+
+    protected ?string $_appLogoUrl = null;
+    protected ?string $_appFaviconUrl = null;
+    protected ?string $_documentLogoUrl = null;
+    protected ?string $_documentLogoRealPath = null;
+    protected ?string $_pinMarkerUrl = null;
+
     public function __construct()
     {
         $this->_id = NULL;
@@ -28,6 +38,13 @@ class MY_Model
         $this->_createdBy = NULL;
         $this->_editedOn = NULL;
         $this->_editedBy = NULL;
+
+        $ci =& get_instance();
+        $this->_appLogoUrl           = $ci->system_settings->getAppLogoUrl();
+        $this->_appFaviconUrl        = $ci->system_settings->getFaviconUrl();
+        $this->_documentLogoUrl      = $ci->system_settings->getDocumentLogoUrl();
+        $this->_documentLogoRealPath = $ci->system_settings->getDocumentLogoRealPath();
+        $this->_pinMarkerUrl         = $ci->system_settings->getPinMarkerUrl();
     }
 
     public function __clone()

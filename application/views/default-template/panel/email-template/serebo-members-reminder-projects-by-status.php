@@ -102,7 +102,7 @@
                                                         editable="" 
                                                         label="ph1" 
                                                         mc:edit="ph1" 
-                                                        src="<?php echo base_url("assets/images/favicon.png")?>" 
+                                                        src="<?=$appFaviconUrl ?>" 
                                                         style="border: 0px; 
                                                             display: block; 
                                                             font-size: 0px; 
@@ -181,7 +181,7 @@
                                                         padding-top: 12px;">
                                                     <multiline label="ab5">
                                                         Estimado,<br>
-                                                        SEREBO le detalla los <?php echo strtolower($subject)?>.
+                                                        le detallamos los <?php echo strtolower($subject)?>.
                                                     </multiline>
                                                 </td>
                                             </tr>
@@ -274,7 +274,7 @@
                                                         padding-top: 12px;"
                                                         colspan="2">
                                                     <multiline label="ab5">
-                                                        Serebo.Admin
+                                                        <?=$emailFooterText?>
                                                     </multiline>
                                                 </td>
                                             </tr>

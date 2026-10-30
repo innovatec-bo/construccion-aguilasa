@@ -9,10 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title><?=$tabTitle?></title>
-    <link rel="shortcut icon" href="<?=assets_url("images/favicon.png")?>">
-    <link rel="apple-touch-icon" href="<?=assets_url("images/favicon.png")?>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?=assets_url("images/favicon.png")?>">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?=assets_url("images/favicon.png")?>">
+    <link rel="shortcut icon" href="<?=$appFaviconUrl?>">
+    <link rel="apple-touch-icon" href="<?=$appFaviconUrl?>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?=$appFaviconUrl?>">
+    <link rel="apple-touch-icon" sizes="114x114" href="<?=$appFaviconUrl?>">
     <?php
     $complementHandler->printViewCss();
     ?>
