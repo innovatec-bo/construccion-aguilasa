@@ -9,11 +9,19 @@ class ExcelRequestMaterialToCRE
     private array $_materialSummary;
     private array $_materialList;
     private array $_projectWorkflow;
+    private string $_documentLogoPath;
 
     public function __construct(object $sessionUser, int $summaryId)
     {
         $this->_sessionUser = $sessionUser;
         $this->_summaryId = $summaryId;
+
+        $ci = &get_instance();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+
+        $this->_documentLogoPath = $ci->system_settings->getDocumentLogoRealPath();
     }
 
     function getReport()
@@ -94,7 +102,7 @@ class ExcelRequestMaterialToCRE
         $manPowerWorkSheet = $spreadsheet->createSheet(0);
         $manPowerWorkSheet->setTitle(strtoupper($this->_projectWorkflow->code_pro));
 
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'SEREBO S-40/2019');
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'S-40/2019');
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A2', 'REF: MATERIAL ADICIONAL');
         $spreadsheet->getActiveSheet()->getStyle('A1:A2')->applyFromArray($topLeftText);
         $spreadsheet->getActiveSheet()->mergeCells('A1:B1');
@@ -112,7 +120,7 @@ class ExcelRequestMaterialToCRE
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setPath($this->_documentLogoPath);
         $drawing->setHeight(100);
         $drawing->setCoordinates('G1');
         $drawing->setWorksheet($spreadsheet->getActiveSheet());

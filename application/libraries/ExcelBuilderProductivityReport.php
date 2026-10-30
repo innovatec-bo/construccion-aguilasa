@@ -9,6 +9,8 @@ class ExcelBuilderProductivityReport
     private $_endDate;
     private $_months;
     private $_userBuilder;
+    private string $_documentLogoPath;
+
 	public function __construct($sessionUser, $builderId, $startDate, $endDate)
 	{
         $this->_sessionUser = $sessionUser;
@@ -30,6 +32,12 @@ class ExcelBuilderProductivityReport
                             "november" => "Noviembre",
                             "december" => "Diciembre"
                         );
+        $ci = &get_instance();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+
+        $this->_documentLogoPath = $ci->system_settings->getDocumentLogoRealPath();
 	}
 
 	function getReport()
@@ -268,7 +276,7 @@ class ExcelBuilderProductivityReport
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setPath($this->_documentLogoPath);
         $drawing->setHeight(60);
         $drawing->setCoordinates('D4');
 

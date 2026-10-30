@@ -9,11 +9,20 @@ class ExcelRequestMaterialToCREV2
     private array $_materialSummary;
     private array $_materialList;
     private array $_projectWorkflow;
+    private string $_documentLogoPath;
 
     public function __construct(object $sessionUser, int $summaryId)
     {
         $this->_sessionUser = $sessionUser;
         $this->_summaryId = $summaryId;
+
+
+        $ci = &get_instance();
+        if (!isset($ci->system_settings)) {
+            $ci->load->library('system_settings');
+        }
+
+        $this->_documentLogoPath = $ci->system_settings->getDocumentLogoRealPath();
     }
 
     function getReport()
@@ -106,9 +115,9 @@ class ExcelRequestMaterialToCREV2
         $spreadsheet->getActiveSheet()->getStyle('A5:H9')->applyFromArray($topCenterText);
 
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('Serebo-Logo');
-        $drawing->setDescription('Serebo-Logo');
-        $drawing->setPath(FCPATH.'assets/images/sereboFullLogo.png');
+        $drawing->setName('System-Logo');
+        $drawing->setDescription('System');
+        $drawing->setPath($this->_documentLogoPath);
         $drawing->setHeight(150);
         $drawing->setOffsetX(0);
         $drawing->setOffsetY(80);
