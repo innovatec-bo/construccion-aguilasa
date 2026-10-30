@@ -16,7 +16,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand logo-link" href="<?= base_url() ?>">
-            <img class="img-responsive logo-image" style="height: auto;" src="<?=$appLogoUrl ?>">
+            <img class="img-responsive logo-image" style="max-height: 60px;max-width:250px" src="<?=$appLogoUrl ?>">
         </a>
     </div>
     <!-- /.navbar-header -->
