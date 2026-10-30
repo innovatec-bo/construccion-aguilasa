@@ -25,15 +25,15 @@ exports.OverlayViewSafe = void 0;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extend(type1, type2) {
-    for (var property in type2.prototype) {
+    for (const property in type2.prototype) {
         type1.prototype[property] = type2.prototype[property];
     }
 }
 /**
  * @ignore
  */
-var OverlayViewSafe = /** @class */ (function () {
-    function OverlayViewSafe() {
+class OverlayViewSafe {
+    constructor() {
         // MarkerClusterer implements google.maps.OverlayView interface. We use the
         // extend function to extend MarkerClusterer with google.maps.OverlayView
         // because it might not always be available when the code is defined so we
@@ -41,6 +41,5 @@ var OverlayViewSafe = /** @class */ (function () {
         // there is no point going ahead :)
         extend(OverlayViewSafe, google.maps.OverlayView);
     }
-    return OverlayViewSafe;
-}());
+}
 exports.OverlayViewSafe = OverlayViewSafe;

@@ -16,59 +16,56 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LatLngBounds = exports.LatLng = void 0;
-var LatLng = /** @class */ (function () {
-    function LatLng(literal, noWrap) {
+class LatLng {
+    constructor(literal, noWrap) {
         this.equals = jest
             .fn()
-            .mockImplementation(function (other) { return false; });
-        this.lat = jest.fn().mockImplementation(function () { return 0; });
-        this.lng = jest.fn().mockImplementation(function () { return 0; });
-        this.toString = jest.fn().mockImplementation(function () { return ""; });
-        this.toUrlValue = jest.fn().mockImplementation(function (precision) { return ""; });
-        this.toJSON = jest.fn().mockImplementation(function () {
+            .mockImplementation((other) => false);
+        this.lat = jest.fn().mockImplementation(() => 0);
+        this.lng = jest.fn().mockImplementation(() => 0);
+        this.toString = jest.fn().mockImplementation(() => "");
+        this.toUrlValue = jest.fn().mockImplementation((precision) => "");
+        this.toJSON = jest.fn().mockImplementation(() => {
             return { lat: 0, lng: 0 };
         });
     }
-    return LatLng;
-}());
+}
 exports.LatLng = LatLng;
-var LatLngBounds = /** @class */ (function () {
-    function LatLngBounds(sw, ne) {
-        var _this = this;
+class LatLngBounds {
+    constructor(sw, ne) {
         this.contains = jest
             .fn()
-            .mockImplementation(function (latLng) { return false; });
+            .mockImplementation((latLng) => false);
         this.equals = jest
             .fn()
-            .mockImplementation(function (other) { return false; });
+            .mockImplementation((other) => false);
         this.extend = jest
             .fn()
-            .mockImplementation(function (point) { return _this; });
+            .mockImplementation((point) => this);
         this.getCenter = jest
             .fn()
-            .mockImplementation(function () { return new google.maps.LatLng({ lat: 0, lng: 0 }); });
+            .mockImplementation(() => new google.maps.LatLng({ lat: 0, lng: 0 }));
         this.getNorthEast = jest
             .fn()
-            .mockImplementation(function () { return new google.maps.LatLng({ lat: 0, lng: 0 }); });
+            .mockImplementation(() => new google.maps.LatLng({ lat: 0, lng: 0 }));
         this.getSouthWest = jest
             .fn()
-            .mockImplementation(function () { return new google.maps.LatLng({ lat: 0, lng: 0 }); });
+            .mockImplementation(() => new google.maps.LatLng({ lat: 0, lng: 0 }));
         this.intersects = jest
             .fn()
-            .mockImplementation(function (other) { return false; });
-        this.isEmpty = jest.fn().mockImplementation(function () { return false; });
-        this.toJSON = jest.fn().mockImplementation(function () {
+            .mockImplementation((other) => false);
+        this.isEmpty = jest.fn().mockImplementation(() => false);
+        this.toJSON = jest.fn().mockImplementation(() => {
             return { east: 0, north: 0, south: 0, west: 0 };
         });
         this.toSpan = jest
             .fn()
-            .mockImplementation(function () { return new google.maps.LatLng({ lat: 0, lng: 0 }); });
-        this.toString = jest.fn().mockImplementation(function () { return ""; });
-        this.toUrlValue = jest.fn().mockImplementation(function (precision) { return ""; });
+            .mockImplementation(() => new google.maps.LatLng({ lat: 0, lng: 0 }));
+        this.toString = jest.fn().mockImplementation(() => "");
+        this.toUrlValue = jest.fn().mockImplementation((precision) => "");
         this.union = jest
             .fn()
-            .mockImplementation(function (other) { return _this; });
+            .mockImplementation((other) => this);
     }
-    return LatLngBounds;
-}());
+}
 exports.LatLngBounds = LatLngBounds;

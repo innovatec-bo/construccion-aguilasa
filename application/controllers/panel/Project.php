@@ -71,8 +71,6 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("parsley.spanish");
         $this->complementHandler->addViewComplement("google.maps.api");
-        // $this->complementHandler->addViewComplement("gmaps");
-        // $this->complementHandler->addProjectJs('gmaps-script-handler');
         $this->complementHandler->addProjectJs('MapsHandler',TRUE);
         $this->complementHandler->addProjectCss('project.add', TRUE);
         $this->complementHandler->addProjectJs('project.add', TRUE);
@@ -212,8 +210,6 @@ class Project extends PrivateController
         $this->complementHandler->addViewComplement("date-time-picker");
         $this->complementHandler->addViewComplement("parsley");
         $this->complementHandler->addViewComplement("google.maps.api");
-        // $this->complementHandler->addViewComplement("gmaps");
-        // $this->complementHandler->addProjectJs('gmaps-script-handler');
         $this->complementHandler->addProjectJs('MapsHandler',TRUE);
         $this->complementHandler->addProjectCss('project.edit',TRUE);
         $this->complementHandler->addProjectJs('project.edit', TRUE);

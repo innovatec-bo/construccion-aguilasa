@@ -17,19 +17,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initialize = exports.LatLngBounds = exports.LatLng = exports.MVCObject = exports.Size = exports.Map = exports.Marker = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
-var latlng_1 = require("./latlng");
+const latlng_1 = require("./latlng");
 Object.defineProperty(exports, "LatLng", { enumerable: true, get: function () { return latlng_1.LatLng; } });
 Object.defineProperty(exports, "LatLngBounds", { enumerable: true, get: function () { return latlng_1.LatLngBounds; } });
-var map_1 = require("./map");
+const map_1 = require("./map");
 Object.defineProperty(exports, "Map", { enumerable: true, get: function () { return map_1.Map_; } });
-var marker_1 = require("./marker");
+const marker_1 = require("./marker");
 Object.defineProperty(exports, "Marker", { enumerable: true, get: function () { return marker_1.Marker; } });
-var mvcobject_1 = require("./mvcobject");
+const mvcobject_1 = require("./mvcobject");
 Object.defineProperty(exports, "MVCObject", { enumerable: true, get: function () { return mvcobject_1.MVCObject; } });
-var point_1 = require("./point");
-var size_1 = require("./size");
+const point_1 = require("./point");
+const size_1 = require("./size");
 Object.defineProperty(exports, "Size", { enumerable: true, get: function () { return size_1.Size; } });
-var initialize = function () {
+const initialize = function () {
     global.google = {
         maps: {
             ImageMapType: jest.fn(),

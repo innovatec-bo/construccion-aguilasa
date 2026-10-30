@@ -17,13 +17,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference types="@types/jest" />
 /// <reference types="@types/googlemaps" />
-var jest_mocks_1 = require("@googlemaps/jest-mocks");
-var wmsmaptype_1 = require("./wmsmaptype");
-var query_string_1 = require("query-string");
-beforeEach(function () {
+const jest_mocks_1 = require("@googlemaps/jest-mocks");
+const wmsmaptype_1 = require("./wmsmaptype");
+const query_string_1 = require("query-string");
+beforeEach(() => {
     (0, jest_mocks_1.initialize)();
 });
-test("xyzToBounds is correct", function () {
+test("xyzToBounds is correct", () => {
     expect((0, wmsmaptype_1.xyzToBounds)(0, 0, 0)).toEqual([
         -wmsmaptype_1.EPSG_3857_EXTENT,
         -wmsmaptype_1.EPSG_3857_EXTENT,
@@ -56,14 +56,14 @@ test.each([
             maxZoom: 18
         }
     ]
-])("WmsMapType can be called with getTIleUrl", function (options) {
+])("WmsMapType can be called with getTIleUrl", (options) => {
     (0, wmsmaptype_1.WmsMapType)(options);
     // need to get the mock in order of each
-    var mock = google.maps.ImageMapType.mock;
-    var tileUrl = mock.calls[mock.calls.length - 1][0].getTileUrl(new google.maps.Point(0, 0), 1, null);
-    var _a = tileUrl.split("?"), base = _a[0], queryString = _a[1];
+    const mock = google.maps.ImageMapType.mock;
+    const tileUrl = mock.calls[mock.calls.length - 1][0].getTileUrl(new google.maps.Point(0, 0), 1, null);
+    const [base, queryString] = tileUrl.split("?");
     expect(base).toEqual("https://www.mrlc.gov/geoserver/NLCD_Land_Cover/wms");
-    var params = (0, query_string_1.parse)(queryString, {
+    const params = (0, query_string_1.parse)(queryString, {
         parseNumbers: true,
         parseBooleans: true
     });

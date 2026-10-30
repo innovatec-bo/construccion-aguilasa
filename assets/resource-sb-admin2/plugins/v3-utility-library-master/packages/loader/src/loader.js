@@ -17,9 +17,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Loader = void 0;
 /// <reference types="@types/googlemaps" />
-var Loader = /** @class */ (function () {
-    function Loader(_a) {
-        var apiKey = _a.apiKey, _b = _a.libraries, libraries = _b === void 0 ? [] : _b, channel = _a.channel, language = _a.language, clientId = _a.clientId, region = _a.region, version = _a.version;
+class Loader {
+    constructor({ apiKey, libraries = [], channel, language, clientId, region, version }) {
         this.CALLBACK = "__google_maps_callback";
         this.URL = "https://maps.googleapis.com/maps/api/js";
         this.callbacks = [];
@@ -33,8 +32,8 @@ var Loader = /** @class */ (function () {
         this.clientId = clientId;
         this.region = region;
     }
-    Loader.prototype.createUrl = function () {
-        var url = this.URL;
+    createUrl() {
+        let url = this.URL;
         url += "?callback=" + this.CALLBACK;
         if (this.apiKey) {
             url += "&key=" + this.apiKey;
@@ -58,14 +57,13 @@ var Loader = /** @class */ (function () {
             url += "&v=" + this.version;
         }
         return url;
-    };
-    Loader.prototype.load = function () {
+    }
+    load() {
         return this.loadPromise();
-    };
-    Loader.prototype.loadPromise = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.loadCallback(function (err) {
+    }
+    loadPromise() {
+        return new Promise((resolve, reject) => {
+            this.loadCallback((err) => {
                 if (!err) {
                     resolve();
                 }
@@ -74,38 +72,37 @@ var Loader = /** @class */ (function () {
                 }
             });
         });
-    };
-    Loader.prototype.loadCallback = function (fn) {
+    }
+    loadCallback(fn) {
         this.callbacks.push(fn);
         this.execute();
-    };
-    Loader.prototype.setScript = function () {
-        var url = this.createUrl();
-        var script = document.createElement("script");
+    }
+    setScript() {
+        const url = this.createUrl();
+        const script = document.createElement("script");
         script.type = "text/javascript";
         script.src = url;
         script.onerror = this.loadErrorCallback;
         script.defer = true;
         script.async = true;
         document.head.appendChild(script);
-    };
-    Loader.prototype.loadErrorCallback = function (e) {
+    }
+    loadErrorCallback(e) {
         this.onerrorEvent = e;
         this.callback();
-    };
-    Loader.prototype.setCallback = function () {
+    }
+    setCallback() {
         window[this.CALLBACK] = this.callback.bind(this);
-    };
-    Loader.prototype.callback = function () {
-        var _this = this;
+    }
+    callback() {
         this.done = true;
         this.loading = false;
-        this.callbacks.forEach(function (cb) {
-            cb(_this.onerrorEvent);
+        this.callbacks.forEach(cb => {
+            cb(this.onerrorEvent);
         });
         this.callbacks = [];
-    };
-    Loader.prototype.execute = function () {
+    }
+    execute() {
         if (this.done) {
             this.callback();
         }
@@ -119,7 +116,6 @@ var Loader = /** @class */ (function () {
                 this.setScript();
             }
         }
-    };
-    return Loader;
-}());
+    }
+}
 exports.Loader = Loader;

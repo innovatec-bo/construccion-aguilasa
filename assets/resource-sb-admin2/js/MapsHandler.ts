@@ -39,7 +39,7 @@ class MapsHandler
     {
         let _this : MapsHandler = this;
         let position = {lat: latitude, lng: longitude};
-        let markerImage = base_url+'assets/images/google-maps-marker.png';
+        let markerImage = pin_marker_url;
         this._uniqueMarker = new google.maps.Marker({
             position: position,
             map: _this._map,

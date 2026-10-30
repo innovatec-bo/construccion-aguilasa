@@ -429,6 +429,7 @@ class PrivateController extends PublicController
         $contentData["magicLogin"] = $this->magicLoginEncryption($this->sessionUser->id);
         $contentData["appLogoUrl"] = $this->_appLogoUrl;
         $contentData["appFaviconUrl"] = $this->_appFaviconUrl;
+        $contentData['pinMarkerUrl'] = $this->_pinMarkerUrl;
         $this->load->view($this->_panelTmpl."/panel/master/master", array("contentData" => $contentData));
     }
 

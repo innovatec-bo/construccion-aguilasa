@@ -1,14 +1,14 @@
 "use strict";
-var EventCalendarHandler = /** @class */ (function () {
-    function EventCalendarHandler() {
+class EventCalendarHandler {
+    constructor() {
         moment.locale('es');
         this._calendarElement = document.getElementById('calendar');
         this._dateStartDateSelected = null;
         this._initializeCalendar();
     }
-    EventCalendarHandler.prototype.add = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    add(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxEvent/add',
             dataType: "json",
@@ -35,13 +35,13 @@ var EventCalendarHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    EventCalendarHandler.prototype.launchForm = function (response) {
-        var _this = this;
-        var $template = $("<div>" + response.data.template + "</div>");
-        var htmlSource = $template.find(response.data.templateName).html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({ event: response.data.event });
+    }
+    launchForm(response) {
+        let _this = this;
+        let $template = $("<div>" + response.data.template + "</div>");
+        let htmlSource = $template.find(response.data.templateName).html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({ event: response.data.event });
         $(_this._popoverAttachTo).popover({
             content: html,
             placement: 'left',
@@ -51,8 +51,8 @@ var EventCalendarHandler = /** @class */ (function () {
             container: 'body',
             template: '<div class="popover box-shadow-3 no-border event-calendar-popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>'
         }).popover('show');
-        var defaultDate1 = moment();
-        var defaultDate2 = moment().add(1, 'hours');
+        let defaultDate1 = moment();
+        let defaultDate2 = moment().add(1, 'hours');
         if (_this._dateStartDateSelected !== null) {
             defaultDate1 = moment(this._dateStartDateSelected);
             defaultDate2 = moment(this._dateStartDateSelected).add(1, 'hours');
@@ -73,10 +73,10 @@ var EventCalendarHandler = /** @class */ (function () {
             format: 'llll',
             widgetPositioning: { horizontal: 'auto', vertical: 'auto' }
         });
-    };
-    EventCalendarHandler.prototype.edit = function (formData) {
-        var _this = this;
-        var method = !formData ? "GET" : "POST";
+    }
+    edit(formData) {
+        let _this = this;
+        let method = !formData ? "GET" : "POST";
         $.ajax({
             url: base_url + 'panel/AjaxEvent/edit/' + _this._eventId,
             dataType: "json",
@@ -101,10 +101,10 @@ var EventCalendarHandler = /** @class */ (function () {
                 }
             }
         });
-    };
-    EventCalendarHandler.prototype._initializeCalendar = function () {
-        var _this = this;
-        var defaultDate = moment().format("YYYY-MM-DD");
+    }
+    _initializeCalendar() {
+        let _this = this;
+        let defaultDate = moment().format("YYYY-MM-DD");
         this._calendar = new FullCalendar.Calendar(this._calendarElement, {
             plugins: ['interaction', 'dayGrid', 'timeGrid'],
             header: {
@@ -146,27 +146,27 @@ var EventCalendarHandler = /** @class */ (function () {
             }
         });
         this._calendar.render();
-    };
-    EventCalendarHandler.prototype._parseTimeToSend = function (formData) {
+    }
+    _parseTimeToSend(formData) {
         $.each(formData, function (index, value) {
             if (value.name == 'date-time-from' || value.name == 'date-time-to') {
                 formData[index].value = moment(value.value, 'llll').format('YYYY-MM-DD HH:mm:ss');
             }
         });
         return formData;
-    };
-    EventCalendarHandler._parseTimeToEdit = function (event) {
+    }
+    static _parseTimeToEdit(event) {
         event.startTime = moment(event.startTime, 'YYYY-MM-DD HH:mm:ss').format('llll');
         event.endTime = moment(event.endTime, 'YYYY-MM-DD HH:mm:ss').format('llll');
         return event;
-    };
-    EventCalendarHandler.prototype.refreshCalendar = function () {
+    }
+    refreshCalendar() {
         this._calendar.refetchEvents();
-    };
-    EventCalendarHandler._destroyPopOvers = function () {
+    }
+    static _destroyPopOvers() {
         $('.popover').popover('dispose');
-    };
-    EventCalendarHandler.prototype._beforeSend = function (method) {
+    }
+    _beforeSend(method) {
         if (method == "GET") {
             $(this._popoverAttachTo).popover({
                 content: "Cargando..",
@@ -178,18 +178,18 @@ var EventCalendarHandler = /** @class */ (function () {
                 template: '<div class="popover box-shadow-3 no-border event-calendar-popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>'
             }).popover('show');
         }
-    };
-    EventCalendarHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         $(document).on("click", ".event-calendar-btn-cancel", function (e) {
             e.preventDefault();
             EventCalendarHandler._destroyPopOvers();
         });
         $(document).on("submit", "form[name=event-calendar-form]", function (e) {
             e.preventDefault();
-            var eventId = parseInt($("input[name=event-id]").val());
-            var $form = $("form[name=event-calendar-form]");
-            var formData = _this._parseTimeToSend($form.serializeArray());
+            let eventId = parseInt($("input[name=event-id]").val());
+            let $form = $("form[name=event-calendar-form]");
+            let formData = _this._parseTimeToSend($form.serializeArray());
             if (isNaN(eventId)) {
                 _this.add(formData);
             }
@@ -197,6 +197,5 @@ var EventCalendarHandler = /** @class */ (function () {
                 _this.edit(formData);
             }
         });
-    };
-    return EventCalendarHandler;
-}());
+    }
+}

@@ -1,6 +1,6 @@
 "use strict";
-var PointsLocationHandler = /** @class */ (function () {
-    function PointsLocationHandler(divContent, projectId) {
+class PointsLocationHandler {
+    constructor(divContent, projectId) {
         this.divContent = divContent;
         this.projectId = projectId;
         moment.locale('es');
@@ -10,14 +10,14 @@ var PointsLocationHandler = /** @class */ (function () {
         this._markerCluster = new MarkerClusterer(this._map, this._currentMarkers, { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
         this._projectId = projectId;
     }
-    PointsLocationHandler.prototype.startPaginationJs = function (additionalParameter) {
-        var _this = this;
+    startPaginationJs(additionalParameter) {
+        let _this = this;
         $('#pagination-content').pagination({
             dataSource: base_url + 'panel/AjaxBuildingPoint/paginationJs',
             locator: 'resultArray',
             totalNumberLocator: function (response) {
                 // you can return totalNumber by analyzing response content
-                var text = "Se encontraron " + response.recordsFiltered + " puntos";
+                let text = "Se encontraron " + response.recordsFiltered + " puntos";
                 if (response.recordsFiltered == 1)
                     text = "Se encontro 1 punto";
                 else if (response.recordsFiltered == 0)
@@ -47,11 +47,11 @@ var PointsLocationHandler = /** @class */ (function () {
                 _this._bounds = new google.maps.LatLngBounds();
                 _this._currentMarkers = [];
                 // _this._markerCluster.clearMarkers();
-                var marker = {};
+                let marker = {};
                 $.each(data, function (index, point) {
                     point.latitude_bpo = point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.");
                     point.longitude_bpo = point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.");
-                    var loc = new google.maps.LatLng(parseFloat(point.latitude_bpo), parseFloat(point.longitude_bpo));
+                    let loc = new google.maps.LatLng(parseFloat(point.latitude_bpo), parseFloat(point.longitude_bpo));
                     // let loc = new google.maps.LatLng(parseFloat(point.latitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")), parseFloat(point.longitude_bpo.replace(/(\d)(?=(\d\d\d)+(?!\d))/, "$1.")));
                     _this._bounds.extend(loc);
                     marker = _this.addMarker(point);
@@ -60,7 +60,7 @@ var PointsLocationHandler = /** @class */ (function () {
                 // _this._markerCluster.setMap(_this._map);
                 // _this._markerCluster.addMarkers(_this._currentMarkers);
                 if (data.length == 1) {
-                    var coordinate = data[0];
+                    let coordinate = data[0];
                     _this._map.setZoom(15);
                     _this._map.panTo(marker.getPosition());
                 }
@@ -71,39 +71,39 @@ var PointsLocationHandler = /** @class */ (function () {
                 $("#" + _this._mapContent).unblock();
             }
         });
-    };
-    PointsLocationHandler.prototype.startMap = function () {
+    }
+    startMap() {
         this._map = new google.maps.Map(document.getElementById(this._mapContent), {
             center: { lat: -17.784146, lng: -63.181738 },
             zoom: 12,
             mapTypeId: 'satellite'
         });
-    };
-    PointsLocationHandler.prototype.addMarker = function (point) {
-        var _this = this;
-        var latitude = parseFloat(point.latitude_bpo);
-        var longitude = parseFloat(point.longitude_bpo);
-        var position = { lat: latitude, lng: longitude };
-        var markerImage = timbthumbImage(base_url + 'assets/images/flaticon/electric-pole-2.png', 30);
-        var marker = new google.maps.Marker({
+    }
+    addMarker(point) {
+        let _this = this;
+        let latitude = parseFloat(point.latitude_bpo);
+        let longitude = parseFloat(point.longitude_bpo);
+        let position = { lat: latitude, lng: longitude };
+        let markerImage = timbthumbImage(base_url + 'assets/images/flaticon/electric-pole-2.png', 30);
+        let marker = new google.maps.Marker({
             position: position,
             map: _this._map,
             // animation: google.maps.Animation.DROP,
             icon: markerImage
         });
-        var htmlSource = $("#point-location-info-window").html();
-        var template = Handlebars.compile(htmlSource);
-        var html = template({ point: point });
-        var infoWindow = new google.maps.InfoWindow({
+        let htmlSource = $("#point-location-info-window").html();
+        let template = Handlebars.compile(htmlSource);
+        let html = template({ point: point });
+        let infoWindow = new google.maps.InfoWindow({
             content: html
         });
         marker.addListener('click', function () {
             infoWindow.open(_this._map, marker);
         });
         return marker;
-    };
-    PointsLocationHandler.prototype._delay = function (callback, ms) {
-        var timer = 0;
+    }
+    _delay(callback, ms) {
+        let timer = 0;
         return function () {
             var context = this, args = arguments;
             clearTimeout(timer);
@@ -111,9 +111,9 @@ var PointsLocationHandler = /** @class */ (function () {
                 callback.apply(context, args);
             }, ms || 0);
         };
-    };
-    PointsLocationHandler.prototype.loadEventHandlers = function () {
-        var _this = this;
+    }
+    loadEventHandlers() {
+        let _this = this;
         $(document).on("click", "#search-text-on-map", function () {
             if ($('#pagination-content').length > 0)
                 $('#pagination-content').pagination('go', 1);
@@ -122,6 +122,5 @@ var PointsLocationHandler = /** @class */ (function () {
             if ($('#pagination-content').length > 0)
                 $('#pagination-content').pagination('go', 1);
         }, 2000));
-    };
-    return PointsLocationHandler;
-}());
+    }
+}

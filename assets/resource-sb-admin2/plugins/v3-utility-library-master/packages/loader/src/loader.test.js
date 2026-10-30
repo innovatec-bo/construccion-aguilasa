@@ -23,37 +23,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference types="@types/jest" />
 /* eslint-disable @typescript-eslint/no-explicit-any */
-var loader_1 = require("./loader");
+const loader_1 = require("./loader");
 test.each([
     [
         {},
@@ -75,42 +48,42 @@ test.each([
         },
         "https://maps.googleapis.com/maps/api/js?callback=__google_maps_callback&key=foo&libraries=places&client=bar&channel=channel&language=language&region=region&v=weekly"
     ]
-])("createUrl is correct", function (options, expected) {
-    var loader = new loader_1.Loader(options);
+])("createUrl is correct", (options, expected) => {
+    const loader = new loader_1.Loader(options);
     expect(loader.createUrl()).toEqual(expected);
 });
-test("setScript adds a script to head with correct attributes", function () {
-    var loader = new loader_1.Loader({ apiKey: "" });
+test("setScript adds a script to head with correct attributes", () => {
+    const loader = new loader_1.Loader({ apiKey: "" });
     loader["setScript"]();
-    var script = document.head.childNodes[0];
+    const script = document.head.childNodes[0];
     expect(script.src).toEqual(loader.createUrl());
     expect(script.defer).toBeTruthy();
     expect(script.async).toBeTruthy();
     expect(script.onerror).toEqual(loader["loadErrorCallback"]);
     expect(script.type).toEqual("text/javascript");
 });
-test("load should return a promise that resolves even if called twice", function () {
-    var loader = new loader_1.Loader({ apiKey: "" });
+test("load should return a promise that resolves even if called twice", () => {
+    const loader = new loader_1.Loader({ apiKey: "" });
     expect.assertions(1);
-    var promise = Promise.all([loader.load(), loader.load()]).then(function () {
+    const promise = Promise.all([loader.load(), loader.load()]).then(() => {
         expect(loader["done"]).toBeTruthy();
     });
     window[loader["CALLBACK"]]();
     return promise;
 });
-test("loadCallaback callback", function () {
-    var loader = new loader_1.Loader({ apiKey: "" });
+test("loadCallaback callback", () => {
+    const loader = new loader_1.Loader({ apiKey: "" });
     expect.assertions(2);
-    loader.loadCallback(function (e) {
+    loader.loadCallback((e) => {
         expect(loader["done"]).toBeTruthy();
         expect(e).toBeUndefined();
     });
     window[loader["CALLBACK"]]();
 });
-test("script onerror should reject promise", function () {
-    var loader = new loader_1.Loader({ apiKey: "" });
+test("script onerror should reject promise", () => {
+    const loader = new loader_1.Loader({ apiKey: "" });
     expect.assertions(3);
-    var promise = loader.load().catch(function (e) {
+    const promise = loader.load().catch(e => {
         expect(e).toBeTruthy();
         expect(loader["done"]).toBeTruthy();
         expect(loader["loading"]).toBeFalsy();
@@ -118,37 +91,21 @@ test("script onerror should reject promise", function () {
     loader["loadErrorCallback"](document.createEvent("ErrorEvent"));
     return promise;
 });
-test("loader should resolve immediately when successfully loaded", function () { return __awaiter(void 0, void 0, void 0, function () {
-    var loader;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                loader = new loader_1.Loader({ apiKey: "" });
-                loader["done"] = true;
-                return [4 /*yield*/, expect(loader.loadPromise()).resolves.toBeUndefined()];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
-test("loader should resolve immediately when failed loading", function () { return __awaiter(void 0, void 0, void 0, function () {
-    var loader;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                loader = new loader_1.Loader({ apiKey: "" });
-                loader["done"] = true;
-                loader["onerrorEvent"] = document.createEvent("ErrorEvent");
-                return [4 /*yield*/, expect(loader.loadPromise()).rejects.toBeDefined()];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
-test("loader should wait if already loading", function () {
-    var loader = new loader_1.Loader({ apiKey: "" });
+test("loader should resolve immediately when successfully loaded", () => __awaiter(void 0, void 0, void 0, function* () {
+    // use await/async pattern since the promise resolves without trigger
+    const loader = new loader_1.Loader({ apiKey: "" });
+    loader["done"] = true;
+    yield expect(loader.loadPromise()).resolves.toBeUndefined();
+}));
+test("loader should resolve immediately when failed loading", () => __awaiter(void 0, void 0, void 0, function* () {
+    // use await/async pattern since the promise rejects without trigger
+    const loader = new loader_1.Loader({ apiKey: "" });
+    loader["done"] = true;
+    loader["onerrorEvent"] = document.createEvent("ErrorEvent");
+    yield expect(loader.loadPromise()).rejects.toBeDefined();
+}));
+test("loader should wait if already loading", () => {
+    const loader = new loader_1.Loader({ apiKey: "" });
     loader["loading"] = true;
     loader.load();
 });

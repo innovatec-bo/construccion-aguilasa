@@ -38,5 +38,6 @@
     <![endif]-->
     <script>
         var base_url = '<?=base_url()?>';
+        var pin_marker_url = '<?= $pinMarkerUrl?>'
     </script>
 </head>
