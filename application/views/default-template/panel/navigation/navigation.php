@@ -282,7 +282,7 @@
                     $magicLoginSystemV2Url = getenv('BASE_URL').'/home/magic-login/' . $sessionUser->id;
                     if (in_array($sessionUser->id, [1, 2, 75, 89, 22, 19, 30, 91, 95])) {
                     ?>
-                <li><a href="<?= $magicLoginSystemV2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Sistema v2</a>
+                    <li><a href="<?= $magicLoginSystemV2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Sistema v2</a>
                 <?php
                     }
                 ?>

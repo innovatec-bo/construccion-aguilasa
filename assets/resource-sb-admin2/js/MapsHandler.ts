@@ -47,9 +47,9 @@ class MapsHandler
             icon: {
                 url: markerImage,
                 // 1. Tamaño visual en el mapa (Ancho, Alto)
-                scaledSize: new google.maps.Size(32, 32), 
+                scaledSize: new google.maps.Size(32,42), 
                 // 2. Tamaño original del archivo (opcional, igual al anterior si se escala)
-                size: new google.maps.Size(32, 32),       
+                size: new google.maps.Size(32,42),
                 // 3. Punto de anclaje (opcional: '0,32' sitúa la base del icono en la coordenada )
                 anchor: new google.maps.Point(16, 32)     
             },
