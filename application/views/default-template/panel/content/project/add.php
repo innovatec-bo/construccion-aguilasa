@@ -53,7 +53,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Area de trabajo</label>
-                                    <select  class="form-control" name="work-area">
+                                    <select  class="form-control" name="work-area" required>
                                         <option value="">Elija una area</option>
                                         <option value="gis">GIS</option>
                                         <option value="gir">GIR</option>

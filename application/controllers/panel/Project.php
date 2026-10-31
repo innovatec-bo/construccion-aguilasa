@@ -77,6 +77,7 @@ class Project extends PrivateController
 
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
+        $this->form_validation->set_rules('work-area', 'Area de trabajo', 'trim|required');
         $this->form_validation->set_rules('project-name', 'Nombre del proyecto', 'trim');
         $this->form_validation->set_rules('project-entry-date', 'Nombre del proyecto', 'trim|required');
         $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim|required');
@@ -217,6 +218,7 @@ class Project extends PrivateController
         /** Server Side Validations **/
         $this->form_validation->set_rules('project-code', 'Codigo del proyecto', 'trim|required|callback_validate_code');
         $this->form_validation->set_rules('project-secondary-code', 'Codigo del proyecto', 'trim|required|callback_validate_secondary_code');
+        $this->form_validation->set_rules('work-area', 'Area de trabajo', 'trim|required');
         $this->form_validation->set_rules('project-folder-date', 'Fecha de folder', 'trim');
         $this->form_validation->set_rules('project-cre-fiscal', 'Fiscal', 'trim|required');
         $this->form_validation->set_rules('project-system', 'sistema', 'trim|required');
