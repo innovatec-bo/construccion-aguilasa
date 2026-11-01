@@ -1058,11 +1058,9 @@ class AjaxProjectStatus extends PrivateController
             {
                 if($statusSet == 'approvement' && $value['status_id_psl'] == 20)
                 {
-                    // dd($key,$value);       
                     unset($projectLog[$key]);
                 }
             }
-            
         }
         $data["projectLog"] = $projectLog;
         $data["updateHistory"] = $this->_validateFeature("project_update_history",TRUE);
@@ -1072,6 +1070,10 @@ class AjaxProjectStatus extends PrivateController
         $data["projectFullDetail"] = $projectWorkFlow;//$projectFullDetail;
         $data["template"] = $this->loadView("panel/content/project-status/ht-status-management", array(), TRUE);
 		$data['projectCurrentBudget'] = $projectWorkFlow['project_current_budget'];
+        $projectManagers = Model_user::getByRoleKeyword('project_manager');
+        foreach ($projectManagers as $key => $projectManager) {
+            $data["projectManagers"][] = ['id' => $projectManager->getId(), 'full_name' => $projectManager->getFullName()];
+        }
         $response["success"] = 1;
         $response["message"] = "";
         $response["data"] = $data;

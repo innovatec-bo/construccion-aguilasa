@@ -89,6 +89,7 @@ class StatusManagementHandler
         let responsibleList = this.loadViewResponse.data.responsibleList;
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         let responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
+        let projectManagers = this.loadViewResponse.data.projectManagers;
         let statusName = "Este proyecto no esta en esta etapa";
         if(project.project_status_id == 20)
         {
@@ -117,6 +118,7 @@ class StatusManagementHandler
         this.viewData.responsibleList = responsibleList;
         this.viewData.responsibleListFiscal = responsibleListFiscal;
         this.viewData.responsibleListBuilder = responsibleListBuilder;
+        this.viewData.projectManagers = projectManagers;
         this.viewData.project.system = project.system_pro;
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;

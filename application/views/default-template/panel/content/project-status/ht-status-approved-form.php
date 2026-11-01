@@ -59,9 +59,9 @@
 											<label>Encargado del proyecto</label>
 											<div class="form-group">
 												<select name="project-manager" class="form-control" parsley-trigger="change" required="">
-													<option value="22">Eddyson Copa</option>
-													<option value="2">Mario Aguilera</option>
-                                                    <option value="8">Pepe Vargas</option>
+                                                    {{#each viewData.projectManagers}}
+                                                        <option value="{{id}}">{{full_name}}</option>
+                                                    {{/each}}
 												</select>
 											</div>
 										</fieldset>

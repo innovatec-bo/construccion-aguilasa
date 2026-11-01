@@ -115,6 +115,7 @@ class Model_status_responsible extends Model_status_responsible_base
         $arrayStatus["approvement_process"][] = "ready_to_send";
         $arrayStatus["approvement_process"][] = "already_sent";
         $arrayStatus["approvement_process"][] = "approvement";
+        $arrayStatus["approvement_process"][] = "approved";
 
         //Responsible on digitization
         $arrayStatus["digitization_process"][] = "digitization";

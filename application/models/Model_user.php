@@ -170,7 +170,7 @@ class Model_user extends Model_user_base
         return $sendMessageResponse;
     }
 
-    public static function getByRoleKeyword($roleKeyword)
+    public static function getByRoleKeyword(string $roleKeyword)
     {
         $ci = &get_instance();
         $ci->load->database();
