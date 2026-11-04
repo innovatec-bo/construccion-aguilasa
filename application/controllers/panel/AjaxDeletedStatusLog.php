@@ -84,7 +84,10 @@ class AjaxDeletedStatusLog extends PrivateController
                             
                             //Deleting labor details and its costs
                             $laborDetail = Model_labor_detail::getByProjectId($project->getId());
-                            $laborDetail->delete();
+                            if ($laborDetail instanceof Model_labor_detail) {
+                                $laborDetail->delete();
+                            }
+                            
                             //Deleting points
                             Model_building_point::deleteByProjectId($project->getId());
                             //Deleting point to point master
