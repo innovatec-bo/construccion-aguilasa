@@ -109,7 +109,7 @@ class Model_warehouse_base extends MY_Model
      * @param string $orderType
      * @return mixed
      */
-    public static function getAllProjects($statusId = "", $limit, $offset, $orderBy = null, $orderType = 'asc')
+    public static function getAllProjects($statusId = "", $limit = 100, $offset = 0, $orderBy = null, $orderType = 'asc')
     {
         if ($orderBy === null)
         {

@@ -54,8 +54,11 @@ class MaterialsFileReader
         $this->_excelArrayData = $sheetData->toArray();
     }
 
-    private function _setExcelArrayData() : void
+    private function _setExcelArrayData()
     {
+        $fileLocation = FCPATH . $this->_file->getUrl();
+        $isNested = false;
+
         switch (strtolower($this->_file->getExtension()))
         {
             case 'xlsx':
@@ -66,24 +69,87 @@ class MaterialsFileReader
                 break;
             default:
                 $reader = new Csv();
-                $fileLocation = FCPATH.$this->_file->getUrl();
-                $detectedDelimiter = $this->detectCsvDelimiter($fileLocation);
-                $reader->setDelimiter($detectedDelimiter);
-                $reader->setInputEncoding('ISO-8859-1');
+                $reader->setEnclosure('"');
+                $reader->setInputEncoding($this->_detectEncoding($fileLocation));
+
+                if ($this->_isNestedCsv($fileLocation)) {
+                    $isNested = true;
+                    $reader->setDelimiter(',');
+                } else {
+                    $reader->setDelimiter($this->_detectDelimiter($fileLocation));
+                }
                 break;
-        }
-        
-        if (!isset($fileLocation)) {
-            $fileLocation = FCPATH.$this->_file->getUrl();
         }
 
         $spreadsheet = $reader->load($fileLocation);
-        $sheetList = $spreadsheet->getAllSheets();
-        $sheetData = $sheetList[0];
-        $this->_excelArrayData = $sheetData->toArray();
+        $data = $spreadsheet->getAllSheets()[0]->toArray();
+
+        if ($isNested) {
+            $data = $this->_expandNestedCsvRows($data);
+        }
+
+        $this->_excelArrayData = $data;
     }
 
-    private function detectCsvDelimiter(string $filePath): string
+    private function _detectEncoding($path)
+    {
+        $sample = file_get_contents($path, false, null, 0, 50000);
+
+        // BOM UTF-8
+        if (strncmp($sample, "\xEF\xBB\xBF", 3) === 0) {
+            return 'UTF-8';
+        }
+
+        // Si es UTF-8 válido, usar UTF-8; si no, asumir Windows-1252
+        return mb_check_encoding($sample, 'UTF-8') ? 'UTF-8' : 'Windows-1252';
+    }
+
+    private function _expandNestedCsvRows(array $rows)
+    {
+        $result = [];
+        $maxCols = 0;
+
+        foreach ($rows as $row) {
+            $first = isset($row[0]) ? (string) $row[0] : '';
+
+            if (strpos($first, ';') !== false) {
+                $row = array_map(function ($v) {
+                    $v = trim($v);
+                    return is_numeric($v) ? $v + 0 : $v;   // "10.3" -> 10.3, "1" -> 1
+                }, explode(';', $first));
+            }
+
+            $maxCols = max($maxCols, count($row));
+            $result[] = $row;
+        }
+
+        // Igualar columnas como lo hace toArray()
+        foreach ($result as &$row) {
+            $row = array_pad($row, $maxCols, null);
+        }
+
+        return $result;
+    }
+
+    private function _isNestedCsv($path)
+    {
+        $lines = array_slice(file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES), 0, 20);
+        $withTrailingComma = 0;
+        $withSemicolon = 0;
+
+        foreach ($lines as $line) {
+            $line = rtrim($line);
+            if (substr($line, -1) === ',') $withTrailingComma++;
+            if (strpos($line, ';') !== false) $withSemicolon++;
+        }
+
+        $total = count($lines);
+        return $total > 0
+            && $withTrailingComma >= $total * 0.8
+            && $withSemicolon >= $total * 0.5;
+    }
+
+    private function _detectDelimiter(string $filePath): string
     {
         $possibleDelimiters = [",", ";", "\t", "|"];
         $counts = array_fill_keys($possibleDelimiters, 0);
