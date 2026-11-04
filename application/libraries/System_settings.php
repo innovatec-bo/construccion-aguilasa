@@ -92,6 +92,11 @@ class System_settings
         return self::$settings['system']['email_footer_text'] ?? 'System.Admin';
     }
 
+    public function isDetailedTreeTrimmingEnabled(): bool
+    {
+        return self::$settings['system']['enable_detailed_tree_trimming'];
+    }
+
     public function all(): array
     {
         return self::$settings ?? [];

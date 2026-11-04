@@ -26,6 +26,7 @@ class PublicController extends CI_Controller
     protected ?string $_pinMarkerUrl = null;
     protected bool $_enableManualApprovementForConciliations;
     protected bool $_noPendingMaterialsInCreForAsBuilt;
+    protected bool $_isDetailedTreeTrimmingEnabled;
     protected ?string $_emailFooterText;
 
     public function __construct()
@@ -50,6 +51,7 @@ class PublicController extends CI_Controller
 
         $this->_enableManualApprovementForConciliations = $this->_ci->system_settings->getEnableManualApprovementForConciliations();
         $this->_noPendingMaterialsInCreForAsBuilt       = $this->_ci->system_settings->getNoPendingMaterialsInCreForAsBuilt();
+        $this->_isDetailedTreeTrimmingEnabled           = $this->_ci->system_settings->isDetailedTreeTrimmingEnabled();
 
         $this->complementHandler = new ComplementHandler();
         $this->complementHandler->addViewComplement("jquery");
