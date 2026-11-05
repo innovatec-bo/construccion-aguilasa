@@ -13,9 +13,12 @@ class ExcelProjectWorkflow
     private $_arrayColumnDataCounter;
     private $_hideHeaderColumnGroup;
     private $_fileName;
+    private $_isDetailedTreeTrimmingEnabled;
 
 	public function __construct($sessionUser)
 	{
+        $ci =& get_instance();
+        $this->_isDetailedTreeTrimmingEnabled = $ci->system_settings->isDetailedTreeTrimmingEnabled();
         $this->_sessionUser = $sessionUser;
         $this->_additionalParameters = array();
         $this->_arrayColumnDataCounter = array();
@@ -273,7 +276,12 @@ class ExcelProjectWorkflow
                     $cellValue = $rowData[$arrayKeys[$i]];
                     if ($arrayKeys[$i] == "trim_tree") 
                     {
-                        $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'si' : 'no';
+                        if ($this->_isDetailedTreeTrimmingEnabled) {
+                            $cellValue = $rowData['trim_tree_type'];
+                        }
+                        else{
+                            $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'si' : 'no';
+                        }
                     }
 
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $cellValue);
