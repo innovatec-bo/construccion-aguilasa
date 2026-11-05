@@ -279,13 +279,17 @@ class AjaxProjectStatus extends PrivateController
 		$tentativeTotalBudget = $formData["tentativeTotalBudget"];
 		$tentativeTotalBudget = str_replace(",","",$tentativeTotalBudget);
 		$trimTree = $formData['trimTree'];
+        $trimTreeType = null;
+        if ($this->_isDetailedTreeTrimmingEnabled && $trimTree == '1') {
+            $trimTreeType = $formData['trimTreeType'];
+        }
 		/** @var Model_project $project */
         $project = Model_project::getById($projectId);
         $project->setStart($projectStart);
         $project->setEnd($projectEnd);
         $project->save();
 
-        $project->saveBudget($design, 0, "", "", 0, 0, 0, $tentativeTotalBudget, $statusId, $statusDetail, $entryDate, $responsibleList, NULL, NULL, NULL, $trimTree);
+        $project->saveBudget($design, 0, "", "", 0, 0, 0, $tentativeTotalBudget, $statusId, $statusDetail, $entryDate, $responsibleList, NULL, NULL, NULL, $trimTree, $trimTreeType);
         $approvementEntryDate = $entryDate;
         $seconds = 1;
         $approvementEntryDate = date("Y-m-d H:i:s", (strtotime(date($approvementEntryDate)) + $seconds));
@@ -1070,6 +1074,7 @@ class AjaxProjectStatus extends PrivateController
         $data["projectFullDetail"] = $projectWorkFlow;//$projectFullDetail;
         $data["template"] = $this->loadView("panel/content/project-status/ht-status-management", array(), TRUE);
 		$data['projectCurrentBudget'] = $projectWorkFlow['project_current_budget'];
+        $data['isDetailedTreeTrimmingEnabled'] = $this->_isDetailedTreeTrimmingEnabled;
         $projectManagers = Model_user::getByRoleKeyword('project_manager');
         foreach ($projectManagers as $key => $projectManager) {
             $data["projectManagers"][] = ['id' => $projectManager->getId(), 'full_name' => $projectManager->getFullName()];

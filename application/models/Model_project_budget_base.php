@@ -25,8 +25,9 @@ class Model_project_budget_base extends MY_Model
     protected ?int $_buildingStructureFileId;
 	protected ?int $_materialsFileId;
 	protected ?int $_trimTree;
+    protected ?string $_trimTreeType;
 
-    public function __construct($statusLogId = NULL, $design = 0.0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL, $trimTree = 0)
+    public function __construct($statusLogId = NULL, $design = 0.0, $building = 0, $graphNumber = 0, $reservationNumber = 0, $transportation = 0, $liveLine = 0, $rightOfWay = 0, $tentativeTotalBudget = 0, $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL, $trimTree = 0, $trimTreeType = null)
     {
         parent::__construct();
         $this->_statusLogId = $statusLogId;
@@ -42,6 +43,7 @@ class Model_project_budget_base extends MY_Model
         $this->_buildingStructureFileId = $buildingStructureFileId;
         $this->_materialsFileId = $materialsFileId;
         $this->_trimTree = $trimTree;
+        $this->_trimTreeType = $trimTreeType;
     }
 
     /**
@@ -65,6 +67,7 @@ class Model_project_budget_base extends MY_Model
             "building_structure_file_id_prb" => $this->_buildingStructureFileId,
             "materials_file_id_prb" => $this->_materialsFileId,
             "trim_tree_prb" => $this->_trimTree,
+            "trim_tree_type" => $this->_trimTreeType,
             "deleted_prb" => $this->_deleted,
             "createdon_prb" => $this->_createdOn,
             "createdby_prb" => $this->_createdBy,
@@ -101,7 +104,8 @@ class Model_project_budget_base extends MY_Model
                 $object->manpower_file_id_prb,
                 $object->building_structure_file_id_prb,
 				$object->materials_file_id_prb,
-				$object->trim_tree_prb
+				$object->trim_tree_prb,
+                $object->trim_tree_type
             );
             $instance->_id = $object->id_prb;
 
@@ -160,6 +164,11 @@ class Model_project_budget_base extends MY_Model
 		$this->_trimTree = $trimTree;
 	}
 
+    public function setTrimTreeType($trimTreeType)
+    {
+        $this->_trimTreeType = $trimTreeType;
+    }
+
     public function setTentativeTotalBudget($tentativeTotalBudget)
     {
         $this->_tentativeTotalBudget = $tentativeTotalBudget;
@@ -168,5 +177,10 @@ class Model_project_budget_base extends MY_Model
     public function getTrimTree()
     {
         return $this->_trimTree;
+    }
+
+    public function getTrimTreeType()
+    {
+        return $this->_trimTreeType;
     }
 }

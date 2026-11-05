@@ -61,14 +61,14 @@ class Model_project extends Model_project_base
 	 * @param int $trimTree
 	 * @return int
 	 */
-    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL, $trimTree = 0) : int
+    public function saveBudget($design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget, $statusId, $statusDetail, $manualEntryDate, $responsibleList = array(), $manpowerFileId = NULL, $buildingStructureFileId = NULL, $materialsFileId = NULL, $trimTree = 0, $trimTreeType = null) : int
     {
         //Lets create a new log
         $projectStatus = new Model_project_status_log($this->_id, $statusId, $statusDetail, $manualEntryDate);
         $projectStatus->save();
 
         //Create the record about the design and building and associate it to project status log
-        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget,$manpowerFileId, $buildingStructureFileId, $materialsFileId, $trimTree);
+        $projectBudget = new Model_project_budget($projectStatus->getId(), $design, $building, $graphNumber, $reservationNumber, $transportation, $liveLine, $rightOfWay, $tentativeTotalBudget,$manpowerFileId, $buildingStructureFileId, $materialsFileId, $trimTree, $trimTreeType);
         $projectBudget->save();
 
         //Each statusLog needs to have a o more responsible by log

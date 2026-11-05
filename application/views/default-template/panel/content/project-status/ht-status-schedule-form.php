@@ -46,12 +46,23 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label>Poda</label>
-											<select class="form-control" name="trim-tree">
+											<select class="form-control" name="trim-tree" id="select-trim-tree">
 												<option value="0">No</option>
 												<option value="1">Si</option>
 											</select>
 										</div>
 									</div>
+                                    {{#ifCond viewData.isDetailedTreeTrimmingEnabled "==" true}}
+                                        <div class="col-md-2" id="container-trim-tree-type" style="display: none;">
+                                            <div class="form-group">
+                                                <label>Tipo de Poda</label>
+                                                <select class="form-control" name="trim-tree-type" id="select-trim-tree-type">
+                                                    <option value="municipal">Municipal</option>
+                                                    <option value="no_municipal">No Municipal</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {{/ifCond}}
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

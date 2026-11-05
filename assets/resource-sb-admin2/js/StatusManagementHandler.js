@@ -60,6 +60,7 @@ class StatusManagementHandler {
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         let responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         let projectManagers = this.loadViewResponse.data.projectManagers;
+        let isDetailedTreeTrimmingEnabled = this.loadViewResponse.data.isDetailedTreeTrimmingEnabled;
         let statusName = "Este proyecto no esta en esta etapa";
         if (project.project_status_id == 20) {
             statusName = "Este proyecto ha sido devuelto a CRE";
@@ -84,6 +85,7 @@ class StatusManagementHandler {
         this.viewData.responsibleListFiscal = responsibleListFiscal;
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.projectManagers = projectManagers;
+        this.viewData.isDetailedTreeTrimmingEnabled = isDetailedTreeTrimmingEnabled;
         this.viewData.project.system = project.system_pro;
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;
         this.viewData.statusList = statusList;
@@ -651,12 +653,14 @@ class StatusManagementHandler {
         let design = $("input[name=design]").val();
         let tentativeTotalBudget = $("input[name=tentative-total-budget]").val();
         let trimTree = $("select[name=trim-tree] option:selected").val();
+        let trimTreeType = $("select[name=trim-tree-type] option:selected").val();
         let schedule = {
             projectStart: projectStart,
             projectEnd: projectEnd,
             design: design,
             tentativeTotalBudget: tentativeTotalBudget,
-            trimTree: trimTree
+            trimTree: trimTree,
+            trimTreeType: trimTreeType
         };
         let dataResult = Object.assign(data, schedule);
         $.ajax({
@@ -1198,6 +1202,23 @@ class StatusManagementHandler {
                     }
                 }
             });
+        });
+        $(document).on('change', '#select-trim-tree', function () {
+            let $trimTree = $('#select-trim-tree');
+            let $container = $('#container-trim-tree-type');
+            let $selectType = $('#select-trim-tree-type');
+            if ($container.length === 0) {
+                return; // El feature flag está apagado en este cliente
+            }
+            if ($trimTree.val() === "1") {
+                $container.slideDown(200);
+                $selectType.prop('disabled', false);
+            }
+            else {
+                $container.slideUp(200);
+                $selectType.prop('disabled', true); // Evita enviar el dato si no hay poda
+                $selectType.val('municipal'); // Reset a valor base opcional
+            }
         });
     }
 }
