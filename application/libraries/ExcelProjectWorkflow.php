@@ -284,6 +284,12 @@ class ExcelProjectWorkflow
                         }
                     }
 
+                    if($arrayKeys[$i] == "has_live_line")
+                    {
+                        $cellValue = isset($rowData['live_line_budget']) && $rowData['live_line_budget'] > 0 ? 'Si' : 'No';
+                        // $cellValue = "Si";
+                    }
+
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $cellValue);
 					if($arrayKeys[$i] == "initial_contract_number_con" && $rowData[$arrayKeys[$i]] == "461-0002/199")
 					{
@@ -302,7 +308,7 @@ class ExcelProjectWorkflow
                         //Let's start our counter
                         $this->_arrayColumnDataCounter[$arrayKeys[$i]] = 0;
                     }
-                    if (!empty($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] != "0000-00-00 00:00:00")
+                    if ($rowData[$arrayKeys[$i]] !=="" && $rowData[$arrayKeys[$i]] != "0000-00-00 00:00:00")
                     {
                         //If there is any data then the counter will increase its value to these column
 
