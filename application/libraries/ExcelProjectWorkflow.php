@@ -277,7 +277,7 @@ class ExcelProjectWorkflow
                     if ($arrayKeys[$i] == "trim_tree") 
                     {
                         if ($this->_isDetailedTreeTrimmingEnabled) {
-                            $cellValue = $rowData['trim_tree_type'];
+                            $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? $rowData['trim_tree_type'] : 'no';
                         }
                         else{
                             $cellValue = (isset($rowData[$arrayKeys[$i]]) && $rowData[$arrayKeys[$i]] == "1") ? 'si' : 'no';
