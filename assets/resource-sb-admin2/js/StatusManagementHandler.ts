@@ -183,7 +183,13 @@ class StatusManagementHandler
             success:function(response: any){
                 let allowUpdateHistory = viewData.allowUpdateHistory;
                 let allowDeleteStatusLog = viewData.allowDeleteStatusLog;
-                let data = {projectLog:response,allowUpdateHistory:allowUpdateHistory, allowDeleteStatusLog:allowDeleteStatusLog};
+                let isDetailedTreeTrimmingEnabled = viewData.isDetailedTreeTrimmingEnabled;
+                let data = {
+                    projectLog:response,
+                    allowUpdateHistory:allowUpdateHistory, 
+                    allowDeleteStatusLog:allowDeleteStatusLog,
+                    isDetailedTreeTrimmingEnabled:isDetailedTreeTrimmingEnabled
+                };
                 let html = _this.getHandlebarHtml("#ht-status-project-log-quick-view", data);
                 $logContent.html(html);
                 initPhotoSwipeFromDOM('.my-gallery');
