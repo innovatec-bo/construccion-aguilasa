@@ -286,8 +286,7 @@ class ExcelProjectWorkflow
 
                     if($arrayKeys[$i] == "has_live_line")
                     {
-                        $cellValue = isset($rowData['live_line_budget']) && $rowData['live_line_budget'] > 0 ? 'Si' : 'No';
-                        // $cellValue = "Si";
+                        $cellValue = $rowData['has_live_line'] == 1 ? 'Si' : 'No';
                     }
 
                     $spreadsheet->setActiveSheetIndex(0)->setCellValue($round . $char . $rowNumber, $cellValue);
