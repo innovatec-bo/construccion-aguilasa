@@ -60,6 +60,7 @@ class StatusManagementHandler {
         let responsibleListFiscal = this.loadViewResponse.data.responsibleListFiscal;
         let responsibleListBuilder = this.loadViewResponse.data.responsibleListBuilder;
         let projectManagers = this.loadViewResponse.data.projectManagers;
+        let energizedAndTrimTree = this.loadViewResponse.data.energizedAndTrimTree;
         let isDetailedTreeTrimmingEnabled = this.loadViewResponse.data.isDetailedTreeTrimmingEnabled;
         let statusName = "Este proyecto no esta en esta etapa";
         if (project.project_status_id == 20) {
@@ -85,6 +86,7 @@ class StatusManagementHandler {
         this.viewData.responsibleListFiscal = responsibleListFiscal;
         this.viewData.responsibleListBuilder = responsibleListBuilder;
         this.viewData.projectManagers = projectManagers;
+        this.viewData.energizedAndTrimTree = energizedAndTrimTree;
         this.viewData.isDetailedTreeTrimmingEnabled = isDetailedTreeTrimmingEnabled;
         this.viewData.project.system = project.system_pro;
         this.viewData.showBtnEditConstructionAssignments = showBtnEditConstructionAssignments;

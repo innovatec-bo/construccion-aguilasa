@@ -88,7 +88,12 @@
                                 </div>
                             {{/ifCond}}
                             {{#ifCond validateSaveEnergized "!=" "1"}}
-                                <h3 class="text-center">Para pasar este proyecto a <strong>Energizado</strong>, por favor contacte al usuario<br><strong>Daybis Marcial Fanola Añez</strong></h3>
+                                <h3 class="text-center">Para pasar este proyecto a <strong>Energizado</strong>, por favor contacte a los siguientes usuarios:</h3>
+                                <div class="text-center">
+                                    {{#each viewData.energizedAndTrimTree}}
+                                        <p>{{full_name}}</p>
+                                    {{/each}}
+                                </div>
                             {{/ifCond}}
                         </div>
                     </div>

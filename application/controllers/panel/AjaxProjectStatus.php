@@ -1079,6 +1079,12 @@ class AjaxProjectStatus extends PrivateController
         foreach ($projectManagers as $key => $projectManager) {
             $data["projectManagers"][] = ['id' => $projectManager->getId(), 'full_name' => $projectManager->getFullName()];
         }
+
+        $energizedAndTrimTree = Model_user::getByRoleKeyword('energized_and_tree_pruning');
+        foreach ($energizedAndTrimTree as $key => $energizedAndTrimTreeUser) {
+            $data["energizedAndTrimTree"][] = ['id' => $energizedAndTrimTreeUser->getId(), 'full_name' => $energizedAndTrimTreeUser->getFullName()];
+        }
+
         $response["success"] = 1;
         $response["message"] = "";
         $response["data"] = $data;
