@@ -32,18 +32,18 @@
 
 		<td>
 			<select class="wh-table-component-select tension text-muted" name="summary[{{rowId}}][tension]">
-				<option value="4">Indefinido</option>
-				<option value="1">Media</option>
-				<option value="2">Baja</option>
-				<option value="3">Transformador</option>
+				<option value="4" {{#ifCond data.tension_id_prm '==' 4}} selected="true" {{/ifCond}}>Indefinido</option>
+				<option value="1" {{#ifCond data.tension_id_prm '==' 1}} selected="true" {{/ifCond}}>Media</option>
+				<option value="2" {{#ifCond data.tension_id_prm '==' 2}} selected="true" {{/ifCond}}>Baja</option>
+				<option value="3" {{#ifCond data.tension_id_prm '==' 3}} selected="true" {{/ifCond}}>Transformador{{data.tension_id_prm}}</option>
 			</select>
 		</td>
 		<td>
 			<select class="wh-table-component-select status text-muted" name="summary[{{rowId}}][status]">
-				<option value="1">NVO</option>
-				<option value="2">MEO</option>
-				<option value="3">RBE</option>
-				<option value="4">Indefinido</option>
+				<option value="1" {{#ifCond data.status_id_prm '==' 1}} selected="true" {{/ifCond}}>NVO</option>
+				<option value="2" {{#ifCond data.status_id_prm '==' 2}} selected="true" {{/ifCond}}>MEO</option>
+				<option value="3" {{#ifCond data.status_id_prm '==' 3}} selected="true" {{/ifCond}}>RBE</option>
+				<option value="4" {{#ifCond data.status_id_prm '==' 4}} selected="true" {{/ifCond}}>Indefinido</option>
 			</select>
 		</td>
 		<td>
@@ -81,18 +81,18 @@
 		</td>
 		<td>
 			<select class="wh-table-component-select tension" name="summary[{{rowId}}][tension]">
-				<option value="4">Indefinido</option>
-				<option value="1">Media</option>
-				<option value="2">Baja</option>
-				<option value="3">Transformador</option>
+				<option value="4" {{#ifCond data.tension_id_prm '==' 4}} selected="true" {{/ifCond}}>Indefinido</option>
+				<option value="1" {{#ifCond data.tension_id_prm '==' 1}} selected="true" {{/ifCond}}>Media</option>
+				<option value="2" {{#ifCond data.tension_id_prm '==' 2}} selected="true" {{/ifCond}}>Baja</option>
+				<option value="3" {{#ifCond data.tension_id_prm '==' 3}} selected="true" {{/ifCond}}>Transformador</option>
 			</select>
 		</td>
 		<td>
 			<select class="wh-table-component-select status" name="summary[{{rowId}}][status]">
-				<option value="1">NVO</option>
-				<option value="2">MEO</option>
-				<option value="3">RBE</option>
-				<option value="4">Indefinido</option>
+				<option value="1" {{#ifCond data.status_id_prm '==' 1}} selected="true" {{/ifCond}}>NVO</option>
+				<option value="2" {{#ifCond data.status_id_prm '==' 2}} selected="true" {{/ifCond}}>MEO</option>
+				<option value="3" {{#ifCond data.status_id_prm '==' 3}} selected="true" {{/ifCond}}>RBE</option>
+				<option value="4" {{#ifCond data.status_id_prm '==' 4}} selected="true" {{/ifCond}}>Indefinido</option>
 			</select>
 		</td>
 		<td>
