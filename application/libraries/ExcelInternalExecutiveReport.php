@@ -168,7 +168,7 @@ class ExcelInternalExecutiveReport
             ->setCellValue('D2', "FECHA")
             ->setCellValue('E2', "DIAS ESTATICO")
             ->setCellValue('F2', "FISCAL CRE")
-            ->setCellValue('G2', "FISCAL SEREBO")
+            ->setCellValue('G2', "FISCAL INTERNO")
             ->setCellValue('H2', "DIRECCION")
             ->setCellValue('I2', "IMPORTE")
             ->setCellValue('J2', "DEPENDENCIA");
@@ -300,7 +300,7 @@ class ExcelInternalExecutiveReport
 		$this->_phpSpreadsheet->getActiveSheet()->mergeCells('AG2:AI2');
 		$this->_phpSpreadsheet->setActiveSheetIndexByName($sheetTitle)
 			->setCellValue('A3', "#")
-			->setCellValue('B3', "FISCAL DE\nSEREBO")
+			->setCellValue('B3', "FISCAL \nINTERNO")
 			->setCellValue('C3', "Cant.\nProyectos")
 			->setCellValue('D3', "Tiempo Prome.\nDias")
 			->setCellValue('E3', "Importe")

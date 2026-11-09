@@ -109,7 +109,7 @@ class ExcelWorkPlanReport
             }
         }
         $i = 3;
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A2', "CRONOGRAMA SEMANAL  DE PROYECTOS CONSTRUCCION DE REDES - SEREBO SRL.");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A2', "CRONOGRAMA SEMANAL  DE PROYECTOS CONSTRUCCION DE REDES.");
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A4', "N");
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('B4', "PROYECTO");
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('C4', "LUGAR");

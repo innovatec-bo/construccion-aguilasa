@@ -300,7 +300,7 @@ class Warehouse extends PrivateController
 			$newMaterialSummary->setCorrelativeCounter($correlativeCounter);
 			$newMaterialSummary->save();
 			$newMaterialSummary->saveMaterials($materials);
-			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente. Esta solicitud sirve como garantia para pedir un prestamo en el almacen de SEREBO");
+			$this->session->set_flashdata("successMessage", "Solicitud creada correctamente. Esta solicitud sirve como garantia para pedir un prestamo en el almacen interno");
 			$this->session->set_flashdata("requestId", $newMaterialSummary->getId());
 			$method = debug_backtrace()[1]['function'];
 			redirect(base_url("panel/Warehouse/requestAdditionalList"));

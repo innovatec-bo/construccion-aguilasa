@@ -1,7 +1,7 @@
 <div class="container-fluid box-shadow-2">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Notificacion de estados de proyectos a fiscales de SEREBO</h1>
+            <h1 class="page-header">Notificacion de estados de proyectos a fiscales internos</h1>
         </div>
         <div class="col-md-12">
             <?php

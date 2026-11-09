@@ -36,7 +36,7 @@ class CronJob extends PrivateController
         $cronJobs = [
                 [
                     'job' => 'notifyProjectStatusToSereboFiscal2019',
-                    'detail' => 'Notificacion de estados de proyectos a fiscales de SEREBO',
+                    'detail' => 'Notificacion de estados de proyectos a fiscales internos',
                     'minute' => '30',
                     'hour' => '5',
                     'day' => '*',

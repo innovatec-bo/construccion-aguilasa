@@ -221,7 +221,7 @@
 <!--						<th>Total<br>material viejo<br>devuelto</th>-->
 <!--						<th>Total<br>devuelto<br>en buen estado</th>-->
 						<th>
-							<div data-toggle="tooltip" data-placement="top" title="Cantidad solicitada por un fiscal de SEREBO">Comprometido<br>en SEREBO <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div> 
+							<div data-toggle="tooltip" data-placement="top" title="Cantidad solicitada por un fiscal de Interno">Comprometido<br>Internamente <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div> 
 						</th>
 						<th>
 							<div data-toggle="tooltip" data-placement="top" title="Diferencia entre los ingresos y egresos de almacen">Disponible<br>en el almac&eacute;n <i class="fa fa-fw fa-info-circle" style="font-size: 15px;color:#f0ad4e"></i></div>

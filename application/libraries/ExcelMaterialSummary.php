@@ -21,7 +21,7 @@ class ExcelMaterialSummary
         $spreadsheet->getProperties()
             ->setCreator($this->_sessionUser->fullName)
             ->setTitle("Resumen de materiales")
-            ->setSubject("Detalle de materiales y sus existencias en SEREBO y CRE")
+            ->setSubject("Detalle de materiales y sus existencias en almacen interno y CRE")
             ->setDescription("Contiene un listado de todos los materiales con sus respectivos detalles acerca de uso en los proyectos.")
             ->setKeywords("materiales resumen")
             ->setCategory("Reporte");

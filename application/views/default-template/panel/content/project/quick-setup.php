@@ -121,7 +121,7 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label>Fiscal SEREBO
+									<label>Fiscal Interno
 										<?php
 										if(is_null($workFlow['fiscal_responsible_id']))
 										{

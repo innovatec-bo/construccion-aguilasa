@@ -9,14 +9,14 @@ class NetBuildingReportPDF extends TCPDF
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache, $pdfa);
         // set document information
-        $this->SetCreator('PANEL SEREBO');
+        $this->SetCreator('PANEL ADMIN');
         $this->SetAuthor('Nicola Asuni');
         $this->SetTitle('REPORTE MENSUAL');
         $this->SetSubject('Resumen de totales y ejecutivo');
         $this->SetKeywords('PDF, resumen, totales, ejecutivo');
 
         // set default header data
-        $this->SetHeaderData("logo.png", 46, 'SEREBO', 'REPORTE DE CONSTRUCCION DE REDES');
+        $this->SetHeaderData("logo.png", 46, 'PANEL ADMIN', 'REPORTE DE CONSTRUCCION DE REDES');
 
         // set header and footer fonts
         $this->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));

@@ -173,7 +173,7 @@ class ExcelExternalExecutiveReport
             ->setCellValue('D2', "FECHA")
             ->setCellValue('E2', "DIAS ESTATICO")
             ->setCellValue('F2', "FISCAL CRE")
-            ->setCellValue('G2', "FISCAL SEREBO")
+            ->setCellValue('G2', "FISCAL INTERNO")
             ->setCellValue('H2', "DIRECCION")
             ->setCellValue('I2', "IMPORTE")
             ->setCellValue('J2', "DEPENDENCIA");

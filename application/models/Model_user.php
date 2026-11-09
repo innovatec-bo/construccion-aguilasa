@@ -236,9 +236,9 @@ class Model_user extends Model_user_base
 		);
 
         $referenceList = array(
-            "already_sent" => "SEREBO le detalla los proyectos pendientes de aprobaci&oacute;n.",
-            "as_built" => "SEREBO le detalla los proyectos por conciliar.",
-            "conciliation_shipment" => "SEREBO le detalla los proyectos pendientes de orden de devoluci&oacute;n.",
+            "already_sent" => "El sistema le detalla los proyectos pendientes de aprobaci&oacute;n.",
+            "as_built" => "El sistema le detalla los proyectos por conciliar.",
+            "conciliation_shipment" => "El sistema le detalla los proyectos pendientes de orden de devoluci&oacute;n.",
             "project_return_materials" => "Realizar procesos de Pago."
         );
         $shipmentDateList = array(

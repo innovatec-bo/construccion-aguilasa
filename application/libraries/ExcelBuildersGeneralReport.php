@@ -282,7 +282,7 @@ class ExcelBuildersGeneralReport
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('D'.$j, "FISCAL")
             ->setCellValue('I'.$j, "ENCARGADO")
-            ->setCellValue('K'.$j, "CONCILIADO CON\nSEREBO")
+            ->setCellValue('K'.$j, "CONCILIADO CON\nALMACEN INTERNO")
 			->setCellValue('M'.$j, "TOTAL POR\nFISCAL");
         $spreadsheet->getActiveSheet()->mergeCells('D'.$j.':F'.$j);
         $spreadsheet->getActiveSheet()->getStyle('D'.$j.':F'.$j)->applyFromArray($tableHeader);
@@ -331,7 +331,7 @@ class ExcelBuildersGeneralReport
 		$spreadsheet->setActiveSheetIndex(0)
 			->setCellValue('D'.$k, "FISCAL")
 			->setCellValue('I'.$k, "ENCARGADO")
-			->setCellValue('K'.$k, "CONCILIADO CON\nSEREBO")
+			->setCellValue('K'.$k, "CONCILIADO CON\nALMACEN INTERNO")
 			->setCellValue('M'.$k, "TOTAL POR\nFISCAL");
 		$spreadsheet->getActiveSheet()->mergeCells('D'.$k.':F'.$k);
 		$spreadsheet->getActiveSheet()->getStyle('D'.$k.':F'.$k)->applyFromArray($tableHeader);
