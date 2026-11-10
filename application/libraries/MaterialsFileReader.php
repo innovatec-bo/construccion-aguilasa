@@ -88,7 +88,74 @@ class MaterialsFileReader
             $data = $this->_expandNestedCsvRows($data);
         }
 
-        $this->_excelArrayData = $data;
+        $this->_excelArrayData = $this->_normalizeData($data);
+    }
+
+    /**
+     * Normalize numeric columns (ITEM, CANTIDAD, P/UNITARIO, PREC.TOTAL)
+     * and discard blank rows. The rows 0-3 are titles and headings.
+     */
+    private function _normalizeData(array $data)
+    {
+        $numericCols = [0, 4, 5];
+        $result = [];
+
+        foreach ($data as $i => $row) {
+            // Discard rows where all cells are empty or whitespaces
+            $isBlank = true;
+            foreach ($row as $cell) {
+                if ($cell !== null && trim((string) $cell) !== '') {
+                    $isBlank = false;
+                    break;
+                }
+            }
+            if ($isBlank) {
+                continue;
+            }
+
+            if ($i >= 4) {
+                foreach ($numericCols as $col) {
+                    if (array_key_exists($col, $row)) {
+                        $row[$col] = $this->_toNumber($row[$col]);
+                    }
+                }
+            }
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    private function _toNumber($value)
+    {
+        if ($value === null || is_int($value) || is_float($value)) {
+            return $value;
+        }
+
+        $v = trim((string) $value);
+        $v = ltrim($v, "'");                          // apóstrofo literal, si existiera
+        $v = str_replace(["\xC2\xA0", ' '], '', $v);  // espacios y nbsp
+
+        if ($v === '') {
+            return null;
+        }
+
+        // Coma decimal (125,66) o formato 1.234,56 / 1,234.56
+        if (strpos($v, ',') !== false) {
+            if (strpos($v, '.') !== false) {
+                if (strrpos($v, ',') > strrpos($v, '.')) {
+                    $v = str_replace('.', '', $v);    // 1.234,56 -> 1234,56
+                    $v = str_replace(',', '.', $v);   // -> 1234.56
+                } else {
+                    $v = str_replace(',', '', $v);    // 1,234.56 -> 1234.56
+                }
+            } else {
+                $v = str_replace(',', '.', $v);       // 125,66 -> 125.66
+            }
+        }
+
+        return is_numeric($v) ? $v + 0 : $value;      // si no es número, devuelve el original
     }
 
     private function _detectEncoding($path)

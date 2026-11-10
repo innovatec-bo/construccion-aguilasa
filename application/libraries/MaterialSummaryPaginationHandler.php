@@ -1,304 +1,227 @@
 <?php
+/**
+ * Resumen de materiales y almacen.
+ *
+ * Grano de cada fila: proyecto + material + tension (tension_id_prm) + estado (status_id_prm).
+ * NULL se trata como 4 (= "Indefinido" en ambos catalogos): las listas (tipos 1 y 2) no traen
+ * tension y el resto de movimientos si, y sin esa normalizacion quedarian en filas distintas.
+ * Todas las cantidades son por fila, o sea por estado y tension.
+ * El "group by project_material" que agrega BasePaginationHandler no colapsa datos reales.
+ *
+ * Una sola pasada sobre mat_projects_materials (agregacion condicional por tipo
+ * de movimiento) en lugar de ~26 LEFT JOIN.
+ *
+ * Parametros adicionales soportados (setAdditionalParameters):
+ *  - project-id                   : filtra por proyecto (vacio = todos)
+ *  - reservation-number           : filtra tipos 1,2,3,8 por numero de reservacion
+ *  - material-ids                 : lista de ids de material (separados por espacio, coma o salto de linea)
+ *  - show-material-pending-in-cre : 1 = solo filas con pendiente en CRE
+ *  - fiscal-responsible-id        : id del fiscal responsable
+ */
 class MaterialSummaryPaginationHandler extends BasePaginationHandler
 {
 	const TABLE_NAME = "mat_materials";
 	const TABLE_ID = "project_material";
 	const ATTRIB_SUFIX = "_mat";
 
-	public function __construct(int $limit = 100, int $offset = 0, string $orderBy = "", string $orderType = 'asc', string $textToSearch = "", array $colsArray = array())
-	{
-		parent::__construct($limit, $offset, $orderBy, $orderType, $textToSearch, $colsArray);
-		// 'grouping-criteria' => ' project_id_msu, material_id_prm, tension_id_prm, status_id_prm '
-		$this->_additionalParameters = array(
-			'grouping-criteria' => ' project_id_msu, material_id_prm, status_id_prm '
-		);
-	}
+	// mat_materials_summary_types.id_mqt
+	const TYPE_INITIAL_LIST = 1;
+	const TYPE_ADDITIONAL_LIST = 2;
+	const TYPE_PICKED_UP_FROM_CRE = 3;
+	const TYPE_DELIVERED_TO_BUILDER = 4;
+	// 5, 6, 7, 10, 11 y 12 estan eliminados (deleted_mqt = 1) y no tienen documentos: ya no se usan.
+	const TYPE_DELIVERED_TO_CRE = 8;
+	const TYPE_ENTRY_CONCILIATION_221 = 9;
+	// 13 (egreso por conciliacion 222): tipo "out" activo con muy pocos datos; hoy NO afecta el almacen.
+	const TYPE_REQUEST_MATERIALS = 14;
+	// 15 y 16 (solicitudes de prestamo / adicional): no afectan el almacen
+	const TYPE_DELIVERED_TO_BUILDER_LOAN = 17;
+	const TYPE_RETURNS_GENERIC = 18;
+	const TYPE_DEBUG_PENDING_CRE = 19;
+
+	// status_id_msu de una solicitud pendiente
+	const REQUEST_STATUS_PENDING = 1;
+
+	// Valor "Indefinido" tanto en el catalogo de estados como en el de tensiones (NULL se trata igual)
+	const UNDEFINED_ID = 4;
+
+	// Etiquetas solo para mostrar en el Select2 (catalogos de estado y tension).
+	// TODO: reemplazar por un JOIN a las tablas de catalogo cuando se confirme su nombre.
+	const STATUS_LABELS = array(1 => 'Nuevo', 2 => 'Viejo', 3 => 'Retirado en buen estado', 4 => 'Indefinido');
+	const TENSION_LABELS = array(1 => 'Media', 2 => 'Baja', 3 => 'Transformador', 4 => 'Indefinido');
 
 	/**
-	 * This method return the master detail table
+	 * Master detail table.
 	 * @return string
 	 */
 	protected function _coreQuery() : string
 	{
-		$coreQuery = "
-			(
-				select 
-					working_materials.*,
-					-- Filter by project
-					IFNULL(assigned_materials.quantity,0) quantity_assigned_materials,
-					IFNULL(additional_materials.quantity,0) quantity_additional_materials,
-					IFNULL(materials_picked_up_from_cre.quantity,0) quantity_picked_up_from_cre,
-					(IFNULL(materials_delivered_to_builder.quantity,0) + IFNULL(materials_delivered_to_builder_loan.quantity,0) )- IFNULL(builder_returns_materials.quantity,0) quantity_materials_delivered_to_builder,
-					IFNULL(materials_delivered_to_cre.quantity,0) quantity_materials_delivered_to_cre,
-					IFNULL(builder_returns_new_materials.quantity,0) quantity_new_materials_returned_by_builder,
-					IFNULL(builder_returns_old_materials.quantity,0) quantity_old_materials_returned_by_builder,
-					IFNULL(builder_returns_good_condition_materials.quantity,0) quantity_good_condition_materials_returned_by_builder,
-					IFNULL(builder_returns_materials.quantity,0) quantity_materials_returned_by_builder,
-					IFNULL(entry_by_conciliation_221.quantity,0) quantity_entry_by_conciliation_221,
-					IFNULL(non_used_materials.quantity,0) quantity_non_used_materials,
-					IFNULL(material_removed_from_construction.quantity,0) quantity_material_removed_from_construction,
-					IFNULL(assigned_materials.quantity,0) - IFNULL(materials_picked_up_from_cre.quantity,0) pending_material_in_cre,
-					IFNULL(request_materials.quantity,0) request_materials_quantity,
-					
-					(
-						IFNULL(materials_picked_up_from_cre.quantity,0) +
-						IFNULL(entry_by_conciliation_221.quantity,0) +
-						IFNULL(non_used_materials.quantity,0) +
-						IFNULL(material_removed_from_construction.quantity,0) + 
-						IFNULL(builder_returns_new_materials.quantity,0) + 
-						IFNULL(builder_returns_old_materials.quantity,0) +
-						IFNULL(builder_returns_good_condition_materials.quantity,0) +
-						IFNULL(builder_returns_materials.quantity,0)
-					) -
-					(
-						IFNULL(materials_delivered_to_builder.quantity,0) +
-						IFNULL(materials_delivered_to_builder_loan.quantity,0) +
-						IFNULL(materials_delivered_to_cre.quantity,0)+
-						IFNULL(request_materials.quantity,0)
-					) quantity_in_warehouse,
+		$ci = &get_instance();
+		$ci->load->database();
 
-					-- No project filter
-					(IFNULL(all_materials_picked_up_from_cre.quantity,0) +
-					IFNULL(all_entry_by_conciliation_221.quantity,0) +
-					IFNULL(all_non_used_materials.quantity,0) +
-					IFNULL(all_material_removed_from_construction.quantity,0)) -
-					(IFNULL(all_materials_delivered_to_builder.quantity,0) +
-					IFNULL(all_materials_delivered_to_cre.quantity,0)+
-					IFNULL(all_request_materials.quantity,0)) all_quantity_in_warehouse,
+		// ---------- Filtros ----------
+		// Material: se aplica dentro de la agregacion (reduce el escaneo)
+		$movFilter = "";
+		$materialIds = $this->_materialIds();
+		if (count($materialIds) > 0)
+			$movFilter .= " AND prm.material_id_prm IN (" . implode(',', $materialIds) . ") ";
 
-					-- Responsibles
-					assign_to.fiscal_responsible_id fiscal_responsible_id,
-            		assign_to.fiscal_responsible fiscal_responsible
-				from 
-				(
-					SELECT
-						CONCAT(id_pro,'-',code_mat,'-',IFNULL(tension_id_prm,'indefinido'),'-',IFNULL(status_id_prm,'indefinido')) project_material,
-						id_pro project_id,
-						code_pro project_code,
-						id_mat material_id,
-						code_mat material_code,
-						description_mat material_description,
-						reservation_number_msu summary_reservation_number,
-						tension_id_prm,
-						status_id_prm
-					FROM
-						mat_projects_materials
-					LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-					LEFT JOIN mat_materials on material_id_prm = id_mat
-					LEFT JOIN wfl_projects on id_pro = project_id_msu
-					where 
-						deleted_prm != 1
-						{project-id}
-						{reservation-number}
-						{material-ids}
-						and deleted_msu != 1
-						GROUP BY project_id_msu, material_id_prm
-						ORDER BY createdby_msu
-				) as working_materials
-				LEFT JOIN (
-					{$this->_subQueryQuantity('1,2')}
-				) as assigned_materials on working_materials.material_id = assigned_materials.material_id and working_materials.project_id = assigned_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('2')}
-				) as additional_materials on working_materials.material_id = additional_materials.material_id and working_materials.project_id = additional_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('3')}
-				) materials_picked_up_from_cre on materials_picked_up_from_cre.material_id = working_materials.material_id and materials_picked_up_from_cre.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('3', FALSE, FAlSE)}
-				) all_materials_picked_up_from_cre on all_materials_picked_up_from_cre.material_id = working_materials.material_id and all_materials_picked_up_from_cre.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('4', FALSE)}
-				) materials_delivered_to_builder on materials_delivered_to_builder.material_id = working_materials.material_id and materials_delivered_to_builder.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('4', FALSE, FALSE)}
-				) all_materials_delivered_to_builder on all_materials_delivered_to_builder.material_id = working_materials.material_id and all_materials_delivered_to_builder.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('6')}
-				) builder_returns_new_materials on builder_returns_new_materials.material_id = working_materials.material_id and builder_returns_new_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('5')}
-				) builder_returns_old_materials on builder_returns_old_materials.material_id = working_materials.material_id and builder_returns_old_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('8')}
-				) materials_delivered_to_cre on materials_delivered_to_cre.material_id = working_materials.material_id and materials_delivered_to_cre.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('8', FALSE, FALSE)}
-				) all_materials_delivered_to_cre on all_materials_delivered_to_cre.material_id = working_materials.material_id and all_materials_delivered_to_cre.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('7')}
-				) builder_returns_good_condition_materials on builder_returns_good_condition_materials.material_id = working_materials.material_id and builder_returns_good_condition_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('9')}
-				) entry_by_conciliation_221 on entry_by_conciliation_221.material_id = working_materials.material_id and entry_by_conciliation_221.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('9', FALSE, FALSE)}
-				) all_entry_by_conciliation_221 on all_entry_by_conciliation_221.material_id = working_materials.material_id and all_entry_by_conciliation_221.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('10')}
-				) non_used_materials on non_used_materials.material_id = working_materials.material_id and non_used_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('10', FALSE, FALSE)}
-				) all_non_used_materials on all_non_used_materials.material_id = working_materials.material_id and all_non_used_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('11')}
-				) material_removed_from_construction on material_removed_from_construction.material_id = working_materials.material_id and material_removed_from_construction.project_id = working_materials.project_id	 
-				LEFT JOIN (
-					{$this->_subQueryQuantity('11', FALSE, FALSE)}
-				) all_material_removed_from_construction on all_material_removed_from_construction.material_id = working_materials.material_id and all_material_removed_from_construction.project_id = working_materials.project_id	 
-				LEFT JOIN (
-					{$this->_subQueryQuantity('14', TRUE, TRUE, 1)}
-				) request_materials on request_materials.material_id = working_materials.material_id and request_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('14', FALSE, FALSE, 1)}
-				) all_request_materials on all_request_materials.material_id = working_materials.material_id and all_request_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('15')}
-				) request_loans_materials on request_loans_materials.material_id = working_materials.material_id and request_loans_materials.project_id = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('17')}
-				) materials_delivered_to_builder_loan on materials_delivered_to_builder_loan.material_id = working_materials.material_id and materials_delivered_to_builder_loan.project_id = working_materials.project_id
-				LEFT JOIN (".Model_project::_statusDetailQuery(21).") assign_to on assign_to.project_id_psl = working_materials.project_id
-				LEFT JOIN (
-					{$this->_subQueryQuantity('18')}
-				) builder_returns_materials on builder_returns_materials.material_id = working_materials.material_id and builder_returns_materials.project_id = working_materials.project_id
-			) ".static::TABLE_NAME."_master_detail
-		";//echo"<pre>";var_dump($this->_applyNestedFilters($coreQuery));exit;
-		return $this->_applyNestedFilters($coreQuery);
-	}
+		// Proyecto: el grano ya incluye el proyecto, asi que el filtro va dentro de la agregacion
+		$projectId = $this->_param('project-id');
+		if (is_numeric($projectId))
+			$movFilter .= " AND msu.project_id_msu = " . (int)$projectId . " ";
 
-	/**
-	 * @param string $summaryTypeId
-	 * @return string
-	 */
-	private function _subQueryQuantity(string $summaryTypeId, $reservationNumber = TRUE, $project = TRUE, $summaryStatus = "") : string
-	{
-		$reservationNumberFilter = "";
-		//Include reservation number filter if the summary type is materials_initial_list, materials_additional_list, materials_picked_up_from_cre, materials_delivered_to_cre
-		if($reservationNumber && in_array($summaryTypeId,[1,2,3,8]))
-			$reservationNumberFilter = " {reservation-number} ";
+		// Reservacion (igual que la clase original):
+		//  1) solo se muestran los pares proyecto+material que tengan alguna linea con esa reservacion
+		//  2) y solo los tipos 1,2,3,8 se suman filtrados por esa reservacion
+		$reservation = trim((string)$this->_param('reservation-number'));
+		$reservationSql = $reservation !== "" ? $ci->db->escape($reservation) : "";
+		$reservationCond = $reservationSql !== "" ? " AND msu.reservation_number_msu = {$reservationSql} " : "";
+		if ($reservationSql !== "")
+		{
+			$movFilter .= "
+				  AND (msu.project_id_msu, prm.material_id_prm) IN (
+						SELECT msu2.project_id_msu, prm2.material_id_prm
+						FROM mat_projects_materials prm2
+						JOIN mat_materials_summary msu2 ON msu2.id_msu = prm2.materials_summary_id_prm
+						WHERE prm2.deleted_prm != 1
+						  AND msu2.deleted_msu != 1
+						  AND msu2.reservation_number_msu = {$reservationSql}
+				  ) ";
+		}
 
-		$projectFilter = "";
-		if($project)
-			$projectFilter = " {project-id} ";
+		// ---------- Agregacion condicional por tipo ----------
+		$reservationTypes = $reservationCond;
+		$sums = array(
+			$this->_sum(array(self::TYPE_INITIAL_LIST, self::TYPE_ADDITIONAL_LIST), 'q_assigned', $reservationTypes),
+			$this->_sum(array(self::TYPE_ADDITIONAL_LIST), 'q_additional', $reservationTypes),
+			$this->_sum(array(self::TYPE_PICKED_UP_FROM_CRE), 'q_picked_up_cre', $reservationTypes),
+			$this->_sum(array(self::TYPE_DELIVERED_TO_BUILDER), 'q_delivered_builder'),
+			$this->_sum(array(self::TYPE_DELIVERED_TO_CRE), 'q_delivered_cre', $reservationTypes),
+			$this->_sum(array(self::TYPE_ENTRY_CONCILIATION_221), 'q_conciliation_221'),
+			$this->_sum(array(self::TYPE_REQUEST_MATERIALS), 'q_request', " AND msu.status_id_msu = " . self::REQUEST_STATUS_PENDING . " "),
+			$this->_sum(array(self::TYPE_DELIVERED_TO_BUILDER_LOAN), 'q_delivered_builder_loan'),
+			$this->_sum(array(self::TYPE_RETURNS_GENERIC), 'q_ret_generic'),
+			$this->_sum(array(self::TYPE_DEBUG_PENDING_CRE), 'q_debug_pending_cre')
+		);
+		$sumsSql = implode(",\n\t\t\t\t", $sums);
 
+		$undef = self::UNDEFINED_ID;
+		$mov = "
+				SELECT
+					msu.project_id_msu AS project_id,
+					prm.material_id_prm AS material_id,
+					IFNULL(prm.tension_id_prm, {$undef}) AS tension_id_prm,
+					IFNULL(prm.status_id_prm, {$undef}) AS status_id_prm,
+					{$sumsSql}
+				FROM mat_projects_materials prm
+				JOIN mat_materials_summary msu ON msu.id_msu = prm.materials_summary_id_prm
+				WHERE prm.deleted_prm != 1
+				  AND msu.deleted_msu != 1
+				  {$movFilter}
+				GROUP BY msu.project_id_msu, prm.material_id_prm,
+						 IFNULL(prm.tension_id_prm, {$undef}), IFNULL(prm.status_id_prm, {$undef})
+		";
 
-		$summaryStatusFilter = "";
-		if(is_numeric($summaryStatus))
-			$summaryStatusFilter = " and status_id_msu = ".$summaryStatus;
+		// ---------- Fiscales (rol 8) del ultimo log con estado 21, sin duplicados ----------
+		$fiscal = "
+				SELECT
+					ll.project_id_psl AS project_id,
+					GROUP_CONCAT(DISTINCT u.id_usr ORDER BY u.id_usr) AS fiscal_responsible_id,
+					GROUP_CONCAT(DISTINCT CONCAT(u.firstname_usr, ' ', u.lastname_usr) SEPARATOR ', ') AS fiscal_responsible
+				FROM (
+					SELECT x.id_psl, x.project_id_psl
+					FROM (
+						SELECT
+							psl.id_psl,
+							psl.project_id_psl,
+							ROW_NUMBER() OVER (PARTITION BY psl.project_id_psl
+											   ORDER BY psl.manual_entry_date_psl DESC, psl.id_psl DESC) AS rn
+						FROM wfl_project_status_log psl
+						JOIN wfl_projects pr ON pr.id_pro = psl.project_id_psl AND pr.deleted_pro != 1
+						WHERE psl.status_id_psl = 21
+						  AND psl.deleted_psl != 1
+					) x
+					WHERE x.rn = 1
+				) ll
+				JOIN wfl_status_log_responsibles slr ON slr.status_log_id_slr = ll.id_psl AND slr.deleted_slr != 1
+				JOIN wfl_status_responsibles sre ON sre.id_sre = slr.responsible_id_slr
+				JOIN sec_users u ON u.id_usr = sre.user_id_sre
+				JOIN sec_userroles ur ON ur.userid_uro = u.id_usr AND ur.roleid_uro = 8 AND ur.deleted_uro != 1
+				GROUP BY ll.project_id_psl
+		";
 
+		// ---------- Consulta final ----------
 		return "
-		SELECT
-			sum(quantity_prm) quantity,
-			material_id_prm material_id,
-			project_id_msu project_id
-		FROM
-			mat_projects_materials
-		LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-		where 
-			summary_type_id_msu in ({$summaryTypeId})
-			{$projectFilter}
-			{$reservationNumberFilter}
-			{$summaryStatusFilter}
-			and deleted_msu != 1
-			and deleted_prm != 1
-		GROUP BY {grouping-criteria}
+		(
+				SELECT
+					CONCAT(IFNULL(m.project_id,0),'-',mat.code_mat,'-',
+						IF(m.tension_id_prm = {$undef},'indefinido',m.tension_id_prm),'-',
+						IF(m.status_id_prm = {$undef},'indefinido',m.status_id_prm)) AS project_material,
+					m.project_id,
+					pro.code_pro AS project_code,
+					ps.id_pst AS project_status_id,
+					ps.status_name_pst AS project_status_name,
+					m.material_id,
+					mat.code_mat AS material_code,
+					mat.description_mat AS material_description,
+					m.tension_id_prm,
+					m.status_id_prm,
+
+					m.q_assigned AS quantity_assigned_materials,
+					m.q_additional AS quantity_additional_materials,
+					m.q_picked_up_cre AS quantity_picked_up_from_cre,
+					m.q_debug_pending_cre AS quantity_debug_pending_in_cre,
+					m.q_assigned - m.q_picked_up_cre - m.q_debug_pending_cre AS pending_material_in_cre,
+					-- entregado al constructor, neto de lo que devolvio (tipo 18)
+					(m.q_delivered_builder + m.q_delivered_builder_loan) - m.q_ret_generic AS quantity_materials_delivered_to_builder,
+					m.q_delivered_cre AS quantity_materials_delivered_to_cre,
+					m.q_ret_generic AS quantity_materials_returned_by_builder,
+					m.q_conciliation_221 AS quantity_entry_by_conciliation_221,
+					m.q_request AS request_materials_quantity,
+
+					(m.q_picked_up_cre + m.q_debug_pending_cre + m.q_conciliation_221 + m.q_ret_generic)
+					- (m.q_delivered_builder + m.q_delivered_builder_loan + m.q_delivered_cre + m.q_request) AS quantity_in_warehouse,
+
+					f.fiscal_responsible_id,
+					f.fiscal_responsible
+				FROM ({$mov}) m
+				JOIN mat_materials mat ON mat.id_mat = m.material_id
+				LEFT JOIN wfl_projects pro ON pro.id_pro = m.project_id
+				LEFT JOIN wfl_project_status ps ON ps.id_pst = pro.status_pro
+				LEFT JOIN ({$fiscal}) f ON f.project_id = m.project_id
+		) " . static::TABLE_NAME . "_master_detail
 		";
 	}
 
 	/**
-	 * @param string $summaryTypeId
-	 * @return string
-	 */
-	// private function _subQueryQuantityWithoutReservationNumber(string $summaryTypeId) : string
-	// {
-
-	// 	return "
-	// 	SELECT
-	// 		sum(quantity_prm) quantity,
-	// 		material_id_prm material_id,
-	// 		project_id_msu project_id
-	// 	FROM
-	// 		mat_projects_materials
-	// 	LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-	// 	where 
-	// 		summary_type_id_msu in ({$summaryTypeId})
-	// 		{project-id}
-	// 		and deleted_msu != 1
-	// 		and deleted_prm != 1
-	// 	GROUP BY {grouping-criteria}
-	// 	";
-	// }
-
-	/**
-	 * @param string $summaryTypeId
-	 * @return string
-	 */
-	// private function _subQueryQuantityRequested(string $summaryTypeId) : string
-	// {
-	// 	return "
-	// 	SELECT
-	// 		sum(quantity_prm) quantity,
-	// 		material_id_prm material_id,
-	// 		project_id_msu project_id
-	// 	FROM
-	// 		mat_projects_materials
-	// 	LEFT JOIN mat_materials_summary on materials_summary_id_prm = id_msu
-	// 	where 
-	// 		summary_type_id_msu in ({$summaryTypeId})
-	// 		{project-id}
-	// 		{reservation-number}
-	// 		and status_id_msu = 1 -- pending
-	// 		and deleted_msu != 1
-	// 		and deleted_prm != 1
-	// 	GROUP BY {grouping-criteria}
-	// 	";
-	// }
-
-	/**
-	 * This method define the columns that will be used from _coreQuery
 	 * @return string
 	 */
 	protected function _dataTableColumns() : string
 	{
-		return static::TABLE_NAME."_master_detail.*";
+		return static::TABLE_NAME . "_master_detail.*";
 	}
 
 	/**
-	 * Handle the additional parameters.
+	 * Filtros que se aplican sobre las columnas calculadas.
 	 * @return string
 	 */
 	protected function _additionalParameters() : string
 	{
-		$ci=&get_instance();
-		$ci->load->database();
 		$sql = "";
-		if(is_array($this->_additionalParameters) && count($this->_additionalParameters) >= 1)
+		foreach ($this->_additionalParameters as $parameter => $value)
 		{
-			foreach($this->_additionalParameters as $parameter => $value)
+			switch ($parameter)
 			{
-				switch ($parameter)
-				{
-					case "example-key":
-						$sql .= " and example-column = ".$ci->db->escape($value)." ";
-						break;
-					case "show-material-pending-in-cre":
-							// if($value == 1)
-							// 	$sql .= " and pending_material_in_cre > 0 ";
-							// elseif($value == 0)
-							// 	$sql .= " and pending_material_in_cre = 0 ";
-							if($value == 1)
-							{
-								$sql .= " and pending_material_in_cre > 0 ";	
-							}
-						break;
-					case "fiscal-responsible-id":
-						if(is_numeric($value))
-						{
-							$sql .= ' and fiscal_responsible_id = '.$ci->db->escape($value);
-						}
-						break;
-				}
+				case "show-material-pending-in-cre":
+					if ($value == 1)
+						$sql .= " and pending_material_in_cre > 0 ";
+					break;
+				case "fiscal-responsible-id":
+					// fiscal_responsible_id es un GROUP_CONCAT ("5,8"): comparar con FIND_IN_SET
+					if (is_numeric($value))
+						$sql .= " and FIND_IN_SET(" . (int)$value . ", fiscal_responsible_id) ";
+					break;
 			}
 		}
 		return $sql;
@@ -320,7 +243,11 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 		{
 			$list[] = array(
 				"id" => $row->project_material,
-				"text" => "($row->material_code) ".$row->material_description,
+				"text" => "($row->material_code) " . $row->material_description
+					. " [" . (self::STATUS_LABELS[(int)$row->status_id_prm] ?? $row->status_id_prm)
+					. " · " . (self::TENSION_LABELS[(int)$row->tension_id_prm] ?? $row->tension_id_prm) . "]",
+				"status_id_prm" => $row->status_id_prm,
+				"tension_id_prm" => $row->tension_id_prm,
 				"material_id" => $row->material_id,
 				"material_code" => $row->material_code,
 				"project_code" => $row->project_code,
@@ -332,11 +259,8 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 				"pending_material_in_cre" => $row->pending_material_in_cre,
 				"quantity_materials_delivered_to_builder" => $row->quantity_materials_delivered_to_builder,
 				"quantity_materials_delivered_to_cre" => $row->quantity_materials_delivered_to_cre,
-				"quantity_new_materials_returned_by_builder" => $row->quantity_new_materials_returned_by_builder,
-				"quantity_old_materials_returned_by_builder" => $row->quantity_old_materials_returned_by_builder,
-				"quantity_good_condition_materials_returned_by_builder" => $row->quantity_good_condition_materials_returned_by_builder,
-				"quantity_in_warehouse" => $row->quantity_in_warehouse,
-				"all_quantity_in_warehouse" => $row->all_quantity_in_warehouse
+				"quantity_materials_returned_by_builder" => $row->quantity_materials_returned_by_builder,
+				"quantity_in_warehouse" => $row->quantity_in_warehouse
 			);
 		}
 
@@ -347,57 +271,36 @@ class MaterialSummaryPaginationHandler extends BasePaginationHandler
 	}
 
 	/**
-	 * @param string $query
-	 * @return string
+	 * SUM condicional por tipo(s) de movimiento.
 	 */
-	private function _applyNestedFilters(string $query) : string
+	private function _sum(array $types, string $alias, string $extraCondition = "") : string
 	{
-		$ci=&get_instance();
-		$ci->load->database();
-		if(is_array($this->_additionalParameters) && count($this->_additionalParameters) >= 1)
-		{
-			//Apply
-			foreach($this->_additionalParameters as $parameter => $value)
-			{
-				$parameter = "{".$parameter."}";
-				switch ($parameter)
-				{
-					case "{reservation-number}":
-						$query = str_replace("{reservation-number}",' and reservation_number_msu = '.$ci->db->escape($value).' ', $query);
-						break;
-					case "{project-id}":
-						if($value != "")
-						{
-							$query = str_replace("{project-id}",' and project_id_msu = '.$ci->db->escape($value).' ', $query);
-						}
-						
-						break;
-					case "{grouping-criteria}":
-						$query = str_replace("{grouping-criteria}",$value, $query);
-						break;
-					case "{material-ids}":
-							$idList = $value;
-							$idList = str_replace("\r\n"," ", $idList);
-							$idList = str_replace(" ",PHP_EOL, $idList);
-							$idList = explode(PHP_EOL, $idList);
-							$idList = array_values(array_filter($idList));
-							$idListFilter = "";
-							foreach ($idList as $id)
-							{
-								$idListFilter .= $ci->db->escape($id).", ";
-							}
-							$idListFilter = substr($idListFilter,0, -2);
-							if($idListFilter != "")
-							{
-								$query = str_replace("{material-ids}",' and id_mat in ('.$idListFilter.') ', $query);
-							}
-							
-						break;
-				}
-			}
-		}
-		//Remove keywords that hasn't values to be replaced
-		$query = preg_replace("/\{[^}]+\}/","", $query);
-		return $query;
+		return "SUM(CASE WHEN msu.summary_type_id_msu IN (" . implode(',', $types) . ") {$extraCondition} THEN prm.quantity_prm ELSE 0 END) AS {$alias}";
+	}
+
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	private function _param(string $key)
+	{
+		return $this->_additionalParameters[$key] ?? "";
+	}
+
+	/**
+	 * Ids de material validos (solo enteros).
+	 * @return int[]
+	 */
+	private function _materialIds() : array
+	{
+		$raw = $this->_param('material-ids');
+		if ($raw === "" || $raw === null)
+			return array();
+
+		$ids = is_array($raw) ? $raw : preg_split('/[\s,]+/', (string)$raw, -1, PREG_SPLIT_NO_EMPTY);
+		$ids = array_filter($ids, function ($id) {
+			return ctype_digit((string)$id);
+		});
+		return array_values(array_unique(array_map('intval', $ids)));
 	}
 }
