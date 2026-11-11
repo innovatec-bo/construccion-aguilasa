@@ -80,6 +80,7 @@ class Model_user extends Model_user_base
         $sessionUser["firstName"] = $this->_firstName;
         $sessionUser["lastName"] = $this->_lastName;
         $sessionUser["fullName"] = $this->_firstName." ".$this->_lastName;
+        $sessionUser["email"] = $this->_email;
         $sessionUser["featureList"] = serialize($featureList);
 
         $sessionUser["roleList"] = serialize($userArrayRoleList);

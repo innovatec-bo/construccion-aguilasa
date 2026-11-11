@@ -279,8 +279,22 @@
                 <li class="divider"></li>
                 <li><a href="<?= base_url("Logout") ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     <?php
+
                     $magicLoginSystemV2Url = getenv('SYSTEM_V2_URL').'/home/magic-login/' . $sessionUser->id;
-                    if (in_array($sessionUser->id, [1, 2, 75, 89, 22, 19, 30, 91, 95])) {
+                    if (in_array($sessionUser->email, [
+                        'jair@twiiti.com', 
+                        'maguilera@serebo.com', 
+                        'genaromj@serebo.com', 
+                        'eddysonca@serebo.com', 
+                        'gilbertof@serebo.com', 
+                        'fduran@serebo.com', 
+                        'luisal@serebo.com', 
+                        'alexander@serebo.com',
+
+                        'gmolina@aguilasa.com',
+                        'maguilera@aguilasa.com', 
+                        'aavalos@aguilasa.com'
+                        ])) {
                     ?>
                     <li><a href="<?= $magicLoginSystemV2Url ?>" target="_blank"><i class="fa fa-sign-in fa-fw"></i> Sistema v2</a>
                 <?php
